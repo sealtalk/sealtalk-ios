@@ -30,6 +30,7 @@
 		5C7629831B54F7E60027DA82 /* RCDBlackListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7629821B54F7E60027DA82 /* RCDBlackListCell.m */; };
 		8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C55EB501B2A8CE5004285F4 /* Emoji.plist */; };
 		8CCBC9871AEDDF8600BA1135 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */; };
+		980235881D227F8100BCB1DD /* RCDPrivacyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */; };
 		9B447DE51CF82926005D3ED5 /* DefaultPortraitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DBC1CF82926005D3ED5 /* DefaultPortraitView.m */; };
 		9B447DE61CF82926005D3ED5 /* RCDChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DBE1CF82926005D3ED5 /* RCDChangePasswordViewController.m */; };
 		9B447DE71CF82926005D3ED5 /* RCDContactSelectedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DC01CF82926005D3ED5 /* RCDContactSelectedTableViewCell.m */; };
@@ -50,14 +51,13 @@
 		9B447DF71CF82926005D3ED5 /* RCDSquareChatRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DE01CF82926005D3ED5 /* RCDSquareChatRoomTableViewCell.m */; };
 		9B447DF81CF82926005D3ED5 /* RCDSquareTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DE21CF82926005D3ED5 /* RCDSquareTableViewCell.m */; };
 		9B447DF91CF82926005D3ED5 /* RCDSquareTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DE41CF82926005D3ED5 /* RCDSquareTableViewController.m */; };
-		9B447DFE1CF82A03005D3ED5 /* IsPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DFB1CF82A03005D3ED5 /* IsPhoneNumber.m */; };
 		A60BAD0A1CD1ACB9003D2375 /* voip_call.caf in Resources */ = {isa = PBXBuildFile; fileRef = A60BAD091CD1ACB9003D2375 /* voip_call.caf */; };
 		A61647881BE9BF7C00E90813 /* RCDMeInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A61647871BE9BF7C00E90813 /* RCDMeInfoTableViewController.m */; };
 		A616478B1BE9D97D00E90813 /* RCDEditUserNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A616478A1BE9D97D00E90813 /* RCDEditUserNameViewController.m */; };
 		A6447A0C1B1DBE6500EA2CEE /* InterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6447A0B1B1DBE6500EA2CEE /* InterfaceController.m */; };
 		A6447A0F1B1DBE6500EA2CEE /* NotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6447A0E1B1DBE6500EA2CEE /* NotificationController.m */; };
 		A6447A111B1DBE6500EA2CEE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6447A101B1DBE6500EA2CEE /* Images.xcassets */; };
-		A6447A151B1DBE6500EA2CEE /* 融云 Demo WatchKit App.app in Resources */ = {isa = PBXBuildFile; fileRef = A6447A141B1DBE6500EA2CEE /* 融云 Demo WatchKit App.app */; };
+		A6447A151B1DBE6500EA2CEE /* SealTalk WatchKit App.app in Resources */ = {isa = PBXBuildFile; fileRef = A6447A141B1DBE6500EA2CEE /* SealTalk WatchKit App.app */; };
 		A6447A1D1B1DBE6500EA2CEE /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6447A1B1B1DBE6500EA2CEE /* Interface.storyboard */; };
 		A6447A1F1B1DBE6500EA2CEE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6447A1E1B1DBE6500EA2CEE /* Images.xcassets */; };
 		A6447A3E1B1DC12500EA2CEE /* RCWKRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A6447A3B1B1DC12500EA2CEE /* RCWKRequestHandler.m */; };
@@ -313,6 +313,8 @@
 		5C7629821B54F7E60027DA82 /* RCDBlackListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RCDBlackListCell.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8C55EB501B2A8CE5004285F4 /* Emoji.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Emoji.plist; path = framework/Emoji.plist; sourceTree = SOURCE_ROOT; };
 		8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		980235861D227F8100BCB1DD /* RCDPrivacyTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPrivacyTableViewController.h; sourceTree = SOURCE_ROOT; };
+		980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPrivacyTableViewController.m; sourceTree = SOURCE_ROOT; };
 		9B447DBB1CF82926005D3ED5 /* DefaultPortraitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultPortraitView.h; sourceTree = SOURCE_ROOT; };
 		9B447DBC1CF82926005D3ED5 /* DefaultPortraitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultPortraitView.m; sourceTree = SOURCE_ROOT; };
 		9B447DBD1CF82926005D3ED5 /* RCDChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDChangePasswordViewController.h; sourceTree = SOURCE_ROOT; };
@@ -353,14 +355,12 @@
 		9B447DE21CF82926005D3ED5 /* RCDSquareTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSquareTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		9B447DE31CF82926005D3ED5 /* RCDSquareTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSquareTableViewController.h; sourceTree = SOURCE_ROOT; };
 		9B447DE41CF82926005D3ED5 /* RCDSquareTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSquareTableViewController.m; sourceTree = SOURCE_ROOT; };
-		9B447DFA1CF82A03005D3ED5 /* IsPhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IsPhoneNumber.h; path = RCloudMessage/IsPhoneNumber.h; sourceTree = SOURCE_ROOT; };
-		9B447DFB1CF82A03005D3ED5 /* IsPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IsPhoneNumber.m; path = RCloudMessage/IsPhoneNumber.m; sourceTree = SOURCE_ROOT; };
 		A60BAD091CD1ACB9003D2375 /* voip_call.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = voip_call.caf; sourceTree = SOURCE_ROOT; };
 		A61647861BE9BF7C00E90813 /* RCDMeInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDMeInfoTableViewController.h; path = RCloudMessage/RCDMeInfoTableViewController.h; sourceTree = SOURCE_ROOT; };
 		A61647871BE9BF7C00E90813 /* RCDMeInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDMeInfoTableViewController.m; path = RCloudMessage/RCDMeInfoTableViewController.m; sourceTree = SOURCE_ROOT; };
 		A61647891BE9D97D00E90813 /* RCDEditUserNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDEditUserNameViewController.h; path = RCloudMessage/RCDEditUserNameViewController.h; sourceTree = SOURCE_ROOT; };
 		A616478A1BE9D97D00E90813 /* RCDEditUserNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDEditUserNameViewController.m; path = RCloudMessage/RCDEditUserNameViewController.m; sourceTree = SOURCE_ROOT; };
-		A6447A051B1DBE6500EA2CEE /* 融云 Demo WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "融云 Demo WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6447A051B1DBE6500EA2CEE /* SealTalk WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "SealTalk WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6447A081B1DBE6500EA2CEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A6447A091B1DBE6500EA2CEE /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		A6447A0A1B1DBE6500EA2CEE /* InterfaceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceController.h; sourceTree = "<group>"; };
@@ -368,7 +368,7 @@
 		A6447A0D1B1DBE6500EA2CEE /* NotificationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationController.h; sourceTree = "<group>"; };
 		A6447A0E1B1DBE6500EA2CEE /* NotificationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationController.m; sourceTree = "<group>"; };
 		A6447A101B1DBE6500EA2CEE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		A6447A141B1DBE6500EA2CEE /* 融云 Demo WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "融云 Demo WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6447A141B1DBE6500EA2CEE /* SealTalk WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SealTalk WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6447A1A1B1DBE6500EA2CEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A6447A1C1B1DBE6500EA2CEE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		A6447A1E1B1DBE6500EA2CEE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -543,7 +543,7 @@
 		E4C497221A2484DB00098C8A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		E4C4E7E31A0A2F2800140067 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		E4C4E7E51A0A2F2E00140067 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		E4D40F281A031F460045097C /* RCloudMessage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RCloudMessage.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4D40F281A031F460045097C /* SealTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SealTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4E938CD1AD65A95001E0AC6 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		E4E938CE1AD65A95001E0AC6 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		E4E938CF1AD65A95001E0AC6 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -806,8 +806,6 @@
 		9B447DBA1CF828E8005D3ED5 /* new */ = {
 			isa = PBXGroup;
 			children = (
-				9B447DFA1CF82A03005D3ED5 /* IsPhoneNumber.h */,
-				9B447DFB1CF82A03005D3ED5 /* IsPhoneNumber.m */,
 				9B447DBB1CF82926005D3ED5 /* DefaultPortraitView.h */,
 				9B447DBC1CF82926005D3ED5 /* DefaultPortraitView.m */,
 				9B447DBD1CF82926005D3ED5 /* RCDChangePasswordViewController.h */,
@@ -848,6 +846,8 @@
 				9B447DE21CF82926005D3ED5 /* RCDSquareTableViewCell.m */,
 				9B447DE31CF82926005D3ED5 /* RCDSquareTableViewController.h */,
 				9B447DE41CF82926005D3ED5 /* RCDSquareTableViewController.m */,
+				980235861D227F8100BCB1DD /* RCDPrivacyTableViewController.h */,
+				980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */,
 			);
 			name = new;
 			sourceTree = "<group>";
@@ -1318,9 +1318,9 @@
 		E4D40F291A031F460045097C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E4D40F281A031F460045097C /* RCloudMessage.app */,
-				A6447A051B1DBE6500EA2CEE /* 融云 Demo WatchKit Extension.appex */,
-				A6447A141B1DBE6500EA2CEE /* 融云 Demo WatchKit App.app */,
+				E4D40F281A031F460045097C /* SealTalk.app */,
+				A6447A051B1DBE6500EA2CEE /* SealTalk WatchKit Extension.appex */,
+				A6447A141B1DBE6500EA2CEE /* SealTalk WatchKit App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1619,9 +1619,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A6447A041B1DBE6500EA2CEE /* 融云 Demo WatchKit Extension */ = {
+		A6447A041B1DBE6500EA2CEE /* SealTalk WatchKit Extension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A6447A281B1DBE6500EA2CEE /* Build configuration list for PBXNativeTarget "融云 Demo WatchKit Extension" */;
+			buildConfigurationList = A6447A281B1DBE6500EA2CEE /* Build configuration list for PBXNativeTarget "SealTalk WatchKit Extension" */;
 			buildPhases = (
 				A6447A011B1DBE6500EA2CEE /* Sources */,
 				A6447A021B1DBE6500EA2CEE /* Frameworks */,
@@ -1633,14 +1633,14 @@
 			dependencies = (
 				A6447A171B1DBE6500EA2CEE /* PBXTargetDependency */,
 			);
-			name = "融云 Demo WatchKit Extension";
+			name = "SealTalk WatchKit Extension";
 			productName = "融云 Demo WatchKit Extension";
-			productReference = A6447A051B1DBE6500EA2CEE /* 融云 Demo WatchKit Extension.appex */;
+			productReference = A6447A051B1DBE6500EA2CEE /* SealTalk WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit-extension";
 		};
-		A6447A131B1DBE6500EA2CEE /* 融云 Demo WatchKit App */ = {
+		A6447A131B1DBE6500EA2CEE /* SealTalk WatchKit App */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A6447A271B1DBE6500EA2CEE /* Build configuration list for PBXNativeTarget "融云 Demo WatchKit App" */;
+			buildConfigurationList = A6447A271B1DBE6500EA2CEE /* Build configuration list for PBXNativeTarget "SealTalk WatchKit App" */;
 			buildPhases = (
 				A6447A121B1DBE6500EA2CEE /* Resources */,
 			);
@@ -1648,14 +1648,14 @@
 			);
 			dependencies = (
 			);
-			name = "融云 Demo WatchKit App";
+			name = "SealTalk WatchKit App";
 			productName = "融云 Demo WatchKit App";
-			productReference = A6447A141B1DBE6500EA2CEE /* 融云 Demo WatchKit App.app */;
+			productReference = A6447A141B1DBE6500EA2CEE /* SealTalk WatchKit App.app */;
 			productType = "com.apple.product-type.application.watchapp";
 		};
-		E4D40F271A031F460045097C /* RCloudMessage */ = {
+		E4D40F271A031F460045097C /* SealTalk */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4D40F4E1A031F460045097C /* Build configuration list for PBXNativeTarget "RCloudMessage" */;
+			buildConfigurationList = E4D40F4E1A031F460045097C /* Build configuration list for PBXNativeTarget "SealTalk" */;
 			buildPhases = (
 				E4D40F241A031F460045097C /* Sources */,
 				E4D40F251A031F460045097C /* Frameworks */,
@@ -1665,9 +1665,9 @@
 			);
 			dependencies = (
 			);
-			name = RCloudMessage;
+			name = SealTalk;
 			productName = RongCloud;
-			productReference = E4D40F281A031F460045097C /* RCloudMessage.app */;
+			productReference = E4D40F281A031F460045097C /* SealTalk.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1683,6 +1683,9 @@
 						CreatedOnToolsVersion = 6.3.2;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 						};
 					};
 					A6447A131B1DBE6500EA2CEE = {
@@ -1693,6 +1696,9 @@
 						CreatedOnToolsVersion = 6.0.1;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
@@ -1714,9 +1720,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E4D40F271A031F460045097C /* RCloudMessage */,
-				A6447A041B1DBE6500EA2CEE /* 融云 Demo WatchKit Extension */,
-				A6447A131B1DBE6500EA2CEE /* 融云 Demo WatchKit App */,
+				E4D40F271A031F460045097C /* SealTalk */,
+				A6447A041B1DBE6500EA2CEE /* SealTalk WatchKit Extension */,
+				A6447A131B1DBE6500EA2CEE /* SealTalk WatchKit App */,
 			);
 		};
 /* End PBXProject section */
@@ -1726,7 +1732,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6447A151B1DBE6500EA2CEE /* 融云 Demo WatchKit App.app in Resources */,
+				A6447A151B1DBE6500EA2CEE /* SealTalk WatchKit App.app in Resources */,
 				A6447A111B1DBE6500EA2CEE /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1882,7 +1888,6 @@
 				E4E939611AD65A95001E0AC6 /* RCDTextFieldValidate.m in Sources */,
 				E4E9395F1AD65A95001E0AC6 /* RCAnimatedImagesView.m in Sources */,
 				E4BFAE651A1219EA007165B1 /* RCDAddressBookViewController.m in Sources */,
-				9B447DFE1CF82A03005D3ED5 /* IsPhoneNumber.m in Sources */,
 				E4E939CF1AD65E30001E0AC6 /* pinyin.c in Sources */,
 				E4E939451AD65A95001E0AC6 /* AFNetworkReachabilityManager.m in Sources */,
 				E4E939B21AD65CD6001E0AC6 /* RCDSelectPersonViewController.m in Sources */,
@@ -1907,6 +1912,7 @@
 				E4E939491AD65A95001E0AC6 /* AFURLResponseSerialization.m in Sources */,
 				E4E939A61AD65CA3001E0AC6 /* RCDRegisterViewController.m in Sources */,
 				466684301B5DEC57000B7504 /* RCDConversationSettingTableViewHeader.m in Sources */,
+				980235881D227F8100BCB1DD /* RCDPrivacyTableViewController.m in Sources */,
 				A692A7321B69CD4200B18659 /* RCDFriendInvitationTableViewCell.m in Sources */,
 				E4E939521AD65A95001E0AC6 /* UIWebView+AFNetworking.m in Sources */,
 				E4E939641AD65A95001E0AC6 /* NSData+ImageContentType.m in Sources */,
@@ -1966,7 +1972,7 @@
 /* Begin PBXTargetDependency section */
 		A6447A171B1DBE6500EA2CEE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A6447A131B1DBE6500EA2CEE /* 融云 Demo WatchKit App */;
+			target = A6447A131B1DBE6500EA2CEE /* SealTalk WatchKit App */;
 			targetProxy = A6447A161B1DBE6500EA2CEE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2076,7 +2082,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
-				PRODUCT_NAME = RCloudMessage;
+				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = $APP_PROFILE;
 				VALID_ARCHS = "armv7 armv7s arm64 x86_64 i386";
 			};
@@ -2209,7 +2215,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
-				PRODUCT_NAME = RCloudMessage;
+				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = $APP_PROFILE;
 				VALID_ARCHS = "armv7 armv7s arm64 x86_64 i386";
 			};
@@ -2487,7 +2493,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
-				PRODUCT_NAME = RCloudMessage;
+				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s arm64 x86_64 i386";
 			};
@@ -2522,7 +2528,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
-				PRODUCT_NAME = RCloudMessage;
+				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s arm64 x86_64 i386";
 			};
@@ -2531,7 +2537,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A6447A271B1DBE6500EA2CEE /* Build configuration list for PBXNativeTarget "融云 Demo WatchKit App" */ = {
+		A6447A271B1DBE6500EA2CEE /* Build configuration list for PBXNativeTarget "SealTalk WatchKit App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A6447A251B1DBE6500EA2CEE /* Debug */,
@@ -2542,7 +2548,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A6447A281B1DBE6500EA2CEE /* Build configuration list for PBXNativeTarget "融云 Demo WatchKit Extension" */ = {
+		A6447A281B1DBE6500EA2CEE /* Build configuration list for PBXNativeTarget "SealTalk WatchKit Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A6447A231B1DBE6500EA2CEE /* Debug */,
@@ -2564,7 +2570,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4D40F4E1A031F460045097C /* Build configuration list for PBXNativeTarget "RCloudMessage" */ = {
+		E4D40F4E1A031F460045097C /* Build configuration list for PBXNativeTarget "SealTalk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4D40F4F1A031F460045097C /* Debug */,

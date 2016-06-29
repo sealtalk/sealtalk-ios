@@ -502,7 +502,8 @@ typedef enum {
             titleLabel.text = menuItem.title;
             titleLabel.font = titleFont;
             titleLabel.textAlignment = menuItem.alignment;
-            titleLabel.textColor = menuItem.foreColor ? menuItem.foreColor : [UIColor whiteColor];
+            //设置字体颜色
+            titleLabel.textColor = menuItem.foreColor ? menuItem.foreColor : [UIColor colorWithHexString:@"000000" alpha:1.0f];
             titleLabel.backgroundColor = [UIColor clearColor];
             titleLabel.autoresizingMask = UIViewAutoresizingNone;
             //titleLabel.backgroundColor = [UIColor greenColor];
@@ -511,7 +512,8 @@ typedef enum {
         
         if (menuItem.image) {
             
-            const CGRect imageFrame = {kMarginX * 2, kMarginY, maxImageWidth, maxItemHeight - kMarginY * 2};
+//            const CGRect imageFrame = {kMarginX * 2, kMarginY, maxImageWidth, maxItemHeight - kMarginY * 2};
+            const CGRect imageFrame = {kMarginX * 1.5, kMarginY, maxImageWidth, maxItemHeight - kMarginY * 2};
             UIImageView *imageView = [[UIImageView alloc] initWithFrame:imageFrame];
             imageView.image = menuItem.image;
             imageView.clipsToBounds = YES;
@@ -523,6 +525,8 @@ typedef enum {
         if (itemNum < _menuItems.count - 1) {
             
             UIImageView *gradientView = [[UIImageView alloc] initWithImage:gradientLine];
+            //隐藏分割线
+            gradientView.hidden =YES;
             gradientView.frame = (CGRect){kMarginX * 2, maxItemHeight + 1, gradientLine.size};
             gradientView.contentMode = UIViewContentModeLeft;
             [itemView addSubview:gradientView];
@@ -633,8 +637,10 @@ typedef enum {
 
     
 //    UIColor *tintColor = [KxMenu tintColor];
-    UIColor *tintColor = [UIColor colorWithHexString:@"0195FF" alpha:1.0f];
-
+//    UIColor *tintColor = [UIColor colorWithHexString:@"0195FF" alpha:1.0f];
+    //修改背景色
+    UIColor *tintColor = [UIColor whiteColor];
+    
     if (tintColor) {
         
         CGFloat a = 0.f ;

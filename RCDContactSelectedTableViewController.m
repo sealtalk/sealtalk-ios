@@ -17,16 +17,20 @@
 #import "RCDCreateGroupViewController.h"
 #import "DefaultPortraitView.h"
 #import "RCDChatViewController.h"
+#import "MBProgressHUD.h"
 
 @interface RCDContactSelectedTableViewController ()
 @property (nonatomic,strong) NSMutableArray *friends;
 @property (strong, nonatomic) NSMutableArray *friendsArr;
 @property (nonatomic,strong) NSMutableArray *tempOtherArr;
-@property (nonatomic,strong) UILabel *noFriend;
+//@property (nonatomic,strong) UILabel *noFriend;
+
+@property (nonatomic,strong) NSIndexPath *selectIndexPath;
 
 @end
 
 @implementation RCDContactSelectedTableViewController
+MBProgressHUD* hud ;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -53,6 +57,7 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -73,15 +78,27 @@
     
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    [hud hide:YES];
+}
+
 //clicked done
 -(void) clickedDone:(id) sender
 {
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    hud= [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    hud.labelText = @"";
+    [hud show:YES];
+    
     NSArray *indexPaths = [self.tableView indexPathsForSelectedRows];
-    if (!indexPaths||indexPaths.count == 0){
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"请选择!" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
-        return;
-    }
+//    if (!indexPaths||indexPaths.count == 0){
+//        [hud hide:YES];
+//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"请选择!" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//        [alert show];
+//        return;
+//    }
     
     //get seleted users
     NSMutableArray *seletedUsers = [NSMutableArray new];
@@ -107,6 +124,13 @@
                                       [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"addGroupMemberList" object:seletedUsers]];
                                       [self.navigationController popViewControllerAnimated:YES];
                                   }
+                                  else
+                                  {
+                                      [hud hide:YES];
+                                      UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"添加成员失败" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                                      [alert show];
+                                      self.navigationItem.rightBarButtonItem.enabled = YES;
+                                  }
                               }];
         return;
     }
@@ -117,6 +141,13 @@
                                     if (result == YES) {
                                         [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"deleteGroupMemberList" object:seletedUsers]];
                                         [self.navigationController popViewControllerAnimated:YES];
+                                    }
+                                    else
+                                    {
+                                        [hud hide:YES];
+                                        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"删除成员失败" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                                        [alert show];
+                                        self.navigationItem.rightBarButtonItem.enabled = YES;
                                     }
                                 }];
         return;
@@ -299,14 +330,25 @@
 //override delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.navigationItem.rightBarButtonItem.enabled = YES;
     RCDContactSelectedTableViewCell *cell = (RCDContactSelectedTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     [cell setSelected:YES];
+    if (self.selectIndexPath && self.selectIndexPath.row == indexPath.row) {
+        [cell setSelected:NO];
+        self.selectIndexPath = nil;
+    }else{
+        self.selectIndexPath = indexPath;
+    }
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RCDContactSelectedTableViewCell *cell = (RCDContactSelectedTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     [cell setSelected:NO];
+    if ([tableView.indexPathsForSelectedRows count] == 0) {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
+    self.selectIndexPath = nil;
 }
 
 
@@ -320,18 +362,18 @@
     _allFriends = [NSMutableDictionary new];
     _allKeys = [NSMutableArray new];
     _friends = [NSMutableArray arrayWithArray:[[RCDataBaseManager shareInstance]getAllFriends ] ];
-    if ([_friends count] == 0) {
-        _noFriend = [[UILabel alloc] init];
-        _noFriend.frame = CGRectMake((self.view.frame.size.width / 2) - 50, (self.view.frame.size.height / 2) - 15 - self.navigationController.navigationBar.frame.size.height, 100, 30);
-        [_noFriend setText:@"暂无好友"];
-        [_noFriend setTextColor:[UIColor grayColor]];
-        _noFriend.textAlignment = UITextAlignmentCenter;
-        [self.view addSubview:_noFriend];
-        _noFriend.hidden = NO;
-//        return;
-    }
+//    if ([_friends count] == 0) {
+//        _noFriend = [[UILabel alloc] init];
+//        _noFriend.frame = CGRectMake((self.view.frame.size.width / 2) - 50, (self.view.frame.size.height / 2) - 15 - self.navigationController.navigationBar.frame.size.height, 100, 30);
+//        [_noFriend setText:@"暂无好友"];
+//        [_noFriend setTextColor:[UIColor grayColor]];
+//        _noFriend.textAlignment = UITextAlignmentCenter;
+//        [self.view addSubview:_noFriend];
+//        _noFriend.hidden = NO;
+////        return;
+//    }
     if (_friends==nil||_friends.count<1) {
-        _noFriend.hidden = YES;
+//        _noFriend.hidden = YES;
         [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId complete:^(NSMutableArray * result) {
             _friends=result;
             for (RCDUserInfo *user in _friends) {
@@ -357,7 +399,7 @@
         //        if (_friends.count < 20) {
         //            self.hideSectionHeader = YES;
         //        }
-        _noFriend.hidden = YES;
+//        _noFriend.hidden = YES;
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             for (RCDUserInfo *user in _friends) {
                 if ([user.status isEqualToString:@"20"]) {

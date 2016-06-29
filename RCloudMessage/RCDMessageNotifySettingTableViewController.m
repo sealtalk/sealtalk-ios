@@ -19,21 +19,11 @@
 @end
 
 @implementation RCDMessageNotifySettingTableViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    //通知开启状态
-    //    UIUserNotificationType userNotiType = [[UIApplication sharedApplication] currentUserNotificationSettings].types;
-    //    if (userNotiType != UIUserNotificationTypeNone) {
-    //        [self.notifySwitch setEnabled:YES];
-    //    }else{
-    //        [self.notifySwitch setEnabled:NO];
-    //    }
-    
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
     [[RCIMClient sharedRCIMClient] getNotificationQuietHours:^(NSString *startTime, int spansMin) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (spansMin >= 1439) {
@@ -52,6 +42,20 @@
         });
     }];
 }
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    //通知开启状态
+    //    UIUserNotificationType userNotiType = [[UIApplication sharedApplication] currentUserNotificationSettings].types;
+    //    if (userNotiType != UIUserNotificationTypeNone) {
+    //        [self.notifySwitch setEnabled:YES];
+    //    }else{
+    //        [self.notifySwitch setEnabled:NO];
+    //    }
+    self.navigationItem.title = @"新消息通知";
+}
+
 - (IBAction)onSwitch:(id)sender {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -60,7 +64,6 @@
     if (!self.notifySwitch.on) {
         [[RCIMClient sharedRCIMClient] setNotificationQuietHours:@"00:00:00" spanMins:1439 success:^{
             NSLog(@"setNotificationQuietHours succeed");
-            [[RCIM sharedRCIM] setDisableMessageNotificaiton:YES];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [hud hide:YES];
@@ -77,7 +80,6 @@
         }];
     } else {
         [[RCIMClient sharedRCIMClient] removeNotificationQuietHours:^{
-            [[RCIM sharedRCIM] setDisableMessageNotificaiton:NO];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [hud hide:YES];
                 cell.backgroundColor = [UIColor whiteColor];
@@ -114,6 +116,14 @@
         
     }
     
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 15.f;
+    }
+    return 5.f;
 }
 
 

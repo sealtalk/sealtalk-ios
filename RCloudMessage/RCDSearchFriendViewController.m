@@ -95,6 +95,7 @@
     }
 
     cell.ivAva.contentMode = UIViewContentModeScaleAspectFill;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -109,12 +110,14 @@
     userInfo.portraitUri = user.portraitUri;
     
     if ([userInfo.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        RCDMeInfoTableViewController *meInfoViewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDMeInfoTableViewController"];
-        [self.navigationController pushViewController:meInfoViewController animated:YES];
-        return;
+//        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        RCDMeInfoTableViewController *meInfoViewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDMeInfoTableViewController"];
+//        [self.navigationController pushViewController:meInfoViewController animated:YES];
+//        return;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"你不能添加自己到通讯录" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
     }
-    if (user && tableView == self.searchDisplayController.searchResultsTableView){
+    else if (user && tableView == self.searchDisplayController.searchResultsTableView){
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         RCDAddFriendViewController *addViewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDAddFriendViewController"];
         addViewController.targetUserInfo = userInfo;

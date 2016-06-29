@@ -16,7 +16,7 @@
 
 static NSString * const userTableName = @"USERTABLE";
 static NSString * const groupTableName = @"GROUPTABLEV2";
-static NSString * const friendTableName = @"FRIENDTABLE";
+static NSString * const friendTableName = @"FRIENDSTABLE";
 static NSString * const blackTableName = @"BLACKTABLE";
 static NSString * const groupMemberTableName = @"GROUPMEMBERTABLE";
 
@@ -53,9 +53,9 @@ static NSString * const groupMemberTableName = @"GROUPMEMBERTABLE";
             [db executeUpdate:createIndexSQL];
         }
         if (![DBHelper isTableOK: friendTableName withDB:db]) {
-            NSString *createTableSQL = @"CREATE TABLE FRIENDTABLE (id integer PRIMARY KEY autoincrement, userid text,name text, portraitUri text, status text)";
+            NSString *createTableSQL = @"CREATE TABLE FRIENDSTABLE (id integer PRIMARY KEY autoincrement, userid text,name text, portraitUri text, status text, updatedAt text)";
             [db executeUpdate:createTableSQL];
-            NSString *createIndexSQL=@"CREATE unique INDEX idx_friendId ON FRIENDTABLE(userid);";
+            NSString *createIndexSQL=@"CREATE unique INDEX idx_friendsId ON FRIENDSTABLE(userid);";
             [db executeUpdate:createIndexSQL];
         }
         
@@ -237,6 +237,21 @@ static NSString * const groupMemberTableName = @"GROUPMEMBERTABLE";
     }];
 }
 
+//清空表中的所有的群组信息
+-(BOOL)clearGroupfromDB
+{
+    __block BOOL result = NO;
+    NSString *clearSql =[NSString stringWithFormat:@"DELETE FROM GROUPTABLEV2"];
+    FMDatabaseQueue *queue = [DBHelper getDatabaseQueue];
+    if (queue==nil) {
+        return result;
+    }
+    
+    [queue inDatabase:^(FMDatabase *db) {
+        result = [db executeUpdate:clearSql];
+    }];
+    return result;
+}
 
 //从表中获取所有群组信息
 -(NSMutableArray *) getAllGroup
@@ -312,10 +327,10 @@ static NSString * const groupMemberTableName = @"GROUPMEMBERTABLE";
 //-(void)insertFriendToDB:(RCUserInfo *)friend
 -(void)insertFriendToDB:(RCDUserInfo *)friendInfo
 {
-    NSString *insertSql = @"REPLACE INTO FRIENDTABLE (userid, name, portraitUri, status) VALUES (?, ?, ?, ?)";
+    NSString *insertSql = @"REPLACE INTO FRIENDSTABLE (userid, name, portraitUri, status,updatedAt) VALUES (?, ?, ?, ?, ?)";
         FMDatabaseQueue *queue = [DBHelper getDatabaseQueue];
         [queue inDatabase:^(FMDatabase *db) {
-            [db executeUpdate:insertSql,friendInfo.userId, friendInfo.name, friendInfo.portraitUri, friendInfo.status];
+            [db executeUpdate:insertSql,friendInfo.userId, friendInfo.name, friendInfo.portraitUri, friendInfo.status, friendInfo.updatedAt];
         }];
 }
 
@@ -325,7 +340,7 @@ static NSString * const groupMemberTableName = @"GROUPMEMBERTABLE";
     NSMutableArray *allUsers = [NSMutableArray new];
     FMDatabaseQueue *queue = [DBHelper getDatabaseQueue];
     [queue inDatabase:^(FMDatabase *db) {
-        FMResultSet *rs = [db executeQuery:@"SELECT * FROM FRIENDTABLE"];
+        FMResultSet *rs = [db executeQuery:@"SELECT * FROM FRIENDSTABLE"];
         while ([rs next]) {
 //            RCUserInfo *model;
             RCDUserInfo *model;
@@ -334,11 +349,31 @@ static NSString * const groupMemberTableName = @"GROUPMEMBERTABLE";
             model.name = [rs stringForColumn:@"name"];
             model.portraitUri = [rs stringForColumn:@"portraitUri"];
             model.status = [rs stringForColumn:@"status"];
+            model.updatedAt = [rs stringForColumn:@"updatedAt"];
             [allUsers addObject:model];
         }
         [rs close];
     }];
     return allUsers;
+}
+
+//从表中获取某个好友的信息
+-(RCDUserInfo *) getFriendInfo:(NSString *)friendId
+{
+    RCDUserInfo *friendInfo = [RCDUserInfo new];
+    FMDatabaseQueue *queue = [DBHelper getDatabaseQueue];
+    [queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *rs = [db executeQuery:@"SELECT * FROM FRIENDSTABLE WHERE userid=?",friendId];
+        while ([rs next]) {
+            friendInfo.userId = [rs stringForColumn:@"userid"];
+            friendInfo.name = [rs stringForColumn:@"name"];
+            friendInfo.portraitUri = [rs stringForColumn:@"portraitUri"];
+            friendInfo.status = [rs stringForColumn:@"status"];
+            friendInfo.updatedAt = [rs stringForColumn:@"updatedAt"];
+        }
+        [rs close];
+    }];
+    return friendInfo;
 }
 
 //清空群组缓存数据
@@ -357,7 +392,7 @@ static NSString * const groupMemberTableName = @"GROUPMEMBERTABLE";
 //清空好友缓存数据
 -(void)clearFriendsData
 {
-    NSString *deleteSql = @"DELETE FROM FRIENDTABLE";
+    NSString *deleteSql = @"DELETE FROM FRIENDSTABLE";
     FMDatabaseQueue *queue = [DBHelper getDatabaseQueue];
     if (queue==nil) {
         return ;
@@ -370,7 +405,7 @@ static NSString * const groupMemberTableName = @"GROUPMEMBERTABLE";
 
 -(void)deleteFriendFromDB:(NSString *)userId;
 {
-    NSString *deleteSql =[NSString stringWithFormat: @"DELETE FROM FRIENDTABLE WHERE userid=%@",userId];
+    NSString *deleteSql =[NSString stringWithFormat: @"DELETE FROM FRIENDSTABLE WHERE userid=%@",userId];
         FMDatabaseQueue *queue = [DBHelper getDatabaseQueue];
         if (queue==nil) {
             return ;

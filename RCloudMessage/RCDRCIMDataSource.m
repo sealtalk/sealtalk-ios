@@ -17,6 +17,7 @@
 #import "RCDataBaseManager.h"
 #import "RCDCommonDefine.h"
 #import "DefaultPortraitView.h"
+#import "RCDUtilities.h"
 
 @interface RCDRCIMDataSource ()
 
@@ -48,7 +49,6 @@
                 NSLog(@"同步群组成功!");
             } error:^(RCErrorCode status) {
                 NSLog(@"同步群组失败!  %ld",(long)status);
-                
             }];
         }
     }];
@@ -74,39 +74,9 @@
     
     //开发者调自己的服务器接口根据userID异步请求数据
     [RCDHTTPTOOL getGroupByID:groupId
-            successCompletion:^(RCDGroupInfo *group)
-    {
-        if ([group.portraitUri isEqualToString:@""]) {
-            DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-            [defaultPortrait setColorAndLabel:groupId Nickname:group.groupName];
-            UIImage *portrait = [defaultPortrait imageFromView];
-            
-
-            NSString *filePath = [self getIconCachePath:[NSString stringWithFormat:@"group%@.png",groupId]];
-           
-            BOOL result = [UIImagePNGRepresentation(portrait)writeToFile: filePath    atomically:YES];
-            if (result == YES) {
-                NSURL *portraitPath = [NSURL fileURLWithPath:filePath];
-                group.portraitUri = [portraitPath absoluteString];
-            }
-
-        }
+            successCompletion:^(RCDGroupInfo *group) {
         completion(group);
     }];
-}
-- (NSString *)getIconCachePath:(NSString *)fileName {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"CachedIcons/%@",fileName]];   // 保存文件的名称
-    
-    NSString *dirPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"CachedIcons"]];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if (![fileManager fileExistsAtPath:dirPath]) {
-        [fileManager createDirectoryAtPath:dirPath
-               withIntermediateDirectories:YES
-                                attributes:nil
-                                     error:nil];
-    }
-    return filePath;
 }
 #pragma mark - RCIMUserInfoDataSource
 - (void)getUserInfoWithUserId:(NSString*)userId completion:(void (^)(RCUserInfo*))completion
@@ -132,30 +102,13 @@
         [RCDHTTPTOOL getUserInfoByUserID:userId
                               completion:^(RCUserInfo *user) {
                                   if (user) {
-                                      if ([user.portraitUri isEqualToString:@""]) {
-                                          DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-                                          [defaultPortrait setColorAndLabel:userId Nickname:user.name];
-                                          UIImage *portrait = [defaultPortrait imageFromView];
-                                          
-                                          NSString *filePath = [self getIconCachePath:[NSString stringWithFormat:@"user%@.png",userId]];   // 保存文件的名称
-                                          
-                                          BOOL result = [UIImagePNGRepresentation(portrait)writeToFile: filePath    atomically:YES];
-                                          if (result == YES) {
-                                              NSURL *portraitPath = [NSURL fileURLWithPath:filePath];
-                                              user.portraitUri = [portraitPath absoluteString];
-//                                              [DEFAULTS setObject:[portraitPath absoluteString] forKey:@"userPortraitUri"];
-//                                              [DEFAULTS synchronize];
-                                          }
-                                      }
                                       [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:user.userId];
                                       completion(user);
-                                  }
-                                  else
-                                  {
+                                  } else {
                                       RCUserInfo *user = [RCUserInfo new];
                                       user.userId = userId;
-                                      user.portraitUri = @"";
                                       user.name = [NSString stringWithFormat:@"name%@", userId];
+                                      user.portraitUri = [RCDUtilities defaultUserPortrait:user];
                                       completion(user);
 
                                   }

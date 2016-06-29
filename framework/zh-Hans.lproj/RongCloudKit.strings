@@ -184,3 +184,10 @@
 "VoIPCallRemoteDidInvite"="%@加入群聊";
 "VoIPCallLocalNetworkError"="本地网络错误";
 "VoIPCallRemoteNetworkError"="对方网络错误";
+"GroupCreated"="%@创建了群组";
+"GroupInvited"="%@邀请%@加入了群组";
+"GroupRemoved"="%@将%@移出了群组";
+"GroupDismiss"="%@解散了群组";
+"GroupQuit"="%@退出了群组";
+"GroupChanged"="%@修改群名为“%@”";
+"GroupJoin"="%@加入了群组";

@@ -14,7 +14,6 @@
 #import "RCUnderlineTextField.h"
 #import "RCDLoginViewController.h"
 #import "RCDCommonDefine.h"
-#import "IsPhoneNumber.h"
 #import "MBProgressHUD.h"
 
 @interface RCDFindPswViewController () <UITextFieldDelegate>
@@ -598,7 +597,6 @@
     [hud show:YES];
     _errorMsgLb.text = @"";
     NSString *phoneNumber = [(UITextField *)[self.view viewWithTag:UserTextFieldTag] text];
-//    if ([[IsPhoneNumber PhoneNumberManager] isMobileNumber:phoneNumber]) {
     if (phoneNumber.length == 11) {
         [AFHttpTool checkPhoneNumberAvailable:@"86"
                                   phoneNumber:phoneNumber

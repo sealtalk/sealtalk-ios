@@ -22,7 +22,7 @@
 #import "AppkeyModel.h"
 #import "SelectAppKeyViewController.h"
 #import "RCDataBaseManager.h"
-#import "IsPhoneNumber.h"
+#import "RCDUtilities.h"
 
 @interface RCDLoginViewController ()<UITextFieldDelegate>
 
@@ -466,9 +466,10 @@ MBProgressHUD* hud ;
                             NSDictionary *result    = response[@"result"];
                             NSString *nickname      = result[@"nickname"];
                             NSString *portraitUri   = result[@"portraitUri"];
-                            RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:  userId
-                                                                             name:nickname
-                                                                         portrait:portraitUri];
+                            RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:userId name:nickname portrait:portraitUri];
+                            if (!user.portraitUri || user.portraitUri.length <= 0) {
+                                user.portraitUri = [RCDUtilities defaultUserPortrait:user];
+                            }
                             [[RCDataBaseManager shareInstance] insertUserToDB:user];
                             [[RCIM sharedRCIM]refreshUserInfoCache:user withUserId:userId];
                             [RCIM sharedRCIM].currentUserInfo = user;                            [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
@@ -478,15 +479,6 @@ MBProgressHUD* hud ;
                     } failure:^(NSError *err) {
                         
                     }];
-    
-    
-//    [RCDHTTPTOOL getUserInfoByUserID:userId
-//                          completion:^(RCUserInfo* user) {
-//                              [[RCIM sharedRCIM]refreshUserInfoCache:user withUserId:userId];
-//                              [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
-//                              [DEFAULTS setObject:user.name forKey:@"userNickName"];
-//                              [DEFAULTS synchronize];
-//                          }];
     //同步群组
     [RCDDataSource syncGroups];
     [RCDDataSource syncFriendList:userId complete:^(NSMutableArray *friends) {}];
@@ -605,7 +597,8 @@ MBProgressHUD* hud ;
                                                       [_pwdTextField shake];
                                                   }
                            } failure:^(NSError *err) {
-                               NSLog(@"");
+                               [hud hide:YES];
+                               _errorMsgLb.text=@"登录失败，请检查网络。";
                            }];
         
 //        [AFHttpTool loginWithEmail:userName password:password env:(self.currentModel == nil ? 1 : self.currentModel.env)
@@ -682,10 +675,6 @@ MBProgressHUD* hud ;
         return NO;
     }
     return YES;
-//    return [[IsPhoneNumber PhoneNumberManager] isMobileNumber:userName]
-//        && [RCDTextFieldValidate validatePassword:userPwd];
-//    return [RCDTextFieldValidate validateEmail:userName]
-//        && [RCDTextFieldValidate validatePassword:userPwd];
 }
 
 - (NSUInteger)animatedImagesNumberOfImages:(RCAnimatedImagesView*)animatedImagesView

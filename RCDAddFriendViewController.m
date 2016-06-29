@@ -34,11 +34,13 @@
     {
         [self.ivAva sd_setImageWithURL:[NSURL URLWithString:self.targetUserInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"icon_person"]];
     }
-    
+    self.ivAva.layer.masksToBounds = YES;
+    self.ivAva.layer.cornerRadius = 6.f;
+    self.ivAva.contentMode = UIViewContentModeScaleAspectFill;
     NSMutableArray *cacheList=[[NSMutableArray alloc]initWithArray:[[RCDataBaseManager shareInstance] getAllFriends]];
     BOOL isFriend = NO;
     for (RCDUserInfo *user in cacheList) {
-        if ([user.userId isEqualToString:self.targetUserInfo.userId]) {
+        if ([user.userId isEqualToString:self.targetUserInfo.userId] && [user.status isEqualToString:@"20"]) {
             isFriend = YES;
             break;
         }

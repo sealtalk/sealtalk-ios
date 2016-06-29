@@ -39,7 +39,7 @@
 "Setting"="Setting";
 "Back"="Back";
 "IsDeleteHistoryMsg"="Do you want to delete history message?";
-"ConnectionIsNotReachable"="Network connection is not reachable, please check it";
+"ConnectionIsNotReachable"="Network unavailable,Check network";
 "Album"="Album";
 "Photo"="Photo";
 "Location"="Location";
@@ -184,3 +184,10 @@
 "VoIPCallRemoteDidInvite"="%@ to join the call";
 "VoIPCallLocalNetworkError"="Network Error";
 "VoIPCallRemoteNetworkError"="Network Error";
+"GroupCreated"="%@ created group.";
+"GroupInvited"="%@ invited %@ to join the group.";
+"GroupRemoved"="%@ removed %@ From the group chat.";
+"GroupDismiss"="%@ dismissed group.";
+"GroupQuit"="%@ quited group.";
+"GroupChanged"="%@ changed the group name to \"%@\".";
+"GroupJoin"="%@ joined group";

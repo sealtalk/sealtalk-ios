@@ -17,7 +17,7 @@
 #import "RCLocationConvert.h"
 #import "RCDUtilities.h"
 
-@interface RealTimeLocationViewController () <RCRealTimeLocationObserver, MKMapViewDelegate,HeadCollectionTouchDelegate,UIActionSheetDelegate>
+@interface RealTimeLocationViewController () <RCRealTimeLocationObserver, MKMapViewDelegate,HeadCollectionTouchDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
 
 @property(nonatomic, strong) MKMapView *mapView;
 @property(nonatomic, strong) UIView *headBackgroundView;
@@ -104,7 +104,7 @@ MBProgressHUD* hud;
 }
 
 - (BOOL)quitButtonPressed {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"是否结束位置共享" otherButtonTitles:@"结束", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否结束位置共享？" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"结束"otherButtonTitles: nil];
     [actionSheet showInView:self.view];
     return YES;
 }
@@ -325,7 +325,7 @@ MBProgressHUD* hud;
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (buttonIndex) {
-        case 1:
+        case 0:
         {
             __weak typeof(&*self) __weakself = self;
             [self dismissViewControllerAnimated:YES completion:^{
@@ -334,6 +334,26 @@ MBProgressHUD* hud;
 
         }
         break;
+    }
+}
+
+
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet{
+    SEL selector = NSSelectorFromString(@"_alertController");
+    
+    if ([actionSheet respondsToSelector:selector]){
+        UIAlertController *alertController = [actionSheet valueForKey:@"_alertController"];
+        if ([alertController isKindOfClass:[UIAlertController class]]){
+            alertController.view.tintColor = [UIColor colorWithWhite:0 alpha:0.6];
+        }
+    }else{
+        for( UIView * subView in actionSheet.subviews ){
+            if( [subView isKindOfClass:[UIButton class]] ){
+                UIButton * btn = (UIButton*)subView;
+                [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            }
+        }
     }
 }
 

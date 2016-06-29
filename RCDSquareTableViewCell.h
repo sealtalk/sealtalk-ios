@@ -10,13 +10,8 @@
 
 @interface RCDSquareTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *GroupPortrait;
+@property (weak, nonatomic) IBOutlet UIImageView *ChatroomPortrait;
 
-@property (weak, nonatomic) IBOutlet UILabel *GroupName;
+@property (weak, nonatomic) IBOutlet UILabel *ChatroomName;
 
-@property (weak, nonatomic) IBOutlet UILabel *GroupNumber;
-
-@property (weak, nonatomic) IBOutlet UIButton *JoinGroupBtn;
-
-@property (weak, nonatomic) IBOutlet UIButton *ChatBtn;
 @end

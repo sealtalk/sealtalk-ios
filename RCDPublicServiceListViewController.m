@@ -8,6 +8,7 @@
 
 #import "RCDPublicServiceListViewController.h"
 #import "RCDChatViewController.h"
+
 @interface RCDPublicServiceListViewController ()
 
 @end
@@ -17,6 +18,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    //自定义rightBarButtonItem
+    UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 17, 17)];
+    [rightBtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
+    [rightBtn addTarget:self action:@selector(pushAddPublicService:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
+    [rightBtn setTintColor:[UIColor whiteColor]];
+    self.navigationItem.rightBarButtonItem = rightButton;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,6 +43,18 @@
     //接口向后兼容 --]]
     _conversationVC.title = PublicServiceProfile.name;
     [self.navigationController pushViewController:_conversationVC animated:YES];
+}
+
+/**
+ *  添加公众号
+ *
+ *  @param sender sender description
+ */
+- (void) pushAddPublicService:(id) sender
+{
+    RCPublicServiceSearchViewController *searchFirendVC = [[RCPublicServiceSearchViewController alloc] init];
+    [self.navigationController pushViewController:searchFirendVC  animated:YES];
+    
 }
 
 /*

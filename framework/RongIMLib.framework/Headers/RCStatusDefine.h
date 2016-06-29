@@ -99,6 +99,13 @@ typedef NS_ENUM(NSInteger, RCConnectErrorCode) {
     RC_MSG_SEND_FAIL = 30014,
     
     /*!
+     连接过于频繁
+     
+     @discussion 建立连接的临时错误码，SDK会做好自动重连，开发者无须处理。
+     */
+    RC_CONN_OVERFREQUENCY = 30015,
+    
+    /*!
      连接ACK超时
      
      @discussion 建立连接的临时错误码，SDK会做好自动重连，开发者无须处理。
@@ -190,6 +197,13 @@ typedef NS_ENUM(NSInteger, RCConnectErrorCode) {
      @discussion 请检查接口调用时传入的参数类型和值。
      */
     RC_INVALID_PARAMETER = 33003,
+    
+    /*!
+     Connection已经存在
+     
+     @discussion 调用过connect之后，只有在token错误或者被踢下线或者用户logout的情况下才需要再次调用connect。SDK会自动重连，不需要应用多次调用connect来保证连接性。
+     */
+    RC_CONNECTION_EXIST = 34001,
     
     /*!
      开发者接口调用时传入的参数错误

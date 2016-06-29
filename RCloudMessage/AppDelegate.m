@@ -25,7 +25,6 @@
 #import "RCDTestMessage.h"
 #import "MobClick.h"
 
-//#define RONGCLOUD_IM_APPKEY @"0vnjpoadn5iiz" //offline key
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" //offline key
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
 
@@ -131,35 +130,30 @@
     [[RCUserInfo alloc] initWithUserId:userId
                                     name:userNickName
                                 portrait:userPortraitUri];
-      [RCIM sharedRCIM].currentUserInfo = _currentUserInfo;
+    [RCIM sharedRCIM].currentUserInfo = _currentUserInfo;
     [[RCIM sharedRCIM] connectWithToken:token
         success:^(NSString *userId) {
-            [AFHttpTool loginWithPhone:userName
-                              password:password
-                                region:@"86"
-                               success:^(id response) {
-                                   if ([response[@"code"] intValue] == 200) {
-                  [RCDHTTPTOOL getUserInfoByUserID:userId
-                                        completion:^(RCUserInfo *user) {
-//                                          [[RCIM sharedRCIM]
-//                                              refreshUserInfoCache:user
-//                                                        withUserId:userId];
-                                            [RCDHTTPTOOL getUserInfoByUserID:userId
-                                                                  completion:^(RCUserInfo* user) {
-//                                                                      [[RCIM sharedRCIM]refreshUserInfoCache:user withUserId:userId];
-                                                                      [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
-                                                                      [DEFAULTS setObject:user.name forKey:@"userNickName"];
-                                                                      [DEFAULTS synchronize];
-                                                                      [RCIMClient sharedRCIMClient].currentUserInfo = user;
-                                                                  }];
-                                        }];
-                    //登陆demoserver成功之后才能调demo 的接口
-                    [RCDDataSource syncGroups];
-                    [RCDDataSource syncFriendList:userId complete:^(NSMutableArray * result) {}];
-                }
-              }
-              failure:^(NSError *err){
-              }];
+            [AFHttpTool
+             loginWithPhone:userName
+             password:password
+             region:@"86"
+             success:^(id response) {
+                 if ([response[@"code"] intValue] == 200) {
+                     [RCDHTTPTOOL
+                      getUserInfoByUserID:userId
+                      completion:^(RCUserInfo* user) {
+                          [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
+                          [DEFAULTS setObject:user.name forKey:@"userNickName"];
+                          [DEFAULTS synchronize];
+                          [RCIMClient sharedRCIMClient].currentUserInfo = user;
+                      }];
+                     //登陆demoserver成功之后才能调demo 的接口
+                     [RCDDataSource syncGroups];
+                     [RCDDataSource syncFriendList:userId complete:^(NSMutableArray * result) {}];
+                 }
+             }
+             failure:^(NSError *err){
+             }];
           //设置当前的用户信息
 
           //同步群组
@@ -363,6 +357,15 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
   // and it begins the transition to the background state.
   // Use this method to pause ongoing tasks, disable timers, and throttle down
   // OpenGL ES frame rates. Games should use this method to pause the game.
+    int unreadMsgCount = [[RCIMClient sharedRCIMClient]
+                          getUnreadCount:@[
+                                           @(ConversationType_PRIVATE),
+                                           @(ConversationType_DISCUSSION),
+                                           @(ConversationType_APPSERVICE),
+                                           @(ConversationType_PUBLICSERVICE),
+                                           @(ConversationType_GROUP)
+                                           ]];
+    application.applicationIconBadgeNumber = unreadMsgCount;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -371,14 +374,14 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
   // application to its current state in case it is terminated later.
   // If your application supports background execution, this method is called
   // instead of applicationWillTerminate: when the user quits.
-  int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
-    @(ConversationType_PRIVATE),
-    @(ConversationType_DISCUSSION),
-    @(ConversationType_APPSERVICE),
-    @(ConversationType_PUBLICSERVICE),
-    @(ConversationType_GROUP)
-  ]];
-  application.applicationIconBadgeNumber = unreadMsgCount;
+//  int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
+//    @(ConversationType_PRIVATE),
+//    @(ConversationType_DISCUSSION),
+//    @(ConversationType_APPSERVICE),
+//    @(ConversationType_PUBLICSERVICE),
+//    @(ConversationType_GROUP)
+//  ]];
+//  application.applicationIconBadgeNumber = unreadMsgCount;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -555,6 +558,19 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
         if ([msg.operation isEqualToString:ContactNotificationMessage_ContactOperationAcceptResponse]) {
             [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId complete:^(NSMutableArray *friends) {
             }];
+        }
+    }else if ([message.content isMemberOfClass:[RCGroupNotificationMessage class]]) {
+        RCGroupNotificationMessage *msg = (RCGroupNotificationMessage *)message.content;
+        if ([msg.operation isEqualToString:@"Dismiss"] && [msg.operatorUserId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
+            [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP targetId:message.targetId];
+            [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_GROUP targetId:message.targetId];
+        } else if ([msg.operation isEqualToString:@"Rename"]) {
+          [RCDHTTPTOOL getGroupByID:message.targetId
+                  successCompletion:^(RCDGroupInfo *group) {
+                    [[RCDataBaseManager shareInstance] insertGroupToDB:group];
+                    [[RCIM sharedRCIM] refreshGroupInfoCache:group
+                                                 withGroupId:group.groupId];
+                  }];
         }
     }
 }

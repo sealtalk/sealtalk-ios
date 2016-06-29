@@ -10,6 +10,7 @@
 #import "RCDLoginViewController.h"
 #import <RongIMLib/RongIMLib.h>
 #import "DBHelper.h"
+#import "RCDChangePasswordViewController.h"
 
 @interface RCDSettingsTableViewController ()<UIAlertViewDelegate>
 
@@ -39,6 +40,13 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (0 == indexPath.section && 0 == indexPath.row) {
+        NSLog(@"show the change password view");
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        RCDChangePasswordViewController *changePasswordVC = [storyboard instantiateViewControllerWithIdentifier:@"changePasswordVC"];
+        [self.navigationController pushViewController:changePasswordVC animated:YES];
+    }
+    
     if (1 == indexPath.section && 0 == indexPath.row) {
         //清除缓存
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
@@ -59,6 +67,14 @@
         alertView.tag = 1010;
         [alertView show];
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 15.f;
+    }
+    return 5.f;
 }
 
 #pragma mark - UIAlertView Delegate

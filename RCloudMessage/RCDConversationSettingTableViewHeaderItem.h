@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCDUserInfo.h"
 
 @protocol RCDConversationSettingTableViewHeaderItemDelegate;
 
@@ -18,10 +19,12 @@
 @property(nonatomic, copy) NSString *userId;
 @property(nonatomic, weak) id<RCDConversationSettingTableViewHeaderItemDelegate> delegate;
 
+- (void)setUserModel:(RCUserInfo *)userModel;
 @end
 
 @protocol RCDConversationSettingTableViewHeaderItemDelegate <NSObject>
 
 - (void)deleteTipButtonClicked:(RCDConversationSettingTableViewHeaderItem *)item;
+
 
 @end

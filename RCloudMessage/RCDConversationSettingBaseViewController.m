@@ -77,22 +77,22 @@
 - (void)addUsers:(NSMutableArray *)users {
     if (!users)
         return;
-    for (RCUserInfo *user in users) {
-        if ([user.portraitUri isEqualToString:@""])
-        {
-            DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-            [defaultPortrait setColorAndLabel:user.userId Nickname:user.name];
-            UIImage *portrait = [defaultPortrait imageFromView];
-            
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"user%@.png",user.userId]];   // 保存文件的名称
-            BOOL result = [UIImagePNGRepresentation(portrait)writeToFile: filePath    atomically:YES];
-            if (result == YES) {
-                NSURL *portraitPath = [NSURL fileURLWithPath:filePath];
-                user.portraitUri = [portraitPath absoluteString];
-            }
-        }
-    }
+//    for (RCUserInfo *user in users) {
+//        if ([user.portraitUri isEqualToString:@""])
+//        {
+//            DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+//            [defaultPortrait setColorAndLabel:user.userId Nickname:user.name];
+//            UIImage *portrait = [defaultPortrait imageFromView];
+//            
+//            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+//            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"user%@.png",user.userId]];   // 保存文件的名称
+//            BOOL result = [UIImagePNGRepresentation(portrait)writeToFile: filePath    atomically:YES];
+//            if (result == YES) {
+//                NSURL *portraitPath = [NSURL fileURLWithPath:filePath];
+//                user.portraitUri = [portraitPath absoluteString];
+//            }
+//        }
+//    }
     
     _header.users = [NSMutableArray arrayWithArray:users];
     self.users = users;

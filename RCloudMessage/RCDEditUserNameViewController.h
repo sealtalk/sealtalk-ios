@@ -10,5 +10,6 @@
 
 @interface RCDEditUserNameViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *userName;
+@property (weak, nonatomic) IBOutlet UIView *BGView;
 
 @end

@@ -16,6 +16,9 @@
 #import "UIImageView+WebCache.h"
 #import "RCDHttpTool.h"
 #import "RCDCustomerServiceViewController.h"
+#import "AFHttpTool.h"
+#import "RCDataBaseManager.h"
+#import "RCDUtilities.h"
 
 @interface RCDMeTableViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *currentUserNameLabel;
@@ -32,6 +35,7 @@
 @implementation RCDMeTableViewController
 {
     UIImage *userPortrait;
+    BOOL isSyncCurrentUserInfo;
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -84,100 +88,19 @@
                                              selector:@selector(setUserPortrait:)
                                                  name:@"setCurrentUserPortrait"
                                                object:nil];
+    
+    isSyncCurrentUserInfo = NO;
+    self.currentUserNameLabel.text = [DEFAULTS stringForKey:@"userNickName"];
+    [self.currentUserPortrait sd_setImageWithURL:[NSURL URLWithString:[DEFAULTS stringForKey:@"userPortraitUri"]] placeholderImage:[UIImage imageNamed:@"icon_person"]];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-//    UILabel *titleView = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-//    titleView.backgroundColor = [UIColor clearColor];
-//    titleView.font = [UIFont boldSystemFontOfSize:19];
-//    titleView.textColor = [UIColor whiteColor];
-//    titleView.textAlignment = NSTextAlignmentCenter;
-//    titleView.text = @"我";
-//    self.tabBarController.navigationItem.titleView = titleView;
     self.tabBarController.navigationItem.title = @"我";
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
     [self updateNewVersionBadge];
-    //从本地文件中获取头像
-//    NSString *userId = [DEFAULTS objectForKey:@"userId"];
-//    NSData *portraitData =
-//    [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"userPortrait_%@",userId]];
-////    if (portraitData != nil) {
-////        dispatch_async(dispatch_get_main_queue(), ^{
-////            self.currentUserPortrait.image = [UIImage imageWithData:portraitData];
-////        });
-////    }
-    NSString *portraitUrl = [DEFAULTS stringForKey:@"userPortraitUri"];
-    if ([portraitUrl isEqualToString:@""]) {
-        DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-                    [defaultPortrait setColorAndLabel:[RCIM sharedRCIM].currentUserInfo.userId Nickname:[DEFAULTS stringForKey:@"userNickName"]];
-                    UIImage *portrait = [defaultPortrait imageFromView];
-                    self.currentUserPortrait.image = portrait;
-                    NSData *data = UIImagePNGRepresentation(portrait);
-                    [RCDHTTPTOOL uploadImageToQiNiu:[RCIM sharedRCIM].currentUserInfo.userId
-                                          ImageData:data
-                                            success:^(NSString *url) {
-                                                [DEFAULTS setObject:url forKey:@"userPortraitUri"];
-                                                [DEFAULTS synchronize];
-                                                RCUserInfo *user = [RCUserInfo new];
-                                                user.userId = [RCIM sharedRCIM].currentUserInfo.userId;
-                                                user.portraitUri = url;
-                                                user.name =[DEFAULTS stringForKey:@"userNickName"];
-                                                [[RCIM sharedRCIM] refreshUserInfoCache:user
-                                                                             withUserId:user.userId];
-                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                [self.currentUserPortrait sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:portrait];
-                                                });
-                                            } failure:^(NSError *err) {
-                                                
-                                            }];
-    }
-    else
-    {
-    [self.currentUserPortrait sd_setImageWithURL:[NSURL URLWithString:[DEFAULTS stringForKey:@"userPortraitUri"]] placeholderImage:[UIImage imageNamed:@"icon_person"]];
-    }
-//    if ([RCIM sharedRCIM].currentUserInfo.portraitUri== 0) {
-//        DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [defaultPortrait setColorAndLabel:[RCIM sharedRCIM].currentUserInfo.userId Nickname:[RCIM sharedRCIM].currentUserInfo.name];
-//            UIImage *portrait = [defaultPortrait imageFromView];
-//            self.currentUserPortrait.image = portrait;
-//            NSData *data = UIImagePNGRepresentation(portrait);
-//            [RCDHTTPTOOL uploadImageToQiNiu:[RCIM sharedRCIM].currentUserInfo.userId
-//                                  ImageData:data
-//                                    success:^(NSString *url) {
-//                                        RCUserInfo *user = [RCUserInfo new];
-//                                        user.userId = [RCIM sharedRCIM].currentUserInfo.userId;
-//                                        user.portraitUri = url;
-//                                        user.name =[RCIM sharedRCIM].currentUserInfo.name;
-//                                        [[RCIM sharedRCIM] refreshUserInfoCache:user
-//                                                                     withUserId:user.userId];
-//                                        [self.currentUserPortrait sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil];
-//                                    } failure:^(NSError *err) {
-//                                        
-//                                    }];
-//
-//        });
-//            }
-//    else
-//    {
-//        if (userPortrait != nil) {
-//                self.currentUserPortrait.image = userPortrait;
-//        }
-//        else
-//        {
-//        [self.currentUserPortrait sd_setImageWithURL:[NSURL URLWithString:[RCIM sharedRCIM].currentUserInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"icon_person"]];
-//        }
-//    }
-    if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE && [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
-    self.currentUserPortrait.layer.masksToBounds = YES;
-    self.currentUserPortrait.layer.cornerRadius = 30.f;
-    }
-//    self.currentUserNameLabel.text = [RCIM sharedRCIM].currentUserInfo.name;
-    
-    self.currentUserNameLabel.text = [DEFAULTS stringForKey:@"userNickName"];
+    [self syncCurrentUserInfo];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -198,6 +121,14 @@
             [self checkNewVersion];
         }
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 15.f;
+    }
+    return 5.f;
 }
 
 -(void)setUserPortrait:(NSNotification *)notifycation
@@ -398,5 +329,73 @@
         NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
         _versionLb.text=[NSString stringWithFormat:@"当前版本 %@",version];
     }
+}
+    
+-(void) syncCurrentUserInfo
+{
+    [AFHttpTool getUserInfo:[RCIM sharedRCIM].currentUserInfo.userId
+                    success:^(id response) {
+                        if ([response[@"code"] intValue] == 200) {
+                            NSDictionary *result    = response[@"result"];
+                            NSString *userId        = result[@"id"];
+                            NSString *nickname      = result[@"nickname"];
+                            NSString *portraitUri   = result[@"portraitUri"];
+                            RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:userId name:nickname portrait:portraitUri];
+                            if (!user.portraitUri || user.portraitUri.length <= 0) {
+                                user.portraitUri = [RCDUtilities defaultUserPortrait:user];
+                            }
+                            [[RCDataBaseManager shareInstance] insertUserToDB:user];
+                            [[RCIM sharedRCIM]refreshUserInfoCache:user withUserId:userId];
+                            [RCIM sharedRCIM].currentUserInfo = user;
+                            [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
+                            [DEFAULTS setObject:user.name forKey:@"userNickName"];
+                            [DEFAULTS synchronize];
+                            isSyncCurrentUserInfo = YES;
+                            [self setNicknameAndPortrait];
+                        }
+                    } failure:^(NSError *err) {
+                        isSyncCurrentUserInfo = YES;
+                        [self setNicknameAndPortrait];
+                    }];
+
+}
+    
+-(void) setNicknameAndPortrait
+{
+    NSString *portraitUrl = [DEFAULTS stringForKey:@"userPortraitUri"];
+    if ([portraitUrl isEqualToString:@""]) {
+        DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        [defaultPortrait setColorAndLabel:[RCIM sharedRCIM].currentUserInfo.userId Nickname:[DEFAULTS stringForKey:@"userNickName"]];
+        UIImage *portrait = [defaultPortrait imageFromView];
+        self.currentUserPortrait.image = portrait;
+        NSData *data = UIImagePNGRepresentation(portrait);
+        [RCDHTTPTOOL uploadImageToQiNiu:[RCIM sharedRCIM].currentUserInfo.userId
+                              ImageData:data
+                                success:^(NSString *url) {
+                                    [DEFAULTS setObject:url forKey:@"userPortraitUri"];
+                                    [DEFAULTS synchronize];
+                                    RCUserInfo *user = [RCUserInfo new];
+                                    user.userId = [RCIM sharedRCIM].currentUserInfo.userId;
+                                    user.portraitUri = url;
+                                    user.name =[DEFAULTS stringForKey:@"userNickName"];
+                                    [[RCIM sharedRCIM] refreshUserInfoCache:user
+                                                                 withUserId:user.userId];
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        [self.currentUserPortrait sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:portrait];
+                                    });
+                                } failure:^(NSError *err) {
+                                    
+                                }];
+    }
+    else
+    {
+        [self.currentUserPortrait sd_setImageWithURL:[NSURL URLWithString:[DEFAULTS stringForKey:@"userPortraitUri"]] placeholderImage:[UIImage imageNamed:@"icon_person"]];
+    }
+    if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE && [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
+        self.currentUserPortrait.layer.masksToBounds = YES;
+        self.currentUserPortrait.layer.cornerRadius = 30.f;
+    }
+    self.currentUserNameLabel.text = [DEFAULTS stringForKey:@"userNickName"];
+
 }
 @end

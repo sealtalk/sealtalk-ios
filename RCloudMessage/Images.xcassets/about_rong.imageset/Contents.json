@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "about_rong.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "logo.png",
       "scale" : "2x"
     },
     {

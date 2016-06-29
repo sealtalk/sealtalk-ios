@@ -13,6 +13,8 @@
 #import "UIImageView+WebCache.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDMeInfoTableViewController.h"
+#import "RCDataBaseManager.h"
+#import "RCDAddFriendViewController.h"
 
 @interface RCDGroupMembersTableViewController ()
 
@@ -69,7 +71,7 @@
     }
     cell.portraitView.layer.masksToBounds = YES;
     cell.portraitView.layer.cornerRadius = 6.f;
-    
+    cell.portraitView.contentMode = UIViewContentModeScaleAspectFill;
     cell.nicknameLabel.text = user.name;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -89,13 +91,36 @@
         
         RCDMeInfoTableViewController *MeInfoVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDMeInfoTableViewController"];
         [self.navigationController pushViewController:MeInfoVC animated:YES];
+        return;
+    }
+    BOOL isFriend = NO;
+    NSArray *friendList = [[RCDataBaseManager shareInstance] getAllFriends];
+    for (RCDUserInfo *friend in friendList) {
+        if ([user.userId isEqualToString:friend.userId] && [friend.status isEqualToString:@"20"]) {
+            isFriend = YES;
+        }
+    }
+    if (isFriend == YES) {
+        UIStoryboard *storyboard =
+        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        RCDPersonDetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"RCDPersonDetailViewController"];
+        
+        [self.navigationController pushViewController:detailViewController animated:YES];
+        detailViewController.userInfo = _GroupMembers[indexPath.row];
     }
     else
     {
-        RCDPersonDetailViewController *PersonDetailVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDPersonDetailViewController"];
-        PersonDetailVC.userInfo = _GroupMembers[indexPath.row];
-        [self.navigationController pushViewController:PersonDetailVC animated:YES];
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        RCDAddFriendViewController *addViewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDAddFriendViewController"];
+        addViewController.targetUserInfo = _GroupMembers[indexPath.row];
+        [self.navigationController pushViewController:addViewController animated:YES];
     }
+//    else
+//    {
+//        RCDPersonDetailViewController *PersonDetailVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDPersonDetailViewController"];
+//        PersonDetailVC.userInfo = _GroupMembers[indexPath.row];
+//        [self.navigationController pushViewController:PersonDetailVC animated:YES];
+//    }
 }
 
 /*

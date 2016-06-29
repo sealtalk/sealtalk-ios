@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RongIMLib/RongIMLib.h>
 #import <RongCallLib/RongCallLib.h>
+#import <RongIMLib/RongIMLib.h>
 
 /*!
  用户通话信息的数据模型类
@@ -18,16 +18,16 @@
 /*!
  用户ID
  */
-@property (nonatomic, strong) NSString *userId;
+@property(nonatomic, strong) NSString *userId;
 
 /*!
  用户信息
  */
-@property (nonatomic, strong) RCUserInfo *userInfo;
+@property(nonatomic, strong) RCUserInfo *userInfo;
 
 /*!
  用户的通话状态Profile
  */
-@property (nonatomic, strong) RCCallUserProfile *profile;
+@property(nonatomic, strong) RCCallUserProfile *profile;
 
 @end

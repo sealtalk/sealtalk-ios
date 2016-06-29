@@ -184,6 +184,20 @@
  */
 - (void)setDeviceToken:(NSString *)deviceToken;
 
+#pragma mark - 设置导航服务器和上传文件服务器(仅限独立数据中心使用，使用前必须先联系商务开通)
+
+/*!
+ 设置导航服务器和上传文件服务器信息
+ 
+ @param naviServer     导航服务器地址, 域名(cn.xxx.com[:port])或者 IP 地址(xxx.xxx.xxx.xxx[:port]),默认端口为80
+ @param fileServer     文件服务器地址, 域名(cn.xxx.com[:port])或者 IP 地址(xxx.xxx.xxx.xxx[:port]),默认端口为80
+ @return               是否设置成功
+ 
+ @warning 仅限独立数据中心使用，使用前必须先联系商务开通。
+ @discussion naviServer必须为有效的服务器地址，fileServer如果想使用默认的，可以传nil。
+ */
+- (BOOL)setServerInfo:(NSString *)naviServer
+           fileServer:(NSString *)fileServer;
 
 #pragma mark - 连接与断开服务器
 
@@ -700,6 +714,27 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
                      targetId:(NSString*)targetId
                    objectName:(NSString *)objectName
               oldestMessageId:(long)oldestMessageId
+                        count:(int)count;
+
+/*!
+ 获取会话中，从指定消息之前、指定数量的、指定消息类型、可以向前或向后查找的最新消息实体
+ 
+ @param conversationType    会话类型
+ @param targetId            目标会话ID
+ @param objectName          消息内容的类型名
+ @param baseMessageId       当前的消息ID
+ @param isForward           查询方向 true为向前，false为向后
+ @param count               需要获取的消息数量
+ @return                    消息实体RCMessage对象列表
+ 
+ @discussion 此方法会获取该会话中，baseMessageId之前或之后的、指定数量、消息类型和查询方向的最新消息实体，返回的消息实体按照时间从新到旧排列。
+ 返回的消息中不包含baseMessageId对应的那条消息，如果会话中的消息数量小于参数count的值，会将该会话中的所有消息返回。
+ */
+-(NSArray*)getHistoryMessages:(RCConversationType)conversationType
+                     targetId:(NSString*)targetId
+                   objectName:(NSString *)objectName
+                baseMessageId:(long)baseMessageId
+                    isForward:(BOOL)isForward
                         count:(int)count;
 
 /*!

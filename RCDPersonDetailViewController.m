@@ -65,7 +65,13 @@
         }
     }];
 
+    self.conversationBtn.layer.borderWidth = 0.5;
+    self.audioCallBtn.layer.borderWidth = 0.5;
+    self.videoCallBtn.layer.borderWidth = 0.5;
     
+    self.conversationBtn.layer.borderColor = [HEXCOLOR(0x0181dd) CGColor];
+    self.audioCallBtn.layer.borderColor = [HEXCOLOR(0xc9c9c9) CGColor];
+    self.videoCallBtn.layer.borderColor = [HEXCOLOR(0xc9c9c9) CGColor];
 }
 
 - (IBAction)btnConversation:(id)sender {
@@ -83,15 +89,19 @@
     [[RCCall sharedRCCall] startSingleCall:self.userInfo.userId mediaType:RCCallMediaAudio];
 }
 
+- (IBAction)btnVideoCall:(id)sender {
+    //视频通话
+    [[RCCall sharedRCCall] startSingleCall:self.userInfo.userId mediaType:RCCallMediaVideo];
+}
 
 -(void) rightBarButtonItemClicked:(id) sender
 {
 
     if (self.inBlackList) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"解除好友关系", @"取消黑名单", nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"取消黑名单", nil];
         [actionSheet showInView:self.view];
     } else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"解除好友关系", @"加入黑名单", nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"加入黑名单", nil];
         [actionSheet showInView:self.view];
     }
 }
@@ -106,18 +116,18 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (buttonIndex) {
+//        case 0:
+//        {
+//            //解除好友关系
+//            [RCDHTTPTOOL deleteFriend:self.userInfo.userId complete:^(BOOL result) {
+//               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"删除好友成功！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil
+//                , nil];
+//                [alertView show];
+//            }];
+//
+//        }
+//            break;
         case 0:
-        {
-            //解除好友关系
-            [RCDHTTPTOOL deleteFriend:self.userInfo.userId complete:^(BOOL result) {
-               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"删除好友成功！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil
-                , nil];
-                [alertView show];
-            }];
-
-        }
-            break;
-        case 1:
         {
             MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0730"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E4D40F271A031F460045097C"
-               BuildableName = "RCloudMessage.app"
-               BlueprintName = "RCloudMessage"
+               BlueprintIdentifier = "A6447A131B1DBE6500EA2CEE"
+               BuildableName = "SealTalk WatchKit App.app"
+               BlueprintName = "SealTalk WatchKit App"
                ReferencedContainer = "container:RCloudMessage.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E4D40F271A031F460045097C"
-            BuildableName = "RCloudMessage.app"
-            BlueprintName = "RCloudMessage"
+            BlueprintIdentifier = "A6447A131B1DBE6500EA2CEE"
+            BuildableName = "SealTalk WatchKit App.app"
+            BlueprintName = "SealTalk WatchKit App"
             ReferencedContainer = "container:RCloudMessage.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -51,22 +51,28 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.carousel"
+         RemotePath = "/SealTalk">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E4D40F271A031F460045097C"
-            BuildableName = "RCloudMessage.app"
-            BlueprintName = "RCloudMessage"
+            BlueprintIdentifier = "A6447A131B1DBE6500EA2CEE"
+            BuildableName = "SealTalk WatchKit App.app"
+            BlueprintName = "SealTalk WatchKit App"
             ReferencedContainer = "container:RCloudMessage.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A6447A131B1DBE6500EA2CEE"
+            BuildableName = "SealTalk WatchKit App.app"
+            BlueprintName = "SealTalk WatchKit App"
+            ReferencedContainer = "container:RCloudMessage.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
-         <AdditionalOption
-            key = "NSZombieEnabled"
-            value = "YES"
-            isEnabled = "YES">
-         </AdditionalOption>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
@@ -75,16 +81,27 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.carousel"
+         RemotePath = "/SealTalk">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E4D40F271A031F460045097C"
-            BuildableName = "RCloudMessage.app"
-            BlueprintName = "RCloudMessage"
+            BlueprintIdentifier = "A6447A131B1DBE6500EA2CEE"
+            BuildableName = "SealTalk WatchKit App.app"
+            BlueprintName = "SealTalk WatchKit App"
             ReferencedContainer = "container:RCloudMessage.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A6447A131B1DBE6500EA2CEE"
+            BuildableName = "SealTalk WatchKit App.app"
+            BlueprintName = "SealTalk WatchKit App"
+            ReferencedContainer = "container:RCloudMessage.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

@@ -30,10 +30,9 @@
 
 /*!
  设置当前消息Cell的数据模型
- 
+
  @param model 消息Cell的数据模型
  */
 - (void)setDataModel:(RCMessageModel *)model;
-
 
 @end

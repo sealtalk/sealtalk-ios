@@ -117,7 +117,6 @@
 
         int timeDif = timeDiff/60;
         [[RCIMClient sharedRCIMClient] setNotificationQuietHours:startTime spanMins:timeDif success:^{
-            [RCIM sharedRCIM].disableMessageNotificaiton = YES;
             [UserDefaults setObject:startTime forKey:@"startTime"];
             [UserDefaults setObject:endTime forKey:@"endTime"];
         } error:^(RCErrorCode status) {
@@ -257,7 +256,6 @@
         
         __weak typeof(&*self) blockSelf = self;
         [[RCIMClient sharedRCIMClient] setNotificationQuietHours:startTimeStr spanMins:timeDif success:^{
-            [RCIM sharedRCIM].disableMessageNotificaiton = YES;
         } error:^(RCErrorCode status) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"设置失败" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
@@ -268,7 +266,6 @@
     }else{
         __weak typeof(&*self) blockSelf = self;
         [[RCIMClient sharedRCIMClient] removeNotificationQuietHours:^{
-            [RCIM sharedRCIM].disableMessageNotificaiton = NO;
         } error:^(RCErrorCode status) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"关闭失败" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];

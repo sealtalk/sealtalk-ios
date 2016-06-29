@@ -57,6 +57,9 @@
 //存储好友信息
 -(void)insertFriendToDB:(RCDUserInfo *)friendInfo;
 
+//清空表中的所有的群组信息
+-(BOOL)clearGroupfromDB;
+
 //清空群组缓存数据
 -(void)clearGroupsData;
 
@@ -65,6 +68,9 @@
 
 //从表中获取所有好友信息 //RCUserInfo
 -(NSArray *) getAllFriends;
+
+//从表中获取某个好友的信息
+-(RCDUserInfo *) getFriendInfo:(NSString *)friendId;
 
 //删除好友信息
 -(void)deleteFriendFromDB:(NSString *)userId;

@@ -147,30 +147,32 @@ NO)
 //}
 
 - (IBAction)ClickDoneBtn:(id)sender {
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     [self moveView:deafultY];
     [_GroupName resignFirstResponder];
     //需要添加群组头像
-    if (image == nil) {
-        [self Alert:@"请添加群组头像"];
-        return;
-    }
+//    if (image == nil) {
+//        [self Alert:@"请添加群组头像"];
+//        self.navigationItem.rightBarButtonItem.enabled = YES;
+//        return;
+//    }
     NSString *nameStr = [self.GroupName.text copy];
     nameStr = [nameStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     //群组名称需要大于2位
     if ([nameStr length] == 0) {
         [self Alert:@"群组名称不能为空"];
-        return;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
     }
     //群组名称需要大于2个字
-    if ([nameStr length] < 2) {
+    else if ([nameStr length] < 2) {
         [self Alert:@"群组名称过短"];
-        return;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
     }
     //群组名称需要小于10个字
-    if ([nameStr length] > 10) {
+    else if ([nameStr length] > 10) {
         [self Alert:@"群组名称不能超过10个字"];
-        return;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
     }
     else
     {
@@ -192,51 +194,105 @@ NO)
         hud.labelText = @"群组创建中...";
         [hud show:YES];
         
-        [[RCDHttpTool shareInstance] createGroupWithGroupName:nameStr
-                                              GroupMemberList:_GroupMemberIdList
-                                                     complete:^(NSString *groupId) {
-                                                         if (groupId) {
-                                                             [RCDHTTPTOOL uploadImageToQiNiu:[RCIM sharedRCIM].currentUserInfo.userId
-                                                                                   ImageData:data
-                                                                                     success:^(NSString *url) {
-                                                                                         RCGroup *groupInfo = [RCGroup new];
-                                                                                         groupInfo.portraitUri = url;
-                                                                                         groupInfo.groupId =groupId;
-                                                                                         groupInfo.groupName =nameStr;
-                                                                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                                                                             [RCDHTTPTOOL setGroupPortraitUri:url groupId:groupId
-                                                                                                                     complete:^(BOOL result) {
-                                                                                                 [[RCIM sharedRCIM] refreshGroupInfoCache:groupInfo
-                                                                                                                              withGroupId:groupId];
-//                                                                                                 [[RCDataBaseManager shareInstance] insertGroupToDB:groupInfo];
-                                                                                                                        if (result == YES) {
-                                                      [self.navigationController popToRootViewControllerAnimated:YES];                                                                      //关闭HUD
-                                                                                                                            [hud hide:YES];
-                                                                                                                        }
-                                                                                                                        if (result == NO) {
-                                                                                                                            //关闭HUD
-                                                                                                                            [hud hide:YES];
-                                                                                                                            [self Alert:@"创建群组失败，请检查你的网络设置。"];
-                                                                                                                        }
-                                                                                                                    }];
-                                                                                         });
-                                                                                         
-                                                                                     } failure:^(NSError *err) {
-                                                                                         //关闭HUD
-                                                                                         [hud hide:YES];
-                                                                                         [self Alert:@"创建群组失败，请检查你的网络设置。"];
-                                                                                     }];
-
-                                                             
-//                                                           dispatch_sync(dispatch_get_main_queue(), ^{
-//                                                          [self.navigationController popToRootViewControllerAnimated:YES];
-//                                                           });
-                                                         }
-                                                         else
-                                                         {
-                                                             [self Alert:@"创建群组失败，请检查你的网络设置。"];
-                                                         }
-                                                     }];
+        [[RCDHttpTool shareInstance]
+         createGroupWithGroupName:nameStr
+         GroupMemberList:_GroupMemberIdList
+         complete:^(NSString *groupId) {
+             
+             if (groupId) {
+                 if (image != nil) {
+                     [RCDHTTPTOOL
+                      uploadImageToQiNiu:[RCIM sharedRCIM].currentUserInfo.userId
+                      ImageData:data
+                      success:^(NSString *url) {
+                          RCGroup *groupInfo = [RCGroup new];
+                          groupInfo.portraitUri = url;
+                          groupInfo.groupId =groupId;
+                          groupInfo.groupName =nameStr;
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                              [RCDHTTPTOOL
+                               setGroupPortraitUri:url groupId:groupId
+                               complete:^(BOOL result) {
+                                   [[RCIM sharedRCIM] refreshGroupInfoCache:groupInfo
+                                                                withGroupId:groupId];
+                                   //                                                                                                 [[RCDataBaseManager shareInstance] insertGroupToDB:groupInfo];
+                                   if (result == YES) {
+                                       
+                                       [self.navigationController popToRootViewControllerAnimated:YES];                                                                      //关闭HUD
+                                       [hud hide:YES];
+                                   }
+                                   if (result == NO) {
+                                       self.navigationItem.rightBarButtonItem.enabled = YES;                                                     //关闭HUD
+                                       [hud hide:YES];
+                                       [self Alert:@"创建群组失败，请检查你的网络设置。"];
+                                   }
+                               }];
+                          });
+                          
+                      } failure:^(NSError *err) {
+                          self.navigationItem.rightBarButtonItem.enabled = YES;
+                          //关闭HUD
+                          [hud hide:YES];
+                          [self Alert:@"创建群组失败，请检查你的网络设置。"];
+                      }];
+                 }
+                 else
+                 {
+                     
+                     RCGroup *groupInfo = [RCGroup new];
+                     groupInfo.portraitUri = [self createDefaultPortrait:groupId GroupName:nameStr];
+                     groupInfo.groupId =groupId;
+                     groupInfo.groupName =nameStr;
+                     [[RCIM sharedRCIM] refreshGroupInfoCache:groupInfo
+                                                  withGroupId:groupId];
+                     [self.navigationController popToRootViewControllerAnimated:YES];
+                 }
+                 
+//                 [RCDHTTPTOOL
+//                  uploadImageToQiNiu:[RCIM sharedRCIM].currentUserInfo.userId
+//                  ImageData:data
+//                  success:^(NSString *url) {
+//                      RCGroup *groupInfo = [RCGroup new];
+//                      groupInfo.portraitUri = url;
+//                      groupInfo.groupId =groupId;
+//                      groupInfo.groupName =nameStr;
+//                      dispatch_async(dispatch_get_main_queue(), ^{
+//                          [RCDHTTPTOOL
+//                           setGroupPortraitUri:url groupId:groupId
+//                           complete:^(BOOL result) {
+//                               
+//                               //                                                                                                 [[RCDataBaseManager shareInstance] insertGroupToDB:groupInfo];
+//                               if (result == YES) {
+//                                   [self.navigationController popToRootViewControllerAnimated:YES];                                                                      //关闭HUD
+//                                   [hud hide:YES];
+//                               }
+//                               if (result == NO) {
+//                                   self.navigationItem.rightBarButtonItem.enabled = YES;                                                     //关闭HUD
+//                                   [hud hide:YES];
+//                                   [self Alert:@"创建群组失败，请检查你的网络设置。"];
+//                               }
+//                           }];
+//                      });
+//                      
+//                  } failure:^(NSError *err) {
+//                      self.navigationItem.rightBarButtonItem.enabled = YES;
+//                      //关闭HUD
+//                      [hud hide:YES];
+//                      [self Alert:@"创建群组失败，请检查你的网络设置。"];
+//                  }];
+                 
+                 
+                 //                                                           dispatch_sync(dispatch_get_main_queue(), ^{
+                 //                                                          [self.navigationController popToRootViewControllerAnimated:YES];
+                 //                                                           });
+             }
+             else
+             {
+                 [hud hide:YES];
+                 self.navigationItem.rightBarButtonItem.enabled = YES;
+                 [self Alert:@"创建群组失败，请检查你的网络设置。"];
+             }
+         }];
     }
 }
 
@@ -354,5 +410,37 @@ NO)
     [UIView beginAnimations:nil context:nil];
     self.view.frame = CGRectMake(0, Y, self.view.frame.size.width, self.view.frame.size.height);
     [UIView commitAnimations];
+}
+
+- (NSString *)createDefaultPortrait:(NSString *)groupId GroupName:(NSString *)groupName
+{
+    DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    [defaultPortrait setColorAndLabel:groupId Nickname:groupName];
+    UIImage *portrait = [defaultPortrait imageFromView];
+    
+    
+    NSString *filePath = [self getIconCachePath:[NSString stringWithFormat:@"group%@.png",groupId]];
+    
+    BOOL result = [UIImagePNGRepresentation(portrait)writeToFile: filePath    atomically:YES];
+    if (result == YES) {
+        NSURL *portraitPath = [NSURL fileURLWithPath:filePath];
+        return [portraitPath absoluteString];
+    }
+    return nil;
+}
+
+- (NSString *)getIconCachePath:(NSString *)fileName {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"CachedIcons/%@",fileName]];   // 保存文件的名称
+    
+    NSString *dirPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"CachedIcons"]];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:dirPath]) {
+        [fileManager createDirectoryAtPath:dirPath
+               withIntermediateDirectories:YES
+                                attributes:nil
+                                     error:nil];
+    }
+    return filePath;
 }
 @end

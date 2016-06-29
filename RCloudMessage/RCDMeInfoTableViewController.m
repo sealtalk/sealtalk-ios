@@ -61,7 +61,8 @@
 //            self.currentUserNickNameLabel.text=userInfo.name;
 //        });
 //    }];
-    self.currentUserNickNameLabel.text = [DEFAULTS stringForKey:@"userNickName"];
+    self.NicknameLabel.text = [DEFAULTS stringForKey:@"userNickName"];
+    self.PhoneNumberLabel.text = [DEFAULTS stringForKey:@"userName"];
 //    if ([RCIM sharedRCIM].currentUserInfo.portraitUri.length == 0) {
 //        DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
 //        dispatch_async(dispatch_get_main_queue(), ^{
@@ -113,6 +114,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 15.f;
+}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];// 取消选中
@@ -122,12 +128,6 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         RCDEditUserNameViewController *editUserNameVC = [storyboard instantiateViewControllerWithIdentifier:@"editUserNameVC"];
         [self.navigationController pushViewController:editUserNameVC animated:YES];
-    }
-    if (indexPath.section == 0 && indexPath.row == 2) {
-        NSLog(@"show the change password view");
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        RCDChangePasswordViewController *changePasswordVC = [storyboard instantiateViewControllerWithIdentifier:@"changePasswordVC"];
-        [self.navigationController pushViewController:changePasswordVC animated:YES];
     }
     if (indexPath.section == 0 && indexPath.row == 0) {
         [self changePortrait];

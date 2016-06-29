@@ -83,6 +83,17 @@
     //self.emptyConversationView=blankView;
     // 设置在NavigatorBar中显示连接中的提示
     self.showConnectingStatusOnNavigatorBar = YES;
+    
+    //修改tabbar的背景色
+    UIView *tabBarBG = [UIView new];
+    tabBarBG.backgroundColor = HEXCOLOR(0xf9f9f9);
+    tabBarBG.frame = self.tabBarController.tabBar.bounds;
+    [[UITabBar appearance] insertSubview:tabBarBG atIndex:0];
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:HEXCOLOR(0x999999), UITextAttributeTextColor, nil] forState:UIControlStateNormal];
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:                                                         [NSDictionary dictionaryWithObjectsAndKeys:HEXCOLOR(0x0099ff),UITextAttributeTextColor, nil]forState:UIControlStateSelected];
+
 }
 
 
@@ -106,7 +117,12 @@
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
     [rightBtn setTintColor:[UIColor whiteColor]];
     self.tabBarController.navigationItem.rightBarButtonItem = rightButton;
-    self.tabBarController.navigationItem.title = @"聊天";
+    self.tabBarController.navigationItem.title = @"会话";
+    
+//    UIImageView *titleView = [[UIImageView alloc] initWithFrame: CGRectMake(160, 0, 71, 15)];
+//    titleView.image = [UIImage imageNamed:@"sealtalk"];
+//    self.tabBarController.navigationItem.titleView=titleView;
+
     
     [self notifyUpdateUnreadMessageCount];
     [[NSNotificationCenter defaultCenter]addObserver:self
@@ -146,7 +162,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:@"kRCNeedReloadDiscussionListNotification"
                                                   object:nil];
-    
 }
 
 - (void)updateBadgeValueForTabBarItem
@@ -208,7 +223,12 @@
                 [self.navigationController pushViewController:addressBookVC animated:YES];
                 return;
             }
+            //如果是单聊，不显示发送方昵称
+            if (model.conversationType == ConversationType_PRIVATE) {
+                _conversationVC.displayUserNameInCell = NO;
+            }
             [self.navigationController pushViewController:_conversationVC animated:YES];
+            
         }
         
         //聚合会话类型，此处自定设置。
@@ -244,7 +264,9 @@
         }
 
     }
-    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self refreshConversationTableViewIfNeeded];
+    });
 }
 
 /**
@@ -257,12 +279,12 @@
     @[
       
       [KxMenuItem menuItem:@"发起聊天"
-                     image:[UIImage imageNamed:@"chat_icon"]
+                     image:[UIImage imageNamed:@"startchat_icon"]
                     target:self
                     action:@selector(pushChat:)],
       
       [KxMenuItem menuItem:@"创建群组"
-                     image:[UIImage imageNamed:@"chat_icon"]
+                     image:[UIImage imageNamed:@"creategroup_icon"]
                     target:self
                     action:@selector(pushContactSelected:)],
       
@@ -289,6 +311,8 @@
     
     CGRect targetFrame = self.tabBarController.navigationItem.rightBarButtonItem.customView.frame;
     targetFrame.origin.y = targetFrame.origin.y + 15;
+    [KxMenu setTintColor:HEXCOLOR(0x000000)];
+    [KxMenu setTitleFont:[UIFont systemFontOfSize:17]];
     [KxMenu showMenuInView:self.tabBarController.navigationController.navigationBar.superview
                   fromRect:targetFrame
                  menuItems:menuItems];

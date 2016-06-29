@@ -9,6 +9,7 @@
 #import "RCDConversationSettingTableViewHeaderItem.h"
 #import "RCDUtilities.h"
 #import "UIImageView+WebCache.h"
+#import "DefaultPortraitView.h"
 
 @implementation RCDConversationSettingTableViewHeaderItem
 
@@ -95,6 +96,25 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(deleteTipButtonClicked:)]) {
         [self.delegate deleteTipButtonClicked:self];
     }
+}
+
+
+- (void)setUserModel:(RCUserInfo *)userModel{
+    self.ivAva.image = nil;
+    self.userId = userModel.userId;
+    self.titleLabel.text = userModel.name;
+    if ([userModel.portraitUri isEqualToString:@""]) {
+        DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        [defaultPortrait setColorAndLabel:userModel.userId Nickname:userModel.name];
+        UIImage *portrait = [defaultPortrait imageFromView];
+        self.ivAva.image = portrait;
+    }
+    else
+    {
+        [self.ivAva sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"icon_person"]];
+        [self.ivAva sd_setImageWithURL:[NSURL URLWithString:userModel.portraitUri] placeholderImage:[UIImage imageNamed:@"icon_person"]];
+    }
+
 }
 
 @end

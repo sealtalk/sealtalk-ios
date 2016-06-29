@@ -134,7 +134,7 @@ sed -i "" -e '/CFBundleShortVersionString/{n;s/Dev/'"$RELEASE_FLAG"'/; }' ./融�
 sed -i ""  -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./融云\ Demo\ WatchKit\ Extension/Info.plist
 
 PROJECT_NAME="RCloudMessage.xcodeproj"
-targetName="RCloudMessage"
+targetName="SealTalk"
 TARGET_DECIVE="iphoneos"
 #TARGET_I386="iphonesimulator"
 

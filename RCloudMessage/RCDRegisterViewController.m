@@ -14,7 +14,6 @@
 #import "RCDLoginViewController.h"
 #import "RCDCommonDefine.h"
 #import <RongIMLib/RongIMLib.h>
-#import "IsPhoneNumber.h"
 #import "RCDFindPswViewController.h"
 #import "MBProgressHUD.h"
 
@@ -699,7 +698,6 @@
     hud= [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [hud show:YES];
     _errorMsgLb.text = @"";
-//    if ([[IsPhoneNumber PhoneNumberManager] isMobileNumber:_PhoneNumber])
     if (_PhoneNumber.length == 11){
         NSString *phone = [NSString stringWithFormat:@"%@",_PhoneNumber];
         [AFHttpTool checkPhoneNumberAvailable:@"86"

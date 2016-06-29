@@ -12,4 +12,6 @@
 
 @interface RCDUtilities : NSObject
 + (UIImage *)imageNamed:(NSString *)name ofBundle:(NSString *)bundleName;
++ (NSString *)defaultGroupPortrait:(RCGroup *)groupInfo;
++ (NSString *)defaultUserPortrait:(RCUserInfo *)userInfo;
 @end

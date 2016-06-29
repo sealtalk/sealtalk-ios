@@ -148,7 +148,7 @@
         _expendLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, self.frame.size.width - 48, 60)];
         _expendLabel.textAlignment = NSTextAlignmentCenter;
         _expendLabel.textColor     = [UIColor whiteColor];
-        [_expendLabel setText:@"加入位置共享可能会泄漏您的个人隐私，请确认是否加入？"];
+        [_expendLabel setText:@"加入位置共享，聊天中其他人也能看到你的位置，确定加入？"];
         _expendLabel.numberOfLines = 0;
     }
     return _expendLabel;

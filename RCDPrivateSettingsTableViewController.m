@@ -130,15 +130,18 @@
             cell.TitleLabel.text = @"新消息通知";
             cell.SwitchButton.hidden = NO;
             cell.SwitchButton.on = enableNotification;
+            [cell.SwitchButton removeTarget:self action:@selector(clickIsTopBtn:) forControlEvents:UIControlEventValueChanged];
+
             [cell.SwitchButton addTarget:self
                                   action:@selector(clickNotificationBtn:)
                         forControlEvents:UIControlEventValueChanged];
+
         }
             break;
             
         case 1:
         {
-            cell.TitleLabel.text = @"会话置顶";
+                        cell.TitleLabel.text = @"会话置顶";
             cell.SwitchButton.hidden = NO;
             cell.SwitchButton.on = currentConversation.isTop;
             [cell.SwitchButton addTarget:self
@@ -227,8 +230,10 @@
 clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (actionSheet.tag == 100)
     {
-        [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_PRIVATE targetId:self.userId];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearHistoryMsg" object:nil];
+        if (buttonIndex == 0) {
+            [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_PRIVATE targetId:self.userId];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearHistoryMsg" object:nil];
+        }
     }
 }
 

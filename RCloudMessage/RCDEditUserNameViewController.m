@@ -30,12 +30,15 @@
             self.userName.text=userInfo.name;
         });
     }];
-    UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 34)];
+    UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(50, 0, 50, 34)];
     [rightBtn setTitle:@"保存" forState:UIControlStateNormal];
     [rightBtn addTarget:self action:@selector(saveUserName:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
     [rightBtn setTintColor:[UIColor whiteColor]];
     self.navigationItem.rightBarButtonItem = rightButton;
+    self.navigationItem.title = @"昵称修改";
+    self.BGView.layer.borderWidth = 0.5;
+    self.BGView.layer.borderColor = [HEXCOLOR(0xdfdfdd) CGColor];
 }
 
 - (void)saveUserName:(id)sender {
@@ -65,7 +68,8 @@
                                   userInfo.name = weakSelf.userName.text;
                                   [[RCDataBaseManager shareInstance] insertUserToDB:userInfo];
                                   [[RCIM sharedRCIM] refreshUserInfoCache:userInfo withUserId:userInfo.userId];
-                                  
+                                  [DEFAULTS setObject:weakSelf.userName.text forKey:@"userNickName"];
+                                  [DEFAULTS synchronize];
                                   [weakSelf.navigationController popViewControllerAnimated:YES];
                               }
                           } failure:^(NSError *err) {

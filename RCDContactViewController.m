@@ -20,6 +20,7 @@
 #import "RCDSearchFriendViewController.h"
 #import "DefaultPortraitView.h"
 #import "pinyin.h"
+#import "RCDPublicServiceListViewController.h"
 
 @interface RCDContactViewController ()
 //#字符索引对应的user object
@@ -34,10 +35,15 @@
 @end
 
 @implementation RCDContactViewController
+{
+    BOOL isSyncFriends;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.tabBarItem.selectedImage = [[UIImage imageNamed:@"contact_icon_hover"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
     //initial data
     _searchResult=[[NSMutableArray alloc] init];
@@ -47,7 +53,7 @@
     float colorFloat = 249.f / 255.f;
     self.friendsTabelView.backgroundColor = [[UIColor alloc] initWithRed:colorFloat green:colorFloat blue:colorFloat alpha:1];
     
-    _defaultCellsTitle      = [NSArray arrayWithObjects:@"新朋友",@"群组",@"公众号", nil];
+    _defaultCellsTitle      = [NSArray arrayWithObjects:@"新朋友",@"群组",@"公众号",@"我", nil];
     _defaultCellsPortrait   = [NSArray arrayWithObjects:@"newFriend",@"defaultGroup",@"publicNumber", nil];
 }
 
@@ -85,7 +91,7 @@
 {
     NSInteger rows = 0;
     if (section == 0) {
-        rows = 3;
+        rows = 4;
     }
     else
     {
@@ -126,8 +132,13 @@
     
     if (indexPath.section == 0) {
         cell.nicknameLabel.text = [_defaultCellsTitle objectAtIndex:indexPath.row];
-        [cell.portraitView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@",[_defaultCellsPortrait objectAtIndex:indexPath.row]]]];
-        
+        if (indexPath.row != 3) {
+          [cell.portraitView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@",[_defaultCellsPortrait objectAtIndex:indexPath.row]]]];
+        }
+        else
+        {
+            [cell.portraitView sd_setImageWithURL:[NSURL URLWithString:[DEFAULTS stringForKey:@"userPortraitUri"]] placeholderImage:[UIImage imageNamed:@"icon_person"]];
+        }
     }
     else
     {
@@ -200,12 +211,23 @@
                 
             case 2:
             {
-                RCPublicServiceListViewController *publicServiceVC = [[RCPublicServiceListViewController alloc] init];
+                RCDPublicServiceListViewController *publicServiceVC = [[RCDPublicServiceListViewController alloc] init];
                 [self.navigationController pushViewController:publicServiceVC  animated:YES];
                 return;
                 
             }
                 break;
+                
+                case 3:
+            {
+                UIStoryboard *storyboard =
+                [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                RCDPersonDetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"RCDPersonDetailViewController"];
+                
+                [self.navigationController pushViewController:detailViewController animated:YES];
+                detailViewController.userInfo = [RCIM sharedRCIM].currentUserInfo;
+                return;
+            }
                 
             default:
                 break;
@@ -266,21 +288,15 @@
         }
         
         
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             _allFriends = [self sortedArrayWithPinYinDic:_searchResult];
-            dispatch_async(dispatch_get_main_queue(), ^{
                 [self.friendsTabelView reloadData];
-                
-            });
         });
     }
     if ([searchText length] == 0) {
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             _allFriends = [self sortedArrayWithPinYinDic:_friends];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.friendsTabelView reloadData];
-                
-            });
+            [self.friendsTabelView reloadData];
         });
 
     }
@@ -345,40 +361,40 @@
 //            self.hideSectionHeader = YES;
 //        }
         
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             for (RCDUserInfo *user in _friends) {
                 if ([user.status isEqualToString:@"20"]) {
                     [_friendsArr addObject:user];
                 }
             }
             _allFriends = [self sortedArrayWithPinYinDic:_friendsArr];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.friendsTabelView reloadData];
-                
-            });
+            [self.friendsTabelView reloadData];
         });
     }
-    [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId complete:^(NSMutableArray * result) {
-        _friends=result;
-        NSMutableArray *tmpFriends = [[NSMutableArray alloc] init];
-        for (RCDUserInfo *user in _friends) {
-            if ([user.status isEqualToString:@"20"]) {
-                [tmpFriends addObject:user];
-            }
-        }
-        //            if (_friends.count < 20) {
-        //                self.hideSectionHeader = YES;
-        //            }
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            NSMutableDictionary *tmpDict = [self sortedArrayWithPinYinDic:tmpFriends];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                _allFriends = tmpDict;
-                [self.friendsTabelView reloadData];
-                
-            });
-        });
-        
-    }];
+    if ([_friends count] == 0 && isSyncFriends == NO) {
+        [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId complete:^(NSMutableArray * result) {
+            isSyncFriends = YES;
+            [self getAllData];
+        }];
+    }
+//    [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId complete:^(NSMutableArray * result) {
+//        _friends=result;
+//        NSMutableArray *tmpFriends = [[NSMutableArray alloc] init];
+//        for (RCDUserInfo *user in _friends) {
+//            if ([user.status isEqualToString:@"20"]) {
+//                [tmpFriends addObject:user];
+//            }
+//        }
+//        //            if (_friends.count < 20) {
+//        //                self.hideSectionHeader = YES;
+//        //            }
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            NSMutableDictionary *tmpDict = [self sortedArrayWithPinYinDic:tmpFriends];
+//            _allFriends = tmpDict;
+//            [self.friendsTabelView reloadData];
+//        });
+//        
+//    }];
 
     
     

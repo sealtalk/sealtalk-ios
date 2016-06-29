@@ -41,6 +41,7 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+    self.enableInteractivePopGestureRecognizer = YES;
     self.enableSaveNewPhotoToLocalSystem = YES;
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
@@ -102,11 +103,6 @@
     
     [self notifyUpdateUnreadMessageCount];
     
-    //如果是单聊，不显示发送方昵称
-    if (self.conversationType == ConversationType_PRIVATE) {
-        self.displayUserNameInCell = NO;
-    }
-    
 //    self.chatSessionInputBarControl.hidden = YES;
 //    CGRect intputTextRect = self.conversationMessageCollectionView.frame;
 //    intputTextRect.size.height = intputTextRect.size.height+50;
@@ -161,21 +157,26 @@
 //    self.enableContinuousReadUnreadVoice = YES;//开启语音连读功能
     //打开单聊强制从demo server 获取用户信息更新本地数据库
     if (self.conversationType == ConversationType_PRIVATE) {
-        [[RCDRCIMDataSource shareInstance]getUserInfoWithUserId:self.targetId completion:^(RCUserInfo *userInfo) {
-            [[RCDHttpTool shareInstance]updateUserInfo:self.targetId success:^(RCUserInfo * user) {
-                if (![userInfo.name isEqualToString:user.name]) {
+        if (![self.targetId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+            [[RCDRCIMDataSource shareInstance]getUserInfoWithUserId:self.targetId completion:^(RCUserInfo *userInfo) {
+                [[RCDHttpTool shareInstance]updateUserInfo:self.targetId success:^(RCUserInfo * user) {
+                    //                if (![userInfo.name isEqualToString:user.name]) {
                     self.navigationItem.title = user.name;
                     [[RCIM sharedRCIM]refreshUserInfoCache:user withUserId:user.userId];
-//                    [[NSNotificationCenter defaultCenter]
-//                     postNotificationName:@"kRCUpdateUserNameNotification"
-//                     object:user];
-                }
-                
-            } failure:^(NSError *err) {
-                
+                    RCDUserInfo *friendInfo = [[RCDataBaseManager shareInstance] getFriendInfo:user.userId];
+                    friendInfo.name = user.name;
+                    friendInfo.portraitUri = user.portraitUri;
+                    [[RCDataBaseManager shareInstance] insertFriendToDB:friendInfo];
+                    //                    [[NSNotificationCenter defaultCenter]
+                    //                     postNotificationName:@"kRCUpdateUserNameNotification"
+                    //                     object:user];
+                    //                }
+                    
+                } failure:^(NSError *err) {
+                    
+                }];
             }];
-        }];
-        
+        }
     }
     
     //群组改名之后，更新当前页面的Title
@@ -196,6 +197,7 @@
     [super viewWillAppear:animated];
     if (self.conversationType == ConversationType_GROUP)
     {
+        _groupMemberList = [[RCDataBaseManager shareInstance] getGroupMember:self.targetId];
         [RCDHTTPTOOL getGroupByID:self.targetId
                 successCompletion:^(RCDGroupInfo *group)
          {
@@ -206,15 +208,28 @@
                      self.navigationItem.rightBarButtonItem = nil;
                  }
                  [[RCDataBaseManager shareInstance] insertGroupToDB:group];
+                 _groupMemberList = [[RCDataBaseManager shareInstance] getGroupMember:self.targetId];
+                 if ([_groupMemberList count] == 0) {
+                     [RCDHTTPTOOL getGroupMembersWithGroupId:self.targetId Block:^(NSMutableArray *result) {
+                         if ([result count] != 0) {
+                             _groupMemberList = result;
+                             [[RCDataBaseManager shareInstance] insertGroupMemberToDB:result groupId:self.targetId];
+                         }
+                         
+                     }];
+                 }
              });
          }];
-        _groupMemberList = [[RCDataBaseManager shareInstance] getGroupMember:self.targetId];
-        if ([_groupMemberList count] == 0) {
-            [RCDHTTPTOOL getGroupMembersWithGroupId:self.targetId Block:^(NSMutableArray *result) {
-                _groupMemberList = result;
-                [[RCDataBaseManager shareInstance] insertGroupMemberToDB:result groupId:self.targetId];
-            }];
-        }
+//        _groupMemberList = [[RCDataBaseManager shareInstance] getGroupMember:self.targetId];
+//        if ([_groupMemberList count] == 0) {
+//            [RCDHTTPTOOL getGroupMembersWithGroupId:self.targetId Block:^(NSMutableArray *result) {
+//                if ([result count] != 0) {
+//                    _groupMemberList = result;
+//                    [[RCDataBaseManager shareInstance] insertGroupMemberToDB:result groupId:self.targetId];
+//                }
+//                
+//            }];
+//        }
         
         
     }
@@ -237,7 +252,7 @@
 - (void)leftBarButtonItemPressed:(id)sender {
     if ([self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_OUTGOING ||
         [self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_CONNECTED) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"退出当前界面位置共享会终止，确定要退出？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"退出", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"离开聊天，位置共享也会结束，确认离开" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         [alertView show];
     } else {
         [self popupChatViewController];
@@ -318,14 +333,17 @@
   else if (self.conversationType == ConversationType_GROUP) {
       UIStoryboard *secondStroyBoard=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
       RCDGroupSettingsTableViewController *settingsVC = [secondStroyBoard instantiateViewControllerWithIdentifier:@"RCDGroupSettingsTableViewController"];
-      if (_groupInfo != nil) {
-          settingsVC.Group = _groupInfo;
-          settingsVC.GroupMemberList = _groupMemberList;
+      if (_groupInfo == nil) {
+//          settingsVC.Group = _groupInfo;
+          settingsVC.Group = [[RCDataBaseManager shareInstance] getGroupByGroupId:self.targetId];
+//          settingsVC.GroupMemberList = _groupMemberList;
       }
       else
       {
-          settingsVC.Group = [[RCDataBaseManager shareInstance] getGroupByGroupId:self.targetId];
+          settingsVC.Group = _groupInfo;
+//          settingsVC.Group = [[RCDataBaseManager shareInstance] getGroupByGroupId:self.targetId];
       }
+      settingsVC.GroupMemberList = _groupMemberList;
       [self.navigationController pushViewController:settingsVC animated:YES];
       
 //      [self.navigationController pushViewController:settingsVC animated:YES];
@@ -599,19 +617,27 @@
                     
                 }
                 NSArray *friendList = [[RCDataBaseManager shareInstance] getAllFriends];
-                for (RCUserInfo *USER in friendList) {
-                    if ([userId isEqualToString:USER.userId] || [userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-                        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                        RCDPersonDetailViewController *temp = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDPersonDetailViewController"];
-                        temp.userInfo = user;
-                        [self.navigationController pushViewController:temp animated:YES];
-                        return;
+                BOOL isGotoDetailView = NO;
+                for (RCDUserInfo *USER in friendList) {
+                    if ([userId isEqualToString:USER.userId] && [USER.status isEqualToString:@"20"]) {
+                        isGotoDetailView = YES;
+                    }
+                    else if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
+                        isGotoDetailView = YES;
                     }
                 }
-                UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                RCDAddFriendViewController *addViewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDAddFriendViewController"];
-                addViewController.targetUserInfo = userInfo;
-                [self.navigationController pushViewController:addViewController animated:YES];
+                if (isGotoDetailView == YES) {
+                    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    RCDPersonDetailViewController *temp = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDPersonDetailViewController"];
+                    temp.userInfo = user;
+                    [self.navigationController pushViewController:temp animated:YES];
+                }
+                else{
+                    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    RCDAddFriendViewController *addViewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDAddFriendViewController"];
+                    addViewController.targetUserInfo = userInfo;
+                    [self.navigationController pushViewController:addViewController animated:YES];
+                }
             } failure:^(NSError *err) {
                 
             }];
@@ -710,6 +736,24 @@
             [self showRealTimeLocationViewController];
         }
         break;
+    }
+}
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet{
+    SEL selector = NSSelectorFromString(@"_alertController");
+    
+    if ([actionSheet respondsToSelector:selector]){
+        UIAlertController *alertController = [actionSheet valueForKey:@"_alertController"];
+        if ([alertController isKindOfClass:[UIAlertController class]]){
+            alertController.view.tintColor = [UIColor blackColor];
+        }
+    }else{
+        for( UIView * subView in actionSheet.subviews ){
+            if( [subView isKindOfClass:[UIButton class]] ){
+                UIButton * btn = (UIButton*)subView;
+                [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            }
+        }
     }
 }
 

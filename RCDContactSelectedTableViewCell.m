@@ -14,8 +14,8 @@
     // Initialization code
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+- (void)setSelected:(BOOL)selected{
+    [super setSelected:selected];
     if (selected) {
         _selectedImageView.image = [UIImage imageNamed:@"select"];
     }else{

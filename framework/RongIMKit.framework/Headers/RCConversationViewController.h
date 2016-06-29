@@ -599,6 +599,14 @@ __deprecated_msg("已废弃，请勿使用。");
  */
 - (void)presentLocationViewController:(RCLocationMessage *)locationMessageContent;
 
+#pragma mark - 公众号
+/*!
+ 点击公众号菜单
+ 
+ @param selectedMenuItem  被点击的公众号菜单
+ */
+- (void)onPublicServiceMenuItemSelected:(RCPublicServiceMenuItem *)selectedMenuItem;
+
 #pragma mark - 客服
 /*!
  用户的详细信息，此数据用于上传用户信息到客服后台，数据的nickName和portraitUrl必须填写。

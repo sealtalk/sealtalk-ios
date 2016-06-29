@@ -26,7 +26,7 @@
 @interface RCDGroupViewController ()<UITableViewDataSource,UITableViewDelegate,JoinQuitGroupDelegate>
 
 @property(nonatomic, strong) NSMutableArray* groups;
-@property(nonatomic, strong) UILabel *noGroup;
+//@property(nonatomic, strong) UILabel *noGroup;
 
 @end
 
@@ -53,7 +53,8 @@
     self.tableView.tableFooterView = [UIView new];
     //self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 12)];
     
-
+    __weak RCDGroupViewController *weakSelf = self;
+    
 //    __weak RCDGroupViewController *weakSelf = self;
 //    [RCDHTTPTOOL getAllGroupsWithCompletion:^(NSMutableArray *result) {
 //        _groups = result;
@@ -62,6 +63,52 @@
 //        });
 //        
 //    }];
+    
+    _groups=[NSMutableArray arrayWithArray:[[RCDataBaseManager shareInstance] getAllGroup]];
+    if ([_groups count] > 0) {
+        [weakSelf.tableView reloadData];
+        //        isNeedReload = NO;
+        //        _noGroup.hidden = YES;
+    }
+    //    else
+    //    {
+    //        [self setNoGroupLabel:_groups];
+    //    }
+    
+        [RCDHTTPTOOL getMyGroupsWithBlock:^(NSMutableArray *result) {
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                _groups=[NSMutableArray arrayWithArray:[[RCDataBaseManager shareInstance] getAllGroup]];
+//            if (result.count > 0) {
+//                NSMutableArray *validGroups = [NSMutableArray new];
+//                _groups =[NSMutableArray arrayWithArray: result];
+//                for (RCDGroupInfo *group in _groups) {
+//                    if (group.maxNumber != nil) {
+//                        [validGroups addObject:group];
+//                    }
+//                }
+//                _groups = validGroups;
+                
+                //                _groups=[NSMutableArray arrayWithArray:[[RCDataBaseManager shareInstance] getAllGroup]];
+                //            [self setNoGroupLabel:_groups];
+                //            if (isNeedReload == YES) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //                    _noGroup.hidden = YES;
+                    [weakSelf.tableView reloadData];
+                });
+                //            }
+//            }
+            });
+            
+            //        else
+            //        {
+            //            _groups=[NSMutableArray arrayWithArray:[[RCDataBaseManager shareInstance] getAllGroup]];
+            //            [self setNoGroupLabel:_groups];
+            //            [weakSelf.tableView reloadData];
+            //            }
+        }];
+        
+    
 }
 
 
@@ -79,7 +126,6 @@
 
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
     
-    __weak RCDGroupViewController *weakSelf = self;
     
     
 
@@ -95,43 +141,9 @@
 ////        dispatch_async(dispatch_get_main_queue(), ^{
 ////            [self.tableView reloadData];
 ////        });
-    BOOL isNeedReload = YES;
-    _groups=[NSMutableArray arrayWithArray:[[RCDataBaseManager shareInstance] getAllGroup]];
-    if ([_groups count] > 0) {
-        [weakSelf.tableView reloadData];
-        isNeedReload = NO;
-        _noGroup.hidden = YES;
-    }
-    else
-    {
-        [self setNoGroupLabel:_groups];
-    }
-    [RCDHTTPTOOL getMyGroupsWithBlock:^(NSMutableArray *result) {
-        if (result.count > 0) {
-                NSMutableArray *validGroups = [NSMutableArray new];
-                _groups =[NSMutableArray arrayWithArray: result];
-                for (RCDGroupInfo *group in _groups) {
-                    if (group.maxNumber != nil) {
-                        [validGroups addObject:group];
-                    }
-                }
-                _groups = validGroups;
-                [self setNoGroupLabel:_groups];
-            if (isNeedReload == YES) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    _noGroup.hidden = YES;
-                    [weakSelf.tableView reloadData];
-                });
-            }
-        }
-//        else
-//        {
-//            _groups=[NSMutableArray arrayWithArray:[[RCDataBaseManager shareInstance] getAllGroup]];
-//            [self setNoGroupLabel:_groups];
-//            [weakSelf.tableView reloadData];
-//            }
-        }];
-//    }else
+//    BOOL isNeedReload = YES;
+    
+    //    }else
 //    {
 //        dispatch_async(dispatch_get_main_queue(), ^{
 //            [self.tableView reloadData];
@@ -318,17 +330,17 @@
 
 }
 
--(void)setNoGroupLabel:(NSArray *)groups
-{
-    if ([groups count] == 0) {
-        _noGroup = [[UILabel alloc] init];
-        _noGroup.frame = CGRectMake((self.view.frame.size.width / 2) - 50, (self.view.frame.size.height / 2) - 15 - self.navigationController.navigationBar.frame.size.height, 100, 30);
-        [_noGroup setText:@"暂无群组"];
-        [_noGroup setTextColor:[UIColor grayColor]];
-        _noGroup.textAlignment = UITextAlignmentCenter;
-        [self.view addSubview:_noGroup];
-        _noGroup.hidden = NO;
-        return;
-    }
-}
+//-(void)setNoGroupLabel:(NSArray *)groups
+//{
+//    if ([groups count] == 0) {
+//        _noGroup = [[UILabel alloc] init];
+//        _noGroup.frame = CGRectMake((self.view.frame.size.width / 2) - 50, (self.view.frame.size.height / 2) - 15 - self.navigationController.navigationBar.frame.size.height, 100, 30);
+//        [_noGroup setText:@"暂无群组"];
+//        [_noGroup setTextColor:[UIColor grayColor]];
+//        _noGroup.textAlignment = UITextAlignmentCenter;
+//        [self.view addSubview:_noGroup];
+//        _noGroup.hidden = NO;
+//        return;
+//    }
+//}
 @end

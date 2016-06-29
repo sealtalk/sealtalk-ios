@@ -20,6 +20,7 @@
 #import "DefaultPortraitView.h"
 #import "RCDGroupMembersTableViewController.h"
 #import "RCDataBaseManager.h"
+#import "RCDAddFriendViewController.h"
 
 @interface RCDGroupSettingsTableViewController ()
 //开始会话
@@ -74,11 +75,10 @@
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.frame = CGRectMake(0, 6, 87, 23);
     UIImageView *backImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
-    backImg.frame = CGRectMake(-10, 0, 22, 22);
+    backImg.frame = CGRectMake(-12, 0, 22, 22);
     [backBtn addSubview:backImg];
-    UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 85, 22)];
+    UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 85, 22)];
     backText.text =@"返回";
-    backText.font = [UIFont systemFontOfSize:15];
     [backText setBackgroundColor:[UIColor clearColor]];
     [backText setTextColor:[UIColor whiteColor]];
     [backBtn addSubview:backText];
@@ -88,6 +88,18 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addGroupMemberList:) name:@"addGroupMemberList" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteGroupMemberList:) name:@"deleteGroupMemberList" object:nil];
+    
+    CGRect tempRect =
+    CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, headerView.collectionViewLayout.collectionViewContentSize.height);
+    UICollectionViewFlowLayout *flowLayout =
+    [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    headerView = [[UICollectionView alloc] initWithFrame:tempRect collectionViewLayout:flowLayout];
+    headerView.delegate = self;
+    headerView.dataSource = self;
+    headerView.scrollEnabled = NO;
+    [headerView registerClass:[RCDConversationSettingTableViewHeaderItem class]
+   forCellWithReuseIdentifier:@"RCDConversationSettingTableViewHeaderItem"];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -138,7 +150,7 @@
     }
     else
     {
-        numberOfSections = 2;
+        numberOfSections = 3;
         [[RCIMClient sharedRCIMClient] getConversationNotificationStatus:ConversationType_GROUP
                                                                 targetId:groupId
                                                                  success:^(RCConversationNotificationStatus nStatus) {
@@ -159,17 +171,18 @@
             /******************添加headerview*******************/
             GroupMembers = [[NSMutableArray alloc] initWithArray:_GroupMemberList];
             collectionViewResource = [[NSMutableArray alloc] initWithArray:_GroupMemberList];
-            CGRect tempRect =
-            CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, headerView.collectionViewLayout.collectionViewContentSize.height);
-            UICollectionViewFlowLayout *flowLayout =
-            [[UICollectionViewFlowLayout alloc] init];
-            flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-            headerView = [[UICollectionView alloc] initWithFrame:tempRect collectionViewLayout:flowLayout];
-                headerView.delegate = self;
-                headerView.dataSource = self;
-                headerView.scrollEnabled = NO;
-                [headerView registerClass:[RCDConversationSettingTableViewHeaderItem class]
-         forCellWithReuseIdentifier:@"RCDConversationSettingTableViewHeaderItem"];
+            [self limitDisplayMemberCount];
+//            CGRect tempRect =
+//            CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, headerView.collectionViewLayout.collectionViewContentSize.height);
+//            UICollectionViewFlowLayout *flowLayout =
+//            [[UICollectionViewFlowLayout alloc] init];
+//            flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+//            headerView = [[UICollectionView alloc] initWithFrame:tempRect collectionViewLayout:flowLayout];
+//                headerView.delegate = self;
+//                headerView.dataSource = self;
+//                headerView.scrollEnabled = NO;
+//                [headerView registerClass:[RCDConversationSettingTableViewHeaderItem class]
+//         forCellWithReuseIdentifier:@"RCDConversationSettingTableViewHeaderItem"];
             UIImage *addImage = [UIImage imageNamed:@"add_member"];
             [collectionViewResource addObject:addImage];
             //判断如果是创建者，添加踢人按钮
@@ -191,6 +204,7 @@
             [GroupMembers addObjectsFromArray:result];
             [collectionViewResource removeAllObjects];
             [collectionViewResource addObjectsFromArray:result];
+            [self limitDisplayMemberCount];
             UIImage *addImage = [UIImage imageNamed:@"add_member"];
             [collectionViewResource addObject:addImage];
             if (isCreator == YES) {
@@ -198,6 +212,8 @@
                 [collectionViewResource addObject:delImage];
             }
             [headerView reloadData];
+            headerView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, headerView.collectionViewLayout.collectionViewContentSize.height);
+            self.tableView.tableHeaderView = headerView;
             [self.tableView reloadData];
             [[RCDataBaseManager shareInstance] insertGroupMemberToDB:result groupId:groupId];
         }
@@ -443,8 +459,10 @@
 clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (actionSheet.tag == 100)
     {
-       [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP targetId:groupId];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearHistoryMsg" object:nil];
+        if (buttonIndex == 0) {
+            [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP targetId:groupId];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearHistoryMsg" object:nil];
+        }
     }
     if (actionSheet.tag == 101)
     {
@@ -462,12 +480,12 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                                                                   targetId:groupId];
                          
                          [[RCDataBaseManager shareInstance] deleteGroupToDB:groupId];
-                         NSArray *defaultGroupIdList = [DEFAULTS objectForKey:@"defaultGroupIdList"];
-                         for (NSString *tempId in defaultGroupIdList) {
-                             if ([tempId isEqualToString:groupId]) {
-                                 [[NSNotificationCenter defaultCenter] postNotificationName:@"quitDefaultGroup" object:groupId];
-                             }
-                         }
+//                         NSArray *defaultGroupIdList = [DEFAULTS objectForKey:@"defaultGroupIdList"];
+//                         for (NSString *tempId in defaultGroupIdList) {
+//                             if ([tempId isEqualToString:groupId]) {
+//                                 [[NSNotificationCenter defaultCenter] postNotificationName:@"quitDefaultGroup" object:groupId];
+//                             }
+//                         }
                          [self.navigationController popToRootViewControllerAnimated:YES];
                      } else {
                          UIAlertView *alertView =
@@ -529,10 +547,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSInteger rows;
     switch (section) {
         case 0:
-            rows = 3;
+            rows = 1;
             break;
             
         case 1:
+            rows = 2;
+            break;
+            
+        case 2:
             rows = 3;
             break;
             
@@ -548,17 +570,25 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     RCDGroupSettingsTableViewCell *cell = (RCDGroupSettingsTableViewCell *) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (indexPath.section == 0) {
+        cell.TitleLabel.text = [NSString stringWithFormat:@"群组成员(%@)",_Group.number];
+        cell.PortraitImg.hidden = YES;
+        cell.arrowImg.hidden = NO;
+        cell.switchBtn.hidden = YES;
+        cell.ContentLabel.hidden = YES;
+    }
+    
+    if (indexPath.section == 1) {
         switch (indexPath.row) {
+//            case 0:
+//            {
+//                cell.TitleLabel.text = [NSString stringWithFormat:@"群组成员(%@)",_Group.number];
+//                cell.PortraitImg.hidden = YES;
+//                cell.arrowImg.hidden = NO;
+//                cell.switchBtn.hidden = YES;
+//                cell.ContentLabel.hidden = YES;
+//            }
+//                break;
             case 0:
-            {
-                cell.TitleLabel.text = [NSString stringWithFormat:@"群组成员(%@)",_Group.number];
-                cell.PortraitImg.hidden = YES;
-                cell.arrowImg.hidden = NO;
-                cell.switchBtn.hidden = YES;
-                cell.ContentLabel.hidden = YES;
-            }
-                break;
-            case 1:
             {
                 cell.PortraitImg.contentMode = UIViewContentModeScaleAspectFill;
                 if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE && [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
@@ -592,9 +622,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                 }
             }
                 break;
-            case 2:
+            case 1:
             {
                 cell.TitleLabel.text = @"群组名称";
+                cell.PortraitImg.hidden = YES;
                 cell.switchBtn.hidden = YES;
                 cell.arrowImg.hidden = NO;
                 cell.ContentLabel.hidden = NO;
@@ -606,27 +637,12 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             }
                 break;
                 
-            case 3:
-            {
-                cell.TitleLabel.text = @"群人数";
-                cell.switchBtn.hidden = YES;
-                cell.ContentLabel.text = [NSString stringWithFormat:@"%@/500",_Group.number];
-            }
-                break;
-                
-//            case 2:
-//            {
-//                cell.TitleLabel.text = @"群名片";
-//                cell.switchBtn.hidden = YES;
-//            }
-//                break;
-                
             default:
                 break;
         }
     }
     
-    if (indexPath.section == 1) {
+    if (indexPath.section == 2) {
         switch (indexPath.row) {
             case 0:
             {
@@ -670,25 +686,33 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (section == 0) {
+        return 0;
+    }
     return 20.f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        if (indexPath.row == 0) {
-            RCDGroupMembersTableViewController *GroupMembersVC = [[RCDGroupMembersTableViewController alloc] init];
-            GroupMembersVC.GroupMembers = GroupMembers;
-            [self.navigationController pushViewController:GroupMembersVC animated:YES];
-        }
+        RCDGroupMembersTableViewController *GroupMembersVC = [[RCDGroupMembersTableViewController alloc] init];
+        GroupMembersVC.GroupMembers = GroupMembers;
+        [self.navigationController pushViewController:GroupMembersVC animated:YES];
+    }
+    if (indexPath.section == 1) {
+//        if (indexPath.row == 0) {
+//            RCDGroupMembersTableViewController *GroupMembersVC = [[RCDGroupMembersTableViewController alloc] init];
+//            GroupMembersVC.GroupMembers = GroupMembers;
+//            [self.navigationController pushViewController:GroupMembersVC animated:YES];
+//        }
         
-        if (indexPath.row == 1) {
+        if (indexPath.row == 0) {
             if (isCreator == YES) {
                 [self chosePortrait];
             }
         }
         
-        if (indexPath.row == 2) {
+        if (indexPath.row == 1) {
             if (isCreator == YES) {
                 UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                 RCDEditGroupNameViewController *editGroupNameVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDEditGroupNameViewController"];
@@ -699,7 +723,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             }
         }
     }
-    if (indexPath.section == 1) {
+    if (indexPath.section == 2) {
         if (indexPath.row == 2) {
             UIActionSheet *actionSheet =
             [[UIActionSheet alloc] initWithTitle:@"确定清除聊天记录？"
@@ -798,24 +822,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         RCUserInfo *user = collectionViewResource[indexPath.row];
             if ([user.userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId])
             {
-            [cell.btnImg setHidden:YES];
+                [cell.btnImg setHidden:YES];
             }
-        //        else
-        //        {
-        //            [cell.btnImg setHidden:!self.showDeleteTip];
-        //        }
-            if ([user.portraitUri isEqualToString:@""]) {
-                DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-                    [defaultPortrait setColorAndLabel:user.userId Nickname:user.name];
-                UIImage *portrait = [defaultPortrait imageFromView];
-                cell.ivAva.image = portrait;
-            }
-            else
-            {
-                [cell.ivAva sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@"icon_person"]];
-            }
-        cell.titleLabel.text = user.name;
-        cell.userId=user.userId;
+            [cell setUserModel:user];
         }
         else
         {
@@ -860,7 +869,13 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 //                [allMembersId addObject:userId];
 //            }
             contactSelectedVC.titleStr = @"移除成员";
-            contactSelectedVC.delGroupMembers = _GroupMemberList;
+            NSMutableArray *members = [NSMutableArray new];
+            for (RCUserInfo *user in _GroupMemberList) {
+                if (![user.userId isEqualToString:creatorId]) {
+                    [members addObject:user];
+                }
+            }
+            contactSelectedVC.delGroupMembers = members;
             _Group = nil;
             [self.navigationController pushViewController:contactSelectedVC animated:YES];
             return;
@@ -878,12 +893,29 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         }
     }
     
-    UIStoryboard *storyboard =
-    [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDPersonDetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"RCDPersonDetailViewController"];
-    
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    detailViewController.userInfo = [membersInfo objectAtIndex:indexPath.row];
+    RCUserInfo *selectedUser = [membersInfo objectAtIndex:indexPath.row];
+    BOOL isFriend = NO;
+    NSArray *friendList = [[RCDataBaseManager shareInstance] getAllFriends];
+    for (RCDUserInfo *friend in friendList) {
+        if ([selectedUser.userId isEqualToString:friend.userId] && [friend.status isEqualToString:@"20"]) {
+            isFriend = YES;
+        }
+    }
+    if (isFriend == YES || [selectedUser.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+        UIStoryboard *storyboard =
+        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        RCDPersonDetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"RCDPersonDetailViewController"];
+        
+        [self.navigationController pushViewController:detailViewController animated:YES];
+        detailViewController.userInfo = [membersInfo objectAtIndex:indexPath.row];
+    }
+    else
+    {
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        RCDAddFriendViewController *addViewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"RCDAddFriendViewController"];
+        addViewController.targetUserInfo = [membersInfo objectAtIndex:indexPath.row];
+        [self.navigationController pushViewController:addViewController animated:YES];
+    }
     
 }
 
@@ -897,6 +929,18 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSArray *tempArray = notify.object;
     for (RCUserInfo *user in tempArray) {
         [_GroupMemberList removeObject:user];
+    }
+}
+
+- (void)limitDisplayMemberCount
+{
+    if (isCreator == YES && [collectionViewResource count] > 28) {
+        NSRange rang = NSMakeRange(28, [collectionViewResource count] - 28);
+        [collectionViewResource removeObjectsInRange:rang];
+    }
+    else if ([collectionViewResource count] > 29) {
+        NSRange rang = NSMakeRange(29, [collectionViewResource count] - 29);
+        [collectionViewResource removeObjectsInRange:rang];
     }
 }
 
