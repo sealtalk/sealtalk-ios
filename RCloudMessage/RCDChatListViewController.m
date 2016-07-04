@@ -12,7 +12,7 @@
 #import "RCDSearchFriendViewController.h"
 #import "RCDSelectPersonViewController.h"
 #import "RCDRCIMDataSource.h"
-#import "RCDChatViewController.h"
+#import "RedpacketDemoViewController.h"
 #import "UIColor+RCColor.h"
 #import "RCDChatListCell.h"
 #import "RCDAddFriendTableViewController.h"
@@ -192,7 +192,7 @@
     if (_isClick) {
         _isClick = NO;
         if (model.conversationModelType == RC_CONVERSATION_MODEL_TYPE_PUBLIC_SERVICE) {
-            RCDChatViewController *_conversationVC = [[RCDChatViewController alloc] init];
+            RedpacketDemoViewController *_conversationVC = [[RedpacketDemoViewController alloc] init];
             _conversationVC.conversationType = model.conversationType;
             _conversationVC.targetId = model.targetId;
             _conversationVC.userName = model.conversationTitle;
@@ -203,7 +203,7 @@
         }
         
         if (conversationModelType == RC_CONVERSATION_MODEL_TYPE_NORMAL) {
-            RCDChatViewController *_conversationVC = [[RCDChatViewController alloc]init];
+            RedpacketDemoViewController *_conversationVC = [[RedpacketDemoViewController alloc]init];
             _conversationVC.conversationType = model.conversationType;
             _conversationVC.targetId = model.targetId;
             _conversationVC.userName = model.conversationTitle;
@@ -680,7 +680,7 @@
 -(void)didTapCellPortrait:(RCConversationModel *)model
 {
     if (model.conversationModelType == RC_CONVERSATION_MODEL_TYPE_PUBLIC_SERVICE) {
-        RCDChatViewController *_conversationVC = [[RCDChatViewController alloc] init];
+        RedpacketDemoViewController *_conversationVC = [[RedpacketDemoViewController alloc] init];
         _conversationVC.conversationType = model.conversationType;
         _conversationVC.targetId = model.targetId;
         _conversationVC.userName = model.conversationTitle;
@@ -691,7 +691,7 @@
     }
     
     if (model.conversationModelType == RC_CONVERSATION_MODEL_TYPE_NORMAL) {
-        RCDChatViewController *_conversationVC = [[RCDChatViewController alloc]init];
+        RedpacketDemoViewController *_conversationVC = [[RedpacketDemoViewController alloc]init];
         _conversationVC.conversationType = model.conversationType;
         _conversationVC.targetId = model.targetId;
         _conversationVC.userName = model.conversationTitle;

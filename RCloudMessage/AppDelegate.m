@@ -25,6 +25,14 @@
 #import "RCDTestMessage.h"
 #import "MobClick.h"
 
+
+#warning 红包相关
+#import "RedpacketConfig.h"
+#import "RedpacketMessage.h"
+#import "RedpacketTakenMessage.h"
+#import "RedpacketTakenOutgoingMessage.h"
+#import "AlipaySDK.h"
+
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" //offline key
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
 
@@ -78,7 +86,7 @@
   
   // 注册自定义测试消息
   [[RCIM sharedRCIM] registerMessageType:[RCDTestMessage class]];
-    
+
   //设置会话列表头像和会话界面头像
 
   [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
@@ -268,6 +276,14 @@
   //    NSArray *loadedContents = [NSKeyedUnarchiver
   //                               unarchiveObjectWithData:data];
   //    NSLog(@"loadedContents size is %d", loadedContents.count);
+    
+    
+#warning 配置红包信息
+    [RedpacketConfig config];
+#warning - 注册自定义消息体
+    [[RCIM sharedRCIM] registerMessageType:[RedpacketMessage class]];
+    [[RCIM sharedRCIM] registerMessageType:[RedpacketTakenMessage class]];
+    [[RCIM sharedRCIM] registerMessageType:[RedpacketTakenOutgoingMessage class]];
   return YES;
 }
 
@@ -387,12 +403,6 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 - (void)applicationWillEnterForeground:(UIApplication *)application {
   // Called as part of the transition from the background to the inactive state;
   // here you can undo many of the changes made on entering the background.
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-  // Restart any tasks that were paused (or not yet started) while the
-  // application was inactive. If the application was previously in the
-  // background, optionally refresh the user interface.
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -598,5 +608,36 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onlineConfigCallBack:) name:UMOnlineConfigDidFinishedNotification object:nil];
     
 }
+// NOTE: 9.0之前使用的API接口
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:resultDic];
+        }];
+    }
+    return YES;
+}
 
+// NOTE: 9.0以后使用新API接口
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<NSString*, id> *)options
+{
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:resultDic];
+        }];
+    }
+    return YES;
+}
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:nil];
+}
 @end
