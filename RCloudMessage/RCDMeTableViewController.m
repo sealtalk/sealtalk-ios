@@ -20,6 +20,9 @@
 #import "RCDataBaseManager.h"
 #import "RCDUtilities.h"
 
+#warning 红包相关
+#import "RedpacketViewControl.h"
+
 @interface RCDMeTableViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *currentUserNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *currentUserPortrait;
@@ -120,6 +123,11 @@
         } else {
             [self checkNewVersion];
         }
+    }else if (indexPath.section == 2 && indexPath.row == 2){
+#warning 红包相关
+        RedpacketViewControl * redpacketControl = [[RedpacketViewControl alloc] init];
+        redpacketControl.conversationController = self;
+        [redpacketControl presentChangeMoneyViewController];
     }
 }
 
