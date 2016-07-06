@@ -10,7 +10,7 @@
 
 @interface RCDDiscussSettingCell : UITableViewCell
 
-@property (strong, nonatomic) UILabel *lblDiscussName;
-@property (strong, nonatomic) UILabel *lblTitle;
+@property(strong, nonatomic) UILabel *lblDiscussName;
+@property(strong, nonatomic) UILabel *lblTitle;
 
 @end

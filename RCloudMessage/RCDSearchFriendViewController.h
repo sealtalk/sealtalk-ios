@@ -15,8 +15,6 @@
  *
  *  @return return a instance
  */
-+(instancetype) searchFriendViewController;
-
-
++ (instancetype)searchFriendViewController;
 
 @end

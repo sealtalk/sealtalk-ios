@@ -19,7 +19,7 @@
 
 /*!
  未知消息类
- 
+
  @discussion 所有未注册的消息类型，在IMKit中都会作为此类消息处理和显示。
  */
 @interface RCUnknownMessage : RCMessageContent

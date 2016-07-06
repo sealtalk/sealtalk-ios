@@ -15,7 +15,7 @@
 
 /*!
  Demo测试用的自定义消息类
- 
+
  @discussion Demo测试用的自定义消息类，此消息会进行存储并计入未读消息数。
  */
 @interface RCDTestMessage : RCMessageContent <NSCoding>
@@ -32,7 +32,7 @@
 
 /*!
  初始化测试消息
- 
+
  @param content 文本内容
  @return        测试消息对象
  */

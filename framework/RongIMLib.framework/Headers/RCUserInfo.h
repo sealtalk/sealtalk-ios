@@ -13,7 +13,7 @@
 #import <Foundation/Foundation.h>
 
 /*!
- 用户信息类 
+ 用户信息类
  */
 @interface RCUserInfo : NSObject <NSCoding>
 
@@ -34,7 +34,7 @@
 
 /*!
  用户信息的初始化方法
- 
+
  @param userId      用户ID
  @param username    用户名称
  @param portrait    用户头像的URL

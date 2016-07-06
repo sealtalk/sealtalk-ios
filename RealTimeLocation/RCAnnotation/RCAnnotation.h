@@ -6,10 +6,10 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
+#import "RCAnnotationView.h"
+#import "RCLocationView.h"
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
-#import "RCLocationView.h"
-#import "RCAnnotationView.h"
 
 @protocol RCAnnotationProtocol <NSObject>
 
@@ -19,9 +19,9 @@
 
 @interface RCAnnotation : NSObject <MKAnnotation, RCAnnotationProtocol>
 
-@property (nonatomic, strong) RCAnnotationView *view;
-@property (nonatomic, strong) RCLocationView *thumbnail;
-@property (nonatomic, readwrite) CLLocationCoordinate2D coordinate;
+@property(nonatomic, strong) RCAnnotationView *view;
+@property(nonatomic, strong) RCLocationView *thumbnail;
+@property(nonatomic, readwrite) CLLocationCoordinate2D coordinate;
 
 - (id)initWithThumbnail:(RCLocationView *)thumbnail;
 - (void)updateThumbnail:(RCLocationView *)thumbnail animated:(BOOL)animated;

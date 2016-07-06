@@ -6,12 +6,13 @@
 //  Copyright (c) 2014年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <RongIMKit/RongIMKit.h>
+#import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, RCIMConnectionStatusDelegate,RCIMReceiveMessageDelegate>
+@interface AppDelegate
+    : UIResponder <UIApplicationDelegate, RCIMConnectionStatusDelegate,
+                   RCIMReceiveMessageDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+@property(strong, nonatomic) UIWindow *window;
 
 @end
-

@@ -10,7 +10,7 @@
 
 @interface IsPhoneNumber : NSObject
 
-+(IsPhoneNumber*) PhoneNumberManager;
++ (IsPhoneNumber *)PhoneNumberManager;
 
 - (BOOL)isMobileNumber:(NSString *)mobileNum;
 

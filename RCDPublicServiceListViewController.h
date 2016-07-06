@@ -8,6 +8,7 @@
 
 #import <RongIMKit/RongIMKit.h>
 
-@interface RCDPublicServiceListViewController : RCPublicServiceListViewController
+@interface RCDPublicServiceListViewController
+    : RCPublicServiceListViewController
 
 @end

@@ -11,4 +11,3 @@
 @implementation RCLocationView
 
 @end
-

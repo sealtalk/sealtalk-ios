@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <RongIMLib/RongIMLib.h>
+#import <UIKit/UIKit.h>
 
 @protocol RealTimeLocationStatusViewDelegate <NSObject>
 
@@ -16,9 +16,8 @@
 - (RCRealTimeLocationStatus)getStatus;
 @end
 
-
 @interface RealTimeLocationStatusView : UIView
-@property (nonatomic, weak)id<RealTimeLocationStatusViewDelegate> delegate;
+@property(nonatomic, weak) id<RealTimeLocationStatusViewDelegate> delegate;
 - (void)updateText:(NSString *)statusText;
 - (void)updateRealTimeLocationStatus;
 @end

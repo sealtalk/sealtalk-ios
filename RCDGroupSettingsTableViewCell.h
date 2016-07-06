@@ -10,11 +10,10 @@
 
 @interface RCDGroupSettingsTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *TitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *ContentLabel;
-@property (weak, nonatomic) IBOutlet UISwitch *switchBtn;
-@property (weak, nonatomic) IBOutlet UIImageView *arrowImg;
-@property (weak, nonatomic) IBOutlet UIImageView *PortraitImg;
-
+@property(weak, nonatomic) IBOutlet UILabel *TitleLabel;
+@property(weak, nonatomic) IBOutlet UILabel *ContentLabel;
+@property(weak, nonatomic) IBOutlet UISwitch *switchBtn;
+@property(weak, nonatomic) IBOutlet UIImageView *arrowImg;
+@property(weak, nonatomic) IBOutlet UIImageView *PortraitImg;
 
 @end

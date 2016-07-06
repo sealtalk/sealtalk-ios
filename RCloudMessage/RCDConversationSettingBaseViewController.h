@@ -93,7 +93,8 @@
  *  @param indexPathOfSelectedItem indexPathOfSelectedItem description
  *  @param users                   users description
  */
-- (void)settingTableViewHeader:(RCDConversationSettingTableViewHeader *)settingTableViewHeader
+- (void)settingTableViewHeader:
+            (RCDConversationSettingTableViewHeader *)settingTableViewHeader
        indexPathOfSelectedItem:(NSIndexPath *)indexPathOfSelectedItem
             allTheSeletedUsers:(NSArray *)users;
 
@@ -109,5 +110,5 @@
  *
  *  @param userId 用户id
  */
-- (void)didTipHeaderClicked:(NSString*)userId;
+- (void)didTipHeaderClicked:(NSString *)userId;
 @end

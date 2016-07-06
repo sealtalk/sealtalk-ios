@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <RongIMKit/RongIMKit.h>
+#import <UIKit/UIKit.h>
 
 @interface RCDFriendInvitationTableViewCell : UITableViewCell
-@property (nonatomic, strong)RCMessage *model;
+@property(nonatomic, strong) RCMessage *model;
 @end

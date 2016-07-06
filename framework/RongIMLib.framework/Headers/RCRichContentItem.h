@@ -14,7 +14,7 @@
 
 /*!
  公众服务图文信息条目类
- 
+
  @discussion 图文消息类，此消息会进行存储并计入未读消息数。
  */
 @interface RCRichContentItem : NSObject
@@ -46,7 +46,7 @@
 
 /*!
  初始化公众服务图文信息条目
- 
+
  @param title       图文信息条目的标题
  @param digest      图文信息条目的内容摘要
  @param imageURL    图文信息条目的图片URL
@@ -60,7 +60,7 @@
 
 /*!
  初始化公众服务图文信息条目
- 
+
  @param title       图文信息条目的标题
  @param digest      图文信息条目的内容摘要
  @param imageURL    图文信息条目的图片URL

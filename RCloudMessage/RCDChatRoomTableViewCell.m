@@ -10,25 +10,22 @@
 
 @implementation RCDChatRoomTableViewCell
 
--(instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        self.ivChatRoomPortrait.layer.cornerRadius     =   4;
-        self.ivChatRoomPortrait.layer.masksToBounds    =   YES;
-    }
-    return self;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+  self = [super initWithCoder:aDecoder];
+  if (self) {
+    self.ivChatRoomPortrait.layer.cornerRadius = 4;
+    self.ivChatRoomPortrait.layer.masksToBounds = YES;
+  }
+  return self;
 }
 
 - (void)awakeFromNib {
-
-
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+  [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
+  // Configure the view for the selected state
 }
 
 @end

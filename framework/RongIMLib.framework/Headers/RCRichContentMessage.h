@@ -20,7 +20,7 @@
 
 /*!
  图文消息类
- 
+
  @discussion 图文消息类，此消息会进行存储并计入未读消息数。
  */
 @interface RCRichContentMessage : RCMessageContent
@@ -52,7 +52,7 @@
 
 /*!
  初始化图文消息
- 
+
  @param title       图文消息的标题
  @param digest      图文消息的内容摘要
  @param imageURL    图文消息的图片URL
@@ -66,7 +66,7 @@
 
 /*!
  初始化图文消息
- 
+
  @param title       图文消息的标题
  @param digest      图文消息的内容摘要
  @param imageURL    图文消息的图片URL

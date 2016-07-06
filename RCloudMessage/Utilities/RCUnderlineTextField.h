@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-@interface RCUnderlineTextField:UITextField
+@interface RCUnderlineTextField : UITextField
 
 @end
-

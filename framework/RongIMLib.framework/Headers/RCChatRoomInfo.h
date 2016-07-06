@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "RCStatusDefine.h"
+#import <Foundation/Foundation.h>
 
 /*!
  聊天室信息类
@@ -26,8 +26,9 @@
 
 /*!
  聊天室中的部分成员信息RCChatRoomMemberInfo列表
- 
- @discussion 如果成员类型为RC_ChatRoom_Member_Asc，则为最早加入的成员列表，按成员加入时间升序排列；
+
+ @discussion
+ 如果成员类型为RC_ChatRoom_Member_Asc，则为最早加入的成员列表，按成员加入时间升序排列；
  如果成员类型为RC_ChatRoom_Member_Desc，则为最晚加入的成员列表，按成员加入时间升序排列。
  */
 @property(nonatomic, strong) NSArray *memberInfoArray;

@@ -11,17 +11,17 @@
 @implementation RCDContactSelectedTableViewCell
 
 - (void)awakeFromNib {
-    // Initialization code
+  // Initialization code
 }
 
-- (void)setSelected:(BOOL)selected{
-    [super setSelected:selected];
-    if (selected) {
-        _selectedImageView.image = [UIImage imageNamed:@"select"];
-    }else{
-        _selectedImageView.image = [UIImage imageNamed:@"unselect"];
-    }
-    // Configure the view for the selected state
+- (void)setSelected:(BOOL)selected {
+  [super setSelected:selected];
+  if (selected) {
+    _selectedImageView.image = [UIImage imageNamed:@"select"];
+  } else {
+    _selectedImageView.image = [UIImage imageNamed:@"unselect"];
+  }
+  // Configure the view for the selected state
 }
 
 @end

@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-@interface  UITextField (Shake)
-- (void) shake;
+@interface UITextField (Shake)
+- (void)shake;
 @end

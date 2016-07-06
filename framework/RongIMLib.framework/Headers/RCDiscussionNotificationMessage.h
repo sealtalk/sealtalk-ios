@@ -21,31 +21,31 @@
  讨论组通知的类型
  */
 typedef NS_ENUM(NSInteger, RCDiscussionNotificationType) {
-    /*!
-     有成员加入讨论组的通知
-     */
-    RCInviteDiscussionNotification = 1,
-    /*!
-     有成员退出讨论组的通知
-     */
-    RCQuitDiscussionNotification,
-    /*!
-     讨论组名称发生变更的通知
-     */
-    RCRenameDiscussionTitleNotification,
-    /*!
-     有成员被踢出讨论组的通知
-     */
-    RCRemoveDiscussionMemberNotification,
-    /*!
-     讨论组加入权限的变更
-     */
-    RCSwichInvitationAccessNotification
+  /*!
+   有成员加入讨论组的通知
+   */
+  RCInviteDiscussionNotification = 1,
+  /*!
+   有成员退出讨论组的通知
+   */
+  RCQuitDiscussionNotification,
+  /*!
+   讨论组名称发生变更的通知
+   */
+  RCRenameDiscussionTitleNotification,
+  /*!
+   有成员被踢出讨论组的通知
+   */
+  RCRemoveDiscussionMemberNotification,
+  /*!
+   讨论组加入权限的变更
+   */
+  RCSwichInvitationAccessNotification
 };
 
 /*!
  讨论组通知消息类
- 
+
  @discussion 讨论组通知消息类，此消息会进行存储，但不计入未读消息数。
  */
 @interface RCDiscussionNotificationMessage : RCMessageContent <NSCoding>
@@ -67,14 +67,14 @@ typedef NS_ENUM(NSInteger, RCDiscussionNotificationType) {
 
 /*!
  初始化讨论组通知消息
- 
+
  @param type        讨论组通知的扩展信息
  @param operatorId  操作者的用户ID
  @param extension   讨论组通知的扩展信息
  @return            讨论组通知对象
  */
 + (instancetype)notificationWithType:(RCDiscussionNotificationType)type
-                            operator:(NSString *)operatorId
+operator:(NSString *)operatorId
                            extension:(NSString *)extension;
 
 @end

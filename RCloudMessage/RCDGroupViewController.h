@@ -11,6 +11,4 @@
 
 @interface RCDGroupViewController : UITableViewController
 
-
 @end
-

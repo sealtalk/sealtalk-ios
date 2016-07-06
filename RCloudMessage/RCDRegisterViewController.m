@@ -7,15 +7,16 @@
 //
 
 #import "RCDRegisterViewController.h"
-#import "RCDTextFieldValidate.h"
 #import "AFHttpTool.h"
-#import "RCAnimatedImagesView.h"
-#import "RCUnderlineTextField.h"
-#import "RCDLoginViewController.h"
-#import "RCDCommonDefine.h"
-#import <RongIMLib/RongIMLib.h>
-#import "RCDFindPswViewController.h"
 #import "MBProgressHUD.h"
+#import "RCAnimatedImagesView.h"
+#import "RCDCommonDefine.h"
+#import "RCDFindPswViewController.h"
+#import "RCDLoginViewController.h"
+#import "RCDTextFieldValidate.h"
+#import "RCUnderlineTextField.h"
+#import <RongIMLib/RongIMLib.h>
+#import "UIColor+RCColor.h"
 
 @interface RCDRegisterViewController () <UITextFieldDelegate>
 @property(unsafe_unretained, nonatomic) IBOutlet UITextField *tfEmail;
@@ -30,16 +31,15 @@
 @property(nonatomic, strong) UIView *statusBarView;
 @property(nonatomic, strong) UILabel *licenseLb;
 @property(nonatomic, strong) UILabel *errorMsgLb;
-@property (strong, nonatomic) IBOutlet UILabel *countDownLable;
-@property (strong, nonatomic) IBOutlet UIButton *getVerificationCodeBt;
+@property(strong, nonatomic) IBOutlet UILabel *countDownLable;
+@property(strong, nonatomic) IBOutlet UIButton *getVerificationCodeBt;
 @end
 
-@implementation RCDRegisterViewController
-{
-    NSTimer *_CountDownTimer;
-    int _Seconds;
-    NSString *_PhoneNumber;
-    MBProgressHUD* hud;
+@implementation RCDRegisterViewController {
+  NSTimer *_CountDownTimer;
+  int _Seconds;
+  NSString *_PhoneNumber;
+  MBProgressHUD *hud;
 }
 #define UserTextFieldTag 1000
 #define PassWordFieldTag 1001
@@ -67,10 +67,11 @@
   UIButton *registerHeadButton = [[UIButton alloc]
       initWithFrame:CGRectMake(self.view.bounds.size.width - 80, 0, 70, 50)];
   [registerHeadButton setTitle:@"登录" forState:UIControlStateNormal];
-  [registerHeadButton
-      setTitleColor:
-          [[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
-           forState:UIControlStateNormal];
+  [registerHeadButton setTitleColor:[[UIColor alloc] initWithRed:153
+                                                           green:153
+                                                            blue:153
+                                                           alpha:0.5]
+                           forState:UIControlStateNormal];
   [registerHeadButton.titleLabel
       setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
   [registerHeadButton addTarget:self
@@ -94,10 +95,11 @@
       [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 50)];
 
   [forgetPswHeadButton setTitle:@"找回密码" forState:UIControlStateNormal];
-  [forgetPswHeadButton
-      setTitleColor:
-          [[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
-           forState:UIControlStateNormal];
+  [forgetPswHeadButton setTitleColor:[[UIColor alloc] initWithRed:153
+                                                            green:153
+                                                             blue:153
+                                                            alpha:0.5]
+                            forState:UIControlStateNormal];
   [forgetPswHeadButton.titleLabel
       setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
   [forgetPswHeadButton addTarget:self
@@ -105,7 +107,7 @@
                 forControlEvents:UIControlEventTouchUpInside];
   [_headBackground addSubview:forgetPswHeadButton];
   _licenseLb = [[UILabel alloc] initWithFrame:CGRectZero];
-//  _licenseLb.text = @"仅供演示融云 SDK 功能使用";
+  //  _licenseLb.text = @"仅供演示融云 SDK 功能使用";
   _licenseLb.font = [UIFont fontWithName:@"Heiti SC" size:12.0];
   _licenseLb.translatesAutoresizingMaskIntoConstraints = NO;
   _licenseLb.textColor =
@@ -147,7 +149,7 @@
   userNameTextField.adjustsFontSizeToFitWidth = YES;
   userNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
   [_inputBackground addSubview:userNameTextField];
-    userNameTextField.keyboardType = UIKeyboardTypeNumberPad;
+  userNameTextField.keyboardType = UIKeyboardTypeNumberPad;
   if (userNameTextField.text.length > 0) {
     [userNameTextField setFont:[UIFont fontWithName:@"Heiti SC" size:25.0]];
   }
@@ -163,68 +165,77 @@
   userNameMsgLb.textColor =
       [[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5];
   [_inputBackground addSubview:userNameMsgLb];
-    _PhoneNumber = userNameTextField.text;
+  _PhoneNumber = userNameTextField.text;
   userNameTextField.delegate = self;
-    
-    RCUnderlineTextField *verificationCodeField =
-    [[RCUnderlineTextField alloc] initWithFrame:CGRectZero];
-    
-    verificationCodeField.backgroundColor = [UIColor clearColor];
-    verificationCodeField.tag = VerificationCodeFieldTag;
-    verificationCodeField.attributedPlaceholder = [[NSAttributedString alloc]
-                                               initWithString:@"短信验证码"
-                                               attributes:@{NSForegroundColorAttributeName : color}];
-    verificationCodeField.textColor = [UIColor whiteColor];
-    self.view.translatesAutoresizingMaskIntoConstraints = YES;
-    verificationCodeField.translatesAutoresizingMaskIntoConstraints = NO;
-    verificationCodeField.adjustsFontSizeToFitWidth = YES;
-    verificationCodeField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    verificationCodeField.keyboardType = UIKeyboardTypeNumberPad;
-    [_inputBackground addSubview:verificationCodeField];
-    if (verificationCodeField.text.length > 0) {
-        [verificationCodeField setFont:[UIFont fontWithName:@"Heiti SC" size:25.0]];
-    }
-    
-    [verificationCodeField addTarget:self
-                          action:@selector(textFieldDidChange:)
-                forControlEvents:UIControlEventEditingChanged];
-    UILabel *verificationCodeLb = [[UILabel alloc] initWithFrame:CGRectZero];
-    verificationCodeLb.text = @"验证码";
-    verificationCodeLb.hidden = YES;
-    
-    
-    verificationCodeLb.font = [UIFont fontWithName:@"Heiti SC" size:10.0];
-    verificationCodeLb.translatesAutoresizingMaskIntoConstraints = NO;
-    verificationCodeLb.textColor =
-    [UIColor whiteColor];
-    [_inputBackground addSubview:verificationCodeLb];
-    verificationCodeField.delegate = self;
-    
-    _getVerificationCodeBt = [[UIButton alloc] init];
-//    [_getVerificationCodeBt setBackgroundColor:[[UIColor alloc] initWithRed:23/255.f green:136/255.f blue:213/255.f alpha:1]];
-    [_getVerificationCodeBt setBackgroundColor:[[UIColor alloc] initWithRed:133/255.f green:133/255.f blue:133/255.f alpha:1]];
-    [_getVerificationCodeBt setTitle:@"发送验证码" forState:UIControlStateNormal];
-    [_getVerificationCodeBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_getVerificationCodeBt addTarget:self action:@selector(getVerficationCode) forControlEvents:UIControlEventTouchUpInside];
-    _getVerificationCodeBt.translatesAutoresizingMaskIntoConstraints = NO;
-    [_getVerificationCodeBt.titleLabel
-     setFont:[UIFont fontWithName:@"Heiti SC" size:13.0]];
-    _getVerificationCodeBt.enabled = NO;
-    _getVerificationCodeBt.layer.masksToBounds = YES;
-    _getVerificationCodeBt.layer.cornerRadius = 6.f;
-    [_inputBackground addSubview:_getVerificationCodeBt];
-    
-    _countDownLable = [[UILabel alloc] init];
-    _countDownLable.textColor = [UIColor whiteColor];
-    [_countDownLable setBackgroundColor:[[UIColor alloc] initWithRed:133/255.f green:133/255.f blue:133/255.f alpha:1]];
-    _countDownLable.textAlignment = UITextAlignmentCenter;
-    [_countDownLable setFont:[UIFont fontWithName:@"Heiti SC" size:13.0]];
-    _countDownLable.text = @"60秒后发送";
-    _countDownLable.translatesAutoresizingMaskIntoConstraints = NO;
-    _countDownLable.hidden = YES;
-    _countDownLable.layer.masksToBounds = YES;
-    _countDownLable.layer.cornerRadius = 6.f;
-    [_inputBackground addSubview:_countDownLable];
+
+  RCUnderlineTextField *verificationCodeField =
+      [[RCUnderlineTextField alloc] initWithFrame:CGRectZero];
+
+  verificationCodeField.backgroundColor = [UIColor clearColor];
+  verificationCodeField.tag = VerificationCodeFieldTag;
+  verificationCodeField.attributedPlaceholder = [[NSAttributedString alloc]
+      initWithString:@"短信验证码"
+          attributes:@{NSForegroundColorAttributeName : color}];
+  verificationCodeField.textColor = [UIColor whiteColor];
+  self.view.translatesAutoresizingMaskIntoConstraints = YES;
+  verificationCodeField.translatesAutoresizingMaskIntoConstraints = NO;
+  verificationCodeField.adjustsFontSizeToFitWidth = YES;
+  verificationCodeField.clearButtonMode = UITextFieldViewModeWhileEditing;
+  verificationCodeField.keyboardType = UIKeyboardTypeNumberPad;
+  [_inputBackground addSubview:verificationCodeField];
+  if (verificationCodeField.text.length > 0) {
+    [verificationCodeField setFont:[UIFont fontWithName:@"Heiti SC" size:25.0]];
+  }
+
+  [verificationCodeField addTarget:self
+                            action:@selector(textFieldDidChange:)
+                  forControlEvents:UIControlEventEditingChanged];
+  UILabel *verificationCodeLb = [[UILabel alloc] initWithFrame:CGRectZero];
+  verificationCodeLb.text = @"验证码";
+  verificationCodeLb.hidden = YES;
+
+  verificationCodeLb.font = [UIFont fontWithName:@"Heiti SC" size:10.0];
+  verificationCodeLb.translatesAutoresizingMaskIntoConstraints = NO;
+  verificationCodeLb.textColor = [UIColor whiteColor];
+  [_inputBackground addSubview:verificationCodeLb];
+  verificationCodeField.delegate = self;
+
+  _getVerificationCodeBt = [[UIButton alloc] init];
+  //    [_getVerificationCodeBt setBackgroundColor:[[UIColor alloc]
+  //    initWithRed:23/255.f green:136/255.f blue:213/255.f alpha:1]];
+  [_getVerificationCodeBt
+      setBackgroundColor:[[UIColor alloc] initWithRed:133 / 255.f
+                                                green:133 / 255.f
+                                                 blue:133 / 255.f
+                                                alpha:1]];
+  [_getVerificationCodeBt setTitle:@"发送验证码" forState:UIControlStateNormal];
+  [_getVerificationCodeBt setTitleColor:[UIColor whiteColor]
+                               forState:UIControlStateNormal];
+  [_getVerificationCodeBt addTarget:self
+                             action:@selector(getVerficationCode)
+                   forControlEvents:UIControlEventTouchUpInside];
+  _getVerificationCodeBt.translatesAutoresizingMaskIntoConstraints = NO;
+  [_getVerificationCodeBt.titleLabel
+      setFont:[UIFont fontWithName:@"Heiti SC" size:13.0]];
+  _getVerificationCodeBt.enabled = NO;
+  _getVerificationCodeBt.layer.masksToBounds = YES;
+  _getVerificationCodeBt.layer.cornerRadius = 6.f;
+  [_inputBackground addSubview:_getVerificationCodeBt];
+
+  _countDownLable = [[UILabel alloc] init];
+  _countDownLable.textColor = [UIColor whiteColor];
+  [_countDownLable setBackgroundColor:[[UIColor alloc] initWithRed:133 / 255.f
+                                                             green:133 / 255.f
+                                                              blue:133 / 255.f
+                                                             alpha:1]];
+  _countDownLable.textAlignment = UITextAlignmentCenter;
+  [_countDownLable setFont:[UIFont fontWithName:@"Heiti SC" size:13.0]];
+  _countDownLable.text = @"60秒后发送";
+  _countDownLable.translatesAutoresizingMaskIntoConstraints = NO;
+  _countDownLable.hidden = YES;
+  _countDownLable.layer.masksToBounds = YES;
+  _countDownLable.layer.cornerRadius = 6.f;
+  [_inputBackground addSubview:_countDownLable];
 
   RCUnderlineTextField *passwordTextField =
       [[RCUnderlineTextField alloc] initWithFrame:CGRectZero];
@@ -272,23 +283,24 @@
   }
 
   // UIEdgeInsets buttonEdgeInsets = UIEdgeInsetsMake(0, 7.f, 0, 7.f);
-    UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [loginButton addTarget:self
-                    action:@selector(btnDoneClicked:)
-          forControlEvents:UIControlEventTouchUpInside];
-    [loginButton setBackgroundImage:[UIImage imageNamed:@"register_button"]
-                           forState:UIControlStateNormal];
-    loginButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    loginButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [_inputBackground addSubview:loginButton];
+  UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+  [loginButton addTarget:self
+                  action:@selector(btnDoneClicked:)
+        forControlEvents:UIControlEventTouchUpInside];
+  [loginButton setBackgroundImage:[UIImage imageNamed:@"register_button"]
+                         forState:UIControlStateNormal];
+  loginButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
+  loginButton.translatesAutoresizingMaskIntoConstraints = NO;
+  [_inputBackground addSubview:loginButton];
 
-    
   UIButton *userProtocolButton = [[UIButton alloc] initWithFrame:CGRectZero];
-//  [userProtocolButton setTitle:@"阅读用户协议" forState:UIControlStateNormal];
-  [userProtocolButton
-      setTitleColor:
-          [[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
-           forState:UIControlStateNormal];
+  //  [userProtocolButton setTitle:@"阅读用户协议"
+  //  forState:UIControlStateNormal];
+  [userProtocolButton setTitleColor:[[UIColor alloc] initWithRed:153
+                                                           green:153
+                                                            blue:153
+                                                           alpha:0.5]
+                           forState:UIControlStateNormal];
   userProtocolButton.titleLabel.font = [UIFont systemFontOfSize:14];
   [userProtocolButton addTarget:self
                          action:@selector(userProtocolEvent)
@@ -301,12 +313,13 @@
   UIView *bottomBackground = [[UIView alloc] initWithFrame:CGRectZero];
   bottomBackground.translatesAutoresizingMaskIntoConstraints = NO;
   UIButton *registerButton = [[UIButton alloc]
-      initWithFrame:CGRectMake(self.view.bounds.size.width - 100, -20, 80, 50)];
+      initWithFrame:CGRectMake(self.view.bounds.size.width - 100, -16, 80, 50)];
   [registerButton setTitle:@"登录" forState:UIControlStateNormal];
-  [registerButton
-      setTitleColor:
-          [[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
-           forState:UIControlStateNormal];
+  [registerButton setTitleColor:[[UIColor alloc] initWithRed:153
+                                                       green:153
+                                                        blue:153
+                                                       alpha:0.5]
+                       forState:UIControlStateNormal];
   [registerButton.titleLabel
       setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
   [registerButton addTarget:self
@@ -316,12 +329,13 @@
   [bottomBackground addSubview:registerButton];
 
   UIButton *forgetPswButton =
-      [[UIButton alloc] initWithFrame:CGRectMake(-10, -20, 80, 50)];
+      [[UIButton alloc] initWithFrame:CGRectMake(-10, -16, 80, 50)];
   [forgetPswButton setTitle:@"找回密码" forState:UIControlStateNormal];
-  [forgetPswButton
-      setTitleColor:
-          [[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
-           forState:UIControlStateNormal];
+  [forgetPswButton setTitleColor:[[UIColor alloc] initWithRed:153
+                                                        green:153
+                                                         blue:153
+                                                        alpha:0.5]
+                        forState:UIControlStateNormal];
   forgetPswButton.titleLabel.font = [UIFont systemFontOfSize:18];
   [forgetPswButton.titleLabel
       setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
@@ -329,6 +343,15 @@
                       action:@selector(forgetPswEvent)
             forControlEvents:UIControlEventTouchUpInside];
   [bottomBackground addSubview:forgetPswButton];
+  
+  CGRect screenBounds = self.view.frame;
+  UILabel *footerLabel = [[UILabel alloc] init];
+  footerLabel.textAlignment = NSTextAlignmentCenter;
+  footerLabel.frame = CGRectMake(screenBounds.size.width / 2 - 100, -2, 200, 21);
+  footerLabel.text = @"Powered by RongCloud";
+  [footerLabel setFont:[UIFont systemFontOfSize:12.f]];
+  [footerLabel setTextColor:[UIColor colorWithHexString:@"484848" alpha:1.0]];
+  [bottomBackground addSubview:footerLabel];
 
   [self.view addSubview:bottomBackground];
 
@@ -350,12 +373,12 @@
                                          constant:-7]];
   [self.view addConstraint:[NSLayoutConstraint
                                constraintWithItem:verificationCodeLb
-                              attribute:NSLayoutAttributeBottom
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:verificationCodeField
-                              attribute:NSLayoutAttributeBottom
-                              multiplier:1.0
-                              constant:0]];
+                                        attribute:NSLayoutAttributeBottom
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:verificationCodeField
+                                        attribute:NSLayoutAttributeBottom
+                                       multiplier:1.0
+                                         constant:0]];
   [self.view addConstraint:[NSLayoutConstraint
                                constraintWithItem:verificationCodeLb
                                         attribute:NSLayoutAttributeRight
@@ -372,46 +395,46 @@
                                         attribute:NSLayoutAttributeBottom
                                        multiplier:1.0
                                          constant:-15]];
-//    [self.view addConstraint:[NSLayoutConstraint
-//                              constraintWithItem:_getVerificationCodeBt
-//                              attribute:NSLayoutAttributeRight
-//                              relatedBy:NSLayoutRelationEqual
-//                              toItem:verificationCodeField
-//                              attribute:NSLayoutAttributeRight
-//                              multiplier:1.0
-//                              constant:-8]];
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:_countDownLable
-                              attribute:NSLayoutAttributeBottom
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:verificationCodeField
-                              attribute:NSLayoutAttributeBottom
-                              multiplier:1.0
-                              constant:-17]];
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:_countDownLable
-                              attribute:NSLayoutAttributeRight
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:_getVerificationCodeBt
-                              attribute:NSLayoutAttributeRight
-                              multiplier:1.0
-                              constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:_countDownLable
-                              attribute:NSLayoutAttributeHeight
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:_getVerificationCodeBt
-                              attribute:NSLayoutAttributeHeight
-                              multiplier:1.0
-                              constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:_countDownLable
-                              attribute:NSLayoutAttributeWidth
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:_getVerificationCodeBt
-                              attribute:NSLayoutAttributeWidth
-                              multiplier:1.0
-                              constant:0]];
+  //    [self.view addConstraint:[NSLayoutConstraint
+  //                              constraintWithItem:_getVerificationCodeBt
+  //                              attribute:NSLayoutAttributeRight
+  //                              relatedBy:NSLayoutRelationEqual
+  //                              toItem:verificationCodeField
+  //                              attribute:NSLayoutAttributeRight
+  //                              multiplier:1.0
+  //                              constant:-8]];
+  [self.view addConstraint:[NSLayoutConstraint
+                               constraintWithItem:_countDownLable
+                                        attribute:NSLayoutAttributeBottom
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:verificationCodeField
+                                        attribute:NSLayoutAttributeBottom
+                                       multiplier:1.0
+                                         constant:-17]];
+  [self.view addConstraint:[NSLayoutConstraint
+                               constraintWithItem:_countDownLable
+                                        attribute:NSLayoutAttributeRight
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:_getVerificationCodeBt
+                                        attribute:NSLayoutAttributeRight
+                                       multiplier:1.0
+                                         constant:0]];
+  [self.view addConstraint:[NSLayoutConstraint
+                               constraintWithItem:_countDownLable
+                                        attribute:NSLayoutAttributeHeight
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:_getVerificationCodeBt
+                                        attribute:NSLayoutAttributeHeight
+                                       multiplier:1.0
+                                         constant:0]];
+  [self.view addConstraint:[NSLayoutConstraint
+                               constraintWithItem:_countDownLable
+                                        attribute:NSLayoutAttributeWidth
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:_getVerificationCodeBt
+                                        attribute:NSLayoutAttributeWidth
+                                       multiplier:1.0
+                                         constant:0]];
   [self.view addConstraint:[NSLayoutConstraint
                                constraintWithItem:pswMsgLb
                                         attribute:NSLayoutAttributeBottom
@@ -437,15 +460,15 @@
                                         attribute:NSLayoutAttributeBottom
                                        multiplier:1.0
                                          constant:20]];
-    
-    [self.view addConstraint:[NSLayoutConstraint
-                              constraintWithItem:_rongLogo
-                              attribute:NSLayoutAttributeCenterX
-                              relatedBy:NSLayoutRelationEqual
-                              toItem:self.view
-                              attribute:NSLayoutAttributeCenterX
-                              multiplier:1.0
-                              constant:0]];
+
+  [self.view addConstraint:[NSLayoutConstraint
+                               constraintWithItem:_rongLogo
+                                        attribute:NSLayoutAttributeCenterX
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:self.view
+                                        attribute:NSLayoutAttributeCenterX
+                                       multiplier:1.0
+                                         constant:0]];
 
   NSDictionary *views = NSDictionaryOfVariableBindings(
       _errorMsgLb, _licenseLb, _rongLogo, _inputBackground, userProtocolButton,
@@ -456,28 +479,27 @@
                           options:0
                           metrics:nil
                             views:views]
-//      arrayByAddingObjectsFromArray:
-//          [NSLayoutConstraint
-//              constraintsWithVisualFormat:@"H:|-14-[_rongLogo]-70-|"
-//                                  options:0
-//                                  metrics:nil
-//                                    views:views]]
+      //      arrayByAddingObjectsFromArray:
+      //          [NSLayoutConstraint
+      //              constraintsWithVisualFormat:@"H:|-14-[_rongLogo]-70-|"
+      //                                  options:0
+      //                                  metrics:nil
+      //                                    views:views]]
       arrayByAddingObjectsFromArray:
-          [NSLayoutConstraint
-              constraintsWithVisualFormat:@"V:|-70-[_rongLogo(100)]-10-[_errorMsgLb(=="
-                                          @"12)]-1-[_inputBackground(==315)]-"
-                                          @"80-[userProtocolButton(==20)]"
-                                  options:0
-                                  metrics:nil
-                                    views:views]]
-                                  
-                                 arrayByAddingObjectsFromArray:
-                                 [NSLayoutConstraint
-                                  constraintsWithVisualFormat:@"V:[_rongLogo(100)]"
-                                  options:0
-                                  metrics:nil
-                                  views:views]]
-                                
+          [NSLayoutConstraint constraintsWithVisualFormat:
+                                  @"V:|-70-[_rongLogo(100)]-10-[_errorMsgLb(=="
+                                  @"12)]-1-[_inputBackground(==315)]-"
+                                  @"80-[userProtocolButton(==20)]"
+                                                  options:0
+                                                  metrics:nil
+                                                    views:views]]
+
+      arrayByAddingObjectsFromArray:
+          [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_rongLogo(100)]"
+                                                  options:0
+                                                  metrics:nil
+                                                    views:views]]
+
       arrayByAddingObjectsFromArray:
           [NSLayoutConstraint
               constraintsWithVisualFormat:@"V:[bottomBackground(==50)]"
@@ -516,7 +538,8 @@
   [self.view addConstraint:userProtocolLabelConstraint];
   NSDictionary *inputViews = NSDictionaryOfVariableBindings(
       userNameMsgLb, pswMsgLb, userNameTextField, passwordTextField,
-      loginButton, rePasswordTextField, verificationCodeField, verificationCodeLb, _getVerificationCodeBt);
+      loginButton, rePasswordTextField, verificationCodeField,
+      verificationCodeLb, _getVerificationCodeBt);
 
   NSArray *inputViewConstraints = [[[[[[[
       [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[userNameTextField]|"
@@ -525,7 +548,8 @@
                                                 views:inputViews]
       arrayByAddingObjectsFromArray:
           [NSLayoutConstraint
-              constraintsWithVisualFormat:@"H:|[verificationCodeField][_getVerificationCodeBt]|"
+              constraintsWithVisualFormat:
+                  @"H:|[verificationCodeField][_getVerificationCodeBt]|"
                                   options:0
                                   metrics:nil
                                     views:inputViews]]
@@ -535,13 +559,13 @@
                                   options:0
                                   metrics:nil
                                     views:inputViews]]
-                                       
-//                                      arrayByAddingObjectsFromArray:
-//                                      [NSLayoutConstraint
-//                                       constraintsWithVisualFormat:@"H:[verificationCodeField]-[_countDownLable]|"
-//                                       options:0
-//                                       metrics:nil
-//                                       views:inputViews]]
+
+      //                                      arrayByAddingObjectsFromArray:
+      //                                      [NSLayoutConstraint
+      //                                       constraintsWithVisualFormat:@"H:[verificationCodeField]-[_countDownLable]|"
+      //                                       options:0
+      //                                       metrics:nil
+      //                                       views:inputViews]]
       arrayByAddingObjectsFromArray:
           [NSLayoutConstraint
               constraintsWithVisualFormat:@"H:|[passwordTextField]|"
@@ -556,24 +580,28 @@
                                     views:inputViews]]
       arrayByAddingObjectsFromArray:
           [NSLayoutConstraint
-              constraintsWithVisualFormat:
-                  @"V:|["@"rePasswordTextField(50)]-[userNameTextField(60)]-[verificationCodeField(60)]-[passwordTextField(60)]-[loginButton(50)]"
+              constraintsWithVisualFormat:@"V:|["
+                                          @"rePasswordTextField(50)]-["
+                                          @"userNameTextField(60)]-["
+                                          @"verificationCodeField(60)]-["
+                                          @"passwordTextField(60)]-["
+                                          @"loginButton(50)]"
                                   options:0
                                   metrics:nil
                                     views:inputViews]]
-                                   
+
       arrayByAddingObjectsFromArray:
-          [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_getVerificationCodeBt(35)]"
-                                                  options:0
-                                                  metrics:nil
-                                                    views:inputViews]]
-    
+          [NSLayoutConstraint
+              constraintsWithVisualFormat:@"V:[_getVerificationCodeBt(35)]"
+                                  options:0
+                                  metrics:nil
+                                    views:inputViews]]
+
       arrayByAddingObjectsFromArray:
           [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[loginButton]|"
                                                   options:0
                                                   metrics:nil
                                                     views:inputViews]];
-    
 
   [_inputBackground addConstraints:inputViewConstraints];
 
@@ -602,23 +630,31 @@
   return YES;
 }
 - (void)textFieldDidChange:(UITextField *)textField {
-    if (textField.tag == UserTextFieldTag) {
-        if (textField.text.length > 0) {
-            _getVerificationCodeBt.enabled = YES;
-            [_getVerificationCodeBt setBackgroundColor:[[UIColor alloc] initWithRed:23/255.f green:136/255.f blue:213/255.f alpha:1]];
-        }
-        if (textField.text.length == 0) {
-            _getVerificationCodeBt.enabled = NO;
-            [_getVerificationCodeBt setBackgroundColor:[[UIColor alloc] initWithRed:133/255.f green:133/255.f blue:133/255.f alpha:1]];
-        }
+  if (textField.tag == UserTextFieldTag) {
+    if (textField.text.length > 0) {
+      _getVerificationCodeBt.enabled = YES;
+      [_getVerificationCodeBt
+          setBackgroundColor:[[UIColor alloc] initWithRed:23 / 255.f
+                                                    green:136 / 255.f
+                                                     blue:213 / 255.f
+                                                    alpha:1]];
     }
-    
+    if (textField.text.length == 0) {
+      _getVerificationCodeBt.enabled = NO;
+      [_getVerificationCodeBt
+          setBackgroundColor:[[UIColor alloc] initWithRed:133 / 255.f
+                                                    green:133 / 255.f
+                                                     blue:133 / 255.f
+                                                    alpha:1]];
+    }
+  }
+
   if (textField.text.length == 0) {
     [textField setFont:[UIFont fontWithName:@"Heiti SC" size:18.0]];
   } else {
-      if (textField.tag == UserTextFieldTag) {
-          _PhoneNumber = textField.text;
-      }
+    if (textField.tag == UserTextFieldTag) {
+      _PhoneNumber = textField.text;
+    }
     [textField setFont:[UIFont fontWithName:@"Heiti SC" size:25.0]];
   }
 }
@@ -693,56 +729,55 @@
 }
 
 /*获取验证码*/
--(void)getVerficationCode
-{
-    hud= [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [hud show:YES];
-    _errorMsgLb.text = @"";
-    if (_PhoneNumber.length == 11){
-        NSString *phone = [NSString stringWithFormat:@"%@",_PhoneNumber];
-        [AFHttpTool checkPhoneNumberAvailable:@"86"
-                                  phoneNumber:phone
-                                      success:^(id response) {
-                                          if ([response[@"code"] intValue] == 200) {
-//                                              if ([[NSString stringWithFormat:@"%@",response[@"message"]] isEqualToString:@"Phone number has already existed."]) {
-                                              if ([response[@"result"] integerValue] == 0) {
-                                                  [hud hide:YES];
-                                                  _errorMsgLb.text = @"手机号已被注册";
-                                                  return;
-                                              }else{
-                                                  [AFHttpTool getVerificationCode:@"86"
-                                                                      phoneNumber:phone
-                                                                          success:^(id response) {
-                                                                              [hud hide:YES];
-                                                                              _getVerificationCodeBt.hidden = YES;
-                                                                              _countDownLable.hidden = NO;
-                                                                              [self CountDown:60];
-                                                                              NSLog(@"Get verification code successfully");
-                                                                              
-                                                                          }
-                                                                          failure:^(NSError *err) {
-                                                                              NSLog(@"%@",err);
-                                                                          }];
-                                                  
-                                              }
-                                          }
-            
-        } failure:^(NSError *err) {
+- (void)getVerficationCode {
+  hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+  [hud show:YES];
+  _errorMsgLb.text = @"";
+  if (_PhoneNumber.length == 11) {
+    NSString *phone = [NSString stringWithFormat:@"%@", _PhoneNumber];
+    [AFHttpTool checkPhoneNumberAvailable:@"86"
+        phoneNumber:phone
+        success:^(id response) {
+          if ([response[@"code"] intValue] == 200) {
+            //                                              if ([[NSString
+            //                                              stringWithFormat:@"%@",response[@"message"]]
+            //                                              isEqualToString:@"Phone
+            //                                              number has already
+            //                                              existed."]) {
+            if ([response[@"result"] integerValue] == 0) {
+              [hud hide:YES];
+              _errorMsgLb.text = @"手机号已被注册";
+              return;
+            } else {
+              [AFHttpTool getVerificationCode:@"86"
+                  phoneNumber:phone
+                  success:^(id response) {
+                    [hud hide:YES];
+                    _getVerificationCodeBt.hidden = YES;
+                    _countDownLable.hidden = NO;
+                    [self CountDown:60];
+                    NSLog(@"Get verification code successfully");
+
+                  }
+                  failure:^(NSError *err) {
+                    NSLog(@"%@", err);
+                  }];
+            }
+          }
+
+        }
+        failure:^(NSError *err){
         }];
-    }
-    else
-    {
-        [hud hide:YES];
-        _errorMsgLb.text = @"手机号输入有误";
-        
-    }
-    
+  } else {
+    [hud hide:YES];
+    _errorMsgLb.text = @"手机号输入有误";
+  }
 }
 
 /*找回密码*/
 - (void)forgetPswEvent {
-    RCDFindPswViewController* temp = [[RCDFindPswViewController alloc] init];
-    [self.navigationController pushViewController:temp animated:YES];
+  RCDFindPswViewController *temp = [[RCDFindPswViewController alloc] init];
+  [self.navigationController pushViewController:temp animated:YES];
 }
 
 /**
@@ -774,84 +809,92 @@
   if (![self checkContent])
     return;
 
-  RCNetworkStatus stauts = [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
+  RCNetworkStatus stauts =
+      [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
 
   if (RC_NotReachable == stauts) {
     _errorMsgLb.text = @"当前网络不可用，请检查！";
   }
   NSString *userName =
       [(UITextField *)[self.view viewWithTag:UserTextFieldTag] text];
-    NSString *verificationCode = [(UITextField *)[self.view viewWithTag:VerificationCodeFieldTag] text];
+  NSString *verificationCode =
+      [(UITextField *)[self.view viewWithTag:VerificationCodeFieldTag] text];
   NSString *userPwd =
       [(UITextField *)[self.view viewWithTag:PassWordFieldTag] text];
   NSString *nickName =
       [(UITextField *)[self.view viewWithTag:RePassWordFieldTag] text];
-//验证验证码是否有效
-    [AFHttpTool verifyVerificationCode:@"86"
-                           phoneNumber:userName
-                      verificationCode:verificationCode
-                               success:^(id response) {
-                                   NSDictionary *results    = response;
-                                   NSString *code           = [NSString stringWithFormat:@"%@",[results objectForKey:@"code"]];
-                                   
-                                   if (code.intValue == 200) {
-                                       NSDictionary *result         = [results objectForKey:@"result"];
-                                       NSString *verificationToken  = [result objectForKey:@"verification_token"];
-                                       //注册用户
-                                       [AFHttpTool registerWithNickname:nickName
-                                                               password:userPwd
-                                                       verficationToken:verificationToken success:^(id response) {
-                                                           NSDictionary *regResults = response;
-                                                           NSString *code           = [NSString stringWithFormat:@"%@",[regResults objectForKey:@"code"]];
-                                                           
-                                                           if (code.intValue == 200) {
-                                                               _errorMsgLb.text = @"注册成功";
-                                                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
-                                                                   [self.navigationController popViewControllerAnimated:YES];
-                                                               });
-                                                           }
-                                                           
-                                                           
-                                                       } failure:^(NSError *err) {
-                                                           NSLog(@"");
-                                                           _errorMsgLb.text = @"注册失败";
-                                                           
-                                                       }];
+  //验证验证码是否有效
+  [AFHttpTool verifyVerificationCode:@"86"
+      phoneNumber:userName
+      verificationCode:verificationCode
+      success:^(id response) {
+        NSDictionary *results = response;
+        NSString *code =
+            [NSString stringWithFormat:@"%@", [results objectForKey:@"code"]];
 
-                                   }
-                                   if (code.intValue == 1000) {
-                                       _errorMsgLb.text = @"验证码错误";
-                                   }
-                                   if (code.intValue == 2000) {
-                                       _errorMsgLb.text = @"验证码过期";
-                                   }
-                               } failure:^(NSError *err) {
-                                   _errorMsgLb.text = @"验证码无效";
-                               }];
-    
-    
-//  [AFHttpTool registerWithEmail:userName
-//      mobile:@""
-//      userName:nickName
-//      password:userPwd
-//      success:^(id response) {
-//        int code = [response[@"code"] intValue];
-//        NSString *messsage = nil;
-//        if (code == 200) {
-//          messsage = @"注册成功!";
-//        } else if (code == 101) {
-//          messsage = @"Email已经被注册！";
-//        }
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//          _errorMsgLb.text = messsage;
-//        });
-//      }
-//      failure:^(NSError *err) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//          _errorMsgLb.text = @"注册失败!";
-//        });
-//
-//      }];
+        if (code.intValue == 200) {
+          NSDictionary *result = [results objectForKey:@"result"];
+          NSString *verificationToken =
+              [result objectForKey:@"verification_token"];
+          //注册用户
+          [AFHttpTool registerWithNickname:nickName
+              password:userPwd
+              verficationToken:verificationToken
+              success:^(id response) {
+                NSDictionary *regResults = response;
+                NSString *code = [NSString
+                    stringWithFormat:@"%@", [regResults objectForKey:@"code"]];
+
+                if (code.intValue == 200) {
+                  _errorMsgLb.text = @"注册成功";
+                  dispatch_after(
+                      dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_MSEC),
+                      dispatch_get_main_queue(), ^{
+                        [self.navigationController
+                            popViewControllerAnimated:YES];
+                      });
+                }
+
+              }
+              failure:^(NSError *err) {
+                NSLog(@"");
+                _errorMsgLb.text = @"注册失败";
+
+              }];
+        }
+        if (code.intValue == 1000) {
+          _errorMsgLb.text = @"验证码错误";
+        }
+        if (code.intValue == 2000) {
+          _errorMsgLb.text = @"验证码过期";
+        }
+      }
+      failure:^(NSError *err) {
+        _errorMsgLb.text = @"验证码无效";
+      }];
+
+  //  [AFHttpTool registerWithEmail:userName
+  //      mobile:@""
+  //      userName:nickName
+  //      password:userPwd
+  //      success:^(id response) {
+  //        int code = [response[@"code"] intValue];
+  //        NSString *messsage = nil;
+  //        if (code == 200) {
+  //          messsage = @"注册成功!";
+  //        } else if (code == 101) {
+  //          messsage = @"Email已经被注册！";
+  //        }
+  //        dispatch_async(dispatch_get_main_queue(), ^{
+  //          _errorMsgLb.text = messsage;
+  //        });
+  //      }
+  //      failure:^(NSError *err) {
+  //        dispatch_async(dispatch_get_main_queue(), ^{
+  //          _errorMsgLb.text = @"注册失败!";
+  //        });
+  //
+  //      }];
 }
 
 /**
@@ -867,20 +910,20 @@
   NSString *reUserPwd =
       [(UITextField *)[self.view viewWithTag:RePassWordFieldTag] text];
 
-//  if (![RCDTextFieldValidate validateEmail:userName]) {
-//    _errorMsgLb.text = @"邮箱格式不正确!";
-//    return NO;
-//  }
+  //  if (![RCDTextFieldValidate validateEmail:userName]) {
+  //    _errorMsgLb.text = @"邮箱格式不正确!";
+  //    return NO;
+  //  }
 
   if (userName.length == 0) {
 
     _errorMsgLb.text = @"手机号不能为空!";
     return NO;
   }
-//  if (userPwd.length < 6) {
-//    _errorMsgLb.text = @"密码不能小于6位!";
-//    return NO;
-//  }
+  //  if (userPwd.length < 6) {
+  //    _errorMsgLb.text = @"密码不能小于6位!";
+  //    return NO;
+  //  }
   if (userPwd.length > 20) {
     _errorMsgLb.text = @"密码不能大于20位!";
     return NO;
@@ -915,21 +958,24 @@
   return [UIImage imageNamed:@"login_background.png"];
 }
 
--(void)CountDown:(int)seconds
-{
-    _Seconds = seconds;
-    _CountDownTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeFireMethod) userInfo:nil repeats:YES];
+- (void)CountDown:(int)seconds {
+  _Seconds = seconds;
+  _CountDownTimer =
+      [NSTimer scheduledTimerWithTimeInterval:1.0
+                                       target:self
+                                     selector:@selector(timeFireMethod)
+                                     userInfo:nil
+                                      repeats:YES];
 }
--(void)timeFireMethod
-{
-    _Seconds--;
-    _countDownLable.text = [NSString stringWithFormat:@"%d秒后发送",_Seconds];
-    if (_Seconds == 0) {
-        [_CountDownTimer invalidate];
-        _countDownLable.hidden = YES;
-        _getVerificationCodeBt.hidden = NO;
-        _countDownLable.text = @"60秒后发送";
-    }
+- (void)timeFireMethod {
+  _Seconds--;
+  _countDownLable.text = [NSString stringWithFormat:@"%d秒后发送", _Seconds];
+  if (_Seconds == 0) {
+    [_CountDownTimer invalidate];
+    _countDownLable.hidden = YES;
+    _getVerificationCodeBt.hidden = NO;
+    _countDownLable.text = @"60秒后发送";
+  }
 }
 
 /*

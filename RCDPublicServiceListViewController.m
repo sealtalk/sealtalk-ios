@@ -16,33 +16,39 @@
 @implementation RCDPublicServiceListViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    //自定义rightBarButtonItem
-    UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 17, 17)];
-    [rightBtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
-    [rightBtn addTarget:self action:@selector(pushAddPublicService:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
-    [rightBtn setTintColor:[UIColor whiteColor]];
-    self.navigationItem.rightBarButtonItem = rightButton;
+  [super viewDidLoad];
+  // Do any additional setup after loading the view.
+
+  //自定义rightBarButtonItem
+  UIButton *rightBtn =
+      [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 17, 17)];
+  [rightBtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
+  [rightBtn addTarget:self
+                action:@selector(pushAddPublicService:)
+      forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *rightButton =
+      [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
+  [rightBtn setTintColor:[UIColor whiteColor]];
+  self.navigationItem.rightBarButtonItem = rightButton;
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *key = [self.allKeys objectAtIndex:indexPath.section];
-    NSArray *arrayForKey = [self.allFriends objectForKey:key];
-    RCPublicServiceProfile *PublicServiceProfile = arrayForKey[indexPath.row];
-    RCDChatViewController *_conversationVC = [[RCDChatViewController alloc] init];
-    _conversationVC.conversationType = (RCConversationType)PublicServiceProfile.publicServiceType;
-    _conversationVC.targetId = PublicServiceProfile.publicServiceId;
-    //接口向后兼容 --]]
-    _conversationVC.title = PublicServiceProfile.name;
-    [self.navigationController pushViewController:_conversationVC animated:YES];
+- (void)tableView:(UITableView *)tableView
+    didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  NSString *key = [self.allKeys objectAtIndex:indexPath.section];
+  NSArray *arrayForKey = [self.allFriends objectForKey:key];
+  RCPublicServiceProfile *PublicServiceProfile = arrayForKey[indexPath.row];
+  RCDChatViewController *_conversationVC = [[RCDChatViewController alloc] init];
+  _conversationVC.conversationType =
+      (RCConversationType)PublicServiceProfile.publicServiceType;
+  _conversationVC.targetId = PublicServiceProfile.publicServiceId;
+  //接口向后兼容 --]]
+  _conversationVC.title = PublicServiceProfile.name;
+  [self.navigationController pushViewController:_conversationVC animated:YES];
 }
 
 /**
@@ -50,17 +56,17 @@
  *
  *  @param sender sender description
  */
-- (void) pushAddPublicService:(id) sender
-{
-    RCPublicServiceSearchViewController *searchFirendVC = [[RCPublicServiceSearchViewController alloc] init];
-    [self.navigationController pushViewController:searchFirendVC  animated:YES];
-    
+- (void)pushAddPublicService:(id)sender {
+  RCPublicServiceSearchViewController *searchFirendVC =
+      [[RCPublicServiceSearchViewController alloc] init];
+  [self.navigationController pushViewController:searchFirendVC animated:YES];
 }
 
 /*
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
+// In a storyboard-based application, you will often want to do a little
+preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.

@@ -10,16 +10,16 @@
 
 @interface RCDSquareChatRoomTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *ChatRoom1Image;
-@property (weak, nonatomic) IBOutlet UILabel *ChatRoom1Title;
+@property(weak, nonatomic) IBOutlet UIImageView *ChatRoom1Image;
+@property(weak, nonatomic) IBOutlet UILabel *ChatRoom1Title;
 
-@property (weak, nonatomic) IBOutlet UIImageView *ChatRoom2Image;
-@property (weak, nonatomic) IBOutlet UILabel *ChatRoom2Title;
+@property(weak, nonatomic) IBOutlet UIImageView *ChatRoom2Image;
+@property(weak, nonatomic) IBOutlet UILabel *ChatRoom2Title;
 
-@property (weak, nonatomic) IBOutlet UIImageView *ChatRoom3Image;
-@property (weak, nonatomic) IBOutlet UILabel *ChatRoom3Title;
+@property(weak, nonatomic) IBOutlet UIImageView *ChatRoom3Image;
+@property(weak, nonatomic) IBOutlet UILabel *ChatRoom3Title;
 
-@property (weak, nonatomic) IBOutlet UIImageView *ChatRoom4Image;
-@property (weak, nonatomic) IBOutlet UILabel *ChatRoom4Title;
+@property(weak, nonatomic) IBOutlet UIImageView *ChatRoom4Image;
+@property(weak, nonatomic) IBOutlet UILabel *ChatRoom4Title;
 
 @end

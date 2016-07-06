@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDAboutRongCloudTableViewController : UITableViewController
-@property (weak, nonatomic) IBOutlet UILabel *VersionLabel;
+@property(weak, nonatomic) IBOutlet UILabel *VersionLabel;
 
 @end

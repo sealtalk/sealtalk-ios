@@ -10,8 +10,8 @@
 
 @interface RCDContactSelectedTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *selectedImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *portraitImageView;
-@property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
+@property(weak, nonatomic) IBOutlet UIImageView *selectedImageView;
+@property(weak, nonatomic) IBOutlet UIImageView *portraitImageView;
+@property(weak, nonatomic) IBOutlet UILabel *nicknameLabel;
 
 @end

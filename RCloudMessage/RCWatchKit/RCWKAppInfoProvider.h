@@ -6,6 +6,8 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 #ifndef RCloudMessage_RCWKAppInfoProvider_h
 #define RCloudMessage_RCWKAppInfoProvider_h
 
