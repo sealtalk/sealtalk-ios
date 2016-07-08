@@ -104,7 +104,9 @@
         }];
         
         // 通知 红包 SDK 刷新 Token
-        [[YZHRedpacketBridge sharedBridge] reRequestRedpacketUserToken];
+        [[YZHRedpacketBridge sharedBridge] reRequestRedpacketUserToken:^(NSInteger code, NSString *msg) {
+            //to do token失效重请求策略
+        }];
     }
 #pragma mark -
 }
@@ -143,12 +145,12 @@
             [self sendMessage:message pushContent:nil];
         }
         else {
-            RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
-                                                               targetId:self.targetId
-                                                           senderUserId:self.conversation.senderUserId
-                                                             sendStatus:SentStatus_SENT
-                                                                content:message];
-            [self appendAndDisplayMessage:m];
+//            RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
+//                                                               targetId:self.targetId
+//                                                           senderUserId:self.conversation.senderUserId
+//                                                             sendStatus:SentStatus_SENT
+//                                                                content:message];
+//            [self appendAndDisplayMessage:m];
             
             // 按照 android 的需求修改发送红包的功能
             RedpacketTakenOutgoingMessage *m2 = [RedpacketTakenOutgoingMessage messageWithRedpacket:redpacket];
@@ -174,7 +176,7 @@
         RedpacketMessage *redpacketMessage = (RedpacketMessage *)messageContent;
         RedpacketMessageModel *redpacket = redpacketMessage.redpacket;
         if(RedpacketMessageTypeRedpacket == redpacket.messageType) {
-            return CGSizeMake(collectionView.frame.size.width, [RedpacketMessageCell getBubbleBackgroundViewSize:(RedpacketMessage *)messageContent].height + REDPACKET_MESSAGE_TOP_BOTTOM_PADDING);
+            return CGSizeMake(collectionView.frame.size.width, [RedpacketMessageCell getBubbleBackgroundViewSize:model].height + REDPACKET_MESSAGE_TOP_BOTTOM_PADDING);
         }
         else if(RedpacketMessageTypeTedpacketTakenMessage == redpacket.messageType){
             return CGSizeMake(collectionView.frame.size.width,
@@ -307,9 +309,9 @@
                                                                                                        }];
                                                                  
                                                              }
-                                                             [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMemberArray:discussion.memberIdList];
+                                                             [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMembers:discussion.memberIdList];
                                                          } error:^(RCErrorCode status) {
-                                                             [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMemberArray:@[]];
+                                                             [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMembers:@[]];
                                                          }];
                 }
                     break;
@@ -326,7 +328,7 @@
                         }
                     
                     }];
-                    [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMemberArray:self.usersArray];
+                    [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMembers:self.usersArray];
                 }
                     break;
                 default:

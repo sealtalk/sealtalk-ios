@@ -57,7 +57,6 @@
     [self.bgView addSubview:self.iconView];
     
     self.isDisplayReadStatus = NO;
-    
 }
 
 - (void)setDataModel:(RCMessageModel *)model {

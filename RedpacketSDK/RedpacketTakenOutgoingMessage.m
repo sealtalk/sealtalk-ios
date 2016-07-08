@@ -11,7 +11,7 @@
 @implementation RedpacketTakenOutgoingMessage
 
 + (RCMessagePersistent)persistentFlag {
-    return (MessagePersistent_ISPERSISTED);
+    return MessagePersistent_ISPERSISTED;
 }
 
 + (NSString *)getObjectName

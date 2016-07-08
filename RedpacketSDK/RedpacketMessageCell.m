@@ -169,7 +169,11 @@
     return bubbleSize;
 }
 
-+ (CGSize)getBubbleBackgroundViewSize:(RedpacketMessage *)message {
-    return [[self class] getBubbleSize];
++ (CGSize)getBubbleBackgroundViewSize:(RCMessageModel *)model {
+    CGFloat height = 94.f;
+    if (model.isDisplayMessageTime) {
+        height = 110.f;
+    }
+    return CGSizeMake(320, height);
 }
 @end

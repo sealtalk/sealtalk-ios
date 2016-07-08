@@ -25,5 +25,5 @@
  
  @return 显示的View尺寸
  */
-+ (CGSize)getBubbleBackgroundViewSize:(RedpacketMessage *)message;
++ (CGSize)getBubbleBackgroundViewSize:(RCMessageModel *)model;
 @end
