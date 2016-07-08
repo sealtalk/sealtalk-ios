@@ -10,7 +10,7 @@
 #import "AFHttpTool.h"
 #import "DefaultPortraitView.h"
 #import "MBProgressHUD.h"
-#import "RCDChatViewController.h"
+#import "RedpacketDemoViewController.h"
 #import "RCDCommonDefine.h"
 #import "RCDGroupInfo.h"
 #import "RCDGroupSettingsTableViewController.h"
@@ -108,7 +108,7 @@
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   RCDGroupInfo *groupInfo = _groups[indexPath.row];
-  RCDChatViewController *temp = [[RCDChatViewController alloc] init];
+  RedpacketDemoViewController *temp = [[RedpacketDemoViewController alloc] init];
   temp.targetId = groupInfo.groupId;
   temp.conversationType = ConversationType_GROUP;
   temp.userName = groupInfo.groupName;
@@ -214,7 +214,7 @@
     }
   }
   if (groupInfo) {
-    RCDChatViewController *temp = [[RCDChatViewController alloc] init];
+    RedpacketDemoViewController *temp = [[RedpacketDemoViewController alloc] init];
     temp.targetId = groupInfo.groupId;
     temp.conversationType = ConversationType_GROUP;
     temp.userName = groupInfo.groupName;

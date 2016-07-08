@@ -23,7 +23,7 @@
 
 // 用于获取
 #import "RCDRCIMDataSource.h"
-
+#import "RCDataBaseManager.h"
 #pragma mark - 红包相关的宏定义
 #define REDPACKET_BUNDLE(name) @"RedpacketCellResource.bundle/" name
 #define REDPACKET_TAG 2016
@@ -230,7 +230,7 @@
         }
         else if(RedpacketMessageTypeTedpacketTakenMessage == redpacket.messageType
                 // 过滤掉空消息显示
-                && [messageContent isMemberOfClass:[RedpacketTakenMessage class]]){
+                && [messageContent isKindOfClass:[RedpacketTakenMessage class]]){
             RedpacketTakenMessageTipCell *cell = [collectionView
                                       dequeueReusableCellWithReuseIdentifier:YZHRedpacketTakenMessageTypeIdentifier
                                       forIndexPath:indexPath];
@@ -280,39 +280,57 @@
     switch (tag) {
         // 云账户增加红包插件点击回调
         case REDPACKET_TAG: {
-            if (ConversationType_PRIVATE == self.conversationType) {
-                [self.redpacketControl presentRedPacketViewController];
-            }
-            else if(ConversationType_DISCUSSION == self.conversationType) {
-
-                // 需要在界面显示群员数量，需要先取得相应的数值
-                [[RCIMClient sharedRCIMClient] getDiscussion:self.targetId
-                                                     success:^(RCDiscussion *discussion) {
-                                                         // 显示多人红包界面
-                                                         [self.usersArray removeAllObjects];
-                                                         for (NSString *targetId in discussion.memberIdList) {
-                                                             [[RCDHttpTool shareInstance] getUserInfoByUserID:targetId
-                                                                                   completion:^(RCUserInfo *user) {
-                                                                                       RedpacketUserInfo * userInfo = [RedpacketUserInfo new];
-                                                                                       userInfo.userId = user.userId;
-                                                                                       userInfo.userAvatar = user.portraitUri;
-                                                                                       userInfo.userNickname = user.name;
-                                                                                       if ([discussion.creatorId isEqualToString: user.userId]) {
-                                                                                           [self.usersArray insertObject:userInfo atIndex:0];
-                                                                                       }else{
-                                                                                           
-                                                                                           [self.usersArray addObject:userInfo];
-                                                                                       }
-                                                                                   }];
-                                                             
-                                                         }
-                                                         [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMemberArray:discussion.memberIdList];
-                                                     } error:^(RCErrorCode status) {
-                                                         
-                                                     }];
-            }
-            else if (ConversationType_GROUP == self.conversationType) {
-                [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMemberArray:@[]];
+            switch (self.conversationType) {
+                case ConversationType_PRIVATE:
+                    [self.redpacketControl presentRedPacketViewController];
+                    break;
+                case ConversationType_DISCUSSION:
+                {
+                    // 需要在界面显示讨论组员数量，需要先取得相应的数值
+                    [[RCIMClient sharedRCIMClient] getDiscussion:self.targetId
+                                                         success:^(RCDiscussion *discussion) {
+                                                             // 显示多人红包界面
+                                                             [self.usersArray removeAllObjects];
+                                                             for (NSString *targetId in discussion.memberIdList) {
+                                                                 [[RCDHttpTool shareInstance] getUserInfoByUserID:targetId
+                                                                                                       completion:^(RCUserInfo *user) {
+                                                                                                           RedpacketUserInfo * userInfo = [RedpacketUserInfo new];
+                                                                                                           userInfo.userId = user.userId;
+                                                                                                           userInfo.userAvatar = user.portraitUri;
+                                                                                                           userInfo.userNickname = user.name;
+                                                                                                           if ([discussion.creatorId isEqualToString: user.userId]) {
+                                                                                                               [self.usersArray insertObject:userInfo atIndex:0];
+                                                                                                           }else{
+                                                                                                               
+                                                                                                               [self.usersArray addObject:userInfo];
+                                                                                                           }
+                                                                                                       }];
+                                                                 
+                                                             }
+                                                             [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMemberArray:discussion.memberIdList];
+                                                         } error:^(RCErrorCode status) {
+                                                             [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMemberArray:@[]];
+                                                         }];
+                }
+                    break;
+                case ConversationType_GROUP:
+                {
+                    [self.usersArray removeAllObjects];
+                    [[[RCDataBaseManager shareInstance] getGroupMember:self.targetId] enumerateObjectsUsingBlock:^(RCUserInfo *user, NSUInteger idx, BOOL * _Nonnull stop) {
+                        if (![[RCIM sharedRCIM].currentUserInfo.userId isEqualToString:user.userId]) {
+                            RedpacketUserInfo * userInfo = [RedpacketUserInfo new];
+                            userInfo.userId = user.userId;
+                            userInfo.userAvatar = user.portraitUri;
+                            userInfo.userNickname = user.name;
+                            [self.usersArray addObject:userInfo];
+                        }
+                    
+                    }];
+                    [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMemberArray:self.usersArray];
+                }
+                    break;
+                default:
+                    break;
             }
         }
         default:

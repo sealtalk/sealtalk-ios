@@ -9,7 +9,7 @@
 #import "RCDChatRoomViewController.h"
 #import "RCDChatRoomInfo.h"
 #import "RCDChatRoomTableViewCell.h"
-#import "RCDChatViewController.h"
+#import "RedpacketDemoViewController.h"
 #import "UIColor+RCColor.h"
 #import <RongIMKit/RongIMKit.h>
 
@@ -135,7 +135,7 @@
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   RCDChatRoomInfo *chatRoom = _chatRoomList[indexPath.row];
-  RCDChatViewController *temp = [[RCDChatViewController alloc] init];
+  RedpacketDemoViewController *temp = [[RedpacketDemoViewController alloc] init];
   temp.targetId = chatRoom.chatRoomId;
   temp.conversationType = ConversationType_CHATROOM;
   temp.userName = chatRoom.chatRoomName;

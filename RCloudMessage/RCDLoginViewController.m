@@ -24,7 +24,7 @@
 #import "UITextFiled+Shake.h"
 #import <RongIMKit/RongIMKit.h>
 #import "UIColor+RCColor.h"
-
+#import "RedpacketConfig.h"
 @interface RCDLoginViewController () <UITextFieldDelegate>
 
 @property(retain, nonatomic) IBOutlet RCAnimatedImagesView *animatedImagesView;
@@ -648,6 +648,7 @@ MBProgressHUD *hud;
           [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
           [DEFAULTS setObject:user.name forKey:@"userNickName"];
           [DEFAULTS synchronize];
+          [RedpacketConfig reconfig];
         }
       }
       failure:^(NSError *err){

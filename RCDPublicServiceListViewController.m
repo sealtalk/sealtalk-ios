@@ -7,7 +7,7 @@
 //
 
 #import "RCDPublicServiceListViewController.h"
-#import "RCDChatViewController.h"
+#import "RedpacketDemoViewController.h"
 
 @interface RCDPublicServiceListViewController ()
 
@@ -42,7 +42,7 @@
   NSString *key = [self.allKeys objectAtIndex:indexPath.section];
   NSArray *arrayForKey = [self.allFriends objectForKey:key];
   RCPublicServiceProfile *PublicServiceProfile = arrayForKey[indexPath.row];
-  RCDChatViewController *_conversationVC = [[RCDChatViewController alloc] init];
+  RedpacketDemoViewController *_conversationVC = [[RedpacketDemoViewController alloc] init];
   _conversationVC.conversationType =
       (RCConversationType)PublicServiceProfile.publicServiceType;
   _conversationVC.targetId = PublicServiceProfile.publicServiceId;

@@ -8,7 +8,7 @@
 
 #import "RCDDiscussGroupSettingViewController.h"
 #import "RCDAddFriendViewController.h"
-#import "RCDChatViewController.h"
+#import "RedpacketDemoViewController.h"
 #import "RCDContactSelectedTableViewController.h"
 #import "RCDDiscussSettingCell.h"
 #import "RCDDiscussSettingSwitchCell.h"
@@ -363,8 +363,8 @@
             success:^(RCDiscussion *discussion) {
 
               dispatch_async(dispatch_get_main_queue(), ^{
-                RCDChatViewController *chat =
-                    [[RCDChatViewController alloc] init];
+                RedpacketDemoViewController *chat =
+                    [[RedpacketDemoViewController alloc] init];
                 chat.targetId = discussion.discussionId;
                 chat.userName = discussion.discussionName;
                 chat.conversationType = ConversationType_DISCUSSION;

@@ -9,7 +9,7 @@
 #import "RCDPersonDetailViewController.h"
 #import "DefaultPortraitView.h"
 #import "MBProgressHUD.h"
-#import "RCDChatViewController.h"
+#import "RedpacketDemoViewController.h"
 #import "RCDHttpTool.h"
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
@@ -86,8 +86,8 @@
 
 - (IBAction)btnConversation:(id)sender {
   //创建会话
-  RCDChatViewController *chatViewController =
-      [[RCDChatViewController alloc] init];
+  RedpacketDemoViewController *chatViewController =
+      [[RedpacketDemoViewController alloc] init];
   chatViewController.conversationType = ConversationType_PRIVATE;
   chatViewController.targetId = self.userInfo.userId;
   chatViewController.title = self.userInfo.name;

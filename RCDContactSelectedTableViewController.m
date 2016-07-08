@@ -9,7 +9,7 @@
 #import "RCDContactSelectedTableViewController.h"
 #import "DefaultPortraitView.h"
 #import "MBProgressHUD.h"
-#import "RCDChatViewController.h"
+#import "RedpacketDemoViewController.h"
 #import "RCDContactSelectedTableViewCell.h"
 #import "RCDCreateGroupViewController.h"
 #import "RCDHttpTool.h"
@@ -204,8 +204,8 @@ MBProgressHUD *hud;
           success:^(RCDiscussion *discussion) {
             NSLog(@"create discussion ssucceed!");
             dispatch_async(dispatch_get_main_queue(), ^{
-              RCDChatViewController *chat =
-                  [[RCDChatViewController alloc] init];
+              RedpacketDemoViewController *chat =
+                  [[RedpacketDemoViewController alloc] init];
               chat.targetId = discussion.discussionId;
               chat.userName = discussion.discussionName;
               chat.conversationType = ConversationType_DISCUSSION;
@@ -233,7 +233,7 @@ MBProgressHUD *hud;
   //    if (self.forCreatingDiscussionGroup) {
   if (seletedUsers.count == 1) {
     RCUserInfo *user = seletedUsers[0];
-    RCDChatViewController *chat = [[RCDChatViewController alloc] init];
+    RedpacketDemoViewController *chat = [[RedpacketDemoViewController alloc] init];
     chat.targetId = user.userId;
     chat.userName = user.name;
     chat.conversationType = ConversationType_PRIVATE;
@@ -249,7 +249,7 @@ MBProgressHUD *hud;
 //        //选择多人则创建讨论组
 //        else if(seletedUsers.count == 1)
 //        {
-//            RCDChatViewController *conversationVC = [[RCDChatViewController
+//            RedpacketDemoViewController *conversationVC = [[RedpacketDemoViewController
 //            alloc] init];
 //            conversationVC.conversationType = ConversationType_PRIVATE;
 //            RCUserInfo *user = seletedUsers[0];
@@ -270,7 +270,7 @@ MBProgressHUD *hud;
 ///userIdList:userIdList success:^(RCDiscussion *discussion) {
 ////                NSLog(@"create discussion ssucceed!");
 ////                dispatch_async(dispatch_get_main_queue(), ^{
-////                    RCDChatViewController *chat =[[RCDChatViewController
+////                    RedpacketDemoViewController *chat =[[RedpacketDemoViewController
 ///alloc]init];
 ////                    chat.targetId                      =
 ///discussion.discussionId;
