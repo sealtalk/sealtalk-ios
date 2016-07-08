@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "RCDConversationSettingBaseViewController.h"
 #import "RCDConversationSettingTableViewHeader.h"
+#import <UIKit/UIKit.h>
 
 /**
  *  定义block
@@ -20,7 +20,8 @@ typedef void (^clearHistory)(BOOL isSuccess);
 /**
  *  RCSettingViewController
  */
-@interface RCDSettingBaseViewController : RCDConversationSettingBaseViewController
+@interface RCDSettingBaseViewController
+    : RCDConversationSettingBaseViewController
 
 /**
  *  targetId
@@ -45,7 +46,8 @@ typedef void (^clearHistory)(BOOL isSuccess);
 /**
  *  UIActionSheet
  */
-@property(nonatomic, readonly, strong) UIActionSheet *clearMsgHistoryActionSheet;
+@property(nonatomic, readonly, strong)
+    UIActionSheet *clearMsgHistoryActionSheet;
 
 /**
  *  clearHistoryMessage
@@ -59,7 +61,8 @@ typedef void (^clearHistory)(BOOL isSuccess);
  *  @param indexPathOfSelectedItem indexPathOfSelectedItem description
  *  @param users                   所有在headerView中的user
  */
-- (void)settingTableViewHeader:(RCDConversationSettingTableViewHeader *)settingTableViewHeader
+- (void)settingTableViewHeader:
+            (RCDConversationSettingTableViewHeader *)settingTableViewHeader
        indexPathOfSelectedItem:(NSIndexPath *)indexPathOfSelectedItem
             allTheSeletedUsers:(NSArray *)users;
 
@@ -71,4 +74,3 @@ typedef void (^clearHistory)(BOOL isSuccess);
 - (void)deleteTipButtonClicked:(NSIndexPath *)indexPath;
 
 @end
-

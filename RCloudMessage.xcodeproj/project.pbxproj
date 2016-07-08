@@ -17,7 +17,6 @@
 		466684331B5DEC7C000B7504 /* RCDConversationSettingTableViewHeaderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684321B5DEC7C000B7504 /* RCDConversationSettingTableViewHeaderItem.m */; };
 		466684361B5DF36E000B7504 /* RCDUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684351B5DF36E000B7504 /* RCDUtilities.m */; };
 		46E0D44F1B1EA7E300E04B8A /* RCDataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E0D44E1B1EA7E300E04B8A /* RCDataBaseManager.m */; };
-		46E17CBB1B0EC294001AC57A /* DBHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E17CBA1B0EC294001AC57A /* DBHelper.m */; };
 		46E17CC71B0EC32A001AC57A /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E17CBD1B0EC32A001AC57A /* FMDatabase.m */; };
 		46E17CC81B0EC32A001AC57A /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E17CBF1B0EC32A001AC57A /* FMDatabaseAdditions.m */; };
 		46E17CC91B0EC32A001AC57A /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E17CC11B0EC32A001AC57A /* FMDatabasePool.m */; };
@@ -31,6 +30,7 @@
 		8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C55EB501B2A8CE5004285F4 /* Emoji.plist */; };
 		8CCBC9871AEDDF8600BA1135 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */; };
 		980235881D227F8100BCB1DD /* RCDPrivacyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */; };
+		98FFECB71D267140001DBB0D /* UITabBar+badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 98FFECB61D267140001DBB0D /* UITabBar+badge.m */; };
 		9B447DE51CF82926005D3ED5 /* DefaultPortraitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DBC1CF82926005D3ED5 /* DefaultPortraitView.m */; };
 		9B447DE61CF82926005D3ED5 /* RCDChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DBE1CF82926005D3ED5 /* RCDChangePasswordViewController.m */; };
 		9B447DE71CF82926005D3ED5 /* RCDContactSelectedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DC01CF82926005D3ED5 /* RCDContactSelectedTableViewCell.m */; };
@@ -122,7 +122,6 @@
 		A6B1D9051B204E6600AD32EC /* RongIMLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6BD04171B1EEA6B00ACAF17 /* RongIMLib.framework */; };
 		A6BD04181B1EEA6B00ACAF17 /* RongIMLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6BD04171B1EEA6B00ACAF17 /* RongIMLib.framework */; };
 		A6CF8A351BD4CB6E00F3EA1A /* RCConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A6CF8A341BD4CB6E00F3EA1A /* RCConfig.plist */; };
-		A6EF9B9A1D0E683200785C27 /* rongcloud.png in Resources */ = {isa = PBXBuildFile; fileRef = A6EF9B991D0E683200785C27 /* rongcloud.png */; };
 		A6EFAB9F1BB0ED94007E9D67 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFAB9E1BB0ED94007E9D67 /* libz.tbd */; };
 		A6EFABA11BB0EDAC007E9D67 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */; };
 		A6EFABA31BB0EDD7007E9D67 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA21BB0EDD7007E9D67 /* libstdc++.tbd */; };
@@ -303,8 +302,6 @@
 		466684351B5DF36E000B7504 /* RCDUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RCDUtilities.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		46E0D44D1B1EA7E300E04B8A /* RCDataBaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDataBaseManager.h; sourceTree = SOURCE_ROOT; };
 		46E0D44E1B1EA7E300E04B8A /* RCDataBaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDataBaseManager.m; sourceTree = SOURCE_ROOT; };
-		46E17CB91B0EC294001AC57A /* DBHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBHelper.h; path = DB/DBHelper.h; sourceTree = "<group>"; };
-		46E17CBA1B0EC294001AC57A /* DBHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBHelper.m; path = DB/DBHelper.m; sourceTree = "<group>"; };
 		46E17CBC1B0EC32A001AC57A /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = DB/FMDatabase.h; sourceTree = "<group>"; };
 		46E17CBD1B0EC32A001AC57A /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = DB/FMDatabase.m; sourceTree = "<group>"; };
 		46E17CBE1B0EC32A001AC57A /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = DB/FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -328,6 +325,8 @@
 		8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		980235861D227F8100BCB1DD /* RCDPrivacyTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPrivacyTableViewController.h; sourceTree = SOURCE_ROOT; };
 		980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPrivacyTableViewController.m; sourceTree = SOURCE_ROOT; };
+		98FFECB51D267140001DBB0D /* UITabBar+badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBar+badge.h"; sourceTree = SOURCE_ROOT; };
+		98FFECB61D267140001DBB0D /* UITabBar+badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+badge.m"; sourceTree = SOURCE_ROOT; };
 		9B447DBB1CF82926005D3ED5 /* DefaultPortraitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultPortraitView.h; sourceTree = SOURCE_ROOT; };
 		9B447DBC1CF82926005D3ED5 /* DefaultPortraitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultPortraitView.m; sourceTree = SOURCE_ROOT; };
 		9B447DBD1CF82926005D3ED5 /* RCDChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDChangePasswordViewController.h; sourceTree = SOURCE_ROOT; };
@@ -499,7 +498,6 @@
 		A6BD04101B1E941D00ACAF17 /* RCloudMessage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = RCloudMessage.entitlements; path = RCloudMessage/RCloudMessage.entitlements; sourceTree = SOURCE_ROOT; };
 		A6BD04171B1EEA6B00ACAF17 /* RongIMLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongIMLib.framework; path = framework/RongIMLib.framework; sourceTree = SOURCE_ROOT; };
 		A6CF8A341BD4CB6E00F3EA1A /* RCConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = RCConfig.plist; path = framework/RCConfig.plist; sourceTree = SOURCE_ROOT; };
-		A6EF9B991D0E683200785C27 /* rongcloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rongcloud.png; sourceTree = SOURCE_ROOT; };
 		A6EFAB9E1BB0ED94007E9D67 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		A6EFABA21BB0EDD7007E9D67 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
@@ -841,8 +839,6 @@
 				46E17CC31B0EC32A001AC57A /* FMDatabaseQueue.m */,
 				46E17CC51B0EC32A001AC57A /* FMResultSet.h */,
 				46E17CC61B0EC32A001AC57A /* FMResultSet.m */,
-				46E17CB91B0EC294001AC57A /* DBHelper.h */,
-				46E17CBA1B0EC294001AC57A /* DBHelper.m */,
 			);
 			name = DB;
 			sourceTree = "<group>";
@@ -892,6 +888,8 @@
 				9B447DE41CF82926005D3ED5 /* RCDSquareTableViewController.m */,
 				980235861D227F8100BCB1DD /* RCDPrivacyTableViewController.h */,
 				980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */,
+				98FFECB51D267140001DBB0D /* UITabBar+badge.h */,
+				98FFECB61D267140001DBB0D /* UITabBar+badge.m */,
 			);
 			name = new;
 			sourceTree = "<group>";
@@ -1392,7 +1390,6 @@
 		E4D40F2B1A031F460045097C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A6EF9B991D0E683200785C27 /* rongcloud.png */,
 				E4E939C21AD65D58001E0AC6 /* Info.plist */,
 				A60BAD091CD1ACB9003D2375 /* voip_call.caf */,
 				510624831AD63A9E00348452 /* RongCloudKit.strings */,
@@ -1807,6 +1804,7 @@
 					};
 					E4D40F271A031F460045097C = {
 						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = PUEB48NTQQ;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -1870,7 +1868,6 @@
 				A6CF8A351BD4CB6E00F3EA1A /* RCConfig.plist in Resources */,
 				E7D206121D2A0C22006B6F7F /* RedPacketResource.bundle in Resources */,
 				E4BFAE251A121839007165B1 /* Images.xcassets in Resources */,
-				A6EF9B9A1D0E683200785C27 /* rongcloud.png in Resources */,
 				510624851AD63A9E00348452 /* RongCloudKit.strings in Resources */,
 				A60BAD0A1CD1ACB9003D2375 /* voip_call.caf in Resources */,
 				E7D206251D2A0C3D006B6F7F /* RedpacketCellResource.bundle in Resources */,
@@ -1970,6 +1967,7 @@
 				E4E939CC1AD65E1E001E0AC6 /* UITextFiled+Shake.m in Sources */,
 				9B447DE61CF82926005D3ED5 /* RCDChangePasswordViewController.m in Sources */,
 				E4E9399A1AD65C3B001E0AC6 /* RCDFindPswViewController.m in Sources */,
+				98FFECB71D267140001DBB0D /* UITabBar+badge.m in Sources */,
 				E4E9394F1AD65A95001E0AC6 /* UIImageView+AFNetworking.m in Sources */,
 				A65C1C8F1C7C13F400EBB601 /* RCDCustomerServiceViewController.m in Sources */,
 				A6827BE41B16AC39000B9862 /* AddAppKeyViewController.m in Sources */,
@@ -1978,7 +1976,6 @@
 				E4E939791AD65AEB001E0AC6 /* RCDChatRoomInfo.m in Sources */,
 				E4E939421AD65A95001E0AC6 /* AFHTTPRequestOperation.m in Sources */,
 				E4E9394B1AD65A95001E0AC6 /* AFNetworkActivityIndicatorManager.m in Sources */,
-				46E17CBB1B0EC294001AC57A /* DBHelper.m in Sources */,
 				E4BFAE681A1219FC007165B1 /* RCDChatListViewController.m in Sources */,
 				E4E939691AD65A95001E0AC6 /* SDWebImageDownloaderOperation.m in Sources */,
 				E4E939571AD65A95001E0AC6 /* NSArray+JSONModel.m in Sources */,
@@ -2207,7 +2204,7 @@
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = $APP_PROFILE;
 				VALID_ARCHS = "armv7 armv7s arm64 x86_64 i386";
@@ -2342,7 +2339,7 @@
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = $APP_PROFILE;
 				VALID_ARCHS = "armv7 armv7s arm64 x86_64 i386";
@@ -2622,7 +2619,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s arm64 x86_64 i386";
@@ -2659,7 +2656,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s arm64 x86_64 i386";

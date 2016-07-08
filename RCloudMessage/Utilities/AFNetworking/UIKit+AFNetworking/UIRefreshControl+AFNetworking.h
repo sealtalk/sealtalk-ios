@@ -31,7 +31,10 @@
 @class AFURLConnectionOperation;
 
 /**
- This category adds methods to the UIKit framework's `UIRefreshControl` class. The methods in this category provide support for automatically begining and ending refreshing depending on the loading state of a request operation or session task.
+ This category adds methods to the UIKit framework's `UIRefreshControl` class.
+ The methods in this category provide support for automatically begining and
+ ending refreshing depending on the loading state of a request operation or
+ session task.
  */
 @interface UIRefreshControl (AFNetworking)
 
@@ -41,8 +44,9 @@
 
 /**
  Binds the refreshing state to the state of the specified task.
- 
- @param task The task. If `nil`, automatic updating from any previously specified operation will be disabled.
+
+ @param task The task. If `nil`, automatic updating from any previously
+ specified operation will be disabled.
  */
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
 - (void)setRefreshingWithStateOfTask:(NSURLSessionTask *)task;
@@ -55,7 +59,8 @@
 /**
  Binds the refreshing state to the execution state of the specified operation.
 
- @param operation The operation. If `nil`, automatic updating from any previously specified operation will be disabled.
+ @param operation The operation. If `nil`, automatic updating from any
+ previously specified operation will be disabled.
  */
 - (void)setRefreshingWithStateOfOperation:(AFURLConnectionOperation *)operation;
 

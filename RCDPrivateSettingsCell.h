@@ -10,8 +10,8 @@
 
 @interface RCDPrivateSettingsCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *TitleLabel;
+@property(weak, nonatomic) IBOutlet UILabel *TitleLabel;
 
-@property (weak, nonatomic) IBOutlet UISwitch *SwitchButton;
+@property(weak, nonatomic) IBOutlet UISwitch *SwitchButton;
 
 @end

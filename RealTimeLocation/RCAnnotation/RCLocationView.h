@@ -13,10 +13,10 @@ typedef void (^TapActionBlock)();
 
 @interface RCLocationView : NSObject
 
-@property (nonatomic, copy) NSString *imageurl;
-@property (nonatomic, strong) NSString *userId;
-@property (nonatomic, assign) BOOL isMyLocation;
-@property (nonatomic, readwrite) CLLocationCoordinate2D coordinate;
-@property (nonatomic, copy) TapActionBlock tapBlock;
+@property(nonatomic, copy) NSString *imageurl;
+@property(nonatomic, strong) NSString *userId;
+@property(nonatomic, assign) BOOL isMyLocation;
+@property(nonatomic, readwrite) CLLocationCoordinate2D coordinate;
+@property(nonatomic, copy) TapActionBlock tapBlock;
 
 @end

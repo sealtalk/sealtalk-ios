@@ -7,16 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void(^setDisplayText)(NSString *text);
+typedef void (^setDisplayText)(NSString *text);
 
 @interface RCDUpdateNameViewController : UITableViewController
 
-@property (weak, nonatomic) IBOutlet UITextField *tfName;
+@property(weak, nonatomic) IBOutlet UITextField *tfName;
 
-@property (nonatomic,copy) NSString *targetId;
+@property(nonatomic, copy) NSString *targetId;
 
-@property (nonatomic,copy) NSString *displayText;
+@property(nonatomic, copy) NSString *displayText;
 
-@property (nonatomic,copy) setDisplayText setDisplayTextCompletion;
+@property(nonatomic, copy) setDisplayText setDisplayTextCompletion;
 
 @end

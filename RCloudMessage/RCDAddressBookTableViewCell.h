@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDAddressBookTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *lblName;
-@property (weak, nonatomic) IBOutlet UIImageView *imgvAva;
-@property (weak, nonatomic) IBOutlet UILabel *rightLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *arrow;
-@property (strong, nonatomic) UIButton *acceptBtn;
+@property(weak, nonatomic) IBOutlet UILabel *lblName;
+@property(weak, nonatomic) IBOutlet UIImageView *imgvAva;
+@property(weak, nonatomic) IBOutlet UILabel *rightLabel;
+@property(weak, nonatomic) IBOutlet UIImageView *arrow;
+@property(strong, nonatomic) UIButton *acceptBtn;
 
 @end

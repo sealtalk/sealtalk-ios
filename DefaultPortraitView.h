@@ -10,9 +10,9 @@
 
 @interface DefaultPortraitView : UIView
 
-@property (nonatomic, strong) NSString *firstCharacter;
+@property(nonatomic, strong) NSString *firstCharacter;
 
--(void)setColorAndLabel:(NSString *)userId Nickname:(NSString *)nickname;
+- (void)setColorAndLabel:(NSString *)userId Nickname:(NSString *)nickname;
 
 - (UIImage *)imageFromView;
 

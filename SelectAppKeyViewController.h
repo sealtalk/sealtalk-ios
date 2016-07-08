@@ -7,9 +7,9 @@
 //
 
 //本文件为了切换appkey测试用的，请应用开发者忽略关于本文件的信息。
-#import <UIKit/UIKit.h>
 #import "AppkeyModel.h"
+#import <UIKit/UIKit.h>
 
 @interface SelectAppKeyViewController : UITableViewController
-@property (nonatomic, strong)void (^result)(AppkeyModel *selectedModel);
+@property(nonatomic, strong) void (^result)(AppkeyModel *selectedModel);
 @end

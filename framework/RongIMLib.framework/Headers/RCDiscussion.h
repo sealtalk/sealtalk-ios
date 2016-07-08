@@ -42,28 +42,30 @@
 
 /*!
  讨论组是否开放加人权限
- 
+
  @discussion 是否允许非创建者添加用户，0表示允许，1表示不允许，默认值为0。
  */
 @property(nonatomic, assign) int inviteStatus;
 
 /*!
  讨论组的会话类型（已废弃，请勿使用）
- 
+
  @warning **已废弃，请勿使用。**
  */
-@property(nonatomic, assign) __deprecated_msg("已废弃，请勿使用。") int conversationType;
+@property(nonatomic, assign) __deprecated_msg("已废弃，请勿使用。")
+    int conversationType;
 
 /*!
  讨论组是否允许消息提醒（已废弃，请勿使用）
- 
+
  @warning **已废弃，请勿使用。**
  */
-@property(nonatomic, assign) __deprecated_msg("已废弃，请勿使用。") int pushMessageNotificationStatus;
+@property(nonatomic, assign) __deprecated_msg("已废弃，请勿使用。")
+    int pushMessageNotificationStatus;
 
 /*!
  讨论组初始化方法
- 
+
  @param discussionId                    讨论组ID
  @param discussionName                  讨论组名称
  @param creatorId                       创建者的用户ID

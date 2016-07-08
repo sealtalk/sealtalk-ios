@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import <RongIMLib/RongIMLib.h>
+#import <UIKit/UIKit.h>
 
 @interface RCDUtilities : NSObject
 + (UIImage *)imageNamed:(NSString *)name ofBundle:(NSString *)bundleName;

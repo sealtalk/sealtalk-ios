@@ -13,7 +13,7 @@
 /**
  *  会话数据模型
  */
-@property (strong,nonatomic) RCConversationModel *conversation;
+@property(strong, nonatomic) RCConversationModel *conversation;
 
 @property BOOL needPopToRootView;
 

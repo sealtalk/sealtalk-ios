@@ -10,7 +10,7 @@
 
 @interface RCDDiscussSettingSwitchCell : UITableViewCell
 
-@property (nonatomic,strong) UISwitch *swich;
-@property (nonatomic,strong) UILabel *label;
+@property(nonatomic, strong) UISwitch *swich;
+@property(nonatomic, strong) UILabel *label;
 
 @end

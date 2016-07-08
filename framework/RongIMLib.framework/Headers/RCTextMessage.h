@@ -19,7 +19,7 @@
 
 /*!
  文本消息类
- 
+
  @discussion 文本消息类，此消息会进行存储并计入未读消息数。
  */
 @interface RCTextMessage : RCMessageContent <NSCoding>
@@ -36,7 +36,7 @@
 
 /*!
  初始化文本消息
- 
+
  @param content 文本消息的内容
  @return        文本消息对象
  */

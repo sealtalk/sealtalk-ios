@@ -6,18 +6,16 @@
 //  Copyright (c) 2014年 RongCloud. All rights reserved.
 //
 
-#import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import <RongIMKit/RongIMKit.h>
+#import <UIKit/UIKit.h>
 
 /**
  * 位置选取视图控制器
  */
-@interface RealTimeLocationViewController
-    : UIViewController
+@interface RealTimeLocationViewController : UIViewController
 
-@property (nonatomic, weak)id<RCRealTimeLocationProxy> realTimeLocationProxy;
+@property(nonatomic, weak) id<RCRealTimeLocationProxy> realTimeLocationProxy;
 
 @end
-

@@ -10,7 +10,7 @@
 
 @interface RCDSelectPersonTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *ivSelected;
-@property (weak, nonatomic) IBOutlet UIImageView *ivAva;
-@property (weak, nonatomic) IBOutlet UILabel *lblName;
+@property(weak, nonatomic) IBOutlet UIImageView *ivSelected;
+@property(weak, nonatomic) IBOutlet UIImageView *ivAva;
+@property(weak, nonatomic) IBOutlet UILabel *lblName;
 @end

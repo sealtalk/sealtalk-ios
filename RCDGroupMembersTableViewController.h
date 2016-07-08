@@ -10,6 +10,6 @@
 
 @interface RCDGroupMembersTableViewController : UITableViewController
 
-@property (nonatomic, strong) NSMutableArray *GroupMembers;
+@property(nonatomic, strong) NSMutableArray *GroupMembers;
 
 @end

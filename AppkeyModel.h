@@ -10,7 +10,7 @@
 #import <Foundation/Foundation.h>
 
 @interface AppkeyModel : NSObject
-@property (nonatomic, strong)NSString *appKey;
-@property (nonatomic)int env;
+@property(nonatomic, strong) NSString *appKey;
+@property(nonatomic) int env;
 - (instancetype)initWithKey:(NSString *)appKey env:(int)env;
 @end

@@ -10,13 +10,14 @@
 //  RCPublicServiceMenu.h
 //  Created by litao on 15/4/14.
 
-#import <Foundation/Foundation.h>
 #import "RCPublicServiceMenuItem.h"
+#import <Foundation/Foundation.h>
 
 /*!
  公众服务账号菜单类
- 
- @discussion 公众服务菜单类，其中包含若干数量的菜单项，每个菜单项可能还包含子菜单项。
+
+ @discussion
+ 公众服务菜单类，其中包含若干数量的菜单项，每个菜单项可能还包含子菜单项。
  公众服务菜单的树状结构如下所示：
  Menu -> MenuItem1
          MenuItem2  -> MenuItem2.1
@@ -34,12 +35,12 @@
 
 /*!
  将公众服务菜单下的所有菜单项解码（已废弃，请勿使用）
- 
+
  @param jsonDictionary  公众服务菜单项Json组成的数组
- 
+
  @warning **已废弃，请勿使用。**
  */
 - (void)decodeWithJsonDictionaryArray:(NSArray *)jsonDictionary
-__deprecated_msg("已废弃，请勿使用。");
+    __deprecated_msg("已废弃，请勿使用。");
 
 @end

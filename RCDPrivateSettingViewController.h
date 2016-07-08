@@ -8,6 +8,7 @@
 
 #import "RCDDiscussGroupSettingViewController.h"
 
-@interface RCDPrivateSettingViewController : RCDDiscussGroupSettingViewController
+@interface RCDPrivateSettingViewController
+    : RCDDiscussGroupSettingViewController
 
 @end

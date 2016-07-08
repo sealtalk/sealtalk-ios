@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
+#import "RCWKAppInfoProvider.h"
 #import <Foundation/Foundation.h>
 #import <RongIMLib/RongIMLib.h>
-#import "RCWKAppInfoProvider.h"
 
 @interface RCWKRequestHandler : NSObject
 - (instancetype)initHelperWithUserInfo:(NSDictionary *)userInfo

@@ -20,7 +20,7 @@
 
 /*!
  公众服务图文消息类
- 
+
  @discussion 公众服务图文消息类，此消息会进行存储并计入未读消息数。
  */
 @interface RCPublicServiceRichContentMessage : RCMessageContent

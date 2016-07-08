@@ -12,13 +12,13 @@
 
 #ifndef __RCMessage
 #define __RCMessage
-#import <Foundation/Foundation.h>
-#import "RCStatusDefine.h"
 #import "RCMessageContent.h"
+#import "RCStatusDefine.h"
+#import <Foundation/Foundation.h>
 
 /*!
  消息实体类
- 
+
  @discussion 消息实体类，包含消息的所有属性。
  */
 @interface RCMessage : NSObject <NSCopying, NSCoding>
@@ -35,7 +35,7 @@
 
 /*!
  消息的ID
- 
+
  @discussion 本地存储的消息的唯一值（数据库索引唯一值）
  */
 @property(nonatomic, assign) long messageId;
@@ -87,14 +87,14 @@
 
 /*!
  全局唯一ID
- 
+
  @discussion 服务器消息唯一ID（在同一个Appkey下全局唯一）
  */
 @property(nonatomic, strong) NSString *messageUId;
 
 /*!
  RCMessage初始化方法
- 
+
  @param  conversationType    会话类型
  @param  targetId            目标会话ID
  @param  messageDirection    消息的方向
@@ -109,14 +109,14 @@
 
 /*!
  RCMessage初始化方法（已废弃，请勿使用）
- 
+
  @param jsonData    消息的JSON Dictionary
  @return            消息实体对象
- 
+
  @warning **已废弃，请勿使用。**
  */
 + (instancetype)messageWithJSON:(NSDictionary *)jsonData
-__deprecated_msg("已废弃，请勿使用。");
+    __deprecated_msg("已废弃，请勿使用。");
 
 @end
 #endif

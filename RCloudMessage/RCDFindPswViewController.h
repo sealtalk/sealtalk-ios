@@ -6,8 +6,9 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "RCAnimatedImagesView.h"
-@interface RCDFindPswViewController : UIViewController<RCAnimatedImagesViewDelegate>
+#import <UIKit/UIKit.h>
+@interface RCDFindPswViewController
+    : UIViewController <RCAnimatedImagesViewDelegate>
 
 @end

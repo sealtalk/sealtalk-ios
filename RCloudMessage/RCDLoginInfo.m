@@ -10,16 +10,14 @@
 
 @implementation RCDLoginInfo
 
-+(id)shareLoginInfo
-{
-    static RCDLoginInfo *loginInfo = nil;
-    static dispatch_once_t  predicate;
-    dispatch_once(&predicate,^{
-        loginInfo = [[self alloc] init];
-    });
++ (id)shareLoginInfo {
+  static RCDLoginInfo *loginInfo = nil;
+  static dispatch_once_t predicate;
+  dispatch_once(&predicate, ^{
+    loginInfo = [[self alloc] init];
+  });
 
-    return loginInfo;
+  return loginInfo;
 }
-
 
 @end

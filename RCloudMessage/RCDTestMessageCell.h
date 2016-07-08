@@ -6,8 +6,8 @@
 //  Copyright © 2015年 RongCloud. All rights reserved.
 //
 
-#import <RongIMKit/RongIMKit.h>
 #import "RCDTestMessage.h"
+#import <RongIMKit/RongIMKit.h>
 
 /*!
  测试消息Cell
@@ -26,9 +26,9 @@
 
 /*!
  根据消息内容获取显示的尺寸
- 
+
  @param message 消息内容
- 
+
  @return 显示的View尺寸
  */
 + (CGSize)getBubbleBackgroundViewSize:(RCDTestMessage *)message;

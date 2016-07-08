@@ -15,57 +15,64 @@
 @implementation RCDSettingBaseViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    //默认隐藏顶部视图
-    self.headerHidden = YES;
-    
-    //设置switch状态
-    [self setSwitchState];
-    
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationItem.title = NSLocalizedStringFromTable(@"Setting", @"RongCloudKit", nil); //@"设置";
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 6, 87, 23);
-    UIImageView *backImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
-    backImg.frame = CGRectMake(-10, 0, 22, 22);
-    [backBtn addSubview:backImg];
-    UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 85, 22)];
-    backText.text = NSLocalizedStringFromTable(@"Back", @"RongCloudKit", nil);
-    [backText setBackgroundColor:[UIColor clearColor]];
-    [backText setTextColor:[UIColor whiteColor]];
-    [backBtn addSubview:backText];
-    [backBtn addTarget:self action:@selector(backBarButtonItemClicked:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-    [self.navigationItem setLeftBarButtonItem:leftButton];
+  [super viewDidLoad];
+
+  //默认隐藏顶部视图
+  self.headerHidden = YES;
+
+  //设置switch状态
+  [self setSwitchState];
+
+  self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+  self.navigationItem.title =
+      NSLocalizedStringFromTable(@"Setting", @"RongCloudKit", nil); //@"设置";
+  UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+  backBtn.frame = CGRectMake(0, 6, 87, 23);
+  UIImageView *backImg = [[UIImageView alloc]
+      initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
+  backImg.frame = CGRectMake(-10, 0, 22, 22);
+  [backBtn addSubview:backImg];
+  UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 85, 22)];
+  backText.text = NSLocalizedStringFromTable(@"Back", @"RongCloudKit", nil);
+  [backText setBackgroundColor:[UIColor clearColor]];
+  [backText setTextColor:[UIColor whiteColor]];
+  [backBtn addSubview:backText];
+  [backBtn addTarget:self
+                action:@selector(backBarButtonItemClicked:)
+      forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *leftButton =
+      [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+  [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
 - (void)backBarButtonItemClicked:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+  [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)setSwitchState {
-    
-    //设置新消息通知状态
-    [[RCIMClient sharedRCIMClient] getConversationNotificationStatus:self.conversationType
-                                                            targetId:self.targetId
-                                                             success:^(RCConversationNotificationStatus nStatus) {
-                                                                 
-                                                                 BOOL enableNotification = NO;
-                                                                 if (nStatus == NOTIFY) {
-                                                                     enableNotification = YES;
-                                                                 }
-                                                                 self.switch_newMessageNotify = enableNotification;
-                                                                 
-                                                             }
-                                                               error:^(RCErrorCode status){
-                                                                   
-                                                               }];
-    
-    //设置置顶聊天状态
-    RCConversation *conversation =
-    [[RCIMClient sharedRCIMClient] getConversation:self.conversationType targetId:self.targetId];
-    self.switch_isTop = conversation.isTop;
+
+  //设置新消息通知状态
+  [[RCIMClient sharedRCIMClient]
+      getConversationNotificationStatus:self.conversationType
+      targetId:self.targetId
+      success:^(RCConversationNotificationStatus nStatus) {
+
+        BOOL enableNotification = NO;
+        if (nStatus == NOTIFY) {
+          enableNotification = YES;
+        }
+        self.switch_newMessageNotify = enableNotification;
+
+      }
+      error:^(RCErrorCode status){
+
+      }];
+
+  //设置置顶聊天状态
+  RCConversation *conversation =
+      [[RCIMClient sharedRCIMClient] getConversation:self.conversationType
+                                            targetId:self.targetId];
+  self.switch_isTop = conversation.isTop;
 }
 
 /**
@@ -74,24 +81,25 @@
  *  @param sender sender description
  */
 - (void)onClickNewMessageNotificationSwitch:(id)sender {
-    UISwitch *swch = sender;
-    __weak RCDSettingBaseViewController *weakSelf = self;
-    [[RCIMClient sharedRCIMClient] setConversationNotificationStatus:self.conversationType
-                                                            targetId:self.targetId
-                                                           isBlocked:!swch.on
-                                                             success:^(RCConversationNotificationStatus nStatus) {
-                                                                 BOOL enableNotification = NO;
-                                                                 if (nStatus == NOTIFY) {
-                                                                     enableNotification = YES;
-                                                                 }
-                                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                                     weakSelf.switch_newMessageNotify = enableNotification;
-                                                                 });
-                                                                 
-                                                             }
-                                                               error:^(RCErrorCode status){
-                                                                   
-                                                               }];
+  UISwitch *swch = sender;
+  __weak RCDSettingBaseViewController *weakSelf = self;
+  [[RCIMClient sharedRCIMClient]
+      setConversationNotificationStatus:self.conversationType
+      targetId:self.targetId
+      isBlocked:!swch.on
+      success:^(RCConversationNotificationStatus nStatus) {
+        BOOL enableNotification = NO;
+        if (nStatus == NOTIFY) {
+          enableNotification = YES;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+          weakSelf.switch_newMessageNotify = enableNotification;
+        });
+
+      }
+      error:^(RCErrorCode status){
+
+      }];
 }
 
 /**
@@ -100,27 +108,33 @@
  *  @param sender sender description
  */
 - (void)onClickClearMessageHistory:(id)sender {
-    
-    _clearMsgHistoryActionSheet =
-    [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"IsDeleteHistoryMsg", @"RongCloudKit", nil)
-                                delegate:self
-                       cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"RongCloudKit", nil)
-                  destructiveButtonTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)
-                       otherButtonTitles:nil, nil];
-    [_clearMsgHistoryActionSheet showInView:self.view];
+
+  _clearMsgHistoryActionSheet = [[UIActionSheet alloc]
+               initWithTitle:NSLocalizedStringFromTable(@"IsDeleteHistoryMsg",
+                                                        @"RongCloudKit", nil)
+                    delegate:self
+           cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel",
+                                                        @"RongCloudKit", nil)
+      destructiveButtonTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit",
+                                                        nil)
+           otherButtonTitles:nil, nil];
+  [_clearMsgHistoryActionSheet showInView:self.view];
 }
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        [self clearHistoryMessage];
-    }
+- (void)actionSheet:(UIActionSheet *)actionSheet
+    clickedButtonAtIndex:(NSInteger)buttonIndex {
+  if (buttonIndex == 0) {
+    [self clearHistoryMessage];
+  }
 }
 - (void)clearHistoryMessage {
-    BOOL isClear = [[RCIMClient sharedRCIMClient] clearMessages:self.conversationType targetId:self.targetId];
-    
-    //清除消息之后回调操作，例如reload 会话列表
-    if (self.clearHistoryCompletion) {
-        self.clearHistoryCompletion(isClear);
-    }
+  BOOL isClear =
+      [[RCIMClient sharedRCIMClient] clearMessages:self.conversationType
+                                          targetId:self.targetId];
+
+  //清除消息之后回调操作，例如reload 会话列表
+  if (self.clearHistoryCompletion) {
+    self.clearHistoryCompletion(isClear);
+  }
 }
 
 /**
@@ -129,12 +143,15 @@
  *  @param sender sender description
  */
 - (void)onClickIsTopSwitch:(id)sender {
-    UISwitch *swch = sender;
-    [[RCIMClient sharedRCIMClient] setConversationToTop:self.conversationType targetId:self.targetId isTop:swch.on];
+  UISwitch *swch = sender;
+  [[RCIMClient sharedRCIMClient] setConversationToTop:self.conversationType
+                                             targetId:self.targetId
+                                                isTop:swch.on];
 }
 
 // override
-- (void)settingTableViewHeader:(RCDConversationSettingTableViewHeader *)settingTableViewHeader
+- (void)settingTableViewHeader:
+            (RCDConversationSettingTableViewHeader *)settingTableViewHeader
        indexPathOfSelectedItem:(NSIndexPath *)indexPathOfSelectedItem
             allTheSeletedUsers:(NSArray *)users {
 }

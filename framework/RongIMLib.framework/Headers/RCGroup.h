@@ -34,7 +34,7 @@
 
 /*!
  群组信息的初始化方法
- 
+
  @param groupId         群组ID
  @param groupName       群组名称
  @param portraitUri     群组头像的URL

@@ -11,12 +11,12 @@
 @interface RCDTextFieldValidate : NSObject
 
 //验证手机号码
-+ (BOOL) validateMobile:(NSString *)mobile;
++ (BOOL)validateMobile:(NSString *)mobile;
 
 //验证电子邮箱
-+ (BOOL) validateEmail:(NSString *)email;
++ (BOOL)validateEmail:(NSString *)email;
 
 //验证密码
-+ (BOOL) validatePassword:(NSString *) password;
++ (BOOL)validatePassword:(NSString *)password;
 
 @end

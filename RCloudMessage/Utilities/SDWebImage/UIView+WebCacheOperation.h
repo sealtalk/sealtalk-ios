@@ -6,8 +6,8 @@
  * file that was distributed with this source code.
  */
 
-#import <UIKit/UIKit.h>
 #import "SDWebImageManager.h"
+#import <UIKit/UIKit.h>
 
 @interface UIView (WebCacheOperation)
 
@@ -27,7 +27,8 @@
 - (void)sd_cancelImageLoadOperationWithKey:(NSString *)key;
 
 /**
- *  Just remove the operations corresponding to the current UIView and key without cancelling them
+ *  Just remove the operations corresponding to the current UIView and key
+ * without cancelling them
  *
  *  @param key key for identifying the operations
  */

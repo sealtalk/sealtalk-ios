@@ -11,15 +11,15 @@
 
 @interface RCDAddressBookViewController : UITableViewController
 
-@property (nonatomic, strong) NSArray *keys;
+@property(nonatomic, strong) NSArray *keys;
 
-@property (nonatomic, strong) NSMutableDictionary *allFriends;
+@property(nonatomic, strong) NSMutableDictionary *allFriends;
 
-@property (nonatomic,strong) NSArray *allKeys;
+@property(nonatomic, strong) NSArray *allKeys;
 
-@property (nonatomic,strong) NSArray *seletedUsers;
+@property(nonatomic, strong) NSArray *seletedUsers;
 
-@property (nonatomic,assign) BOOL hideSectionHeader;
+@property(nonatomic, assign) BOOL hideSectionHeader;
 
-@property (nonatomic,assign) BOOL needSyncFriendList;
+@property(nonatomic, assign) BOOL needSyncFriendList;
 @end

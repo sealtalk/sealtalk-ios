@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCDCreateGroupViewController : UIViewController<UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
-@property (weak, nonatomic) IBOutlet UIImageView *GroupPortrait;
-@property (weak, nonatomic) IBOutlet UITextField *GroupName;
-@property (weak, nonatomic) IBOutlet UIButton *DoneBtn;
-@property (strong, nonatomic) NSMutableArray *GroupMemberIdList;
+@interface RCDCreateGroupViewController
+    : UIViewController <UITextFieldDelegate, UIActionSheetDelegate,
+                        UIImagePickerControllerDelegate,
+                        UINavigationControllerDelegate>
+@property(weak, nonatomic) IBOutlet UIImageView *GroupPortrait;
+@property(weak, nonatomic) IBOutlet UITextField *GroupName;
+@property(weak, nonatomic) IBOutlet UIButton *DoneBtn;
+@property(strong, nonatomic) NSMutableArray *GroupMemberIdList;
 - (IBAction)ClickDoneBtn:(id)sender;
 
 @end

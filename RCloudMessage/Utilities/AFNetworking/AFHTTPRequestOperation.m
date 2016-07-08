@@ -23,37 +23,39 @@
 #import "AFHTTPRequestOperation.h"
 
 static dispatch_queue_t http_request_operation_processing_queue() {
-    static dispatch_queue_t af_http_request_operation_processing_queue;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        af_http_request_operation_processing_queue = dispatch_queue_create("com.alamofire.networking.http-request.processing", DISPATCH_QUEUE_CONCURRENT);
-    });
+  static dispatch_queue_t af_http_request_operation_processing_queue;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    af_http_request_operation_processing_queue = dispatch_queue_create(
+        "com.alamofire.networking.http-request.processing",
+        DISPATCH_QUEUE_CONCURRENT);
+  });
 
-    return af_http_request_operation_processing_queue;
+  return af_http_request_operation_processing_queue;
 }
 
 static dispatch_group_t http_request_operation_completion_group() {
-    static dispatch_group_t af_http_request_operation_completion_group;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        af_http_request_operation_completion_group = dispatch_group_create();
-    });
+  static dispatch_group_t af_http_request_operation_completion_group;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    af_http_request_operation_completion_group = dispatch_group_create();
+  });
 
-    return af_http_request_operation_completion_group;
+  return af_http_request_operation_completion_group;
 }
 
 #pragma mark -
 
 @interface AFURLConnectionOperation ()
-@property (readwrite, nonatomic, strong) NSURLRequest *request;
-@property (readwrite, nonatomic, strong) NSURLResponse *response;
+@property(readwrite, nonatomic, strong) NSURLRequest *request;
+@property(readwrite, nonatomic, strong) NSURLResponse *response;
 @end
 
 @interface AFHTTPRequestOperation ()
-@property (readwrite, nonatomic, strong) NSHTTPURLResponse *response;
-@property (readwrite, nonatomic, strong) id responseObject;
-@property (readwrite, nonatomic, strong) NSError *responseSerializationError;
-@property (readwrite, nonatomic, strong) NSRecursiveLock *lock;
+@property(readwrite, nonatomic, strong) NSHTTPURLResponse *response;
+@property(readwrite, nonatomic, strong) id responseObject;
+@property(readwrite, nonatomic, strong) NSError *responseSerializationError;
+@property(readwrite, nonatomic, strong) NSRecursiveLock *lock;
 @end
 
 @implementation AFHTTPRequestOperation
@@ -61,147 +63,171 @@ static dispatch_group_t http_request_operation_completion_group() {
 @dynamic lock;
 
 - (instancetype)initWithRequest:(NSURLRequest *)urlRequest {
-    self = [super initWithRequest:urlRequest];
-    if (!self) {
-        return nil;
-    }
+  self = [super initWithRequest:urlRequest];
+  if (!self) {
+    return nil;
+  }
 
-    self.responseSerializer = [AFHTTPResponseSerializer serializer];
+  self.responseSerializer = [AFHTTPResponseSerializer serializer];
 
-    return self;
+  return self;
 }
 
-- (void)setResponseSerializer:(AFHTTPResponseSerializer <AFURLResponseSerialization> *)responseSerializer {
-    NSParameterAssert(responseSerializer);
+- (void)setResponseSerializer:
+    (AFHTTPResponseSerializer<AFURLResponseSerialization> *)responseSerializer {
+  NSParameterAssert(responseSerializer);
 
-    [self.lock lock];
-    _responseSerializer = responseSerializer;
-    self.responseObject = nil;
-    self.responseSerializationError = nil;
-    [self.lock unlock];
+  [self.lock lock];
+  _responseSerializer = responseSerializer;
+  self.responseObject = nil;
+  self.responseSerializationError = nil;
+  [self.lock unlock];
 }
 
 - (id)responseObject {
-    [self.lock lock];
-    if (!_responseObject && [self isFinished] && !self.error) {
-        NSError *error = nil;
-        self.responseObject = [self.responseSerializer responseObjectForResponse:self.response data:self.responseData error:&error];
-        if (error) {
-            self.responseSerializationError = error;
-        }
+  [self.lock lock];
+  if (!_responseObject && [self isFinished] && !self.error) {
+    NSError *error = nil;
+    self.responseObject =
+        [self.responseSerializer responseObjectForResponse:self.response
+                                                      data:self.responseData
+                                                     error:&error];
+    if (error) {
+      self.responseSerializationError = error;
     }
-    [self.lock unlock];
+  }
+  [self.lock unlock];
 
-    return _responseObject;
+  return _responseObject;
 }
 
 - (NSError *)error {
-    if (_responseSerializationError) {
-        return _responseSerializationError;
-    } else {
-        return [super error];
-    }
+  if (_responseSerializationError) {
+    return _responseSerializationError;
+  } else {
+    return [super error];
+  }
 }
 
 #pragma mark - AFHTTPRequestOperation
 
-- (void)setCompletionBlockWithSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                              failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
-{
-    // completionBlock is manually nilled out in AFURLConnectionOperation to break the retain cycle.
+- (void)
+setCompletionBlockWithSuccess:(void (^)(AFHTTPRequestOperation *operation,
+                                        id responseObject))success
+                      failure:(void (^)(AFHTTPRequestOperation *operation,
+                                        NSError *error))failure {
+// completionBlock is manually nilled out in AFURLConnectionOperation to break
+// the retain cycle.
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
 #pragma clang diagnostic ignored "-Wgnu"
-    self.completionBlock = ^{
-        if (self.completionGroup) {
-            dispatch_group_enter(self.completionGroup);
+  self.completionBlock = ^{
+    if (self.completionGroup) {
+      dispatch_group_enter(self.completionGroup);
+    }
+
+    dispatch_async(http_request_operation_processing_queue(), ^{
+      if (self.error) {
+        if (failure) {
+          dispatch_group_async(
+              self.completionGroup ?: http_request_operation_completion_group(),
+              self.completionQueue ?: dispatch_get_main_queue(), ^{
+                failure(self, self.error);
+              });
         }
+      } else {
+        id responseObject = self.responseObject;
+        if (self.error) {
+          if (failure) {
+            dispatch_group_async(
+                self.completionGroup
+                    ?: http_request_operation_completion_group(),
+                self.completionQueue ?: dispatch_get_main_queue(), ^{
+                  failure(self, self.error);
+                });
+          }
+        } else {
+          if (success) {
+            dispatch_group_async(
+                self.completionGroup
+                    ?: http_request_operation_completion_group(),
+                self.completionQueue ?: dispatch_get_main_queue(), ^{
+                  success(self, responseObject);
+                });
+          }
+        }
+      }
 
-        dispatch_async(http_request_operation_processing_queue(), ^{
-            if (self.error) {
-                if (failure) {
-                    dispatch_group_async(self.completionGroup ?: http_request_operation_completion_group(), self.completionQueue ?: dispatch_get_main_queue(), ^{
-                        failure(self, self.error);
-                    });
-                }
-            } else {
-                id responseObject = self.responseObject;
-                if (self.error) {
-                    if (failure) {
-                        dispatch_group_async(self.completionGroup ?: http_request_operation_completion_group(), self.completionQueue ?: dispatch_get_main_queue(), ^{
-                            failure(self, self.error);
-                        });
-                    }
-                } else {
-                    if (success) {
-                        dispatch_group_async(self.completionGroup ?: http_request_operation_completion_group(), self.completionQueue ?: dispatch_get_main_queue(), ^{
-                            success(self, responseObject);
-                        });
-                    }
-                }
-            }
-
-            if (self.completionGroup) {
-                dispatch_group_leave(self.completionGroup);
-            }
-        });
-    };
+      if (self.completionGroup) {
+        dispatch_group_leave(self.completionGroup);
+      }
+    });
+  };
 #pragma clang diagnostic pop
 }
 
 #pragma mark - AFURLRequestOperation
 
 - (void)pause {
-    [super pause];
+  [super pause];
 
-    u_int64_t offset = 0;
-    if ([self.outputStream propertyForKey:NSStreamFileCurrentOffsetKey]) {
-        offset = [(NSNumber *)[self.outputStream propertyForKey:NSStreamFileCurrentOffsetKey] unsignedLongLongValue];
-    } else {
-        offset = [(NSData *)[self.outputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey] length];
-    }
+  u_int64_t offset = 0;
+  if ([self.outputStream propertyForKey:NSStreamFileCurrentOffsetKey]) {
+    offset = [(NSNumber *)[self.outputStream
+        propertyForKey:NSStreamFileCurrentOffsetKey] unsignedLongLongValue];
+  } else {
+    offset = [(NSData *)[self.outputStream
+        propertyForKey:NSStreamDataWrittenToMemoryStreamKey] length];
+  }
 
-    NSMutableURLRequest *mutableURLRequest = [self.request mutableCopy];
-    if ([self.response respondsToSelector:@selector(allHeaderFields)] && [[self.response allHeaderFields] valueForKey:@"ETag"]) {
-        [mutableURLRequest setValue:[[self.response allHeaderFields] valueForKey:@"ETag"] forHTTPHeaderField:@"If-Range"];
-    }
-    [mutableURLRequest setValue:[NSString stringWithFormat:@"bytes=%llu-", offset] forHTTPHeaderField:@"Range"];
-    self.request = mutableURLRequest;
+  NSMutableURLRequest *mutableURLRequest = [self.request mutableCopy];
+  if ([self.response respondsToSelector:@selector(allHeaderFields)] &&
+      [[self.response allHeaderFields] valueForKey:@"ETag"]) {
+    [mutableURLRequest
+                  setValue:[[self.response allHeaderFields] valueForKey:@"ETag"]
+        forHTTPHeaderField:@"If-Range"];
+  }
+  [mutableURLRequest setValue:[NSString stringWithFormat:@"bytes=%llu-", offset]
+           forHTTPHeaderField:@"Range"];
+  self.request = mutableURLRequest;
 }
 
 #pragma mark - NSSecureCoding
 
 + (BOOL)supportsSecureCoding {
-    return YES;
+  return YES;
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
-    self = [super initWithCoder:decoder];
-    if (!self) {
-        return nil;
-    }
+  self = [super initWithCoder:decoder];
+  if (!self) {
+    return nil;
+  }
 
-    self.responseSerializer = [decoder decodeObjectOfClass:[AFHTTPResponseSerializer class] forKey:NSStringFromSelector(@selector(responseSerializer))];
+  self.responseSerializer = [decoder
+      decodeObjectOfClass:[AFHTTPResponseSerializer class]
+                   forKey:NSStringFromSelector(@selector(responseSerializer))];
 
-    return self;
+  return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    [super encodeWithCoder:coder];
+  [super encodeWithCoder:coder];
 
-    [coder encodeObject:self.responseSerializer forKey:NSStringFromSelector(@selector(responseSerializer))];
+  [coder encodeObject:self.responseSerializer
+               forKey:NSStringFromSelector(@selector(responseSerializer))];
 }
 
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-    AFHTTPRequestOperation *operation = [super copyWithZone:zone];
+  AFHTTPRequestOperation *operation = [super copyWithZone:zone];
 
-    operation.responseSerializer = [self.responseSerializer copyWithZone:zone];
-    operation.completionQueue = self.completionQueue;
-    operation.completionGroup = self.completionGroup;
+  operation.responseSerializer = [self.responseSerializer copyWithZone:zone];
+  operation.completionQueue = self.completionQueue;
+  operation.completionGroup = self.completionGroup;
 
-    return operation;
+  return operation;
 }
 
 @end

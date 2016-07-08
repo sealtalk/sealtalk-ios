@@ -11,14 +11,13 @@
 
 @implementation RCDNavigationBar
 
--(id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self) {
+- (id)initWithCoder:(NSCoder *)aDecoder {
+  self = [super initWithCoder:aDecoder];
+  if (self) {
 
-        [self setBarTintColor:[UIColor colorWithHexString:@"0195ff" alpha:1.0f]];
-    }
-    return self;
+    [self setBarTintColor:[UIColor colorWithHexString:@"0195ff" alpha:1.0f]];
+  }
+  return self;
 }
 
 @end

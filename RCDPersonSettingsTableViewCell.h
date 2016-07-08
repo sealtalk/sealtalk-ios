@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDPersonSettingsTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *TitleLabel;
+@property(weak, nonatomic) IBOutlet UILabel *TitleLabel;
 
-@property (weak, nonatomic) IBOutlet UISwitch *SwitchBtn;
+@property(weak, nonatomic) IBOutlet UISwitch *SwitchBtn;
 
 @end

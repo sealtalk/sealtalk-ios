@@ -9,12 +9,13 @@
 #import "RCDAddressBookViewController.h"
 @class RCDUserInfo;
 
+@interface RCDSelectPersonViewController
+    : RCDAddressBookViewController <UIActionSheetDelegate>
 
-@interface RCDSelectPersonViewController : RCDAddressBookViewController<UIActionSheetDelegate>
+typedef void (^clickDone)(
+    RCDSelectPersonViewController *selectPersonViewController,
+    NSArray *seletedUsers);
 
-typedef void(^clickDone)(RCDSelectPersonViewController *selectPersonViewController, NSArray *seletedUsers);
-
-@property (nonatomic,copy) clickDone clickDoneCompletion;
-
+@property(nonatomic, copy) clickDone clickDoneCompletion;
 
 @end

@@ -6,11 +6,12 @@
 //  Copyright (c) 2014年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import <UIKit/UIKit.h>
 
-int main(int argc, char * argv[]) {
-    @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
-    }
+int main(int argc, char *argv[]) {
+  @autoreleasepool {
+    return UIApplicationMain(argc, argv, nil,
+                             NSStringFromClass([AppDelegate class]));
+  }
 }

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <RongIMKit/RongIMKit.h>
+#import <UIKit/UIKit.h>
 
 @interface RCDFriendInvitationTableViewController : UITableViewController
 /**
@@ -25,5 +25,5 @@
 /**
  * model
  */
-@property (strong,nonatomic) RCConversationModel *conversation;
+@property(strong, nonatomic) RCConversationModel *conversation;
 @end

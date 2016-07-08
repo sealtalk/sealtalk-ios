@@ -10,8 +10,8 @@
 
 @interface RCDSquareTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *ChatroomPortrait;
+@property(weak, nonatomic) IBOutlet UIImageView *ChatroomPortrait;
 
-@property (weak, nonatomic) IBOutlet UILabel *ChatroomName;
+@property(weak, nonatomic) IBOutlet UILabel *ChatroomName;
 
 @end

@@ -19,7 +19,7 @@
 
 /*!
  公众服务账号信息变更消息类
- 
+
  @discussion 公众服务账号信息变更消息类，此消息会进行存储，但不计入未读消息数。
  */
 @interface RCProfileNotificationMessage : RCMessageContent
@@ -41,7 +41,7 @@
 
 /*!
  初始化公众服务账号信息变更消息
- 
+
  @param operation   信息变更的操作名
  @param data        信息变更的数据
  @param extra       信息变更的附加信息

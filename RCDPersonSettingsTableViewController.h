@@ -6,13 +6,14 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <RongIMLib/RongIMLib.h>
+#import <UIKit/UIKit.h>
 
-@interface RCDPersonSettingsTableViewController : UITableViewController<UIActionSheetDelegate>
+@interface RCDPersonSettingsTableViewController
+    : UITableViewController <UIActionSheetDelegate>
 
-@property (nonatomic, strong) NSString *targetId;
+@property(nonatomic, strong) NSString *targetId;
 
-@property (nonatomic, strong) RCUserInfo *user;
+@property(nonatomic, strong) RCUserInfo *user;
 
 @end

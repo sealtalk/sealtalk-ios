@@ -7,10 +7,10 @@
 //
 
 #import "RCDGroupDetailViewController.h"
+#import "RCDChatViewController.h"
 #import "RCDGroupInfo.h"
 #import "RCDHttpTool.h"
 #import "RCDRCIMDataSource.h"
-#import "RCDChatViewController.h"
 
 @interface RCDGroupDetailViewController () <UIActionSheetDelegate>
 
@@ -89,50 +89,53 @@
 
 - (IBAction)joinOrQuitGroup:(id)sender {
   int groupId = [_groupInfo.groupId intValue];
-    NSString *groupName = self.lbGroupName.text;
+  NSString *groupName = self.lbGroupName.text;
   if (!_groupInfo.isJoin) {
 
     [RCDHTTPTOOL
-        joinGroup:groupId
-     withGroupName:groupName
-         complete:^(BOOL isOk) {
-           dispatch_async(dispatch_get_main_queue(), ^{
-             if (isOk) {
-               _groupInfo.isJoin = YES;
-               [RCDDataSource syncGroups];
-               UIImage *image = [UIImage imageNamed:@"group_quit"];
-               image = [image
-                   stretchableImageWithLeftCapWidth:floorf(image.size.width / 2)
-                                       topCapHeight:floorf(image.size.height /
-                                                           2)];
-               [_btJoinOrQuitGroup setTitle:@"删除并退出"
-                                   forState:UIControlStateNormal];
-                 
-               [_btChat setHidden:NO];
-               [self.messageDisTrubleCell setHidden:NO];
-               [self.clearMessageCell setHidden:NO];
-               [self.messageTopCell setHidden:NO];
+            joinGroup:groupId
+        withGroupName:groupName
+             complete:^(BOOL isOk) {
+               dispatch_async(dispatch_get_main_queue(), ^{
+                 if (isOk) {
+                   _groupInfo.isJoin = YES;
+                   [RCDDataSource syncGroups];
+                   UIImage *image = [UIImage imageNamed:@"group_quit"];
+                   image = [image
+                       stretchableImageWithLeftCapWidth:floorf(
+                                                            image.size.width /
+                                                            2)
+                                           topCapHeight:floorf(
+                                                            image.size.height /
+                                                            2)];
+                   [_btJoinOrQuitGroup setTitle:@"删除并退出"
+                                       forState:UIControlStateNormal];
 
-               [_btJoinOrQuitGroup setBackgroundImage:image
-                                             forState:UIControlStateNormal];
-             } else {
-               NSString *msg = @"加入失败";
-               if (_groupInfo.number == _groupInfo.maxNumber)
-                 msg = @"群组人数已满";
+                   [_btChat setHidden:NO];
+                   [self.messageDisTrubleCell setHidden:NO];
+                   [self.clearMessageCell setHidden:NO];
+                   [self.messageTopCell setHidden:NO];
 
-               UIAlertView *alertView =
-                   [[UIAlertView alloc] initWithTitle:nil
-                                              message:msg
-                                             delegate:nil
-                                    cancelButtonTitle:@"确定"
-                                    otherButtonTitles:nil, nil];
-               [alertView show];
+                   [_btJoinOrQuitGroup setBackgroundImage:image
+                                                 forState:UIControlStateNormal];
+                 } else {
+                   NSString *msg = @"加入失败";
+                   if (_groupInfo.number == _groupInfo.maxNumber)
+                     msg = @"群组人数已满";
 
-               [RCDDataSource syncGroups];
-             }
-           });
+                   UIAlertView *alertView =
+                       [[UIAlertView alloc] initWithTitle:nil
+                                                  message:msg
+                                                 delegate:nil
+                                        cancelButtonTitle:@"确定"
+                                        otherButtonTitles:nil, nil];
+                   [alertView show];
 
-         }];
+                   [RCDDataSource syncGroups];
+                 }
+               });
+
+             }];
   } else {
     UIActionSheet *actionSheet =
         [[UIActionSheet alloc] initWithTitle:@"确定退出群组？"

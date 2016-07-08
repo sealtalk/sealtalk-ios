@@ -18,7 +18,6 @@
  *
  *  @return 修改后的图片
  */
-+ (UIImage *)image:(UIImage*)image byScalingToSize:(CGSize)targetSize;
-
++ (UIImage *)image:(UIImage *)image byScalingToSize:(CGSize)targetSize;
 
 @end

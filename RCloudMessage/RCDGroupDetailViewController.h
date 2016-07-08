@@ -10,9 +10,9 @@
 
 #import "RCDGroupInfo.h"
 
-#define  EditNickNameInGroup @"EditNickNameInGroup"
-#define  EditGroupIntroduce @"EditGroupIntroduce"
-#define  EditGroupName @"EditGroupName"
+#define EditNickNameInGroup @"EditNickNameInGroup"
+#define EditGroupIntroduce @"EditGroupIntroduce"
+#define EditGroupName @"EditGroupName"
 /**
  *  定义block
  *
@@ -26,23 +26,23 @@ typedef void (^clearMessageCompletion)(BOOL isSuccess);
  */
 @property(nonatomic, copy) clearMessageCompletion clearHistoryCompletion;
 
-@property (strong, nonatomic) IBOutlet UITableView *tbGroupInfo;
-@property (strong, nonatomic)  RCDGroupInfo *groupInfo;
-@property (weak, nonatomic) IBOutlet UILabel *lbGroupName;
-@property (weak, nonatomic) IBOutlet UIImageView *imgGroupPortait;
-@property (weak, nonatomic) IBOutlet UILabel *lbGroupIntru;
-@property (weak, nonatomic) IBOutlet UILabel *lbGroupNotice;
-@property (weak, nonatomic) IBOutlet UILabel *lbMyNickNameInGroup;
-@property (weak, nonatomic) IBOutlet UILabel *lbNumberInGroup;
-@property (weak, nonatomic) IBOutlet UISwitch *swMessageNotDistrub;
-@property (weak, nonatomic) IBOutlet UISwitch *swConversationTop;
-@property (weak, nonatomic) IBOutlet UIButton *btClearMessage;
-@property (weak, nonatomic) IBOutlet UITableViewCell *messageDisTrubleCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *messageTopCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *clearMessageCell;
+@property(strong, nonatomic) IBOutlet UITableView *tbGroupInfo;
+@property(strong, nonatomic) RCDGroupInfo *groupInfo;
+@property(weak, nonatomic) IBOutlet UILabel *lbGroupName;
+@property(weak, nonatomic) IBOutlet UIImageView *imgGroupPortait;
+@property(weak, nonatomic) IBOutlet UILabel *lbGroupIntru;
+@property(weak, nonatomic) IBOutlet UILabel *lbGroupNotice;
+@property(weak, nonatomic) IBOutlet UILabel *lbMyNickNameInGroup;
+@property(weak, nonatomic) IBOutlet UILabel *lbNumberInGroup;
+@property(weak, nonatomic) IBOutlet UISwitch *swMessageNotDistrub;
+@property(weak, nonatomic) IBOutlet UISwitch *swConversationTop;
+@property(weak, nonatomic) IBOutlet UIButton *btClearMessage;
+@property(weak, nonatomic) IBOutlet UITableViewCell *messageDisTrubleCell;
+@property(weak, nonatomic) IBOutlet UITableViewCell *messageTopCell;
+@property(weak, nonatomic) IBOutlet UITableViewCell *clearMessageCell;
 
-@property (weak, nonatomic) IBOutlet UIButton *btChat;
-@property (weak, nonatomic) IBOutlet UIButton *btJoinOrQuitGroup;
+@property(weak, nonatomic) IBOutlet UIButton *btChat;
+@property(weak, nonatomic) IBOutlet UIButton *btJoinOrQuitGroup;
 - (IBAction)joinOrQuitGroup:(id)sender;
 - (IBAction)beginGroupChat:(id)sender;
 - (IBAction)setIsMessageDistruble:(id)sender;

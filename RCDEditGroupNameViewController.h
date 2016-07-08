@@ -6,13 +6,14 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "RCDGroupInfo.h"
+#import <UIKit/UIKit.h>
 
-@interface RCDEditGroupNameViewController : UIViewController<UITextFieldDelegate>
+@interface RCDEditGroupNameViewController
+    : UIViewController <UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *GroupNameLabel;
+@property(weak, nonatomic) IBOutlet UITextField *GroupNameLabel;
 
-@property (nonatomic, strong) RCDGroupInfo *Group;
+@property(nonatomic, strong) RCDGroupInfo *Group;
 
 @end

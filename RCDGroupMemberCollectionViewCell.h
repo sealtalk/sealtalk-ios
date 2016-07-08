@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDGroupMemberCollectionViewCell : UICollectionViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *PortraitImageView;
-@property (weak, nonatomic) IBOutlet UILabel *NicknameLabel;
-
-
+@property(weak, nonatomic) IBOutlet UIImageView *PortraitImageView;
+@property(weak, nonatomic) IBOutlet UILabel *NicknameLabel;
 
 @end

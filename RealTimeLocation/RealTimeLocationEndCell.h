@@ -25,4 +25,3 @@
 - (void)setDataModel:(RCMessageModel *)model;
 
 @end
-

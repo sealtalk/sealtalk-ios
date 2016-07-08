@@ -21,6 +21,6 @@
 /*!
  加入时间（Unix时间戳，毫秒）
  */
-@property(nonatomic,assign) long long joinTime;
+@property(nonatomic, assign) long long joinTime;
 
 @end

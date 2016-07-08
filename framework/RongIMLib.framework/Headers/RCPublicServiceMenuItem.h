@@ -10,8 +10,8 @@
 //  RCPublicServiceMenuItem.h
 //  Created by litao on 15/4/14.
 
-#import <Foundation/Foundation.h>
 #import "RCStatusDefine.h"
+#import <Foundation/Foundation.h>
 
 /*!
  公众服务的菜单项
@@ -40,20 +40,20 @@
 
 /*!
  菜单中的子菜单
- 
+
  @discussion 子菜单为RCPublicServiceMenuItem的数组
  */
 @property(nonatomic, strong) NSArray *subMenuItems;
 
 /*!
  将菜单项的json数组解码（已废弃，请勿使用）
- 
+
  @param jsonArray   由菜单项原始Json数据组成的数组
  @return            公众服务菜单项RCPublicServiceMenuItem的数组
- 
+
  @warning **已废弃，请勿使用。**
  */
 + (NSArray *)menuItemsFromJsonArray:(NSArray *)jsonArray
-__deprecated_msg("已废弃，请勿使用。");
+    __deprecated_msg("已废弃，请勿使用。");
 
 @end

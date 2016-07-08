@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <RongIMKit/RongIMKit.h>
 #import "RCDSettingBaseViewController.h"
+#import <RongIMKit/RongIMKit.h>
 
 @interface RCDRoomSettingViewController : RCDSettingBaseViewController
 

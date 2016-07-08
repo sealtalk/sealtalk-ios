@@ -10,8 +10,8 @@
 
 @interface RCDContactTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) UIImageView *portraitView;
+@property(nonatomic, strong) UIImageView *portraitView;
 
-@property (nonatomic, strong) UILabel *nicknameLabel;
+@property(nonatomic, strong) UILabel *nicknameLabel;
 
 @end

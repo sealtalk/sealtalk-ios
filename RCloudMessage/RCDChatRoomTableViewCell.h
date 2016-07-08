@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDChatRoomTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *lbChatroom;
-@property (weak, nonatomic) IBOutlet UIImageView *ivChatRoomPortrait;
-@property (weak, nonatomic) IBOutlet UILabel *lbNumber;
-@property (weak, nonatomic) IBOutlet UILabel *lbDescription;
+@property(weak, nonatomic) IBOutlet UILabel *lbChatroom;
+@property(weak, nonatomic) IBOutlet UIImageView *ivChatRoomPortrait;
+@property(weak, nonatomic) IBOutlet UILabel *lbNumber;
+@property(weak, nonatomic) IBOutlet UILabel *lbDescription;
 
 @end

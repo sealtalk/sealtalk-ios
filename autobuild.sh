@@ -66,9 +66,9 @@ elif [ ${ENV_FLAG} == "dev" ]; then
 fi
 
 if [ -n "${MANUAL_DEMO_SERVER_URL}" ]; then
-    sed -i '' -e '/DemoServer/s/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/'$MANUAL_DEMO_SERVER_URL'\/"/g' ./RCloudMessage/AFHttpTool.m
+    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/'$MANUAL_DEMO_SERVER_URL'\/"/g' ./RCloudMessage/AFHttpTool.m
 elif [ ${ENV_FLAG} == "dev" ]; then
-    sed -i '' -e '/DemoServer/s/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/api.hitalk.im\/"/g' ./RCloudMessage/AFHttpTool.m
+    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/api.hitalk.im\/"/g' ./RCloudMessage/AFHttpTool.m
 fi
 
 if [ -n "${MANUAL_NAVI_SERVER_URL}" ]; then
@@ -104,9 +104,9 @@ sed -i '' -e '/UMENG_APPKEY/s/@"563755cbe0f55a5cb300139c"/@"5637263b67e58e772200
 
 if [ ${PROFILE_FLAG} == "dev" ]
 then
-BUILD_APP_PROFILE="d955aaf0-d3bd-4214-aea9-01863861d7b5"
-BUILD_WATCHKIT_EXTENSION_PROFILE="40edf0d8-6941-4d89-b4a6-74372a03e5a7"
-BUILD_WATCHKIT_APP_PROFILE="b7bf6f95-6678-4dbb-8d7c-8621ecaad0f4"
+BUILD_APP_PROFILE="f50d094a-a8b5-42ca-b00f-0e96f9d84a42"
+BUILD_WATCHKIT_EXTENSION_PROFILE="376d0433-3017-40db-9d1f-6c812110674e"
+BUILD_WATCHKIT_APP_PROFILE="82080891-c055-4a61-a536-cbf2b76903bb"
 else
 # Release可以使用Automatic
 BUILD_APP_PROFILE=""

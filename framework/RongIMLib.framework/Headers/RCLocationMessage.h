@@ -10,9 +10,9 @@
 //  RCLocationMessage.h
 //  Created by Heq.Shinoda on 14-6-13.
 
-#import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
 #import "RCMessageContent.h"
+#import <CoreLocation/CoreLocation.h>
+#import <UIKit/UIKit.h>
 
 /*!
  地理位置消息的类型名
@@ -21,7 +21,7 @@
 
 /*!
  地理位置消息类
- 
+
  @discussion 地理位置消息类，此消息会进行存储并计入未读消息数。
  */
 @interface RCLocationMessage : RCMessageContent <NSCoding>
@@ -48,7 +48,7 @@
 
 /*!
  初始化地理位置消息
- 
+
  @param image 地理位置的缩略图
  @param location 地理位置的二维坐标
  @param locationName 地理位置的名称

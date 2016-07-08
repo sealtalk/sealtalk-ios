@@ -6,20 +6,22 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
+#import "RCDGroupInfo.h"
+#import "RCDUserInfo.h"
 #import <Foundation/Foundation.h>
 #import <RongIMKit/RongIMKit.h>
-#import "RCDUserInfo.h"
-#import "RCDGroupInfo.h"
 
 @interface RCDataBaseManager : NSObject
 
-+ (RCDataBaseManager*)shareInstance;
++ (RCDataBaseManager *)shareInstance;
+
+- (void)closeDBForDisconnect;
 
 //存储用户信息
--(void)insertUserToDB:(RCUserInfo*)user;
+- (void)insertUserToDB:(RCUserInfo *)user;
 
 //插入黑名单列表
--(void)insertBlackListToDB:(RCUserInfo*)user;
+- (void)insertBlackListToDB:(RCUserInfo *)user;
 
 //获取黑名单列表
 - (NSArray *)getBlackList;
@@ -28,51 +30,52 @@
 - (void)removeBlackList:(NSString *)userId;
 
 //清空黑名单缓存信息
--(void)clearBlackListData;
+- (void)clearBlackListData;
 
 //从表中获取用户信息
--(RCUserInfo*) getUserByUserId:(NSString*)userId;
+- (RCUserInfo *)getUserByUserId:(NSString *)userId;
 
 //从表中获取所有用户信息
--(NSArray *) getAllUserInfo;
+- (NSArray *)getAllUserInfo;
 
 //存储群组信息
--(void)insertGroupToDB:(RCGroup *)group;
+- (void)insertGroupToDB:(RCGroup *)group;
 
 //从表中获取群组信息
--(RCDGroupInfo*) getGroupByGroupId:(NSString*)groupId;
+- (RCDGroupInfo *)getGroupByGroupId:(NSString *)groupId;
 
 //删除表中的群组信息
--(void)deleteGroupToDB:(NSString *)groupId;
+- (void)deleteGroupToDB:(NSString *)groupId;
 
 //从表中获取所有群组信息
--(NSMutableArray *) getAllGroup;
+- (NSMutableArray *)getAllGroup;
 
 //存储群组成员信息
--(void)insertGroupMemberToDB:(NSMutableArray *)groupMemberList groupId:(NSString *)groupId;
+- (void)insertGroupMemberToDB:(NSMutableArray *)groupMemberList
+                      groupId:(NSString *)groupId;
 
 //从表中获取群组成员信息
--(NSMutableArray *)getGroupMember:(NSString *)groupId;
+- (NSMutableArray *)getGroupMember:(NSString *)groupId;
 
 //存储好友信息
--(void)insertFriendToDB:(RCDUserInfo *)friendInfo;
+- (void)insertFriendToDB:(RCDUserInfo *)friendInfo;
 
 //清空表中的所有的群组信息
--(BOOL)clearGroupfromDB;
+- (BOOL)clearGroupfromDB;
 
 //清空群组缓存数据
--(void)clearGroupsData;
+- (void)clearGroupsData;
 
 //清空好友缓存数据
--(void)clearFriendsData;
+- (void)clearFriendsData;
 
 //从表中获取所有好友信息 //RCUserInfo
--(NSArray *) getAllFriends;
+- (NSArray *)getAllFriends;
 
 //从表中获取某个好友的信息
--(RCDUserInfo *) getFriendInfo:(NSString *)friendId;
+- (RCDUserInfo *)getFriendInfo:(NSString *)friendId;
 
 //删除好友信息
--(void)deleteFriendFromDB:(NSString *)userId;
+- (void)deleteFriendFromDB:(NSString *)userId;
 
 @end

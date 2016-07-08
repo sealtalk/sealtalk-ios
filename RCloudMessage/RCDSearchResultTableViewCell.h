@@ -10,8 +10,7 @@
 
 @interface RCDSearchResultTableViewCell : UITableViewCell
 
-
-@property (nonatomic,strong) UIImageView *ivAva;
-@property (nonatomic,strong) UILabel *lblName;
+@property(nonatomic, strong) UIImageView *ivAva;
+@property(nonatomic, strong) UILabel *lblName;
 
 @end
