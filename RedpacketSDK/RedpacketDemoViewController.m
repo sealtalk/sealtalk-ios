@@ -140,30 +140,31 @@
 {
     RedpacketTakenMessage *message = [RedpacketTakenMessage messageWithRedpacket:redpacket];
     // 抢自己的红包不发消息，只自己显示抢红包消息
-    if (![redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]) {
-        if (NO == self.redpacketControl.converstationInfo.isGroup) {
-            [self sendMessage:message pushContent:nil];
-        }
-        else {
-//            RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
-//                                                               targetId:self.targetId
-//                                                           senderUserId:self.conversation.senderUserId
-//                                                             sendStatus:SentStatus_SENT
-//                                                                content:message];
-//            [self appendAndDisplayMessage:m];
-            
-            // 按照 android 的需求修改发送红包的功能
-            RedpacketTakenOutgoingMessage *m2 = [RedpacketTakenOutgoingMessage messageWithRedpacket:redpacket];
-            [self sendMessage:m2 pushContent:nil];
-        }
-    }
-    else {
+    if ([redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]) {//如果发送者是自己
+
         RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
                                                            targetId:self.targetId
                                                        senderUserId:self.conversation.senderUserId
                                                          sendStatus:SentStatus_SENT
                                                             content:message];
         [self appendAndDisplayMessage:m];
+    }
+    else {
+        if (NO == self.redpacketControl.converstationInfo.isGroup) {//如果是群红包
+            [self sendMessage:message pushContent:nil];
+        }
+        else {
+            //            RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
+            //                                                               targetId:self.targetId
+            //                                                           senderUserId:self.conversation.senderUserId
+            //                                                             sendStatus:SentStatus_SENT
+            //                                                                content:message];
+            //            [self appendAndDisplayMessage:m];
+            
+            // 按照 android 的需求修改发送红包的功能
+            RedpacketTakenOutgoingMessage *m2 = [RedpacketTakenOutgoingMessage messageWithRedpacket:redpacket];
+            [self sendMessage:m2 pushContent:nil];
+        }
     }
 }
 
@@ -198,11 +199,14 @@
                 // 发红包的人可以显示所有被抢红包的消息
                 // 抢红包的人显示自己的消息
             // 过滤掉空消息显示
-            if (![messageContent isMemberOfClass:[RedpacketTakenMessage class]]
-                && ![redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]
+            if (![redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]
                 && ![redpacket.currentUser.userId isEqualToString:redpacket.redpacketReceiver.userId]) {
-                return nil;
+    
+                if ([messageContent isKindOfClass:[RedpacketTakenOutgoingMessage class]]) {
+                    return nil;
+                }
             }
+            
         }
     }
     return message;
