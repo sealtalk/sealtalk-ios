@@ -13,6 +13,7 @@
 #define Redpacket_SubMessage_Font_Size 12
 #define Redpacket_Background_Extra_Height 25
 #define Redpacket_SubMessage_Text NSLocalizedString(@"查看红包", @"查看红包")
+#define Redpacket_SubSpecialMessage_Text NSLocalizedString(@"专属红包", @"专属红包")
 #define Redpacket_Label_Padding 2
 
 @implementation RedpacketMessageCell
@@ -87,6 +88,20 @@
     [self.orgLabel setTextAlignment:NSTextAlignmentLeft];
     [self.bubbleBackgroundView addSubview:self.orgLabel];
 
+    // 设置专属红包文字
+    self.specialLable = [[UILabel alloc] initWithFrame:CGRectZero];
+    frame = CGRectMake(110, 76, 50, 12);
+    self.specialLable.frame = frame;
+    self.specialLable.text = Redpacket_SubSpecialMessage_Text;
+    self.specialLable.font = [UIFont systemFontOfSize:Redpacket_SubMessage_Font_Size];
+    self.specialLable.numberOfLines = 1;
+    self.specialLable.textColor = [UIColor lightGrayColor];
+    self.specialLable.numberOfLines = 1;
+    [self.specialLable setLineBreakMode:NSLineBreakByCharWrapping];
+    [self.specialLable setTextAlignment:NSTextAlignmentLeft];
+    [self.bubbleBackgroundView addSubview:self.specialLable];
+    
+    
     // 设置红包厂商图标
     icon = [RCKitUtility imageNamed:@"redPacket_yunAccount_icon" ofBundle:@"RedpacketCellResource.bundle"];
     self.orgIconView = [[UIImageView alloc] initWithImage:icon];
@@ -135,6 +150,7 @@
     CGRect messageContentViewRect = self.messageContentView.frame;
     
     // 设置红包文字
+    self.specialLable.hidden = (redpacketMessage.redpacket.redpacketType != RedpacketTypeMember);
     if (MessageDirection_RECEIVE == self.messageDirection) {
         messageContentViewRect.size.width = bubbleBackgroundViewSize.width;
         self.messageContentView.frame = messageContentViewRect;

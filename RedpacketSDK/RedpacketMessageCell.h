@@ -15,7 +15,7 @@
 @property(strong, nonatomic) UILabel *orgLabel;
 @property(strong, nonatomic) UIImageView *iconView;
 @property(strong, nonatomic) UIImageView *orgIconView;
-
+@property(strong, nonatomic) UILabel *specialLable;
 @property(nonatomic, strong) UIImageView *bubbleBackgroundView;
 
 /*
