@@ -66,7 +66,7 @@ static NSString *requestUrl = @"https://rpv2.yunzhanghu.com/api/sign?duid=";
 
 - (void)config
 {
-    if(![[YZHRedpacketBridge sharedBridge] isRedpacketTokenExist]) {
+//    if(![[YZHRedpacketBridge sharedBridge] isRedpacketTokenExist]) {
         NSString *userId = [RCIM sharedRCIM].currentUserInfo.userId;
         
         if (userId) {
@@ -86,7 +86,7 @@ static NSString *requestUrl = @"https://rpv2.yunzhanghu.com/api/sign?duid=";
                                                                                   NSLog(@"request redpacket sign failed:%@", error);
                                                                               }] start];
         }
-    }
+//    }
 }
 
 - (RedpacketUserInfo *)redpacketUserInfo
