@@ -605,7 +605,22 @@
                                              withGroupId:group.groupId];
               }];
     }
+  }else if ([message.content isMemberOfClass:[RedpacketTakenOutgoingMessage class]]){
+      
+          RedpacketTakenOutgoingMessage *redpacketMessage = (RedpacketTakenOutgoingMessage *)message.content;
+          RedpacketMessageModel *redpacket = redpacketMessage.redpacket;
+          if(RedpacketMessageTypeTedpacketTakenMessage == redpacket.messageType){
+              // 发红包的人可以显示所有被抢红包的消息
+              // 抢红包的人显示自己的消息
+              // 过滤掉空消息显示
+              if (![redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]
+                  && ![redpacket.currentUser.userId isEqualToString:redpacket.redpacketReceiver.userId]) {
+                  [[RCIMClient sharedRCIMClient] deleteMessages:@[@(message.messageId)]];
+              }
+              
+          }
   }
+  
 }
 
 //设置群组通知消息没有提示音

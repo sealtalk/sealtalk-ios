@@ -154,12 +154,12 @@
             [self sendMessage:message pushContent:nil];
         }
         else {
-            //            RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
-            //                                                               targetId:self.targetId
-            //                                                           senderUserId:self.conversation.senderUserId
-            //                                                             sendStatus:SentStatus_SENT
-            //                                                                content:message];
-            //            [self appendAndDisplayMessage:m];
+//            RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
+//                                                               targetId:self.targetId
+//                                                           senderUserId:self.conversation.senderUserId
+//                                                             sendStatus:SentStatus_SENT
+//                                                                content:message];
+//            [self appendAndDisplayMessage:m];
             
             // 按照 android 的需求修改发送红包的功能
             RedpacketTakenOutgoingMessage *m2 = [RedpacketTakenOutgoingMessage messageWithRedpacket:redpacket];
@@ -199,7 +199,7 @@
                 // 发红包的人可以显示所有被抢红包的消息
                 // 抢红包的人显示自己的消息
             // 过滤掉空消息显示
-            if ([messageContent isMemberOfClass:[RedpacketTakenMessage class]]
+            if ([messageContent isKindOfClass:[RedpacketTakenMessage class]]
                 &&![redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]
                 && ![redpacket.currentUser.userId isEqualToString:redpacket.redpacketReceiver.userId]) {
                 
@@ -207,7 +207,7 @@
             }
             
         }
-    }
+    } 
     return message;
 }
 
@@ -235,7 +235,7 @@
         }
         else if(RedpacketMessageTypeTedpacketTakenMessage == redpacket.messageType
                 // 过滤掉空消息显示
-                && [messageContent isKindOfClass:[RedpacketTakenMessage class]]){
+                && [messageContent isMemberOfClass:[RedpacketTakenMessage class]]){
             RedpacketTakenMessageTipCell *cell = [collectionView
                                       dequeueReusableCellWithReuseIdentifier:YZHRedpacketTakenMessageTypeIdentifier
                                       forIndexPath:indexPath];
