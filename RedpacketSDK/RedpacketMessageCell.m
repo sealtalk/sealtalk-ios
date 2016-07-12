@@ -90,12 +90,12 @@
 
     // 设置专属红包文字
     self.specialLable = [[UILabel alloc] initWithFrame:CGRectZero];
-    frame = CGRectMake(110, 76, 50, 12);
+    frame = CGRectMake(140, 76, 50, 12);
     self.specialLable.frame = frame;
     self.specialLable.text = Redpacket_SubSpecialMessage_Text;
     self.specialLable.font = [UIFont systemFontOfSize:Redpacket_SubMessage_Font_Size];
     self.specialLable.numberOfLines = 1;
-    self.specialLable.textColor = [UIColor lightGrayColor];
+    self.specialLable.textColor = [UIColor redColor];
     self.specialLable.numberOfLines = 1;
     [self.specialLable setLineBreakMode:NSLineBreakByCharWrapping];
     [self.specialLable setTextAlignment:NSTextAlignmentLeft];
@@ -103,15 +103,15 @@
     
     
     // 设置红包厂商图标
-    icon = [RCKitUtility imageNamed:@"redPacket_yunAccount_icon" ofBundle:@"RedpacketCellResource.bundle"];
-    self.orgIconView = [[UIImageView alloc] initWithImage:icon];
-    [self.bubbleBackgroundView addSubview:self.orgIconView];
-    
-
-    CGRect rt = self.orgIconView.frame;
-    rt.origin = CGPointMake(165, 75);
-    rt.size = CGSizeMake(21, 14);
-    self.orgIconView.frame = rt;
+//    icon = [RCKitUtility imageNamed:@"redPacket_yunAccount_icon" ofBundle:@"RedpacketCellResource.bundle"];
+//    self.orgIconView = [[UIImageView alloc] initWithImage:icon];
+//    [self.bubbleBackgroundView addSubview:self.orgIconView];
+//    
+//
+//    CGRect rt = self.orgIconView.frame;
+//    rt.origin = CGPointMake(165, 75);
+//    rt.size = CGSizeMake(21, 14);
+//    self.orgIconView.frame = rt;
 
     [self.statusContentView removeFromSuperview];
     self.statusContentView = nil;

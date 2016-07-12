@@ -199,12 +199,11 @@
                 // 发红包的人可以显示所有被抢红包的消息
                 // 抢红包的人显示自己的消息
             // 过滤掉空消息显示
-            if (![redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]
+            if ([messageContent isMemberOfClass:[RedpacketTakenMessage class]]
+                &&![redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]
                 && ![redpacket.currentUser.userId isEqualToString:redpacket.redpacketReceiver.userId]) {
-    
-                if ([messageContent isKindOfClass:[RedpacketTakenOutgoingMessage class]]) {
-                    return nil;
-                }
+                
+                return nil;
             }
             
         }
@@ -271,7 +270,14 @@
             if ([self.chatSessionInputBarControl.inputTextView isFirstResponder]) {
                 [self.chatSessionInputBarControl.inputTextView resignFirstResponder];
             }
-            [self.redpacketControl redpacketCellTouchedWithMessageModel:((RedpacketMessage *)model.content).redpacket];
+            RedpacketMessageModel * redPacketModel = ((RedpacketMessage *)model.content).redpacket;
+            
+            [[RCDHttpTool shareInstance] getUserInfoByUserID:redPacketModel.toRedpacketReceiver.userId
+                                                  completion:^(RCUserInfo *user) {
+                                                      redPacketModel.toRedpacketReceiver.userNickname = user.name?user.name:user.userId;
+                                                      [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
+                                                  }];
+            
         }
     }
     else {

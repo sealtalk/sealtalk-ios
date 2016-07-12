@@ -13,7 +13,7 @@ static NSString *const RedpacketDictKey = @"redpacket";
 static NSString *const UserDictKey = @"user";
 
 @interface RedpacketMessage ()
-@property (nonatomic, readwrite, copy) RedpacketMessageModel *redpacket;
+
 @end
 
 @implementation RedpacketMessage
@@ -25,7 +25,10 @@ static NSString *const UserDictKey = @"user";
     message.redpacketUserInfo = [RCIMClient sharedRCIMClient].currentUserInfo;
     return message;
 }
+- (void)setRedpacket:(RedpacketMessageModel * _Nonnull)redpacket{
+    _redpacket = redpacket;
 
+}
 // 消息只存储，不计入未读消息
 + (RCMessagePersistent)persistentFlag {
     return (MessagePersistent_ISPERSISTED | MessagePersistent_ISCOUNTED);
@@ -33,7 +36,7 @@ static NSString *const UserDictKey = @"user";
 
 - (NSData *)encode
 {
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:2];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSData *data = nil;
     
     // 先保证是一个正确的红包消息
