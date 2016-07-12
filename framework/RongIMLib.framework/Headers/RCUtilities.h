@@ -62,6 +62,16 @@
                             targetSize:(CGSize)targetSize;
 
 /*!
+ generate thumbnail from image
+ 
+ @param image           image
+ @param targetSize      targetSize
+ 
+ @return                image
+ */
++ (UIImage *)generateThumbnail:(UIImage *)image
+                    targetSize:(CGSize)targetSize;
+/*!
  compressedImageWithMaxDataLength
 
  @param image               image

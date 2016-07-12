@@ -10,7 +10,7 @@
 #import "MBProgressHUD.h"
 #import "RCDMessageNoDisturbSettingController.h"
 #import <RongIMKit/RongIMKit.h>
-
+#import "UIColor+RCColor.h"
 @interface RCDMessageNotifySettingTableViewController ()
 @property(weak, nonatomic) IBOutlet UISwitch *notifySwitch;
 
@@ -58,6 +58,12 @@
   //        [self.notifySwitch setEnabled:NO];
   //    }
   self.navigationItem.title = @"新消息通知";
+    //设置分割线颜色
+    self.tableView.separatorColor =
+    [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
+    }
 }
 
 - (IBAction)onSwitch:(id)sender {

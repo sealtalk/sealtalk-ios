@@ -2,7 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "navigator_btn_back.png",
+      "filename" : "back.png",
       "scale" : "1x"
     },
     {

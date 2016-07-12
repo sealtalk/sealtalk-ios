@@ -28,8 +28,7 @@
 
 - (void)isMyFriendWithUserInfo:(RCDUserInfo *)userInfo
                     completion:(void (^)(BOOL isFriend))completion {
-  [self getFriends:userInfo.userId
-          complete:^(NSMutableArray *result) {
+  [self getFriendscomplete:^(NSMutableArray *result) {
             for (RCDUserInfo *user in result) {
               if ([user.userId isEqualToString:userInfo.userId] && completion &&
                   [@"1" isEqualToString:user.status]) {
@@ -590,12 +589,10 @@
       }];
 }
 
-- (void)getFriends:(NSString *)userId
-          complete:(void (^)(NSMutableArray *))friendList {
+- (void)getFriendscomplete:(void (^)(NSMutableArray *))friendList {
   NSMutableArray *list = [NSMutableArray new];
 
-  [AFHttpTool getFriendListFromServer:userId
-      Success:^(id response) {
+  [AFHttpTool getFriendListFromServerSuccess:^(id response) {
         NSString *code = [NSString stringWithFormat:@"%@", response[@"code"]];
         if (friendList) {
           if ([code isEqualToString:@"200"]) {
@@ -608,7 +605,7 @@
               //                    != 1)
               //                        continue;
               NSDictionary *userDic = dic[@"user"];
-              if (![userDic[@"id"] isEqualToString:userId]) {
+              if (![userDic[@"id"] isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
                 RCDUserInfo *userInfo = [RCDUserInfo new];
                 userInfo.userId = userDic[@"id"];
                 userInfo.name = userDic[@"nickname"];
@@ -974,5 +971,20 @@
       failure:^(NSError *err) {
         failure(err);
       }];
+}
+
+//获取Demo及SDK版本
+- (void)getVersion:(void (^)(NSDictionary *result))block {
+    [AFHttpTool getversionsuccess:^(id response) {
+      if (response) {
+        
+      }
+      
+    } failure:^(NSError *err) {
+      if (err) {
+        
+      }
+      
+    }];
 }
 @end

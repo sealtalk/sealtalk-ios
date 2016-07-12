@@ -220,9 +220,8 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
                 failure:(void (^)(NSError *err))failure;
 
 //获取好友列表
-+ (void)getFriendListFromServer:(NSString *)userId
-                        Success:(void (^)(id))success
-                        failure:(void (^)(NSError *))failure;
++ (void)getFriendListFromServerSuccess:(void (^)(id))success
+                               failure:(void (^)(NSError *))failure;
 
 //按昵称搜素好友
 + (void)searchFriendListByName:(NSString *)name
@@ -280,5 +279,9 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
 + (void)updateName:(NSString *)userName
            success:(void (^)(id response))success
            failure:(void (^)(NSError *err))failure;
+
+//获取demo和sdk的版本
++ (void)getversionsuccess:(void (^)(id response))success
+                  failure:(void (^)(NSError *err))failure;
 
 @end

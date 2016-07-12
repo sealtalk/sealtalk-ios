@@ -239,6 +239,7 @@ MBProgressHUD *hud;
     chat.conversationType = ConversationType_PRIVATE;
     chat.title = user.name;
     chat.needPopToRootView = YES;
+    chat.displayUserNameInCell = NO;
 
     //跳转到会话页面
     dispatch_async(dispatch_get_main_queue(), ^{

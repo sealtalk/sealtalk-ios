@@ -57,8 +57,7 @@
 
 - (void)syncFriendList:(NSString *)userId
               complete:(void (^)(NSMutableArray *friends))completion {
-  [RCDHTTPTOOL getFriends:userId
-                 complete:^(NSMutableArray *result) {
+  [RCDHTTPTOOL getFriendscomplete:^(NSMutableArray *result) {
                    completion(result);
                  }];
 }
@@ -196,8 +195,7 @@
 
 - (void)cacheAllFriends:(void (^)())completion {
   [RCDHTTPTOOL
-      getFriends:[RCIM sharedRCIM].currentUserInfo.userId
-        complete:^(NSMutableArray *result) {
+      getFriendscomplete:^(NSMutableArray *result) {
           dispatch_async(
               dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),
               ^{

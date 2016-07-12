@@ -272,7 +272,16 @@
          selector:@selector(didReceiveMessageNotification:)
              name:RCKitDispatchMessageNotification
            object:nil];
-
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-1.5, 0)  forBarMetrics:UIBarMetricsDefault];
+    UIImage *tmpImage = [UIImage imageNamed:@"back"];
+    
+    CGSize newSize = CGSizeMake(12, 20);
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0f);
+    [tmpImage drawInRect:CGRectMake(2, -2, newSize.width, newSize.height)];
+    UIImage *backButtonImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [[UINavigationBar appearance] setBackIndicatorImage:backButtonImage];
+    [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:backButtonImage];
   //    NSArray *groups = [self getAllGroupInfo];
   //    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:groups];
   //    NSArray *loadedContents = [NSKeyedUnarchiver

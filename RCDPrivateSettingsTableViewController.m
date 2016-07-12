@@ -36,9 +36,32 @@
   // Uncomment the following line to display an Edit button in the navigation
   // bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
+    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    backBtn.frame = CGRectMake(0, 6, 87, 23);
+    UIImageView *backImg = [[UIImageView alloc]
+                            initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
+    backImg.frame = CGRectMake(-6, 4, 10, 17);
+    [backBtn addSubview:backImg];
+    UILabel *backText =
+    [[UILabel alloc] initWithFrame:CGRectMake(9,4, 85, 17)];
+    backText.text = @"返回"; // NSLocalizedStringFromTable(@"Back",
+    // @"RongCloudKit", nil);
+    //   backText.font = [UIFont systemFontOfSize:17];
+    [backText setBackgroundColor:[UIColor clearColor]];
+    [backText setTextColor:[UIColor whiteColor]];
+    [backBtn addSubview:backText];
+    [backBtn addTarget:self
+                action:@selector(leftBarButtonItemPressed:)
+      forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftButton =
+    [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    [self.navigationItem setLeftBarButtonItem:leftButton];
   self.title = @"聊天详情";
   [self startLoadView];
+}
+
+- (void)leftBarButtonItemPressed:(id)sender{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -132,9 +155,9 @@
 
   switch (indexPath.row) {
   case 0: {
-    cell.TitleLabel.text = @"新消息通知";
+    cell.TitleLabel.text = @"消息免打扰";
     cell.SwitchButton.hidden = NO;
-    cell.SwitchButton.on = enableNotification;
+    cell.SwitchButton.on = !enableNotification;
     [cell.SwitchButton removeTarget:self
                              action:@selector(clickIsTopBtn:)
                    forControlEvents:UIControlEventValueChanged];
@@ -372,7 +395,7 @@ preparation before navigation
   [[RCIMClient sharedRCIMClient]
       setConversationNotificationStatus:ConversationType_PRIVATE
       targetId:self.userId
-      isBlocked:!swch.on
+      isBlocked:swch.on
       success:^(RCConversationNotificationStatus nStatus) {
 
       }

@@ -26,23 +26,26 @@
   self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
   self.navigationItem.title =
       NSLocalizedStringFromTable(@"Setting", @"RongCloudKit", nil); //@"设置";
-  UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-  backBtn.frame = CGRectMake(0, 6, 87, 23);
-  UIImageView *backImg = [[UIImageView alloc]
-      initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
-  backImg.frame = CGRectMake(-10, 0, 22, 22);
-  [backBtn addSubview:backImg];
-  UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 85, 22)];
-  backText.text = NSLocalizedStringFromTable(@"Back", @"RongCloudKit", nil);
-  [backText setBackgroundColor:[UIColor clearColor]];
-  [backText setTextColor:[UIColor whiteColor]];
-  [backBtn addSubview:backText];
-  [backBtn addTarget:self
+    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    backBtn.frame = CGRectMake(0, 6, 87, 23);
+    UIImageView *backImg = [[UIImageView alloc]
+                            initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
+    backImg.frame = CGRectMake(-6, 4, 10, 17);
+    [backBtn addSubview:backImg];
+    UILabel *backText =
+    [[UILabel alloc] initWithFrame:CGRectMake(9,4, 85, 17)];
+    backText.text = @"返回"; // NSLocalizedStringFromTable(@"Back",
+    // @"RongCloudKit", nil);
+    //   backText.font = [UIFont systemFontOfSize:17];
+    [backText setBackgroundColor:[UIColor clearColor]];
+    [backText setTextColor:[UIColor whiteColor]];
+    [backBtn addSubview:backText];
+    [backBtn addTarget:self
                 action:@selector(backBarButtonItemClicked:)
       forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *leftButton =
-      [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-  [self.navigationItem setLeftBarButtonItem:leftButton];
+    UIBarButtonItem *leftButton =
+    [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
 - (void)backBarButtonItemClicked:(id)sender {

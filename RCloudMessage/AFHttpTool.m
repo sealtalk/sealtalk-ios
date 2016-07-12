@@ -669,14 +669,12 @@
                         failure:failure];
 }
 
-+ (void)getFriendListFromServer:(NSString *)userId
-                        Success:(void (^)(id))success
++ (void)getFriendListFromServerSuccess:(void (^)(id))success
                         failure:(void (^)(NSError *))failure {
   //获取除自己之外的好友信息
   [AFHttpTool
       requestWihtMethod:RequestMethodTypeGet
-                    url:[NSString stringWithFormat:@"friendship/all?userId=%@",
-                                                   userId]
+                    url:[NSString stringWithFormat:@"friendship/all"]
                  params:nil
                 success:success
                 failure:failure];
@@ -834,5 +832,15 @@
                          }
                         success:success
                         failure:failure];
+}
+
+// get demo and sdk version
++ (void)getversionsuccess:(void (^)(id response))success
+                  failure:(void (^)(NSError *err))failure {
+  [AFHttpTool requestWihtMethod:RequestMethodTypeGet
+   url:@"http://downloads.rongcloud.cn/SealTalk_iOS_Update.html"
+   params:nil
+   success:success
+   failure:failure];
 }
 @end

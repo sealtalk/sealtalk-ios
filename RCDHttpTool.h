@@ -107,8 +107,7 @@
 - (void)getSquareInfoCompletion:(void (^)(NSMutableArray *result))completion;
 
 //获取好友列表
-- (void)getFriends:(NSString *)userId
-          complete:(void (^)(NSMutableArray *))friendList;
+- (void)getFriendscomplete:(void (^)(NSMutableArray *))friendList;
 
 //按昵称搜素好友
 - (void)searchFriendListByName:(NSString *)name
@@ -158,5 +157,7 @@
                  ImageData:(NSData *)image
                    success:(void (^)(NSString *url))success
                    failure:(void (^)(NSError *err))failure;
+
+- (void)getVersion:(void (^)(NSDictionary *result))block;
 
 @end

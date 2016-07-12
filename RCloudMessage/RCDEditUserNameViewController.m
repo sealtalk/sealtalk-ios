@@ -33,8 +33,11 @@
                    });
                  }];
   UIButton *rightBtn =
-      [[UIButton alloc] initWithFrame:CGRectMake(50, 0, 50, 34)];
-  [rightBtn setTitle:@"保存" forState:UIControlStateNormal];
+      [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 34)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(22.5, 0, 50, 34)];
+    label.text = @"保存";
+    [rightBtn addSubview:label];
+    [label setTextColor:[UIColor whiteColor]];
   [rightBtn addTarget:self
                 action:@selector(saveUserName:)
       forControlEvents:UIControlEventTouchUpInside];
@@ -44,7 +47,7 @@
   self.navigationItem.rightBarButtonItem = rightButton;
   self.navigationItem.title = @"昵称修改";
   self.BGView.layer.borderWidth = 0.5;
-  self.BGView.layer.borderColor = [HEXCOLOR(0xdfdfdd) CGColor];
+  self.BGView.layer.borderColor = [HEXCOLOR(0xdfdfdf) CGColor];
 }
 
 - (void)saveUserName:(id)sender {

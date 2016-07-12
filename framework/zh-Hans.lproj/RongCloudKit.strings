@@ -40,8 +40,8 @@
 "Back"="返回";
 "IsDeleteHistoryMsg"="是否删除历史消息？";
 "ConnectionIsNotReachable"="当前网络不可用，请检查你的网络设置";
-"Album"="相册";
-"Photo"="照相";
+"Camera"="拍摄";
+"Photos"="照片";
 "Location"="位置";
 "Audio"="语音通话";
 "Albums"="相册列表";

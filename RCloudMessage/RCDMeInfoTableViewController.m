@@ -45,7 +45,9 @@
   //设置分割线颜色
   self.tableView.separatorColor =
       [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
-
+  if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+      [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
+  }
   self.tabBarController.navigationItem.rightBarButtonItem = nil;
   self.tabBarController.navigationController.navigationBar.tintColor =
       [UIColor whiteColor];

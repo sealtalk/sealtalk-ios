@@ -40,8 +40,8 @@
 "Back"="Back";
 "IsDeleteHistoryMsg"="Do you want to delete history message?";
 "ConnectionIsNotReachable"="Network unavailable,check network";
-"Album"="Album";
-"Photo"="Photo";
+"Camera"="Camera";
+"Photos"="Photos";
 "Location"="Location";
 "Audio"="Audio";
 "Albums"="Albums";

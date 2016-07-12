@@ -92,6 +92,7 @@
   chatViewController.targetId = self.userInfo.userId;
   chatViewController.title = self.userInfo.name;
   chatViewController.needPopToRootView = YES;
+  chatViewController.displayUserNameInCell = NO;
   [self.navigationController pushViewController:chatViewController
                                        animated:YES];
 }

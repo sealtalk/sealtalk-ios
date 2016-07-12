@@ -6,12 +6,12 @@
     },
     {
       "idiom" : "universal",
+      "filename" : "contact_me.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "server_ima_vertical.png"
+      "scale" : "3x"
     }
   ],
   "info" : {

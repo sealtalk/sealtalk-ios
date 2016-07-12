@@ -22,17 +22,18 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   [self notifyUpdateUnreadMessageCount];
-  UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
-  UIImageView *imageView =
-      [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"data"]];
-  imageView.frame = CGRectMake(7, -1, 25, 25);
-  [button addSubview:imageView];
-  [button addTarget:self
-                action:@selector(rightBarButtonItemClicked:)
-      forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *rightBarButton =
-      [[UIBarButtonItem alloc] initWithCustomView:button];
-  self.navigationItem.rightBarButtonItem = rightBarButton;
+    UIButton *button =
+    [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+    UIImageView *imageView =
+    [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"data"]];
+    imageView.frame = CGRectMake(15, 5,16 , 17);
+    [button addSubview:imageView];
+    [button addTarget:self
+               action:@selector(rightBarButtonItemClicked:)
+     forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightBarButton =
+    [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.rightBarButtonItem = rightBarButton;
 }
 
 - (void)rightBarButtonItemClicked:(id)sender {
@@ -167,10 +168,10 @@
     backBtn.frame = CGRectMake(0, 6, 87, 23);
     UIImageView *backImg = [[UIImageView alloc]
         initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
-    backImg.frame = CGRectMake(-10, 0, 22, 22);
+    backImg.frame = CGRectMake(-6, 4, 10, 17);
     [backBtn addSubview:backImg];
     UILabel *backText =
-        [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 85, 22)];
+        [[UILabel alloc] initWithFrame:CGRectMake(9, 4, 85, 17)];
     backText.text = backString; // NSLocalizedStringFromTable(@"Back",
                                 // @"RongCloudKit", nil);
     //   backText.font = [UIFont systemFontOfSize:17];

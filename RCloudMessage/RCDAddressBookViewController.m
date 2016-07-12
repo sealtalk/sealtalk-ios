@@ -17,7 +17,6 @@
 #import "RCDUserInfo.h"
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
-#import "pinyin.h"
 #import <RongIMLib/RongIMLib.h>
 #include <ctype.h>
 
@@ -26,7 +25,6 @@
 //#字符索引对应的user object
 @property(nonatomic, strong) NSMutableArray *tempOtherArr;
 @property(nonatomic, strong) NSMutableArray *friends;
-@property(nonatomic, strong) NSArray *arrayForKey;
 @property(nonatomic, strong) NSMutableDictionary *friendsDic;
 //@property (nonatomic,strong) UILabel *noFriend;
 
@@ -75,16 +73,10 @@ MBProgressHUD *hud;
  *  initial data
  */
 - (void)getAllData {
-  //    _keys =
-  //    @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z",@"#"];
-  //    _allFriends = [NSMutableDictionary new];
-  //    _allKeys = [NSMutableArray new];
   _friends = [NSMutableArray
       arrayWithArray:[[RCDataBaseManager shareInstance] getAllFriends]];
   if ([_friends count] > 0) {
-    //        _noFriend.hidden = YES;
     self.hideSectionHeader = YES;
-    //        _allFriends = [self sortedArrayWithPinYinDic:_friends];
     _friends = [self sortForFreindList:_friends];
     tag = 0;
     [self.tableView reloadData];
@@ -96,90 +88,6 @@ MBProgressHUD *hud;
                            [self getAllData];
                          }];
   }
-  //    if ([_friends count] == 0) {
-  //        _noFriend = [[UILabel alloc] init];
-  //        _noFriend.frame = CGRectMake((self.view.frame.size.width / 2) - 50,
-  //        (self.view.frame.size.height / 2) - 15 -
-  //        self.navigationController.navigationBar.frame.size.height, 100, 30);
-  //        [_noFriend setText:@"暂无好友"];
-  //        [_noFriend setTextColor:[UIColor grayColor]];
-  //        _noFriend.textAlignment = UITextAlignmentCenter;
-  //        _noFriend.hidden = NO;
-  //        [self.view addSubview:_noFriend];
-  ////        return;
-  //    }
-  //    if (_needSyncFriendList == YES) {
-  ////        _noFriend.hidden = YES;
-  //        [RCDDataSource syncFriendList:[RCIM
-  //        sharedRCIM].currentUserInfo.userId complete:^(NSMutableArray *
-  //        result) {
-  //            if (result.count == 0) {
-  //                if (_friends.count < 20) {
-  //                    self.hideSectionHeader = YES;
-  //                }
-  //
-  //                dispatch_async(dispatch_get_global_queue(0, 0), ^{
-  //                    dispatch_async(dispatch_get_main_queue(), ^{
-  //                        _allFriends = [self
-  //                        sortedArrayWithPinYinDic:_friends];
-  //                        tag = 0;
-  //                        [self.tableView reloadData];
-  //
-  //                    });
-  //                });
-  //            }
-  //            _friends=result;
-  //            if (_friends.count < 20) {
-  //                self.hideSectionHeader = YES;
-  //            }
-  //            dispatch_async(dispatch_get_global_queue(0, 0), ^{
-  //                dispatch_async(dispatch_get_main_queue(), ^{
-  //                    _allFriends = [self sortedArrayWithPinYinDic:_friends];
-  //                    tag = 0;
-  //                    [self.tableView reloadData];
-  //                });
-  //            });
-  //
-  //        }];
-  //    }
-  //    else if (_friends==nil||_friends.count<1) {
-  ////        _noFriend.hidden = YES;
-  //        [RCDDataSource syncFriendList:[RCIM
-  //        sharedRCIM].currentUserInfo.userId complete:^(NSMutableArray *
-  //        result) {
-  //            _friends=result;
-  //            if (_friends.count < 20) {
-  //                self.hideSectionHeader = YES;
-  //            }
-  //            dispatch_async(dispatch_get_global_queue(0, 0), ^{
-  //                dispatch_async(dispatch_get_main_queue(), ^{
-  //                     _allFriends = [self sortedArrayWithPinYinDic:_friends];
-  //                    _friendsDic = [[NSMutableDictionary alloc] init];
-  //                    tag = 0;
-  //                    [self.tableView reloadData];
-  //
-  //                });
-  //            });
-  //
-  //        }];
-  //    }
-  //    else
-  //    {
-  ////        _noFriend.hidden = YES;
-  //        if (_friends.count < 20) {
-  //            self.hideSectionHeader = YES;
-  //        }
-  //
-  //        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-  //
-  ////            _allFriends = [self sortedArrayWithPinYinDic:_friends];
-  //            dispatch_async(dispatch_get_main_queue(), ^{
-  //                tag = 0;
-  //                [self.tableView reloadData];
-  //
-  //            });
-  //        });
-  //    }
 }
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
@@ -196,8 +104,6 @@ MBProgressHUD *hud;
   cell.tag = tag + 5000;
   cell.acceptBtn.tag = tag + 10000;
   tag++;
-  //    NSString *key = [_allKeys objectAtIndex:indexPath.section];
-  //    _arrayForKey = [_allFriends objectForKey:key];
 
   RCDUserInfo *user = _friends[indexPath.row];
   [_friendsDic setObject:user
@@ -249,52 +155,18 @@ MBProgressHUD *hud;
 }
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section {
-  //    NSString *key = [_allKeys objectAtIndex:section];
-  //
-  //    NSArray *arr = [_allFriends objectForKey:key];
-
   return [_friends count];
 }
-
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//
-//
-//    return [_allKeys count];
-//
-//}
 
 - (CGFloat)tableView:(UITableView *)tableView
     heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   return 65.f;
 }
 
-////pinyin index
-//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-//
-//    if (self.hideSectionHeader) {
-//        return nil;
-//    }
-//    return _allKeys;
-//
-//}
-
-//- (NSString *)tableView:(UITableView *)tableView
-//titleForHeaderInSection:(NSInteger)section{
-//    if (self.hideSectionHeader) {
-//        return nil;
-//    }
-//
-//    NSString *key = [_allKeys objectAtIndex:section];
-//    return key;
-//
-//}
 
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-  //    NSIndexPath *indexPath = [self.tableView indexPath.];
-  //    NSString *key = [_allKeys objectAtIndex:indexPath.section];
-  //    NSArray *arrayForKey = [_allFriends objectForKey:key];
   RCDUserInfo *user = _friends[indexPath.row];
   if ([user.status intValue] == 10 || [user.status intValue] == 11) {
     return;
@@ -303,100 +175,16 @@ MBProgressHUD *hud;
   userInfo.userId = user.userId;
   userInfo.portraitUri = user.portraitUri;
   userInfo.name = user.name;
-  //
-  //    UIStoryboard *storyboard =
-  //                    [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  //    RCDPersonDetailViewController *detailViewController = [storyboard
-  //    instantiateViewControllerWithIdentifier:@"RCDPersonDetailViewController"];
 
   RCDChatViewController *chatViewController =
       [[RCDChatViewController alloc] init];
   chatViewController.conversationType = ConversationType_PRIVATE;
   chatViewController.targetId = userInfo.userId;
   chatViewController.title = userInfo.name;
+  chatViewController.displayUserNameInCell = NO;
   [self.navigationController pushViewController:chatViewController
                                        animated:YES];
-
-  //    [self.navigationController pushViewController:detailViewController
-  //    animated:YES];
-  //    detailViewController.userInfo = userInfo;
 }
-
-#pragma mark - 拼音排序
-
-/**
- *  汉字转拼音
- *
- *  @param hanZi 汉字
- *
- *  @return 转换后的拼音
- */
-- (NSString *)hanZiToPinYinWithString:(NSString *)hanZi {
-  if (!hanZi)
-    return nil;
-  NSString *pinYinResult = [NSString string];
-  for (int j = 0; j < hanZi.length; j++) {
-    NSString *singlePinyinLetter = [[NSString
-        stringWithFormat:@"%c", pinyinFirstLetter([hanZi characterAtIndex:j])]
-        uppercaseString];
-    pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
-  }
-
-  return pinYinResult;
-}
-
-///**
-// *  根据转换拼音后的字典排序
-// *
-// *  @param pinyinDic 转换后的字典
-// *
-// *  @return 对应排序的字典
-// */
-//-(NSMutableDictionary *) sortedArrayWithPinYinDic:(NSArray *) friends
-//{
-//    if(!friends) return nil;
-//
-//    NSMutableDictionary *returnDic = [NSMutableDictionary new];
-//    _tempOtherArr = [NSMutableArray new];
-//    BOOL isReturn = NO;
-//
-//    for (NSString *key in _keys) {
-//
-//        if ([_tempOtherArr count]) {
-//            isReturn = YES;
-//        }
-//
-//        NSMutableArray *tempArr = [NSMutableArray new];
-//        for (RCDUserInfo *user in friends) {
-//
-//            NSString *pyResult = [self hanZiToPinYinWithString:user.name];
-//            NSString *firstLetter = [pyResult substringToIndex:1];
-//            if ([firstLetter isEqualToString:key]){
-//                [tempArr addObject:user];
-//            }
-//
-//            if(isReturn) continue;
-//            char c = [pyResult characterAtIndex:0];
-//            if (isalpha(c) == 0) {
-//                [_tempOtherArr addObject:user];
-//            }
-//        }
-//        if(![tempArr count]) continue;
-//        [returnDic setObject:tempArr forKey:key];
-//
-//    }
-//    if([_tempOtherArr count])
-//        [returnDic setObject:_tempOtherArr forKey:@"#"];
-//
-//
-//    _allKeys = [[returnDic allKeys]
-//    sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-//
-//        return [obj1 compare:obj2 options:NSNumericSearch];
-//    }];
-//
-//    return returnDic;
-//}
 
 - (void)doAccept:(UIButton *)sender {
   hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -415,9 +203,7 @@ MBProgressHUD *hud;
                         complete:^(BOOL request) {
                           if (request) {
                             [RCDHTTPTOOL
-                                getFriends:[RCIM sharedRCIM]
-                                               .currentUserInfo.userId
-                                  complete:^(NSMutableArray *result) {
+                                getFriendscomplete:^(NSMutableArray *result) {
 
                                     dispatch_async(dispatch_get_main_queue(), ^{
                                       cell.acceptBtn.hidden = YES;
@@ -428,9 +214,7 @@ MBProgressHUD *hud;
                                       [hud hide:YES];
                                     });
                                   }];
-                            [RCDHTTPTOOL getFriends:[RCIM sharedRCIM]
-                                                        .currentUserInfo.userId
-                                           complete:^(NSMutableArray *result){
+                            [RCDHTTPTOOL getFriendscomplete:^(NSMutableArray *result){
 
                                            }];
                           } else {
@@ -453,8 +237,15 @@ MBProgressHUD *hud;
   NSMutableArray *updatedAtList = [NSMutableArray new];
   for (RCDUserInfo *friend in _friends) {
     NSString *key = friend.updatedAt;
-    [tempFrinedsDic setObject:friend forKey:key];
-    [updatedAtList addObject:key];
+    if (key == nil) {
+      NSLog([NSString stringWithFormat:@"%@'s updatedAt is nil",friend.userId],nil);
+      return nil;
+    }
+    else
+    {
+      [tempFrinedsDic setObject:friend forKey:key];
+      [updatedAtList addObject:key];
+    }
   }
   updatedAtList = [self sortForUpdateAt:updatedAtList];
   NSMutableArray *result = [NSMutableArray new];
@@ -514,27 +305,5 @@ MBProgressHUD *hud;
 
   return result;
 }
-
-//跳转到个人详细资料
-//-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-//    NSString *key = [_allKeys objectAtIndex:indexPath.section];
-//    NSArray *arrayForKey = [_allFriends objectForKey:key];
-//    RCDUserInfo *user = arrayForKey[indexPath.row];
-//    if ([user.status intValue] == 10) {
-//        return;
-//    }
-//    RCUserInfo *userInfo = [RCUserInfo new];
-//    userInfo.userId = user.userId;
-//    userInfo.portraitUri = user.portraitUri;
-//    userInfo.name = user.name;
-//
-//
-//    RCDPersonDetailViewController *detailViewController = [segue
-//    destinationViewController];
-//    detailViewController.userInfo = userInfo;
-//
-//}
 
 @end

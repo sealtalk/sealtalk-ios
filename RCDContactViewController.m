@@ -28,6 +28,7 @@
 @property(strong, nonatomic) NSArray *defaultCellsTitle;
 @property(strong, nonatomic) NSArray *defaultCellsPortrait;
 @property (nonatomic, assign) BOOL hasSyncFriendList;
+@property (nonatomic, assign) BOOL isBeginSearch;
 
 @end
 
@@ -57,22 +58,26 @@
   self.defaultCellsTitle = [NSArray
       arrayWithObjects:@"新朋友", @"群组", @"公众号", @"我", nil];
   self.defaultCellsPortrait = [NSArray
-      arrayWithObjects:@"newFriend", @"defaultGroup", @"publicNumber", nil];
+      arrayWithObjects:@"newFriend", @"defaultGroup", @"publicNumber",@"contact_me", nil];
+  
+  self.searchFriendsBar.placeholder = @"搜索";
+  
+  _isBeginSearch = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
 
   [self.searchFriendsBar resignFirstResponder];
-  if ([self.matchFriendList count] > 0) {
-    return;
-  } else {
-    [self sortAndRefreshWithList:[self getAllFriendList]];
-  }
+//  if ([self.matchFriendList count] > 0) {
+//    return;
+//  } else {
+  [self sortAndRefreshWithList:[self getAllFriendList]];
+//  _isBeginSearch = NO;
+//  }
   UIButton *rightBtn =
-      [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 17, 17)];
-  [rightBtn setImage:[UIImage imageNamed:@"add_friend"]
-            forState:UIControlStateNormal];
+      [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 20)];
+  [rightBtn setImage:[UIImage imageNamed:@"add_friend"] forState:UIControlStateNormal];
   [rightBtn addTarget:self
                 action:@selector(pushAddFriend:)
       forControlEvents:UIControlEventTouchUpInside];
@@ -89,6 +94,20 @@
   self.tabBarController.navigationItem.title = @"通讯录";
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+  [super viewWillDisappear:animated];
+  if (_isBeginSearch == YES) {
+    [self sortAndRefreshWithList:[self getAllFriendList]];
+    _isBeginSearch = NO;
+    self.searchFriendsBar.showsCancelButton = NO;
+    [self.searchFriendsBar resignFirstResponder];
+    self.searchFriendsBar.text = @"";
+    [self.matchFriendList removeAllObjects];
+    [self.friendsTabelView setContentOffset:CGPointMake(0,0) animated:NO];
+  }
+}
+
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
@@ -99,7 +118,13 @@
  numberOfRowsInSection:(NSInteger)section {
   NSInteger rows = 0;
   if (section == 0) {
-    rows = 4;
+    if (_isBeginSearch == YES) {
+      rows = 0;
+    }
+    else
+    {
+      rows = 4;
+    }
   } else {
     NSString *letter = [self getFriendClassifiedLetterList][section -1];
     rows = [self.allFriendSectionDic[letter] count];
@@ -133,7 +158,7 @@ titleForHeaderInSection:(NSInteger)section {
 
   if (indexPath.section == 0) {
     cell.nicknameLabel.text = [_defaultCellsTitle objectAtIndex:indexPath.row];
-    if (indexPath.row != 3) {
+
       [cell.portraitView
           setImage:[UIImage
                        imageNamed:[NSString
@@ -141,12 +166,6 @@ titleForHeaderInSection:(NSInteger)section {
                                           @"%@",
                                           [_defaultCellsPortrait
                                               objectAtIndex:indexPath.row]]]];
-    } else {
-      [cell.portraitView
-          sd_setImageWithURL:
-              [NSURL URLWithString:[DEFAULTS stringForKey:@"userPortraitUri"]]
-            placeholderImage:[UIImage imageNamed:@"icon_person"]];
-    }
   } else {
     NSString *letter = [self getFriendClassifiedLetterList][indexPath.section -1];
     NSArray *sectionUserInfoList = self.allFriendSectionDic[letter];
@@ -243,16 +262,12 @@ titleForHeaderInSection:(NSInteger)section {
       break;
     }
   }
-  if ([self.matchFriendList count] > 0) {
-    user = self.matchFriendList[indexPath.row];
-  } else {
     NSString *letter = [self getFriendClassifiedLetterList][indexPath.section -1];
     NSArray *sectionUserInfoList = self.allFriendSectionDic[letter];
     user = sectionUserInfoList[indexPath.row];
     if ([user.status intValue] == 10) {
       return;
     }
-  }
   if (user == nil) {
     return;
   }
@@ -305,9 +320,15 @@ titleForHeaderInSection:(NSInteger)section {
   self.searchFriendsBar.text = @"";
   [self.matchFriendList removeAllObjects];
   [self sortAndRefreshWithList:[self getAllFriendList]];
+  _isBeginSearch = NO;
+  [self.friendsTabelView reloadData];
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+  if (_isBeginSearch == NO) {
+    _isBeginSearch = YES;
+    [self.friendsTabelView reloadData];
+  }
   self.searchFriendsBar.showsCancelButton = YES;
   return YES;
 }

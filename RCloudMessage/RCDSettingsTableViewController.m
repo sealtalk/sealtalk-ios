@@ -11,7 +11,7 @@
 #import "RCDChangePasswordViewController.h"
 #import "RCDLoginViewController.h"
 #import <RongIMLib/RongIMLib.h>
-
+#import "UIColor+RCColor.h"
 @interface RCDSettingsTableViewController () <UIAlertViewDelegate>
 
 @end
@@ -30,6 +30,12 @@
   // self.automaticallyAdjustsScrollViewInsets = false;
   self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
   self.tableView.tableFooterView = [UIView new];
+    //设置分割线颜色
+    self.tableView.separatorColor =
+    [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

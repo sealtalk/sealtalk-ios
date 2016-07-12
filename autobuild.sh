@@ -25,6 +25,9 @@ DEV_FLAG=$PPARAM
 elif [ $PFLAG == "-v" ]
 then
 VER_FLAG=$PPARAM
+elif [ $PFLAG == "-s" ]
+then
+SEALTALK_VER_FLAG=$PPARAM
 elif [ $PFLAG == "-r" ]
 then
 if [ $PPARAM = "dev" ]; then
@@ -122,6 +125,8 @@ sed -i ""  -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\.[0-9]\{1,2\}/'"$VE
 sed -i ""  -e '/CFBundleShortVersionString/{n;s/Stable/'"$RELEASE_FLAG"'/; }' ./RCloudMessage/Info.plist
 sed -i ""  -e '/CFBundleShortVersionString/{n;s/Dev/'"$RELEASE_FLAG"'/; }' ./RCloudMessage/Info.plist
 sed -i ""  -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./RCloudMessage/Info.plist
+
+sed -i ""  -e '/SealTalk Version/{n;s/[0-9]\.[0-9]\.[0-9]\{1,2\}/'"$SEALTALK_VER_FLAG"'/; }' ./RCloudMessage/Info.plist
 
 sed  -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\.[0-9]\{1,2\}/'"$VER_FLAG"'/; }' ./融云\ Demo\ WatchKit\ App/Info.plist
 sed  -i "" -e '/CFBundleShortVersionString/{n;s/Stable/'"$RELEASE_FLAG"'/; }' ./融云\ Demo\ WatchKit\ App/Info.plist

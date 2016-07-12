@@ -16,20 +16,17 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    UIView *myView = [[UIView alloc] initWithFrame:CGRectZero];
-
     _ivAva = [[UIImageView alloc] initWithFrame:CGRectZero];
     _ivAva.clipsToBounds = YES;
     _ivAva.layer.cornerRadius = 5.f;
-    //_ivAva.placeholderImage = IMAGE_BY_NAMED(@"default_portrait_msg");
     [_ivAva setBackgroundColor:[UIColor clearColor]];
-    [myView addSubview:_ivAva];
+    [self.contentView addSubview:_ivAva];
 
     _titleLabel = [UILabel new];
     [_titleLabel setTextColor:[UIColor colorWithHexString:@"0x999999" alpha:1.0]];
     [_titleLabel setFont:[UIFont systemFontOfSize:14]];
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [myView addSubview:_titleLabel];
+    [self.contentView addSubview:_titleLabel];
 
     _btnImg = [[UIButton alloc] initWithFrame:CGRectZero];
     [_btnImg setHidden:YES];
@@ -39,34 +36,11 @@
     [_btnImg addTarget:self
                   action:@selector(deleteItem:)
         forControlEvents:UIControlEventTouchUpInside];
-    [myView addSubview:_btnImg];
+    [self.contentView addSubview:_btnImg];
 
-    [self.contentView addSubview:myView];
-
-    // add contraints
-    [myView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_ivAva setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_titleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_btnImg setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    UIView *tempContentView = self.contentView;
-
-    [self.contentView
-        addConstraints:
-            [NSLayoutConstraint
-                constraintsWithVisualFormat:@"H:|[myView]|"
-                                    options:kNilOptions
-                                    metrics:nil
-                                      views:NSDictionaryOfVariableBindings(
-                                                myView, tempContentView)]];
-    [self.contentView
-        addConstraints:
-            [NSLayoutConstraint
-                constraintsWithVisualFormat:@"V:|[myView]|"
-                                    options:kNilOptions
-                                    metrics:nil
-                                      views:NSDictionaryOfVariableBindings(
-                                                myView, tempContentView)]];
 
     [self.contentView
         addConstraints:
@@ -84,7 +58,7 @@
                                     options:kNilOptions
                                     metrics:nil
                                       views:NSDictionaryOfVariableBindings(
-                                                _titleLabel, myView)]];
+                                                _titleLabel)]];
     [self.contentView
         addConstraints:
             [NSLayoutConstraint

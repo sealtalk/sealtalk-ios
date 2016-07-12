@@ -2,6 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "redpoint.png",
       "scale" : "1x"
     },
     {
@@ -10,8 +11,7 @@
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "server_ima.png"
+      "scale" : "3x"
     }
   ],
   "info" : {

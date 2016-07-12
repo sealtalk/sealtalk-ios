@@ -90,6 +90,7 @@
   conversationVC.conversationType = ConversationType_PRIVATE;
   conversationVC.targetId = self.targetUserInfo.userId;
   conversationVC.title = self.targetUserInfo.name;
+  conversationVC.displayUserNameInCell = NO;
   [self.navigationController pushViewController:conversationVC animated:YES];
 }
 

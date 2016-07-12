@@ -44,7 +44,7 @@
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
   self.tableView.tableFooterView = [UIView new];
-  
+  [self.tableView setSeparatorColor:HEXCOLOR(0xdfdfdf)];
   if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
   }
@@ -144,7 +144,6 @@
   cell.ChatroomPortrait.image = [UIImage
       imageNamed:[NSString
                      stringWithFormat:@"%@", chatroomIcons[indexPath.row]]];
-
   return cell;
 }
 
@@ -152,12 +151,13 @@
         viewForHeaderInSection:(NSInteger)section {
   UIView *sectionHeaderView = [[UIView alloc]
       initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width,
-                               35)];
+                               35.5)];
   sectionHeaderView.backgroundColor = HEXCOLOR(0xf0f0f6);
-  sectionHeaderView.layer.borderColor = [HEXCOLOR(0xdfdfdd) CGColor];
-  sectionHeaderView.layer.borderWidth = 0.5;
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 35.5-0.5, [[UIScreen mainScreen] bounds].size.width, 0.5)];
+    line.backgroundColor = HEXCOLOR(0xdfdfdf);
+    [sectionHeaderView addSubview:line];
 
-  UILabel *Title = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 200, 20)];
+  UILabel *Title = [[UILabel alloc] initWithFrame:CGRectMake(9, (35.5-20)/2.0, 200, 20)];
   [Title setTextColor:HEXCOLOR(0x000000)];
   [Title setFont:[UIFont systemFontOfSize:16.f]];
 
@@ -166,11 +166,9 @@
   case 0:
     Title.text = @"聊天室";
     break;
-
   default:
     break;
   }
-
   return sectionHeaderView;
 }
 
@@ -179,7 +177,7 @@
   CGFloat height;
   switch (indexPath.section) {
   case 0:
-    height = 68;
+    height = 68.5;
     break;
 
   default:
