@@ -66,27 +66,24 @@ static NSString *requestUrl = @"https://rpv2.yunzhanghu.com/api/sign?duid=";
 
 - (void)config
 {
-//    if(![[YZHRedpacketBridge sharedBridge] isRedpacketTokenExist]) {
-        NSString *userId = [RCIM sharedRCIM].currentUserInfo.userId;
+    NSString *userId = [RCIM sharedRCIM].currentUserInfo.userId;
+    if(userId && [[YZHRedpacketBridge sharedBridge] isNeedUpdateSignWithUserId:userId]) {
         
-        if (userId) {
-            
-            // 获取应用自己的签名字段。实际应用中需要开发者自行提供相应在的签名计算服务
-            
-            NSString *urlStr = [NSString stringWithFormat:@"%@%@",requestUrl, userId];
-            NSURL *url = [NSURL URLWithString:urlStr];
-            NSURLRequest *request = [NSURLRequest requestWithURL:url];
-            
-            [[[AFHTTPRequestOperationManager manager] HTTPRequestOperationWithRequest:request
-                                                                              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                                                  if ([responseObject isKindOfClass:[NSDictionary class]]) {
-                                                                                      [self configWithSignDict:responseObject];
-                                                                                  }
-                                                                              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                                                  NSLog(@"request redpacket sign failed:%@", error);
-                                                                              }] start];
-        }
-//    }
+        // 获取应用自己的签名字段。实际应用中需要开发者自行提供相应在的签名计算服务
+        
+        NSString *urlStr = [NSString stringWithFormat:@"%@%@",requestUrl, userId];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        
+        [[[AFHTTPRequestOperationManager manager] HTTPRequestOperationWithRequest:request
+                                                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                              if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                                                                                  [self configWithSignDict:responseObject];
+                                                                              }
+                                                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                              NSLog(@"request redpacket sign failed:%@", error);
+                                                                          }] start];
+    }
 }
 
 - (RedpacketUserInfo *)redpacketUserInfo

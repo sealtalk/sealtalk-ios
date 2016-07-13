@@ -54,10 +54,11 @@
         // 设置红包插件界面
         UIImage *icon = [UIImage imageNamed:REDPACKET_BUNDLE(@"redpacket_redpacket")];
         assert(icon);
-        [self.pluginBoardView insertItemWithImage:icon
-                                            title:NSLocalizedString(@"红包", @"红包")
-                                          atIndex:0
-                                              tag:REDPACKET_TAG];
+//        [self.pluginBoardView insertItemWithImage:icon
+//                                            title:NSLocalizedString(@"红包", @"红包")
+//                                          atIndex:0
+//                                              tag:REDPACKET_TAG];
+        [self.pluginBoardView insertItemWithImage:icon title:NSLocalizedString(@"红包", @"红包") tag:REDPACKET_TAG];
         // 设置红包功能相关的参数
         self.redpacketControl = [[RedpacketViewControl alloc] init];
         self.redpacketControl.delegate = self;
@@ -235,7 +236,7 @@
         }
         else if(RedpacketMessageTypeTedpacketTakenMessage == redpacket.messageType
                 // 过滤掉空消息显示
-                && [messageContent isMemberOfClass:[RedpacketTakenMessage class]]){
+                && [messageContent isKindOfClass:[RedpacketTakenMessage class]]){
             RedpacketTakenMessageTipCell *cell = [collectionView
                                       dequeueReusableCellWithReuseIdentifier:YZHRedpacketTakenMessageTypeIdentifier
                                       forIndexPath:indexPath];
