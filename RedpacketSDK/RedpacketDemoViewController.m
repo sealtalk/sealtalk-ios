@@ -151,16 +151,16 @@
         [self appendAndDisplayMessage:m];
     }
     else {
-        if (NO == self.redpacketControl.converstationInfo.isGroup) {//如果是群红包
+        if (NO == self.redpacketControl.converstationInfo.isGroup) {//如果不是群红包
             [self sendMessage:message pushContent:nil];
         }
         else {
-//            RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
-//                                                               targetId:self.targetId
-//                                                           senderUserId:self.conversation.senderUserId
-//                                                             sendStatus:SentStatus_SENT
-//                                                                content:message];
-//            [self appendAndDisplayMessage:m];
+            RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
+                                                               targetId:self.targetId
+                                                           senderUserId:self.conversation.senderUserId
+                                                             sendStatus:SentStatus_SENT
+                                                                content:message];
+            [self appendAndDisplayMessage:m];
             
             // 按照 android 的需求修改发送红包的功能
             RedpacketTakenOutgoingMessage *m2 = [RedpacketTakenOutgoingMessage messageWithRedpacket:redpacket];
@@ -196,17 +196,28 @@
     if ([messageContent isKindOfClass:[RedpacketMessage class]]) {
         RedpacketMessage *redpacketMessage = (RedpacketMessage *)messageContent;
         RedpacketMessageModel *redpacket = redpacketMessage.redpacket;
-        if(RedpacketMessageTypeTedpacketTakenMessage == redpacket.messageType){
+        if(RedpacketMessageTypeTedpacketTakenMessage == redpacket.messageType ){            
+            
                 // 发红包的人可以显示所有被抢红包的消息
                 // 抢红包的人显示自己的消息
-            // 过滤掉空消息显示
-            if ([messageContent isKindOfClass:[RedpacketTakenMessage class]]
-                &&![redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]
-                && ![redpacket.currentUser.userId isEqualToString:redpacket.redpacketReceiver.userId]) {
-                
-                return nil;
-            }
+                // 过滤掉空消息显示
             
+           if (![redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]
+                && ![redpacket.currentUser.userId isEqualToString:redpacket.redpacketReceiver.userId]) {
+             
+               return nil;
+           }else if ([redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]){
+               
+               RedpacketTakenMessage *takenMessage = [RedpacketTakenMessage messageWithRedpacket:redpacket];
+               RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:message.conversationType
+                                                                  targetId:message.targetId
+                                                              senderUserId:redpacket.redpacketSender.userId
+                                                                sendStatus:SentStatus_SENT
+                                                                   content:takenMessage];
+               [self appendAndDisplayMessage:m];
+               return nil;
+           
+           }
         }
     } 
     return message;

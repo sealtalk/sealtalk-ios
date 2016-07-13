@@ -606,41 +606,9 @@
               }];
     }
   
-  }if ([message.content isKindOfClass:[RedpacketMessage class]]){
-#warning 红包群透传消息体拦截
-      RedpacketTakenOutgoingMessage *redpacketMessage = (RedpacketTakenOutgoingMessage *)message.content;
-      RedpacketMessageModel *redpacket = redpacketMessage.redpacket;
-      if (redpacket.messageType == RedpacketMessageTypeTedpacketTakenMessage) {
-          if (![redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]
-                    && ![redpacket.currentUser.userId isEqualToString:redpacket.redpacketReceiver.userId]) {
-              [[RCIMClient sharedRCIMClient] deleteMessages:@[@(message.messageId)]];
-              
-          }
-      }
   }
-  
 }
--(BOOL)onRCIMCustomLocalNotification:(RCMessage*)message
-                      withSenderName:(NSString *)senderName{
-#warning 红包群透传消息体拦截
-    if ([message.content isKindOfClass:[RedpacketMessage class]]){
-        RedpacketTakenOutgoingMessage *redpacketMessage = (RedpacketTakenOutgoingMessage *)message.content;
-        RedpacketMessageModel *redpacket = redpacketMessage.redpacket;
-        
-        if(RedpacketMessageTypeTedpacketTakenMessage == redpacket.messageType){
-            // 发红包的人可以显示所有被抢红包的消息
-            // 抢红包的人显示自己的消息
-            // 过滤掉空消息显示
-            if (message.conversationType == ConversationType_PRIVATE) {
-                return YES;
-            }else if (![redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]
-                && ![redpacket.currentUser.userId isEqualToString:redpacket.redpacketReceiver.userId]) {
-                return YES;
-            }
-        }
-    }
-    return NO;
-}
+
 //设置群组通知消息没有提示音
 -(BOOL)onRCIMCustomAlertSound:(RCMessage*)message
 {
