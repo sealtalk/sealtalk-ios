@@ -37,7 +37,7 @@
           placeholderImage:[UIImage imageNamed:@"icon_person"]];
   }
   self.ivAva.layer.masksToBounds = YES;
-  self.ivAva.layer.cornerRadius = 6.f;
+  self.ivAva.layer.cornerRadius = 5.f;
   self.ivAva.contentMode = UIViewContentModeScaleAspectFill;
   NSMutableArray *cacheList = [[NSMutableArray alloc]
       initWithArray:[[RCDataBaseManager shareInstance] getAllFriends]];

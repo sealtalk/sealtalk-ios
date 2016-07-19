@@ -63,7 +63,7 @@
     badgeLabel.frame = CGRectMake(1, 3, 20, 12);
     badgeLabel.text = [NSString stringWithFormat:@"%d",badgeValue];
   }
-  if (badgeValue >= 100 && badgeValue < 999 ) {
+  if (badgeValue >= 100) {
     badgeView.frame = CGRectMake(x, y, 26, 18);//椭圆形
     badgeLabel.frame = CGRectMake(1, 0, 24, 10);
     badgeLabel.text = @"...";

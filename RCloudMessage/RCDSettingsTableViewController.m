@@ -12,6 +12,7 @@
 #import "RCDLoginViewController.h"
 #import <RongIMLib/RongIMLib.h>
 #import "UIColor+RCColor.h"
+#import "RCDMeButton.h"
 @interface RCDSettingsTableViewController () <UIAlertViewDelegate>
 
 @end
@@ -36,6 +37,11 @@
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
         [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
     }
+  
+  RCDMeButton *backBtn = [[RCDMeButton alloc] init];
+  [backBtn addTarget:self action:@selector(cilckBackBtn:) forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+  [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -156,6 +162,11 @@
   self.view.window.rootViewController = navi;
   [[RCIMClient sharedRCIMClient] logout];
   //[[RCIMClient sharedRCIMClient]disconnect:NO];
+}
+
+-(void)cilckBackBtn:(id)sender
+{
+  [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

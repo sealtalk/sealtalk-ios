@@ -787,7 +787,13 @@
     if ([isNeedUpdate isEqualToString:@"YES"]) {
       __weak typeof(self) __weakSelf = self;
       [__weakSelf.tabBarController.tabBar showBadgeOnItemIndex:3];
+      //获取系统当前的时间戳
+      NSDate *dat = [NSDate dateWithTimeIntervalSinceNow:0];
+      NSTimeInterval now = [dat timeIntervalSince1970] * 1000;
+      NSString *timeString = [NSString stringWithFormat:@"%f", now];
+      //为html增加随机数，避免缓存。
       NSString *applist = [result objectForKey:@"applist"];
+      applist = [NSString stringWithFormat:@"%@?%@",applist,timeString];
       finalURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@",applist];
     }
     [[NSUserDefaults standardUserDefaults] setObject:finalURL forKey:@"applistURL"];

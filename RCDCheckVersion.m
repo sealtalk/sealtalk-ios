@@ -8,6 +8,11 @@
 
 #import "RCDCheckVersion.h"
 
+@interface RCDCheckVersion ()
+@property (nonatomic, copy) void (^successBlock)(NSDictionary *result);
+
+@end
+
 @implementation RCDCheckVersion
 {
   NSMutableData *backData;
@@ -15,7 +20,6 @@
   NSString *sdkVersion;
   NSString *sealtalkBuild;
   NSString *applistURL;
-  void (^successBlock)(NSDictionary *result);
 }
 
 + (RCDCheckVersion *)shareInstance {
@@ -42,17 +46,24 @@
   {
     result = [NSDictionary dictionaryWithObjectsAndKeys:@"NO",@"isNeedUpdate", nil];
   }
-  successBlock(result);
-  successBlock = nil;
+  if (self.successBlock) {
+    self.successBlock(result);
+    self.successBlock = nil;
+  }
 }
 
 -(void)startCheckSuccess:(void (^)(NSDictionary *result))success
 {
-  NSString * URLString = @"http://downloads.rongcloud.cn/SealTalk_iOS_Update.html";
+  //获取系统当前的时间戳
+  NSDate *dat = [NSDate dateWithTimeIntervalSinceNow:0];
+  NSTimeInterval now = [dat timeIntervalSince1970] * 1000;
+  NSString *timeString = [NSString stringWithFormat:@"%f", now];
+  //为html增加随机数，避免缓存。
+  NSString * URLString = [NSString stringWithFormat:@"http://downloads.rongcloud.cn/SealTalk_iOS_Update.html?%@",timeString];
   NSURL * URL = [NSURL URLWithString:[URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
   
   NSURLRequest * request = [[NSURLRequest alloc]initWithURL:URL];
-  successBlock = success;
+  self.successBlock = success;
   connection = [[NSURLConnection alloc]initWithRequest:request delegate:self];
 }
 

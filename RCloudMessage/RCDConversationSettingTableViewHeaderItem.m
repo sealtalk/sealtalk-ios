@@ -63,7 +63,7 @@
         addConstraints:
             [NSLayoutConstraint
                 constraintsWithVisualFormat:
-                    @"V:|[_ivAva(55)]-10-[_titleLabel(==15)]"
+                    @"V:|[_ivAva(55)]-9-[_titleLabel(==15)]"
                                     options:kNilOptions
                                     metrics:nil
                                       views:NSDictionaryOfVariableBindings(

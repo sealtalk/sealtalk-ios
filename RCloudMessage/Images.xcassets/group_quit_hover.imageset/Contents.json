@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "group_quit_hover.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "btn_red_hover.png",
       "scale" : "2x"
     },
     {

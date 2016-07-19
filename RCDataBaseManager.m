@@ -8,7 +8,6 @@
 
 #import "RCDataBaseManager.h"
 #import "RCDHttpTool.h"
-#import "RCDLoginInfo.h"
 #import "RCDUserInfo.h"
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"

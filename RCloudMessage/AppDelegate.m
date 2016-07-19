@@ -12,7 +12,6 @@
 #import "MobClick.h"
 #import "RCDCommonDefine.h"
 #import "RCDHttpTool.h"
-#import "RCDLoginInfo.h"
 #import "RCDLoginViewController.h"
 #import "RCDRCIMDataSource.h"
 #import "RCDTestMessage.h"
@@ -85,12 +84,8 @@
   //设置会话列表头像和会话界面头像
 
   [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
-  if (iPhone6Plus) {
-    [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(56, 56);
-  } else {
-    NSLog(@"iPhone6 %d", iPhone6);
-    [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
-  }
+  
+  [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
   //    [RCIM sharedRCIM].portraitImageViewCornerRadius = 10;
   //开启用户信息和群组信息的持久化
   [RCIM sharedRCIM].enablePersistentUserInfoCache = YES;
@@ -533,8 +528,8 @@
     UIAlertView *alert = [[UIAlertView alloc]
             initWithTitle:@"提示"
                   message:
-                      @"您"
-                      @"的帐号在别的设备上登录，您被迫下线！"
+                      @"您的帐号在别的设备上登录，"
+                      @"您被迫下线！"
                  delegate:nil
         cancelButtonTitle:@"知道了"
         otherButtonTitles:nil, nil];

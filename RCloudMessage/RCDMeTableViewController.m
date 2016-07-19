@@ -65,7 +65,7 @@
       [UIColor whiteColor];
 
   self.currentUserPortrait.layer.masksToBounds = YES;
-  self.currentUserPortrait.layer.cornerRadius = 6.0;
+  self.currentUserPortrait.layer.cornerRadius = 5.f;
 
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(setUserPortrait:)
@@ -80,7 +80,7 @@
                                                stringForKey:@"userPortraitUri"]]
         placeholderImage:[UIImage imageNamed:@"icon_person"]];
   
-  self.needUpdateImage.layer.cornerRadius = 6.0f;
+  self.needUpdateImage.layer.cornerRadius = 5.f;
   NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
   if ([isNeedUpdate isEqualToString:@"YES"]) {
     self.needUpdateImage.hidden = NO;
@@ -121,6 +121,8 @@
 - (void)chatWithCustomerService {
   RCDCustomerServiceViewController *chatService =
       [[RCDCustomerServiceViewController alloc] init];
+//#define SERVICE_ID @"KEFU145760441681012" //智齿Test kefu id
+  
 #define SERVICE_ID @"KEFU146001495753714"
   // live800  KEFU146227005669524   live800的客服ID
   // zhichi   KEFU146001495753714   智齿的客服ID

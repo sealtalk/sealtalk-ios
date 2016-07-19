@@ -48,19 +48,39 @@
   self.allFriendSectionDic = [[NSDictionary alloc] init];
   
   self.friendsTabelView.tableFooterView = [UIView new];
-  float colorFloat = 249.f / 255.f;
-  self.friendsTabelView.backgroundColor =
-      [[UIColor alloc] initWithRed:colorFloat
-                             green:colorFloat
-                              blue:colorFloat
-                             alpha:1];
+  self.friendsTabelView.backgroundColor = HEXCOLOR(0xf0f0f6);
+  self.friendsTabelView.separatorColor = HEXCOLOR(0xdfdfdf);
+  
+  self.friendsTabelView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.friendsTabelView.bounds.size.width, 0.01f)];
+  
+  //设置右侧索引
+  self.friendsTabelView.sectionIndexBackgroundColor = [UIColor clearColor];
+  self.friendsTabelView.sectionIndexColor = HEXCOLOR(0x555555);
+  
+  if ([self.friendsTabelView respondsToSelector:@selector(setSeparatorInset:)]) {
+    [self.friendsTabelView setSeparatorInset:UIEdgeInsetsMake(0, 14, 0, 0)];
+  }
+  if ([self.friendsTabelView respondsToSelector:@selector(setLayoutMargins:)]) {
+    [self.friendsTabelView setLayoutMargins:UIEdgeInsetsMake(0, 14, 0, 0)];
+  }
+
+  UIImage* searchBarBg = [self GetImageWithColor:[UIColor clearColor] andHeight:32.0f];
+  //设置顶部搜索栏的背景图片
+  [self.searchFriendsBar setBackgroundImage:searchBarBg];
+  //设置顶部搜索栏的背景色
+  [self.searchFriendsBar setBackgroundColor:HEXCOLOR(0xf0f0f6)];
+  
+  //设置顶部搜索栏输入框的样式
+  UITextField *searchField = [self.searchFriendsBar valueForKey:@"_searchField"];
+  searchField.layer.borderWidth = 0.5f;
+  searchField.layer.borderColor = [HEXCOLOR(0xdfdfdf) CGColor];
+  searchField.layer.cornerRadius = 5.f;
+  self.searchFriendsBar.placeholder = @"搜索";
 
   self.defaultCellsTitle = [NSArray
       arrayWithObjects:@"新朋友", @"群组", @"公众号", @"我", nil];
   self.defaultCellsPortrait = [NSArray
       arrayWithObjects:@"newFriend", @"defaultGroup", @"publicNumber",@"contact_me", nil];
-  
-  self.searchFriendsBar.placeholder = @"搜索";
   
   _isBeginSearch = NO;
 }
@@ -69,12 +89,7 @@
   [super viewWillAppear:animated];
 
   [self.searchFriendsBar resignFirstResponder];
-//  if ([self.matchFriendList count] > 0) {
-//    return;
-//  } else {
   [self sortAndRefreshWithList:[self getAllFriendList]];
-//  _isBeginSearch = NO;
-//  }
   UIButton *rightBtn =
       [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 20)];
   [rightBtn setImage:[UIImage imageNamed:@"add_friend"] forState:UIControlStateNormal];
@@ -136,15 +151,34 @@
   return [self.allFriendSectionDic count] + 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView
-titleForHeaderInSection:(NSInteger)section {
-  NSString *title;
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
   if (section == 0) {
-    title = @"";
-  } else {
-   title = [self getFriendClassifiedLetterList][section -1];
+    return 0;
   }
-  return title;
+  return 21.f;
+}
+
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+  UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
+  view.frame = CGRectMake(0, 0, self.view.frame.size.width, 22);
+  view.backgroundColor = [UIColor clearColor];
+  
+  UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
+  title.frame = CGRectMake(13, 3, 15, 15);
+  title.font = [UIFont systemFontOfSize:15.f];
+  title.textColor = HEXCOLOR(0x999999);
+  
+  [view addSubview:title];
+  
+  if (section == 0) {
+    title.text = nil;
+  } else {
+    title.text = [self getFriendClassifiedLetterList][section -1];
+  }
+  
+  return view;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -192,10 +226,10 @@ titleForHeaderInSection:(NSInteger)section {
     cell.portraitView.layer.cornerRadius = 20.f;
   } else {
     cell.portraitView.layer.masksToBounds = YES;
-    cell.portraitView.layer.cornerRadius = 6.f;
+    cell.portraitView.layer.cornerRadius = 5.f;
   }
   //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  cell.selectionStyle = UITableViewCellSelectionStyleNone;
+  cell.selectionStyle = UITableViewCellSelectionStyleDefault;
   cell.portraitView.contentMode = UIViewContentModeScaleAspectFill;
   cell.nicknameLabel.font = [UIFont systemFontOfSize:15.f];
   return cell;
@@ -203,7 +237,7 @@ titleForHeaderInSection:(NSInteger)section {
 
 - (CGFloat)tableView:(UITableView *)tableView
     heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 70.0;
+  return 55.5;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
@@ -446,6 +480,22 @@ titleForHeaderInSection:(NSInteger)section {
   RCDSearchFriendViewController *searchFirendVC =
   [RCDSearchFriendViewController searchFriendViewController];
   [self.navigationController pushViewController:searchFirendVC animated:YES];
+}
+
+
+- (UIImage*) GetImageWithColor:(UIColor*)color andHeight:(CGFloat)height
+{
+  CGRect r= CGRectMake(0.0f, 0.0f, 1.0f, height);
+  UIGraphicsBeginImageContext(r.size);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  
+  CGContextSetFillColorWithColor(context, [color CGColor]);
+  CGContextFillRect(context, r);
+  
+  UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  
+  return img;
 }
 
 @end

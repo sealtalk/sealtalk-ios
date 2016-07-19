@@ -98,7 +98,7 @@
                                                      image.size.height * 0.2,
                                                      image.size.width * 0.2)];
   } else {
-    messageContentViewRect.size.width = __bubbleSize.width + 4;
+    messageContentViewRect.size.width = __bubbleSize.width;
     messageContentViewRect.size.height = __bubbleSize.height;
     messageContentViewRect.origin.x =
         self.baseContentView.bounds.size.width -

@@ -16,7 +16,7 @@
   if (self) {
     _ivAva = [UIImageView new];
     _ivAva.clipsToBounds = YES;
-    _ivAva.layer.cornerRadius = 8.f;
+    _ivAva.layer.cornerRadius = 5.f;
     _lblName = [UILabel new];
 
     [self addSubview:_ivAva];

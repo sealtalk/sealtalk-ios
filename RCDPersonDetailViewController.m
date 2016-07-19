@@ -45,7 +45,7 @@
     self.ivAva.layer.cornerRadius = 30.f;
   } else {
     self.ivAva.clipsToBounds = YES;
-    self.ivAva.layer.cornerRadius = 6.f;
+    self.ivAva.layer.cornerRadius = 5.f;
   }
   if (self.userInfo.portraitUri.length == 0) {
     DefaultPortraitView *defaultPortrait =

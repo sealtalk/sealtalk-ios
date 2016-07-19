@@ -13,6 +13,7 @@
 #import "RCDUserInfo.h"
 #import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
+#import "SortForTime.h"
 
 @implementation RCDHttpTool
 
@@ -349,17 +350,20 @@
           NSArray *members = response[@"result"];
           for (NSDictionary *memberInfo in members) {
             NSDictionary *tempInfo = memberInfo[@"user"];
-            RCUserInfo *member = [[RCUserInfo alloc] init];
+            RCDUserInfo *member = [[RCDUserInfo alloc] init];
             member.userId = tempInfo[@"id"];
             member.name = tempInfo[@"nickname"];
             member.portraitUri = tempInfo[@"portraitUri"];
+            member.updatedAt = memberInfo[@"createdAt"];
             if (!member.portraitUri || member.portraitUri <= 0) {
               member.portraitUri = [RCDUtilities defaultUserPortrait:member];
             }
             [tempArr addObject:member];
           }
         }
-
+        //按加成员入群组时间的升序排列
+        SortForTime *sort = [[SortForTime alloc] init];
+        tempArr = [sort sortForUpdateAt:tempArr order:NSOrderedDescending];
         if (block) {
           block(tempArr);
         }

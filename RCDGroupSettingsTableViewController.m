@@ -53,6 +53,7 @@
   [super viewDidLoad];
 
   self.tableView.tableFooterView = [UIView new];
+  self.tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
   
   if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
@@ -77,7 +78,6 @@
       }
     }
   }
-
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.frame = CGRectMake(0, 6, 87, 23);
     UIImageView *backImg = [[UIImageView alloc]
@@ -86,9 +86,7 @@
     [backBtn addSubview:backImg];
     UILabel *backText =
     [[UILabel alloc] initWithFrame:CGRectMake(9,4, 85, 17)];
-    backText.text = @"返回"; // NSLocalizedStringFromTable(@"Back",
-    // @"RongCloudKit", nil);
-    //   backText.font = [UIFont systemFontOfSize:17];
+    backText.text = @"返回";
     [backText setBackgroundColor:[UIColor clearColor]];
     [backText setTextColor:[UIColor whiteColor]];
     [backBtn addSubview:backText];
@@ -169,7 +167,7 @@
       [[RCIMClient sharedRCIMClient] getConversation:ConversationType_GROUP
                                             targetId:groupId];
   if (currentConversation.targetId == nil) {
-    numberOfSections = 1;
+    numberOfSections = 2;
     [self.tableView reloadData];
   } else {
     numberOfSections = 3;
@@ -206,7 +204,11 @@
     headerView.frame = CGRectMake(
         0, 0, [UIScreen mainScreen].bounds.size.width,
         headerView.collectionViewLayout.collectionViewContentSize.height);
-    self.tableView.tableHeaderView = headerView;
+    CGRect frame = headerView.frame;
+    frame.size.height += 14;
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:frame];
+    self.tableView.tableHeaderView.backgroundColor = [UIColor whiteColor];
+    [self.tableView.tableHeaderView addSubview:headerView];
   }
   
     [RCDHTTPTOOL
@@ -235,7 +237,11 @@
                                        [UIScreen mainScreen].bounds.size.width,
                                        headerView.collectionViewLayout
                                        .collectionViewContentSize.height);
-         self.tableView.tableHeaderView = headerView;
+         CGRect frame = headerView.frame;
+         frame.size.height += 14;
+         self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:frame];
+         [self.tableView.tableHeaderView addSubview:headerView];
+         self.tableView.tableHeaderView.backgroundColor = [UIColor whiteColor];
          [self.tableView reloadData];
          [[RCDataBaseManager shareInstance]
           insertGroupMemberToDB:result
@@ -262,6 +268,9 @@
   [_btJoinOrQuitGroup addTarget:self
                          action:@selector(btnJOQAction:)
                forControlEvents:UIControlEventTouchUpInside];
+  _btJoinOrQuitGroup.layer.cornerRadius = 5.f;
+  _btJoinOrQuitGroup.layer.borderWidth = 0.5f;
+  _btJoinOrQuitGroup.layer.borderColor = [HEXCOLOR(0xcc4445) CGColor];
   [view addSubview:_btJoinOrQuitGroup];
 
   //解散群组按钮
@@ -277,8 +286,10 @@
   [_btDismissGroup addTarget:self
                       action:@selector(btnDismissAction:)
             forControlEvents:UIControlEventTouchUpInside];
-  _btDismissGroup.layer.cornerRadius = 6.f;
+  _btDismissGroup.layer.cornerRadius = 5.f;
   [_btDismissGroup setHidden:YES];
+  _btDismissGroup.layer.borderWidth = 0.5f;
+  _btDismissGroup.layer.borderColor = [HEXCOLOR(0xcc4445) CGColor];
   [view addSubview:_btDismissGroup];
 
   //自动布局
@@ -293,7 +304,7 @@
     [_btJoinOrQuitGroup setHidden:YES];
     [view
         addConstraints:[NSLayoutConstraint
-                           constraintsWithVisualFormat:@"V:|-30-[_"
+                           constraintsWithVisualFormat:@"V:|-29-[_"
                                                        @"btDismissGroup(42)]"
                                                options:0
                                                metrics:nil
@@ -307,7 +318,7 @@
   } else {
     [view
         addConstraints:[NSLayoutConstraint
-                           constraintsWithVisualFormat:@"V:|-30-[_"
+                           constraintsWithVisualFormat:@"V:|-29-[_"
                                                        @"btJoinOrQuitGroup(42)]"
                                                options:0
                                                metrics:nil
@@ -660,7 +671,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         cell.PortraitImg.layer.cornerRadius = 20.f;
       } else {
         cell.PortraitImg.layer.masksToBounds = YES;
-        cell.PortraitImg.layer.cornerRadius = 6.f;
+        cell.PortraitImg.layer.cornerRadius = 5.f;
       }
       cell.PortraitImg.hidden = NO;
       if ([_Group.portraitUri isEqualToString:@""]) {
@@ -739,7 +750,12 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   if (section == 0) {
     return 0;
   }
-  return 15.f;
+  return 14.f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  return 44.f;
 }
 
 - (void)tableView:(UITableView *)tableView
@@ -747,6 +763,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   if (indexPath.section == 0) {
     RCDGroupMembersTableViewController *GroupMembersVC =
         [[RCDGroupMembersTableViewController alloc] init];
+    GroupMembers = [self moveCreator:GroupMembers];
     GroupMembersVC.GroupMembers = GroupMembers;
     [self.navigationController pushViewController:GroupMembersVC animated:YES];
   }
@@ -804,6 +821,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   return CGSizeMake(width, height);
 }
 
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+  return 12;
+}
+
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section {
@@ -828,6 +850,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
                                                 forIndexPath:indexPath];
   
   if (collectionViewResource.count > 0) {
+    if (indexPath.row == 0) {
+    collectionViewResource = [self moveCreator:collectionViewResource];
+    }
     if (![collectionViewResource[indexPath.row]
             isKindOfClass:[UIImage class]]) {
       RCUserInfo *user = collectionViewResource[indexPath.row];
@@ -897,7 +922,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       return;
     }
   }
-
+  membersInfo = [self moveCreator:membersInfo];
   RCUserInfo *selectedUser = [membersInfo objectAtIndex:indexPath.row];
   BOOL isFriend = NO;
   NSArray *friendList = [[RCDataBaseManager shareInstance] getAllFriends];
@@ -958,15 +983,27 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   [alert show];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little
-preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+//将创建者挪到第一的位置
+-(NSMutableArray *) moveCreator:(NSMutableArray *)GroupMemberList
+{
+  if (GroupMemberList ==nil || GroupMemberList.count == 0) {
+    return nil;
+  }
+  NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:GroupMemberList];
+  int index;
+  RCUserInfo *creator;
+  for (int i = 0; i < [temp count]; i++) {
+    RCUserInfo *user = [temp objectAtIndex:i];
+    
+    if ([creatorId isEqualToString:user.userId]) {
+      index = i;
+      creator = user;
+      break;
+    }
+  }
+  [temp insertObject:creator atIndex:0];
+  [temp removeObjectAtIndex:index+1];
+  return temp;
 }
-*/
 
 @end

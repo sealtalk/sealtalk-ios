@@ -33,7 +33,7 @@
 
     _ivAva = [UIImageView new];
     _ivAva.clipsToBounds = YES;
-    _ivAva.layer.cornerRadius = 6.0f;
+    _ivAva.layer.cornerRadius = 5.0f;
     if ([[RCIM sharedRCIM] globalConversationAvatarStyle] ==
         RC_USER_AVATAR_CYCLE) {
       _ivAva.layer.cornerRadius =

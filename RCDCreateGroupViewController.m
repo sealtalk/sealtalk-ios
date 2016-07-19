@@ -48,7 +48,7 @@
   self.DoneBtn.hidden = YES;
 
   self.GroupPortrait.layer.masksToBounds = YES;
-  self.GroupPortrait.layer.cornerRadius = 6.f;
+  self.GroupPortrait.layer.cornerRadius = 5.f;
 
   //为头像设置点击事件
   self.GroupPortrait.userInteractionEnabled = YES;

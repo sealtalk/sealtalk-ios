@@ -57,19 +57,7 @@
               if ([discussion.memberIdList
                       containsObject:[RCIMClient sharedRCIMClient]
                                          .currentUserInfo.userId]) {
-                UIButton *button =
-                    [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
-                UIImageView *imageView = [[UIImageView alloc]
-                    initWithImage:[UIImage imageNamed:@"data"]];
-                imageView.frame = CGRectMake(15, 5, 16, 17);
-                  
-                [button addSubview:imageView];
-                [button addTarget:self
-                              action:@selector(rightBarButtonItemClicked:)
-                    forControlEvents:UIControlEventTouchUpInside];
-                UIBarButtonItem *rightBarButton =
-                    [[UIBarButtonItem alloc] initWithCustomView:button];
-                self.navigationItem.rightBarButtonItem = rightBarButton;
+                [self setRightNavigationItem:[UIImage imageNamed:@"Private_Setting"] withFrame:CGRectMake(15,3.5,16,18.5)];
               } else {
                 self.navigationItem.rightBarButtonItem = nil;
               }
@@ -78,19 +66,10 @@
           error:^(RCErrorCode status){
 
           }];
+    }else if (self.conversationType == ConversationType_GROUP){
+        [self setRightNavigationItem:[UIImage imageNamed:@"Group_Setting"] withFrame:CGRectMake(10, 3.5,21,19.5)];
     } else {
-      UIButton *button =
-          [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
-      UIImageView *imageView =
-          [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"data"]];
-      imageView.frame = CGRectMake(15, 5,16 , 17);
-      [button addSubview:imageView];
-      [button addTarget:self
-                    action:@selector(rightBarButtonItemClicked:)
-          forControlEvents:UIControlEventTouchUpInside];
-      UIBarButtonItem *rightBarButton =
-          [[UIBarButtonItem alloc] initWithCustomView:button];
-      self.navigationItem.rightBarButtonItem = rightBarButton;
+        [self setRightNavigationItem:[UIImage imageNamed:@"Private_Setting"] withFrame:CGRectMake(15,3.5,16 ,18.5)];
     }
 
   } else {
@@ -201,6 +180,21 @@
                                              object:nil];
 }
 
+- (void)setRightNavigationItem:(UIImage *)image withFrame:(CGRect)frame {
+    UIButton *button =
+    [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+    UIImageView *imageView =
+    [[UIImageView alloc] initWithImage:image];
+    imageView.frame = frame;
+    [button addSubview:imageView];
+    [button addTarget:self
+               action:@selector(rightBarButtonItemClicked:)
+     forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightBarButton =
+    [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.rightBarButtonItem = rightBarButton;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   if (self.conversationType == ConversationType_GROUP) {
@@ -218,11 +212,15 @@
             [[RCDataBaseManager shareInstance] insertGroupToDB:group];
             _groupMemberList = [[RCDataBaseManager shareInstance]
                 getGroupMember:self.targetId];
+            _groupMemberList= [self moveCreator:_groupMemberList group:group];
             if ([_groupMemberList count] == 0) {
               [RCDHTTPTOOL
                   getGroupMembersWithGroupId:self.targetId
                                        Block:^(NSMutableArray *result) {
                                          if ([result count] != 0) {
+                                           if (result.count > 1) {
+                                             result = [self moveCreator:result group:group];
+                                           }
                                            _groupMemberList = result;
                                            [[RCDataBaseManager shareInstance]
                                                insertGroupMemberToDB:result
@@ -234,21 +232,31 @@
             }
           });
         }];
-    //        _groupMemberList = [[RCDataBaseManager shareInstance]
-    //        getGroupMember:self.targetId];
-    //        if ([_groupMemberList count] == 0) {
-    //            [RCDHTTPTOOL getGroupMembersWithGroupId:self.targetId
-    //            Block:^(NSMutableArray *result) {
-    //                if ([result count] != 0) {
-    //                    _groupMemberList = result;
-    //                    [[RCDataBaseManager shareInstance]
-    //                    insertGroupMemberToDB:result groupId:self.targetId];
-    //                }
-    //
-    //            }];
-    //        }
   }
 }
+
+//将创建者挪到第一的位置
+-(NSMutableArray *) moveCreator:(NSMutableArray *)GroupMemberList group:(RCDGroupInfo *)group
+{
+  if (GroupMemberList ==nil || GroupMemberList.count == 0) {
+    return nil;
+  }
+  NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:GroupMemberList];
+  int index;
+  RCUserInfo *creator;
+  for (int i = 0; i < [temp count]; i++) {
+    RCUserInfo *user = [temp objectAtIndex:i];
+    if ([group.creatorId isEqualToString:user.userId]) {
+      index = i;
+      creator = user;
+      break;
+    }
+  }
+  [temp insertObject:creator atIndex:0];
+  [temp removeObjectAtIndex:index+1];
+  return temp;
+}
+
 
 - (void)renameGroupName:(NSNotification *)notification {
   self.title = [notification object];
@@ -732,18 +740,26 @@ rcConversationCollectionView:(UICollectionView *)collectionView
   RCMessageModel *model =
       [self.conversationDataRepository objectAtIndex:indexPath.row];
   RCMessageContent *messageContent = model.content;
+    CGFloat height = 0.0;
+    if (model.isDisplayNickname) {
+        if (model.messageDirection == MessageDirection_RECEIVE) {
+            height = 16;
+        }
+    }
+    if (model.isDisplayMessageTime) {
+        height += 46;
+    }
   if ([messageContent isMemberOfClass:[RCRealTimeLocationStartMessage class]]) {
     if (model.isDisplayMessageTime) {
-      return CGSizeMake(collectionView.frame.size.width, 40 + 30 + 10 + 10);
+      return CGSizeMake(collectionView.frame.size.width, 40 + 10 + 10 + height);
     }
-    return CGSizeMake(collectionView.frame.size.width, 40 + 10 + 10);
+    return CGSizeMake(collectionView.frame.size.width, 40 + 10 + 10 + height);
+  }else if ([messageContent isMemberOfClass:[RCRealTimeLocationEndMessage class]]) {
+      return CGSizeMake(collectionView.frame.size.width-30*2,
+                        10+21+10+height);
   } else if ([messageContent isMemberOfClass:[RCDTestMessage class]]) {
-    return CGSizeMake(
-        collectionView.frame.size.width,
-        [RCDTestMessageCell
-            getBubbleBackgroundViewSize:(RCDTestMessage *)messageContent]
-                .height +
-            40);
+    return CGSizeMake(collectionView.frame.size.width,height+10+10+40);
+      
   } else {
     return [super rcConversationCollectionView:collectionView
                                         layout:collectionViewLayout

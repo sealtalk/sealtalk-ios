@@ -146,7 +146,7 @@ MBProgressHUD *hud;
     cell.imgvAva.layer.cornerRadius = 18.f;
   } else {
     cell.imgvAva.layer.masksToBounds = YES;
-    cell.imgvAva.layer.cornerRadius = 6.f;
+    cell.imgvAva.layer.cornerRadius = 5.f;
   }
   cell.accessoryType = UITableViewCellAccessoryNone;
   cell.selectionStyle = UITableViewCellSelectionStyleNone;

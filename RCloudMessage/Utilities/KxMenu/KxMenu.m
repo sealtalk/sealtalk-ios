@@ -42,7 +42,7 @@
 #import "UIColor+RCColor.h"
 #import "UIImage+RCImage.h"
 
-const CGFloat kArrowSize = 12.f;
+const CGFloat kArrowSize = 8.f;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -706,7 +706,7 @@ typedef enum {
   const CGRect bodyFrame = {X0, Y0, X1 - X0, Y1 - Y0};
 
   UIBezierPath *borderPath =
-      [UIBezierPath bezierPathWithRoundedRect:bodyFrame cornerRadius:8];
+      [UIBezierPath bezierPathWithRoundedRect:bodyFrame cornerRadius:3];
 
   //    const CGFloat locations[] = {0, 1};
   //    const CGFloat components[] = {

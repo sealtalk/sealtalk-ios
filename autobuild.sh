@@ -82,6 +82,10 @@ if [ -n "${MANUAL_FILE_SERVER_URL}" ]; then
     sed -i '' -e '/RONGCLOUD_FILE_SERVER/s/@"img.cn.ronghub.com"/@"'$MANUAL_FILE_SERVER_URL'"/g' ./RCloudMessage/AppDelegate.m
 fi
 
+if [ ${ENV_FLAG} == "dev" ]; then
+    sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU145760441681012"/g' ./RCloudMessage/RCDMeTableViewController.m
+fi
+
 if [ ${ENV_FLAG} == "pri" ]; then
     sed -i '' -e 's/\/\/NSString \*RONGCLOUD_IM_NAVI/NSString \*RONGCLOUD_IM_NAVI/g' ./RCloudMessage/AppDelegate.m
     sed -i '' -e 's/\/\/NSString \*RONGCLOUD_FILE_SERVER/NSString \*RONGCLOUD_FILE_SERVER/g' ./RCloudMessage/AppDelegate.m
@@ -151,7 +155,7 @@ xcodebuild clean -configuration $configuration -sdk $TARGET_DECIVE APP_PROFILE="
 #xcodebuild clean -configuration $configuration -sdk $TARGET_I386
 
 echo "***开始build iphoneos文件***"
-xcodebuild OTHER_CFLAGS="-fembed-bitcode" -project ${PROJECT_NAME} -target $targetName -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
+xcodebuild -project ${PROJECT_NAME} -target $targetName -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
 xcrun -sdk $TARGET_DECIVE PackageApplication -v ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app -o ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.ipa
 cp -af ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.app.dSYM
 

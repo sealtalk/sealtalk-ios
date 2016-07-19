@@ -39,7 +39,7 @@
 "Setting"="Setting";
 "Back"="Back";
 "IsDeleteHistoryMsg"="Do you want to delete history message?";
-"ConnectionIsNotReachable"="Network unavailable,check network";
+"ConnectionIsNotReachable"="Network unavailable, check network";
 "Camera"="Camera";
 "Photos"="Photos";
 "Location"="Location";

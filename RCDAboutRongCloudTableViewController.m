@@ -9,6 +9,7 @@
 #import "RCDAboutRongCloudTableViewController.h"
 #import "UIColor+RCColor.h"
 #import "RCDCheckVersion.h"
+#import "RCDMeButton.h"
 
 @interface RCDAboutRongCloudTableViewController ()
 @property(nonatomic, strong) NSArray *urls;
@@ -46,6 +47,11 @@
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
         [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
     }
+  
+  RCDMeButton *backBtn = [[RCDMeButton alloc] init];
+  [backBtn addTarget:self action:@selector(cilckBackBtn:) forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+  [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
 - (void)tableView:(UITableView *)tableView
@@ -91,8 +97,6 @@
      @"http://rongcloud.cn/downloads/history/ios",
      @"http://rongcloud.cn/features",
      @"http://rongcloud.cn/", nil];
-    //        NSArray *section1 = [NSArray
-    //        arrayWithObjects:@"http://rongcloud.cn/", nil];
     _urls = [NSArray arrayWithObjects:section0, nil];
   }
   return _urls;
@@ -107,5 +111,8 @@
   return [NSURL URLWithString:urlString];
 }
 
-
+-(void)cilckBackBtn:(id)sender
+{
+  [self.navigationController popViewControllerAnimated:YES];
+}
 @end

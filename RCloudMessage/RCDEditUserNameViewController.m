@@ -63,15 +63,12 @@
   }
   if ([errorMsg length] > 0) {
     [hud hide:YES];
-    //        dispatch_async(dispatch_get_main_queue(), ^{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:errorMsg
                                                    delegate:self
                                           cancelButtonTitle:@"确定"
                                           otherButtonTitles:nil, nil];
     [alert show];
-
-    //        });
   } else {
     NSString *userId = [DEFAULTS objectForKey:@"userId"];
     [AFHttpTool modifyNickname:userId
@@ -99,25 +96,6 @@
               otherButtonTitles:nil, nil];
           [alert show];
         }];
-
-    //        [RCDHTTPTOOL updateName:self.userName.text success:^(id response)
-    //        {
-    //            [hud show:NO];
-    //            RCUserInfo *userInfo = [RCIMClient
-    //            sharedRCIMClient].currentUserInfo;
-    //            userInfo.name = weakSelf.userName.text;
-    //            [[RCDataBaseManager shareInstance] insertUserToDB:userInfo];
-    //            [[RCIM sharedRCIM] refreshUserInfoCache:userInfo
-    //            withUserId:userInfo.userId];
-    //
-    //            [weakSelf.navigationController popViewControllerAnimated:YES];
-    //        } failure:^(NSError *err) {
-    //            [hud hide:YES];
-    //            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil
-    //            message:@"修改失败，请检查输入的名称" delegate:self
-    //            cancelButtonTitle:@"确定"  otherButtonTitles:nil, nil];
-    //            [alert show];
-    //        }];
   }
 }
 - (void)didReceiveMemoryWarning {
@@ -125,15 +103,5 @@
   // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little
-preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

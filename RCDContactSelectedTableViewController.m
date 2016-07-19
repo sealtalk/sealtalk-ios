@@ -362,7 +362,7 @@ titleForHeaderInSection:(NSInteger)section {
     cell.portraitImageView.layer.cornerRadius = 20.f;
   } else {
     cell.portraitImageView.layer.masksToBounds = YES;
-    cell.portraitImageView.layer.cornerRadius = 6.f;
+    cell.portraitImageView.layer.cornerRadius = 5.f;
   }
   cell.portraitImageView.contentMode = UIViewContentModeScaleAspectFill;
   return cell;
