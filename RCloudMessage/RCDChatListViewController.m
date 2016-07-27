@@ -9,13 +9,11 @@
 #import "RCDChatListViewController.h"
 #import "AFHttpTool.h"
 #import "KxMenu.h"
-#import "RCDAddFriendTableViewController.h"
 #import "RCDAddFriendViewController.h"
 #import "RCDAddressBookViewController.h"
 #import "RCDChatListCell.h"
 #import "RCDChatViewController.h"
 #import "RCDContactSelectedTableViewController.h"
-#import "RCDFriendInvitationTableViewController.h"
 #import "RCDHttpTool.h"
 #import "RCDPublicServiceListViewController.h"
 #import "RCDRCIMDataSource.h"
@@ -255,6 +253,7 @@
             [mainStoryboard instantiateViewControllerWithIdentifier:
                                 @"RCDAddressBookViewController"];
         addressBookVC.needSyncFriendList = YES;
+        
         [self.navigationController pushViewController:addressBookVC
                                              animated:YES];
         return;
@@ -325,6 +324,12 @@
                    image:[UIImage imageNamed:@"addfriend_icon"]
                   target:self
                   action:@selector(pushAddFriend:)],
+#ifdef DEBUG
+    [KxMenuItem menuItem:@"创建讨论组"
+                   image:[UIImage imageNamed:@"addfriend_icon"]
+                  target:self
+                  action:@selector(pushToCreateDiscussion:)],
+#endif
   ];
 
   UIBarButtonItem *rightBarButton = self.tabBarController.navigationItem.rightBarButtonItems[1];
@@ -801,5 +806,18 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
   }];
 }
+
+- (void)pushToCreateDiscussion:(id)sender {
+  UIStoryboard *mainStoryboard =
+  [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+  RCDContactSelectedTableViewController *contactSelectedVC =
+  [mainStoryboard instantiateViewControllerWithIdentifier:
+   @"RCDContactSelectedTableViewController"];
+  contactSelectedVC.forCreatingDiscussionGroup = YES;
+  contactSelectedVC.isAllowsMultipleSelection = YES;
+  contactSelectedVC.titleStr = @"选择联系人";
+  [self.navigationController pushViewController:contactSelectedVC animated:YES];
+}
+
 
 @end

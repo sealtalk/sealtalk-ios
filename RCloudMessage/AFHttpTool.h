@@ -32,13 +32,6 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
                   failure:(void (^)(NSError *err))failure;
 
 // login
-+ (void)loginWithEmail:(NSString *)email
-              password:(NSString *)password
-                   env:(int)env
-               success:(void (^)(id response))success
-               failure:(void (^)(NSError *err))failure;
-
-// login
 + (void)loginWithPhone:(NSString *)phone
               password:(NSString *)password
                 region:(NSString *)region
@@ -109,13 +102,6 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
                 success:(void (^)(id response))success
                 failure:(void (^)(NSError *err))failure;
 
-// reg email mobile username password
-+ (void)registerWithEmail:(NSString *)email
-                   mobile:(NSString *)mobile
-                 userName:(NSString *)userName
-                 password:(NSString *)password
-                  success:(void (^)(id response))success
-                  failure:(void (^)(NSError *err))failure;
 // get token
 + (void)getTokenSuccess:(void (^)(id response))success
                 failure:(void (^)(NSError *err))failure;
@@ -146,8 +132,7 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
 // get groups
 + (void)getMyGroupsSuccess:(void (^)(id response))success
                    failure:(void (^)(NSError *err))failure;
-+ (void)getAllGroupsSuccess:(void (^)(id response))success
-                    failure:(void (^)(NSError *err))failure;
+
 // get group by id
 + (void)getGroupByID:(NSString *)groupID
              success:(void (^)(id response))success
@@ -197,45 +182,10 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
                        success:(void (^)(id response))success
                        failure:(void (^)(NSError *err))failure;
 
-// create group
-+ (void)createGroupWithName:(NSString *)name
-                    success:(void (^)(id response))success
-                    failure:(void (^)(NSError *err))failure;
-
-// join group
-+ (void)joinGroupByID:(int)groupID
-              success:(void (^)(id response))success
-              failure:(void (^)(NSError *err))failure;
-
-// quit group
-+ (void)quitGroupByID:(int)groupID
-              success:(void (^)(id response))success
-              failure:(void (^)(NSError *err))failure;
-
-// update group
-+ (void)updateGroupByID:(int)groupID
-          withGroupName:(NSString *)groupName
-      andGroupIntroduce:(NSString *)introduce
-                success:(void (^)(id response))success
-                failure:(void (^)(NSError *err))failure;
-
 //获取好友列表
 + (void)getFriendListFromServerSuccess:(void (^)(id))success
                                failure:(void (^)(NSError *))failure;
 
-//按昵称搜素好友
-+ (void)searchFriendListByName:(NSString *)name
-                       success:(void (^)(id response))success
-                       failure:(void (^)(NSError *err))failure;
-//按邮箱搜素好友
-+ (void)searchFriendListByEmail:(NSString *)email
-                        success:(void (^)(id response))success
-                        failure:(void (^)(NSError *err))failure;
-
-//请求加好友
-+ (void)requestFriend:(NSString *)userId
-              success:(void (^)(id response))success
-              failure:(void (^)(NSError *err))failure;
 //处理请求加好友
 + (void)processInviteFriendRequest:(NSString *)friendUserId
                            success:(void (^)(id))success
@@ -246,20 +196,6 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
                               time:(NSString *)now
                            success:(void (^)(id))success
                            failure:(void (^)(NSError *))failure;
-
-+ (void)processRequestFriend:(NSString *)userId
-                withIsAccess:(BOOL)isAccess
-                     success:(void (^)(id response))success
-                     failure:(void (^)(NSError *err))failure;
-//删除好友
-+ (void)deleteFriend:(NSString *)userId
-             success:(void (^)(id response))success
-             failure:(void (^)(NSError *err))failure;
-
-//获取好友信息
-+ (void)getUserById:(NSString *)userId
-            success:(void (^)(id response))success
-            failure:(void (^)(NSError *err))failure;
 
 //加入黑名单
 + (void)addToBlacklist:(NSString *)userId
@@ -279,9 +215,5 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
 + (void)updateName:(NSString *)userName
            success:(void (^)(id response))success
            failure:(void (^)(NSError *err))failure;
-
-//获取demo和sdk的版本
-+ (void)getversionsuccess:(void (^)(id response))success
-                  failure:(void (^)(NSError *err))failure;
 
 @end

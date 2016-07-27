@@ -22,10 +22,6 @@
 
 + (RCDHttpTool *)shareInstance;
 
-//查看是否好友
-- (void)isMyFriendWithUserInfo:(RCDUserInfo *)userInfo
-                    completion:(void (^)(BOOL isFriend))completion;
-
 //获取个人信息
 - (void)getUserInfoByUserID:(NSString *)userID
                  completion:(void (^)(RCUserInfo *user))completion;
@@ -44,30 +40,22 @@
                     groupId:(NSString *)groupId
                    complete:(void (^)(BOOL))result;
 
-////创建群组
-//-(void) setGroupPortrait:(NSString *)groupName
-//              GroupMemberList:(NSArray *)groupMemberList
-//                     complete:(void (^)(NSString *))userId;
-
-//获取我的群组(新)
+//获取我的群组
 - (void)getMyGroupsWithBlock:(void (^)(NSMutableArray *result))block;
 
-//获取群组列表
-- (void)getAllGroupsWithCompletion:(void (^)(NSMutableArray *result))completion;
-
-//根据id获取单个群组(新)
+//根据id获取单个群组
 - (void)getGroupByID:(NSString *)groupID
    successCompletion:(void (^)(RCDGroupInfo *group))completion;
 
-//获取群组成员列表(新)
+//获取群组成员列表
 - (void)getGroupMembersWithGroupId:(NSString *)groupId
                              Block:(void (^)(NSMutableArray *result))block;
 
-//加入群组(新)
+//加入群组
 - (void)joinGroupWithGroupId:(NSString *)groupID
                     complete:(void (^)(BOOL))result;
 
-//添加群组成员(新)
+//添加群组成员
 - (void)addUsersIntoGroup:(NSString *)groupID
                   usersId:(NSMutableArray *)usersId
                  complete:(void (^)(BOOL))result;
@@ -76,11 +64,11 @@
 - (void)kickUsersOutOfGroup:(NSString *)groupID
                     usersId:(NSMutableArray *)usersId
                    complete:(void (^)(BOOL))result;
-//退出群组(新)
+//退出群组
 - (void)quitGroupWithGroupId:(NSString *)groupID
                     complete:(void (^)(BOOL result))quitResult;
 
-//解散群组(新)
+//解散群组
 - (void)dismissGroupWithGroupId:(NSString *)groupID
                        complete:(void (^)(BOOL result))quitResult;
 
@@ -89,47 +77,22 @@
                     groupName:(NSString *)groupName
                      complete:(void (^)(BOOL))result;
 
-//加入群组
-- (void)joinGroup:(int)groupID
-    withGroupName:(NSString *)groupName
-         complete:(void (^)(BOOL result))joinResult;
-
-//退出群组
-- (void)quitGroup:(int)groupID complete:(void (^)(BOOL result))quitResult;
-
-//更新群组信息
-- (void)updateGroupById:(int)groupID
-          withGroupName:(NSString *)groupName
-           andintroduce:(NSString *)introduce
-               complete:(void (^)(BOOL result))result;
-
 //获取广场信息
 - (void)getSquareInfoCompletion:(void (^)(NSMutableArray *result))completion;
 
 //获取好友列表
 - (void)getFriendscomplete:(void (^)(NSMutableArray *))friendList;
 
-//按昵称搜素好友
-- (void)searchFriendListByName:(NSString *)name
-                      complete:(void (^)(NSMutableArray *result))friendList;
-//按邮箱搜素好友
-- (void)searchFriendListByEmail:(NSString *)email
-                       complete:(void (^)(NSMutableArray *result))friendList;
 //通过手机号搜索好友
 - (void)searchUserByPhone:(NSString *)phone
                  complete:(void (^)(NSMutableArray *))userList;
 
 //请求加好友
 - (void)requestFriend:(NSString *)userId complete:(void (^)(BOOL result))result;
+
 //处理请求加好友
 - (void)processInviteFriendRequest:(NSString *)userId
                           complete:(void (^)(BOOL))result;
-
-- (void)processRequestFriend:(NSString *)userId
-                withIsAccess:(BOOL)isAccess
-                    complete:(void (^)(BOOL result))result;
-//删除好友
-- (void)deleteFriend:(NSString *)userId complete:(void (^)(BOOL result))result;
 
 //加入黑名单
 - (void)AddToBlacklist:(NSString *)userId
@@ -157,7 +120,5 @@
                  ImageData:(NSData *)image
                    success:(void (^)(NSString *url))success
                    failure:(void (^)(NSError *err))failure;
-
-- (void)getVersion:(void (^)(NSDictionary *result))block;
 
 @end

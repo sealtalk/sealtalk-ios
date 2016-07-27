@@ -179,11 +179,12 @@
                                                        delegate:nil
                                               cancelButtonTitle:@"确定"
                                               otherButtonTitles:nil, nil];
-    [alertView show];
+    [alertView show]; 
   }
   [RCDDataSource syncGroups];
   __weak RCDGroupViewController *weakSelf = self;
-  [RCDHTTPTOOL getAllGroupsWithCompletion:^(NSMutableArray *result) {
+  
+  [RCDHTTPTOOL getMyGroupsWithBlock:^(NSMutableArray *result) {
     dispatch_async(dispatch_get_main_queue(), ^{
       _groups = result;
       [weakSelf.tableView reloadData];

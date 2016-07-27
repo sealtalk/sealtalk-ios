@@ -39,32 +39,4 @@
   // Configure the view for the selected state
 }
 
-- (IBAction)btnJoin:(id)sender {
-
-  __block typeof(self) weakSelf = self;
-  if (!self.isJoin) {
-    int groupId = [self.groupID intValue];
-    NSString *groupName = self.lblGroupName.text;
-    [RCDHTTPTOOL
-            joinGroup:groupId
-        withGroupName:groupName
-             complete:^(BOOL isOk) {
-               if (_delegate) {
-                 if ([self.delegate
-                         respondsToSelector:@selector(joinGroupCallback:
-                                                            withGroupId:)]) {
-                   [self.delegate joinGroupCallback:isOk
-                                        withGroupId:weakSelf.groupID];
-                 }
-               }
-             }];
-  } else {
-    if (_delegate) {
-      if ([self.delegate
-              respondsToSelector:@selector(launchGroupChatPageByGroupId:)]) {
-        [self.delegate launchGroupChatPageByGroupId:weakSelf.groupID];
-      }
-    }
-  }
-}
 @end

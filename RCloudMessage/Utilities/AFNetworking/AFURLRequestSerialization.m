@@ -286,7 +286,7 @@ static void *AFHTTPRequestSerializerObserverContext =
   // User-Agent Header; see
   // http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
   userAgent = [NSString
-      stringWithFormat:@"%@/%@ (%@; iOS %@; Scale/%0.2f)",
+      stringWithFormat:@"%@ v%@ (%@; iOS %@;)",
                        [[[NSBundle mainBundle] infoDictionary]
                            objectForKey:(__bridge NSString *)
                                             kCFBundleExecutableKey]
@@ -294,13 +294,12 @@ static void *AFHTTPRequestSerializerObserverContext =
                                   objectForKey:(__bridge NSString *)
                                                    kCFBundleIdentifierKey],
                        [[[NSBundle mainBundle] infoDictionary]
-                           objectForKey:@"CFBundleShortVersionString"]
+                           objectForKey:@"SealTalk Version"]
                            ?: [[[NSBundle mainBundle] infoDictionary]
                                   objectForKey:(__bridge NSString *)
                                                    kCFBundleVersionKey],
                        [[UIDevice currentDevice] model],
-                       [[UIDevice currentDevice] systemVersion],
-                       [[UIScreen mainScreen] scale]];
+                       [[UIDevice currentDevice] systemVersion]];
 #elif defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
   userAgent = [NSString
       stringWithFormat:

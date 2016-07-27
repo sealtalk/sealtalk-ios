@@ -22,15 +22,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-  //    UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,
-  //    50, 34)];
-  //    [rightBtn setTitle:@"保存" forState:UIControlStateNormal];
-  //    [rightBtn addTarget:self action:@selector(saveNewPassword:)
-  //    forControlEvents:UIControlEventTouchUpInside];
-  //    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]
-  //    initWithCustomView:rightBtn];
-  //    [rightBtn setTintColor:[UIColor whiteColor]];
-  //    self.navigationItem.rightBarButtonItem = rightButton;
+
   self.navigationItem.title = @"密码修改";
 
   self.OldPasswordView.layer.borderWidth = 0.5;
@@ -59,10 +51,6 @@
   __weak __typeof(&*self) weakSelf = self;
   NSString *userPwd = [DEFAULTS objectForKey:@"userPwd"];
   if ([userPwd isEqualToString:self.oldPwd.text]) {
-    //        if (self.newsPwd.text.length < 6) {
-    //            [self AlertShow:@"密码不能小于6位!"];
-    //            return;
-    //        }
     if (self.newsPwd.text.length > 20) {
       [self AlertShow:@"密码不能大于20位!"];
       return;

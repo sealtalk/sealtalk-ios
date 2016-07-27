@@ -104,6 +104,7 @@
   if (indexPath.section == 2 && indexPath.row == 0) {
     [self chatWithCustomerService];
   }
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView

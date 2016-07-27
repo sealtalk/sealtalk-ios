@@ -1,5 +1,5 @@
 //
-//  RongMessageModel.h
+//  RCMessageModel.h
 //  RongIMKit
 //
 //  Created by xugang on 15/1/22.

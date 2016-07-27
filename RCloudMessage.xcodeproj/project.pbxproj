@@ -30,7 +30,10 @@
 		8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C55EB501B2A8CE5004285F4 /* Emoji.plist */; };
 		8CCBC9871AEDDF8600BA1135 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */; };
 		980235881D227F8100BCB1DD /* RCDPrivacyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */; };
+		980EF4561D373BE0000C26FC /* RCDGroupAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980EF4551D373BE0000C26FC /* RCDGroupAnnouncementViewController.m */; };
+		980EF4591D376BC9000C26FC /* UITextViewAndPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 980EF4581D376BC9000C26FC /* UITextViewAndPlaceholder.m */; };
 		9859D8121D2DEDF700240A4B /* RCDCheckVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 9859D8111D2DEDF700240A4B /* RCDCheckVersion.m */; };
+		98A3E70A1D45F961007989E7 /* RCDNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98A3E7091D45F961007989E7 /* RCDNavigationViewController.m */; };
 		98AB3C061D387CD900C3B87C /* RCDMeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AB3C051D387CD900C3B87C /* RCDMeButton.m */; };
 		98AB3C091D38940600C3B87C /* SortForTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AB3C081D38940600C3B87C /* SortForTime.m */; };
 		98FFECB71D267140001DBB0D /* UITabBar+badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 98FFECB61D267140001DBB0D /* UITabBar+badge.m */; };
@@ -111,8 +114,6 @@
 		A68AFAF21CCF0B1600F16B3D /* RongCallLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68AFAF11CCF0B1600F16B3D /* RongCallLib.framework */; };
 		A68AFAF41CCF0B3700F16B3D /* RongCallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68AFAF31CCF0B3700F16B3D /* RongCallKit.framework */; };
 		A68AFAFD1CCF1ECE00F16B3D /* AgoraRtcEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68AFAFC1CCF1ECE00F16B3D /* AgoraRtcEngineKit.framework */; };
-		A692A72F1B69CCF700B18659 /* RCDFriendInvitationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A692A72E1B69CCF700B18659 /* RCDFriendInvitationTableViewController.m */; };
-		A692A7321B69CD4200B18659 /* RCDFriendInvitationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A692A7311B69CD4200B18659 /* RCDFriendInvitationTableViewCell.m */; };
 		A6B1D8EB1B1FFCB700AD32EC /* RCWKNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B1D8EA1B1FFCB700AD32EC /* RCWKNotifier.m */; };
 		A6B1D8F71B201B3600AD32EC /* RCAppInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B1D8EE1B201B3600AD32EC /* RCAppInfoModel.m */; };
 		A6B1D8F81B201B3600AD32EC /* RCAppQueryHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B1D8F01B201B3600AD32EC /* RCAppQueryHelper.m */; };
@@ -128,7 +129,6 @@
 		A6EFABA51BB0EDE1007E9D67 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA41BB0EDE1007E9D67 /* libsqlite3.tbd */; };
 		A6EFABA71BB0EDFB007E9D67 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA61BB0EDFB007E9D67 /* libc++.tbd */; };
 		E412BD1E1ADE19A4000DCA7A /* RCDChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E412BD1D1ADE19A4000DCA7A /* RCDChatListCell.m */; };
-		E412BD211ADE55BF000DCA7A /* RCDAddFriendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E412BD201ADE55BF000DCA7A /* RCDAddFriendTableViewController.m */; };
 		E412BD241ADE6BFB000DCA7A /* RCDHttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E412BD231ADE6BFB000DCA7A /* RCDHttpTool.m */; };
 		E412BD271ADFA2A0000DCA7A /* RCDAddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E412BD261ADFA2A0000DCA7A /* RCDAddFriendViewController.m */; };
 		E42A2E5A1AAEE76800F4C3AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4BFAE2A1A12184E007165B1 /* Main.storyboard */; };
@@ -212,7 +212,6 @@
 		E4E939AC1AD65CC2001E0AC6 /* RCDSearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939AA1AD65CC2001E0AC6 /* RCDSearchResultTableViewCell.m */; };
 		E4E939B11AD65CD6001E0AC6 /* RCDSelectPersonTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939AE1AD65CD6001E0AC6 /* RCDSelectPersonTableViewCell.m */; };
 		E4E939B21AD65CD6001E0AC6 /* RCDSelectPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939B01AD65CD6001E0AC6 /* RCDSelectPersonViewController.m */; };
-		E4E939B71AD65CFD001E0AC6 /* RCDGroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939B41AD65CFD001E0AC6 /* RCDGroupDetailViewController.m */; };
 		E4E939B81AD65CFD001E0AC6 /* RCDGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939B61AD65CFD001E0AC6 /* RCDGroupTableViewCell.m */; };
 		E4E939BB1AD65D18001E0AC6 /* RCDChatRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939BA1AD65D18001E0AC6 /* RCDChatRoomTableViewCell.m */; };
 		E4E939BE1AD65D30001E0AC6 /* RCDMessageNotifySettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939BD1AD65D30001E0AC6 /* RCDMessageNotifySettingTableViewController.m */; };
@@ -301,8 +300,14 @@
 		8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		980235861D227F8100BCB1DD /* RCDPrivacyTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPrivacyTableViewController.h; sourceTree = SOURCE_ROOT; };
 		980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPrivacyTableViewController.m; sourceTree = SOURCE_ROOT; };
+		980EF4541D373BE0000C26FC /* RCDGroupAnnouncementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDGroupAnnouncementViewController.h; sourceTree = SOURCE_ROOT; };
+		980EF4551D373BE0000C26FC /* RCDGroupAnnouncementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDGroupAnnouncementViewController.m; sourceTree = SOURCE_ROOT; };
+		980EF4571D376BC9000C26FC /* UITextViewAndPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextViewAndPlaceholder.h; sourceTree = SOURCE_ROOT; };
+		980EF4581D376BC9000C26FC /* UITextViewAndPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITextViewAndPlaceholder.m; sourceTree = SOURCE_ROOT; };
 		9859D8101D2DEDF700240A4B /* RCDCheckVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDCheckVersion.h; sourceTree = SOURCE_ROOT; };
 		9859D8111D2DEDF700240A4B /* RCDCheckVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDCheckVersion.m; sourceTree = SOURCE_ROOT; };
+		98A3E7081D45F961007989E7 /* RCDNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDNavigationViewController.h; sourceTree = SOURCE_ROOT; };
+		98A3E7091D45F961007989E7 /* RCDNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDNavigationViewController.m; sourceTree = SOURCE_ROOT; };
 		98AB3C041D387CD900C3B87C /* RCDMeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDMeButton.h; sourceTree = SOURCE_ROOT; };
 		98AB3C051D387CD900C3B87C /* RCDMeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDMeButton.m; sourceTree = SOURCE_ROOT; };
 		98AB3C071D38940600C3B87C /* SortForTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SortForTime.h; path = SDWebImage/SortForTime.h; sourceTree = "<group>"; };
@@ -455,10 +460,6 @@
 		A68AFAF11CCF0B1600F16B3D /* RongCallLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongCallLib.framework; path = framework/RongCallLib.framework; sourceTree = SOURCE_ROOT; };
 		A68AFAF31CCF0B3700F16B3D /* RongCallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongCallKit.framework; path = framework/RongCallKit.framework; sourceTree = SOURCE_ROOT; };
 		A68AFAFC1CCF1ECE00F16B3D /* AgoraRtcEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtcEngineKit.framework; path = framework/AgoraRtcEngineKit.framework; sourceTree = SOURCE_ROOT; };
-		A692A72D1B69CCF700B18659 /* RCDFriendInvitationTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDFriendInvitationTableViewController.h; sourceTree = SOURCE_ROOT; };
-		A692A72E1B69CCF700B18659 /* RCDFriendInvitationTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDFriendInvitationTableViewController.m; sourceTree = SOURCE_ROOT; };
-		A692A7301B69CD4200B18659 /* RCDFriendInvitationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDFriendInvitationTableViewCell.h; sourceTree = SOURCE_ROOT; };
-		A692A7311B69CD4200B18659 /* RCDFriendInvitationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDFriendInvitationTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		A6B1D8E91B1FFCB700AD32EC /* RCWKNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCWKNotifier.h; sourceTree = "<group>"; };
 		A6B1D8EA1B1FFCB700AD32EC /* RCWKNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCWKNotifier.m; sourceTree = "<group>"; };
 		A6B1D8ED1B201B3600AD32EC /* RCAppInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAppInfoModel.h; sourceTree = "<group>"; };
@@ -482,8 +483,6 @@
 		A6EFABA61BB0EDFB007E9D67 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		E412BD1C1ADE19A4000DCA7A /* RCDChatListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDChatListCell.h; sourceTree = SOURCE_ROOT; };
 		E412BD1D1ADE19A4000DCA7A /* RCDChatListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDChatListCell.m; sourceTree = SOURCE_ROOT; };
-		E412BD1F1ADE55BF000DCA7A /* RCDAddFriendTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDAddFriendTableViewController.h; sourceTree = SOURCE_ROOT; };
-		E412BD201ADE55BF000DCA7A /* RCDAddFriendTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDAddFriendTableViewController.m; sourceTree = SOURCE_ROOT; };
 		E412BD221ADE6BFB000DCA7A /* RCDHttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDHttpTool.h; sourceTree = SOURCE_ROOT; };
 		E412BD231ADE6BFB000DCA7A /* RCDHttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDHttpTool.m; sourceTree = SOURCE_ROOT; };
 		E412BD251ADFA2A0000DCA7A /* RCDAddFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDAddFriendViewController.h; sourceTree = SOURCE_ROOT; };
@@ -648,8 +647,6 @@
 		E4E939AE1AD65CD6001E0AC6 /* RCDSelectPersonTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDSelectPersonTableViewCell.m; path = RCloudMessage/RCDSelectPersonTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		E4E939AF1AD65CD6001E0AC6 /* RCDSelectPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDSelectPersonViewController.h; path = RCloudMessage/RCDSelectPersonViewController.h; sourceTree = SOURCE_ROOT; };
 		E4E939B01AD65CD6001E0AC6 /* RCDSelectPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDSelectPersonViewController.m; path = RCloudMessage/RCDSelectPersonViewController.m; sourceTree = SOURCE_ROOT; };
-		E4E939B31AD65CFD001E0AC6 /* RCDGroupDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDGroupDetailViewController.h; path = RCloudMessage/RCDGroupDetailViewController.h; sourceTree = SOURCE_ROOT; };
-		E4E939B41AD65CFD001E0AC6 /* RCDGroupDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDGroupDetailViewController.m; path = RCloudMessage/RCDGroupDetailViewController.m; sourceTree = SOURCE_ROOT; };
 		E4E939B51AD65CFD001E0AC6 /* RCDGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDGroupTableViewCell.h; path = RCloudMessage/RCDGroupTableViewCell.h; sourceTree = SOURCE_ROOT; };
 		E4E939B61AD65CFD001E0AC6 /* RCDGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDGroupTableViewCell.m; path = RCloudMessage/RCDGroupTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		E4E939B91AD65D18001E0AC6 /* RCDChatRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDChatRoomTableViewCell.h; path = RCloudMessage/RCDChatRoomTableViewCell.h; sourceTree = SOURCE_ROOT; };
@@ -1075,6 +1072,8 @@
 		E4C4E7C81A09F87C00140067 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				98A3E7081D45F961007989E7 /* RCDNavigationViewController.h */,
+				98A3E7091D45F961007989E7 /* RCDNavigationViewController.m */,
 				983903601D2D052800CE2C00 /* Discovery */,
 				9B447DBA1CF828E8005D3ED5 /* new */,
 				F836AB0F1C226A3500A1A5D2 /* Cell */,
@@ -1131,17 +1130,11 @@
 				9B447DDC1CF82926005D3ED5 /* RCDPrivateSettingsTableViewController.m */,
 				9B447DDD1CF82926005D3ED5 /* RCDPrivateSettingsUserInfoCell.h */,
 				9B447DDE1CF82926005D3ED5 /* RCDPrivateSettingsUserInfoCell.m */,
-				E412BD1F1ADE55BF000DCA7A /* RCDAddFriendTableViewController.h */,
-				E412BD201ADE55BF000DCA7A /* RCDAddFriendTableViewController.m */,
 				E412BD1C1ADE19A4000DCA7A /* RCDChatListCell.h */,
 				E412BD1D1ADE19A4000DCA7A /* RCDChatListCell.m */,
 				E4B5159A1AC64BC3005CB1D2 /* SearchFriend */,
 				E4B5159B1AC64DB0005CB1D2 /* SelectPerson */,
 				E4BFABFA1A11B5DF007165B1 /* AddressBook */,
-				A692A72D1B69CCF700B18659 /* RCDFriendInvitationTableViewController.h */,
-				A692A72E1B69CCF700B18659 /* RCDFriendInvitationTableViewController.m */,
-				A692A7301B69CD4200B18659 /* RCDFriendInvitationTableViewCell.h */,
-				A692A7311B69CD4200B18659 /* RCDFriendInvitationTableViewCell.m */,
 			);
 			name = ChatList;
 			sourceTree = "<group>";
@@ -1163,10 +1156,10 @@
 				9B447DD41CF82926005D3ED5 /* RCDGroupSettingsTableViewController.m */,
 				E4BFAE691A121A13007165B1 /* RCDGroupViewController.h */,
 				E4BFAE6A1A121A13007165B1 /* RCDGroupViewController.m */,
-				E4E939B31AD65CFD001E0AC6 /* RCDGroupDetailViewController.h */,
-				E4E939B41AD65CFD001E0AC6 /* RCDGroupDetailViewController.m */,
 				E4E939B51AD65CFD001E0AC6 /* RCDGroupTableViewCell.h */,
 				E4E939B61AD65CFD001E0AC6 /* RCDGroupTableViewCell.m */,
+				980EF4541D373BE0000C26FC /* RCDGroupAnnouncementViewController.h */,
+				980EF4551D373BE0000C26FC /* RCDGroupAnnouncementViewController.m */,
 			);
 			name = Group;
 			sourceTree = "<group>";
@@ -1374,6 +1367,8 @@
 				466684351B5DF36E000B7504 /* RCDUtilities.m */,
 				9B447DBB1CF82926005D3ED5 /* DefaultPortraitView.h */,
 				9B447DBC1CF82926005D3ED5 /* DefaultPortraitView.m */,
+				980EF4571D376BC9000C26FC /* UITextViewAndPlaceholder.h */,
+				980EF4581D376BC9000C26FC /* UITextViewAndPlaceholder.m */,
 			);
 			name = Utilities;
 			path = RCloudMessage/Utilities;
@@ -1748,7 +1743,6 @@
 				A677D69B1B81EBB9007D5D90 /* RCAnnotationView.m in Sources */,
 				E4E939671AD65A95001E0AC6 /* SDWebImageDecoder.m in Sources */,
 				E4E939C11AD65D41001E0AC6 /* RCDMeTableViewController.m in Sources */,
-				E4E939B71AD65CFD001E0AC6 /* RCDGroupDetailViewController.m in Sources */,
 				E4BFAE211A1217C0007165B1 /* AppDelegate.m in Sources */,
 				A6827BE11B15E94A000B9862 /* SelectAppKeyViewController.m in Sources */,
 				E4E939761AD65AC7001E0AC6 /* RCDAddressBookTableViewCell.m in Sources */,
@@ -1769,16 +1763,19 @@
 				E4BFAE681A1219FC007165B1 /* RCDChatListViewController.m in Sources */,
 				E4E939691AD65A95001E0AC6 /* SDWebImageDownloaderOperation.m in Sources */,
 				E4E939CA1AD65E1E001E0AC6 /* UIColor+RCColor.m in Sources */,
+				98A3E70A1D45F961007989E7 /* RCDNavigationViewController.m in Sources */,
 				E4E939B81AD65CFD001E0AC6 /* RCDGroupTableViewCell.m in Sources */,
 				466684361B5DF36E000B7504 /* RCDUtilities.m in Sources */,
 				E4E939441AD65A95001E0AC6 /* AFHTTPSessionManager.m in Sources */,
 				E4E939A01AD65C74001E0AC6 /* RCDDiscussGroupSettingViewController.m in Sources */,
 				A677D69C1B81EBB9007D5D90 /* RCLocationConvert.m in Sources */,
+				980EF4591D376BC9000C26FC /* UITextViewAndPlaceholder.m in Sources */,
 				E412BD1E1ADE19A4000DCA7A /* RCDChatListCell.m in Sources */,
 				E4E9395E1AD65A95001E0AC6 /* MBProgressHUD.m in Sources */,
 				9B447DE71CF82926005D3ED5 /* RCDContactSelectedTableViewCell.m in Sources */,
 				A677D6A11B81EBB9007D5D90 /* RealTimeLocationViewController.m in Sources */,
 				9B447DED1CF82926005D3ED5 /* RCDGroupMemberCollectionViewCell.m in Sources */,
+				980EF4561D373BE0000C26FC /* RCDGroupAnnouncementViewController.m in Sources */,
 				E4BFAE6B1A121A13007165B1 /* RCDGroupViewController.m in Sources */,
 				9B447DEA1CF82926005D3ED5 /* RCDContactViewController.m in Sources */,
 				E4E9396F1AD65A95001E0AC6 /* UIImage+WebP.m in Sources */,
@@ -1809,14 +1806,12 @@
 				17244C181B56553B000EFF79 /* RCDMessageNoDisturbSettingController.m in Sources */,
 				E4E939911AD65BD4001E0AC6 /* RCDUpdateNameViewController.m in Sources */,
 				5C7629831B54F7E60027DA82 /* RCDBlackListCell.m in Sources */,
-				A692A72F1B69CCF700B18659 /* RCDFriendInvitationTableViewController.m in Sources */,
 				46E17CC71B0EC32A001AC57A /* FMDatabase.m in Sources */,
 				E4E939B11AD65CD6001E0AC6 /* RCDSelectPersonTableViewCell.m in Sources */,
 				E4E939491AD65A95001E0AC6 /* AFURLResponseSerialization.m in Sources */,
 				E4E939A61AD65CA3001E0AC6 /* RCDRegisterViewController.m in Sources */,
 				466684301B5DEC57000B7504 /* RCDConversationSettingTableViewHeader.m in Sources */,
 				980235881D227F8100BCB1DD /* RCDPrivacyTableViewController.m in Sources */,
-				A692A7321B69CD4200B18659 /* RCDFriendInvitationTableViewCell.m in Sources */,
 				E4E939521AD65A95001E0AC6 /* UIWebView+AFNetworking.m in Sources */,
 				E4E939641AD65A95001E0AC6 /* NSData+ImageContentType.m in Sources */,
 				E4E9394C1AD65A95001E0AC6 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
@@ -1860,7 +1855,6 @@
 				A616478B1BE9D97D00E90813 /* RCDEditUserNameViewController.m in Sources */,
 				E4E939431AD65A95001E0AC6 /* AFHTTPRequestOperationManager.m in Sources */,
 				E4BFAE5F1A121996007165B1 /* AFHttpTool.m in Sources */,
-				E412BD211ADE55BF000DCA7A /* RCDAddFriendTableViewController.m in Sources */,
 				9B447DF01CF82926005D3ED5 /* RCDGroupSettingsTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

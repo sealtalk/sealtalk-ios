@@ -1,5 +1,5 @@
 //
-//  RCMessageTipLabel.h
+//  RCTipLabel.h
 //  iOS-IMKit
 //
 //  Created by Gang Li on 10/27/14.

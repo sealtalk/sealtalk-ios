@@ -1,5 +1,5 @@
 //
-//  RongConversationModel.h
+//  RCConversationModel.h
 //  RongIMKit
 //
 //  Created by xugang on 15/1/22.
@@ -130,6 +130,11 @@ typedef NS_ENUM(NSUInteger, RCConversationModelType) {
  会话中最后一条消息的json Dictionary
  */
 @property(nonatomic, strong) NSDictionary *jsonDict;
+
+/*!
+ 会话中有被提及的消息（有@你的消息）
+ */
+@property(nonatomic, assign) BOOL hasUnreadMentioned;
 
 /*!
  初始化会话Cell的数据模型（已废弃，请勿使用）

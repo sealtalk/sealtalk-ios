@@ -22,7 +22,7 @@
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   UITableViewCell *cell = [self.tableView
-      cellForRowAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]];
+      cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
   [[RCIMClient sharedRCIMClient]
       getNotificationQuietHours:^(NSString *startTime, int spansMin) {
@@ -68,7 +68,7 @@
 
 - (IBAction)onSwitch:(id)sender {
   UITableViewCell *cell = [self.tableView
-      cellForRowAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]];
+      cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
   MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
   hud.labelText = @"设置中...";
@@ -130,13 +130,13 @@
 
 #pragma mark - Table view Delegate
 - (void)tableView:(UITableView *)tableView
-    didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-  if (indexPath.row == 1 && indexPath.section == 0) {
-
+didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  [tableView deselectRowAtIndexPath:indexPath animated:YES]; // 取消选中
+  
+  if (indexPath.row == 0 && indexPath.section == 0) {
     if (_notifySwitch.on) {
       RCDMessageNoDisturbSettingController *noMessage =
-          [[RCDMessageNoDisturbSettingController alloc] init];
+      [[RCDMessageNoDisturbSettingController alloc] init];
       [self.navigationController pushViewController:noMessage animated:YES];
     }
   }

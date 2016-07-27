@@ -740,6 +740,22 @@ typedef NS_ENUM(NSUInteger, RCMediaType) {
   MediaType_FILE = 100
 };
 
+#pragma mark RCMediaType - 消息中@提醒的类型
+/*!
+ @提醒的类型
+ */
+typedef NS_ENUM(NSUInteger, RCMentionedType) {
+  /*!
+   @所有人
+   */
+  RC_Mentioned_All = 1,
+  
+  /*!
+   @部分指定用户
+   */
+  RC_Mentioned_Users = 2,
+};
+
 #pragma mark - 公众服务相关
 
 #pragma mark RCPublicServiceType - 公众服务账号类型
@@ -818,6 +834,27 @@ typedef NS_ENUM(NSUInteger, RCCSModeType) {
    机器人优先服务
    */
   RC_CS_RobotFirst = 3,
+};
+
+#pragma mark RCLogLevel - 日志级别
+/*!
+ 日志级别
+ */
+typedef NS_ENUM(NSUInteger, RCLogLevel) {
+  /*!
+   *  只输出错误的日志
+   */
+  RC_Log_Level_Error = 1,
+  
+  /*!
+   *  输出错误和警告的日志
+   */
+  RC_Log_Level_Warn = 2,
+  
+  /*!
+   *  输出错误、警告和一般的日志
+   */
+  RC_Log_Level_Info = 3,
 };
 
 #endif

@@ -24,7 +24,6 @@
 /** 是否加入 */
 @property(nonatomic, assign) BOOL isJoin;
 
-- (IBAction)btnJoin:(id)sender;
 @end
 @protocol JoinQuitGroupDelegate <NSObject>
 

@@ -36,7 +36,7 @@
 - (void)syncGroups {
   //开发者调用自己的服务器接口获取所属群组信息
   [RCDHTTPTOOL getMyGroupsWithBlock:^(NSMutableArray *result) {
-  }];
+    }];
 }
 
 - (void)syncFriendList:(NSString *)userId

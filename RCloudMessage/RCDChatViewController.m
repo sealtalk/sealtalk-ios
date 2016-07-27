@@ -10,7 +10,6 @@
 #import "RCDAddFriendViewController.h"
 #import "RCDChatViewController.h"
 #import "RCDDiscussGroupSettingViewController.h"
-#import "RCDGroupDetailViewController.h"
 #import "RCDGroupSettingsTableViewController.h"
 #import "RCDHttpTool.h"
 #import "RCDPersonDetailViewController.h"
@@ -27,6 +26,7 @@
 #import "RealTimeLocationStatusView.h"
 #import "RealTimeLocationViewController.h"
 #import <RongIMKit/RongIMKit.h>
+#import "RCDContactSelectedTableViewController.h"
 
 @interface RCDChatViewController () <UIActionSheetDelegate,
                                      RCRealTimeLocationObserver,
@@ -43,9 +43,7 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  self.enableInteractivePopGestureRecognizer = YES;
   self.enableSaveNewPhotoToLocalSystem = YES;
-
   [UIApplication sharedApplication].statusBarStyle =
       UIStatusBarStyleLightContent;
 
@@ -178,6 +176,9 @@
                                            selector:@selector(clearHistoryMSG:)
                                                name:@"ClearHistoryMsg"
                                              object:nil];
+  
+  
+  
 }
 
 - (void)setRightNavigationItem:(UIImage *)image withFrame:(CGRect)frame {
@@ -365,78 +366,13 @@
         [secondStroyBoard instantiateViewControllerWithIdentifier:
                               @"RCDGroupSettingsTableViewController"];
     if (_groupInfo == nil) {
-      //          settingsVC.Group = _groupInfo;
       settingsVC.Group =
           [[RCDataBaseManager shareInstance] getGroupByGroupId:self.targetId];
-      //          settingsVC.GroupMemberList = _groupMemberList;
     } else {
       settingsVC.Group = _groupInfo;
-      //          settingsVC.Group = [[RCDataBaseManager shareInstance]
-      //          getGroupByGroupId:self.targetId];
     }
     settingsVC.GroupMemberList = _groupMemberList;
     [self.navigationController pushViewController:settingsVC animated:YES];
-
-    //      [self.navigationController pushViewController:settingsVC
-    //      animated:YES];
-    //           return;
-
-    //      RCDGroupDetailViewController *detail=[secondStroyBoard
-    //      instantiateViewControllerWithIdentifier:@"RCDGroupDetailViewController"];
-    //      NSMutableArray *groups=RCDHTTPTOOL.allGroups ;
-    //      __weak RCDChatViewController *weakSelf = self;
-    //      detail.clearHistoryCompletion = ^(BOOL isSuccess) {
-    //          if (isSuccess) {
-    //              [weakSelf.conversationDataRepository removeAllObjects];
-    //              dispatch_async(dispatch_get_main_queue(), ^{
-    //                  [weakSelf.conversationMessageCollectionView reloadData];
-    //              });
-    //          }
-    //      };
-    //
-    //      [RCDHTTPTOOL getGroupByID:self.targetId
-    //              successCompletion:^(RCDGroupInfo *group)
-    //       {
-    //                     dispatch_async(dispatch_get_main_queue(), ^{
-    //                         [[RCDataBaseManager shareInstance]
-    //                         insertGroupToDB:group];
-    //                         settingsVC.Group = group;
-    //                         [self.navigationController
-    //                         pushViewController:settingsVC animated:NO];
-    //                     });
-
-    //           detail.groupInfo=group;
-    //           [self.navigationController pushViewController:detail
-    //           animated:YES];
-    //           return;
-    //       }];
-    //      if (groups) {
-    //          for (RCDGroupInfo *group in groups) {
-    //              if ([group.groupId isEqualToString: self.targetId]) {
-    //                  detail.groupInfo=group;
-    //                  [self.navigationController pushViewController:detail
-    //                  animated:YES];
-    //                  return;
-    //              }
-    //          }
-    //      }
-
-    //没有找到群组信息，可能是获取群组信息失败，这里重新获取一些群众信息。
-    //      [RCDHTTPTOOL getAllGroupsWithCompletion:^(NSMutableArray *result) {
-    //
-    //      }];
-    //      [RCDDataSource getGroupInfoWithGroupId:self.targetId
-    //      completion:^(RCGroup *groupInfo) {
-    //          detail.groupInfo=[[RCDGroupInfo alloc]init];
-    //          detail.groupInfo.groupId=groupInfo.groupId;
-    //          detail.groupInfo.groupName=groupInfo.groupName;
-    //          dispatch_async(dispatch_get_main_queue(), ^{
-    //              [self.navigationController pushViewController:detail
-    //              animated:NO];
-    //          });
-    //
-    //      }];
-
   }
   //客服设置
   else if (self.conversationType == ConversationType_CUSTOMERSERVICE ||
@@ -477,15 +413,12 @@
  */
 - (void)presentImagePreviewController:(RCMessageModel *)model;
 {
-  RCImagePreviewController *_imagePreviewVC =
-      [[RCImagePreviewController alloc] init];
-  _imagePreviewVC.messageModel = model;
-  _imagePreviewVC.title = @"图片预览";
-
-  UINavigationController *nav = [[UINavigationController alloc]
-      initWithRootViewController:_imagePreviewVC];
-
-  [self presentViewController:nav animated:YES completion:nil];
+    RCImageSlideController *previewController = [[RCImageSlideController alloc]init];
+    previewController.messageModel = model;
+    
+    UINavigationController *nav = [[UINavigationController alloc]
+                                   initWithRootViewController:previewController];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)didLongTouchMessageCell:(RCMessageModel *)model inView:(UIView *)view {
@@ -1077,5 +1010,28 @@ rcUnkownConversationCollectionView:(UICollectionView *)collectionView
             }];
   }
 }
+
+//- (void)showChooseUserViewController:(void (^)(RCUserInfo *selectedUserInfo))selectedBlock
+//                              cancel:(void (^)())cancelBlock {
+//    if(self.conversationType == ConversationType_GROUP || self.conversationType == ConversationType_DISCUSSION){
+//      UIStoryboard *mainStoryboard =
+//      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//      RCDContactSelectedTableViewController *contactSelectedVC =
+//      [mainStoryboard instantiateViewControllerWithIdentifier:
+//       @"RCDContactSelectedTableViewController"];
+//      //    contactSelectedVC.forCreatingDiscussionGroup = YES;
+//      contactSelectedVC.isAllowsMultipleSelection = NO;
+//      contactSelectedVC.isHideSelectedIcon = YES;
+//      contactSelectedVC.titleStr = @"选择好友";
+//      __weak typeof(&*self) weakSelf = self;
+//      contactSelectedVC.selectUserList = ^(NSArray<RCUserInfo *> *selectedUserList) {
+//        if (selectedUserList.count > 0) {
+//          selectedBlock(selectedUserList[0]);
+//        }
+//        [weakSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+//      };
+//      [self.navigationController presentViewController:contactSelectedVC animated:YES completion:nil];
+//    }
+//}
 
 @end

@@ -16,6 +16,7 @@
 #import "RCStatusDefine.h"
 #import "RCUserInfo.h"
 #import <Foundation/Foundation.h>
+#import "RCMentionedInfo.h"
 
 /*!
  消息内容的编解码协议
@@ -117,11 +118,23 @@
 @property(nonatomic, strong) RCUserInfo *senderUserInfo;
 
 /*!
+ 消息中的@提醒信息
+ */
+@property(nonatomic, strong) RCMentionedInfo *mentionedInfo;
+
+/*!
  将消息内容中携带的用户信息解码
 
  @param dictionary 用户信息的Dictionary
  */
 - (void)decodeUserInfo:(NSDictionary *)dictionary;
+
+/*!
+ 将消息内容中携带的@提醒信息解码
+ 
+ @param dictionary @提醒信息的Dictionary
+ */
+- (void)decodeMentionedInfo:(NSDictionary *)dictionary;
 
 /*!
  消息内容的原始json数据

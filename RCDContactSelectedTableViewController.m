@@ -34,7 +34,7 @@ MBProgressHUD *hud;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-
+    
   _friendsArr = [[NSMutableArray alloc] init];
 
   self.navigationItem.title = _titleStr;
@@ -54,13 +54,6 @@ MBProgressHUD *hud;
                                        style:UIBarButtonItemStylePlain
                                       target:self
                                       action:@selector(clickedDone:)];
-
-  // Uncomment the following line to preserve selection between presentations.
-  // self.clearsSelectionOnViewWillAppear = NO;
-
-  // Uncomment the following line to display an Edit button in the navigation
-  // bar for this view controller.
-  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
   self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
@@ -85,20 +78,13 @@ MBProgressHUD *hud;
 
 // clicked done
 - (void)clickedDone:(id)sender {
+  
   self.navigationItem.rightBarButtonItem.enabled = NO;
   hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
   //    hud.labelText = @"";
   [hud show:YES];
 
   NSArray *indexPaths = [self.tableView indexPathsForSelectedRows];
-  //    if (!indexPaths||indexPaths.count == 0){
-  //        [hud hide:YES];
-  //        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"请选择!"
-  //        message:nil delegate:self cancelButtonTitle:@"确定"
-  //        otherButtonTitles:nil, nil];
-  //        [alert show];
-  //        return;
-  //    }
 
   // get seleted users
   NSMutableArray *seletedUsers = [NSMutableArray new];
@@ -117,6 +103,12 @@ MBProgressHUD *hud;
     [seletedUsersId addObject:user.userId];
     [seletedUsers addObject:userInfo];
   }
+  if (_selectUserList) {
+    NSArray<RCUserInfo *> *userList = [NSArray arrayWithArray:seletedUsers];
+    _selectUserList(userList);
+    return;
+  }
+
   if (_addGroupMembers.count > 0) {
     [RCDHTTPTOOL
         addUsersIntoGroup:_groupId
@@ -246,50 +238,33 @@ MBProgressHUD *hud;
       [self.navigationController pushViewController:chat animated:YES];
     });
   }
+  if (self.forCreatingDiscussionGroup) {
+    NSMutableString *discussionTitle = [NSMutableString string];
+    NSMutableArray *userIdList = [NSMutableArray new];
+    for (RCUserInfo *user in seletedUsers) {
+      [discussionTitle appendString:[NSString stringWithFormat:@"%@%@", user.name,@","]];
+      [userIdList addObject:user.userId];
+    }
+    [discussionTitle deleteCharactersInRange:NSMakeRange(discussionTitle.length - 1, 1)];
+    
+    [[RCIMClient sharedRCIMClient] createDiscussion:discussionTitle userIdList:userIdList success:^(RCDiscussion *discussion) {
+      NSLog(@"create discussion ssucceed!");
+      dispatch_async(dispatch_get_main_queue(), ^{
+        RCDChatViewController *chat =[[RCDChatViewController alloc]init];
+        chat.targetId                      = discussion.discussionId;
+        chat.userName                    = discussion.discussionName;
+        chat.conversationType              = ConversationType_DISCUSSION;
+        chat.title                         = @"讨论组";
+        chat.needPopToRootView = YES;
+        [self.navigationController pushViewController:chat animated:YES];
+      });
+    } error:^(RCErrorCode status) {
+      NSLog(@"create discussion Failed > %ld!", (long)status);
+    }];
+    return;
+  }
+  
 }
-//        //选择多人则创建讨论组
-//        else if(seletedUsers.count == 1)
-//        {
-//            RCDChatViewController *conversationVC = [[RCDChatViewController
-//            alloc] init];
-//            conversationVC.conversationType = ConversationType_PRIVATE;
-//            RCUserInfo *user = seletedUsers[0];
-//            conversationVC.targetId = user.userId;
-//            [self.navigationController pushViewController:conversationVC
-//            animated:YES];
-////            NSMutableString *discussionTitle = [NSMutableString string];
-////            NSMutableArray *userIdList = [NSMutableArray new];
-////            for (RCUserInfo *user in seletedUsers) {
-////                [discussionTitle appendString:[NSString
-///stringWithFormat:@"%@%@", user.name,@","]];
-////                [userIdList addObject:user.userId];
-////            }
-////            [discussionTitle
-///deleteCharactersInRange:NSMakeRange(discussionTitle.length - 1, 1)];
-////
-////            [[RCIMClient sharedRCIMClient] createDiscussion:discussionTitle
-///userIdList:userIdList success:^(RCDiscussion *discussion) {
-////                NSLog(@"create discussion ssucceed!");
-////                dispatch_async(dispatch_get_main_queue(), ^{
-////                    RCDChatViewController *chat =[[RCDChatViewController
-///alloc]init];
-////                    chat.targetId                      =
-///discussion.discussionId;
-////                    chat.userName                    =
-///discussion.discussionName;
-////                    chat.conversationType              =
-///ConversationType_DISCUSSION;
-////                    chat.title                         = @"讨论组";
-////                    chat.needPopToRootView = YES;
-////                    [self.navigationController pushViewController:chat
-///animated:YES];
-////                });
-////            } error:^(RCErrorCode status) {
-////                NSLog(@"create discussion Failed > %ld!", (long)status);
-////            }];
-////            return;
-//        }
-//    }
 
 #pragma mark - Table view data source
 
@@ -323,6 +298,7 @@ titleForHeaderInSection:(NSInteger)section {
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   static NSString *cellReuseIdentifier = @"RCDContactSelectedTableViewCell";
+    
   RCDContactSelectedTableViewCell *cell =
       [tableView dequeueReusableCellWithIdentifier:cellReuseIdentifier];
 
@@ -365,6 +341,9 @@ titleForHeaderInSection:(NSInteger)section {
     cell.portraitImageView.layer.cornerRadius = 5.f;
   }
   cell.portraitImageView.contentMode = UIViewContentModeScaleAspectFill;
+    if(_isHideSelectedIcon){
+        cell.selectedImageView .hidden = YES;
+    }
   return cell;
 }
 
@@ -382,6 +361,25 @@ titleForHeaderInSection:(NSInteger)section {
   } else {
     self.selectIndexPath = indexPath;
   }
+    if (_selectUserList && self.isHideSelectedIcon) {
+        NSMutableArray *seletedUsers = [NSMutableArray new];
+        NSString *key = [self.allKeys objectAtIndex:indexPath.section];
+        NSArray *arrayForKey = [self.allFriends objectForKey:key];
+        RCDUserInfo *user = arrayForKey[indexPath.row];
+        //转成RCDUserInfo
+        RCUserInfo *userInfo = [RCUserInfo new];
+        userInfo.userId = user.userId;
+        userInfo.name = user.name;
+        userInfo.portraitUri = user.portraitUri;
+        [[RCIM sharedRCIM] refreshUserInfoCache:userInfo
+                                     withUserId:userInfo.userId];
+        [seletedUsers addObject:userInfo];
+
+        NSArray<RCUserInfo *> *userList = [NSArray arrayWithArray:seletedUsers];
+        _selectUserList(userList);
+        return;
+    }
+
 }
 
 - (void)tableView:(UITableView *)tableView
@@ -401,51 +399,10 @@ titleForHeaderInSection:(NSInteger)section {
  *  initial data
  */
 - (void)getAllData {
-  _keys = @[
-    @"A",
-    @"B",
-    @"C",
-    @"D",
-    @"E",
-    @"F",
-    @"G",
-    @"H",
-    @"I",
-    @"J",
-    @"K",
-    @"L",
-    @"M",
-    @"N",
-    @"O",
-    @"P",
-    @"Q",
-    @"R",
-    @"S",
-    @"T",
-    @"U",
-    @"V",
-    @"W",
-    @"X",
-    @"Y",
-    @"Z",
-    @"#"
-  ];
+ 
   _allFriends = [NSMutableDictionary new];
   _allKeys = [NSMutableArray new];
-  _friends = [NSMutableArray
-      arrayWithArray:[[RCDataBaseManager shareInstance] getAllFriends]];
-  //    if ([_friends count] == 0) {
-  //        _noFriend = [[UILabel alloc] init];
-  //        _noFriend.frame = CGRectMake((self.view.frame.size.width / 2) - 50,
-  //        (self.view.frame.size.height / 2) - 15 -
-  //        self.navigationController.navigationBar.frame.size.height, 100, 30);
-  //        [_noFriend setText:@"暂无好友"];
-  //        [_noFriend setTextColor:[UIColor grayColor]];
-  //        _noFriend.textAlignment = UITextAlignmentCenter;
-  //        [self.view addSubview:_noFriend];
-  //        _noFriend.hidden = NO;
-  ////        return;
-  //    }
+  _friends = [NSMutableArray arrayWithArray:[[RCDataBaseManager shareInstance] getAllFriends]];
   if (_friends == nil || _friends.count < 1) {
     //        _noFriend.hidden = YES;
     [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
@@ -456,9 +413,6 @@ titleForHeaderInSection:(NSInteger)section {
                                [_friendsArr addObject:user];
                              }
                            }
-                           //            if (_friends.count < 20) {
-                           //                self.hideSectionHeader = YES;
-                           //            }
                            dispatch_async(dispatch_get_global_queue(0, 0), ^{
                              [self addOrDelGroupMembers];
                              _allFriends =
@@ -471,10 +425,6 @@ titleForHeaderInSection:(NSInteger)section {
 
                          }];
   } else {
-    //        if (_friends.count < 20) {
-    //            self.hideSectionHeader = YES;
-    //        }
-    //        _noFriend.hidden = YES;
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
       for (RCDUserInfo *user in _friends) {
         if ([user.status isEqualToString:@"20"]) {
@@ -524,6 +474,35 @@ titleForHeaderInSection:(NSInteger)section {
 - (NSMutableDictionary *)sortedArrayWithPinYinDic:(NSArray *)friends {
   if (!friends)
     return nil;
+    _keys = @[
+              @"A",
+              @"B",
+              @"C",
+              @"D",
+              @"E",
+              @"F",
+              @"G",
+              @"H",
+              @"I",
+              @"J",
+              @"K",
+              @"L",
+              @"M",
+              @"N",
+              @"O",
+              @"P",
+              @"Q",
+              @"R",
+              @"S",
+              @"T",
+              @"U",
+              @"V",
+              @"W",
+              @"X",
+              @"Y",
+              @"Z",
+              @"#"
+              ];
 
   NSMutableDictionary *returnDic = [NSMutableDictionary new];
   _tempOtherArr = [NSMutableArray new];
@@ -581,20 +560,6 @@ titleForHeaderInSection:(NSInteger)section {
     [_friendsArr removeObjectsAtIndexes:indexSets];
   }
   if (_delGroupMembers.count > 0) {
-    //        NSMutableArray *currentGroupMembers = [NSMutableArray new];
-    //        for (NSString *userId in _delGroupMembers)
-    //        {
-    //            for (int i = 0; i<_friendsArr.count; i++)
-    //            {
-    //                RCDUserInfo *user = [_friendsArr objectAtIndex:i];
-    //                if ([userId isEqualToString:user.userId])
-    //                {
-    //                    [currentGroupMembers addObject:[_friendsArr
-    //                    objectAtIndex:i]];
-    //                    break;
-    //                }
-    //            }
-    //        }
     _friendsArr = _delGroupMembers;
   }
   if (_addDiscussionGroupMembers.count > 0) {

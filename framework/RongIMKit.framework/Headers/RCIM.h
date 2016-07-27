@@ -1,5 +1,5 @@
 //
-//  RongUIKit.h
+//  RCIM.h
 //  RongIMKit
 //
 //  Created by xugang on 15/1/13.
@@ -24,6 +24,18 @@
  RCKitDispatchMessageNotification只要注册都可以收到通知；RCIMReceiveMessageDelegate需要设置监听，并同时只能存在一个监听。
  */
 FOUNDATION_EXPORT NSString *const RCKitDispatchMessageNotification;
+
+/*!
+ @const 消息被撤回的Notification
+ 
+ @discussion 消息被撤回后，SDK会分发此通知。
+ 
+ Notification的object为NSNumber的messageId。
+ 
+ 与RCIMReceiveMessageDelegate的区别:
+ RCKitDispatchRecallMessageNotification只要注册都可以收到通知；RCIMReceiveMessageDelegate需要设置监听，并同时只能存在一个监听。
+ */
+FOUNDATION_EXPORT NSString *const RCKitDispatchRecallMessageNotification;
 
 /*!
  @const 连接状态变化的Notification
@@ -103,15 +115,32 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
 
 @end
 
+/*!
+ 群组成员列表提供者
+ */
+@protocol RCIMGroupMemberDataSource <NSObject>
+@optional
+
+/*!
+ 获取当前群组成员列表的回调
+ 
+ @param groupId     群ID
+ @param resultBlock 获取成功 [userIdList:群成员ID列表]
+ */
+- (void)getAllMembersOfGroup:(NSString *)groupId
+                      result:(void (^)(NSArray<NSString *> *userIdList))resultBlock;
+@end
+
+
 #pragma mark - 消息接收监听器
 
 /*!
  IMKit消息接收的监听器
  
- @discussion 设置IMKit的消息接收监听器请参考RCIM的receiveMessageDelegate属性。
+ @discussion 设置 IMKit 的消息接收监听器请参考 RCIM 的 receiveMessageDelegate 属性。
  
- @warning 如果您使用IMKit，可以设置并实现此Delegate监听消息接收；
- 如果您使用IMLib，请使用RCIMClient中的RCIMClientReceiveMessageDelegate监听消息接收，而不要使用此监听器。
+ @warning 如果您使用 IMKit，可以设置并实现此 Delegate 监听消息接收；
+ 如果您使用 IMLib，请使用 RCIMClient 中的 RCIMClientReceiveMessageDelegate 监听消息接收，而不要使用此监听器。
  */
 @protocol RCIMReceiveMessageDelegate <NSObject>
 
@@ -169,6 +198,15 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
  您可以通过RCIM的disableMessageAlertSound属性，关闭所有前台消息的提示音(此时不再回调此接口)。
  */
 -(BOOL)onRCIMCustomAlertSound:(RCMessage*)message;
+
+/*!
+ 消息被撤回的回调方法
+ 
+ @param messageId 被撤回的消息ID
+ 
+ @discussion 被撤回的消息会变更为RCRecallNotificationMessage，App需要在UI上刷新这条消息。
+ */
+- (void)onRCIMMessageRecalled:(long)messageId;
 
 @end
 
@@ -440,6 +478,21 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
  是否开启发送已读回执，默认值是NO，开启之后在会话页面展示对方的消息之后会发送回执给对方(目前只支持单聊)
  */
 @property(nonatomic, assign) BOOL enableReadReceipt;
+
+/*!
+ 是否开启消息@提醒功能（只支持群聊和讨论组, App需要实现群成员数据源groupMemberDataSource），默认值是NO。
+ */
+@property(nonatomic, assign) BOOL enableMessageMentioned;
+
+/*!
+ 是否开启消息撤回功能，默认值是NO。
+ */
+@property(nonatomic, assign) BOOL enableMessageRecall;
+
+/*!
+ 消息可撤回的最大时间，单位是秒，默认值是120s。
+ */
+@property(nonatomic, assign) NSUInteger maxRecallDuration;
 
 /*!
  是否在聊天界面和会话列表界面显示未注册的消息类型，默认值是NO
@@ -719,6 +772,15 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
  如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
  */
 - (void)clearGroupUserInfoCache;
+
+#pragma mark 群成员信息提供者
+
+/*!
+ 群成员信息提供者
+ 
+ @discussion 如果您使用了@功能，SDK需要通过您实现的群用户成员提供者，获取群组中的用户列表。
+ */
+@property(nonatomic, weak) id<RCIMGroupMemberDataSource> groupMemberDataSource;
 
 #pragma mark 头像显示
 

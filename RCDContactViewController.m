@@ -24,7 +24,6 @@
 
 @interface RCDContactViewController ()
 @property(strong, nonatomic) NSMutableArray *matchFriendList;
-@property(nonatomic, strong) NSDictionary *allFriendSectionDic;
 @property(strong, nonatomic) NSArray *defaultCellsTitle;
 @property(strong, nonatomic) NSArray *defaultCellsPortrait;
 @property (nonatomic, assign) BOOL hasSyncFriendList;

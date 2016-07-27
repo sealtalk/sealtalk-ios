@@ -13,6 +13,10 @@
 
 @interface RCDAboutRongCloudTableViewController ()
 @property(nonatomic, strong) NSArray *urls;
+
+//force crash for test
+@property (nonatomic, strong)NSDate *firstClickDate;
+@property (nonatomic, assign)NSUInteger clickTimes;
 @end
 
 @implementation RCDAboutRongCloudTableViewController
@@ -20,6 +24,8 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
   self = [super initWithCoder:aDecoder];
   if (self) {
+    self.firstClickDate = nil;
+    self.clickTimes = 0;
   }
   return self;
 }
@@ -71,6 +77,28 @@
     }
 
   }
+
+  //force crash for test
+  if (indexPath.section == 0 && indexPath.row == 5) {
+    if (self.clickTimes == 0) {
+      self.firstClickDate = [[NSDate alloc] init];
+      self.clickTimes = 1;
+    } else if ([self.firstClickDate timeIntervalSinceNow] > -3){
+      self.clickTimes++;
+      if (self.clickTimes >= 5) {
+        [self forceCrash];
+      }
+    } else {
+      self.clickTimes = 0;
+      self.firstClickDate = nil;
+    }
+  }
+}
+
+//force crash for test
+- (void)forceCrash {
+  int x = 0;
+  x = x/x;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

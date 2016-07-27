@@ -201,8 +201,6 @@
   verificationCodeField.delegate = self;
 
   _getVerificationCodeBt = [[UIButton alloc] init];
-  //    [_getVerificationCodeBt setBackgroundColor:[[UIColor alloc]
-  //    initWithRed:23/255.f green:136/255.f blue:213/255.f alpha:1]];
   [_getVerificationCodeBt
       setBackgroundColor:[[UIColor alloc] initWithRed:133 / 255.f
                                                 green:133 / 255.f
@@ -395,14 +393,6 @@
                                         attribute:NSLayoutAttributeBottom
                                        multiplier:1.0
                                          constant:-15]];
-  //    [self.view addConstraint:[NSLayoutConstraint
-  //                              constraintWithItem:_getVerificationCodeBt
-  //                              attribute:NSLayoutAttributeRight
-  //                              relatedBy:NSLayoutRelationEqual
-  //                              toItem:verificationCodeField
-  //                              attribute:NSLayoutAttributeRight
-  //                              multiplier:1.0
-  //                              constant:-8]];
   [self.view addConstraint:[NSLayoutConstraint
                                constraintWithItem:_countDownLable
                                         attribute:NSLayoutAttributeBottom
@@ -872,29 +862,6 @@
       failure:^(NSError *err) {
         _errorMsgLb.text = @"验证码无效";
       }];
-
-  //  [AFHttpTool registerWithEmail:userName
-  //      mobile:@""
-  //      userName:nickName
-  //      password:userPwd
-  //      success:^(id response) {
-  //        int code = [response[@"code"] intValue];
-  //        NSString *messsage = nil;
-  //        if (code == 200) {
-  //          messsage = @"注册成功!";
-  //        } else if (code == 101) {
-  //          messsage = @"Email已经被注册！";
-  //        }
-  //        dispatch_async(dispatch_get_main_queue(), ^{
-  //          _errorMsgLb.text = messsage;
-  //        });
-  //      }
-  //      failure:^(NSError *err) {
-  //        dispatch_async(dispatch_get_main_queue(), ^{
-  //          _errorMsgLb.text = @"注册失败!";
-  //        });
-  //
-  //      }];
 }
 
 /**
@@ -910,20 +877,11 @@
   NSString *reUserPwd =
       [(UITextField *)[self.view viewWithTag:RePassWordFieldTag] text];
 
-  //  if (![RCDTextFieldValidate validateEmail:userName]) {
-  //    _errorMsgLb.text = @"邮箱格式不正确!";
-  //    return NO;
-  //  }
-
   if (userName.length == 0) {
 
     _errorMsgLb.text = @"手机号不能为空!";
     return NO;
   }
-  //  if (userPwd.length < 6) {
-  //    _errorMsgLb.text = @"密码不能小于6位!";
-  //    return NO;
-  //  }
   if (userPwd.length > 20) {
     _errorMsgLb.text = @"密码不能大于20位!";
     return NO;

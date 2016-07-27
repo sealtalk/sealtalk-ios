@@ -61,28 +61,39 @@
   // Dispose of any resources that can be recreated.
 }
 - (IBAction)actionAddFriend:(id)sender {
-  [RCDHTTPTOOL requestFriend:_targetUserInfo.userId
-                    complete:^(BOOL result) {
-                      //    [RCDHTTPTOOL requestFriend:@"OioOHsuTN"
-                      //    complete:^(BOOL result) {
-                      if (result) {
-                        UIAlertView *alertView = [[UIAlertView alloc]
-                                initWithTitle:nil
-                                      message:@"请求已发送"
-                                     delegate:nil
-                            cancelButtonTitle:@"确定"
-                            otherButtonTitles:nil, nil];
-                        [alertView show];
-                      } else {
-                        UIAlertView *alertView = [[UIAlertView alloc]
-                                initWithTitle:nil
-                                      message:@"请求失败，请重试"
-                                     delegate:nil
-                            cancelButtonTitle:@"确定"
-                            otherButtonTitles:nil, nil];
-                        [alertView show];
-                      }
-                    }];
+  RCDUserInfo *user = [[RCDataBaseManager shareInstance] getFriendInfo:_targetUserInfo.userId];
+  if ([user.status isEqualToString:@"10"]) {
+    UIAlertView *alertView = [[UIAlertView alloc]
+                              initWithTitle:nil
+                              message:@"已发送好友邀请"
+                              delegate:nil
+                              cancelButtonTitle:@"确定"
+                              otherButtonTitles:nil, nil];
+    [alertView show];
+  } else {
+    [RCDHTTPTOOL requestFriend:_targetUserInfo.userId
+                      complete:^(BOOL result) {
+                        if (result) {
+                          UIAlertView *alertView = [[UIAlertView alloc]
+                                                    initWithTitle:nil
+                                                    message:@"请求已发送"
+                                                    delegate:nil
+                                                    cancelButtonTitle:@"确定"
+                                                    otherButtonTitles:nil, nil];
+                          [RCDHTTPTOOL getFriendscomplete:^(NSMutableArray *result) {
+                          }];
+                          [alertView show];
+                        } else {
+                          UIAlertView *alertView = [[UIAlertView alloc]
+                                                    initWithTitle:nil
+                                                    message:@"请求失败，请重试"
+                                                    delegate:nil
+                                                    cancelButtonTitle:@"确定"
+                                                    otherButtonTitles:nil, nil];
+                          [alertView show];
+                        }
+                      }];
+  }
 }
 
 - (IBAction)actionStartChat:(id)sender {

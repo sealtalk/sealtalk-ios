@@ -92,6 +92,7 @@
  */
 @property(nonatomic, strong) NSString *messageUId;
 
+
 /*!
  RCMessage初始化方法
 

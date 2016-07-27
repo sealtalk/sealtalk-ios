@@ -49,6 +49,10 @@
 "unknown_message_notification_tip"="Receive an unkown message";
 "Copy"="Copy";
 "Delete"="Delete";
+"Recall"="Recall";
+"MessageRecalling"="Message is recalling";
+"MessageRecalled"=" recalled a message";
+"MessageRecallFailed"="Failed to recall the message.Check network.";
 "Save"="Save";
 "SavePhotoFailed"="Failed to save this photo";
 "SavePhotoSuccess"="Saved";
@@ -191,3 +195,9 @@
 "GroupQuit"="%@ quitted the group";
 "GroupChanged"="%@ changed the group name to \"%@\"";
 "GroupJoin"="%@ joined the group";
+"ImageLoadFailed"="Unable to download image";
+"ImageHasBeenDeleted"="The image has been deleted";
+"HaveMentioned"="You were mentioned";
+"HaveMentionedForNotification"="You were mentioned";
+"SelectMentionedUser"="Select Contact";
+"ToSearch"="Search";

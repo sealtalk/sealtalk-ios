@@ -1,6 +1,6 @@
 //
 //  RCCallSession.h
-//  RongVoIPLib
+//  RongCallLib
 //
 //  Created by 岑裕 on 16/2/29.
 //  Copyright © 2016年 RongCloud. All rights reserved.

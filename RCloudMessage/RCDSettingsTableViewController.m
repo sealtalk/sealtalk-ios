@@ -53,6 +53,7 @@
 
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  [tableView deselectRowAtIndexPath:indexPath animated:YES]; // 取消选中
   if (0 == indexPath.section && 0 == indexPath.row) {
     NSLog(@"show the change password view");
     UIStoryboard *storyboard =

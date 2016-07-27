@@ -242,6 +242,8 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
  *  dismiss公众账号弹出菜单
  */
 - (void)dismissPublicServiceMenuPopupView;
+
+- (void)refreshInputViewFrame;
 @end
 
 /*!

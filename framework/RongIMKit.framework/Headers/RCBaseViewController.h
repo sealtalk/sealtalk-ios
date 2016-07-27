@@ -18,9 +18,10 @@
  */
 @interface RCBaseViewController : UIViewController
 
-/*!
- 是否开启左滑返回手势,默认是 NO ,关闭状态，可以在页面 viewDidLoad 里开启
- */
-@property(nonatomic, assign) BOOL enableInteractivePopGestureRecognizer;
+///*!
+// 是否开启左滑返回手势,默认是 NO ,关闭状态，可以在页面 viewDidLoad 里开启
+// */
+//如果需要实现滑动返回，请参考知识库http://support.rongcloud.cn/kb/NTEx 
+//@property(nonatomic, assign) BOOL enableInteractivePopGestureRecognizer;
 @end
 #endif

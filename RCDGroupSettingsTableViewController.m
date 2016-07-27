@@ -21,6 +21,7 @@
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMLib/RongIMLib.h>
+#import "RCDGroupAnnouncementViewController.h"
 
 @interface RCDGroupSettingsTableViewController ()
 //开始会话
@@ -246,6 +247,9 @@
          [[RCDataBaseManager shareInstance]
           insertGroupMemberToDB:result
           groupId:groupId];
+         for (RCDUserInfo *user in result) {
+           [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:user.userId];
+         }
        }
      }];
 
@@ -631,7 +635,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     break;
 
   case 1:
-    rows = 2;
+    rows = 3;
     break;
 
   case 2:
@@ -699,6 +703,13 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       cell.ContentLabel.hidden = NO;
       cell.ContentLabel.text = _Group.groupName;
     } break;
+      case 2: {
+        cell.TitleLabel.text = @"群公告";
+        cell.PortraitImg.hidden = YES;
+        cell.switchBtn.hidden = YES;
+        cell.arrowImg.hidden = NO;
+        cell.ContentLabel.hidden = YES;
+      } break;
 
     default:
       break;
@@ -760,54 +771,87 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (indexPath.section == 0) {
-    RCDGroupMembersTableViewController *GroupMembersVC =
-        [[RCDGroupMembersTableViewController alloc] init];
-    GroupMembers = [self moveCreator:GroupMembers];
-    GroupMembersVC.GroupMembers = GroupMembers;
-    [self.navigationController pushViewController:GroupMembersVC animated:YES];
-  }
-  if (indexPath.section == 1) {
-    if (indexPath.row == 0) {
-      if (isCreator == YES) {
-        [self chosePortrait];
-      }
-      else
-      {
-        [self showAlert:@"只有群组创建者可以修改群组头像"];
-      }
-    }
-
-    if (indexPath.row == 1) {
-      if (isCreator == YES) {
-        UIStoryboard *mainStoryboard =
+  switch (indexPath.section) {
+    case 0:{
+      RCDGroupMembersTableViewController *GroupMembersVC =
+      [[RCDGroupMembersTableViewController alloc] init];
+      GroupMembersVC.GroupMembers = GroupMembers;
+      [self.navigationController pushViewController:GroupMembersVC animated:YES];
+    }break;
+      
+    case 1:{
+      switch (indexPath.row) {
+        case 0:
+        {
+          if (isCreator == YES) {
+            [self chosePortrait];
+          }
+          else
+          {
+            [self showAlert:@"只有群主可以修改群组头像"];
+          }
+        }break;
+         
+        case 1:
+        {
+          if (isCreator == YES) {
+            UIStoryboard *mainStoryboard =
             [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        RCDEditGroupNameViewController *editGroupNameVC =
+            RCDEditGroupNameViewController *editGroupNameVC =
             [mainStoryboard instantiateViewControllerWithIdentifier:
-                                @"RCDEditGroupNameViewController"];
-        editGroupNameVC.Group = _Group;
-        _Group = nil;
-        [self.navigationController pushViewController:editGroupNameVC
-                                             animated:YES];
+             @"RCDEditGroupNameViewController"];
+            editGroupNameVC.Group = _Group;
+            _Group = nil;
+            [self.navigationController pushViewController:editGroupNameVC
+                                                 animated:YES];
+          }
+          else
+          {
+            [self showAlert:@"只有群主可以修改群组名称"];
+          }
+        }break;
+         
+          case 2:
+        {
+          if (isCreator == YES) {
+            RCDGroupAnnouncementViewController *vc = [[RCDGroupAnnouncementViewController alloc] init];
+            vc.GroupId = _Group.groupId;
+            [self.navigationController pushViewController:vc animated:YES];
+          }
+          else
+          {
+            [self showAlert:@"只有群主可以发布群公告"];
+          }
+        }break;
+          
+        default:
+          break;
       }
-      else
-      {
-        [self showAlert:@"只有群组创建者可以修改群组名称"];
-      }
-    }
-  }
-  if (indexPath.section == 2) {
-    if (indexPath.row == 2) {
-      UIActionSheet *actionSheet =
+    }break;
+      
+      case 2:
+    {
+      switch (indexPath.row) {
+        case 2:
+        {
+          UIActionSheet *actionSheet =
           [[UIActionSheet alloc] initWithTitle:@"确定清除聊天记录？"
                                       delegate:self
                              cancelButtonTitle:@"取消"
                         destructiveButtonTitle:@"确定"
                              otherButtonTitles:nil];
-
-      [actionSheet showInView:self.view];
-      actionSheet.tag = 100;
-    }
+          
+          [actionSheet showInView:self.view];
+          actionSheet.tag = 100;
+        }break;
+          
+        default:
+          break;
+      }
+    }break;
+      
+    default:
+      break;
   }
 }
 

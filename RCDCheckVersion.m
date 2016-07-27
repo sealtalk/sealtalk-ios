@@ -59,7 +59,11 @@
   NSTimeInterval now = [dat timeIntervalSince1970] * 1000;
   NSString *timeString = [NSString stringWithFormat:@"%f", now];
   //为html增加随机数，避免缓存。
-  NSString * URLString = [NSString stringWithFormat:@"http://downloads.rongcloud.cn/SealTalk_iOS_Update.html?%@",timeString];
+  //用于测试
+//  NSString *url = @"http://downloads.rongcloud.cn/SealTalk_iOS_Update_test.html";
+  //用于发布
+  NSString *url = @"http://downloads.rongcloud.cn/SealTalk_iOS_Update.html";
+  NSString * URLString = [NSString stringWithFormat:@"%@?%@",url,timeString];
   NSURL * URL = [NSURL URLWithString:[URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
   
   NSURLRequest * request = [[NSURLRequest alloc]initWithURL:URL];

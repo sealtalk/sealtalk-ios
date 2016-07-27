@@ -23,6 +23,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <RongCallKit/RongCallKit.h>
 #import <RongIMKit/RongIMKit.h>
+#import "RCDNavigationViewController.h"
 
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" //offline key
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
@@ -92,6 +93,7 @@
   //设置用户信息源和群组信息源
   [RCIM sharedRCIM].userInfoDataSource = RCDDataSource;
   [RCIM sharedRCIM].groupInfoDataSource = RCDDataSource;
+
   //设置群组内用户信息源。如果不使用群名片功能，可以不设置
   //  [RCIM sharedRCIM].groupUserInfoDataSource = RCDDataSource;
   //  [RCIM sharedRCIM].enableMessageAttachUserInfo = YES;
@@ -107,6 +109,16 @@
   [RCIM sharedRCIM].showUnkownMessage = YES;
   [RCIM sharedRCIM].showUnkownMessageNotificaiton = YES;
 
+  //群成员数据源
+  [RCIM sharedRCIM].groupMemberDataSource = RCDDataSource;
+  
+  //开启消息@功能（只支持群聊和讨论组, App需要实现群成员数据源groupMemberDataSource）
+  [RCIM sharedRCIM].enableMessageMentioned = YES;
+  
+  //开启消息撤回功能
+  [RCIM sharedRCIM].enableMessageRecall = YES;
+  
+  
   //    //设置头像为圆形
   //    [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
   //    [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
@@ -181,7 +193,7 @@
           dispatch_async(dispatch_get_main_queue(), ^{
             UIStoryboard *storyboard =
                 [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UINavigationController *rootNavi = [storyboard
+            RCDNavigationViewController *rootNavi = [storyboard
                 instantiateViewControllerWithIdentifier:@"rootNavi"];
             self.window.rootViewController = rootNavi;
           });
@@ -190,8 +202,8 @@
           dispatch_async(dispatch_get_main_queue(), ^{
             RCDLoginViewController *loginVC =
                 [[RCDLoginViewController alloc] init];
-            UINavigationController *_navi = [[UINavigationController alloc]
-                initWithRootViewController:loginVC];
+            RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
+                                                  initWithRootViewController:loginVC];
             self.window.rootViewController = _navi;
             UIAlertView *alertView =
                 [[UIAlertView alloc] initWithTitle:nil
@@ -209,8 +221,8 @@
     // [loginVC defaultLogin];
     // RCDLoginViewController* loginVC = [storyboard
     // instantiateViewControllerWithIdentifier:@"loginVC"];
-    UINavigationController *_navi =
-        [[UINavigationController alloc] initWithRootViewController:loginVC];
+    RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
+                                          initWithRootViewController:loginVC];
     self.window.rootViewController = _navi;
   }
 
@@ -277,6 +289,10 @@
     UIGraphicsEndImageContext();
     [[UINavigationBar appearance] setBackIndicatorImage:backButtonImage];
     [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:backButtonImage];
+    if (IOS_FSystenVersion >= 8.0) {
+        [UINavigationBar appearance].translucent = NO;
+    }
+
   //    NSArray *groups = [self getAllGroupInfo];
   //    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:groups];
   //    NSArray *loadedContents = [NSKeyedUnarchiver
@@ -501,8 +517,8 @@
         [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     RCDLoginViewController *loginVC =
         [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
-    UINavigationController *navi =
-        [[UINavigationController alloc] initWithRootViewController:loginVC];
+    RCDNavigationViewController *navi = [[RCDNavigationViewController alloc]
+                                          initWithRootViewController:loginVC];
     self.window.rootViewController = navi;
   }
   [[RCIMClient sharedRCIMClient] disconnect:NO];
@@ -538,8 +554,8 @@
     // [loginVC defaultLogin];
     // RCDLoginViewController* loginVC = [storyboard
     // instantiateViewControllerWithIdentifier:@"loginVC"];
-    UINavigationController *_navi =
-        [[UINavigationController alloc] initWithRootViewController:loginVC];
+    RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
+                                          initWithRootViewController:loginVC];
     self.window.rootViewController = _navi;
   } else if (status == ConnectionStatus_TOKEN_INCORRECT) {
     dispatch_async(dispatch_get_main_queue(), ^{

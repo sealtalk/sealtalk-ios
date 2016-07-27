@@ -1,6 +1,6 @@
 //
 //  RCConversationSettingTableViewHeader.h
-//  RongIMToolkit
+//  RongIMKit
 //
 //  Created by Liv on 15/3/25.
 //  Copyright (c) 2015年 RongCloud. All rights reserved.

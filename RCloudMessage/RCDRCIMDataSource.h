@@ -18,7 +18,7 @@
  */
 @interface RCDRCIMDataSource
     : NSObject <RCIMUserInfoDataSource, RCIMGroupInfoDataSource,
-                RCIMGroupUserInfoDataSource, RCCallGroupMemberDataSource>
+                RCIMGroupUserInfoDataSource, RCCallGroupMemberDataSource, RCIMGroupMemberDataSource>
 
 + (RCDRCIMDataSource *)shareInstance;
 

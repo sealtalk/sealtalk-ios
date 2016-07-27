@@ -1,5 +1,5 @@
 //
-//  RCSettingController.h
+//  RCSettingViewController.h
 //  RongIMKit
 //
 //  Created by Liv on 15/4/20.

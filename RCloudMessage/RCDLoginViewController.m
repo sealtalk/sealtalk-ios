@@ -23,6 +23,7 @@
 #import "UITextFiled+Shake.h"
 #import <RongIMKit/RongIMKit.h>
 #import "UIColor+RCColor.h"
+#import "RCDNavigationViewController.h"
 
 @interface RCDLoginViewController () <UITextFieldDelegate, RCIMConnectionStatusDelegate>
 
@@ -666,7 +667,7 @@ MBProgressHUD *hud;
   dispatch_async(dispatch_get_main_queue(), ^{
     UIStoryboard *storyboard =
         [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UINavigationController *rootNavi =
+    RCDNavigationViewController *rootNavi =
         [storyboard instantiateViewControllerWithIdentifier:@"rootNavi"];
     [ShareApplicationDelegate window].rootViewController = rootNavi;
 
