@@ -36,9 +36,35 @@
   // Uncomment the following line to display an Edit button in the navigation
   // bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
+    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    backBtn.frame = CGRectMake(0, 6, 87, 23);
+    UIImageView *backImg = [[UIImageView alloc]
+                            initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
+    backImg.frame = CGRectMake(-6, 4, 10, 17);
+    [backBtn addSubview:backImg];
+    UILabel *backText =
+    [[UILabel alloc] initWithFrame:CGRectMake(9,4, 85, 17)];
+    backText.text = @"返回"; // NSLocalizedStringFromTable(@"Back",
+    // @"RongCloudKit", nil);
+    //   backText.font = [UIFont systemFontOfSize:17];
+    [backText setBackgroundColor:[UIColor clearColor]];
+    [backText setTextColor:[UIColor whiteColor]];
+    [backBtn addSubview:backText];
+    [backBtn addTarget:self
+                action:@selector(leftBarButtonItemPressed:)
+      forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftButton =
+    [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    [self.navigationItem setLeftBarButtonItem:leftButton];
   self.title = @"聊天详情";
   [self startLoadView];
+  
+  self.tableView.tableFooterView = [UIView new];
+  self.tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
+}
+
+- (void)leftBarButtonItemPressed:(id)sender{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -124,7 +150,7 @@
             placeholderImage:[UIImage imageNamed:@"icon_person"]];
     }
     infoCell.PortraitImageView.layer.masksToBounds = YES;
-    infoCell.PortraitImageView.layer.cornerRadius = 6.f;
+    infoCell.PortraitImageView.layer.cornerRadius = 5.f;
     infoCell.PortraitImageView.contentMode = UIViewContentModeScaleAspectFill;
     infoCell.NickNameLabel.text = nickname;
     return infoCell;
@@ -132,9 +158,9 @@
 
   switch (indexPath.row) {
   case 0: {
-    cell.TitleLabel.text = @"新消息通知";
+    cell.TitleLabel.text = @"消息免打扰";
     cell.SwitchButton.hidden = NO;
-    cell.SwitchButton.on = enableNotification;
+    cell.SwitchButton.on = !enableNotification;
     [cell.SwitchButton removeTarget:self
                              action:@selector(clickIsTopBtn:)
                    forControlEvents:UIControlEventValueChanged];
@@ -182,58 +208,6 @@
     }
   }
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath
-*)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView
-commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath]
-withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the
-array, and add a new row to the table view
-    }
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath
-*)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath
-*)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little
-preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark -UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet
@@ -310,7 +284,6 @@ preparation before navigation
       }];
 
   [self loadUserInfo:self.userId];
-  [self addFooterView];
 }
 
 - (void)loadUserInfo:(NSString *)userId {
@@ -325,54 +298,12 @@ preparation before navigation
                         }];
 }
 
-- (void)addFooterView {
-  /******************添加footerview*******************/
-  UIView *view = [[UIView alloc]
-      initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 150)];
-  //发起会话按钮
-  UIImage *imageChat = [UIImage imageNamed:@"group_add"];
-  _btChat = [[UIButton alloc] init];
-  [_btChat setTitle:@"发起会话" forState:UIControlStateNormal];
-  [_btChat setBackgroundImage:imageChat forState:UIControlStateNormal];
-  [_btChat setCenter:CGPointMake(view.bounds.size.width / 2,
-                                 view.bounds.size.height / 2)];
-  [_btChat addTarget:self
-                action:@selector(buttonChatAction:)
-      forControlEvents:UIControlEventTouchUpInside];
-  [view addSubview:_btChat];
-
-  [_btChat setHidden:NO];
-
-  //自动布局
-  [_btChat setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-  NSDictionary *views = NSDictionaryOfVariableBindings(_btChat);
-
-  [view addConstraints:[NSLayoutConstraint
-                           constraintsWithVisualFormat:@"V:|-10-[_btChat]"
-                                               options:0
-                                               metrics:nil
-                                                 views:views]];
-
-  [view addConstraints:[NSLayoutConstraint
-                           constraintsWithVisualFormat:@"H:|-10-[_btChat]-10-|"
-                                               options:0
-                                               metrics:nil
-                                                 views:views]];
-
-  self.tableView.tableFooterView = view;
-}
-
-- (void)buttonChatAction:(id)sender {
-  [self.navigationController popViewControllerAnimated:YES];
-}
-
 - (void)clickNotificationBtn:(id)sender {
   UISwitch *swch = sender;
   [[RCIMClient sharedRCIMClient]
       setConversationNotificationStatus:ConversationType_PRIVATE
       targetId:self.userId
-      isBlocked:!swch.on
+      isBlocked:swch.on
       success:^(RCConversationNotificationStatus nStatus) {
 
       }

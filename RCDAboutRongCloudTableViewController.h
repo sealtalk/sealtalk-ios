@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDAboutRongCloudTableViewController : UITableViewController
-@property(weak, nonatomic) IBOutlet UILabel *VersionLabel;
+
+@property (weak, nonatomic) IBOutlet UIImageView *NewVersionImage;
+
+@property (weak, nonatomic) IBOutlet UILabel *SDKVersionLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *SealTalkVersionLabel;
 
 @end

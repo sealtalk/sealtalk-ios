@@ -12,7 +12,7 @@
 
 - (void)awakeFromNib {
   self.ivAva.clipsToBounds = YES;
-  self.ivAva.layer.cornerRadius = 8.f;
+  self.ivAva.layer.cornerRadius = 5.f;
 }
 
 - (void)setSelected:(BOOL)selected {

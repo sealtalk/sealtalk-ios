@@ -36,15 +36,8 @@
   self.tabBarItem.selectedImage = [[UIImage imageNamed:@"square_hover"]
       imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
-  // Uncomment the following line to preserve selection between presentations.
-  // self.clearsSelectionOnViewWillAppear = NO;
-
-  // Uncomment the following line to display an Edit button in the navigation
-  // bar for this view controller.
-  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
   self.tableView.tableFooterView = [UIView new];
-  
+  [self.tableView setSeparatorColor:HEXCOLOR(0xdfdfdf)];
   if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
   }
@@ -135,16 +128,16 @@
   static NSString *CellIdentifier = @"RCDSquareTableViewCell";
   RCDSquareTableViewCell *cell = (RCDSquareTableViewCell *)[tableView
       dequeueReusableCellWithIdentifier:CellIdentifier];
-  cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
   NSArray *chatroomIcons = [[NSArray alloc]
       initWithObjects:@"icon_1-1", @"icon_2-1", @"icon_3-1", @"icon_4-1", nil];
-  // Configure the cell...
+
   cell.ChatroomName.text = chatRoomNames[indexPath.row];
   cell.ChatroomPortrait.image = [UIImage
       imageNamed:[NSString
                      stringWithFormat:@"%@", chatroomIcons[indexPath.row]]];
-
+  cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
+  cell.selectedBackgroundView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5" alpha:1.0];
   return cell;
 }
 
@@ -152,12 +145,13 @@
         viewForHeaderInSection:(NSInteger)section {
   UIView *sectionHeaderView = [[UIView alloc]
       initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width,
-                               35)];
+                               35.5)];
   sectionHeaderView.backgroundColor = HEXCOLOR(0xf0f0f6);
-  sectionHeaderView.layer.borderColor = [HEXCOLOR(0xdfdfdd) CGColor];
-  sectionHeaderView.layer.borderWidth = 0.5;
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 35.5-0.5, [[UIScreen mainScreen] bounds].size.width, 0.5)];
+    line.backgroundColor = HEXCOLOR(0xdfdfdf);
+    [sectionHeaderView addSubview:line];
 
-  UILabel *Title = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 200, 20)];
+  UILabel *Title = [[UILabel alloc] initWithFrame:CGRectMake(9, (35.5-20)/2.0, 200, 20)];
   [Title setTextColor:HEXCOLOR(0x000000)];
   [Title setFont:[UIFont systemFontOfSize:16.f]];
 
@@ -166,11 +160,9 @@
   case 0:
     Title.text = @"聊天室";
     break;
-
   default:
     break;
   }
-
   return sectionHeaderView;
 }
 
@@ -179,7 +171,7 @@
   CGFloat height;
   switch (indexPath.section) {
   case 0:
-    height = 68;
+    height = 68.5;
     break;
 
   default:
@@ -202,6 +194,7 @@
                       targetId:chatroomId];
   chatVC.title = chatRoomNames[indexPath.row];
   [self.navigationController pushViewController:chatVC animated:YES];
+   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - 本类私有方法
@@ -222,57 +215,5 @@
   chatVC.title = chatRoomNameArr[tag - 10];
   [self.navigationController pushViewController:chatVC animated:YES];
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath
-*)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView
-commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath]
-withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the
-array, and add a new row to the table view
-    }
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath
-*)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath
-*)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little
-preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

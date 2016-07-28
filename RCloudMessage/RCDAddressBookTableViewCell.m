@@ -13,8 +13,6 @@
 
 - (void)awakeFromNib {
   // Initialization code
-  //    _imgvAva.layer.masksToBounds = YES;
-  //    _imgvAva.layer.cornerRadius = 8.f;
   _acceptBtn = [[UIButton alloc] init];
   _acceptBtn.tag = self.tag;
   [_acceptBtn setTitle:@"接受" forState:UIControlStateNormal];

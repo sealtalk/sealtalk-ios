@@ -114,6 +114,13 @@
 @property(nonatomic, strong) NSString *lastestMessageUId;
 
 /*!
+ 会话中是否存在被@的消息
+ 
+ @discussion 在清除会话未读数（clearMessagesUnreadStatus:targetId:）的时候，会将此状态置成 NO。
+ */
+@property(nonatomic, assign) BOOL hasUnreadMentioned;
+
+/*!
  RCConversation初始化方法（已废弃，请勿使用）
 
  @param json    会话的json Dictionary

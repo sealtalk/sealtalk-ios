@@ -16,6 +16,7 @@
 #import "RCThemeDefine.h"
 #import "RCMessageBaseCell.h"
 #import "RCMessageModel.h"
+#import "RCConversationModel.h"
 
 ///输入栏扩展输入的唯一标示
 #define PLUGIN_BOARD_ITEM_ALBUM_TAG      1001
@@ -39,6 +40,8 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
      */
     RCCustomerService_RobotService
 };
+
+
 /*!
  聊天界面类
  */
@@ -64,6 +67,7 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  当前会话的会话类型
  */
 @property(nonatomic) RCConversationType conversationType;
+
 
 /*!
  目标会话ID
@@ -95,8 +99,6 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  聊天界面的CollectionView Layout
  */
 @property(nonatomic, strong) UICollectionViewFlowLayout *customFlowLayout;
-
-#pragma mark - 未读消息数
 
 #pragma mark 导航栏返回按钮中的未读消息数提示
 /*!
@@ -358,6 +360,15 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  @param model 消息Cell的数据模型
  */
 - (void)deleteMessage:(RCMessageModel *)model;
+
+#pragma mark 撤回消息
+/*!
+ 撤回消息并更新UI
+ 
+ @param messageId 被撤回的消息Id
+ @discussion 只有存储并发送成功的消息才可以撤回。
+ */
+- (void)recallMessage:(long)messageId;
 
 #pragma mark - 消息操作的回调
 
@@ -636,5 +647,16 @@ __deprecated_msg("已废弃，请勿使用。");
  @param newMode  新的客服服务模式。
  */
 - (void)onCustomerServiceModeChanged:(RCCSModeType)newMode;
+
+/*!
+ 输入框内输入了@符号，即将显示选人界面的回调
+ 
+ @param selectedBlock 选人后的回调
+ @param cancelBlock   取消选人的回调
+ 
+ @discussion 开发者如果想更换选人界面，可以重写方法，弹出自定义的选人界面，选人结束之后，调用selectedBlock传入选中的UserInfo即可。
+ */
+- (void)showChooseUserViewController:(void (^)(RCUserInfo *selectedUserInfo))selectedBlock
+                              cancel:(void (^)())cancelBlock;
 @end
 #endif

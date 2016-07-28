@@ -24,10 +24,10 @@
 
 @interface RCDContactViewController ()
 @property(strong, nonatomic) NSMutableArray *matchFriendList;
-@property(nonatomic, strong) NSDictionary *allFriendSectionDic;
 @property(strong, nonatomic) NSArray *defaultCellsTitle;
 @property(strong, nonatomic) NSArray *defaultCellsPortrait;
 @property (nonatomic, assign) BOOL hasSyncFriendList;
+@property (nonatomic, assign) BOOL isBeginSearch;
 
 @end
 
@@ -47,32 +47,51 @@
   self.allFriendSectionDic = [[NSDictionary alloc] init];
   
   self.friendsTabelView.tableFooterView = [UIView new];
-  float colorFloat = 249.f / 255.f;
-  self.friendsTabelView.backgroundColor =
-      [[UIColor alloc] initWithRed:colorFloat
-                             green:colorFloat
-                              blue:colorFloat
-                             alpha:1];
+  self.friendsTabelView.backgroundColor = HEXCOLOR(0xf0f0f6);
+  self.friendsTabelView.separatorColor = HEXCOLOR(0xdfdfdf);
+  
+  self.friendsTabelView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.friendsTabelView.bounds.size.width, 0.01f)];
+  
+  //设置右侧索引
+  self.friendsTabelView.sectionIndexBackgroundColor = [UIColor clearColor];
+  self.friendsTabelView.sectionIndexColor = HEXCOLOR(0x555555);
+  
+  if ([self.friendsTabelView respondsToSelector:@selector(setSeparatorInset:)]) {
+    [self.friendsTabelView setSeparatorInset:UIEdgeInsetsMake(0, 14, 0, 0)];
+  }
+  if ([self.friendsTabelView respondsToSelector:@selector(setLayoutMargins:)]) {
+    [self.friendsTabelView setLayoutMargins:UIEdgeInsetsMake(0, 14, 0, 0)];
+  }
+
+  UIImage* searchBarBg = [self GetImageWithColor:[UIColor clearColor] andHeight:32.0f];
+  //设置顶部搜索栏的背景图片
+  [self.searchFriendsBar setBackgroundImage:searchBarBg];
+  //设置顶部搜索栏的背景色
+  [self.searchFriendsBar setBackgroundColor:HEXCOLOR(0xf0f0f6)];
+  
+  //设置顶部搜索栏输入框的样式
+  UITextField *searchField = [self.searchFriendsBar valueForKey:@"_searchField"];
+  searchField.layer.borderWidth = 0.5f;
+  searchField.layer.borderColor = [HEXCOLOR(0xdfdfdf) CGColor];
+  searchField.layer.cornerRadius = 5.f;
+  self.searchFriendsBar.placeholder = @"搜索";
 
   self.defaultCellsTitle = [NSArray
       arrayWithObjects:@"新朋友", @"群组", @"公众号", @"我", nil];
   self.defaultCellsPortrait = [NSArray
-      arrayWithObjects:@"newFriend", @"defaultGroup", @"publicNumber", nil];
+      arrayWithObjects:@"newFriend", @"defaultGroup", @"publicNumber",@"contact_me", nil];
+  
+  _isBeginSearch = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
 
   [self.searchFriendsBar resignFirstResponder];
-  if ([self.matchFriendList count] > 0) {
-    return;
-  } else {
-    [self sortAndRefreshWithList:[self getAllFriendList]];
-  }
+  [self sortAndRefreshWithList:[self getAllFriendList]];
   UIButton *rightBtn =
-      [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 17, 17)];
-  [rightBtn setImage:[UIImage imageNamed:@"add_friend"]
-            forState:UIControlStateNormal];
+      [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 20)];
+  [rightBtn setImage:[UIImage imageNamed:@"add_friend"] forState:UIControlStateNormal];
   [rightBtn addTarget:self
                 action:@selector(pushAddFriend:)
       forControlEvents:UIControlEventTouchUpInside];
@@ -89,6 +108,20 @@
   self.tabBarController.navigationItem.title = @"通讯录";
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+  [super viewWillDisappear:animated];
+  if (_isBeginSearch == YES) {
+    [self sortAndRefreshWithList:[self getAllFriendList]];
+    _isBeginSearch = NO;
+    self.searchFriendsBar.showsCancelButton = NO;
+    [self.searchFriendsBar resignFirstResponder];
+    self.searchFriendsBar.text = @"";
+    [self.matchFriendList removeAllObjects];
+    [self.friendsTabelView setContentOffset:CGPointMake(0,0) animated:NO];
+  }
+}
+
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
@@ -99,7 +132,13 @@
  numberOfRowsInSection:(NSInteger)section {
   NSInteger rows = 0;
   if (section == 0) {
-    rows = 4;
+    if (_isBeginSearch == YES) {
+      rows = 0;
+    }
+    else
+    {
+      rows = 4;
+    }
   } else {
     NSString *letter = [self getFriendClassifiedLetterList][section -1];
     rows = [self.allFriendSectionDic[letter] count];
@@ -111,15 +150,34 @@
   return [self.allFriendSectionDic count] + 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView
-titleForHeaderInSection:(NSInteger)section {
-  NSString *title;
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
   if (section == 0) {
-    title = @"";
-  } else {
-   title = [self getFriendClassifiedLetterList][section -1];
+    return 0;
   }
-  return title;
+  return 21.f;
+}
+
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+  UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
+  view.frame = CGRectMake(0, 0, self.view.frame.size.width, 22);
+  view.backgroundColor = [UIColor clearColor];
+  
+  UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
+  title.frame = CGRectMake(13, 3, 15, 15);
+  title.font = [UIFont systemFontOfSize:15.f];
+  title.textColor = HEXCOLOR(0x999999);
+  
+  [view addSubview:title];
+  
+  if (section == 0) {
+    title.text = nil;
+  } else {
+    title.text = [self getFriendClassifiedLetterList][section -1];
+  }
+  
+  return view;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -133,7 +191,7 @@ titleForHeaderInSection:(NSInteger)section {
 
   if (indexPath.section == 0) {
     cell.nicknameLabel.text = [_defaultCellsTitle objectAtIndex:indexPath.row];
-    if (indexPath.row != 3) {
+
       [cell.portraitView
           setImage:[UIImage
                        imageNamed:[NSString
@@ -141,12 +199,6 @@ titleForHeaderInSection:(NSInteger)section {
                                           @"%@",
                                           [_defaultCellsPortrait
                                               objectAtIndex:indexPath.row]]]];
-    } else {
-      [cell.portraitView
-          sd_setImageWithURL:
-              [NSURL URLWithString:[DEFAULTS stringForKey:@"userPortraitUri"]]
-            placeholderImage:[UIImage imageNamed:@"icon_person"]];
-    }
   } else {
     NSString *letter = [self getFriendClassifiedLetterList][indexPath.section -1];
     NSArray *sectionUserInfoList = self.allFriendSectionDic[letter];
@@ -173,10 +225,10 @@ titleForHeaderInSection:(NSInteger)section {
     cell.portraitView.layer.cornerRadius = 20.f;
   } else {
     cell.portraitView.layer.masksToBounds = YES;
-    cell.portraitView.layer.cornerRadius = 6.f;
+    cell.portraitView.layer.cornerRadius = 5.f;
   }
   //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  cell.selectionStyle = UITableViewCellSelectionStyleNone;
+  cell.selectionStyle = UITableViewCellSelectionStyleDefault;
   cell.portraitView.contentMode = UIViewContentModeScaleAspectFill;
   cell.nicknameLabel.font = [UIFont systemFontOfSize:15.f];
   return cell;
@@ -184,7 +236,7 @@ titleForHeaderInSection:(NSInteger)section {
 
 - (CGFloat)tableView:(UITableView *)tableView
     heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 70.0;
+  return 55.5;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
@@ -243,16 +295,12 @@ titleForHeaderInSection:(NSInteger)section {
       break;
     }
   }
-  if ([self.matchFriendList count] > 0) {
-    user = self.matchFriendList[indexPath.row];
-  } else {
     NSString *letter = [self getFriendClassifiedLetterList][indexPath.section -1];
     NSArray *sectionUserInfoList = self.allFriendSectionDic[letter];
     user = sectionUserInfoList[indexPath.row];
     if ([user.status intValue] == 10) {
       return;
     }
-  }
   if (user == nil) {
     return;
   }
@@ -305,9 +353,15 @@ titleForHeaderInSection:(NSInteger)section {
   self.searchFriendsBar.text = @"";
   [self.matchFriendList removeAllObjects];
   [self sortAndRefreshWithList:[self getAllFriendList]];
+  _isBeginSearch = NO;
+  [self.friendsTabelView reloadData];
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+  if (_isBeginSearch == NO) {
+    _isBeginSearch = YES;
+    [self.friendsTabelView reloadData];
+  }
   self.searchFriendsBar.showsCancelButton = YES;
   return YES;
 }
@@ -425,6 +479,22 @@ titleForHeaderInSection:(NSInteger)section {
   RCDSearchFriendViewController *searchFirendVC =
   [RCDSearchFriendViewController searchFriendViewController];
   [self.navigationController pushViewController:searchFirendVC animated:YES];
+}
+
+
+- (UIImage*) GetImageWithColor:(UIColor*)color andHeight:(CGFloat)height
+{
+  CGRect r= CGRectMake(0.0f, 0.0f, 1.0f, height);
+  UIGraphicsBeginImageContext(r.size);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  
+  CGContextSetFillColorWithColor(context, [color CGColor]);
+  CGContextFillRect(context, r);
+  
+  UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  
+  return img;
 }
 
 @end

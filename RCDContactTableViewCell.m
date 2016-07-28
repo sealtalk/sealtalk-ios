@@ -7,6 +7,7 @@
 //
 
 #import "RCDContactTableViewCell.h"
+#import "UIColor+RCColor.h"
 
 @implementation RCDContactTableViewCell
 
@@ -33,7 +34,8 @@
 
   _nicknameLabel = [[UILabel alloc] init];
   _nicknameLabel.translatesAutoresizingMaskIntoConstraints = NO;
-  [_nicknameLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
+  [_nicknameLabel setFont:[UIFont fontWithName:@"Heiti SC" size:15.0]];
+  _nicknameLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];
   [self.contentView addSubview:_nicknameLabel];
 
   NSDictionary *views =
@@ -61,19 +63,21 @@
 
   [self.contentView
       addConstraints:[NSLayoutConstraint
-                         constraintsWithVisualFormat:@"V:[_portraitView(50)]"
+                         constraintsWithVisualFormat:@"V:[_portraitView(36)]"
                                              options:kNilOptions
                                              metrics:nil
                                                views:views]];
 
   [self.contentView
       addConstraints:[NSLayoutConstraint
-                         constraintsWithVisualFormat:@"H:|-15-[_portraitView("
-                                                     @"50)]-10-[_"
+                         constraintsWithVisualFormat:@"H:|-14-[_portraitView("
+                                                     @"36)]-9-[_"
                                                      @"nicknameLabel]-40-|"
                                              options:kNilOptions
                                              metrics:nil
                                                views:views]];
+  self.selectedBackgroundView = [[UIView alloc] initWithFrame:self.frame];
+  self.selectedBackgroundView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5" alpha:1.0];
 }
 
 - (void)awakeFromNib {

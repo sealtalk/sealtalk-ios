@@ -1,5 +1,5 @@
 //
-//  RCMessageCommonCell.h
+//  RCMessageCell.h
 //  RongIMKit
 //
 //  Created by xugang on 15/1/28.

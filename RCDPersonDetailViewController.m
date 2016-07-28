@@ -45,7 +45,7 @@
     self.ivAva.layer.cornerRadius = 30.f;
   } else {
     self.ivAva.clipsToBounds = YES;
-    self.ivAva.layer.cornerRadius = 6.f;
+    self.ivAva.layer.cornerRadius = 5.f;
   }
   if (self.userInfo.portraitUri.length == 0) {
     DefaultPortraitView *defaultPortrait =
@@ -92,6 +92,7 @@
   chatViewController.targetId = self.userInfo.userId;
   chatViewController.title = self.userInfo.name;
   chatViewController.needPopToRootView = YES;
+  chatViewController.displayUserNameInCell = NO;
   [self.navigationController pushViewController:chatViewController
                                        animated:YES];
 }
@@ -138,20 +139,6 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet
     clickedButtonAtIndex:(NSInteger)buttonIndex {
   switch (buttonIndex) {
-  //        case 0:
-  //        {
-  //            //解除好友关系
-  //            [RCDHTTPTOOL deleteFriend:self.userInfo.userId complete:^(BOOL
-  //            result) {
-  //               UIAlertView *alertView = [[UIAlertView alloc]
-  //               initWithTitle:nil message:@"删除好友成功！" delegate:nil
-  //               cancelButtonTitle:@"确定" otherButtonTitles:nil
-  //                , nil];
-  //                [alertView show];
-  //            }];
-  //
-  //        }
-  //            break;
   case 0: {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 

@@ -26,6 +26,7 @@
 #import "RCUploadImageStatusListener.h"
 #import "RCUserInfo.h"
 #import "RCWatchKitStatusDelegate.h"
+#import "RCCustomerServiceGroupItem.h"
 
 #pragma mark - 消息接收监听器
 
@@ -53,6 +54,16 @@
  object为您在设置消息接收监听时的key值。
  */
 - (void)onReceived:(RCMessage *)message left:(int)nLeft object:(id)object;
+
+@optional
+/*!
+ 消息被撤回的回调方法
+ 
+ @param messageId 被撤回的消息ID
+ 
+ @discussion 被撤回的消息会变更为RCRecallNotificationMessage，App需要在UI上刷新这条消息。
+ */
+- (void)onMessageRecalled:(long)messageId;
 
 @end
 
@@ -706,6 +717,18 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 - (void)sendReadReceiptMessage:(RCConversationType)conversationType
                       targetId:(NSString *)targetId
                           time:(long long)timestamp;
+
+/*!
+ 撤回消息
+ 
+ @param message      需要撤回的消息
+ @param successBlock 撤回成功的回调 [messageId:撤回的消息ID，该消息已经变更为新的消息]
+ @param errorBlock   撤回失败的回调 [errorCode:撤回失败错误码]
+ */
+- (void)recallMessage:(RCMessage *)message
+              success:(void (^)(long messageId))successBlock
+                error:(void(^)(RCErrorCode errorcode))errorBlock;
+
 #pragma mark - 消息操作
 
 /*!
@@ -809,6 +832,19 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
                          success:(void (^)(NSArray *messages))successBlock
                            error:(void (^)(RCErrorCode status))errorBlock;
 
+/*!
+ 获取会话中@提醒自己的消息
+ 
+ @param conversationType    会话类型
+ @param targetId            目标会话ID
+ 
+ @discussion
+ 此方法从本地获取被@提醒的消息(最多返回10条信息)
+ @warning 使用 IMKit 注意在进入会话页面前调用，否则在进入会话清除未读数的接口 clearMessagesUnreadStatus: targetId:
+ 以及 设置消息接收状态接口 setMessageReceivedStatus:receivedStatus:会同步清除被提示信息状态。
+ */
+- (NSArray *)getUnreadMentionedMessages:(RCConversationType)conversationType
+                               targetId:(NSString *)targetId;
 /*!
  获取消息的发送时间（Unix时间戳、毫秒）
 
@@ -1668,11 +1704,13 @@ getConversationNotificationStatus:(RCConversationType)conversationType
  errMsg:错误信息]
  @param modeTypeBlock           客服模式变化
  @param pullEvaluationBlock     客服请求评价
+ @param selectGroupBlock        客服分组选择
  @param quitBlock
  客服被动结束。如果主动调用stopCustomerService，则不会调用到该block
 
  @discussion
  有些客服提供商可能会主动邀请评价，有些不会，所以用lib开发客服需要注意对pullEvaluationBlock的处理。在pullEvaluationBlock里应该弹出评价。如果pullEvaluationBlock没有被调用到，需要在结束客服时（之前之后都可以）弹出评价框并评价。
+ 如果客服有分组，selectGroupBlock会被回调，此时必须让用户选择分组然后调用selectCustomerServiceGroup:withGroupId:。
 
  @warning
  如果你使用IMKit，请不要使用此方法。RCConversationViewController默认已经做了处理。
@@ -1684,7 +1722,9 @@ startCustomerService:(NSString *)kefuId
              onError:(void (^)(int errorCode, NSString *errMsg))errorBlock
           onModeType:(void (^)(RCCSModeType mode))modeTypeBlock
     onPullEvaluation:(void (^)(NSString *dialogId))pullEvaluationBlock
+       onSelectGroup:(void (^)(NSArray <RCCustomerServiceGroupItem*> *groupList))selectGroupBlock
               onQuit:(void (^)(NSString *quitMsg))quitBlock;
+
 
 /*!
  结束客服聊天
@@ -1696,6 +1736,17 @@ startCustomerService:(NSString *)kefuId
  如果你使用IMKit，请不要使用此方法。RCConversationViewController默认已经做了处理。
  */
 - (void)stopCustomerService:(NSString *)kefuId;
+
+/*!
+ 选择客服分组模式
+ 
+ @param kefuId       客服ID
+ @param groupId       选择的客服分组id
+ @discussion 此方法依赖startCustomerService方法，只有调用成功以后才有效。
+ @warning
+ 如果你使用IMKit，请不要使用此方法。RCConversationViewController默认已经做了处理。
+ */
+- (void)selectCustomerServiceGroup:(NSString *)kefuId withGroupId:(NSString *)groupId;
 
 /*!
  切换客服模式
@@ -1749,5 +1800,13 @@ startCustomerService:(NSString *)kefuId
                        dialogId:(NSString *)dialogId
                      humanValue:(int)value
                         suggest:(NSString *)suggest;
+
+#pragma mark - Log
+
+/*!
+ *  设置日志级别
+ */
+@property (nonatomic, assign) RCLogLevel logLevel;
+
 @end
 #endif

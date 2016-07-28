@@ -12,7 +12,6 @@
 #import "MobClick.h"
 #import "RCDCommonDefine.h"
 #import "RCDHttpTool.h"
-#import "RCDLoginInfo.h"
 #import "RCDLoginViewController.h"
 #import "RCDRCIMDataSource.h"
 #import "RCDTestMessage.h"
@@ -24,6 +23,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <RongCallKit/RongCallKit.h>
 #import <RongIMKit/RongIMKit.h>
+#import "RCDNavigationViewController.h"
 
 
 #warning 红包相关
@@ -93,18 +93,15 @@
   //设置会话列表头像和会话界面头像
 
   [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
-  if (iPhone6Plus) {
-    [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(56, 56);
-  } else {
-    NSLog(@"iPhone6 %d", iPhone6);
-    [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
-  }
+  
+  [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
   //    [RCIM sharedRCIM].portraitImageViewCornerRadius = 10;
   //开启用户信息和群组信息的持久化
   [RCIM sharedRCIM].enablePersistentUserInfoCache = YES;
   //设置用户信息源和群组信息源
   [RCIM sharedRCIM].userInfoDataSource = RCDDataSource;
   [RCIM sharedRCIM].groupInfoDataSource = RCDDataSource;
+
   //设置群组内用户信息源。如果不使用群名片功能，可以不设置
   //  [RCIM sharedRCIM].groupUserInfoDataSource = RCDDataSource;
   //  [RCIM sharedRCIM].enableMessageAttachUserInfo = YES;
@@ -120,6 +117,16 @@
   [RCIM sharedRCIM].showUnkownMessage = YES;
   [RCIM sharedRCIM].showUnkownMessageNotificaiton = YES;
 
+  //群成员数据源
+  [RCIM sharedRCIM].groupMemberDataSource = RCDDataSource;
+  
+  //开启消息@功能（只支持群聊和讨论组, App需要实现群成员数据源groupMemberDataSource）
+  [RCIM sharedRCIM].enableMessageMentioned = YES;
+  
+  //开启消息撤回功能
+  [RCIM sharedRCIM].enableMessageRecall = YES;
+  
+  
   //    //设置头像为圆形
   //    [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
   //    [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
@@ -194,7 +201,7 @@
           dispatch_async(dispatch_get_main_queue(), ^{
             UIStoryboard *storyboard =
                 [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UINavigationController *rootNavi = [storyboard
+            RCDNavigationViewController *rootNavi = [storyboard
                 instantiateViewControllerWithIdentifier:@"rootNavi"];
             self.window.rootViewController = rootNavi;
           });
@@ -203,8 +210,8 @@
           dispatch_async(dispatch_get_main_queue(), ^{
             RCDLoginViewController *loginVC =
                 [[RCDLoginViewController alloc] init];
-            UINavigationController *_navi = [[UINavigationController alloc]
-                initWithRootViewController:loginVC];
+            RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
+                                                  initWithRootViewController:loginVC];
             self.window.rootViewController = _navi;
             UIAlertView *alertView =
                 [[UIAlertView alloc] initWithTitle:nil
@@ -222,8 +229,8 @@
     // [loginVC defaultLogin];
     // RCDLoginViewController* loginVC = [storyboard
     // instantiateViewControllerWithIdentifier:@"loginVC"];
-    UINavigationController *_navi =
-        [[UINavigationController alloc] initWithRootViewController:loginVC];
+    RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
+                                          initWithRootViewController:loginVC];
     self.window.rootViewController = _navi;
   }
 
@@ -280,6 +287,19 @@
          selector:@selector(didReceiveMessageNotification:)
              name:RCKitDispatchMessageNotification
            object:nil];
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-1.5, 0)  forBarMetrics:UIBarMetricsDefault];
+    UIImage *tmpImage = [UIImage imageNamed:@"back"];
+    
+    CGSize newSize = CGSizeMake(12, 20);
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0f);
+    [tmpImage drawInRect:CGRectMake(2, -2, newSize.width, newSize.height)];
+    UIImage *backButtonImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [[UINavigationBar appearance] setBackIndicatorImage:backButtonImage];
+    [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:backButtonImage];
+    if (IOS_FSystenVersion >= 8.0) {
+        [UINavigationBar appearance].translucent = NO;
+    }
 
   //    NSArray *groups = [self getAllGroupInfo];
   //    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:groups];
@@ -507,8 +527,8 @@
         [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     RCDLoginViewController *loginVC =
         [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
-    UINavigationController *navi =
-        [[UINavigationController alloc] initWithRootViewController:loginVC];
+    RCDNavigationViewController *navi = [[RCDNavigationViewController alloc]
+                                          initWithRootViewController:loginVC];
     self.window.rootViewController = navi;
   }
   [[RCIMClient sharedRCIMClient] disconnect:NO];
@@ -534,8 +554,8 @@
     UIAlertView *alert = [[UIAlertView alloc]
             initWithTitle:@"提示"
                   message:
-                      @"您"
-                      @"的帐号在别的设备上登录，您被迫下线！"
+                      @"您的帐号在别的设备上登录，"
+                      @"您被迫下线！"
                  delegate:nil
         cancelButtonTitle:@"知道了"
         otherButtonTitles:nil, nil];
@@ -544,8 +564,8 @@
     // [loginVC defaultLogin];
     // RCDLoginViewController* loginVC = [storyboard
     // instantiateViewControllerWithIdentifier:@"loginVC"];
-    UINavigationController *_navi =
-        [[UINavigationController alloc] initWithRootViewController:loginVC];
+    RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
+                                          initWithRootViewController:loginVC];
     self.window.rootViewController = _navi;
   } else if (status == ConnectionStatus_TOKEN_INCORRECT) {
     dispatch_async(dispatch_get_main_queue(), ^{

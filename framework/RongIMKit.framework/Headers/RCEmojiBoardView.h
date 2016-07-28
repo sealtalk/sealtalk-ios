@@ -1,5 +1,5 @@
 //
-//  RCEmojiView.h
+//  RCEmojiBoardView.h
 //  RCIM
 //
 //  Created by Heq.Shinoda on 14-5-29.
@@ -71,5 +71,8 @@
  加载表情Label
  */
 - (void)loadLabelView;
-
+/*!
+发送按钮是否可点击
+ */
+- (void)enableSendButton:(BOOL)sender;
 @end

@@ -18,7 +18,7 @@
  */
 @interface RCDRCIMDataSource
     : NSObject <RCIMUserInfoDataSource, RCIMGroupInfoDataSource,
-                RCIMGroupUserInfoDataSource, RCCallGroupMemberDataSource>
+                RCIMGroupUserInfoDataSource, RCCallGroupMemberDataSource, RCIMGroupMemberDataSource>
 
 + (RCDRCIMDataSource *)shareInstance;
 
@@ -38,10 +38,6 @@
  */
 - (void)syncFriendList:(NSString *)userId
               complete:(void (^)(NSMutableArray *friends))completion;
-/*
- * 当客户端第一次运行时，调用此接口初始化所有用户数据。
- */
-- (void)cacheAllData:(void (^)())completion;
 /*
  * 获取所有用户信息
  */

@@ -33,7 +33,7 @@
 
     _ivAva = [UIImageView new];
     _ivAva.clipsToBounds = YES;
-    _ivAva.layer.cornerRadius = 6.0f;
+    _ivAva.layer.cornerRadius = 5.0f;
     if ([[RCIM sharedRCIM] globalConversationAvatarStyle] ==
         RC_USER_AVATAR_CYCLE) {
       _ivAva.layer.cornerRadius =
@@ -72,80 +72,89 @@
         _ivAva, _lblName, _lblDetail, _labelTime);
 
     [self addConstraints:
-              [NSLayoutConstraint
-                  constraintsWithVisualFormat:@"V:|-11-[_labelTime(20)]"
-                                      options:0
-                                      metrics:nil
-                                        views:NSDictionaryOfVariableBindings(
-                                                  _labelTime)]];
-
+     [NSLayoutConstraint
+      constraintsWithVisualFormat:@"V:|-11-[_labelTime(20)]"
+      options:0
+      metrics:nil
+      views:NSDictionaryOfVariableBindings(
+                                           _labelTime)]];
+    
     [self addConstraints:
-              [NSLayoutConstraint
-                  constraintsWithVisualFormat:@"H:[_labelTime(200)]-11-|"
-                                      options:0
-                                      metrics:nil
-                                        views:NSDictionaryOfVariableBindings(
-                                                  _labelTime)]];
-
+     [NSLayoutConstraint
+      constraintsWithVisualFormat:@"H:[_labelTime(200)]-11-|"
+      options:0
+      metrics:nil
+      views:NSDictionaryOfVariableBindings(
+                                           _labelTime)]];
+    
     [self addConstraints:
-              [NSLayoutConstraint
-                  constraintsWithVisualFormat:@"H:|-13-[_ivAva(width)]"
-                                      options:0
-                                      metrics:@{
-                                        @"width" : @(
-                                            [RCIM sharedRCIM]
-                                                .globalConversationPortraitSize
-                                                .width)
-                                      }
-                                        views:NSDictionaryOfVariableBindings(
-                                                  _ivAva)]];
-
+     [NSLayoutConstraint
+      constraintsWithVisualFormat:@"H:|-13-[_ivAva(width)]"
+      options:0
+      metrics:@{
+                @"width" : @(
+                  [RCIM sharedRCIM]
+                  .globalConversationPortraitSize
+                  .width)
+                }
+      views:NSDictionaryOfVariableBindings(
+                                           _ivAva)]];
+    
     [self addConstraints:
-              [NSLayoutConstraint
-                  constraintsWithVisualFormat:@"V:|-10-[_ivAva(height)]"
-                                      options:0
-                                      metrics:@{
-                                        @"height" : @(
-                                            [RCIM sharedRCIM]
-                                                .globalConversationPortraitSize
-                                                .height)
-                                      }
-                                        views:NSDictionaryOfVariableBindings(
-                                                  _ivAva)]];
-
+     [NSLayoutConstraint
+      constraintsWithVisualFormat:@"V:|-10-[_ivAva(height)]"
+      options:0
+      metrics:@{
+                @"height" : @(
+                  [RCIM sharedRCIM]
+                  .globalConversationPortraitSize
+                  .height)
+                }
+      views:NSDictionaryOfVariableBindings(
+                                           _ivAva)]];
+    
     [self addConstraints:[NSLayoutConstraint
-                             constraintsWithVisualFormat:
-                                 @"V:[_lblName(18)]-[_lblDetail(18)]"
-                                                 options:kNilOptions
-                                                 metrics:kNilOptions
-                                                   views:_bindingViews]];
-
+                          constraintsWithVisualFormat:
+                          @"V:[_lblName(18)]-[_lblDetail(18)]"
+                          options:kNilOptions
+                          metrics:kNilOptions
+                          views:_bindingViews]];
+    
     [self addConstraint:[NSLayoutConstraint
-                            constraintWithItem:_lblName
-                                     attribute:NSLayoutAttributeTop
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:_ivAva
-                                     attribute:NSLayoutAttributeTop
-                                    multiplier:1.0
-                                      constant:2.f]];
-
+                         constraintWithItem:_lblName
+                         attribute:NSLayoutAttributeTop
+                         relatedBy:NSLayoutRelationEqual
+                         toItem:_ivAva
+                         attribute:NSLayoutAttributeTop
+                         multiplier:1.0
+                         constant:2.f]];
+    
     [self addConstraint:[NSLayoutConstraint
-                            constraintWithItem:_lblName
-                                     attribute:NSLayoutAttributeLeft
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:_ivAva
-                                     attribute:NSLayoutAttributeRight
-                                    multiplier:1.0
-                                      constant:8]];
-
+                         constraintWithItem:_lblName
+                         attribute:NSLayoutAttributeLeft
+                         relatedBy:NSLayoutRelationEqual
+                         toItem:_ivAva
+                         attribute:NSLayoutAttributeRight
+                         multiplier:1.0
+                         constant:8]];
+    
     [self addConstraint:[NSLayoutConstraint
-                            constraintWithItem:_lblDetail
-                                     attribute:NSLayoutAttributeLeft
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:_lblName
-                                     attribute:NSLayoutAttributeLeft
-                                    multiplier:1.0
-                                      constant:1]];
+                         constraintWithItem:_lblDetail
+                         attribute:NSLayoutAttributeLeft
+                         relatedBy:NSLayoutRelationEqual
+                         toItem:_lblName
+                         attribute:NSLayoutAttributeLeft
+                         multiplier:1.0
+                         constant:1]];
+    
+    [self addConstraint:[NSLayoutConstraint
+                         constraintWithItem:_lblDetail
+                         attribute:NSLayoutAttributeRight
+                         relatedBy:NSLayoutRelationEqual
+                         toItem:_labelTime
+                         attribute:NSLayoutAttributeRight
+                         multiplier:1.0
+                         constant:-30]];
   }
   return self;
 }

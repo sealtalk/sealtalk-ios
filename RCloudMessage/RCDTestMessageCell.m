@@ -81,13 +81,13 @@
   //拉伸图片
   if (MessageDirection_RECEIVE == self.messageDirection) {
     self.textLabel.frame =
-        CGRectMake(20, 5, textLabelSize.width, textLabelSize.height);
+        CGRectMake(20, 7, textLabelSize.width, textLabelSize.height);
 
     messageContentViewRect.size.width = bubbleBackgroundViewSize.width;
     self.messageContentView.frame = messageContentViewRect;
 
     self.bubbleBackgroundView.frame = CGRectMake(
-        -8, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
+        0, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
     UIImage *image = [RCKitUtility imageNamed:@"chat_from_bg_normal"
                                      ofBundle:@"RongCloud.bundle"];
     self.bubbleBackgroundView.image = [image
@@ -97,17 +97,18 @@
                                                      image.size.width * 0.2)];
   } else {
     self.textLabel.frame =
-        CGRectMake(12, 5, textLabelSize.width, textLabelSize.height);
+        CGRectMake(12, 7, textLabelSize.width, textLabelSize.height);
 
     messageContentViewRect.size.width = bubbleBackgroundViewSize.width;
+    messageContentViewRect.size.height = bubbleBackgroundViewSize.height;
     messageContentViewRect.origin.x =
         self.baseContentView.bounds.size.width -
-        (messageContentViewRect.size.width + 12 +
+        (messageContentViewRect.size.width + 9 +
          [RCIM sharedRCIM].globalMessagePortraitSize.width + 10);
     self.messageContentView.frame = messageContentViewRect;
 
     self.bubbleBackgroundView.frame = CGRectMake(
-        8, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
+        0, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
     UIImage *image = [RCKitUtility imageNamed:@"chat_to_bg_normal"
                                      ofBundle:@"RongCloud.bundle"];
     self.bubbleBackgroundView.image = [image
@@ -160,10 +161,10 @@
   } else {
     bubbleSize.width = 50;
   }
-  if (bubbleSize.height + 5 + 5 > 35) {
-    bubbleSize.height = bubbleSize.height + 5 + 5;
+  if (bubbleSize.height + 7 + 7 > 40) {
+    bubbleSize.height = bubbleSize.height + 7 + 7;
   } else {
-    bubbleSize.height = 35;
+    bubbleSize.height = 40;
   }
 
   return bubbleSize;

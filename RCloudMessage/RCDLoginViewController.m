@@ -12,7 +12,6 @@
 #import "RCDCommonDefine.h"
 #import "RCDFindPswViewController.h"
 #import "RCDHttpTool.h"
-#import "RCDLoginInfo.h"
 #import "RCDLoginViewController.h"
 #import "RCDRCIMDataSource.h"
 #import "RCDRegisterViewController.h"
@@ -25,7 +24,10 @@
 #import <RongIMKit/RongIMKit.h>
 #import "UIColor+RCColor.h"
 #import "RedpacketConfig.h"
-@interface RCDLoginViewController () <UITextFieldDelegate>
+#import "RCDNavigationViewController.h"
+
+@interface RCDLoginViewController () <UITextFieldDelegate, RCIMConnectionStatusDelegate>
+
 
 @property(retain, nonatomic) IBOutlet RCAnimatedImagesView *animatedImagesView;
 
@@ -46,6 +48,12 @@
 @property(nonatomic, strong) UIButton *changeKeyButton;
 @property(nonatomic) int loginFailureTimes;
 @property(nonatomic) BOOL rcDebug;
+
+@property(nonatomic, strong) NSString *loginUserName;
+@property(nonatomic, strong) NSString *loginUserId;
+@property(nonatomic, strong) NSString *loginToken;
+@property(nonatomic, strong) NSString *loginPassword;
+
 @end
 
 @implementation RCDLoginViewController
@@ -615,9 +623,9 @@ MBProgressHUD *hud;
 }
 
 - (void)loginSuccess:(NSString *)userName
-            password:(NSString *)password
+              userId:(NSString *)userId
                token:(NSString *)token
-              userId:(NSString *)userId {
+            password:(NSString *)password {
   //保存默认用户
   [DEFAULTS setObject:userName forKey:@"userName"];
   [DEFAULTS setObject:password forKey:@"userPwd"];
@@ -659,21 +667,10 @@ MBProgressHUD *hud;
   [RCDDataSource syncFriendList:userId
                        complete:^(NSMutableArray *friends){
                        }];
-  BOOL notFirstTimeLogin = [DEFAULTS boolForKey:@"notFirstTimeLogin"];
-  if (!notFirstTimeLogin) {
-    [RCDDataSource cacheAllData:^{
-        // auto saved after completion.
-        //                                                   [DEFAULTS
-        //                                                   setBool:YES
-        //                                                   forKey:@"notFirstTimeLogin"];
-        //                                                   [DEFAULTS
-        //                                                   synchronize];
-    }];
-  }
   dispatch_async(dispatch_get_main_queue(), ^{
     UIStoryboard *storyboard =
         [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UINavigationController *rootNavi =
+    RCDNavigationViewController *rootNavi =
         [storyboard instantiateViewControllerWithIdentifier:@"rootNavi"];
     [ShareApplicationDelegate window].rootViewController = rootNavi;
 
@@ -687,43 +684,53 @@ MBProgressHUD *hud;
  *  @param password 密码
  */
 - (void)loginRongCloud:(NSString *)userName
+                userId:(NSString *)userId
                  token:(NSString *)token
               password:(NSString *)password {
+  self.loginUserName = userName;
+  self.loginUserId = userId;
+  self.loginToken = token;
+  self.loginPassword = password;
+  
   //登陆融云服务器
   [[RCIM sharedRCIM] connectWithToken:token
       success:^(NSString *userId) {
         NSLog([NSString
                   stringWithFormat:@"token is %@  userId is %@", token, userId],
               nil);
-        [self loginSuccess:userName
-                  password:password
-                     token:token
-                    userId:userId];
+        self.loginUserId = userId;
+        [self loginSuccess:self.loginUserName userId:self.loginUserId token:self.loginToken password:self.loginPassword];
       }
       error:^(RCConnectErrorCode status) {
         //关闭HUD
         [hud hide:YES];
         NSLog(@"RCConnectErrorCode is %ld", (long)status);
-        _errorMsgLb.text = @"Token无效！";
+        _errorMsgLb.text = [NSString stringWithFormat:@"登陆失败！Status: %zd", status];
         [_pwdTextField shake];
-
+        
+        //SDK会自动重连登陆，这时候需要监听连接状态
+        [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
       }
       tokenIncorrect:^{
         NSLog(@"IncorrectToken");
 
-                if (_loginFailureTimes<1) {
-                    _loginFailureTimes++;
-                  [AFHttpTool getTokenSuccess:^(id response) {
-                    [self loginRongCloud:userName
-                                   token:response[@"result"][@"token"]
-                                password:password];
-                  } failure:^(NSError *err) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                      [hud hide:YES];
-                      _errorMsgLb.text=@"Token无效";
-                    });
-                  }];
-                }
+        if (_loginFailureTimes < 1) {
+          _loginFailureTimes++;
+          [AFHttpTool getTokenSuccess:^(id response) {
+            NSString *token = response[@"result"][@"token"];
+            NSString *userId = response[@"result"][@"userId"];
+            [self loginRongCloud:userName
+                          userId:userId
+                           token:token
+                        password:password];
+          }
+              failure:^(NSError *err) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                  [hud hide:YES];
+                  _errorMsgLb.text = @"Token无效！";
+                });
+              }];
+        }
       }];
 }
 
@@ -757,11 +764,8 @@ MBProgressHUD *hud;
         success:^(id response) {
           if ([response[@"code"] intValue] == 200) {
             NSString *token = response[@"result"][@"token"];
-            RCDLoginInfo *loginInfo = [RCDLoginInfo shareLoginInfo];
-            loginInfo =
-                [loginInfo initWithDictionary:response[@"result"] error:NULL];
-            [self loginRongCloud:userName token:token password:password];
-
+            NSString *userId = response[@"result"][@"id"];
+            [self loginRongCloud:userName userId:userId token:token password:password];
           } else {
             //关闭HUD
             [hud hide:YES];
@@ -777,47 +781,6 @@ MBProgressHUD *hud;
           [hud hide:YES];
           _errorMsgLb.text = @"登录失败，请检查网络。";
         }];
-
-    //        [AFHttpTool loginWithEmail:userName password:password
-    //        env:(self.currentModel == nil ? 1 : self.currentModel.env)
-    //            success:^(id response) {
-    //               if ([response[@"code"] intValue] == 200) {
-    //                   NSString *token = response[@"result"][@"token"];
-    //                   RCDLoginInfo *loginInfo = [RCDLoginInfo
-    //                   shareLoginInfo];
-    //                   loginInfo = [loginInfo
-    //                   initWithDictionary:response[@"result"] error:NULL];
-    //                   [self loginRongCloud:userName token:token
-    //                   password:password];
-    //               }else{
-    //                   //关闭HUD
-    //                   [hud hide:YES];
-    //                   int _errCode = [response[@"code"] intValue];
-    //                   NSLog(@"NSError is %d",_errCode);
-    //                   if(_errCode==500)
-    //                   {
-    //                       _errorMsgLb.text=@"APP服务器错误！";
-    //
-    //                   }else
-    //                   {
-    //                       _errorMsgLb.text=@"用户名或密码错误！";
-    //                   }
-    //                   [_pwdTextField shake];
-    //               }
-    //            }
-    //            failure:^(NSError* err) {
-    //               //关闭HUD
-    //               [hud hide:YES];
-    //               NSLog(@"NSError is %ld",(long)err.code);
-    //               if (err.code == 3840) {
-    //                   _errorMsgLb.text=@"用户名或密码错误！";
-    //                   [_pwdTextField shake];
-    //               }else{
-    //                   _errorMsgLb.text=@"DemoServer错误！";
-    //                   [_pwdTextField shake];
-    //               }
-    //
-    //            }];
   } else {
     _errorMsgLb.text = @"请检查手机号和密码";
   }
@@ -851,6 +814,39 @@ MBProgressHUD *hud;
     return NO;
   }
   return YES;
+}
+
+- (void)onRCIMConnectionStatusChanged:(RCConnectionStatus)status {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    if (status == ConnectionStatus_Connected) {
+      [RCIM sharedRCIM].connectionStatusDelegate = (id<RCIMConnectionStatusDelegate>)[UIApplication sharedApplication].delegate;
+      [self loginSuccess:self.loginUserName userId:self.loginUserId token:self.loginToken password:self.loginPassword];
+    } else if (status == ConnectionStatus_NETWORK_UNAVAILABLE) {
+      self.errorMsgLb.text = @"当前网络不可用，请检查！";
+    } else if (status == ConnectionStatus_KICKED_OFFLINE_BY_OTHER_CLIENT) {
+      self.errorMsgLb.text = @"您的帐号在别的设备上登录，您被迫下线！";
+    } else if (status == ConnectionStatus_TOKEN_INCORRECT) {
+      self.errorMsgLb.text = @"Token无效！";
+      if (self.loginFailureTimes < 1) {
+        self.loginFailureTimes++;
+        [AFHttpTool getTokenSuccess:^(id response) {
+          self.loginToken = response[@"result"][@"token"];
+          self.loginUserId = response[@"result"][@"userId"];
+          [self loginRongCloud:self.loginUserName
+                        userId:self.loginUserId
+                         token:self.loginToken
+                      password:self.loginPassword];
+        } failure:^(NSError *err) {
+          dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hide:YES];
+            self.errorMsgLb.text = @"Token无效！";
+          });
+        }];
+      }
+    } else {
+      NSLog(@"RCConnectErrorCode is %zd", status);
+    }
+  });
 }
 
 - (NSUInteger)animatedImagesNumberOfImages:

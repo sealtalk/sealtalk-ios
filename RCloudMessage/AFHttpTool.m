@@ -84,15 +84,6 @@
         success:^(AFHTTPRequestOperation *operation,
                   NSDictionary *responseObj) {
           if (success) {
-            //                      NSString *cookieString = [[NSUserDefaults
-            //                      standardUserDefaults]
-            //                      objectForKey:@"UserCookies"];
-            //
-            //                      if(cookieString)
-            //                      {
-            //                         success(responseObj);
-            //                          return;
-            //                      }
             if ([url isEqualToString:@"user/login"]) {
               NSString *cookieString = [[operation.response allHeaderFields]
                   valueForKey:@"Set-Cookie"];
@@ -123,26 +114,6 @@
   default:
     break;
   }
-}
-
-// login
-+ (void)loginWithEmail:(NSString *)email
-              password:(NSString *)password
-                   env:(int)env
-               success:(void (^)(id response))success
-               failure:(void (^)(NSError *err))failure {
-  NSDictionary *params = @{
-    @"email" : email,
-    @"password" : password,
-    @"env" : [NSString stringWithFormat:@"%d", env]
-  };
-  //    [[NSUserDefaults standardUserDefaults] removeObjectForKey
-  //    :@"UserCookies"];
-  [AFHttpTool requestWihtMethod:RequestMethodTypePost
-                            url:@"email_login_token"
-                         params:params
-                        success:success
-                        failure:failure];
 }
 
 // check phone available
@@ -328,27 +299,6 @@
                 failure:failure];
 }
 
-// reg email mobile username password
-+ (void)registerWithEmail:(NSString *)email
-                   mobile:(NSString *)mobile
-                 userName:(NSString *)userName
-                 password:(NSString *)password
-                  success:(void (^)(id response))success
-                  failure:(void (^)(NSError *err))failure {
-
-  NSDictionary *params = @{
-    @"email" : email,
-    @"mobile" : mobile,
-    @"username" : userName,
-    @"password" : password
-  };
-  [AFHttpTool requestWihtMethod:RequestMethodTypePost
-                            url:@"reg"
-                         params:params
-                        success:success
-                        failure:failure];
-}
-
 // get token
 + (void)getTokenSuccess:(void (^)(id response))success
                 failure:(void (^)(NSError *err))failure {
@@ -471,23 +421,8 @@
                         failure:failure];
 }
 
-// get groups
-+ (void)getAllGroupsSuccess:(void (^)(id response))success
-                    failure:(void (^)(NSError *err))failure {
-  [AFHttpTool requestWihtMethod:RequestMethodTypeGet
-                            url:@"get_all_group"
-                         params:nil
-                        success:success
-                        failure:failure];
-}
-
 + (void)getMyGroupsSuccess:(void (^)(id response))success
                    failure:(void (^)(NSError *err))failure {
-  //    [AFHttpTool requestWihtMethod:RequestMethodTypeGet
-  //                              url:@"get_my_group"
-  //                           params:nil
-  //                          success:success
-  //                          failure:failure];
   [AFHttpTool requestWihtMethod:RequestMethodTypeGet
                             url:@"user/groups"
                          params:nil
@@ -499,11 +434,6 @@
 + (void)getGroupByID:(NSString *)groupID
              success:(void (^)(id response))success
              failure:(void (^)(NSError *err))failure {
-  //    [AFHttpTool requestWihtMethod:RequestMethodTypeGet
-  //                              url:@"get_group"
-  //                           params:@{@"id":groupID}
-  //                          success:success
-  //                          failure:failure];
   [AFHttpTool requestWihtMethod:RequestMethodTypeGet
                             url:[NSString stringWithFormat:@"group/%@", groupID]
                          params:nil
@@ -614,112 +544,15 @@
                         failure:failure];
 }
 
-// create group
-+ (void)createGroupWithName:(NSString *)name
-                    success:(void (^)(id response))success
-                    failure:(void (^)(NSError *err))failure {
-  [AFHttpTool requestWihtMethod:RequestMethodTypePost
-                            url:@"create_group"
-                         params:@{
-                           @"name" : name
-                         }
-                        success:success
-                        failure:failure];
-}
-
-// join group
-+ (void)joinGroupByID:(int)groupID
-              success:(void (^)(id response))success
-              failure:(void (^)(NSError *err))failure {
-  [AFHttpTool requestWihtMethod:RequestMethodTypeGet
-                            url:@"join_group"
-                         params:@{
-                           @"id" : [NSNumber numberWithInt:groupID]
-                         }
-                        success:success
-                        failure:failure];
-}
-
-// quit group
-+ (void)quitGroupByID:(int)groupID
-              success:(void (^)(id response))success
-              failure:(void (^)(NSError *err))failure {
-  [AFHttpTool requestWihtMethod:RequestMethodTypeGet
-                            url:@"quit_group"
-                         params:@{
-                           @"id" : [NSNumber numberWithInt:groupID]
-                         }
-                        success:success
-                        failure:failure];
-}
-
-+ (void)updateGroupByID:(int)groupID
-          withGroupName:(NSString *)groupName
-      andGroupIntroduce:(NSString *)introduce
-                success:(void (^)(id))success
-                failure:(void (^)(NSError *))failure {
-  [AFHttpTool requestWihtMethod:RequestMethodTypePost
-                            url:@"update_group"
-                         params:@{
-                           @"id" : [NSNumber numberWithInt:groupID],
-                           @"name" : groupName,
-                           @"introduce" : introduce
-                         }
-                        success:success
-                        failure:failure];
-}
-
-+ (void)getFriendListFromServer:(NSString *)userId
-                        Success:(void (^)(id))success
++ (void)getFriendListFromServerSuccess:(void (^)(id))success
                         failure:(void (^)(NSError *))failure {
   //获取除自己之外的好友信息
   [AFHttpTool
       requestWihtMethod:RequestMethodTypeGet
-                    url:[NSString stringWithFormat:@"friendship/all?userId=%@",
-                                                   userId]
+                    url:[NSString stringWithFormat:@"friendship/all"]
                  params:nil
                 success:success
                 failure:failure];
-}
-
-+ (void)searchFriendListByEmail:(NSString *)email
-                        success:(void (^)(id))success
-                        failure:(void (^)(NSError *))failure {
-  [AFHttpTool requestWihtMethod:RequestMethodTypeGet
-                            url:@"seach_email"
-                         params:@{
-                           @"email" : email
-                         }
-                        success:success
-                        failure:failure];
-}
-
-+ (void)searchFriendListByName:(NSString *)name
-                       success:(void (^)(id))success
-                       failure:(void (^)(NSError *))failure {
-  [AFHttpTool requestWihtMethod:RequestMethodTypeGet
-                            url:@"seach_name"
-                         params:@{
-                           @"username" : name
-                         }
-                        success:success
-                        failure:failure];
-}
-
-+ (void)requestFriend:(NSString *)userId
-              success:(void (^)(id))success
-              failure:(void (^)(NSError *))failure {
-  NSLog(@"%@", NSLocalizedStringFromTable(@"Request_Friends_extra",
-                                          @"RongCloudKit", nil));
-  [AFHttpTool requestWihtMethod:RequestMethodTypePost
-                            url:@"request_friend"
-                         params:@{
-                           @"id" : userId,
-                           @"message" : NSLocalizedStringFromTable(
-                               @"Request_Friends_extra", @"RongCloudKit", nil)
-                         } // Request_Friends_extra
-                        success:success
-                        failure:failure];
 }
 
 + (void)processInviteFriendRequest:(NSString *)friendUserId
@@ -746,46 +579,6 @@
   [AFHttpTool requestWihtMethod:RequestMethodTypePost
                             url:@"friendship/agree"
                          params:params
-                        success:success
-                        failure:failure];
-}
-
-+ (void)processRequestFriend:(NSString *)userId
-                withIsAccess:(BOOL)isAccess
-                     success:(void (^)(id))success
-                     failure:(void (^)(NSError *))failure {
-
-  NSString *isAcept = isAccess ? @"1" : @"0";
-  [AFHttpTool requestWihtMethod:RequestMethodTypePost
-                            url:@"process_request_friend"
-                         params:@{
-                           @"id" : userId,
-                           @"is_access" : isAcept
-                         }
-                        success:success
-                        failure:failure];
-}
-
-+ (void)deleteFriend:(NSString *)userId
-             success:(void (^)(id))success
-             failure:(void (^)(NSError *))failure {
-  [AFHttpTool requestWihtMethod:RequestMethodTypePost
-                            url:@"delete_friend"
-                         params:@{
-                           @"id" : userId
-                         }
-                        success:success
-                        failure:failure];
-}
-
-+ (void)getUserById:(NSString *)userId
-            success:(void (^)(id response))success
-            failure:(void (^)(NSError *err))failure {
-  [AFHttpTool requestWihtMethod:RequestMethodTypeGet
-                            url:@"profile"
-                         params:@{
-                           @"id" : userId
-                         }
                         success:success
                         failure:failure];
 }
@@ -824,6 +617,7 @@
                         failure:failure];
 }
 
+//讨论组接口，暂时保留
 + (void)updateName:(NSString *)userName
            success:(void (^)(id response))success
            failure:(void (^)(NSError *err))failure {
@@ -835,4 +629,5 @@
                         success:success
                         failure:failure];
 }
+
 @end

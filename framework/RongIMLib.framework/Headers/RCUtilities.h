@@ -62,6 +62,16 @@
                             targetSize:(CGSize)targetSize;
 
 /*!
+ generate thumbnail from image
+ 
+ @param image           image
+ @param targetSize      targetSize
+ 
+ @return                image
+ */
++ (UIImage *)generateThumbnail:(UIImage *)image
+                    targetSize:(CGSize)targetSize;
+/*!
  compressedImageWithMaxDataLength
 
  @param image               image
@@ -106,6 +116,24 @@
  @return                image nsdata
  */
 + (NSData *)compressedImage:(UIImage *)image percent:(CGFloat)percent;
+
+/*!
+ 判断是否是本地路径
+ 
+ @param path 路径
+ 
+ @return 是否是本地路径
+ */
++ (BOOL)isLocalPath:(NSString *)path;
+
+/*!
+ 获取沙盒修正后的文件路径
+ 
+ @param localPath 本地路径
+ 
+ @return 修正后的文件路径
+ */
++ (NSString *)getCorrectedFilePath:(NSString *)localPath;
 
 /*!
  excludeBackupKeyForURL

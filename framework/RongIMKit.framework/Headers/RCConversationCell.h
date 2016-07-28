@@ -1,5 +1,5 @@
 //
-//  RCConversationTableCell.h
+//  RCConversationCell.h
 //  RongIMKit
 //
 //  Created by xugang on 15/1/24.

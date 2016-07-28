@@ -127,7 +127,7 @@
   cell.lbDescription.text = chatRoom.introduce;
   UIImage *img = [UIImage imageNamed:chatRoom.portrait];
   cell.ivChatRoomPortrait.image = img;
-  cell.ivChatRoomPortrait.layer.cornerRadius = 4;
+  cell.ivChatRoomPortrait.layer.cornerRadius = 5.f;
   cell.ivChatRoomPortrait.layer.masksToBounds = YES;
   return cell;
 }

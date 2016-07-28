@@ -8,13 +8,15 @@
 
 #import "RCDAboutRongCloudTableViewController.h"
 #import "UIColor+RCColor.h"
+#import "RCDCheckVersion.h"
+#import "RCDMeButton.h"
 
 @interface RCDAboutRongCloudTableViewController ()
 @property(nonatomic, strong) NSArray *urls;
-@property(nonatomic) BOOL hasNewVersion;
-@property(nonatomic) NSString *versionUrl;
-@property(nonatomic, strong) NSString *versionString;
-@property(nonatomic, strong) NSURLConnection *connection;
+
+//force crash for test
+@property (nonatomic, strong)NSDate *firstClickDate;
+@property (nonatomic, assign)NSUInteger clickTimes;
 @end
 
 @implementation RCDAboutRongCloudTableViewController
@@ -22,71 +24,107 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
   self = [super initWithCoder:aDecoder];
   if (self) {
-    self.versionUrl =
-        [[NSUserDefaults standardUserDefaults] stringForKey:@"newVersionUrl"];
-    self.versionUrl = [[NSUserDefaults standardUserDefaults]
-        stringForKey:@"newVersionString"];
-    //        self.hasNewVersion = [[NSUserDefaults standardUserDefaults]
-    //        boolForKey:@"hasNewVersion"];
-    [self checkNewVersion];
+    self.firstClickDate = nil;
+    self.clickTimes = 0;
   }
   return self;
 }
-#if DEBUG
-#define DEMO_VERSION_BOARD @"http://bj.rongcloud.net/list.php"
-#else
-#define DEMO_VERSION_BOARD @"http://rongcloud.cn/demo"
-#endif
 
 - (void)viewDidLoad {
   [super viewDidLoad];
   [self setPoweredView];
   self.tableView.tableFooterView = [UIView new];
+  
+  NSString *version = [[[NSBundle mainBundle] infoDictionary]
+                       objectForKey:@"CFBundleShortVersionString"];
+  _SDKVersionLabel.text = [NSString stringWithFormat:@"SDK 版本 %@", version];
+  
+  NSString *SealTalkVersion = [[[NSBundle mainBundle] infoDictionary]
+                       objectForKey:@"SealTalk Version"];
+  self.SealTalkVersionLabel.text = [NSString stringWithFormat:@"SealTalk 版本 %@",SealTalkVersion];
+  
+  NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
+  if ([isNeedUpdate isEqualToString:@"YES"]) {
+    _NewVersionImage.hidden = NO;
+  }
+    //设置分割线颜色
+    self.tableView.separatorColor =
+    [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
+    }
+  
+  RCDMeButton *backBtn = [[RCDMeButton alloc] init];
+  [backBtn addTarget:self action:@selector(cilckBackBtn:) forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+  [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (indexPath.section == 0 && indexPath.row == 5) {
-    if (self.hasNewVersion) {
-      [[UIApplication sharedApplication]
-          openURL:[NSURL URLWithString:self.versionUrl]];
-      self.hasNewVersion = NO;
-      self.versionUrl = nil;
-    } else {
-      [self checkNewVersion];
+  NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
+  if (indexPath.section == 0 && indexPath.row == 4) {
+    if ([isNeedUpdate isEqualToString:@"YES"]) {
+      NSString *finalURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"applistURL"];
+      NSURL *applistURL = [NSURL URLWithString:finalURL];
+      [[UIApplication sharedApplication] openURL:applistURL];
     }
-    return;
   }
   if (indexPath.section == 0 && indexPath.row < 4) {
     NSURL *url = [self getUrlAt:indexPath];
     if (url) {
-      [[UIApplication sharedApplication] openURL:[self getUrlAt:indexPath]];
+      [[UIApplication sharedApplication] openURL:url];
+    }
+
+  }
+
+  //force crash for test
+  if (indexPath.section == 0 && indexPath.row == 5) {
+    if (self.clickTimes == 0) {
+      self.firstClickDate = [[NSDate alloc] init];
+      self.clickTimes = 1;
+    } else if ([self.firstClickDate timeIntervalSinceNow] > -3){
+      self.clickTimes++;
+      if (self.clickTimes >= 5) {
+        [self forceCrash];
+      }
+    } else {
+      self.clickTimes = 0;
+      self.firstClickDate = nil;
     }
   }
 }
 
-- (void)setHasNewVersion:(BOOL)hasNewVersion {
-  _hasNewVersion = hasNewVersion;
-  [[NSUserDefaults standardUserDefaults] setBool:self.hasNewVersion
-                                          forKey:@"hasNewVersion"];
-  [[NSUserDefaults standardUserDefaults] synchronize];
-  [self updateNewVersionBadge];
+//force crash for test
+- (void)forceCrash {
+  int x = 0;
+  x = x/x;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  [self updateNewVersionBadge];
+
+}
+
+- (void)setPoweredView
+{
+  CGRect screenBounds = self.view.frame;
+  UILabel *footerLabel = [[UILabel alloc] init];
+  footerLabel.textAlignment = NSTextAlignmentCenter;
+  footerLabel.frame = CGRectMake(screenBounds.size.width / 2 - 100, screenBounds.size.height - 30 - 21 - self.navigationController.navigationBar.frame.size.height, 200, 21);
+  footerLabel.text = @"Powered by RongCloud";
+  [footerLabel setFont:[UIFont systemFontOfSize:12.f]];
+  [footerLabel setTextColor:[UIColor colorWithHexString:@"999999" alpha:1.0]];
+  [self.view addSubview:footerLabel];
 }
 
 - (NSArray *)urls {
   if (!_urls) {
     NSArray *section0 =
-        [NSArray arrayWithObjects:@"http://rongcloud.cn/",
-                                  @"http://rongcloud.cn/downloads/history/ios",
-                                  @"http://rongcloud.cn/features",
-                                  @"http://rongcloud.cn/", nil];
-    //        NSArray *section1 = [NSArray
-    //        arrayWithObjects:@"http://rongcloud.cn/", nil];
+    [NSArray arrayWithObjects:@"http://rongcloud.cn/",
+     @"http://rongcloud.cn/downloads/history/ios",
+     @"http://rongcloud.cn/features",
+     @"http://rongcloud.cn/", nil];
     _urls = [NSArray arrayWithObjects:section0, nil];
   }
   return _urls;
@@ -101,74 +139,8 @@
   return [NSURL URLWithString:urlString];
 }
 
-- (void)checkNewVersion {
-  long lastCheckTime = [[NSUserDefaults standardUserDefaults]
-      integerForKey:@"lastupdatetimestamp"];
-
-  NSDate *now = [[NSDate alloc] init];
-  if (now.timeIntervalSince1970 - lastCheckTime > 0) {
-    if (DEMO_VERSION_BOARD.length == 0) {
-      return;
-    }
-    NSURL *url = [NSURL URLWithString:DEMO_VERSION_BOARD];
-    NSURLRequest *request =
-        [[NSURLRequest alloc] initWithURL:url
-                              cachePolicy:NSURLRequestUseProtocolCachePolicy
-                          timeoutInterval:10];
-    self.connection =
-        [[NSURLConnection alloc] initWithRequest:request delegate:self];
-  }
-}
-
-- (void)updateNewVersionBadge {
-#if DEBUG
-  NSString *version =
-      [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-  if (self.hasNewVersion &&
-      ([self.versionString compare:version] == NSOrderedDescending)) {
-#else
-  if (self.hasNewVersion) {
-#endif
-    _VersionLabel.attributedText = [[NSAttributedString alloc]
-        initWithString:@"有新版本啦。。。"
-            attributes:@{NSForegroundColorAttributeName : [UIColor redColor]}];
-  } else {
-    self.tabBarItem.badgeValue = nil;
-    NSString *version = [[[NSBundle mainBundle] infoDictionary]
-        objectForKey:@"CFBundleShortVersionString"];
-    _VersionLabel.text = [NSString stringWithFormat:@"SDK 版本 %@", version];
-  }
-}
-
-- (void)setPoweredView
+-(void)cilckBackBtn:(id)sender
 {
-  CGRect screenBounds = self.view.frame;
-  UILabel *footerLabel = [[UILabel alloc] init];
-  footerLabel.textAlignment = NSTextAlignmentCenter;
-  footerLabel.frame = CGRectMake(screenBounds.size.width / 2 - 100, screenBounds.size.height - 30 - 21 - self.navigationController.navigationBar.frame.size.height, 200, 21);
-  footerLabel.text = @"Powered by RongCloud";
-  [footerLabel setFont:[UIFont systemFontOfSize:12.f]];
-  [footerLabel setTextColor:[UIColor colorWithHexString:@"999999" alpha:1.0]];
-  [self.view addSubview:footerLabel];
-//  footerLabel.translatesAutoresizingMaskIntoConstraints = NO;
-  
-//  NSDictionary *subViews = NSDictionaryOfVariableBindings(footerLabel);
-//  
-//  [self.view
-//   addConstraint:[NSLayoutConstraint constraintWithItem:footerLabel
-//                                              attribute:NSLayoutAttributeCenterX
-//                                              relatedBy:NSLayoutRelationEqual
-//                                                 toItem:self.view
-//                                              attribute:NSLayoutAttributeCenterX
-//                                             multiplier:1
-//                                               constant:0]];
-//  [self.view
-//   addConstraints:
-//   [NSLayoutConstraint
-//    constraintsWithVisualFormat:@"V:[footerLabel]-15-|"
-//    options:0
-//    metrics:nil
-//    views:subViews]];
+  [self.navigationController popViewControllerAnimated:YES];
 }
-
 @end

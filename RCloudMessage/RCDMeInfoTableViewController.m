@@ -19,6 +19,7 @@
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMLib/RongIMLib.h>
+#import "RCDMeButton.h"
 
 @interface RCDMeInfoTableViewController ()
 @property(weak, nonatomic) IBOutlet UILabel *currentUserNickNameLabel;
@@ -45,41 +46,24 @@
   //设置分割线颜色
   self.tableView.separatorColor =
       [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
-
+  if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+      [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
+  }
   self.tabBarController.navigationItem.rightBarButtonItem = nil;
   self.tabBarController.navigationController.navigationBar.tintColor =
       [UIColor whiteColor];
   self.currentUserPortraitView.layer.masksToBounds = YES;
   self.currentUserPortraitView.layer.cornerRadius = 6.0;
+  
+  RCDMeButton *backBtn = [[RCDMeButton alloc] init];
+  [backBtn addTarget:self action:@selector(cilckBackBtn:) forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+  [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  //    [[RCDRCIMDataSource shareInstance]getUserInfoWithUserId:[RCIMClient
-  //    sharedRCIMClient].currentUserInfo.userId completion:^(RCUserInfo
-  //    *userInfo) {
-  //        dispatch_async(dispatch_get_main_queue(), ^{
-  //            self.currentUserNickNameLabel.text=userInfo.name;
-  //        });
-  //    }];
   self.NicknameLabel.text = [DEFAULTS stringForKey:@"userNickName"];
   self.PhoneNumberLabel.text = [DEFAULTS stringForKey:@"userName"];
-  //    if ([RCIM sharedRCIM].currentUserInfo.portraitUri.length == 0) {
-  //        DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc]
-  //        initWithFrame:CGRectMake(0, 0, 100, 100)];
-  //        dispatch_async(dispatch_get_main_queue(), ^{
-  //            [defaultPortrait setColorAndLabel:[RCIM
-  //            sharedRCIM].currentUserInfo.userId Nickname:[RCIM
-  //            sharedRCIM].currentUserInfo.name];
-  //            UIImage *portrait = [defaultPortrait imageFromView];
-  //            self.currentUserPortraitView.image = portrait;
-  //        });
-  //    }
-  //    else
-  //    {
-  //        [self.currentUserPortraitView sd_setImageWithURL:[NSURL
-  //        URLWithString:[RCIM sharedRCIM].currentUserInfo.portraitUri]
-  //        placeholderImage:[UIImage imageNamed:@"icon_person"]];
-  //    }
   NSString *portraitUrl = [DEFAULTS stringForKey:@"userPortraitUri"];
   if ([portraitUrl isEqualToString:@""]) {
     DefaultPortraitView *defaultPortrait =
@@ -196,18 +180,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         [info objectForKey:UIImagePickerControllerEditedImage];
 
     UIImage *scaleImage = [self scaleImage:originImage toScale:0.8];
-
-    //        if (UIImagePNGRepresentation(scaleImage) == nil)
-    //        {
-    //            data = UIImageJPEGRepresentation(scaleImage, 0.00001);
-    //        }
-    //        else
-    //        {
-    //            data = UIImagePNGRepresentation(scaleImage);
-    //        }
     data = UIImageJPEGRepresentation(scaleImage, 0.00001);
   }
-
   image = [UIImage imageWithData:data];
   [self dismissViewControllerAnimated:YES completion:nil];
   hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -277,6 +251,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   return scaledImage;
+}
+
+-(void)cilckBackBtn:(id)sender
+{
+  [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
