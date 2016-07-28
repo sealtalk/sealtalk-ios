@@ -11,7 +11,7 @@ DK 接入文档
 
   因为`红包 SDK` 在一直更新维护，所以为了不与 demo 产生依赖，所以采取了单独下载 zip 包的策略
 
-  [https://github.com/YunzhanghuOpen/iOSRedpacketLib](https://github.com/YunzhanghuOpen/iOSRedpacketLib)
+  [https://www.yunzhanghu.com/download.html](https://www.yunzhanghu.com/download.html)
 
   解压后将 RedpacketLib 复制至 sealtalk-ios 目录下。
   
