@@ -407,19 +407,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-<<<<<<< HEAD
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="RCDGroupSettingsTableViewCell" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="RCDGroupSettingsTableViewCell" rowHeight="43" id="Msn-Xl-Ley" customClass="RCDGroupSettingsTableViewCell">
-                                <rect key="frame" x="0.0" y="50" width="600" height="43"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Msn-Xl-Ley" id="Vyh-pR-Dfy">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
-=======
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="RCDGroupSettingsTableViewCell" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="RCDGroupSettingsTableViewCell" rowHeight="44" id="Msn-Xl-Ley" customClass="RCDGroupSettingsTableViewCell">
                                 <rect key="frame" x="0.0" y="50" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Msn-Xl-Ley" id="Vyh-pR-Dfy">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
->>>>>>> upstream/master
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z8G-Dc-jsc">
@@ -1192,7 +1184,6 @@
             </objects>
             <point key="canvasLocation" x="-1247" y="1664"/>
         </scene>
-<<<<<<< HEAD
         <!--详细资料-->
         <scene sceneID="8bD-q4-m1h">
             <objects>
@@ -1619,11 +1610,7 @@
                                                         <constraint firstAttribute="width" constant="18" id="tOb-eI-Eod"/>
                                                     </constraints>
                                                 </imageView>
-<<<<<<< HEAD
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="账号设置" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DSv-hF-zGD">
-=======
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="帐号设置" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DSv-hF-zGD">
->>>>>>> upstream/master
                                                     <rect key="frame" x="35" y="12" width="80" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="80" id="pQr-Nu-uvZ"/>
@@ -1742,13 +1729,8 @@
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="3K5-Vy-4bX">
                                         <rect key="frame" x="0.0" y="251" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-<<<<<<< HEAD
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3K5-Vy-4bX" id="Fhq-UW-AA7">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-=======
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="100" contentMode="center" tableViewCell="3K5-Vy-4bX" id="Fhq-UW-AA7">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
->>>>>>> upstream/master
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="关于 SealTalk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="370-nW-5zo">
@@ -1895,7 +1877,6 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-<<<<<<< HEAD
                             <tableViewSection id="zII-GG-fxT">
                                 <cells>
                                     <tableViewCell hidden="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="0z6-ac-DwI">
@@ -2263,11 +2244,7 @@
                                         <rect key="frame" x="0.0" y="35" width="600" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VKn-AL-fCa" id="saO-FI-7nt">
-<<<<<<< HEAD
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="88"/>
-=======
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="88"/>
->>>>>>> upstream/master
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="头像" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e8x-eb-L7X">
@@ -2319,11 +2296,7 @@
                                         <rect key="frame" x="0.0" y="123" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lxl-5A-Gya" id="AWw-YU-7o6">
-<<<<<<< HEAD
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="44"/>
-=======
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
->>>>>>> upstream/master
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sxj-Z5-9SF">
@@ -2584,13 +2557,8 @@
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="9BV-ql-ovG">
                                         <rect key="frame" x="0.0" y="35" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-<<<<<<< HEAD
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PGi-6Z-sWS" id="zCl-5z-Lw4">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-=======
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="bottom" tableViewCell="9BV-ql-ovG" id="VcW-vd-hrF">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="44"/>
->>>>>>> upstream/master
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="消息免打扰" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KY8-W3-ITw">
@@ -2613,13 +2581,8 @@
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="PGi-6Z-sWS">
                                         <rect key="frame" x="0.0" y="79" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-<<<<<<< HEAD
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="bottom" tableViewCell="9BV-ql-ovG" id="VcW-vd-hrF">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="44"/>
-=======
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PGi-6Z-sWS" id="zCl-5z-Lw4">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
->>>>>>> upstream/master
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aw4-xG-tbF">
@@ -2744,7 +2707,6 @@
             </objects>
             <point key="canvasLocation" x="375" y="3215"/>
         </scene>
-<<<<<<< HEAD
         <!--好友申请-->
         <scene sceneID="key-b3-xSr">
             <objects>
@@ -3335,11 +3297,7 @@
                                     <constraint firstAttribute="height" constant="42" id="D8J-6r-O3q"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-<<<<<<< HEAD
-                                <state key="normal" title="发起会话" backgroundImage="95BA3408-349A-4E31-8664-E8190645FC2B">
-=======
                                 <state key="normal" title="发起会话" backgroundImage="A627DEFB-4A3D-490D-A271-47651D0942AB">
->>>>>>> upstream/master
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="selected" backgroundImage="calling_hover"/>
@@ -3771,11 +3729,7 @@
         </scene>
     </scenes>
     <resources>
-<<<<<<< HEAD
-        <image name="95BA3408-349A-4E31-8664-E8190645FC2B" width="300" height="42">
-=======
         <image name="A627DEFB-4A3D-490D-A271-47651D0942AB" width="300" height="42">
->>>>>>> upstream/master
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

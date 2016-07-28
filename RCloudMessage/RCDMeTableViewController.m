@@ -112,7 +112,7 @@
             self.hasNewVersion = NO;
             self.versionUrl = nil;
         } else {
-            [self checkNewVersion];
+//            [self checkNewVersion];
         }
     }else if (indexPath.section == 2 && indexPath.row == 2){
 #warning 红包相关
