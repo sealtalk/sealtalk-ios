@@ -71,8 +71,11 @@
  加载表情Label
  */
 - (void)loadLabelView;
+
 /*!
 发送按钮是否可点击
+ 
+ @param sender 发送者
  */
 - (void)enableSendButton:(BOOL)sender;
 @end

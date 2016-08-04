@@ -36,6 +36,7 @@
 		98A3E70A1D45F961007989E7 /* RCDNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98A3E7091D45F961007989E7 /* RCDNavigationViewController.m */; };
 		98AB3C061D387CD900C3B87C /* RCDMeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AB3C051D387CD900C3B87C /* RCDMeButton.m */; };
 		98AB3C091D38940600C3B87C /* SortForTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AB3C081D38940600C3B87C /* SortForTime.m */; };
+		98D3C9D11D4C464D006FDF67 /* RCDMainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D3C9D01D4C464D006FDF67 /* RCDMainTabBarViewController.m */; };
 		98FFECB71D267140001DBB0D /* UITabBar+badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 98FFECB61D267140001DBB0D /* UITabBar+badge.m */; };
 		9B447DE51CF82926005D3ED5 /* DefaultPortraitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DBC1CF82926005D3ED5 /* DefaultPortraitView.m */; };
 		9B447DE61CF82926005D3ED5 /* RCDChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DBE1CF82926005D3ED5 /* RCDChangePasswordViewController.m */; };
@@ -312,6 +313,8 @@
 		98AB3C051D387CD900C3B87C /* RCDMeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDMeButton.m; sourceTree = SOURCE_ROOT; };
 		98AB3C071D38940600C3B87C /* SortForTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SortForTime.h; path = SDWebImage/SortForTime.h; sourceTree = "<group>"; };
 		98AB3C081D38940600C3B87C /* SortForTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SortForTime.m; path = SDWebImage/SortForTime.m; sourceTree = "<group>"; };
+		98D3C9CF1D4C464D006FDF67 /* RCDMainTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDMainTabBarViewController.h; sourceTree = SOURCE_ROOT; };
+		98D3C9D01D4C464D006FDF67 /* RCDMainTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDMainTabBarViewController.m; sourceTree = SOURCE_ROOT; };
 		98FFECB51D267140001DBB0D /* UITabBar+badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBar+badge.h"; sourceTree = SOURCE_ROOT; };
 		98FFECB61D267140001DBB0D /* UITabBar+badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+badge.m"; sourceTree = SOURCE_ROOT; };
 		9B447DBB1CF82926005D3ED5 /* DefaultPortraitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultPortraitView.h; sourceTree = SOURCE_ROOT; };
@@ -1084,6 +1087,10 @@
 				E4E9397B1AD65B0D001E0AC6 /* RCDChatViewController.m */,
 				E4BFAE661A1219FC007165B1 /* RCDChatListViewController.h */,
 				E4BFAE671A1219FC007165B1 /* RCDChatListViewController.m */,
+				98A3E7081D45F961007989E7 /* RCDNavigationViewController.h */,
+				98A3E7091D45F961007989E7 /* RCDNavigationViewController.m */,
+				98D3C9CF1D4C464D006FDF67 /* RCDMainTabBarViewController.h */,
+				98D3C9D01D4C464D006FDF67 /* RCDMainTabBarViewController.m */,
 				E4FF90B91AC980E900542DC9 /* SettingViewController */,
 				46A831B81AC014B2001A533F /* FindPsw */,
 				E4C4E7CC1A09FC2800140067 /* Login */,
@@ -1826,6 +1833,7 @@
 				E4BFAE711A121A5E007165B1 /* RCDRCIMDataSource.m in Sources */,
 				E4E939631AD65A95001E0AC6 /* MKAnnotationView+WebCache.m in Sources */,
 				E4E939651AD65A95001E0AC6 /* SDImageCache.m in Sources */,
+				98D3C9D11D4C464D006FDF67 /* RCDMainTabBarViewController.m in Sources */,
 				E412BD271ADFA2A0000DCA7A /* RCDAddFriendViewController.m in Sources */,
 				E4E939701AD65A95001E0AC6 /* UIImageView+HighlightedWebCache.m in Sources */,
 				E4BFAE6E1A121A22007165B1 /* RCDChatRoomViewController.m in Sources */,

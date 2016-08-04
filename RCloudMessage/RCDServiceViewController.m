@@ -21,7 +21,6 @@
 @implementation RCDServiceViewController
 
 - (IBAction)acService:(UIButton *)sender {
-  //测试环境客服Id "rongcloud.net.kefu.service112"
   RCDCustomerServiceViewController *chatService =
       [[RCDCustomerServiceViewController alloc] init];
 //#define SERVICE_ID @"KEFU145801184889727"

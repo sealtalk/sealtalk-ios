@@ -10,7 +10,7 @@
 #import "AFHttpTool.h"
 #import "AFNetworking.h"
 #import "RCDCommonDefine.h"
-
+#import <RongIMKit/RongIMKit.h>
 #define DevDemoServer                                                          \
   @"http://119.254.110.241/" // Beijing SUN-QUAN 测试环境（北京）
 #define ProDemoServer                                                          \
@@ -278,8 +278,7 @@
            failure:(void (^)(NSError *err))failure {
   NSDictionary *params = @{
     @"friendId" : userId,
-    @"message" : [NSString stringWithFormat:@"I am %@", userId]
-  };
+    @"message" : [NSString stringWithFormat:@"我是%@",[RCIM sharedRCIM].currentUserInfo.name]};
   [AFHttpTool requestWihtMethod:RequestMethodTypePost
                             url:@"friendship/invite"
                          params:params

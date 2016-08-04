@@ -453,10 +453,21 @@
 }
 
 - (void)didReceiveMessageNotification:(NSNotification *)notification {
-  RCMessage *message = notification.object;
-  if (message.messageDirection == MessageDirection_RECEIVE && [[message.content class] persistentFlag] & MessagePersistent_ISCOUNTED) {
-    [UIApplication sharedApplication].applicationIconBadgeNumber =
-        [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
+  NSNumber *left = [notification.userInfo objectForKey:@"left"];
+  if ([RCIMClient sharedRCIMClient].sdkRunningMode == RCSDKRunningMode_Backgroud
+      && 0 == left.integerValue) {
+    RCMessage *message = notification.object;
+    if (message.messageDirection == MessageDirection_RECEIVE && [[message.content class] persistentFlag] & MessagePersistent_ISCOUNTED) {
+      int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
+        @(ConversationType_PRIVATE),
+        @(ConversationType_DISCUSSION),
+        @(ConversationType_APPSERVICE),
+        @(ConversationType_PUBLICSERVICE),
+        @(ConversationType_GROUP)
+      ]];
+      [UIApplication sharedApplication].applicationIconBadgeNumber =
+          unreadMsgCount;
+    }
   }
 }
 

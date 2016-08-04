@@ -115,4 +115,8 @@
  */
 @property(nonatomic, strong, readonly) RCCallSession *currentCallSession;
 
+/*!
+ 是否生成通话记录消息，默认为YES
+ */
+@property(nonatomic, assign)BOOL enableCallSummary;
 @end

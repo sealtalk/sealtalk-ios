@@ -31,6 +31,8 @@
 //@property (nonatomic,strong) NSMutableArray *myDataSource;
 @property(nonatomic, strong) RCConversationModel *tempModel;
 
+@property(nonatomic, assign) NSUInteger index;
+
 @property(nonatomic, assign) BOOL isClick;
 - (void)updateBadgeValueForTabBarItem;
 
@@ -100,8 +102,20 @@
                                                HEXCOLOR(0x0099ff),
                                                UITextAttributeTextColor, nil]
                     forState:UIControlStateSelected];
+  
+  //定位未读数会话
+  self.index = 0;
+  //接收定位到未读数会话的通知
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self
+   selector:@selector(GotoNextCoversation)
+   name:@"GotoNextCoversation"
+   object:nil];
+  
   //检查版本
   [self checkVersion];
+  
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -135,46 +149,6 @@
                                                           name:@"群组通知"
                                                       portrait:nil];
   [[RCIM sharedRCIM] refreshUserInfoCache:groupNotify withUserId:@"__system__"];
-
-  //由于当天的消息会被补偿回来，导致如果重装了应用，当天退出的群组会出现在会话列表。判断群组通知消息的操作如果是退出群组，就直接从会话列表中删除。
-  NSArray *conversationListArray =
-      [[RCIMClient sharedRCIMClient] getConversationList:@[
-        @(ConversationType_PRIVATE),
-        @(ConversationType_DISCUSSION),
-        @(ConversationType_APPSERVICE),
-        @(ConversationType_PUBLICSERVICE),
-        @(ConversationType_GROUP),
-        @(ConversationType_SYSTEM)
-      ]];
-  for (RCConversation *conversation in conversationListArray) {
-    if ([conversation.lastestMessage
-            isKindOfClass:[RCGroupNotificationMessage class]]) {
-      RCGroupNotificationMessage *groupNotification =
-          (RCGroupNotificationMessage *)conversation.lastestMessage;
-      if ([groupNotification.operation isEqualToString:@"Quit"]) {
-        NSData *jsonData =
-            [groupNotification.data dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *dictionary = [NSJSONSerialization
-            JSONObjectWithData:jsonData
-                       options:NSJSONReadingMutableContainers
-                         error:nil];
-        NSDictionary *data =
-            [dictionary[@"data"] isKindOfClass:[NSDictionary class]]
-                ? dictionary[@"data"]
-                : nil;
-        NSString *nickName =
-            [data[@"operatorNickname"] isKindOfClass:[NSString class]]
-                ? data[@"operatorNickname"]
-                : nil;
-        if ([nickName isEqualToString:[RCIM sharedRCIM].currentUserInfo.name]) {
-          [[RCIMClient sharedRCIMClient]
-              removeConversation:conversation.conversationType
-                        targetId:conversation.targetId];
-          [self refreshConversationTableViewIfNeeded];
-        }
-      }
-    }
-  }
 }
 
 //由于demo使用了tabbarcontroller，当切换到其它tab时，不能更改tabbarcontroller的标题。
@@ -819,5 +793,56 @@
   [self.navigationController pushViewController:contactSelectedVC animated:YES];
 }
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+
+ NSIndexPath *indexPath = [self.conversationListTableView indexPathForRowAtPoint:scrollView.contentOffset];
+  self.index = indexPath.row;
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+  //恢复conversationListTableView的自动回滚功能。
+  self.conversationListTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+}
+
+-(void) GotoNextCoversation
+{
+  NSUInteger i;
+  //设置contentInset是为了滚动到底部的时候，避免conversationListTableView自动回滚。
+  self.conversationListTableView.contentInset = UIEdgeInsetsMake(0, 0, self.conversationListTableView.frame.size.height, 0);
+  for (i = self.index + 1; i < self.conversationListDataSource.count; i++) {
+    RCConversationModel *model = self.conversationListDataSource[i];
+    if (model.unreadMessageCount > 0) {
+      NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+      RCConversationCell *cell = (RCConversationCell *)[self.conversationListTableView cellForRowAtIndexPath:scrollIndexPath];
+      //只有显示未读数字的，才会去定位到。
+      if (cell.isShowNotificationNumber == YES) {
+        self.index = i;
+        [self.conversationListTableView scrollToRowAtIndexPath:scrollIndexPath
+                                              atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        break;
+      }
+    }
+  }
+  //滚动到起始位置
+  if (i >= self.conversationListDataSource.count) {
+    self.conversationListTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    for (i = 0; i < self.conversationListDataSource.count; i++) {
+      RCConversationModel *model = self.conversationListDataSource[i];
+      if (model.unreadMessageCount > 0) {
+        NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        RCConversationCell *cell = (RCConversationCell *)[self.conversationListTableView cellForRowAtIndexPath:scrollIndexPath];
+        //只有显示未读数字的，才会去定位到。
+        if (cell.isShowNotificationNumber == YES) {
+          self.index = i;
+          [self.conversationListTableView scrollToRowAtIndexPath:scrollIndexPath
+                                                atScrollPosition:UITableViewScrollPositionTop animated:YES];
+          break;
+        }
+      }
+    }
+  }
+}
 
 @end

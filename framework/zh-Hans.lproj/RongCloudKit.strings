@@ -198,6 +198,6 @@
 "ImageLoadFailed"="图片加载失败";
 "ImageHasBeenDeleted"="图片已被删除";
 "HaveMentioned"="[有人@我]";
-"HaveMentionedForNotification"="有人@我";
+"HaveMentionedForNotification"="[有人@我]";
 "SelectMentionedUser"="选择提醒的人";
 "ToSearch"="搜索";

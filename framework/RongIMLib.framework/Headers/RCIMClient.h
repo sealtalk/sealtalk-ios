@@ -85,8 +85,7 @@
 
  @param status  SDK与融云服务器的连接状态
 
- @discussion
- 如果您设置了IMLib消息监听之后，当SDK与融云服务器的连接状态发生变化时，会回调此方法。
+ @discussion 如果您设置了IMLib消息监听之后，当SDK与融云服务器的连接状态发生变化时，会回调此方法。
  */
 - (void)onConnectionStatusChanged:(RCConnectionStatus)status;
 
@@ -97,11 +96,9 @@
 /*!
  IMLib输入状态的的监听器
 
- @discussion
- 设置IMLib的输入状态监听器，请参考RCIMClient的setRCTypingStatusDelegate:方法。
+ @discussion 设置IMLib的输入状态监听器，请参考RCIMClient的setRCTypingStatusDelegate:方法。
 
- @warning 如果您使用IMLib，可以设置并实现此Delegate监听消息接收；
- 如果您使用IMKit，请直接设置RCIM中的enableSendComposingStatus，而不要使用此监听器，否则会导致IMKit中无法自动更新UI！
+ @warning 如果您使用IMLib，可以设置并实现此Delegate监听消息接收；如果您使用IMKit，请直接设置RCIM中的enableSendComposingStatus，而不要使用此监听器，否则会导致IMKit中无法自动更新UI！
  */
 @protocol RCTypingStatusDelegate <NSObject>
 
@@ -110,11 +107,9 @@
 
  @param conversationType        会话类型
  @param targetId                会话目标ID
- @param userTypingStatusList
- 正在输入的RCUserTypingStatus列表（nil标示当前没有用户正在输入）
+ @param userTypingStatusList 正在输入的RCUserTypingStatus列表（nil标示当前没有用户正在输入）
 
- @discussion
- 当客户端收到用户输入状态的变化时，会回调此接口，通知发生变化的会话以及当前正在输入的RCUserTypingStatus列表。
+ @discussion 当客户端收到用户输入状态的变化时，会回调此接口，通知发生变化的会话以及当前正在输入的RCUserTypingStatus列表。
 
  @warning 目前仅支持单聊。
  */
@@ -937,8 +932,7 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 /*!
  获取会话列表
 
- @param conversationTypeList
- 会话类型的数组(需要将RCConversationType转为NSNumber构建Array)
+ @param conversationTypeList 会话类型的数组(需要将RCConversationType转为NSNumber构建Array)
  @return                        会话RCConversation的列表
 
  @discussion 此方法会从本地数据库中，读取会话列表。
@@ -971,8 +965,7 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 /*!
  删除指定类型的会话
 
- @param conversationTypeList
- 会话类型的数组(需要将RCConversationType转为NSNumber构建Array)
+ @param conversationTypeList 会话类型的数组(需要将RCConversationType转为NSNumber构建Array)
  @return                        是否删除成功
  */
 - (BOOL)clearConversations:(NSArray *)conversationTypeList;
@@ -1478,18 +1471,12 @@ getConversationNotificationStatus:(RCConversationType)conversationType
  获取聊天室的信息（包含部分成员信息和当前聊天室中的成员总数）
 
  @param targetId     聊天室ID
- @param count
- 需要获取的成员信息的数量（目前获取到的聊天室信息中仅包含不多于20人的成员信息，即0
- <= count <=
- 20，传入0获取到的聊天室信息将或仅包含成员总数，不包含具体的成员列表）
+ @param count 需要获取的成员信息的数量（目前获取到的聊天室信息中仅包含不多于20人的成员信息，即0 <= count <= 20，传入0获取到的聊天室信息将或仅包含成员总数，不包含具体的成员列表）
  @param order        需要获取的成员列表的顺序（最早加入或是最晚加入的部分成员）
  @param successBlock 获取成功的回调 [chatRoomInfo:聊天室信息]
  @param errorBlock   获取失败的回调 [status:获取失败的错误码]
 
- @discussion
- 因为聊天室一般成员数量巨大，权衡效率和用户体验，目前返回的聊天室信息仅包含不多于20人的成员信息和当前成员总数。
- 如果您使用RC_ChatRoom_Member_Asc升序方式查询，将返回最早加入的成员信息列表，按加入时间从旧到新排列；
- 如果您使用RC_ChatRoom_Member_Desc降序方式查询，将返回最晚加入的成员信息列表，按加入时间从新到旧排列。
+ @discussion 因为聊天室一般成员数量巨大，权衡效率和用户体验，目前返回的聊天室信息仅包含不多于20人的成员信息和当前成员总数。如果您使用RC_ChatRoom_Member_Asc升序方式查询，将返回最早加入的成员信息列表，按加入时间从旧到新排列；如果您使用RC_ChatRoom_Member_Desc降序方式查询，将返回最晚加入的成员信息列表，按加入时间从新到旧排列。
  */
 - (void)getChatRoomInfo:(NSString *)targetId
                   count:(int)count
@@ -1700,20 +1687,15 @@ getConversationNotificationStatus:(RCConversationType)conversationType
  @param kefuId       客服ID
  @param csInfo       客服信息
  @param successBlock            发起客服会话成功的回调
- @param errorBlock              发起客服会话失败的回调 [errorCode:失败的错误码
- errMsg:错误信息]
+ @param errorBlock              发起客服会话失败的回调 [errorCode:失败的错误码 errMsg:错误信息]
  @param modeTypeBlock           客服模式变化
  @param pullEvaluationBlock     客服请求评价
  @param selectGroupBlock        客服分组选择
- @param quitBlock
- 客服被动结束。如果主动调用stopCustomerService，则不会调用到该block
+ @param quitBlock 客服被动结束。如果主动调用stopCustomerService，则不会调用到该block
 
- @discussion
- 有些客服提供商可能会主动邀请评价，有些不会，所以用lib开发客服需要注意对pullEvaluationBlock的处理。在pullEvaluationBlock里应该弹出评价。如果pullEvaluationBlock没有被调用到，需要在结束客服时（之前之后都可以）弹出评价框并评价。
- 如果客服有分组，selectGroupBlock会被回调，此时必须让用户选择分组然后调用selectCustomerServiceGroup:withGroupId:。
+ @discussion 有些客服提供商可能会主动邀请评价，有些不会，所以用lib开发客服需要注意对pullEvaluationBlock的处理。在pullEvaluationBlock里应该弹出评价。如果pullEvaluationBlock没有被调用到，需要在结束客服时（之前之后都可以）弹出评价框并评价。如果客服有分组，selectGroupBlock会被回调，此时必须让用户选择分组然后调用selectCustomerServiceGroup:withGroupId:。
 
- @warning
- 如果你使用IMKit，请不要使用此方法。RCConversationViewController默认已经做了处理。
+ @warning 如果你使用IMKit，请不要使用此方法。RCConversationViewController默认已经做了处理。
  */
 - (void)
 startCustomerService:(NSString *)kefuId

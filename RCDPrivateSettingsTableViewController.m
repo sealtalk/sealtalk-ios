@@ -230,7 +230,7 @@
       
       [[RCIMClient sharedRCIMClient]deleteMessages:ConversationType_PRIVATE targetId:_userId success:^{
         [self performSelectorOnMainThread:@selector(clearCacheAlertMessage:)
-                               withObject:@"缓存聊天记录成功！"
+                               withObject:@"清除聊天记录成功！"
                             waitUntilDone:YES];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"ClearHistoryMsg" object:nil];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -239,7 +239,7 @@
         
       } error:^(RCErrorCode status) {
         [self performSelectorOnMainThread:@selector(clearCacheAlertMessage:)
-                               withObject:@"缓存聊天记录失败！"
+                               withObject:@"清除聊天记录失败！"
                             waitUntilDone:YES];
         dispatch_async(dispatch_get_main_queue(), ^{
           [loadingView removeFromSuperview];

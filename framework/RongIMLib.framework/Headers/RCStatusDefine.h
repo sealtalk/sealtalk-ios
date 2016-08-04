@@ -344,6 +344,8 @@ typedef NS_ENUM(NSInteger, RCErrorCode) {
 typedef NS_ENUM(NSInteger, RCConnectionStatus) {
   /*!
    未知状态
+   
+   @discussion 建立连接中出现异常的临时状态，SDK会做好自动重连，开发者无须处理。
    */
   ConnectionStatus_UNKNOWN = -1,
 

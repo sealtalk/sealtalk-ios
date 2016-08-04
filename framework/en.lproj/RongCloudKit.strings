@@ -198,6 +198,6 @@
 "ImageLoadFailed"="Unable to download image";
 "ImageHasBeenDeleted"="The image has been deleted";
 "HaveMentioned"="You were mentioned";
-"HaveMentionedForNotification"="You were mentioned";
+"HaveMentionedForNotification"="You were mentioned ";
 "SelectMentionedUser"="Select Contact";
 "ToSearch"="Search";
