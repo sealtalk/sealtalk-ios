@@ -8,8 +8,8 @@
 
 #import "RCDAboutRongCloudTableViewController.h"
 #import "UIColor+RCColor.h"
-#import "RCDCheckVersion.h"
 #import "RCDMeButton.h"
+#import "RCDCommonDefine.h"
 
 @interface RCDAboutRongCloudTableViewController ()
 @property(nonatomic, strong) NSArray *urls;
@@ -86,7 +86,7 @@
     } else if ([self.firstClickDate timeIntervalSinceNow] > -3){
       self.clickTimes++;
       if (self.clickTimes >= 5) {
-        [self forceCrash];
+        [self gotoDebugModel];
       }
     } else {
       self.clickTimes = 0;
@@ -95,10 +95,64 @@
   }
 }
 
+-(void)gotoDebugModel
+{
+    NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
+  if ([isDisplayID isEqualToString:@"YES"]) {
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:nil
+                          message:@"Debug模式"
+                          delegate:self
+                          cancelButtonTitle:@"确定"
+                          otherButtonTitles:@"强制Crash",@"关闭显示ID", nil];
+    alert.delegate = self;
+    [alert show];
+    
+  } else {
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:nil
+                          message:@"Debug模式"
+                          delegate:self
+                          cancelButtonTitle:@"确定"
+                          otherButtonTitles:@"强制Crash",@"显示ID", nil];
+    alert.delegate = self;
+    [alert show];
+  }
+}
+
 //force crash for test
 - (void)forceCrash {
   int x = 0;
   x = x/x;
+}
+
+-(void) setIsDisplayId
+{
+  NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
+  if ([isDisplayID isEqualToString:@"YES"]) {
+    [DEFAULTS setObject:nil forKey:@"isDisplayID"];
+    [DEFAULTS synchronize];
+  } else {
+    [DEFAULTS setObject:@"YES" forKey:@"isDisplayID"];
+    [DEFAULTS synchronize];
+
+  }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+  switch (buttonIndex) {
+    case 1:
+      [self forceCrash];
+      break;
+      
+    case 2:
+      [self setIsDisplayId];
+      break;
+      
+    default:
+      break;
+  }
 }
 
 - (void)viewWillAppear:(BOOL)animated {

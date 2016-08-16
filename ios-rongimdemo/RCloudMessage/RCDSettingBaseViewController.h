@@ -15,7 +15,7 @@
  *
  *  @param isSuccess isSuccess description
  */
-typedef void (^clearHistory)(BOOL isSuccess);
+typedef void(^rcdClearHistory)(BOOL isSuccess);
 
 /**
  *  RCSettingViewController
@@ -36,12 +36,7 @@ typedef void (^clearHistory)(BOOL isSuccess);
 /**
  *  清除历史消息后，会话界面调用roload data
  */
-@property(nonatomic, copy) clearHistory clearHistoryCompletion;
-
-/**
- *  默认实现的三个cell
- */
-@property(nonatomic, readonly, strong) NSArray *defaultCells;
+@property(nonatomic, copy) rcdClearHistory clearHistoryCompletion;
 
 /**
  *  UIActionSheet

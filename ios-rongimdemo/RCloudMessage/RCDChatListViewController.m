@@ -24,7 +24,6 @@
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
 #import "UITabBar+badge.h"
-#import "RCDCheckVersion.h"
 
 @interface RCDChatListViewController ()
 
@@ -759,25 +758,26 @@
 
 -(void)checkVersion
 {
-  //检查版本
-  [[RCDCheckVersion shareInstance] startCheckSuccess:^(NSDictionary *result) {
-    NSString *isNeedUpdate = [result objectForKey:@"isNeedUpdate"];
-    NSString *finalURL;
-    if ([isNeedUpdate isEqualToString:@"YES"]) {
-      __weak typeof(self) __weakSelf = self;
-      [__weakSelf.tabBarController.tabBar showBadgeOnItemIndex:3];
-      //获取系统当前的时间戳
-      NSDate *dat = [NSDate dateWithTimeIntervalSinceNow:0];
-      NSTimeInterval now = [dat timeIntervalSince1970] * 1000;
-      NSString *timeString = [NSString stringWithFormat:@"%f", now];
-      //为html增加随机数，避免缓存。
-      NSString *applist = [result objectForKey:@"applist"];
-      applist = [NSString stringWithFormat:@"%@?%@",applist,timeString];
-      finalURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@",applist];
+  [RCDHTTPTOOL getVersioncomplete:^(NSDictionary *versionInfo) {
+    if (versionInfo) {
+      NSString *isNeedUpdate = [versionInfo objectForKey:@"isNeedUpdate"];
+      NSString *finalURL;
+      if ([isNeedUpdate isEqualToString:@"YES"]) {
+        __weak typeof(self) __weakSelf = self;
+        [__weakSelf.tabBarController.tabBar showBadgeOnItemIndex:3];
+        //获取系统当前的时间戳
+        NSDate *dat = [NSDate dateWithTimeIntervalSinceNow:0];
+        NSTimeInterval now = [dat timeIntervalSince1970] * 1000;
+        NSString *timeString = [NSString stringWithFormat:@"%f", now];
+        //为html增加随机数，避免缓存。
+        NSString *applist = [versionInfo objectForKey:@"applist"];
+        applist = [NSString stringWithFormat:@"%@?%@",applist,timeString];
+        finalURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@",applist];
+      }
+      [[NSUserDefaults standardUserDefaults] setObject:finalURL forKey:@"applistURL"];
+      [[NSUserDefaults standardUserDefaults] setObject:isNeedUpdate forKey:@"isNeedUpdate"];
+      [[NSUserDefaults standardUserDefaults] synchronize];
     }
-    [[NSUserDefaults standardUserDefaults] setObject:finalURL forKey:@"applistURL"];
-    [[NSUserDefaults standardUserDefaults] setObject:isNeedUpdate forKey:@"isNeedUpdate"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
   }];
 }
 
@@ -793,10 +793,9 @@
   [self.navigationController pushViewController:contactSelectedVC animated:YES];
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+- (void)scrollViewDidScroll:(UIScrollView*)scrollView
 {
-
- NSIndexPath *indexPath = [self.conversationListTableView indexPathForRowAtPoint:scrollView.contentOffset];
+  NSIndexPath *indexPath = [self.conversationListTableView indexPathForRowAtPoint:scrollView.contentOffset];
   self.index = indexPath.row;
 }
 
@@ -815,31 +814,23 @@
     RCConversationModel *model = self.conversationListDataSource[i];
     if (model.unreadMessageCount > 0) {
       NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
-      RCConversationCell *cell = (RCConversationCell *)[self.conversationListTableView cellForRowAtIndexPath:scrollIndexPath];
-      //只有显示未读数字的，才会去定位到。
-      if (cell.isShowNotificationNumber == YES) {
         self.index = i;
         [self.conversationListTableView scrollToRowAtIndexPath:scrollIndexPath
                                               atScrollPosition:UITableViewScrollPositionTop animated:YES];
         break;
-      }
     }
   }
   //滚动到起始位置
   if (i >= self.conversationListDataSource.count) {
-    self.conversationListTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+//    self.conversationListTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     for (i = 0; i < self.conversationListDataSource.count; i++) {
       RCConversationModel *model = self.conversationListDataSource[i];
       if (model.unreadMessageCount > 0) {
         NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
-        RCConversationCell *cell = (RCConversationCell *)[self.conversationListTableView cellForRowAtIndexPath:scrollIndexPath];
-        //只有显示未读数字的，才会去定位到。
-        if (cell.isShowNotificationNumber == YES) {
           self.index = i;
           [self.conversationListTableView scrollToRowAtIndexPath:scrollIndexPath
                                                 atScrollPosition:UITableViewScrollPositionTop animated:YES];
           break;
-        }
       }
     }
   }

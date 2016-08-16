@@ -19,6 +19,8 @@
 @property(weak, nonatomic) IBOutlet UIImageView *imvGroupPort;
 @property(weak, nonatomic) IBOutlet UIButton *btJoin;
 
+@property (weak, nonatomic) IBOutlet UILabel *lblGroupId;
+
 @property(nonatomic, assign) id<JoinQuitGroupDelegate> delegate;
 
 /** 是否加入 */

@@ -724,7 +724,8 @@ MBProgressHUD *hud;
               failure:^(NSError *err) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                   [hud hide:YES];
-                  _errorMsgLb.text = @"Token无效！";
+                  NSLog(@"Token无效");
+                  _errorMsgLb.text = @"无法连接到服务器！";
                 });
               }];
         }
@@ -823,7 +824,8 @@ MBProgressHUD *hud;
     } else if (status == ConnectionStatus_KICKED_OFFLINE_BY_OTHER_CLIENT) {
       self.errorMsgLb.text = @"您的帐号在别的设备上登录，您被迫下线！";
     } else if (status == ConnectionStatus_TOKEN_INCORRECT) {
-      self.errorMsgLb.text = @"Token无效！";
+      NSLog(@"Token无效");
+      self.errorMsgLb.text = @"无法连接到服务器！";
       if (self.loginFailureTimes < 1) {
         self.loginFailureTimes++;
         [AFHttpTool getTokenSuccess:^(id response) {
@@ -836,7 +838,8 @@ MBProgressHUD *hud;
         } failure:^(NSError *err) {
           dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
-            self.errorMsgLb.text = @"Token无效！";
+            NSLog(@"Token无效");
+            self.errorMsgLb.text = @"无法连接到服务器！";
           });
         }];
       }

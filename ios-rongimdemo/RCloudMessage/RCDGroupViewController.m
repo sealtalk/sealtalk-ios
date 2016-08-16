@@ -114,12 +114,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
   static NSString *CellIdentifier = @"RCDGroupCell";
   RCDGroupTableViewCell *cell = (RCDGroupTableViewCell *)[tableView
       dequeueReusableCellWithIdentifier:CellIdentifier];
   cell.btJoin.hidden = YES;
 
   RCDGroupInfo *group = _groups[indexPath.row];
+  if ([isDisplayID isEqualToString:@"YES"]) {
+    cell.lblGroupId.text = group.groupId;
+  }
   cell.lblGroupName.text = group.groupName;
   cell.groupID = group.groupId;
   if ([RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE &&
@@ -230,5 +234,4 @@
   }
   [RCDDataSource syncGroups];
 }
-
 @end

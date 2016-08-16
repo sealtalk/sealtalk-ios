@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCDAboutRongCloudTableViewController : UITableViewController
+@interface RCDAboutRongCloudTableViewController : UITableViewController<UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *NewVersionImage;
 

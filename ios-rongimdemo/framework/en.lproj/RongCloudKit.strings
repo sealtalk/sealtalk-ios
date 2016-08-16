@@ -9,8 +9,6 @@
 "RC:LBSMsg"="[Location]";
 "RC:VcMsg"="[Voice]";
 "RC:ImgTextMsg"="[RichContent]";
-"RC:VoipCallMsg"="[VoIP Start]";
-"RC:VoipFinishMsg"="[VoIP End]";
 "RC:PSMultiImgTxtMsg"="[RichContent]";
 "RC:PSImgTxtMsg"="[RichContent]";
 "Draft"="[Draft]";

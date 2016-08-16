@@ -9,6 +9,10 @@
 #import "RCDContactTableViewCell.h"
 #import "UIColor+RCColor.h"
 
+@interface RCDContactTableViewCell ()
+
+@end
+
 @implementation RCDContactTableViewCell
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -37,9 +41,16 @@
   [_nicknameLabel setFont:[UIFont fontWithName:@"Heiti SC" size:15.0]];
   _nicknameLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];
   [self.contentView addSubview:_nicknameLabel];
+  
+  
+  _userIdLabel = [[UILabel alloc] init];
+  _userIdLabel.translatesAutoresizingMaskIntoConstraints = NO;
+  [_userIdLabel setFont:[UIFont fontWithName:@"Heiti SC" size:15.0]];
+  _userIdLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];
+  [self.contentView addSubview:_userIdLabel];
 
   NSDictionary *views =
-      NSDictionaryOfVariableBindings(_portraitView, _nicknameLabel);
+      NSDictionaryOfVariableBindings(_portraitView, _nicknameLabel,_userIdLabel);
 
   [self.contentView
       addConstraint:[NSLayoutConstraint
@@ -67,21 +78,42 @@
                                              options:kNilOptions
                                              metrics:nil
                                                views:views]];
-
-  [self.contentView
-      addConstraints:[NSLayoutConstraint
-                         constraintsWithVisualFormat:@"H:|-14-[_portraitView("
-                                                     @"36)]-9-[_"
-                                                     @"nicknameLabel]-40-|"
-                                             options:kNilOptions
-                                             metrics:nil
-                                               views:views]];
+  
+  NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
+  
+  if ([isDisplayID isEqualToString:@"YES"]) {
+    [self.contentView
+     addConstraints: [NSLayoutConstraint
+                        constraintsWithVisualFormat:@"H:|-14-[_portraitView(36)]-9-[_nicknameLabel][_userIdLabel(90)]-40-|"
+                        options:kNilOptions
+                        metrics:nil
+                        views:views]];
+    
+    [self.contentView
+     addConstraint:[NSLayoutConstraint
+                    constraintWithItem:_userIdLabel
+                    attribute:NSLayoutAttributeCenterY
+                    relatedBy:NSLayoutRelationEqual
+                    toItem:self.contentView
+                    attribute:NSLayoutAttributeCenterY
+                    multiplier:1.0f
+                    constant:0]];
+  } else {
+    [self.contentView
+     addConstraints: [NSLayoutConstraint
+                      constraintsWithVisualFormat:@"H:|-14-[_portraitView(36)]-9-[_nicknameLabel]-40-|"
+                      options:kNilOptions
+                      metrics:nil
+                      views:views]];
+    
+  }
+  
   self.selectedBackgroundView = [[UIView alloc] initWithFrame:self.frame];
   self.selectedBackgroundView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5" alpha:1.0];
 }
 
 - (void)awakeFromNib {
-  // Initialization code
+  [super awakeFromNib];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -89,5 +121,4 @@
 
   // Configure the view for the selected state
 }
-
 @end

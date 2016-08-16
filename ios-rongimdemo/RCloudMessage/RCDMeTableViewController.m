@@ -19,7 +19,6 @@
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMLib/RongIMLib.h>
-#import "RCDCheckVersion.h"
 
 @interface RCDMeTableViewController ()
 @property(weak, nonatomic) IBOutlet UILabel *currentUserNameLabel;
@@ -160,9 +159,8 @@
   csInfo.referrer = @"客户端";
   csInfo.enterUrl = @"testurl";
   csInfo.skillId = @"技能组";
-  csInfo.listUrl = @[ @"用户浏览的第一个商品Url", @"用"
-                                                            @"户浏览的第二个商"
-                                                            @"品Url" ];
+  csInfo.listUrl = @[@"用户浏览的第一个商品Url",
+                      @"用户浏览的第二个商品Url"];
   csInfo.define = @"自定义信息";
 
   chatService.csInfo = csInfo;

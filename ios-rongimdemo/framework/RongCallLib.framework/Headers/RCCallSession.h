@@ -63,7 +63,7 @@
                            mediaType:(RCCallMediaType)mediaType;
 
 /*!
- 对端用户开启或管理了摄像头的状态
+ 对端用户开启或关闭了摄像头的状态
 
  @param userId    用户ID
  @param muted     是否关闭摄像头
@@ -115,6 +115,11 @@
  通话的会话类型
  */
 @property(nonatomic, assign, readonly) RCConversationType conversationType;
+
+/*!
+ 通话ID
+ */
+@property(nonatomic, strong, readonly) NSString *callId;
 
 /*!
  通话的目标会话ID

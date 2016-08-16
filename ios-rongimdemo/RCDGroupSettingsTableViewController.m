@@ -55,6 +55,7 @@
 
   self.tableView.tableFooterView = [UIView new];
   self.tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
+  self.tableView.separatorColor = HEXCOLOR(0xdfdfdf);
   
   if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
@@ -877,7 +878,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       (UICollectionViewFlowLayout *)collectionViewLayout;
   flowLayout.minimumInteritemSpacing = 20;
   flowLayout.minimumLineSpacing = 12;
-  return UIEdgeInsetsMake(10, 10, 10, 10);
+  return UIEdgeInsetsMake(15, 10, 10, 10);
 }
 
 #pragma mark - UICollectionViewDataSource

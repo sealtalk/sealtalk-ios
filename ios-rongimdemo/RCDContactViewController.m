@@ -81,7 +81,7 @@
   self.defaultCellsPortrait = [NSArray
       arrayWithObjects:@"newFriend", @"defaultGroup", @"publicNumber",@"contact_me", nil];
   
-  _isBeginSearch = NO;
+  self.isBeginSearch = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -182,15 +182,21 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
   static NSString *reusableCellWithIdentifier = @"RCDContactTableViewCell";
   RCDContactTableViewCell *cell = [self.friendsTabelView
       dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
   if (cell == nil) {
-    cell = [[RCDContactTableViewCell alloc] init];
+      cell = [[RCDContactTableViewCell alloc] init];
   }
 
   if (indexPath.section == 0) {
     cell.nicknameLabel.text = [_defaultCellsTitle objectAtIndex:indexPath.row];
+    if (indexPath.row == 3) {
+      if ([isDisplayID isEqualToString:@"YES"]) {
+        cell.userIdLabel.text = [RCIM sharedRCIM].currentUserInfo.userId;
+      }
+    }
 
       [cell.portraitView
           setImage:[UIImage
@@ -205,6 +211,9 @@
 
     RCDUserInfo *userInfo = sectionUserInfoList[indexPath.row];
     if (userInfo) {
+      if ([isDisplayID isEqualToString:@"YES"]) {
+        cell.userIdLabel.text = userInfo.userId;
+      }
       cell.nicknameLabel.text = userInfo.name;
       if ([userInfo.portraitUri isEqualToString:@""]) {
         DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc]

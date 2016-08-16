@@ -11,6 +11,7 @@
 @implementation RCDSelectPersonTableViewCell
 
 - (void)awakeFromNib {
+  [super awakeFromNib];
   self.ivAva.clipsToBounds = YES;
   self.ivAva.layer.cornerRadius = 5.f;
 }

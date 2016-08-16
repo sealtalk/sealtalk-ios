@@ -12,7 +12,7 @@
 @implementation RCDAddressBookTableViewCell
 
 - (void)awakeFromNib {
-  // Initialization code
+  [super awakeFromNib];
   _acceptBtn = [[UIButton alloc] init];
   _acceptBtn.tag = self.tag;
   [_acceptBtn setTitle:@"接受" forState:UIControlStateNormal];

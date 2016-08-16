@@ -629,4 +629,14 @@
                         failure:failure];
 }
 
+//获取版本信息
++ (void)getVersionsuccess:(void (^)(id response))success
+                    failure:(void (^)(NSError *err))failure {
+  [AFHttpTool requestWihtMethod:RequestMethodTypeGet
+                            url:@"/misc/client_version"
+                         params:nil
+                        success:success
+                        failure:failure];
+}
+
 @end

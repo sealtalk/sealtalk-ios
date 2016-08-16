@@ -216,4 +216,8 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
            success:(void (^)(id response))success
            failure:(void (^)(NSError *err))failure;
 
+//获取版本信息
++ (void)getVersionsuccess:(void (^)(id response))success
+                  failure:(void (^)(NSError *err))failure;
+
 @end

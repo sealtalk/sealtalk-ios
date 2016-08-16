@@ -660,4 +660,38 @@
       }];
 }
 
+- (void)getVersioncomplete:(void (^)(NSDictionary *))versionInfo {
+  [AFHttpTool getVersionsuccess:^(id response) {
+    if (response) {
+      NSDictionary *iOSResult = response[@"iOS"];
+      NSString *sealtalkBuild = iOSResult[@"build"];
+      NSString *applistURL = iOSResult[@"url"];
+      
+      NSDictionary *result = [[NSDictionary alloc] init];
+      NSString *currentBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+      
+      NSDate *currentBuildDate = [self stringToDate:currentBuild];
+      NSDate *buildDtate = [self stringToDate:sealtalkBuild];
+      NSTimeInterval secondsInterval= [currentBuildDate timeIntervalSinceDate:buildDtate];
+      if (secondsInterval < 0) {
+        result = [NSDictionary dictionaryWithObjectsAndKeys:@"YES",@"isNeedUpdate",applistURL,@"applist", nil];
+      }
+      else
+      {
+        result = [NSDictionary dictionaryWithObjectsAndKeys:@"NO",@"isNeedUpdate", nil];
+      }
+      versionInfo(result);
+    }
+  } failure:^(NSError *err) {
+    versionInfo(nil);
+  }];
+}
+-(NSDate *)stringToDate:(NSString *)build
+{
+  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+  [dateFormatter setDateFormat:@"yyyyMMddHHmm"];
+  NSDate *date = [dateFormatter dateFromString:build];
+  return date;
+}
+
 @end

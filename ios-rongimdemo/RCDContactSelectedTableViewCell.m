@@ -11,7 +11,7 @@
 @implementation RCDContactSelectedTableViewCell
 
 - (void)awakeFromNib {
-  // Initialization code
+  [super awakeFromNib];
 }
 
 - (void)setSelected:(BOOL)selected {

@@ -32,7 +32,6 @@
 		980235881D227F8100BCB1DD /* RCDPrivacyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */; };
 		980EF4561D373BE0000C26FC /* RCDGroupAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980EF4551D373BE0000C26FC /* RCDGroupAnnouncementViewController.m */; };
 		980EF4591D376BC9000C26FC /* UITextViewAndPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 980EF4581D376BC9000C26FC /* UITextViewAndPlaceholder.m */; };
-		9859D8121D2DEDF700240A4B /* RCDCheckVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 9859D8111D2DEDF700240A4B /* RCDCheckVersion.m */; };
 		98A3E70A1D45F961007989E7 /* RCDNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98A3E7091D45F961007989E7 /* RCDNavigationViewController.m */; };
 		98AB3C061D387CD900C3B87C /* RCDMeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AB3C051D387CD900C3B87C /* RCDMeButton.m */; };
 		98AB3C091D38940600C3B87C /* SortForTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AB3C081D38940600C3B87C /* SortForTime.m */; };
@@ -305,8 +304,6 @@
 		980EF4551D373BE0000C26FC /* RCDGroupAnnouncementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDGroupAnnouncementViewController.m; sourceTree = SOURCE_ROOT; };
 		980EF4571D376BC9000C26FC /* UITextViewAndPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextViewAndPlaceholder.h; sourceTree = SOURCE_ROOT; };
 		980EF4581D376BC9000C26FC /* UITextViewAndPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITextViewAndPlaceholder.m; sourceTree = SOURCE_ROOT; };
-		9859D8101D2DEDF700240A4B /* RCDCheckVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDCheckVersion.h; sourceTree = SOURCE_ROOT; };
-		9859D8111D2DEDF700240A4B /* RCDCheckVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDCheckVersion.m; sourceTree = SOURCE_ROOT; };
 		98A3E7081D45F961007989E7 /* RCDNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDNavigationViewController.h; sourceTree = SOURCE_ROOT; };
 		98A3E7091D45F961007989E7 /* RCDNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDNavigationViewController.m; sourceTree = SOURCE_ROOT; };
 		98AB3C041D387CD900C3B87C /* RCDMeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDMeButton.h; sourceTree = SOURCE_ROOT; };
@@ -1075,8 +1072,6 @@
 		E4C4E7C81A09F87C00140067 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				98A3E7081D45F961007989E7 /* RCDNavigationViewController.h */,
-				98A3E7091D45F961007989E7 /* RCDNavigationViewController.m */,
 				983903601D2D052800CE2C00 /* Discovery */,
 				9B447DBA1CF828E8005D3ED5 /* new */,
 				F836AB0F1C226A3500A1A5D2 /* Cell */,
@@ -1200,8 +1195,6 @@
 				A61647871BE9BF7C00E90813 /* RCDMeInfoTableViewController.m */,
 				A61647891BE9D97D00E90813 /* RCDEditUserNameViewController.h */,
 				A616478A1BE9D97D00E90813 /* RCDEditUserNameViewController.m */,
-				9859D8101D2DEDF700240A4B /* RCDCheckVersion.h */,
-				9859D8111D2DEDF700240A4B /* RCDCheckVersion.m */,
 			);
 			name = Me;
 			sourceTree = "<group>";
@@ -1757,7 +1750,6 @@
 				46E17CC81B0EC32A001AC57A /* FMDatabaseAdditions.m in Sources */,
 				E4E939CC1AD65E1E001E0AC6 /* UITextFiled+Shake.m in Sources */,
 				9B447DE61CF82926005D3ED5 /* RCDChangePasswordViewController.m in Sources */,
-				9859D8121D2DEDF700240A4B /* RCDCheckVersion.m in Sources */,
 				E4E9399A1AD65C3B001E0AC6 /* RCDFindPswViewController.m in Sources */,
 				98FFECB71D267140001DBB0D /* UITabBar+badge.m in Sources */,
 				E4E9394F1AD65A95001E0AC6 /* UIImageView+AFNetworking.m in Sources */,

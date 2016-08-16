@@ -9,8 +9,6 @@
 "RC:LBSMsg"="[位置]";
 "RC:VcMsg"="[语音]";
 "RC:ImgTextMsg"="[图文]";
-"RC:VoipCallMsg"="[语音通话]";
-"RC:VoipFinishMsg"="[语音结束]";
 "RC:PSMultiImgTxtMsg"="[图文]";
 "RC:PSImgTxtMsg"="[图文]";
 "Draft"="[草稿]";

@@ -24,6 +24,7 @@
 #import <RongCallKit/RongCallKit.h>
 #import <RongIMKit/RongIMKit.h>
 #import "RCDNavigationViewController.h"
+#import "RCDUtilities.h"
 
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" //offline key
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
@@ -199,23 +200,34 @@
           });
         }
         tokenIncorrect:^{
-          dispatch_async(dispatch_get_main_queue(), ^{
-            RCDLoginViewController *loginVC =
-                [[RCDLoginViewController alloc] init];
-            RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
-                                                  initWithRootViewController:loginVC];
-            self.window.rootViewController = _navi;
-            UIAlertView *alertView =
-                [[UIAlertView alloc] initWithTitle:nil
-                                           message:@"Token已过期，请重新登录"
-                                          delegate:nil
-                                 cancelButtonTitle:@"确定"
-                                 otherButtonTitles:nil, nil];
-            ;
-            [alertView show];
-          });
+          [AFHttpTool loginWithPhone:userName
+                            password:password
+                              region:@"86"
+                             success:^(id response) {
+                               if ([response[@"code"] intValue] == 200) {
+                                 NSString *newToken = response[@"result"][@"token"];
+                                 NSString *newUserId = response[@"result"][@"id"];
+                                 [[RCIM sharedRCIM] connectWithToken:newToken
+                                                             success:^(NSString *userId) {
+                                                               [self loginSuccess:userName
+                                                                           userId:newUserId
+                                                                            token:newToken
+                                                                         password:password];
+                                                             } error:^(RCConnectErrorCode status) {
+                                                            [self gotoLoginViewAndDisplayReasonInfo:@"登录失效，请重新登录。"];
+                                                             } tokenIncorrect:^{
+                                                              [self gotoLoginViewAndDisplayReasonInfo:@"无法连接到服务器"];
+                                                               NSLog(@"Token无效");
+                                                             }];
+                               } else {
+                                 [self gotoLoginViewAndDisplayReasonInfo:@"手机号或密码错误"];
+                                                                }
+                             }
+                             failure:^(NSError *err) {
+                               
+                             }];
         }];
-
+    
   } else {
     RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
     // [loginVC defaultLogin];
@@ -377,9 +389,9 @@
    */
   [[RCIMClient sharedRCIMClient] recordLocalNotificationEvent:notification];
 
-  //震动
-  AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-  AudioServicesPlaySystemSound(1007);
+//  //震动
+//  AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+//  AudioServicesPlaySystemSound(1007);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -569,19 +581,20 @@
                                           initWithRootViewController:loginVC];
     self.window.rootViewController = _navi;
   } else if (status == ConnectionStatus_TOKEN_INCORRECT) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
-      UINavigationController *_navi =
-          [[UINavigationController alloc] initWithRootViewController:loginVC];
-      self.window.rootViewController = _navi;
-      UIAlertView *alertView =
-          [[UIAlertView alloc] initWithTitle:nil
-                                     message:@"Token已过期，请重新登录"
-                                    delegate:nil
-                           cancelButtonTitle:@"确定"
-                           otherButtonTitles:nil, nil];
-      [alertView show];
-    });
+    [AFHttpTool getTokenSuccess:^(id response) {
+      NSString *token = response[@"result"][@"token"];
+      [[RCIM sharedRCIM] connectWithToken:token
+                                  success:^(NSString *userId) {
+                                    
+                                  } error:^(RCConnectErrorCode status) {
+                                    
+                                  } tokenIncorrect:^{
+                                    
+                                  }];
+    }
+                        failure:^(NSError *err) {
+                         
+                        }];
   }
 }
 
@@ -632,10 +645,11 @@
 //设置群组通知消息没有提示音
 -(BOOL)onRCIMCustomAlertSound:(RCMessage*)message
 {
-  if ([message.content isMemberOfClass:[RCGroupNotificationMessage class]]) {
+//当应用处于前台运行，收到消息不会有提示音。
+  //  if ([message.content isMemberOfClass:[RCGroupNotificationMessage class]]) {
     return YES;
-  }
-  return NO;
+//  }
+//  return NO;
 }
 
 - (void)dealloc {
@@ -671,6 +685,80 @@
          selector:@selector(onlineConfigCallBack:)
              name:UMOnlineConfigDidFinishedNotification
            object:nil];
+}
+
+- (void)loginSuccess:(NSString *)userName
+              userId:(NSString *)userId
+               token:(NSString *)token
+            password:(NSString *)password {
+  //保存默认用户
+  [DEFAULTS setObject:userName forKey:@"userName"];
+  [DEFAULTS setObject:password forKey:@"userPwd"];
+  [DEFAULTS setObject:token forKey:@"userToken"];
+  [DEFAULTS setObject:userId forKey:@"userId"];
+  [DEFAULTS synchronize];
+  //保存“发现”的信息
+  [RCDHTTPTOOL getSquareInfoCompletion:^(NSMutableArray *result) {
+    [DEFAULTS setObject:result forKey:@"SquareInfoList"];
+    [DEFAULTS synchronize];
+  }];
+  
+  [AFHttpTool getUserInfo:userId
+                  success:^(id response) {
+                    if ([response[@"code"] intValue] == 200) {
+                      NSDictionary *result = response[@"result"];
+                      NSString *nickname = result[@"nickname"];
+                      NSString *portraitUri = result[@"portraitUri"];
+                      RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:userId
+                                                                       name:nickname
+                                                                   portrait:portraitUri];
+                      if (!user.portraitUri || user.portraitUri.length <= 0) {
+                        user.portraitUri = [RCDUtilities defaultUserPortrait:user];
+                      }
+                      [[RCDataBaseManager shareInstance] insertUserToDB:user];
+                      [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:userId];
+                      [RCIM sharedRCIM].currentUserInfo = user;
+                      [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
+                      [DEFAULTS setObject:user.name forKey:@"userNickName"];
+                      [DEFAULTS synchronize];
+                    }
+                  }
+                  failure:^(NSError *err){
+                    
+                  }];
+  //同步群组
+  [RCDDataSource syncGroups];
+  [RCDDataSource syncFriendList:userId
+                       complete:^(NSMutableArray *friends){
+                       }];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    UIStoryboard *storyboard =
+    [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    RCDNavigationViewController *rootNavi =
+    [storyboard instantiateViewControllerWithIdentifier:@"rootNavi"];
+    [ShareApplicationDelegate window].rootViewController = rootNavi;
+    
+  });
+}
+
+-(void)gotoLoginViewAndDisplayReasonInfo:(NSString *)reason
+{
+  dispatch_async(dispatch_get_main_queue(), ^{
+    UIAlertView *alertView =
+    [[UIAlertView alloc] initWithTitle:nil
+                               message:reason
+                              delegate:nil
+                     cancelButtonTitle:@"确定"
+                     otherButtonTitles:nil, nil];
+    ;
+    [alertView show];
+    RCDLoginViewController *loginVC =
+    [[RCDLoginViewController alloc] init];
+    RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
+                                          initWithRootViewController:loginVC];
+    self.window.rootViewController = _navi;
+    
+  });
 }
 
 @end

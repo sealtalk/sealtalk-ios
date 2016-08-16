@@ -121,4 +121,7 @@
                    success:(void (^)(NSString *url))success
                    failure:(void (^)(NSError *err))failure;
 
+//获取版本信息
+- (void)getVersioncomplete:(void (^)(NSDictionary *))versionInfo;
+
 @end

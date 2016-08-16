@@ -13,7 +13,7 @@
 @implementation RCDGroupTableViewCell
 
 - (void)awakeFromNib {
-  // Initialization code
+  [super awakeFromNib];
   _imvGroupPort.layer.masksToBounds = YES;
   _imvGroupPort.layer.cornerRadius = 2.f;
 }

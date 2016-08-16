@@ -14,4 +14,6 @@
 
 @property(nonatomic, strong) UILabel *nicknameLabel;
 
+@property(nonatomic, strong) UILabel *userIdLabel;
+
 @end
