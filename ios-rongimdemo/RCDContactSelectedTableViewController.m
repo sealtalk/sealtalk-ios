@@ -18,6 +18,7 @@
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
 #import "pinyin.h"
+#import "UIColor+RCColor.h"
 
 @interface RCDContactSelectedTableViewController ()
 @property(nonatomic, strong) NSMutableArray *friends;
@@ -81,6 +82,7 @@ MBProgressHUD *hud;
   
   self.navigationItem.rightBarButtonItem.enabled = NO;
   hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+  hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
   //    hud.labelText = @"";
   [hud show:YES];
 

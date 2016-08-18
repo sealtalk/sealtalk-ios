@@ -41,6 +41,14 @@
 "Camera"="Camera";
 "Photos"="Photos";
 "Location"="Location";
+"File"="File";
+"SendFile"="Send File";
+"PreviewFile"="Preview File";
+"StartDownloadingFile"="Start downloading";
+"FileIsDownloading"="Downloding...";
+"FileDownloadFailed"="Download failed";
+"FileDownloadCanceled"="Download has been canceled";
+"OpenFileInOtherApp"="Open the file in other app";
 "Audio"="Audio";
 "Albums"="Albums";
 "unknown_message_cell_tip"="The current version is not available for viewing this message";
@@ -199,3 +207,7 @@
 "HaveMentionedForNotification"="You were mentioned ";
 "SelectMentionedUser"="Select Contact";
 "ToSearch"="Search";
+"chatDate"="MMM d,yyyy";
+"chatListDate"="M/d/yyyy";
+"locale"="en_US";
+"SameYearDate"="M/d/yy";

@@ -8,74 +8,6 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--客服-->
-        <scene sceneID="E5a-BL-EX6">
-            <objects>
-                <viewController id="QQL-yh-Qgh" customClass="RCDServiceViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="FFx-mB-G9Q"/>
-                        <viewControllerLayoutGuide type="bottom" id="SAW-gR-aic"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="w9u-EF-tMJ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="services_bg" translatesAutoresizingMaskIntoConstraints="NO" id="3Kf-Ur-Cfm">
-                                <rect key="frame" x="-10" y="0.0" width="620" height="487"/>
-                            </imageView>
-                            <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JpQ-8g-lgu">
-                                <rect key="frame" x="4" y="510" width="592" height="90"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6R6-ha-u6R">
-                                <rect key="frame" x="200" y="515" width="200" height="49"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="eJE-c3-9RM"/>
-                                    <constraint firstAttribute="width" constant="69" id="ju0-RN-nv4"/>
-                                    <constraint firstAttribute="height" constant="49" id="nk4-VG-az6"/>
-                                    <constraint firstAttribute="width" constant="200" id="x63-Dg-JUo"/>
-                                </constraints>
-                                <state key="normal" image="service_icon">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="eJE-c3-9RM"/>
-                                        <exclude reference="ju0-RN-nv4"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=compact-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="eJE-c3-9RM"/>
-                                        <include reference="ju0-RN-nv4"/>
-                                    </mask>
-                                </variation>
-                                <connections>
-                                    <action selector="acService:" destination="QQL-yh-Qgh" eventType="touchUpInside" id="S8l-fY-De1"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="JpQ-8g-lgu" secondAttribute="trailing" constant="-16" id="3WO-jq-qa3"/>
-                            <constraint firstItem="SAW-gR-aic" firstAttribute="top" secondItem="3Kf-Ur-Cfm" secondAttribute="bottom" id="5xk-lc-17C"/>
-                            <constraint firstItem="3Kf-Ur-Cfm" firstAttribute="leading" secondItem="w9u-EF-tMJ" secondAttribute="leadingMargin" constant="-30" id="Ai9-ao-VQk"/>
-                            <constraint firstItem="JpQ-8g-lgu" firstAttribute="leading" secondItem="w9u-EF-tMJ" secondAttribute="leadingMargin" constant="-16" id="GtC-bn-V9E"/>
-                            <constraint firstItem="3Kf-Ur-Cfm" firstAttribute="top" secondItem="FFx-mB-G9Q" secondAttribute="bottom" id="I34-g0-lS3"/>
-                            <constraint firstItem="JpQ-8g-lgu" firstAttribute="top" secondItem="3Kf-Ur-Cfm" secondAttribute="bottom" constant="-90" id="MLT-mW-Vt0"/>
-                            <constraint firstItem="JpQ-8g-lgu" firstAttribute="centerY" secondItem="6R6-ha-u6R" secondAttribute="centerY" constant="15" id="SJj-eR-10v"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="3Kf-Ur-Cfm" secondAttribute="trailing" constant="-30" id="WrL-h2-BvX"/>
-                            <constraint firstItem="SAW-gR-aic" firstAttribute="top" secondItem="JpQ-8g-lgu" secondAttribute="bottom" id="Xlm-un-YLF"/>
-                            <constraint firstItem="JpQ-8g-lgu" firstAttribute="centerX" secondItem="6R6-ha-u6R" secondAttribute="centerX" id="dh3-jM-GXB"/>
-                        </constraints>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="客服" image="serve" id="ke7-9w-Ds9"/>
-                    <navigationItem key="navigationItem" title="客服" id="eiF-2n-Muf"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Sew-Jb-Eoz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1095" y="2346"/>
-        </scene>
         <!--登录-->
         <scene sceneID="jZI-5n-KV2">
             <objects>
@@ -169,7 +101,7 @@
         <!--会话-->
         <scene sceneID="t74-QZ-loV">
             <objects>
-                <viewController title="会话" id="BGM-dn-rmd" customClass="RCDChatListViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RCDChatListViewController" title="会话" id="BGM-dn-rmd" customClass="RCDChatListViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LSb-nQ-aCx"/>
                         <viewControllerLayoutGuide type="bottom" id="qCg-oh-E8C"/>
@@ -179,7 +111,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="会话" image="message" id="ToU-a9-WZ8"/>
+                    <tabBarItem key="tabBarItem" title="会话" id="ToU-a9-WZ8"/>
                     <navigationItem key="navigationItem" title="会话" id="hjv-3j-BLm">
                         <barButtonItem key="rightBarButtonItem" title="Item" id="6Ck-ET-GA4">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" id="6Qo-va-M8i">
@@ -207,7 +139,7 @@
         <!--通讯录-->
         <scene sceneID="hs7-VL-uob">
             <objects>
-                <viewController title="通讯录" id="EZN-gW-2QO" customClass="RCDContactViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RCDContactViewController" title="通讯录" id="EZN-gW-2QO" customClass="RCDContactViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rvB-a9-Qsl"/>
                         <viewControllerLayoutGuide type="bottom" id="jgL-aW-Szx"/>
@@ -246,7 +178,7 @@
                             <constraint firstItem="BjG-4I-rua" firstAttribute="leading" secondItem="Bup-Dc-5gZ" secondAttribute="leadingMargin" constant="-20" id="nMf-Mv-Xxe"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="通讯录" image="contact_icon" id="ZIc-qS-RgL"/>
+                    <tabBarItem key="tabBarItem" title="通讯录" id="ZIc-qS-RgL"/>
                     <connections>
                         <outlet property="friendsTabelView" destination="BjG-4I-rua" id="6dy-1S-wb8"/>
                         <outlet property="searchFriendsBar" destination="AdU-7q-Bbn" id="eII-wW-Rsg"/>
@@ -1191,16 +1123,16 @@
                             <outlet property="delegate" destination="Xqb-U9-2Kf" id="39R-IB-VXs"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="发现" image="square" id="YWb-7P-Kts"/>
+                    <tabBarItem key="tabBarItem" title="发现" id="YWb-7P-Kts"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="edu-MU-GdV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1247" y="1664"/>
+            <point key="canvasLocation" x="-1111" y="1959"/>
         </scene>
         <!--我-->
         <scene sceneID="OGs-Ye-MQd">
             <objects>
-                <tableViewController id="og0-6I-bGN" customClass="RCDMeTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="RCDMeTableViewController" id="og0-6I-bGN" customClass="RCDMeTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="a8N-0A-Zva">
                         <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1499,7 +1431,7 @@
                             <outlet property="delegate" destination="og0-6I-bGN" id="RNU-6Q-BBB"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="我" image="icon_me" id="Ofi-PU-ilJ"/>
+                    <tabBarItem key="tabBarItem" title="我" id="Ofi-PU-ilJ"/>
                     <navigationItem key="navigationItem" title="我" id="rUd-3w-eIn"/>
                     <connections>
                         <outlet property="currentUserNameLabel" destination="ZNU-Xw-dTY" id="Es0-UH-iCH"/>
@@ -2037,7 +1969,7 @@
                                         <rect key="frame" x="0.0" y="123" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4tH-9y-m0W" id="NlU-VZ-DCz">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="新消息通知" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpb-Qq-GfO">
@@ -2067,7 +1999,7 @@
                                         <rect key="frame" x="0.0" y="187" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3pS-2i-z9i" id="cKH-0h-Qs1">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="清除缓存" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8U6-5g-rFj">
@@ -2135,7 +2067,7 @@
                                         <rect key="frame" x="0.0" y="35" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="bottom" tableViewCell="9BV-ql-ovG" id="VcW-vd-hrF">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="消息免打扰" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KY8-W3-ITw">
@@ -2562,7 +2494,7 @@
                                     <constraint firstAttribute="height" constant="42" id="D8J-6r-O3q"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="发起会话" backgroundImage="613CB4A9-C2E3-46B3-98F6-5F99AE05FADE">
+                                <state key="normal" title="发起会话" backgroundImage="0E1136C0-0456-4068-A460-FB637C580ED1">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="selected" backgroundImage="calling_hover"/>
@@ -2994,7 +2926,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="613CB4A9-C2E3-46B3-98F6-5F99AE05FADE" width="300" height="42">
+        <image name="0E1136C0-0456-4068-A460-FB637C580ED1" width="300" height="42">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3892,7 +3824,6 @@ Ec8jzybPKwAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAAM8tA
         <image name="calling" width="300" height="42"/>
         <image name="calling_hover" width="300" height="42"/>
         <image name="chat_room" width="26" height="22"/>
-        <image name="contact_icon" width="26" height="26"/>
         <image name="grayarrow" width="22" height="22"/>
         <image name="group" width="31" height="21"/>
         <image name="icon_1-1" width="50" height="50"/>
@@ -3901,18 +3832,12 @@ Ec8jzybPKwAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAAM8tA
         <image name="icon_4" width="56" height="56"/>
         <image name="icon_4-1" width="50" height="50"/>
         <image name="icon_5" width="46" height="46"/>
-        <image name="icon_me" width="26" height="26"/>
         <image name="icon_person" width="92" height="92"/>
-        <image name="message" width="26" height="26"/>
         <image name="new" width="66" height="30"/>
         <image name="redpoint" width="36" height="36"/>
         <image name="right_arrow" width="8" height="13"/>
-        <image name="serve" width="23" height="22"/>
-        <image name="service_icon" width="375" height="91"/>
-        <image name="services_bg" width="640" height="923"/>
         <image name="setting_up" width="18" height="18"/>
         <image name="sevre_inactive" width="18" height="18"/>
-        <image name="square" width="26" height="26"/>
         <image name="unselect" width="22" height="22"/>
     </resources>
 </document>

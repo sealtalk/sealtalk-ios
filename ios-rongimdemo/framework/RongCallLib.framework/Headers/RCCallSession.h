@@ -104,6 +104,35 @@
  */
 - (void)errorDidOccur:(RCCallErrorCode)error;
 
+/*!
+ 开启在服务器录制当前通话的回调
+ 
+ @param startSuccess 是否成功开始录制
+ @param errorCode    失败的错误码
+ */
+- (void)resultForStartServerRecording:(BOOL)startSuccess
+                            errorCode:(RCCallErrorCode)errorCode;
+
+/*!
+ 停止在服务器录制当前通话的回调
+ 
+ @param stopSuccess 是否成功停止
+ @param errorCode   失败的错误码
+ */
+- (void)resultForStopServerRecording:(BOOL)stopSuccess
+                           errorCode:(RCCallErrorCode)errorCode;
+
+/*!
+ 查询当前通话在服务器的录制状态的回调
+ 
+ @param fetchSuccess 是否成功查询成功。如果为YES，则表示查询成功，isRecording为服务器当前是否正在录制的状态
+ @param isRecording  服务器是否正在录制
+ @param errorCode    查询失败的错误码
+ */
+- (void)resultForFetchServerRecordingStatus:(BOOL)fetchSuccess
+                                     status:(BOOL)isRecording
+                                  errorCode:(RCCallErrorCode)errorCode;
+
 @end
 
 /*!
@@ -277,5 +306,26 @@
  @return 是否切换成功
  */
 - (BOOL)switchCameraMode;
+
+/*!
+ 开始在服务器录制当前通话
+ 
+ @discussion 调用此接口的时候，当前通话必须已经接通。
+ */
+- (void)startServerRecording;
+
+/*!
+ 停止在服务器录制当前通话
+ 
+ @discussion 调用此接口的时候，当前通话必须已经接通。
+ */
+- (void)stopServerRecording;
+
+/*!
+ 查询当前通话在服务器端的录制状态
+ 
+ @discussion 调用此接口的时候，当前通话必须已经接通。
+ */
+- (void)fetchServerRecordingStatus;
 
 @end

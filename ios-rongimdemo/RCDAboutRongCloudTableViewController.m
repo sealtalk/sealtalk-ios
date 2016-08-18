@@ -176,7 +176,7 @@
   if (!_urls) {
     NSArray *section0 =
     [NSArray arrayWithObjects:@"http://rongcloud.cn/",
-     @"http://rongcloud.cn/downloads/history/ios",
+     @"http://www.rongcloud.cn/changelog",
      @"http://rongcloud.cn/features",
      @"http://rongcloud.cn/", nil];
     _urls = [NSArray arrayWithObjects:section0, nil];

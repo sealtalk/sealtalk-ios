@@ -522,13 +522,12 @@ didApiCallExecute:(NSString *)api
 __attribute__((visibility("default"))) @interface AgoraRtcEngineKit
     : NSObject
 
-      /**
-      *  Get the version of Agora SDK.
-      *
-      *  @return string, sdk version
-      */
-      +
-      (NSString *)getSdkVersion;
+/**
+ *  Get the version of Agora SDK.
+ *
+ *  @return string, sdk version
+ */
++(NSString *)getSdkVersion;
 
 /**
  *  Get the version of Media Engine

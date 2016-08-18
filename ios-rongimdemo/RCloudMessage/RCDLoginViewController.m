@@ -670,7 +670,6 @@ MBProgressHUD *hud;
     RCDNavigationViewController *rootNavi =
         [storyboard instantiateViewControllerWithIdentifier:@"rootNavi"];
     [ShareApplicationDelegate window].rootViewController = rootNavi;
-
   });
 }
 /**
@@ -752,6 +751,7 @@ MBProgressHUD *hud;
       [[RCIM sharedRCIM] initWithAppKey:@"n19jmcy59f1q9"];
     }
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.color = [UIColor colorWithHexString:@"343637" alpha:0.8];
     hud.labelText = @"登录中...";
     [hud show:YES];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserCookies"];

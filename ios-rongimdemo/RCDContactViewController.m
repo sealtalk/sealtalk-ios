@@ -37,11 +37,6 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
 
-  self.tabBarItem.image = [[UIImage imageNamed:@"contact_icon"]
-      imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-  self.tabBarItem.selectedImage = [[UIImage imageNamed:@"contact_icon_hover"]
-      imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-
   // initial data
   self.matchFriendList = [[NSMutableArray alloc] init];
   self.allFriendSectionDic = [[NSDictionary alloc] init];
@@ -253,8 +248,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView
-    didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
-{
+    didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   RCDUserInfo *user = nil;
   if (indexPath.section == 0) {
     switch (indexPath.row) {

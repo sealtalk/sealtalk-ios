@@ -37,18 +37,6 @@
   BOOL isSyncCurrentUserInfo;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-  self = [super initWithCoder:aDecoder];
-  if (self) {
-    //设置为不用默认渲染方式
-    self.tabBarItem.image = [[UIImage imageNamed:@"icon_me"]
-        imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.tabBarItem.selectedImage = [[UIImage imageNamed:@"icon_me_hover"]
-        imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-  }
-  return self;
-}
-
 - (void)viewDidLoad {
   [super viewDidLoad];
   self.tableView.tableFooterView = [UIView new];

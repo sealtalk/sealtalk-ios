@@ -9,10 +9,10 @@
 #import "RCMessageCell.h"
 #import "RCAttributedLabel.h"
 
-#define RichContent_Title_Font_Size 16
+#define RichContent_Title_Font_Size 15
 #define RichContent_Message_Font_Size 12
-#define RICH_CONTENT_THUMBNAIL_WIDTH 60
-#define RICH_CONTENT_THUMBNAIL_HIGHT 60
+#define RICH_CONTENT_THUMBNAIL_WIDTH 45
+#define RICH_CONTENT_THUMBNAIL_HIGHT 45
 
 /*!
  富文本（图文）消息Cell

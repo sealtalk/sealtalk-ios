@@ -17,11 +17,17 @@ typedef NS_ENUM(NSInteger, RCCallMediaType) {
 #pragma mark - Call
 
 typedef NS_ENUM(NSInteger, RCCallErrorCode) {
+  RCCallSuccess = 0,
   RCCallNetworkUnavailable = 1,
   RCCallOneCallExisted = 2,
   RCCallOperationUnavailable = 3,
   RCCallInvalidParam = 4,
   RCCallNetworkUnstable = 5,
+  RCCallMediaRequestFailed = 6,
+  RCCallMediaServerNotReady = 7,
+  RCCallMediaServerNotInitialized = 8,
+  RCCallMediaRequestTimeout = 9,
+  RCCallMediaUnkownError = 10,
 };
 
 typedef NS_ENUM(NSInteger, RCCallDisconnectReason) {
@@ -82,6 +88,17 @@ typedef NS_ENUM(NSInteger, RCCallDisconnectReason) {
    对方网络错误
    */
   RCCallDisconnectReasonRemoteNetworkError = 17,
+};
+
+typedef NS_ENUM(NSInteger, RCVideoProfile) {
+                                           // res       fps  kbps
+  RC_VIDEO_PROFILE_120P = 0,               // 160x120   15   80
+  RC_VIDEO_PROFILE_180P = 10,              // 320x180   15   160
+  RC_VIDEO_PROFILE_240P = 20,              // 320x240   15   200
+  RC_VIDEO_PROFILE_360P = 30,              // 640x360   15   400
+  RC_VIDEO_PROFILE_480P = 40,              // 640x480   15   500
+  RC_VIDEO_PROFILE_720P = 50,              // 1280x720  15   1000
+  RC_VIDEO_PROFILE_DEFAULT = RC_VIDEO_PROFILE_360P,
 };
 
 typedef NS_ENUM(NSInteger, RCCallStatus) {

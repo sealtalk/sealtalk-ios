@@ -15,6 +15,7 @@
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
+#import "UIColor+RCColor.h"
 
 // 是否iPhone5
 #define isiPhone5                                                              \
@@ -163,12 +164,7 @@ preparation before navigation
   self.navigationItem.rightBarButtonItem.enabled = NO;
   [self moveView:deafultY];
   [_GroupName resignFirstResponder];
-  //需要添加群组头像
-  //    if (image == nil) {
-  //        [self Alert:@"请添加群组头像"];
-  //        self.navigationItem.rightBarButtonItem.enabled = YES;
-  //        return;
-  //    }
+
   NSString *nameStr = [self.GroupName.text copy];
   nameStr = [nameStr
       stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -201,7 +197,8 @@ preparation before navigation
     }
 
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"群组创建中...";
+    hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
+    hud.labelText = @"创建中...";
     [hud show:YES];
 
     [[RCDHttpTool shareInstance]
@@ -230,7 +227,6 @@ preparation before navigation
                                                                groupInfo
                                                                      withGroupId:
                                                                          groupId];
-                                                       //                                                                                                 [[RCDataBaseManager shareInstance] insertGroupToDB:groupInfo];
                                                        if (result == YES) {
 
                                                          [self.navigationController
@@ -278,60 +274,6 @@ preparation before navigation
                               [self.navigationController
                                   popToRootViewControllerAnimated:YES];
                             }
-
-                            //                 [RCDHTTPTOOL
-                            //                  uploadImageToQiNiu:[RCIM
-                            //                  sharedRCIM].currentUserInfo.userId
-                            //                  ImageData:data
-                            //                  success:^(NSString *url) {
-                            //                      RCGroup *groupInfo =
-                            //                      [RCGroup new];
-                            //                      groupInfo.portraitUri = url;
-                            //                      groupInfo.groupId =groupId;
-                            //                      groupInfo.groupName
-                            //                      =nameStr;
-                            //                      dispatch_async(dispatch_get_main_queue(),
-                            //                      ^{
-                            //                          [RCDHTTPTOOL
-                            //                           setGroupPortraitUri:url
-                            //                           groupId:groupId
-                            //                           complete:^(BOOL result)
-                            //                           {
-                            //
-                            //                               //
-                            //                               [[RCDataBaseManager
-                            //                               shareInstance]
-                            //                               insertGroupToDB:groupInfo];
-                            //                               if (result == YES)
-                            //                               {
-                            //                                   [self.navigationController
-                            //                                   popToRootViewControllerAnimated:YES];
-                            //                                   //关闭HUD
-                            //                                   [hud hide:YES];
-                            //                               }
-                            //                               if (result == NO) {
-                            //                                   self.navigationItem.rightBarButtonItem.enabled
-                            //                                   = YES;
-                            //                                   //关闭HUD
-                            //                                   [hud hide:YES];
-                            //                                   [self
-                            //                                   Alert:@"创建群组失败，请检查你的网络设置。"];
-                            //                               }
-                            //                           }];
-                            //                      });
-                            //
-                            //                  } failure:^(NSError *err) {
-                            //                      self.navigationItem.rightBarButtonItem.enabled
-                            //                      = YES;
-                            //                      //关闭HUD
-                            //                      [hud hide:YES];
-                            //                      [self
-                            //                      Alert:@"创建群组失败，请检查你的网络设置。"];
-                            //                  }];
-
-                            //                                                           dispatch_sync(dispatch_get_main_queue(), ^{
-                            //                                                          [self.navigationController popToRootViewControllerAnimated:YES];
-                            //                                                           });
                           } else {
                             [hud hide:YES];
                             self.navigationItem.rightBarButtonItem.enabled =

@@ -8,7 +8,6 @@
 
 #import "RCDSquareTableViewController.h"
 #import "DefaultPortraitView.h"
-#import "MBProgressHUD.h"
 #import "RCDChatViewController.h"
 #import "RCDCommonDefine.h"
 #import "RCDGroupInfo.h"
@@ -25,16 +24,10 @@
 @implementation RCDSquareTableViewController {
   NSMutableArray *chatRoomIdList;
   NSMutableArray *chatRoomNames;
-  MBProgressHUD *hud;
 }
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-
-  self.tabBarItem.image = [[UIImage imageNamed:@"square"]
-                           imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-  self.tabBarItem.selectedImage = [[UIImage imageNamed:@"square_hover"]
-      imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
   self.tableView.tableFooterView = [UIView new];
   [self.tableView setSeparatorColor:HEXCOLOR(0xdfdfdf)];

@@ -57,6 +57,19 @@
 + (UIImage *)createImageWithColor:(UIColor *)color;
 
 /*!
+ 获取文字显示的尺寸
+ 
+ @param text 文字
+ @param font 字体
+ @param size 文字显示的容器大小
+ 
+ @return 文字显示的尺寸
+ 
+ @discussion 该方法在计算iOS 7以下系统显示的时候默认使用NSLineBreakByTruncatingTail模式。
+ */
++ (CGSize)getTextDrawingSize:(NSString *)text font:(UIFont *)font constrainedSize:(CGSize)constrainedSize;
+
+/*!
  获取消息内容的摘要
  
  @param messageContent  消息内容
@@ -107,5 +120,21 @@ __deprecated_msg("已废弃，请勿使用。");
  @return                    本地通知的Dictionary
  */
 + (NSDictionary *)getNotificationUserInfoDictionary:(RCConversationType)conversationType fromUserId:(NSString *)fromUserId targetId:(NSString *)targetId objectName:(NSString *)objectName;
+
+/*!
+ 获取文件消息中消息类型对应的图片名称
+ 
+ @param fileType    文件类型
+ @return            图片名称
+ */
++ (NSString *)getFileTypeIcon:(NSString *)fileType;
+
+/*!
+ 获取文件大小的字符串，单位是k
+ 
+ @param byteSize    文件大小，单位是byte
+ @return 文件大小的字符串
+ */
++ (NSString *)getReadableStringForFileSize:(long long)byteSize;
 
 @end

@@ -625,6 +625,7 @@
 /*发送验证码*/
 - (void)sendCodeEvent {
   hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+  hud.color = [UIColor colorWithHexString:@"343637" alpha:0.8];
   [hud show:YES];
   _errorMsgLb.text = @"";
   NSString *phoneNumber =

@@ -59,6 +59,7 @@
   //    }
   [self umengTrack];
 
+  
   /**
    *  推送说明：
    *
@@ -103,8 +104,11 @@
   //    [RCIM sharedRCIM].globalMessagePortraitSize = CGSizeMake(46, 46);
   //开启输入状态监听
   [RCIM sharedRCIM].enableTypingStatus = YES;
-  //开启发送已读回执（只支持单聊）
+  //开启发送已读回执
   [RCIM sharedRCIM].enableReadReceipt = YES;
+  [RCIM sharedRCIM].readReceiptConversationTypeList = @[@(ConversationType_PRIVATE), @(ConversationType_DISCUSSION), @(ConversationType_GROUP)];
+  //开启多端未读状态同步
+  [RCIM sharedRCIM].enableSyncUnreadStatus = YES;
   //设置显示未注册的消息
   //如：新版本增加了某种自定义消息，但是老版本不能识别，开发者可以在旧版本中预先自定义这种未识别的消息的显示
   [RCIM sharedRCIM].showUnkownMessage = YES;
@@ -127,6 +131,9 @@
   //通话设置群组成员列表提供者
   [RCCall sharedRCCall].groupMemberDataSource = RCDDataSource;
 
+//  设置通话视频分辨率
+//  [[RCCallClient sharedRCCallClient] setVideoProfile:RC_VIDEO_PROFILE_480P];
+  
   //登录
   NSString *token = [DEFAULTS objectForKey:@"userToken"];
   NSString *userId = [DEFAULTS objectForKey:@"userId"];
@@ -182,6 +189,7 @@
           //                instantiateViewControllerWithIdentifier:@"rootNavi"];
           //            self.window.rootViewController = rootNavi;
           //          });
+          [self insertSharedMessageIfNeed];
         }
         error:^(RCConnectErrorCode status) {
           RCUserInfo *_currentUserInfo =
@@ -425,11 +433,18 @@
   //    @(ConversationType_GROUP)
   //  ]];
   //  application.applicationIconBadgeNumber = unreadMsgCount;
+  
+  // 为消息分享保存会话信息
+  [self saveConversationInfoForMessageShare];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
   // Called as part of the transition from the background to the inactive state;
   // here you can undo many of the changes made on entering the background.
+  if ([[RCIMClient sharedRCIMClient] getConnectionStatus] == ConnectionStatus_Connected) {
+    // 插入分享消息
+    [self insertSharedMessageIfNeed];
+  }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -441,6 +456,60 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
   // Called when the application is about to terminate. Save data if
   // appropriate. See also applicationDidEnterBackground:.
+}
+
+//插入分享消息
+- (void)insertSharedMessageIfNeed {
+  NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.cn.rongcloud.im.share"];
+  
+  NSArray *sharedMessages = [shareUserDefaults valueForKey:@"sharedMessages"];
+  if (sharedMessages.count > 0) {
+    for (NSDictionary *sharedInfo in sharedMessages) {
+      RCRichContentMessage *richMsg = [[RCRichContentMessage alloc]init];
+      richMsg.title = [sharedInfo objectForKey:@"title"];
+      richMsg.digest = [sharedInfo objectForKey:@"content"];
+      richMsg.url = [sharedInfo objectForKey:@"url"];
+      richMsg.imageURL = [sharedInfo objectForKey:@"imageURL"];
+      richMsg.extra = [sharedInfo objectForKey:@"extra"];
+      long long sendTime = [[sharedInfo objectForKey:@"sharedTime"] longLongValue];
+      RCMessage *message = [[RCIMClient sharedRCIMClient] insertOutgoingMessage:[[sharedInfo objectForKey:@"conversationType"] intValue] targetId:[sharedInfo objectForKey:@"targetId"] sentStatus:SentStatus_SENT content:richMsg sentTime:sendTime];
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"RCDSharedMessageInsertSuccess" object:message];
+    }
+    [shareUserDefaults removeObjectForKey:@"sharedMessages"];
+    [shareUserDefaults synchronize];
+  }
+}
+
+//为消息分享保存会话信息
+- (void)saveConversationInfoForMessageShare {
+  NSArray *conversationList = [[RCIMClient sharedRCIMClient] getConversationList:@[@(ConversationType_PRIVATE), @(ConversationType_GROUP)]];
+  
+  NSMutableArray *conversationInfoList = [[NSMutableArray alloc] init];
+  if (conversationList.count > 0) {
+    for (RCConversation *conversation in conversationList) {
+      NSMutableDictionary *conversationInfo = [NSMutableDictionary dictionary];
+      [conversationInfo setValue:conversation.targetId forKey:@"targetId"];
+      [conversationInfo setValue:@(conversation.conversationType) forKey:@"conversationType"];
+      if (conversation.conversationType == ConversationType_PRIVATE) {
+        RCUserInfo * user = [[RCIM sharedRCIM] getUserInfoCache:conversation.targetId];
+        [conversationInfo setValue:user.name forKey:@"name"];
+        [conversationInfo setValue:user.portraitUri forKey:@"portraitUri"];
+      }else if (conversation.conversationType == ConversationType_GROUP){
+        RCGroup *group = [[RCIM sharedRCIM] getGroupInfoCache:conversation.targetId];
+        [conversationInfo setValue:group.groupName forKey:@"name"];
+        [conversationInfo setValue:group.portraitUri forKey:@"portraitUri"];
+      }
+      [conversationInfoList addObject:conversationInfo];
+    }
+  }
+  NSURL *sharedURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.cn.rongcloud.im.share"];
+  NSURL *fileURL = [sharedURL URLByAppendingPathComponent:@"rongcloudShare.plist"];
+  [conversationInfoList writeToURL:fileURL atomically:YES];
+  
+  NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.cn.rongcloud.im.share"];
+  [shareUserDefaults setValue:[RCIM sharedRCIM].currentUserInfo.userId forKey:@"currentUserId"];
+  [shareUserDefaults setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserCookies"] forKey:@"Cookie"];
+  [shareUserDefaults synchronize];
 }
 
 - (void)redirectNSlogToDocumentFolder {
@@ -466,20 +535,18 @@
 
 - (void)didReceiveMessageNotification:(NSNotification *)notification {
   NSNumber *left = [notification.userInfo objectForKey:@"left"];
-  if ([RCIMClient sharedRCIMClient].sdkRunningMode == RCSDKRunningMode_Backgroud
-      && 0 == left.integerValue) {
-    RCMessage *message = notification.object;
-    if (message.messageDirection == MessageDirection_RECEIVE && [[message.content class] persistentFlag] & MessagePersistent_ISCOUNTED) {
-      int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
-        @(ConversationType_PRIVATE),
-        @(ConversationType_DISCUSSION),
-        @(ConversationType_APPSERVICE),
-        @(ConversationType_PUBLICSERVICE),
-        @(ConversationType_GROUP)
-      ]];
-      [UIApplication sharedApplication].applicationIconBadgeNumber =
-          unreadMsgCount;
-    }
+  if ([RCIMClient sharedRCIMClient].sdkRunningMode ==
+          RCSDKRunningMode_Backgroud &&
+      0 == left.integerValue) {
+    int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
+      @(ConversationType_PRIVATE),
+      @(ConversationType_DISCUSSION),
+      @(ConversationType_APPSERVICE),
+      @(ConversationType_PUBLICSERVICE),
+      @(ConversationType_GROUP)
+    ]];
+    [UIApplication sharedApplication].applicationIconBadgeNumber =
+        unreadMsgCount;
   }
 }
 

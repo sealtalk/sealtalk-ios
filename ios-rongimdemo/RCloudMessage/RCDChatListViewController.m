@@ -62,11 +62,6 @@
     //聚合会话类型
     [self setCollectionConversationType:@[ @(ConversationType_SYSTEM) ]];
 
-    //设置为不用默认渲染方式
-    self.tabBarItem.image = [[UIImage imageNamed:@"icon_chat"]
-        imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.tabBarItem.selectedImage = [[UIImage imageNamed:@"icon_chat_hover"]
-        imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
   }
   return self;
 }
@@ -111,10 +106,18 @@
    name:@"GotoNextCoversation"
    object:nil];
   
-  //检查版本
-  [self checkVersion];
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self
+   selector:@selector(updateForSharedMessageInsertSuccess)
+   name:@"RCDSharedMessageInsertSuccess"
+   object:nil];
   
-
+  [[NSNotificationCenter defaultCenter]addObserver:self
+                                          selector:@selector(updateBadgeValueForTabBarItem)
+                                              name:RCLibDispatchReadReceiptNotification
+                                            object:nil];
+  
+  [self checkVersion];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -836,4 +839,7 @@
   }
 }
 
+- (void)updateForSharedMessageInsertSuccess{
+  [self refreshConversationTableViewIfNeeded];
+}
 @end

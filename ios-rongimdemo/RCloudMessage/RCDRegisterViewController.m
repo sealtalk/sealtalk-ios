@@ -721,6 +721,7 @@
 /*获取验证码*/
 - (void)getVerficationCode {
   hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+  hud.color = [UIColor colorWithHexString:@"343637" alpha:0.8];
   [hud show:YES];
   _errorMsgLb.text = @"";
   if (_PhoneNumber.length == 11) {

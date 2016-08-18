@@ -9,6 +9,20 @@
 /* Begin PBXBuildFile section */
 		17244C181B56553B000EFF79 /* RCDMessageNoDisturbSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17244C171B56553B000EFF79 /* RCDMessageNoDisturbSettingController.m */; };
 		174151F51CBE516A00A4B23B /* RCDPublicServiceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 174151F41CBE516A00A4B23B /* RCDPublicServiceListViewController.m */; };
+		17B181851D587A1C0061E02B /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */; };
+		17BE51CF1D5828EC0001418D /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = 17BE51CE1D5828EC0001418D /* check.png */; };
+		17D7D1DC1D534F56000AEC54 /* RCDShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D7D1DB1D534F56000AEC54 /* RCDShareViewController.m */; };
+		17D7D1DF1D534F56000AEC54 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17D7D1DD1D534F56000AEC54 /* MainInterface.storyboard */; };
+		17D7D1E31D534F56000AEC54 /* SealTalkShareExtention.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 17D7D1D81D534F56000AEC54 /* SealTalkShareExtention.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		17D7D1EF1D534FCD000AEC54 /* RCDShareChatListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D7D1EC1D534FCD000AEC54 /* RCDShareChatListController.m */; };
+		17D7D1F01D534FCD000AEC54 /* RCDShareChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D7D1EE1D534FCD000AEC54 /* RCDShareChatListCell.m */; };
+		17D7D1FB1D535272000AEC54 /* DefaultPortraitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D7D1FA1D535272000AEC54 /* DefaultPortraitView.m */; };
+		17D7D1FC1D535272000AEC54 /* DefaultPortraitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D7D1FA1D535272000AEC54 /* DefaultPortraitView.m */; };
+		17D7D2021D5355A0000AEC54 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 17D7D2001D5355A0000AEC54 /* pinyin.c */; };
+		17D7D2031D5355A0000AEC54 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 17D7D2001D5355A0000AEC54 /* pinyin.c */; };
+		17E018C71D59BCBB0093D3A0 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E018C21D59BCBB0093D3A0 /* TFHpple.m */; };
+		17E018C81D59BCBB0093D3A0 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E018C41D59BCBB0093D3A0 /* TFHppleElement.m */; };
+		17E018C91D59BCBB0093D3A0 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E018C61D59BCBB0093D3A0 /* XPathQuery.m */; };
 		466684241B5DEA10000B7504 /* RCDSettingBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684231B5DEA10000B7504 /* RCDSettingBaseViewController.m */; };
 		466684271B5DEA5B000B7504 /* RCDConversationSettingBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684261B5DEA5B000B7504 /* RCDConversationSettingBaseViewController.m */; };
 		4666842A1B5DEC04000B7504 /* RCDConversationSettingClearMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684291B5DEC04000B7504 /* RCDConversationSettingClearMessageCell.m */; };
@@ -37,7 +51,6 @@
 		98AB3C091D38940600C3B87C /* SortForTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AB3C081D38940600C3B87C /* SortForTime.m */; };
 		98D3C9D11D4C464D006FDF67 /* RCDMainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D3C9D01D4C464D006FDF67 /* RCDMainTabBarViewController.m */; };
 		98FFECB71D267140001DBB0D /* UITabBar+badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 98FFECB61D267140001DBB0D /* UITabBar+badge.m */; };
-		9B447DE51CF82926005D3ED5 /* DefaultPortraitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DBC1CF82926005D3ED5 /* DefaultPortraitView.m */; };
 		9B447DE61CF82926005D3ED5 /* RCDChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DBE1CF82926005D3ED5 /* RCDChangePasswordViewController.m */; };
 		9B447DE71CF82926005D3ED5 /* RCDContactSelectedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DC01CF82926005D3ED5 /* RCDContactSelectedTableViewCell.m */; };
 		9B447DE81CF82926005D3ED5 /* RCDContactSelectedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DC21CF82926005D3ED5 /* RCDContactSelectedTableViewController.m */; };
@@ -219,7 +232,6 @@
 		E4E939CA1AD65E1E001E0AC6 /* UIColor+RCColor.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939C51AD65E1E001E0AC6 /* UIColor+RCColor.m */; };
 		E4E939CB1AD65E1E001E0AC6 /* UIImage+RCImage.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939C71AD65E1E001E0AC6 /* UIImage+RCImage.m */; };
 		E4E939CC1AD65E1E001E0AC6 /* UITextFiled+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939C91AD65E1E001E0AC6 /* UITextFiled+Shake.m */; };
-		E4E939CF1AD65E30001E0AC6 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = E4E939CD1AD65E30001E0AC6 /* pinyin.c */; };
 		E4E939D21AD6805E001E0AC6 /* RCDPersonDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939D11AD6805E001E0AC6 /* RCDPersonDetailViewController.m */; };
 		E4FCD7C41AD69DFB00915650 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FCD7C31AD69DFB00915650 /* ImageIO.framework */; };
 		F821B7F51BE75BFD00F0D14C /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F821B7F41BE75BFD00F0D14C /* libMobClickLibrary.a */; };
@@ -234,6 +246,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		17D7D1E11D534F56000AEC54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4D40F201A031F460045097C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 17D7D1D71D534F56000AEC54;
+			remoteInfo = SealTalkShareExtention;
+		};
 		A6447A161B1DBE6500EA2CEE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E4D40F201A031F460045097C /* Project object */;
@@ -244,6 +263,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		17D7D1E91D534F56000AEC54 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				17D7D1E31D534F56000AEC54 /* SealTalkShareExtention.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A6B1D9021B204E0600AD32EC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -261,6 +291,28 @@
 		17244C171B56553B000EFF79 /* RCDMessageNoDisturbSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RCDMessageNoDisturbSettingController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		174151F31CBE516A00A4B23B /* RCDPublicServiceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPublicServiceListViewController.h; sourceTree = SOURCE_ROOT; };
 		174151F41CBE516A00A4B23B /* RCDPublicServiceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPublicServiceListViewController.m; sourceTree = SOURCE_ROOT; };
+		17B181861D587B0F0061E02B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		17BE51CE1D5828EC0001418D /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
+		17D7D1D81D534F56000AEC54 /* SealTalkShareExtention.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SealTalkShareExtention.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		17D7D1DA1D534F56000AEC54 /* RCDShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDShareViewController.h; sourceTree = "<group>"; };
+		17D7D1DB1D534F56000AEC54 /* RCDShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDShareViewController.m; sourceTree = "<group>"; };
+		17D7D1DE1D534F56000AEC54 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		17D7D1E01D534F56000AEC54 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		17D7D1EA1D534F71000AEC54 /* SealTalkShareExtention.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SealTalkShareExtention.entitlements; sourceTree = "<group>"; };
+		17D7D1EB1D534FCD000AEC54 /* RCDShareChatListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDShareChatListController.h; sourceTree = "<group>"; };
+		17D7D1EC1D534FCD000AEC54 /* RCDShareChatListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDShareChatListController.m; sourceTree = "<group>"; };
+		17D7D1ED1D534FCD000AEC54 /* RCDShareChatListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDShareChatListCell.h; sourceTree = "<group>"; };
+		17D7D1EE1D534FCD000AEC54 /* RCDShareChatListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDShareChatListCell.m; sourceTree = "<group>"; };
+		17D7D1F91D535272000AEC54 /* DefaultPortraitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultPortraitView.h; sourceTree = "<group>"; };
+		17D7D1FA1D535272000AEC54 /* DefaultPortraitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultPortraitView.m; sourceTree = "<group>"; };
+		17D7D2001D5355A0000AEC54 /* pinyin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
+		17D7D2011D5355A0000AEC54 /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
+		17E018C11D59BCBB0093D3A0 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
+		17E018C21D59BCBB0093D3A0 /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
+		17E018C31D59BCBB0093D3A0 /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
+		17E018C41D59BCBB0093D3A0 /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
+		17E018C51D59BCBB0093D3A0 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
+		17E018C61D59BCBB0093D3A0 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
 		466684221B5DEA10000B7504 /* RCDSettingBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = RCDSettingBaseViewController.h; path = RCloudMessage/RCDSettingBaseViewController.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		466684231B5DEA10000B7504 /* RCDSettingBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = RCDSettingBaseViewController.m; path = RCloudMessage/RCDSettingBaseViewController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		466684251B5DEA5B000B7504 /* RCDConversationSettingBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = RCDConversationSettingBaseViewController.h; path = RCloudMessage/RCDConversationSettingBaseViewController.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -314,8 +366,6 @@
 		98D3C9D01D4C464D006FDF67 /* RCDMainTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDMainTabBarViewController.m; sourceTree = SOURCE_ROOT; };
 		98FFECB51D267140001DBB0D /* UITabBar+badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBar+badge.h"; sourceTree = SOURCE_ROOT; };
 		98FFECB61D267140001DBB0D /* UITabBar+badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+badge.m"; sourceTree = SOURCE_ROOT; };
-		9B447DBB1CF82926005D3ED5 /* DefaultPortraitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultPortraitView.h; sourceTree = SOURCE_ROOT; };
-		9B447DBC1CF82926005D3ED5 /* DefaultPortraitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultPortraitView.m; sourceTree = SOURCE_ROOT; };
 		9B447DBD1CF82926005D3ED5 /* RCDChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDChangePasswordViewController.h; sourceTree = SOURCE_ROOT; };
 		9B447DBE1CF82926005D3ED5 /* RCDChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDChangePasswordViewController.m; sourceTree = SOURCE_ROOT; };
 		9B447DBF1CF82926005D3ED5 /* RCDContactSelectedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDContactSelectedTableViewCell.h; sourceTree = SOURCE_ROOT; };
@@ -662,8 +712,6 @@
 		E4E939C71AD65E1E001E0AC6 /* UIImage+RCImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RCImage.m"; sourceTree = "<group>"; };
 		E4E939C81AD65E1E001E0AC6 /* UITextFiled+Shake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextFiled+Shake.h"; sourceTree = "<group>"; };
 		E4E939C91AD65E1E001E0AC6 /* UITextFiled+Shake.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextFiled+Shake.m"; sourceTree = "<group>"; };
-		E4E939CD1AD65E30001E0AC6 /* pinyin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
-		E4E939CE1AD65E30001E0AC6 /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
 		E4E939D01AD6805E001E0AC6 /* RCDPersonDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPersonDetailViewController.h; sourceTree = SOURCE_ROOT; };
 		E4E939D11AD6805E001E0AC6 /* RCDPersonDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPersonDetailViewController.m; sourceTree = SOURCE_ROOT; };
 		E4FCD7C31AD69DFB00915650 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -683,6 +731,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		17D7D1D51D534F56000AEC54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				17B181851D587A1C0061E02B /* libxml2.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A6447A021B1DBE6500EA2CEE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -736,6 +792,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17D7D1D91D534F56000AEC54 /* SealTalkShareExtention */ = {
+			isa = PBXGroup;
+			children = (
+				17D7D1DA1D534F56000AEC54 /* RCDShareViewController.h */,
+				17D7D1DB1D534F56000AEC54 /* RCDShareViewController.m */,
+				17D7D1EB1D534FCD000AEC54 /* RCDShareChatListController.h */,
+				17D7D1EC1D534FCD000AEC54 /* RCDShareChatListController.m */,
+				17D7D1ED1D534FCD000AEC54 /* RCDShareChatListCell.h */,
+				17D7D1EE1D534FCD000AEC54 /* RCDShareChatListCell.m */,
+				F82F1ACD1D62F3C50039AE45 /* Utilities */,
+				F82F1ACE1D62F3DA0039AE45 /* Supporting Files */,
+			);
+			path = SealTalkShareExtention;
+			sourceTree = "<group>";
+		};
 		46A831B81AC014B2001A533F /* FindPsw */ = {
 			isa = PBXGroup;
 			children = (
@@ -774,13 +845,6 @@
 				9B447DE41CF82926005D3ED5 /* RCDSquareTableViewController.m */,
 			);
 			name = Discovery;
-			sourceTree = "<group>";
-		};
-		9B447DBA1CF828E8005D3ED5 /* new */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = new;
 			sourceTree = "<group>";
 		};
 		A6447A061B1DBE6500EA2CEE /* 融云 Demo WatchKit Extension */ = {
@@ -1073,7 +1137,6 @@
 			isa = PBXGroup;
 			children = (
 				983903601D2D052800CE2C00 /* Discovery */,
-				9B447DBA1CF828E8005D3ED5 /* new */,
 				F836AB0F1C226A3500A1A5D2 /* Cell */,
 				A677D6851B81EBB9007D5D90 /* RealTimeLocation */,
 				E4BFAE6F1A121A5E007165B1 /* RCDRCIMDataSource.h */,
@@ -1215,6 +1278,7 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				17B181861D587B0F0061E02B /* Foundation.framework */,
 				F880EA781D0808B300FD5CC4 /* VideoToolbox.framework */,
 				A68AFAFC1CCF1ECE00F16B3D /* AgoraRtcEngineKit.framework */,
 				A68AFAF31CCF0B3700F16B3D /* RongCallKit.framework */,
@@ -1269,6 +1333,7 @@
 				E4D40F2A1A031F460045097C /* RCloudMessage */,
 				A6447A061B1DBE6500EA2CEE /* 融云 Demo WatchKit Extension */,
 				A6447A181B1DBE6500EA2CEE /* 融云 Demo WatchKit App */,
+				17D7D1D91D534F56000AEC54 /* SealTalkShareExtention */,
 				E4C4E7E71A0A309100140067 /* Frameworks */,
 				E4D40F291A031F460045097C /* Products */,
 			);
@@ -1281,6 +1346,7 @@
 				E4D40F281A031F460045097C /* SealTalk.app */,
 				A6447A051B1DBE6500EA2CEE /* SealTalk WatchKit Extension.appex */,
 				A6447A141B1DBE6500EA2CEE /* SealTalk WatchKit App.app */,
+				17D7D1D81D534F56000AEC54 /* SealTalkShareExtention.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1357,16 +1423,16 @@
 				E4E939C71AD65E1E001E0AC6 /* UIImage+RCImage.m */,
 				E4E939C81AD65E1E001E0AC6 /* UITextFiled+Shake.h */,
 				E4E939C91AD65E1E001E0AC6 /* UITextFiled+Shake.m */,
+				17D7D2001D5355A0000AEC54 /* pinyin.c */,
+				17D7D2011D5355A0000AEC54 /* pinyin.h */,
 				E4E939171AD65A95001E0AC6 /* RCDTextFieldValidate.h */,
 				E4E939181AD65A95001E0AC6 /* RCDTextFieldValidate.m */,
 				E4E939191AD65A95001E0AC6 /* RCUnderlineTextField.h */,
 				E4E9391A1AD65A95001E0AC6 /* RCUnderlineTextField.m */,
-				E4E939CD1AD65E30001E0AC6 /* pinyin.c */,
-				E4E939CE1AD65E30001E0AC6 /* pinyin.h */,
+				17D7D1F91D535272000AEC54 /* DefaultPortraitView.h */,
+				17D7D1FA1D535272000AEC54 /* DefaultPortraitView.m */,
 				466684341B5DF36E000B7504 /* RCDUtilities.h */,
 				466684351B5DF36E000B7504 /* RCDUtilities.m */,
-				9B447DBB1CF82926005D3ED5 /* DefaultPortraitView.h */,
-				9B447DBC1CF82926005D3ED5 /* DefaultPortraitView.m */,
 				980EF4571D376BC9000C26FC /* UITextViewAndPlaceholder.h */,
 				980EF4581D376BC9000C26FC /* UITextViewAndPlaceholder.m */,
 			);
@@ -1512,6 +1578,30 @@
 			name = UMAnalytics;
 			sourceTree = "<group>";
 		};
+		F82F1ACD1D62F3C50039AE45 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				17E018C11D59BCBB0093D3A0 /* TFHpple.h */,
+				17E018C21D59BCBB0093D3A0 /* TFHpple.m */,
+				17E018C31D59BCBB0093D3A0 /* TFHppleElement.h */,
+				17E018C41D59BCBB0093D3A0 /* TFHppleElement.m */,
+				17E018C51D59BCBB0093D3A0 /* XPathQuery.h */,
+				17E018C61D59BCBB0093D3A0 /* XPathQuery.m */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		F82F1ACE1D62F3DA0039AE45 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				17D7D1EA1D534F71000AEC54 /* SealTalkShareExtention.entitlements */,
+				17BE51CE1D5828EC0001418D /* check.png */,
+				17D7D1DD1D534F56000AEC54 /* MainInterface.storyboard */,
+				17D7D1E01D534F56000AEC54 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		F836AB0F1C226A3500A1A5D2 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1524,6 +1614,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		17D7D1D71D534F56000AEC54 /* SealTalkShareExtention */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 17D7D1E81D534F56000AEC54 /* Build configuration list for PBXNativeTarget "SealTalkShareExtention" */;
+			buildPhases = (
+				17D7D1D41D534F56000AEC54 /* Sources */,
+				17D7D1D51D534F56000AEC54 /* Frameworks */,
+				17D7D1D61D534F56000AEC54 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SealTalkShareExtention;
+			productName = SealTalkShareExtention;
+			productReference = 17D7D1D81D534F56000AEC54 /* SealTalkShareExtention.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		A6447A041B1DBE6500EA2CEE /* SealTalk WatchKit Extension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A6447A281B1DBE6500EA2CEE /* Build configuration list for PBXNativeTarget "SealTalk WatchKit Extension" */;
@@ -1565,10 +1672,12 @@
 				E4D40F241A031F460045097C /* Sources */,
 				E4D40F251A031F460045097C /* Frameworks */,
 				E4D40F261A031F460045097C /* Resources */,
+				17D7D1E91D534F56000AEC54 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				17D7D1E21D534F56000AEC54 /* PBXTargetDependency */,
 			);
 			name = SealTalk;
 			productName = RongCloud;
@@ -1584,13 +1693,15 @@
 				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = RongCloud;
 				TargetAttributes = {
+					17D7D1D71D534F56000AEC54 = {
+						CreatedOnToolsVersion = 7.2;
+						SystemCapabilities = {
+						};
+					};
 					A6447A041B1DBE6500EA2CEE = {
 						CreatedOnToolsVersion = 6.3.2;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
-							};
 						};
 					};
 					A6447A131B1DBE6500EA2CEE = {
@@ -1601,9 +1712,6 @@
 						CreatedOnToolsVersion = 6.0.1;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
-							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
@@ -1628,11 +1736,21 @@
 				E4D40F271A031F460045097C /* SealTalk */,
 				A6447A041B1DBE6500EA2CEE /* SealTalk WatchKit Extension */,
 				A6447A131B1DBE6500EA2CEE /* SealTalk WatchKit App */,
+				17D7D1D71D534F56000AEC54 /* SealTalkShareExtention */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		17D7D1D61D534F56000AEC54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				17BE51CF1D5828EC0001418D /* check.png in Resources */,
+				17D7D1DF1D534F56000AEC54 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A6447A031B1DBE6500EA2CEE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1667,6 +1785,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		17D7D1D41D534F56000AEC54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				17D7D2031D5355A0000AEC54 /* pinyin.c in Sources */,
+				17E018C81D59BCBB0093D3A0 /* TFHppleElement.m in Sources */,
+				17E018C91D59BCBB0093D3A0 /* XPathQuery.m in Sources */,
+				17E018C71D59BCBB0093D3A0 /* TFHpple.m in Sources */,
+				17D7D1DC1D534F56000AEC54 /* RCDShareViewController.m in Sources */,
+				17D7D1FC1D535272000AEC54 /* DefaultPortraitView.m in Sources */,
+				17D7D1EF1D534FCD000AEC54 /* RCDShareChatListController.m in Sources */,
+				17D7D1F01D534FCD000AEC54 /* RCDShareChatListCell.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A6447A011B1DBE6500EA2CEE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1726,7 +1859,6 @@
 				4666842D1B5DEC25000B7504 /* RCDConversationSettingTableViewCell.m in Sources */,
 				E4E939461AD65A95001E0AC6 /* AFSecurityPolicy.m in Sources */,
 				9B447DF81CF82926005D3ED5 /* RCDSquareTableViewCell.m in Sources */,
-				9B447DE51CF82926005D3ED5 /* DefaultPortraitView.m in Sources */,
 				E412BD241ADE6BFB000DCA7A /* RCDHttpTool.m in Sources */,
 				46E17CC91B0EC32A001AC57A /* FMDatabasePool.m in Sources */,
 				E475A3371AE6981B009C31D7 /* RCDPrivateSettingViewController.m in Sources */,
@@ -1766,6 +1898,7 @@
 				E4E939B81AD65CFD001E0AC6 /* RCDGroupTableViewCell.m in Sources */,
 				466684361B5DF36E000B7504 /* RCDUtilities.m in Sources */,
 				E4E939441AD65A95001E0AC6 /* AFHTTPSessionManager.m in Sources */,
+				17D7D1FB1D535272000AEC54 /* DefaultPortraitView.m in Sources */,
 				E4E939A01AD65C74001E0AC6 /* RCDDiscussGroupSettingViewController.m in Sources */,
 				A677D69C1B81EBB9007D5D90 /* RCLocationConvert.m in Sources */,
 				980EF4591D376BC9000C26FC /* UITextViewAndPlaceholder.m in Sources */,
@@ -1789,7 +1922,6 @@
 				E4E939611AD65A95001E0AC6 /* RCDTextFieldValidate.m in Sources */,
 				E4E9395F1AD65A95001E0AC6 /* RCAnimatedImagesView.m in Sources */,
 				E4BFAE651A1219EA007165B1 /* RCDAddressBookViewController.m in Sources */,
-				E4E939CF1AD65E30001E0AC6 /* pinyin.c in Sources */,
 				E4E939451AD65A95001E0AC6 /* AFNetworkReachabilityManager.m in Sources */,
 				E4E939B21AD65CD6001E0AC6 /* RCDSelectPersonViewController.m in Sources */,
 				E4E939481AD65A95001E0AC6 /* AFURLRequestSerialization.m in Sources */,
@@ -1809,6 +1941,7 @@
 				E4E939B11AD65CD6001E0AC6 /* RCDSelectPersonTableViewCell.m in Sources */,
 				E4E939491AD65A95001E0AC6 /* AFURLResponseSerialization.m in Sources */,
 				E4E939A61AD65CA3001E0AC6 /* RCDRegisterViewController.m in Sources */,
+				17D7D2021D5355A0000AEC54 /* pinyin.c in Sources */,
 				466684301B5DEC57000B7504 /* RCDConversationSettingTableViewHeader.m in Sources */,
 				980235881D227F8100BCB1DD /* RCDPrivacyTableViewController.m in Sources */,
 				E4E939521AD65A95001E0AC6 /* UIWebView+AFNetworking.m in Sources */,
@@ -1862,6 +1995,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		17D7D1E21D534F56000AEC54 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 17D7D1D71D534F56000AEC54 /* SealTalkShareExtention */;
+			targetProxy = 17D7D1E11D534F56000AEC54 /* PBXContainerItemProxy */;
+		};
 		A6447A171B1DBE6500EA2CEE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A6447A131B1DBE6500EA2CEE /* SealTalk WatchKit App */;
@@ -1870,6 +2008,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		17D7D1DD1D534F56000AEC54 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				17D7D1DE1D534F56000AEC54 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		510624831AD63A9E00348452 /* RongCloudKit.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1898,6 +2044,90 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		17D7D1E41D534F56000AEC54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				INFOPLIST_FILE = SealTalkShareExtention/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.shareextension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		17D7D1E51D534F56000AEC54 /* AutoDebug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				INFOPLIST_FILE = SealTalkShareExtention/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.shareextension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = $SHARE_PROFILE;
+				SKIP_INSTALL = YES;
+			};
+			name = AutoDebug;
+		};
+		17D7D1E61D534F56000AEC54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				INFOPLIST_FILE = SealTalkShareExtention/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.shareextension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		17D7D1E71D534F56000AEC54 /* AutoRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				INFOPLIST_FILE = SealTalkShareExtention/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.shareextension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = $SHARE_PROFILE;
+				SKIP_INSTALL = YES;
+			};
+			name = AutoRelease;
+		};
 		A608834D1B3954240003B082 /* AutoDebug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2441,6 +2671,17 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		17D7D1E81D534F56000AEC54 /* Build configuration list for PBXNativeTarget "SealTalkShareExtention" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				17D7D1E41D534F56000AEC54 /* Debug */,
+				17D7D1E51D534F56000AEC54 /* AutoDebug */,
+				17D7D1E61D534F56000AEC54 /* Release */,
+				17D7D1E71D534F56000AEC54 /* AutoRelease */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A6447A271B1DBE6500EA2CEE /* Build configuration list for PBXNativeTarget "SealTalk WatchKit App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

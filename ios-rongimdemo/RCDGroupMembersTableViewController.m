@@ -77,6 +77,7 @@
   cell.portraitView.layer.cornerRadius = 5.f;
   cell.portraitView.contentMode = UIViewContentModeScaleAspectFill;
   cell.nicknameLabel.text = user.name;
+  cell.nicknameLabel.font = [UIFont systemFontOfSize:15.f];
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
   return cell;

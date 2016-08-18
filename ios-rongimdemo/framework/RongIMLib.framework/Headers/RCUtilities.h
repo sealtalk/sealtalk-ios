@@ -118,6 +118,19 @@
 + (NSData *)compressedImage:(UIImage *)image percent:(CGFloat)percent;
 
 /*!
+ 获取文字显示的尺寸
+ 
+ @param text 文字
+ @param font 字体
+ @param size 文字显示的容器大小
+ 
+ @return 文字显示的尺寸
+ 
+ @discussion 该方法在计算iOS 7以下系统显示的时候默认使用NSLineBreakByTruncatingTail模式。
+ */
++ (CGSize)getTextDrawingSize:(NSString *)text font:(UIFont *)font constrainedSize:(CGSize)constrainedSize;
+
+/*!
  判断是否是本地路径
  
  @param path 路径
@@ -127,6 +140,15 @@
 + (BOOL)isLocalPath:(NSString *)path;
 
 /*!
+ 判断是否是网络地址
+ 
+ @param url 地址
+ 
+ @return 是否是网络地址
+ */
++ (BOOL)isRemoteUrl:(NSString *)url;
+
+/*!
  获取沙盒修正后的文件路径
  
  @param localPath 本地路径
@@ -134,6 +156,12 @@
  @return 修正后的文件路径
  */
 + (NSString *)getCorrectedFilePath:(NSString *)localPath;
+
+
+/*!
+ * 获取文件存储路径
+ */
++ (NSString *)getFileStoragePath;
 
 /*!
  excludeBackupKeyForURL

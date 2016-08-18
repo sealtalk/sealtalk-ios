@@ -117,8 +117,6 @@
     UIImage *portrait = [defaultPortrait imageFromView];
     self.ivAva.image = portrait;
   } else {
-    [self.ivAva sd_setImageWithURL:nil
-                  placeholderImage:[UIImage imageNamed:@"icon_person"]];
     [self.ivAva sd_setImageWithURL:[NSURL URLWithString:userModel.portraitUri]
                   placeholderImage:[UIImage imageNamed:@"icon_person"]];
   }

@@ -8,6 +8,10 @@
 
 #import "RCDMainTabBarViewController.h"
 #import <RongIMKit/RongIMKit.h>
+#import "RCDSquareTableViewController.h"
+#import "RCDChatListViewController.h"
+#import "RCDContactViewController.h"
+#import "RCDMeTableViewController.h"
 
 @interface RCDMainTabBarViewController ()
 
@@ -20,6 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+  [self setTabBarItems];
   self.delegate = self;
 }
 
@@ -28,15 +33,34 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)setTabBarItems {
+  [self.viewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    if ([obj isKindOfClass:[RCDChatListViewController class]]) {
+      obj.tabBarItem.image = [[UIImage imageNamed:@"icon_chat"]
+                                       imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+      obj.tabBarItem.selectedImage = [[UIImage imageNamed:@"icon_chat_hover"]
+                                               imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    } else if ([obj isKindOfClass:[RCDContactViewController class]]) {
+      obj.tabBarItem.image = [[UIImage imageNamed:@"contact_icon"]
+                              imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+      obj.tabBarItem.selectedImage = [[UIImage imageNamed:@"contact_icon_hover"]
+                                      imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    } else if ([obj isKindOfClass:[RCDSquareTableViewController class]]) {
+      obj.tabBarItem.image = [[UIImage imageNamed:@"square"]
+                              imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+      obj.tabBarItem.selectedImage = [[UIImage imageNamed:@"square_hover"]
+                                      imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    } else if ([obj isKindOfClass:[RCDMeTableViewController class]]){
+      obj.tabBarItem.image = [[UIImage imageNamed:@"icon_me"]
+                              imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+      obj.tabBarItem.selectedImage = [[UIImage imageNamed:@"icon_me_hover"]
+                                      imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    } else {
+      NSLog(@"Unknown TabBarController");
+    }
+  }];
 }
-*/
+
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
   NSUInteger index = tabBarController.selectedIndex;

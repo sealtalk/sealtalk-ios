@@ -102,7 +102,7 @@
     messageContentViewRect.size.height = __bubbleSize.height;
     messageContentViewRect.origin.x =
         self.baseContentView.bounds.size.width -
-        (messageContentViewRect.size.width + 9 +
+        (messageContentViewRect.size.width + HeadAndContentSpacing +
          [RCIM sharedRCIM].globalMessagePortraitSize.width + 10);
     self.messageContentView.frame = messageContentViewRect;
 

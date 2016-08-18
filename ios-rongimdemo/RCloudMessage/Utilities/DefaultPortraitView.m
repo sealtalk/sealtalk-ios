@@ -43,7 +43,7 @@
   NSString *firstLetter = [nickname substringToIndex:1];
   firstCharacterLabel.text = firstLetter;
   firstCharacterLabel.textColor = [UIColor whiteColor];
-  firstCharacterLabel.textAlignment = UITextAlignmentCenter;
+  firstCharacterLabel.textAlignment = NSTextAlignmentCenter;
   firstCharacterLabel.font = [UIFont systemFontOfSize:50];
   firstCharacterLabel.frame = CGRectMake(
       self.frame.size.width / 2 - 30, self.frame.size.height / 2 - 30, 60, 60);

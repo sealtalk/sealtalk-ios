@@ -24,6 +24,7 @@
 #define PLUGIN_BOARD_ITEM_LOCATION_TAG   1003
 #define PLUGIN_BOARD_ITEM_VOIP_TAG       1004
 #define PLUGIN_BOARD_ITEM_VIDEO_VOIP_TAG 1005
+#define PLUGIN_BOARD_ITEM_FILE_TAG       1006
 
 
 typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
@@ -289,10 +290,10 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
         pushContent:(NSString *)pushContent;
 
 /*!
- 发送图片消息
+ 发送媒体消息（图片消息或文件消息）
  
- @param imageMessage 消息的内容
- @param pushContent  接收方离线时需要显示的远程推送内容
+ @param messageContent 消息的内容
+ @param pushContent    接收方离线时需要显示的远程推送内容
  
  @discussion 当接收方离线并允许远程推送时，会收到远程推送。
  远程推送中包含两部分内容，一是pushContent，用于显示；二是pushData，用于携带不显示的数据。
@@ -300,10 +301,38 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  SDK内置的消息类型，如果您将pushContent置为nil，会使用默认的推送格式进行远程推送。
  自定义类型的消息，需要您自己设置pushContent来定义推送内容，否则将不会进行远程推送。
  
- 如果您需要设置发送的pushData，可以使用RCIM的发送图片消息接口。
+ 如果您需要设置发送的pushData，可以使用RCIM的发送媒体消息接口。
  */
-- (void)sendImageMessage:(RCImageMessage *)imageMessage
+- (void)sendMediaMessage:(RCMessageContent *)messageContent
              pushContent:(NSString *)pushContent;
+
+/*!
+ 发送媒体消息(上传图片或文件到App指定的服务器)
+ 
+ @param messageContent 消息的内容
+ @param pushContent    接收方离线时需要显示的远程推送内容
+ @param appUpload      是否上传到App指定的服务器
+ 
+ @discussion 此方法用于上传媒体信息到您自己的服务器，此时需要将appUpload设置为YES，并实现uploadMedia:uploadListener:回调。
+ 需要您在该回调中上传媒体信息（图片或文件），并通过uploadListener监听通知SDK同步显示上传进度。
+ 
+ 如果appUpload设置为NO，将会和普通媒体消息的发送一致，上传到融云默认的服务器并发送。
+ */
+- (void)sendMediaMessage:(RCMessageContent *)messageContent
+             pushContent:(NSString *)pushContent
+               appUpload:(BOOL)appUpload;
+
+/*!
+ 上传媒体信息到App指定的服务器的回调
+ 
+ @param message        媒体消息（图片消息或文件消息）的实体
+ @param uploadListener SDK图片上传进度监听
+ 
+ @discussion 如果您通过sendMediaMessage:pushContent:appUpload:接口发送媒体消息，则必须实现此回调。
+ 您需要在此回调中通过uploadListener将上传媒体信息的进度和结果通知SDK，SDK会根据这些信息，自动更新UI。
+ */
+- (void)uploadMedia:(RCMessage *)message
+     uploadListener:(RCUploadMediaStatusListener *)uploadListener;
 
 /*!
  重新发送消息
@@ -316,6 +345,27 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 - (void)resendMessage:(RCMessageContent *)messageContent;
 
 /*!
+ 发送图片消息
+ 
+ @param imageMessage 消息的内容
+ @param pushContent  接收方离线时需要显示的远程推送内容
+ 
+ @discussion 当接收方离线并允许远程推送时，会收到远程推送。
+ 远程推送中包含两部分内容，一是pushContent，用于显示；二是pushData，用于携带不显示的数据。
+ 
+ SDK内置的消息类型，如果您将pushContent置为nil，会使用默认的推送格式进行远程推送。
+ 自定义类型的消息，需要您自己设置pushContent来定义推送内容，否则将不会进行远程推送。
+ 
+ 如果您需要设置发送的pushData，可以使用RCIM的发送图片消息接口。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此接口，可以直接替换为sendMediaMessage:pushContent:接口，行为和实现完全一致。
+ */
+- (void)sendImageMessage:(RCImageMessage *)imageMessage
+             pushContent:(NSString *)pushContent
+__deprecated_msg("已废弃，请勿使用。");
+
+/*!
  发送图片消息(上传图片到App指定的服务器)
  
  @param imageMessage 消息的内容
@@ -326,10 +376,14 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  需要您在该回调中上传图片，并通过uploadListener监听通知SDK同步显示上传进度。
  
  如果appUpload设置为NO，将会和普通图片消息的发送一致，上传到融云默认的服务器并发送。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此接口，可以直接替换为sendMediaMessage:pushContent:appUpload:接口并将uploadImage:uploadListener:原有代码迁移到uploadMedia:uploadListener:中，行为和实现完全一致。
  */
 - (void)sendImageMessage:(RCImageMessage *)imageMessage
              pushContent:(NSString *)pushContent
-               appUpload:(BOOL)appUpload;
+               appUpload:(BOOL)appUpload
+__deprecated_msg("已废弃，请勿使用。");
 
 /*!
  上传图片到App指定的服务器的回调
@@ -339,9 +393,13 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  
  @discussion 如果您通过sendImageMessage:pushContent:appUpload:接口发送图片消息，则必须实现此回调。
  您需要在此回调中通过uploadListener将上传图片的进度和结果通知SDK，SDK会根据这些信息，自动更新UI。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此接口，可以直接将原有的代码逻辑迁移到uploadMedia:uploadListener:中，行为和实现完全一致。
  */
 - (void)uploadImage:(RCMessage *)message
-     uploadListener:(RCUploadImageStatusListener *)uploadListener;
+     uploadListener:(RCUploadImageStatusListener *)uploadListener
+__deprecated_msg("已废弃，请勿使用。");
 
 #pragma mark 插入消息
 /*!
@@ -526,6 +584,16 @@ __deprecated_msg("已废弃，请勿使用。");
                          inView:(UIView *)view;
 
 /*!
+ 获取长按Cell中的消息时的菜单
+ 
+ @param model 消息Cell的数据模型
+ 
+ @discussion SDK在此长按事件中，会展示此方法返回的菜单。
+ 您在重写此回调时，如果想保留SDK原有的功能，需要注意调用super。
+ */
+- (NSArray<UIMenuItem *> *)getLongTouchMessageCellMenuList:(RCMessageModel *)model;
+
+/*!
  点击Cell中URL的回调
  
  @param url   点击的URL
@@ -557,7 +625,7 @@ __deprecated_msg("已废弃，请勿使用。");
  */
 - (void)didLongPressCellPortrait:(NSString *)userId;
 
-#pragma mark - 语音消息、图片消息、位置消息显示与操作
+#pragma mark - 语音消息、图片消息、位置消息、文件消息显示与操作
 
 /*!
  开始录制语音消息
@@ -581,7 +649,7 @@ __deprecated_msg("已废弃，请勿使用。");
  
  @param model   消息Cell的数据模型
  
- @discussion SDK在此方法中会默认调用RCImagePreviewController下载并展示图片。
+ @discussion SDK在此方法中会默认调用RCImageSlideController下载并展示图片。
  */
 - (void)presentImagePreviewController:(RCMessageModel *)model;
 
@@ -609,6 +677,15 @@ __deprecated_msg("已废弃，请勿使用。");
  @discussion SDK在此方法中会默认调用RCLocationViewController在地图中展示位置。
  */
 - (void)presentLocationViewController:(RCLocationMessage *)locationMessageContent;
+
+/*!
+ 查看文件消息中的文件
+ 
+ @param model   消息Cell的数据模型
+ 
+ @discussion SDK在此方法中会默认调用RCFilePreviewViewController下载并展示文件。
+ */
+- (void)presentFilePreviewViewController:(RCMessageModel *)model;
 
 #pragma mark - 公众号
 /*!

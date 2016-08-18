@@ -73,7 +73,7 @@
   
   CGFloat height = [self.myPlaceholder boundingRectWithSize:maxSize options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : self.placeholderLabel.font} context:nil].size.height;
   
-  CGRect frame = CGRectMake(6, 8, self.frame.size.width, height);
+  CGRect frame = CGRectMake(5, 8, self.frame.size.width, height);
   
   self.placeholderLabel.frame = frame;
 }

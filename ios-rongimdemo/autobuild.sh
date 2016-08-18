@@ -70,8 +70,10 @@ fi
 
 if [ -n "${MANUAL_DEMO_SERVER_URL}" ]; then
     sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/'$MANUAL_DEMO_SERVER_URL'\/"/g' ./RCloudMessage/AFHttpTool.m
+    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/'$MANUAL_DEMO_SERVER_URL'\/"/g' ./SealTalkShareExtention/RCDShareChatListController.m
 elif [ ${ENV_FLAG} == "dev" ]; then
     sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/api.hitalk.im\/"/g' ./RCloudMessage/AFHttpTool.m
+    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/api.hitalk.im\/"/g' ./SealTalkShareExtention/RCDShareChatListController.m
 fi
 
 if [ -n "${MANUAL_NAVI_SERVER_URL}" ]; then
@@ -96,12 +98,10 @@ fi
 
 if [ ${DEV_FLAG} == "debug" ]
 then
-configuration="AutoDebug"
 sed -i '' -e '/DEMO_VERSION_BOARD/s/@""/@"http:\/\/bj.rongcloud.net\/list.php"/g' ./RCloudMessage/RCDMeTableViewController.m
 sed -i '' -e '/redirectNSlogToDocumentFolder/s/\/\///g' ./RCloudMessage/AppDelegate.m
 sed  -i "" -e '/UIFileSharingEnabled/{n;s/false/true/; }' ./RCloudMessage/Info.plist
 else
-configuration="AutoRelease"
 sed -i '' -e '/redirectNSlogToDocumentFolder/s/\/\///g' ./RCloudMessage/AppDelegate.m
 sed  -i "" -e '/UIFileSharingEnabled/{n;s/false/true/; }' ./RCloudMessage/Info.plist
 fi
@@ -111,14 +111,18 @@ sed -i '' -e '/UMENG_APPKEY/s/@"563755cbe0f55a5cb300139c"/@"5637263b67e58e772200
 
 if [ ${PROFILE_FLAG} == "dev" ]
 then
-BUILD_APP_PROFILE="f50d094a-a8b5-42ca-b00f-0e96f9d84a42"
-BUILD_WATCHKIT_EXTENSION_PROFILE="376d0433-3017-40db-9d1f-6c812110674e"
+configuration="AutoDebug"
+BUILD_APP_PROFILE="c5ab9e5c-4bc1-4a91-b684-3dcb1f55e557"
+BUILD_WATCHKIT_EXTENSION_PROFILE="6f5c5d79-fd4f-4ec4-9495-d690b12a5fae"
 BUILD_WATCHKIT_APP_PROFILE="82080891-c055-4a61-a536-cbf2b76903bb"
+BUILD_SHARE_PROFILE="b752e5e6-86ea-4a87-a1ee-7c6221a8a877"
 else
+configuration="AutoRelease"
 # Release可以使用Automatic
 BUILD_APP_PROFILE=""
 BUILD_WATCHKIT_EXTENSION_PROFILE=""
 BUILD_WATCHKIT_APP_PROFILE=""
+BUILD_SHARE_PROFILE=""
 fi
 
 BUILD_CODE_SIGN_IDENTITY="iPhone Distribution: Beijing Rong Cloud Network Technology CO., LTD"
@@ -151,11 +155,11 @@ if [ ! -d "$BIN_DIR" ]; then
 mkdir -p "$BIN_DIR"
 fi
 
-xcodebuild clean -configuration $configuration -sdk $TARGET_DECIVE APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
+xcodebuild clean -configuration $configuration -sdk $TARGET_DECIVE APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
 #xcodebuild clean -configuration $configuration -sdk $TARGET_I386
 
 echo "***开始build iphoneos文件***"
-xcodebuild -project ${PROJECT_NAME} -target $targetName -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
+xcodebuild -project ${PROJECT_NAME} -target $targetName -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
 xcrun -sdk $TARGET_DECIVE PackageApplication -v ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app -o ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.ipa
 cp -af ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.app.dSYM
 

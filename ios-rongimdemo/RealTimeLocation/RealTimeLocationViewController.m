@@ -16,6 +16,7 @@
 #import "RCLocationView.h"
 #import <MapKit/MapKit.h>
 #import <RongIMKit/RongIMKit.h>
+#import "UIColor+RCColor.h"
 
 @interface RealTimeLocationViewController () <
     RCRealTimeLocationObserver, MKMapViewDelegate, HeadCollectionTouchDelegate,
@@ -81,6 +82,7 @@ MBProgressHUD *hud;
   }
 
   hud = [MBProgressHUD showHUDAddedTo:self.mapView animated:YES];
+  hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
   hud.labelText = @"定位中...";
   [hud show:YES];
 }

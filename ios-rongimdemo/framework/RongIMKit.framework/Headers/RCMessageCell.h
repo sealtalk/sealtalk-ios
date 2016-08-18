@@ -16,6 +16,7 @@
 
 //#define PORTRAIT_WIDTH 45
 //#define PORTRAIT_HEIGHT 45
+#define HeadAndContentSpacing 6
 
 @class RCloudImageView;
 

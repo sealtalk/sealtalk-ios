@@ -185,6 +185,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   image = [UIImage imageWithData:data];
   [self dismissViewControllerAnimated:YES completion:nil];
   hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+  hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
   hud.labelText = @"上传头像中...";
   [hud show:YES];
 

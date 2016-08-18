@@ -103,6 +103,16 @@
   
   [self notifyUpdateUnreadMessageCount];
   
+  
+  //加号区域增加发送文件功能，Kit中已经默认实现了该功能，但是为了SDK向后兼容性，目前SDK默认不开启该入口，可以参考以下代码在加号区域中增加发送文件功能。
+  UIImage *imageFile = [RCKitUtility imageNamed:@"actionbar_file_icon"
+                                       ofBundle:@"RongCloud.bundle"];
+  
+  [self.pluginBoardView insertItemWithImage:imageFile
+                                      title:NSLocalizedStringFromTable(@"File", @"RongCloudKit", nil)
+                                    atIndex:3
+                                        tag:PLUGIN_BOARD_ITEM_FILE_TAG];
+  
   //    self.chatSessionInputBarControl.hidden = YES;
   //    CGRect intputTextRect = self.conversationMessageCollectionView.frame;
   //    intputTextRect.size.height = intputTextRect.size.height+50;
@@ -149,10 +159,7 @@
       BOOL saveToDB = NO;  //是否保存到数据库中
       RCMessage *savedMsg ;
       if (saveToDB) {
-          savedMsg = [[RCIMClient sharedRCIMClient]
-     insertMessage:self.conversationType targetId:self.targetId
-     senderUserId:[RCIMClient sharedRCIMClient].currentUserInfo.userId
-     sendStatus:SentStatus_SENT content:warningMsg];
+          savedMsg = [[RCIMClient sharedRCIMClient] insertOutgoingMessage:self.conversationType targetId:self.targetId sentStatus:SentStatus_SENT content:warningMsg];
       } else {
           savedMsg =[[RCMessage alloc] initWithType:self.conversationType
      targetId:self.targetId direction:MessageDirection_SEND messageId:-1
@@ -177,8 +184,19 @@
                                                name:@"ClearHistoryMsg"
                                              object:nil];
   
-  
-  
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self
+   selector:@selector(updateForSharedMessageInsertSuccess:)
+   name:@"RCDSharedMessageInsertSuccess"
+   object:nil];
+}
+
+- (void)updateForSharedMessageInsertSuccess:(NSNotification *)notification {
+  RCMessage *message = notification.object;
+  if (message.conversationType == self.conversationType &&
+      [message.targetId isEqualToString:self.targetId]) {
+    [self appendAndDisplayMessage:message];
+  }
 }
 
 - (void)setRightNavigationItem:(UIImage *)image withFrame:(CGRect)frame {
@@ -411,8 +429,7 @@
  *
  *  @param imageMessageContent 图片消息内容
  */
-- (void)presentImagePreviewController:(RCMessageModel *)model;
-{
+- (void)presentImagePreviewController:(RCMessageModel *)model {
     RCImageSlideController *previewController = [[RCImageSlideController alloc]init];
     previewController.messageModel = model;
     
@@ -597,6 +614,25 @@
   }
 }
 
+- (NSArray<UIMenuItem *> *)getLongTouchMessageCellMenuList:(RCMessageModel *)model {
+  NSMutableArray<UIMenuItem *> *menuList = [[super getLongTouchMessageCellMenuList:model] mutableCopy];
+  /*
+  在这里添加删除菜单。
+  [menuList enumerateObjectsUsingBlock:^(UIMenuItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    if ([obj.title isEqualToString:@"删除"] || [obj.title isEqualToString:@"delete"]) {
+      [menuList removeObjectAtIndex:idx];
+      *stop = YES;
+    }
+  }];
+  
+ UIMenuItem *forwardItem = [[UIMenuItem alloc] initWithTitle:@"转发" action:@selector(onForwardMessage:)];
+ [menuList addObject:forwardItem];
+   
+  如果您不需要修改，不用重写此方法，或者直接return［super getLongTouchMessageCellMenuList:model]。
+  */
+  return menuList;
+}
+
 - (void)didTapCellPortrait:(NSString *)userId {
   if (self.conversationType == ConversationType_GROUP ||
       self.conversationType == ConversationType_DISCUSSION) {
@@ -673,15 +709,15 @@ rcConversationCollectionView:(UICollectionView *)collectionView
   RCMessageModel *model =
       [self.conversationDataRepository objectAtIndex:indexPath.row];
   RCMessageContent *messageContent = model.content;
-    CGFloat height = 0.0;
-    if (model.isDisplayNickname) {
-        if (model.messageDirection == MessageDirection_RECEIVE) {
-            height = 16;
-        }
+  CGFloat height = 0.0;
+  if (model.isDisplayNickname) {
+    if (model.messageDirection == MessageDirection_RECEIVE) {
+      height = 16;
     }
-    if (model.isDisplayMessageTime) {
-        height += 46;
-    }
+  }
+  if (model.isDisplayMessageTime) {
+    height += 45;
+  }
   if ([messageContent isMemberOfClass:[RCRealTimeLocationStartMessage class]]) {
     if (model.isDisplayMessageTime) {
       return CGSizeMake(collectionView.frame.size.width, 40 + 10 + 10 + height);
@@ -691,58 +727,59 @@ rcConversationCollectionView:(UICollectionView *)collectionView
       return CGSizeMake(collectionView.frame.size.width-30*2,
                         10+21+10+height);
   } else if ([messageContent isMemberOfClass:[RCDTestMessage class]]) {
-    return CGSizeMake(collectionView.frame.size.width,height+10+10+40);
-      
+    RCDTestMessage *message = (RCDTestMessage *)messageContent;
+    CGSize size = [RCDTestMessageCell getBubbleBackgroundViewSize:message];
+    return CGSizeMake(collectionView.frame.size.width, size.height+height + 10 + 10);
   } else {
     return [super rcConversationCollectionView:collectionView
                                         layout:collectionViewLayout
                         sizeForItemAtIndexPath:indexPath];
   }
 }
-
-/**
- *  重写方法实现未注册的消息的显示
- *  如：新版本增加了某种自定义消息，但是老版本不能识别，开发者可以在旧版本中预先自定义这种未识别的消息的显示
- *  需要设置RCIM showUnkownMessage属性
- *
- *  @param collectionView collectionView
- *  @param indexPath      indexPath
- *
- *  @return RCMessageTemplateCell
- */
-- (RCMessageBaseCell *)
-rcUnkownConversationCollectionView:(UICollectionView *)collectionView
-            cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-  RCMessageModel *model =
-      [self.conversationDataRepository objectAtIndex:indexPath.row];
-  NSLog(@"message objectName = %@", model.objectName);
-  RCMessageCell *cell = [collectionView
-      dequeueReusableCellWithReuseIdentifier:RCUnknownMessageTypeIdentifier
-                                forIndexPath:indexPath];
-  [cell setDataModel:model];
-  return cell;
-}
-
-/**
- *  重写方法实现未注册的消息的显示的高度
- *  如：新版本增加了某种自定义消息，但是老版本不能识别，开发者可以在旧版本中预先自定义这种未识别的消息的显示
- *  需要设置RCIM showUnkownMessage属性
- *
- *  @param collectionView       collectionView
- *  @param collectionViewLayout collectionViewLayout
- *  @param indexPath            indexPath
- *
- *  @return 显示的高度
- */
-- (CGSize)rcUnkownConversationCollectionView:(UICollectionView *)collectionView
-                                      layout:(UICollectionViewLayout *)
-                                                 collectionViewLayout
-                      sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-  RCMessageModel *model =
-      [self.conversationDataRepository objectAtIndex:indexPath.row];
-  NSLog(@"message objectName = %@", model.objectName);
-  return CGSizeMake(collectionView.frame.size.width, 66);
-}
+//
+///**
+// *  重写方法实现未注册的消息的显示
+// *  如：新版本增加了某种自定义消息，但是老版本不能识别，开发者可以在旧版本中预先自定义这种未识别的消息的显示
+// *  需要设置RCIM showUnkownMessage属性
+// *
+// *  @param collectionView collectionView
+// *  @param indexPath      indexPath
+// *
+// *  @return RCMessageTemplateCell
+// */
+//- (RCMessageBaseCell *)
+//rcUnkownConversationCollectionView:(UICollectionView *)collectionView
+//            cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+//  RCMessageModel *model =
+//      [self.conversationDataRepository objectAtIndex:indexPath.row];
+//  NSLog(@"message objectName = %@", model.objectName);
+//  RCMessageCell *cell = [collectionView
+//      dequeueReusableCellWithReuseIdentifier:RCUnknownMessageTypeIdentifier
+//                                forIndexPath:indexPath];
+//  [cell setDataModel:model];
+//  return cell;
+//}
+//
+///**
+// *  重写方法实现未注册的消息的显示的高度
+// *  如：新版本增加了某种自定义消息，但是老版本不能识别，开发者可以在旧版本中预先自定义这种未识别的消息的显示
+// *  需要设置RCIM showUnkownMessage属性
+// *
+// *  @param collectionView       collectionView
+// *  @param collectionViewLayout collectionViewLayout
+// *  @param indexPath            indexPath
+// *
+// *  @return 显示的高度
+// */
+//- (CGSize)rcUnkownConversationCollectionView:(UICollectionView *)collectionView
+//                                      layout:(UICollectionViewLayout *)
+//                                                 collectionViewLayout
+//                      sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+//  RCMessageModel *model =
+//      [self.conversationDataRepository objectAtIndex:indexPath.row];
+//  NSLog(@"message objectName = %@", model.objectName);
+//  return CGSizeMake(collectionView.frame.size.width, 66);
+//}
 
 #pragma mark override
 - (void)resendMessage:(RCMessageContent *)messageContent {

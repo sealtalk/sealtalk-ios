@@ -21,6 +21,8 @@
 
 @property (nonatomic, strong) MBProgressHUD *hud;
 
+@property (nonatomic) CGFloat heigh;
+
 @end
 
 @implementation RCDGroupAnnouncementViewController
@@ -33,7 +35,8 @@
     self.AnnouncementContent.font = [UIFont systemFontOfSize:16.f];
     self.AnnouncementContent.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];
     self.AnnouncementContent.myPlaceholder = @"请编辑群公告";
-    self.AnnouncementContent.frame = CGRectMake(3.5, 8, self.view.frame.size.width - 5, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - 90);
+    self.AnnouncementContent.frame = CGRectMake(4.5, 8, self.view.frame.size.width - 5, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - 90);
+    self.heigh = self.AnnouncementContent.frame.size.height;
     [self.view addSubview:self.AnnouncementContent];
     
   }
@@ -78,7 +81,6 @@
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -103,7 +105,13 @@
   CGRect keyboardRect = [[[aNotification userInfo] objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
   NSTimeInterval animationDuration = [[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
   CGRect frame = self.AnnouncementContent.frame;
-  frame.size.height -= keyboardRect.size.height;
+  frame.origin.y = 8;
+  if (frame.size.height == self.heigh) {
+    frame.size.height -= keyboardRect.size.height;
+    if (frame.size.height != self.heigh) {
+      frame.size.height -= 60;
+    }
+  }
   [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
   [UIView setAnimationDuration:animationDuration];
   self.AnnouncementContent.frame = frame;
@@ -113,10 +121,10 @@
 //键盘将要隐藏
 - (void)keyboardWillHide:(NSNotification *)aNotification
 {
-  CGRect keyboardRect = [[[aNotification userInfo] objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
+//  CGRect keyboardRect = [[[aNotification userInfo] objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
   NSTimeInterval animationDuration = [[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
   CGRect frame = self.AnnouncementContent.frame;
-  frame.size.height += keyboardRect.size.height;
+  frame.size.height = self.heigh;
   [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
   [UIView setAnimationDuration:animationDuration];
   self.AnnouncementContent.frame = frame;
@@ -229,6 +237,10 @@
           self.AnnouncementContent.editable = NO;
           //发布中的时候显示转圈的进度
           self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+          self.hud.yOffset = -46.f;
+          self.hud.minSize = CGSizeMake(120, 120);
+          self.hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
+          self.hud.margin = 0;
           [self.hud show:YES];
           //发布成功后，使用自定义图片
           NSString *txt = [NSString stringWithFormat: @"@所有人\n%@",self.AnnouncementContent.text];
@@ -248,7 +260,7 @@
                                                   dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)),dispatch_get_main_queue(), ^{
                                                     self.hud.mode = MBProgressHUDModeCustomView;
                                                     UIImageView *customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Complete"]];
-                                                    customView.frame = CGRectMake(0, 0, 37, 37);
+                                                    customView.frame = CGRectMake(0, 0, 80, 80);
                                                     self.hud.customView = customView;
                                                     dispatch_after(
                                                                    dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)),dispatch_get_main_queue(), ^{
@@ -296,6 +308,5 @@
     }
   }
 }
-
 
 @end

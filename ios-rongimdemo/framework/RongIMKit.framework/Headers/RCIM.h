@@ -377,7 +377,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
 
 #pragma mark 消息发送
 /*!
- 发送消息(除图片消息外的所有消息)，会自动更新UI
+ 发送消息(除图片消息、文件消息外的所有消息)，会自动更新UI
  
  @param conversationType    发送消息的会话类型
  @param targetId            发送消息的目标会话ID
@@ -406,6 +406,62 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
                      error:(void (^)(RCErrorCode nErrorCode, long messageId))errorBlock;
 
 /*!
+ 发送媒体文件消息，会自动更新UI
+ 
+ @param conversationType    发送消息的会话类型
+ @param targetId            发送消息的目标会话ID
+ @param content             消息的内容
+ @param pushContent         接收方离线时需要显示的远程推送内容
+ @param pushData            接收方离线时需要在远程推送中携带的非显示数据
+ @param progressBlock       消息发送进度更新的回调 [progress:当前的发送进度, 0 <= progress <= 100, messageId:消息的ID]
+ @param successBlock        消息发送成功的回调 [messageId:消息的ID]
+ @param errorBlock          消息发送失败的回调 [errorCode:发送失败的错误码, messageId:消息的ID]
+ @return                    发送的消息实体
+ 
+ @discussion 当接收方离线并允许远程推送时，会收到远程推送。
+ 远程推送中包含两部分内容，一是pushContent，用于显示；二是pushData，用于携带不显示的数据。
+ 
+ SDK内置的消息类型，如果您将pushContent和pushData置为nil，会使用默认的推送格式进行远程推送。
+ 自定义类型的消息，需要您自己设置pushContent和pushData来定义推送内容，否则将不会进行远程推送。
+ 
+ @warning 如果您使用IMKit，使用此方法发送媒体文件消息SDK会自动更新UI；
+ 如果您使用IMLib，请使用RCIMClient中的同名方法发送媒体文件消息，不会自动更新UI。
+ */
+- (RCMessage *)sendMediaMessage:(RCConversationType)conversationType
+                       targetId:(NSString *)targetId
+                        content:(RCMessageContent *)content
+                    pushContent:(NSString *)pushContent
+                       pushData:(NSString *)pushData
+                       progress:(void (^)(int progress, long messageId))progressBlock
+                        success:(void (^)(long messageId))successBlock
+                          error:(void (^)(RCErrorCode errorCode, long messageId))errorBlock;
+
+/*!
+ 下载消息中的媒体文件
+ 
+ @param messageId       消息ID
+ @param progressBlock   下载进度更新的回调 [progress:当前的发送进度, 0 <= progress <= 100]
+ @param successBlock    下载成功的回调 [mediaPath:下载完成后文件在本地的存储路径]
+ @param errorBlock      下载失败的回调 [errorCode:下载失败的错误码]
+ 
+ @discussion 媒体消息仅限于图片消息和文件消息。
+ */
+- (void)downloadMediaMessage:(long)messageId
+                    progress:(void (^)(int progress))progressBlock
+                     success:(void (^)(NSString *mediaPath))successBlock
+                       error:(void (^)(RCErrorCode errorCode))errorBlock
+                      cancel:(void (^)())cancelBlock;
+
+/*!
+ 取消下载消息中的媒体信息
+ 
+ @param messageId           媒体消息的messageId
+ 
+ @return true取消成功。false下载完成或者下载不存在
+ */
+- (BOOL)cancelDownloadMediaMessage:(long)messageId;
+
+/*!
  发送图片消息，会自动更新UI
  
  @param conversationType    发送消息的会话类型
@@ -424,8 +480,11 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
  SDK内置的消息类型，如果您将pushContent和pushData置为nil，会使用默认的推送格式进行远程推送。
  自定义类型的消息，需要您自己设置pushContent和pushData来定义推送内容，否则将不会进行远程推送。
  
- @warning 如果您使用IMKit，使用此方法发送图片消息SDK会自动更新UI；
+ 如果您使用IMKit，使用此方法发送图片消息SDK会自动更新UI；
  如果您使用IMLib，请使用RCIMClient中的同名方法发送图片消息，不会自动更新UI。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此接口，可以直接替换为sendMediaMessage:targetId:content:pushContent:pushData:success:error:接口，行为和实现完全一致。
  */
 - (RCMessage *)sendImageMessage:(RCConversationType)conversationType
                        targetId:(NSString *)targetId
@@ -434,7 +493,8 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
                        pushData:(NSString *)pushData
                        progress:(void (^)(int progress, long messageId))progressBlock
                         success:(void (^)(long messageId))successBlock
-                          error:(void (^)(RCErrorCode errorCode, long messageId))errorBlock;
+                          error:(void (^)(RCErrorCode errorCode, long messageId))errorBlock
+__deprecated_msg("已废弃，请使用sendMediaMessage函数。");
 
 /*!
  发起VoIP语音通话
@@ -475,9 +535,25 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
 @property(nonatomic, assign) BOOL enableTypingStatus;
 
 /*!
- 是否开启发送已读回执，默认值是NO，开启之后在会话页面展示对方的消息之后会发送回执给对方(目前只支持单聊)
+ 是否开启已读回执功能，默认值是NO
+ 
+ @discussion 开启后会在聊天页面消息显示之后会发送已读回执给对方。
  */
 @property(nonatomic, assign) BOOL enableReadReceipt;
+
+/*!
+ 开启已读回执功能的会话类型，默认值为@[@(ConversationType_PRIVATE)]
+ 
+ @discussion 需要先开启enableReadReceipt。开启后，这些会话类型的消息在聊天界面显示了之后会发送已读回执。目前仅支持单聊、群聊和讨论组。
+ */
+@property(nonatomic, copy) NSArray* readReceiptConversationTypeList;
+
+/*!
+ 是否开启多端同步未读状态的功能，默认值是NO
+ 
+ @discussion 开启之后，用户在其他端上阅读过的消息，当前客户端会清掉该消息的未读数。目前仅支持单聊、群聊、讨论组。
+ */
+@property(nonatomic, assign) BOOL enableSyncUnreadStatus;
 
 /*!
  是否开启消息@提醒功能（只支持群聊和讨论组, App需要实现群成员数据源groupMemberDataSource），默认值是NO。
@@ -521,6 +597,16 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
  @discussion 默认值是60s，有效值为不小于5秒，不大于60秒
  */
 @property(nonatomic, assign) NSUInteger maxVoiceDuration;
+
+
+/*!
+ APP是否独占音频
+ 
+ @discussion 默认是NO,录音结束之后会调用AVAudioSession 的 setActive:NO ，
+ 恢复其他后台APP播放的声音，如果设置成YES,不会调用 setActive:NO，这样不会中断当前APP播放的声音
+ (如果当前APP 正在播放音频，这时候如果调用SDK 的录音，可以设置这里为YES)
+ */
+@property(nonatomic, assign) BOOL isExclusiveSoundPlayer;
 
 #pragma mark - 讨论组相关操作
 

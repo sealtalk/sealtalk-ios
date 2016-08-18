@@ -13,8 +13,6 @@
 #import "RCDConversationSettingTableViewHeader.h"
 #import <RongIMLib/RongIMLib.h>
 
-#define IOS_FSystenVersion                                                     \
-  ([[[UIDevice currentDevice] systemVersion] floatValue])
 #define CellReuseIdentifierCellIsTop @"CellIsTop"
 #define CellReuseIdentifierCellNewMessageNotify @"CellNewMessageNotify"
 #define CellReuserIdentifierCellClearHistory @"CellClearHistory"

@@ -22,6 +22,7 @@
 #import "UIImageView+WebCache.h"
 #import <RongIMLib/RongIMLib.h>
 #import "RCDGroupAnnouncementViewController.h"
+#import "UIColor+RCColor.h"
 
 @interface RCDGroupSettingsTableViewController ()
 //开始会话
@@ -396,6 +397,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   [self dismissViewControllerAnimated:YES completion:nil];
 
   hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+  hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
   hud.labelText = @"上传头像中...";
   [hud show:YES];
 
@@ -658,7 +660,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
   if (indexPath.section == 0) {
     cell.TitleLabel.text =
-        [NSString stringWithFormat:@"全体群成员(%@)", _Group.number];
+        [NSString stringWithFormat:@"全部群成员(%@)", _Group.number];
     cell.PortraitImg.hidden = YES;
     cell.arrowImg.hidden = NO;
     cell.switchBtn.hidden = YES;
@@ -908,8 +910,10 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       [cell setUserModel:user];
     } else {
       UIImage *Image = collectionViewResource[indexPath.row];
+      cell.ivAva.image = nil;
       cell.ivAva.image = Image;
       cell.titleLabel.text = @"";
+        
     }
   }
   cell.ivAva.contentMode = UIViewContentModeScaleAspectFill;

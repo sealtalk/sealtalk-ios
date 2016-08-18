@@ -41,6 +41,14 @@
 "Camera"="拍摄";
 "Photos"="照片";
 "Location"="位置";
+"File"="文件";
+"SendFile"="发送文件";
+"PreviewFile"="文件预览";
+"StartDownloadingFile"="开始下载";
+"FileIsDownloading"="下载中...";
+"FileDownloadFailed"="下载失败";
+"FileDownloadCanceled"="下载已取消";
+"OpenFileInOtherApp"="在其他应用中打开";
 "Audio"="语音通话";
 "Albums"="相册列表";
 "unknown_message_cell_tip"="当前版本暂不支持查看此消息";
@@ -199,3 +207,7 @@
 "HaveMentionedForNotification"="[有人@我]";
 "SelectMentionedUser"="选择提醒的人";
 "ToSearch"="搜索";
+"chatDate"="yyyy年M月d日";
+"chatListDate"="yyyy/M/d";
+"SameYearDate"="yy/M/d";
+"locale"="zh_CN";

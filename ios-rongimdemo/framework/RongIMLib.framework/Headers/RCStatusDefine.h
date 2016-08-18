@@ -739,7 +739,7 @@ typedef NS_ENUM(NSUInteger, RCMediaType) {
   /*!
    其他文件
    */
-  MediaType_FILE = 100
+  MediaType_FILE = 4
 };
 
 #pragma mark RCMediaType - 消息中@提醒的类型

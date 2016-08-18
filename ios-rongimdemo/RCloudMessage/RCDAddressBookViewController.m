@@ -19,6 +19,7 @@
 #import "UIImageView+WebCache.h"
 #import <RongIMLib/RongIMLib.h>
 #include <ctype.h>
+#import "UIColor+RCColor.h"
 
 @interface RCDAddressBookViewController ()
 
@@ -165,8 +166,7 @@ MBProgressHUD *hud;
 
 
 - (void)tableView:(UITableView *)tableView
-    didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
-{
+    didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   RCDUserInfo *user = _friends[indexPath.row];
   if ([user.status intValue] == 10 || [user.status intValue] == 11) {
     return;
@@ -188,6 +188,7 @@ MBProgressHUD *hud;
 
 - (void)doAccept:(UIButton *)sender {
   hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+  hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
   hud.labelText = @"添加好友中...";
   [hud show:YES];
   NSInteger tempTag = sender.tag;

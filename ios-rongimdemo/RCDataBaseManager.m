@@ -429,8 +429,7 @@ static NSString *const groupMemberTableName = @"GROUPMEMBERTABLE";
   }];
 }
 
-- (void)deleteFriendFromDB:(NSString *)userId;
-{
+- (void)deleteFriendFromDB:(NSString *)userId {
   NSString *deleteSql = [NSString
       stringWithFormat:@"DELETE FROM FRIENDSTABLE WHERE userid=%@", userId];
   
