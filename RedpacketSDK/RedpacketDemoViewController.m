@@ -84,11 +84,11 @@
                                                               self.redpacketControl.converstationInfo = user;
                                                           }];
         }
-        else if (ConversationType_DISCUSSION == self.conversationType
-                 || ConversationType_GROUP == self.conversationType) {
-            // 设置群发红包
-            user.isGroup = YES;
-        }
+//        else if (ConversationType_DISCUSSION == self.conversationType
+//                 || ConversationType_GROUP == self.conversationType) {
+//            // 设置群发红包
+//            
+//        }
         
         self.redpacketControl.converstationInfo = user;
         
@@ -151,10 +151,10 @@
         [self appendAndDisplayMessage:m];
     }
     else {
-        if (NO == self.redpacketControl.converstationInfo.isGroup) {//如果不是群红包
-            [self sendMessage:message pushContent:nil];
-        }
-        else {
+//        if (NO == self.redpacketControl.converstationInfo.isGroup) {//如果不是群红包
+//            [self sendMessage:message pushContent:nil];
+//        }
+//        else {
             RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
                                                                targetId:self.targetId
                                                            senderUserId:self.conversation.senderUserId
@@ -165,7 +165,7 @@
             // 按照 android 的需求修改发送红包的功能
             RedpacketTakenOutgoingMessage *m2 = [RedpacketTakenOutgoingMessage messageWithRedpacket:redpacket];
             [self sendMessage:m2 pushContent:nil];
-        }
+//        }
     }
 }
 
@@ -362,8 +362,9 @@
             break;
     }
 }
-- (NSArray *)groupMemberList{
+- (void)getGroupMemberListCompletionHandle:(void (^)(NSArray<RedpacketUserInfo *> * groupMemberList))completionHandle{
+    completionHandle(self.usersArray);
 
-    return self.usersArray;
 }
+
 @end
