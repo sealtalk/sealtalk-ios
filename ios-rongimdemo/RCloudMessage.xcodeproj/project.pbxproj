@@ -2489,7 +2489,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.shareextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.shareextension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
@@ -2510,7 +2510,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.shareextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.shareextension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = $SHARE_PROFILE;
 				SKIP_INSTALL = YES;
@@ -2531,7 +2531,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.shareextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.shareextension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
@@ -2552,7 +2552,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.shareextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.shareextension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = $SHARE_PROFILE;
 				SKIP_INSTALL = YES;
@@ -2671,7 +2671,7 @@
 				);
 				OTHER_CFLAGS = "-fembed-bitcode";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.wkextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.wkextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = $WATCHKIT_EXTENSION_PROFILE;
 				SKIP_INSTALL = YES;
@@ -2695,7 +2695,7 @@
 				INFOPLIST_FILE = "融云 Demo WatchKit App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				OTHER_CFLAGS = "-fembed-bitcode";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = $WATCHKIT_APP_PROFILE;
 				SKIP_INSTALL = YES;
@@ -2808,7 +2808,7 @@
 				);
 				OTHER_CFLAGS = "-fembed-bitcode";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.wkextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.wkextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = $WATCHKIT_EXTENSION_PROFILE;
 				SKIP_INSTALL = YES;
@@ -2829,7 +2829,7 @@
 				INFOPLIST_FILE = "融云 Demo WatchKit App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				OTHER_CFLAGS = "-fembed-bitcode";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = $WATCHKIT_APP_PROFILE;
 				SKIP_INSTALL = YES;
@@ -2863,7 +2863,7 @@
 				);
 				OTHER_CFLAGS = "-fembed-bitcode";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.wkextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.wkextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
@@ -2892,7 +2892,7 @@
 				);
 				OTHER_CFLAGS = "-fembed-bitcode";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.wkextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.wkextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
@@ -2916,7 +2916,7 @@
 				INFOPLIST_FILE = "融云 Demo WatchKit App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				OTHER_CFLAGS = "-fembed-bitcode";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
@@ -2939,7 +2939,7 @@
 				INFOPLIST_FILE = "融云 Demo WatchKit App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				OTHER_CFLAGS = "-fembed-bitcode";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.sealtalk.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
