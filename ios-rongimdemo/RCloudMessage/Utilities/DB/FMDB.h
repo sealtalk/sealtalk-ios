@@ -1,0 +1,5 @@
+#import "FMDatabase.h"
+#import "FMDatabaseAdditions.h"
+#import "FMDatabasePool.h"
+#import "FMDatabaseQueue.h"
+#import "FMResultSet.h"

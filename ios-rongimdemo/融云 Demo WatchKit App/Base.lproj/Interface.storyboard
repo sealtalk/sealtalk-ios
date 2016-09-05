@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="kku-Cz-s8a">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="7701"/>
+    </dependencies>
+    <scenes>
+        <!--Interface Controller-->
+        <scene sceneID="8MM-St-IB0">
+            <objects>
+                <controller id="weS-zi-dbD" customClass="InterfaceController"/>
+            </objects>
+            <point key="canvasLocation" x="-125" y="-48"/>
+        </scene>
+        <!--Main Interface Controller-->
+        <scene sceneID="Cv9-kN-CJo">
+            <objects>
+                <controller id="kku-Cz-s8a" customClass="MainInterfaceController">
+                    <items>
+                        <imageView width="1" height="71" alignment="left" image="watchlogo" contentMode="center" id="Hst-c6-dTh">
+                            <variation key="device=watch38mm" height="62"/>
+                        </imageView>
+                        <label width="1" alignment="left" text="载入中..." textAlignment="center" id="MwY-p4-ABQ">
+                            <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
+                        </label>
+                        <group width="1" height="27" alignment="left" id="lRV-zj-Jdp">
+                            <variation key="device=watch38mm" height="14"/>
+                        </group>
+                        <group width="1" height="36" alignment="left" id="EJp-zh-w8H">
+                            <items>
+                                <group width="0.33000000000000002" height="1" alignment="left" id="V8j-AX-qyq">
+                                    <items>
+                                        <button width="20" alignment="center" verticalAlignment="center" backgroundImage="watchchat" id="UoX-ya-G5k">
+                                            <connections>
+                                                <segue destination="qr8-XE-MWq" kind="push" id="eP3-js-fkd"/>
+                                            </connections>
+                                        </button>
+                                    </items>
+                                </group>
+                                <group width="0.34000000000000002" height="1" alignment="left" id="bM4-5B-imD">
+                                    <items>
+                                        <button alignment="center" verticalAlignment="center" backgroundImage="watchfriends" id="sEt-hd-8Y7">
+                                            <connections>
+                                                <segue destination="EoU-eX-GqM" kind="push" id="MIn-9e-C6A"/>
+                                            </connections>
+                                        </button>
+                                    </items>
+                                </group>
+                                <group width="0.33000000000000002" height="1" alignment="left" id="cY5-aO-tDZ">
+                                    <items>
+                                        <button alignment="center" verticalAlignment="center" backgroundImage="watchconfig" id="VRk-4C-ogW">
+                                            <connections>
+                                                <segue destination="3ib-xU-mci" kind="push" id="qiJ-Hp-aJp"/>
+                                            </connections>
+                                        </button>
+                                    </items>
+                                </group>
+                            </items>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="appIcon" destination="Hst-c6-dTh" id="EF9-Ti-nWY"/>
+                        <outlet property="conversation" destination="UoX-ya-G5k" id="bsr-JK-Ves"/>
+                        <outlet property="discussion" destination="sEt-hd-8Y7" id="0e1-ud-4fp"/>
+                        <outlet property="newmsgcount" destination="MwY-p4-ABQ" id="J7e-EW-Vxt"/>
+                        <outlet property="settings" destination="VRk-4C-ogW" id="48R-7D-B3z"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="-113" y="162.5"/>
+        </scene>
+        <!--Interface Controller-->
+        <scene sceneID="hl8-ZI-4eB">
+            <objects>
+                <controller id="UYc-xe-8PS">
+                    <items>
+                        <table alignment="left" id="GGm-VB-f3Z">
+                            <items>
+                                <tableRow id="FMB-9P-2g9">
+                                    <group key="rootItem" width="1" alignment="left" id="HXg-TV-itQ"/>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="107" y="-17"/>
+        </scene>
+        <!--Conversation List-->
+        <scene sceneID="7VP-Ng-2ui">
+            <objects>
+                <controller identifier="Conversation List" id="qr8-XE-MWq" customClass="ConversationListController">
+                    <items>
+                        <table alignment="left" id="PQ1-O0-g5n">
+                            <items>
+                                <tableRow id="mO8-vY-S0d" customClass="ConversationRowController">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="B9C-wT-gkY">
+                                        <items>
+                                            <imageView width="25" height="25" alignment="left" verticalAlignment="center" image="header" id="F6A-1g-hf6"/>
+                                            <group width="4" height="1" alignment="left" id="1cB-ef-Qpu"/>
+                                            <group width="93" alignment="left" layout="vertical" id="JKt-Fp-6Z3">
+                                                <items>
+                                                    <group width="1" height="4" alignment="left" id="1fd-eA-sfC"/>
+                                                    <label width="96" alignment="left" verticalAlignment="center" text="Label" id="aLz-0f-i28">
+                                                        <fontDescription key="font" type="system" pointSize="13"/>
+                                                    </label>
+                                                    <label width="90.5" alignment="left" verticalAlignment="center" text="Label" id="cV6-FM-34c">
+                                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <fontDescription key="font" type="system" pointSize="12"/>
+                                                    </label>
+                                                </items>
+                                            </group>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="headIcon" destination="F6A-1g-hf6" id="o8D-ZE-FW1"/>
+                                        <outlet property="lastMsg" destination="cV6-FM-34c" id="M8u-MN-3qy"/>
+                                        <outlet property="name" destination="aLz-0f-i28" id="XYy-D8-ppa"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="tableView" destination="PQ1-O0-g5n" id="hge-fO-oeD"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="176" y="190"/>
+        </scene>
+        <!--Conversation-->
+        <scene sceneID="sn6-W1-mfg">
+            <objects>
+                <controller identifier="Conversation" id="Y6M-LJ-v7n" customClass="ConversationController">
+                    <items>
+                        <table alignment="left" id="PM4-gh-t0u">
+                            <items>
+                                <tableRow identifier="sentTextRow" id="udu-WI-Cl3" customClass="SentTextMessageRow">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="Foq-cD-jUV">
+                                        <items>
+                                            <group width="6" alignment="right" id="7Yb-C3-itC"/>
+                                            <group alignment="right" id="iKV-wh-i0K">
+                                                <items>
+                                                    <group width="6" height="23" alignment="right" id="6pf-fD-zIm"/>
+                                                    <label alignment="right" verticalAlignment="center" text="Label" textAlignment="left" numberOfLines="0" id="J4A-U6-21W">
+                                                        <fontDescription key="font" type="system" pointSize="13"/>
+                                                    </label>
+                                                    <group width="14" alignment="right" id="Q5H-At-NwT"/>
+                                                </items>
+                                            </group>
+                                            <group width="25" alignment="right" layout="vertical" id="Vjy-gT-RF6">
+                                                <items>
+                                                    <imageView width="25" height="25" alignment="left" id="K8x-As-W0O"/>
+                                                </items>
+                                            </group>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="bgGroup" destination="iKV-wh-i0K" id="wYO-A6-ZIw"/>
+                                        <outlet property="contentLabel" destination="J4A-U6-21W" id="TUj-lD-52B"/>
+                                        <outlet property="header" destination="K8x-As-W0O" id="H1v-I3-26h"/>
+                                    </connections>
+                                </tableRow>
+                                <tableRow identifier="rcvdTextRow" id="UP4-Un-9jA" customClass="ReceivedTextMessageRow">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="lZ3-Y0-pJv">
+                                        <items>
+                                            <group width="25" alignment="left" layout="vertical" id="igd-Lx-LBk">
+                                                <items>
+                                                    <imageView width="25" height="25" alignment="left" id="Xnx-Iv-kkY"/>
+                                                    <label width="25" alignment="left" text="Label" textAlignment="center" id="udG-hf-GyJ">
+                                                        <fontDescription key="font" type="system" pointSize="6"/>
+                                                    </label>
+                                                </items>
+                                            </group>
+                                            <group alignment="left" id="9sY-rz-O7C">
+                                                <items>
+                                                    <group width="14" alignment="left" id="Tyv-rc-sqN"/>
+                                                    <label alignment="left" verticalAlignment="center" text="Label" textAlignment="left" numberOfLines="0" id="3ZL-vX-wWN">
+                                                        <color key="textColor" red="0.21701507449999999" green="0.3617179338" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="font" type="system" pointSize="13"/>
+                                                    </label>
+                                                    <group width="6" height="23" alignment="left" id="3PY-WA-aCZ"/>
+                                                </items>
+                                            </group>
+                                            <group width="6" alignment="right" id="wu4-hW-n7a"/>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="bgGroup" destination="9sY-rz-O7C" id="LuQ-Tm-jF5"/>
+                                        <outlet property="contentLabel" destination="3ZL-vX-wWN" id="RVd-cM-hLe"/>
+                                        <outlet property="header" destination="Xnx-Iv-kkY" id="hnm-Gp-Q3t"/>
+                                        <outlet property="name" destination="udG-hf-GyJ" id="dR3-ak-hoe"/>
+                                    </connections>
+                                </tableRow>
+                                <tableRow identifier="sentImageRow" id="nDm-90-Qo0" customClass="SentImageMessageRow">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="uzC-V5-Mmh">
+                                        <items>
+                                            <group width="6" alignment="right" id="ycg-qA-LlN"/>
+                                            <group alignment="right" radius="0.0" id="9sW-Cp-KyS">
+                                                <items>
+                                                    <group alignment="right" radius="7" id="lpB-tE-2i9">
+                                                        <items>
+                                                            <imageView alignment="right" id="YwG-0P-vlY"/>
+                                                        </items>
+                                                    </group>
+                                                    <group width="4" alignment="right" id="iVq-dR-Nlm"/>
+                                                </items>
+                                            </group>
+                                            <group width="25" alignment="right" layout="vertical" id="U6W-Uu-C5h">
+                                                <items>
+                                                    <imageView width="25" height="25" alignment="left" id="nIN-hb-bJu"/>
+                                                </items>
+                                            </group>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="bgGroup" destination="9sW-Cp-KyS" id="2Zb-yo-kCm"/>
+                                        <outlet property="header" destination="nIN-hb-bJu" id="ISC-yL-5CG"/>
+                                        <outlet property="imageView" destination="YwG-0P-vlY" id="qZD-r3-S9Y"/>
+                                    </connections>
+                                </tableRow>
+                                <tableRow identifier="rcvdImageRow" id="QHE-e7-fCE" customClass="ReceivedImageMessageRow">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="PJP-gO-o22">
+                                        <items>
+                                            <group width="25" alignment="left" layout="vertical" id="lcl-0y-hHC">
+                                                <items>
+                                                    <imageView width="25" height="25" alignment="left" id="och-mR-jYm"/>
+                                                    <label width="25" alignment="left" text="Label" textAlignment="center" id="IU9-Oe-yw6">
+                                                        <fontDescription key="font" type="system" pointSize="6"/>
+                                                    </label>
+                                                </items>
+                                            </group>
+                                            <group alignment="left" id="xDi-De-e9o">
+                                                <items>
+                                                    <group width="4" alignment="left" id="YRz-Rr-DeH"/>
+                                                    <group alignment="left" radius="7" id="uRS-tY-3bR">
+                                                        <items>
+                                                            <imageView alignment="left" id="skw-9f-s0d"/>
+                                                        </items>
+                                                    </group>
+                                                </items>
+                                            </group>
+                                            <group width="6" alignment="left" id="qFF-8H-2Bn"/>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="bgGroup" destination="xDi-De-e9o" id="bVe-eK-AuD"/>
+                                        <outlet property="header" destination="och-mR-jYm" id="acB-z6-6Pb"/>
+                                        <outlet property="imageView" destination="skw-9f-s0d" id="Es9-K2-GQm"/>
+                                        <outlet property="name" destination="IU9-Oe-yw6" id="Uf5-GH-crt"/>
+                                    </connections>
+                                </tableRow>
+                                <tableRow identifier="sentLocationRow" id="vNd-Er-TdM" customClass="SentLocationMessageRow">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="i7q-AJ-q9T">
+                                        <items>
+                                            <group width="6" alignment="right" id="eb6-op-HhD"/>
+                                            <group alignment="right" id="5tK-0J-nKA">
+                                                <items>
+                                                    <group alignment="right" radius="7" id="DaD-5g-rEk">
+                                                        <items>
+                                                            <imageView alignment="right" id="QgV-rB-kkW"/>
+                                                        </items>
+                                                    </group>
+                                                    <group width="4" alignment="right" id="wWg-VU-ajm"/>
+                                                </items>
+                                            </group>
+                                            <group alignment="right" id="13M-CW-VoR">
+                                                <items>
+                                                    <imageView width="25" height="25" alignment="left" id="fff-O9-p2g"/>
+                                                </items>
+                                            </group>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="bgGroup" destination="5tK-0J-nKA" id="683-gb-Gwu"/>
+                                        <outlet property="header" destination="fff-O9-p2g" id="aT0-vT-wCe"/>
+                                        <outlet property="locationThumbnail" destination="QgV-rB-kkW" id="5PH-dW-wOT"/>
+                                    </connections>
+                                </tableRow>
+                                <tableRow identifier="rcvdLocationRow" id="XLG-A4-v32" customClass="ReceivedLocationMessageRow">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="nfk-qe-ReW">
+                                        <items>
+                                            <group width="25" alignment="left" layout="vertical" id="ce4-io-DoE">
+                                                <items>
+                                                    <imageView width="25" height="25" alignment="left" id="KYI-uI-Hpi"/>
+                                                    <label width="25" alignment="left" text="Label" textAlignment="center" id="z8l-Ee-JTc">
+                                                        <fontDescription key="font" type="system" pointSize="6"/>
+                                                    </label>
+                                                </items>
+                                            </group>
+                                            <group alignment="left" id="Pn6-sE-icu">
+                                                <items>
+                                                    <group width="4" alignment="left" id="GE1-wi-MYo"/>
+                                                    <group alignment="left" radius="7" id="lhx-c6-uw7">
+                                                        <items>
+                                                            <imageView alignment="left" id="pyI-cu-hO1"/>
+                                                        </items>
+                                                    </group>
+                                                </items>
+                                            </group>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="bgGroup" destination="Pn6-sE-icu" id="P3t-xp-Qaw"/>
+                                        <outlet property="header" destination="KYI-uI-Hpi" id="kHu-Rs-QSC"/>
+                                        <outlet property="locationThumbnail" destination="pyI-cu-hO1" id="Lh5-6X-ram"/>
+                                        <outlet property="name" destination="z8l-Ee-JTc" id="6gt-Tj-wHX"/>
+                                    </connections>
+                                </tableRow>
+                                <tableRow identifier="sentVoiceRow" id="RG9-zS-FqU" customClass="SentVoiceMessageRow">
+                                    <group key="rootItem" width="1" alignment="left" id="2ma-pw-Mw9">
+                                        <items>
+                                            <group width="6" alignment="right" id="PU3-cQ-Sp3"/>
+                                            <group alignment="right" id="Bpb-YW-8sc">
+                                                <items>
+                                                    <group width="6" height="23" alignment="right" id="oCr-9k-1ZL"/>
+                                                    <imageView alignment="right" verticalAlignment="center" contentMode="center" id="upJ-mL-h6D"/>
+                                                    <group width="14" alignment="right" id="fVx-Pi-ghh"/>
+                                                </items>
+                                            </group>
+                                            <group alignment="right" id="xGD-TM-3EH">
+                                                <items>
+                                                    <imageView width="25" height="25" alignment="left" id="8BE-5J-cDw"/>
+                                                </items>
+                                            </group>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="bgGroup" destination="Bpb-YW-8sc" id="cyL-cf-pSk"/>
+                                        <outlet property="header" destination="8BE-5J-cDw" id="MRF-Im-Xvz"/>
+                                        <outlet property="voiceIcon" destination="upJ-mL-h6D" id="uHr-xS-t5d"/>
+                                    </connections>
+                                </tableRow>
+                                <tableRow identifier="rcvdVoiceRow" id="eh0-7t-Y9C" customClass="ReceivedVoiceMessageRow">
+                                    <group key="rootItem" width="1" alignment="left" id="KdU-kd-Jie">
+                                        <items>
+                                            <group width="25" alignment="left" layout="vertical" id="rJL-8d-cOC">
+                                                <items>
+                                                    <imageView width="25" height="25" alignment="left" id="zx6-dz-bDw"/>
+                                                    <label width="25" alignment="left" text="Label" textAlignment="center" id="mT7-dG-20x">
+                                                        <fontDescription key="font" type="system" pointSize="6"/>
+                                                    </label>
+                                                </items>
+                                            </group>
+                                            <group alignment="left" id="S96-DF-vPC">
+                                                <items>
+                                                    <group width="14" alignment="left" id="2Tx-0C-TFo"/>
+                                                    <imageView alignment="left" verticalAlignment="center" contentMode="center" id="Gi2-7M-MYn"/>
+                                                    <group width="6" height="23" alignment="left" id="rYB-Xq-nsG"/>
+                                                </items>
+                                            </group>
+                                            <group width="6" alignment="left" id="5bM-lP-Aac"/>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="bgGroup" destination="S96-DF-vPC" id="I8O-XZ-oRA"/>
+                                        <outlet property="header" destination="zx6-dz-bDw" id="WbY-xp-wzM"/>
+                                        <outlet property="name" destination="mT7-dG-20x" id="AaR-kW-dnS"/>
+                                        <outlet property="voiceIcon" destination="Gi2-7M-MYn" id="Alk-zG-hVe"/>
+                                    </connections>
+                                </tableRow>
+                                <tableRow identifier="sentUnknownMsgRow" id="oJL-tf-0uv" userLabel="sentUnknownMsgRow" customClass="SentUnsupportMessageRow">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="mir-be-fhH">
+                                        <items>
+                                            <group width="6" alignment="right" id="ffw-uE-VQx"/>
+                                            <group alignment="right" id="Ww2-b5-zCH">
+                                                <items>
+                                                    <group width="6" alignment="right" id="sDz-il-zrs"/>
+                                                    <label alignment="right" verticalAlignment="center" text="未知消息" textAlignment="left" numberOfLines="0" id="Rk6-1Q-UQX">
+                                                        <fontDescription key="font" type="system" pointSize="13"/>
+                                                    </label>
+                                                    <group width="14" alignment="right" id="6Jc-UL-R0l"/>
+                                                </items>
+                                            </group>
+                                            <group width="25" alignment="right" layout="vertical" id="B25-wX-bIz">
+                                                <items>
+                                                    <imageView width="25" height="25" alignment="left" id="Al6-5z-Ocn"/>
+                                                </items>
+                                            </group>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </group>
+                                </tableRow>
+                                <tableRow identifier="rcvdUnknownMsgRow" id="V69-Pf-3Uw" userLabel="rcvdUnknownMsgRow" customClass="ReceivedUnsupportMessageRow">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="THg-fW-vsd">
+                                        <items>
+                                            <group width="25" alignment="left" layout="vertical" id="jS0-Bu-0UT">
+                                                <items>
+                                                    <imageView width="25" height="25" alignment="left" id="PWL-Qe-zRb"/>
+                                                    <label width="25" alignment="left" text="Label" textAlignment="center" id="yoI-03-qup">
+                                                        <fontDescription key="font" type="system" pointSize="6"/>
+                                                    </label>
+                                                </items>
+                                            </group>
+                                            <group alignment="left" id="rX4-Tk-fzd">
+                                                <items>
+                                                    <group width="14" alignment="left" id="8Y6-mP-6et"/>
+                                                    <label alignment="left" text="未知消息" textAlignment="left" numberOfLines="0" id="dw4-RV-yh6">
+                                                        <color key="textColor" red="0.21701507449999999" green="0.3617179338" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="font" type="system" pointSize="13"/>
+                                                    </label>
+                                                    <group width="6" alignment="left" id="dkg-7k-5Nd"/>
+                                                </items>
+                                            </group>
+                                            <group width="6" alignment="left" id="ZK3-Ls-RFC"/>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="bgGroup" destination="THg-fW-vsd" id="rd5-ua-Vuc"/>
+                                    </connections>
+                                </tableRow>
+                                <tableRow identifier="rcvdDiscussionNotificationRow" id="nNE-EX-xfe" customClass="DiscussionNotificationRow">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="oGw-iL-pLt">
+                                        <items>
+                                            <group alignment="center" verticalAlignment="center" radius="3" id="ejZ-WF-4TI">
+                                                <items>
+                                                    <label alignment="center" verticalAlignment="center" text="Label" numberOfLines="0" id="3CF-E7-H7J">
+                                                        <fontDescription key="font" type="system" pointSize="11"/>
+                                                    </label>
+                                                </items>
+                                                <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            </group>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="notifationLabel" destination="3CF-E7-H7J" id="Gjf-c0-riZ"/>
+                                    </connections>
+                                </tableRow>
+                                <tableRow identifier="replyRow" id="XIQ-Uv-6QQ" customClass="ReplyRow">
+                                    <group key="rootItem" width="1" alignment="left" id="Pld-Lr-6gx">
+                                        <items>
+                                            <group width="24" alignment="left" id="ayo-rw-rRa">
+                                                <variation key="device=watch38mm" width="20"/>
+                                            </group>
+                                            <button alignment="left" backgroundImage="watchvoice" id="8E5-dW-ZTl">
+                                                <connections>
+                                                    <action selector="replyVoice" destination="XIQ-Uv-6QQ" id="g0S-w6-75E"/>
+                                                </connections>
+                                            </button>
+                                            <button alignment="right" backgroundImage="watchkeyboard" id="let-84-PkP">
+                                                <connections>
+                                                    <action selector="replyText" destination="XIQ-Uv-6QQ" id="Z05-ke-cDP"/>
+                                                </connections>
+                                            </button>
+                                            <group width="24" alignment="right" id="A3R-NG-lZX">
+                                                <variation key="device=watch38mm" width="20"/>
+                                            </group>
+                                        </items>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </group>
+                                </tableRow>
+                                <tableRow identifier="blankRow" id="urB-uX-D40" userLabel="blankRow" customClass="BlankRow">
+                                    <group key="rootItem" width="1" height="100" alignment="left" id="J3b-9X-rae">
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <variation key="device=watch42mm" height="120"/>
+                                    </group>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="tableView" destination="PM4-gh-t0u" id="Nhg-9K-jTB"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="387" y="188"/>
+        </scene>
+        <!--image view-->
+        <scene sceneID="pfA-hg-TMg">
+            <objects>
+                <controller identifier="image view" id="Vby-Ae-hDt" customClass="ImageViewController">
+                    <items>
+                        <label width="136" alignment="center" verticalAlignment="center" text="图像载入中。。。" id="je3-bG-OZ4"/>
+                        <imageView alignment="center" verticalAlignment="center" contentMode="center" id="XB1-pt-wIl"/>
+                    </items>
+                    <connections>
+                        <outlet property="image" destination="XB1-pt-wIl" id="LzN-nS-qkX"/>
+                        <outlet property="loadingLabel" destination="je3-bG-OZ4" id="Db5-FX-eEq"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="594" y="150"/>
+        </scene>
+        <!--voice input controller-->
+        <scene sceneID="xim-zz-nhk">
+            <objects>
+                <controller identifier="voice input controller" id="JVo-bh-3ww" customClass="VoiceInputController">
+                    <items>
+                        <imageView width="0.5" height="50" alignment="center" contentMode="center" id="fjI-87-er5"/>
+                        <button width="1" alignment="left" title="开始" id="6lt-5g-FC3">
+                            <connections>
+                                <action selector="recordButtonPressed" destination="JVo-bh-3ww" id="tJv-0u-y9K"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="发送" id="bjW-Ki-Trv">
+                            <connections>
+                                <action selector="sendButtonPressed" destination="JVo-bh-3ww" id="o3y-uG-MY8"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="recordButton" destination="6lt-5g-FC3" id="gH2-HO-BNh"/>
+                        <outlet property="recordImage" destination="fjI-87-er5" id="q02-WG-VWf"/>
+                        <outlet property="sendButton" destination="bjW-Ki-Trv" id="HUH-hd-vp3"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="490" y="589"/>
+        </scene>
+        <!--location view-->
+        <scene sceneID="MDE-aG-mzX">
+            <objects>
+                <controller identifier="location view" id="3Tx-Ea-Yl3" customClass="LocationViewController">
+                    <items>
+                        <map width="1" height="1" alignment="left" id="79y-cr-QWg"/>
+                    </items>
+                    <connections>
+                        <outlet property="mapView" destination="79y-cr-QWg" id="IqQ-j6-xo7"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="607" y="379"/>
+        </scene>
+        <!--Settings Controller-->
+        <scene sceneID="3Si-GJ-01l">
+            <objects>
+                <controller id="3ib-xU-mci" customClass="SettingsController">
+                    <items>
+                        <switch width="1" alignment="left" value="YES" title="新消息提示音" id="TKb-di-tRh">
+                            <connections>
+                                <action selector="onSoundSwitch:" destination="3ib-xU-mci" id="H1m-1W-NVd"/>
+                            </connections>
+                        </switch>
+                        <separator alignment="left" id="Qpd-Sa-5uN"/>
+                        <button width="1" alignment="left" title="退出登录" id="IuK-kb-P4b">
+                            <connections>
+                                <action selector="onLogoutButton" destination="3ib-xU-mci" id="4on-B4-C75"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="quit" destination="IuK-kb-P4b" id="4Q6-Ju-sKw"/>
+                        <outlet property="sound" destination="TKb-di-tRh" id="nzB-L8-CBV"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="-166" y="510"/>
+        </scene>
+        <!--friend list identifier-->
+        <scene sceneID="vig-9N-ySx">
+            <objects>
+                <controller identifier="friend list identifier" id="EoU-eX-GqM" customClass="FriendListController">
+                    <items>
+                        <table alignment="left" id="PbV-NY-Y10">
+                            <items>
+                                <tableRow identifier="friendRow" id="Afv-ke-OhU" customClass="FriendRowController">
+                                    <group key="rootItem" width="1" alignment="left" id="XCV-rd-GZB">
+                                        <items>
+                                            <imageView width="32" height="32" alignment="left" id="WWb-xl-YVC"/>
+                                            <label width="93.5" alignment="left" text="Label" id="GJc-6o-Zga"/>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="header" destination="WWb-xl-YVC" id="2Uh-ne-mkx"/>
+                                        <outlet property="name" destination="GJc-6o-Zga" id="QCA-um-tqu"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="tableView" destination="PbV-NY-Y10" id="Ov9-si-O2u"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="178" y="413"/>
+        </scene>
+        <!--Glance Interface Controller-->
+        <scene sceneID="z4m-KO-HEK">
+            <objects>
+                <glanceController spacing="0.0" id="IlX-dQ-Vd0" customClass="GlanceController">
+                    <items>
+                        <group alignment="left" id="BXt-zo-arP"/>
+                        <group alignment="left" id="YpM-Pa-gLF"/>
+                    </items>
+                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="14"/>
+                </glanceController>
+            </objects>
+            <point key="canvasLocation" x="235" y="672"/>
+        </scene>
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="dee-zn-50e">
+            <objects>
+                <notificationController id="Z3W-9m-s8n">
+                    <items>
+                        <label alignment="left" text="Alert Label" id="Dzh-LY-jom"/>
+                    </items>
+                    <notificationCategory key="notificationCategory" identifier="myCategory" id="Tyy-VL-kao"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="Dzh-LY-jom" id="4sU-O7-1dB"/>
+                        <segue destination="0cp-sD-sVH" kind="relationship" relationship="dynamicNotificationInterface" id="ed5-lB-0OR"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="39" y="1001"/>
+        </scene>
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="nJU-2J-Lav">
+            <objects>
+                <notificationController id="BeR-A9-Ov0">
+                    <items>
+                        <label alignment="left" text="Alert Label" id="K9w-2t-Nb9"/>
+                    </items>
+                    <notificationCategory key="notificationCategory" identifier="default" id="iJu-yK-TWr"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="K9w-2t-Nb9" id="b7h-5d-Zgj"/>
+                        <segue destination="8Wp-An-cLP" kind="relationship" relationship="dynamicNotificationInterface" id="4ao-nH-Y73"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="81" y="1253"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="xaX-vI-zUu">
+            <objects>
+                <controller id="0cp-sD-sVH" customClass="NotificationController"/>
+            </objects>
+            <point key="canvasLocation" x="297" y="976"/>
+        </scene>
+        <!--Dynamic Notification Interface Controller-->
+        <scene sceneID="qWB-nx-Od2">
+            <objects>
+                <controller id="8Wp-An-cLP"/>
+            </objects>
+            <point key="canvasLocation" x="381" y="1253"/>
+        </scene>
+    </scenes>
+</document>
