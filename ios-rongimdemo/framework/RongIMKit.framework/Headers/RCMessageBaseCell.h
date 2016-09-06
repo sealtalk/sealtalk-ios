@@ -33,6 +33,25 @@ UIKIT_EXTERN NSString *const KNotificationMessageBaseCellUpdateSendingStatus;
  */
 @interface RCMessageBaseCell : UICollectionViewCell
 
+#pragma mark - overwrite
+
+/*!
+ 自定义消息Cell的Size
+ 
+ @param model               要显示的消息model
+ @param collectionViewWidth cell所在的collectionView的宽度
+ @param extraHeight         cell内容区域之外的高度
+ 
+ @return 自定义消息Cell的Size
+ 
+ @discussion 当应用自定义消息时，必须实现该方法来返回cell的Size。
+ 其中，extraHeight是Cell根据界面上下文，需要额外显示的高度（比如时间、用户名的高度等）。
+ 一般而言，Cell的高度应该是内容显示的高度再加上extraHeight的高度。
+ */
++ (CGSize)sizeForMessageModel:(RCMessageModel *)model
+      withCollectionViewWidth:(CGFloat)collectionViewWidth
+         referenceExtraHeight:(CGFloat)extraHeight;
+
 /*!
  消息Cell点击回调
  */

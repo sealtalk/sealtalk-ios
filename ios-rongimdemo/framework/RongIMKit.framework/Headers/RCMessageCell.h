@@ -82,10 +82,19 @@
 @property(nonatomic, strong) UIView *messageHasReadStatusView;
 
 /*!
+ 显示群是否消息回执的Button
+ */
+@property(nonatomic, strong) UIButton *groupAndDiscussionReceiptView;
+
+/*!
+ 消息阅读人数的View
+ */
+@property(nonatomic, strong) UILabel *groupAndDiscussionReceiptCountView;
+
+/*!
  显示消息发送成功状态的View
  */
 @property(nonatomic, strong) UIView *messageSendSuccessStatusView;
-
 /*!
  设置当前消息Cell的数据模型
  

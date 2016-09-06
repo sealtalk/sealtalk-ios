@@ -12,8 +12,6 @@
 @interface RCDPrivateSettingsTableViewController
     : UITableViewController <UIActionSheetDelegate>
 
-@property(nonatomic, strong) RCUserInfo *userInfo;
-
 @property(nonatomic, strong) NSString *userId;
 
 @end

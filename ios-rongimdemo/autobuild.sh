@@ -10,9 +10,10 @@ configuration="Release"
 DEV_FLAG=""
 VER_FLAG=""
 RELEASE_FLAG="Stable"
-BIN_DIR="bin"
 ENV_FLAG="pro"
 PROFILE_FLAG="distribution"
+BIN_DIR="bin"
+BUILD_DIR="build"
 CUR_PATH=$(pwd)
 
 for i in "$@"
@@ -112,10 +113,10 @@ sed -i '' -e '/UMENG_APPKEY/s/@"563755cbe0f55a5cb300139c"/@"5637263b67e58e772200
 if [ ${PROFILE_FLAG} == "dev" ]
 then
 configuration="AutoDebug"
-BUILD_APP_PROFILE="c5ab9e5c-4bc1-4a91-b684-3dcb1f55e557"
-BUILD_WATCHKIT_EXTENSION_PROFILE="6f5c5d79-fd4f-4ec4-9495-d690b12a5fae"
-BUILD_WATCHKIT_APP_PROFILE="82080891-c055-4a61-a536-cbf2b76903bb"
-BUILD_SHARE_PROFILE="b752e5e6-86ea-4a87-a1ee-7c6221a8a877"
+BUILD_APP_PROFILE="34ef6289-ff30-423e-ae84-de957621ae8f"
+BUILD_WATCHKIT_EXTENSION_PROFILE="c361fc31-181d-43c5-9d2d-17466939e93f"
+BUILD_WATCHKIT_APP_PROFILE="3219a56b-1f02-4e39-8ada-02180b2326a3"
+BUILD_SHARE_PROFILE="1f6f4a71-aa6c-4ba5-9748-76a7c8efb6d9"
 else
 configuration="AutoRelease"
 # Release可以使用Automatic
@@ -149,19 +150,25 @@ sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./融云\ Dem
 PROJECT_NAME="RCloudMessage.xcodeproj"
 targetName="SealTalk"
 TARGET_DECIVE="iphoneos"
-#TARGET_I386="iphonesimulator"
 
-if [ ! -d "$BIN_DIR" ]; then
+rm -rf DerivedData
+rm -rf "$BIN_DIR"
+rm -rf "$BUILD_DIR"
 mkdir -p "$BIN_DIR"
-fi
-
-xcodebuild clean -configuration $configuration -sdk $TARGET_DECIVE APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
-#xcodebuild clean -configuration $configuration -sdk $TARGET_I386
+mkdir -p "$BUILD_DIR"
+xcodebuild clean -alltargets
 
 echo "***开始build iphoneos文件***"
-xcodebuild -project ${PROJECT_NAME} -target $targetName -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
-xcrun -sdk $TARGET_DECIVE PackageApplication -v ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app -o ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.ipa
-cp -af ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.app.dSYM
+if [ ${PROFILE_FLAG} == "dev" ]; then
+  xcodebuild -project ${PROJECT_NAME} -target $targetName -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
+  xcrun -sdk $TARGET_DECIVE PackageApplication -v ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app -o ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.ipa
+  cp -af ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.app.dSYM
+else
+  xcodebuild -scheme "${targetName}" archive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
+  xcodebuild -exportArchive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -exportOptionsPlist "archive.plist" -exportPath "./${BIN_DIR}"
+  mv ./${BIN_DIR}/${targetName}.ipa ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.ipa
+  cp -af ./${BUILD_DIR}/${targetName}.xcarchive/dSYMs/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.app.dSYM
+fi
 
 echo "***编译结束***"
 

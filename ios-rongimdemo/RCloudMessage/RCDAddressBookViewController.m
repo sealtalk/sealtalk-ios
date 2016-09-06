@@ -37,6 +37,20 @@
 }
 MBProgressHUD *hud;
 
++ (instancetype)addressBookViewController {
+    return [[self alloc]init];
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
@@ -102,6 +116,9 @@ MBProgressHUD *hud;
   static NSString *reusableCellWithIdentifier = @"RCDAddressBookCell";
   RCDAddressBookTableViewCell *cell =
       [tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
+    if(!cell) {
+        cell = [[RCDAddressBookTableViewCell alloc]init];
+    }
   cell.tag = tag + 5000;
   cell.acceptBtn.tag = tag + 10000;
   tag++;
@@ -109,49 +126,13 @@ MBProgressHUD *hud;
   RCDUserInfo *user = _friends[indexPath.row];
   [_friendsDic setObject:user
                   forKey:[NSString stringWithFormat:@"%ld", (long)cell.tag]];
-  if (user) {
-    cell.lblName.text = user.name;
-    if ([user.portraitUri isEqualToString:@""]) {
-      DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc]
-          initWithFrame:CGRectMake(0, 0, 100, 100)];
-      [defaultPortrait setColorAndLabel:user.userId Nickname:user.name];
-      UIImage *portrait = [defaultPortrait imageFromView];
-      cell.imgvAva.image = portrait;
-    } else {
-      [cell.imgvAva sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
-                      placeholderImage:[UIImage imageNamed:@"contact"]];
-    }
-  }
-  if ([user.status intValue] == 20) {
-    cell.rightLabel.text = @"已接受";
-    cell.acceptBtn.hidden = YES;
-    cell.arrow.hidden = NO;
-  }
-  if ([user.status intValue] == 10) {
-    cell.rightLabel.text = @"已邀请";
-    cell.selected = NO;
-    cell.arrow.hidden = YES;
-    cell.acceptBtn.hidden = YES;
-  }
+  [cell setModel:user];
   if ([user.status intValue] == 11) {
-    cell.selected = NO;
-    cell.acceptBtn.hidden = NO;
-    [cell.acceptBtn addTarget:self
-                       action:@selector(doAccept:)
-             forControlEvents:UIControlEventTouchUpInside];
-    cell.arrow.hidden = YES;
+      cell.selected = NO;
+      cell.acceptBtn.hidden = NO;
+      [cell.acceptBtn addTarget:self action:@selector(doAccept:) forControlEvents:UIControlEventTouchUpInside];
+      cell.arrow.hidden = YES;
   }
-  if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
-      [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
-    cell.imgvAva.layer.masksToBounds = YES;
-    cell.imgvAva.layer.cornerRadius = 18.f;
-  } else {
-    cell.imgvAva.layer.masksToBounds = YES;
-    cell.imgvAva.layer.cornerRadius = 5.f;
-  }
-  cell.accessoryType = UITableViewCellAccessoryNone;
-  cell.selectionStyle = UITableViewCellSelectionStyleNone;
-  cell.imgvAva.contentMode = UIViewContentModeScaleAspectFill;
   return cell;
 }
 - (NSInteger)tableView:(UITableView *)tableView
@@ -161,7 +142,7 @@ MBProgressHUD *hud;
 
 - (CGFloat)tableView:(UITableView *)tableView
     heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 65.f;
+    return [RCDAddressBookTableViewCell cellHeight];
 }
 
 

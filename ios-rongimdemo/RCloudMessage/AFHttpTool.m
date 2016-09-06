@@ -639,4 +639,31 @@
                         failure:failure];
 }
 
+//设置好友备注
++ (void)setFriendDisplayName:(NSString *)friendId
+                 displayName:(NSString *)displayName
+                    success:(void (^)(id response))success
+                    failure:(void (^)(NSError *err))failure {
+  NSDictionary *params = @{
+                           @"friendId" : friendId,
+                           @"displayName" : displayName
+                           };
+  [AFHttpTool requestWihtMethod:RequestMethodTypePost
+                            url:@"friendship/set_display_name"
+                         params:params
+                        success:success
+                        failure:failure];
+}
+
+//获取用户详细资料
++ (void)getFriendDetailsByID:(NSString *)friendId
+                    success:(void (^)(id response))success
+                    failure:(void (^)(NSError *err))failure {
+  [AFHttpTool
+   requestWihtMethod:RequestMethodTypeGet
+   url:[NSString stringWithFormat:@"friendship/%@/profile", friendId]
+   params:nil
+   success:success
+   failure:failure];
+}
 @end

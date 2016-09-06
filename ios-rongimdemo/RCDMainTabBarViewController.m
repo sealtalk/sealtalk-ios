@@ -33,6 +33,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.viewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[RCDChatListViewController class]]) {
+            RCDChatListViewController *chatListVC = (RCDChatListViewController *)obj;
+            [chatListVC updateBadgeValueForTabBarItem];
+        }
+    }];
+}
+
 -(void)setTabBarItems {
   [self.viewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
     if ([obj isKindOfClass:[RCDChatListViewController class]]) {

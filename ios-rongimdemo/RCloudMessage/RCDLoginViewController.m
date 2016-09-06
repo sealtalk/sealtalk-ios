@@ -688,7 +688,7 @@ MBProgressHUD *hud;
   self.loginToken = token;
   self.loginPassword = password;
   
-  //登陆融云服务器
+  //登录融云服务器
   [[RCIM sharedRCIM] connectWithToken:token
       success:^(NSString *userId) {
         NSLog([NSString
@@ -701,10 +701,10 @@ MBProgressHUD *hud;
         //关闭HUD
         [hud hide:YES];
         NSLog(@"RCConnectErrorCode is %ld", (long)status);
-        _errorMsgLb.text = [NSString stringWithFormat:@"登陆失败！Status: %zd", status];
+        _errorMsgLb.text = [NSString stringWithFormat:@"登录失败！Status: %zd", status];
         [_pwdTextField shake];
         
-        //SDK会自动重连登陆，这时候需要监听连接状态
+        //SDK会自动重连登录，这时候需要监听连接状态
         [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
       }
       tokenIncorrect:^{
@@ -732,7 +732,7 @@ MBProgressHUD *hud;
 }
 
 /**
- *  登陆
+ *  登录
  */
 - (void)login:(NSString *)userName password:(NSString *)password {
   RCNetworkStatus stauts =

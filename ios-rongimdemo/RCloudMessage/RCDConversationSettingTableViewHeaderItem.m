@@ -24,7 +24,7 @@
 
     _titleLabel = [UILabel new];
     [_titleLabel setTextColor:[UIColor colorWithHexString:@"0x999999" alpha:1.0]];
-    [_titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [_titleLabel setFont:[UIFont systemFontOfSize:13]];
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];
     [self.contentView addSubview:_titleLabel];
 

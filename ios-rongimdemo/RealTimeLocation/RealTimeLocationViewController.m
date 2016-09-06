@@ -414,7 +414,11 @@ MBProgressHUD *hud;
     for (UIView *subView in actionSheet.subviews) {
       if ([subView isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton *)subView;
-        [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+          if ([btn.titleLabel.text isEqualToString:@"结束"]) {
+              [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+          } else {
+              [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+          }
       }
     }
   }

@@ -41,6 +41,4 @@
 
 @property BOOL isHideSelectedIcon;
 
-- (NSMutableDictionary *)sortedArrayWithPinYinDic:(NSArray *)friends;
-
 @end

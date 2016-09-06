@@ -178,8 +178,6 @@
 "VoIPVideoCallIncomingWithoutUserName"="Invites you to video call";
 "VoIPMultiCallUserCollectionTitle"="Members";
 "VoIPCallTotalTime"="Duration";
-"VoIPMultiCallRemoteConnecting"="Waiting";
-"VoIPMultiCallRemoteQuit"="Cancelled";
 "VoIPCallHasEnd"="Cancelled";
 "VoIPCallHasCancel"="Cancelled";
 "VoIPCallHasReject"="Declined";
@@ -207,7 +205,15 @@
 "HaveMentionedForNotification"="You were mentioned ";
 "SelectMentionedUser"="Select Contact";
 "ToSearch"="Search";
-"chatDate"="MMM d,yyyy";
+"chatDate"="MMM d, yyyy";
 "chatListDate"="M/d/yyyy";
 "locale"="en_US";
 "SameYearDate"="M/d/yy";
+"readNum"="%d read";
+"read"="read";
+"punctuation"=", ";
+"Dawn"="h:mm a";
+"Forenoon"="h:mm a";
+"Noon"="h:mm a";
+"Afternoon"="h:mm a";
+"Evening"="h:mm a";

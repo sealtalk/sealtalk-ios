@@ -7,32 +7,38 @@
 //
 
 #import <UIKit/UIKit.h>
-@protocol JoinQuitGroupDelegate;
+@class RCDGroupInfo;
 
 @interface RCDGroupTableViewCell : UITableViewCell
 
+/**
+ *
+ *  @return cell高度
+ */
++ (CGFloat)cellHeight;
+
+/**
+ *  给控件填充数据
+ *
+ *  @param group 设置群组模型
+ */
+- (void)setModel:(RCDGroupInfo *)group;
+
 @property(nonatomic, copy) NSString *groupID;
 
-@property(weak, nonatomic) IBOutlet UILabel *lblGroupName;
-@property(weak, nonatomic) IBOutlet UILabel *lblPersonNumber;
-@property(weak, nonatomic) IBOutlet UILabel *lblInstru;
-@property(weak, nonatomic) IBOutlet UIImageView *imvGroupPort;
-@property(weak, nonatomic) IBOutlet UIButton *btJoin;
+/**
+ *  群组名称label
+ */
+@property(nonatomic, strong) UILabel *lblGroupName;
 
-@property (weak, nonatomic) IBOutlet UILabel *lblGroupId;
+/**
+ *  群组头像
+ */
+@property(nonatomic, strong) UIImageView *imvGroupPort;
 
-@property(nonatomic, assign) id<JoinQuitGroupDelegate> delegate;
+/**
+ *  群组id的label
+ */
+@property(nonatomic, strong) UILabel *lblGroupId;
 
-/** 是否加入 */
-@property(nonatomic, assign) BOOL isJoin;
-
-@end
-@protocol JoinQuitGroupDelegate <NSObject>
-
-@required
-
-- (void)joinGroupCallback:(BOOL)result withGroupId:(NSString *)groupId;
-
-- (void)quitGroupCallback:(BOOL)result withGroupId:(NSString *)groupId;
-- (void)launchGroupChatPageByGroupId:(NSString *)groupId;
 @end

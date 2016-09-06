@@ -43,7 +43,7 @@
 /*!
  收到通话呼入的时间
 
- @discussion 只有当前登陆用户的呼入时间是准确的，其他用户的并不准确
+ @discussion 只有当前登录用户的呼入时间是准确的，其他用户的并不准确
  */
 @property(nonatomic, assign) long long startTime;
 

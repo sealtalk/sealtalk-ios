@@ -12,5 +12,6 @@
 
 //弹出菜单
 - (IBAction)showMenu:(UIButton *)sender;
+- (void)updateBadgeValueForTabBarItem;
 
 @end

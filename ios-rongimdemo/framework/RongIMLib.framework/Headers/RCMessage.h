@@ -14,6 +14,7 @@
 #define __RCMessage
 #import "RCMessageContent.h"
 #import "RCStatusDefine.h"
+#import "RCReadReceiptInfo.h"
 #import <Foundation/Foundation.h>
 
 /*!
@@ -91,6 +92,11 @@
  @discussion 服务器消息唯一ID（在同一个Appkey下全局唯一）
  */
 @property(nonatomic, strong) NSString *messageUId;
+
+/*!
+ 阅读回执状态
+ */
+@property(nonatomic, strong) RCReadReceiptInfo *readReceiptInfo;
 
 
 /*!

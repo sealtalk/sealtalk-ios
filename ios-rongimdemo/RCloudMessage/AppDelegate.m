@@ -57,9 +57,13 @@
   //    Simulator"]) {
           [self redirectNSlogToDocumentFolder];
   //    }
-  [self umengTrack];
-
+  //启动页停留1秒钟。
+  [NSThread sleepForTimeInterval:1.0];
   
+  //为了在启动页面不显示statusBar，所以在工程设置里面把statusBar隐藏了，在启动页面过后，显示statusBar。
+  application.statusBarHidden = NO;
+  
+  [self umengTrack];
   /**
    *  推送说明：
    *
@@ -81,6 +85,9 @@
 
   }
 
+  //设置扩展Module的Url Scheme。
+  //[[RCIM sharedRCIM] setScheme:@"rongcloudRedPacket" forExtensionModule:@"RedPacket"];
+  
   // 注册自定义测试消息
   [[RCIM sharedRCIM] registerMessageType:[RCDTestMessage class]];
 
@@ -104,11 +111,13 @@
   //    [RCIM sharedRCIM].globalMessagePortraitSize = CGSizeMake(46, 46);
   //开启输入状态监听
   [RCIM sharedRCIM].enableTypingStatus = YES;
+  
   //开启发送已读回执
-  [RCIM sharedRCIM].enableReadReceipt = YES;
-  [RCIM sharedRCIM].readReceiptConversationTypeList = @[@(ConversationType_PRIVATE), @(ConversationType_DISCUSSION), @(ConversationType_GROUP)];
+  [RCIM sharedRCIM].enabledReadReceiptConversationTypeList = @[@(ConversationType_PRIVATE),@(ConversationType_DISCUSSION),@(ConversationType_GROUP)];
+  
   //开启多端未读状态同步
-  [RCIM sharedRCIM].enableSyncUnreadStatus = YES;
+  [RCIM sharedRCIM].enableSyncReadStatus = YES;
+  
   //设置显示未注册的消息
   //如：新版本增加了某种自定义消息，但是老版本不能识别，开发者可以在旧版本中预先自定义这种未识别的消息的显示
   [RCIM sharedRCIM].showUnkownMessage = YES;
@@ -166,7 +175,7 @@
                                  [RCIMClient sharedRCIMClient].currentUserInfo =
                                      user;
                                }];
-                  //登陆demoserver成功之后才能调demo 的接口
+                  //登录demoserver成功之后才能调demo 的接口
                   [RCDDataSource syncGroups];
                   [RCDDataSource syncFriendList:userId
                                        complete:^(NSMutableArray *result){
@@ -179,7 +188,7 @@
 
           //同步群组
           //调用connectWithToken时数据库会同步打开，不用再等到block返回之后再访问数据库，因此不需要这里刷新
-          //这里仅保证之前已经成功登陆过，如果第一次登陆必须等block
+          //这里仅保证之前已经成功登录过，如果第一次登录必须等block
           //返回之后才操作数据
           //          dispatch_async(dispatch_get_main_queue(), ^{
           //            UIStoryboard *storyboard =
@@ -292,7 +301,7 @@
   [[UINavigationBar appearance] setTitleTextAttributes:textAttributes];
   [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
   [[UINavigationBar appearance]
-      setBarTintColor:[UIColor colorWithHexString:@"0195ff" alpha:1.0f]];
+      setBarTintColor:[UIColor colorWithHexString:@"0099ff" alpha:1.0f]];
 
   [[NSNotificationCenter defaultCenter]
       addObserver:self
@@ -707,6 +716,20 @@
               }];
     }
   }
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
+  if ([[RCIM sharedRCIM] openExtensionModuleUrl:url]) {
+    return YES;
+  }
+  return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+  if ([[RCIM sharedRCIM] openExtensionModuleUrl:url]) {
+    return YES;
+  }
+  return YES;
 }
 
 //设置群组通知消息没有提示音

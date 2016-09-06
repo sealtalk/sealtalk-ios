@@ -8,8 +8,8 @@
 
 #import "RCDAboutRongCloudTableViewController.h"
 #import "UIColor+RCColor.h"
-#import "RCDMeButton.h"
 #import "RCDCommonDefine.h"
+#import "RCDUIBarButtonItem.h"
 
 @interface RCDAboutRongCloudTableViewController ()
 @property(nonatomic, strong) NSArray *urls;
@@ -37,11 +37,13 @@
   
   NSString *version = [[[NSBundle mainBundle] infoDictionary]
                        objectForKey:@"CFBundleShortVersionString"];
-  _SDKVersionLabel.text = [NSString stringWithFormat:@"SDK 版本 %@", version];
+  self.SDKVersionLabel.text = version;
+  self.SDKVersionLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.0];
   
   NSString *SealTalkVersion = [[[NSBundle mainBundle] infoDictionary]
                        objectForKey:@"SealTalk Version"];
-  self.SealTalkVersionLabel.text = [NSString stringWithFormat:@"SealTalk 版本 %@",SealTalkVersion];
+  self.SealTalkVersionLabel.text = SealTalkVersion;
+  self.SealTalkVersionLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.0];
   
   NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
   if ([isNeedUpdate isEqualToString:@"YES"]) {
@@ -54,10 +56,16 @@
         [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
     }
   
-  RCDMeButton *backBtn = [[RCDMeButton alloc] init];
-  [backBtn addTarget:self action:@selector(cilckBackBtn:) forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-  [self.navigationItem setLeftBarButtonItem:leftButton];
+  RCDUIBarButtonItem *leftBtn =
+  [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
+                                imageViewFrame:CGRectMake(-6, 4, 10, 17)
+                                   buttonTitle:@"我"
+                                    titleColor:[UIColor whiteColor]
+                                    titleFrame:CGRectMake(9, 4, 85, 17)
+                                   buttonFrame:CGRectMake(0, 6, 87, 23)
+                                        target:self
+                                        action:@selector(cilckBackBtn:)];
+  self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
 - (void)tableView:(UITableView *)tableView

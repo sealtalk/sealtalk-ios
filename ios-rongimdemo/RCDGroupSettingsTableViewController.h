@@ -9,12 +9,15 @@
 #import "RCDGroupInfo.h"
 #import <RongIMKit/RongIMKit.h>
 #import <UIKit/UIKit.h>
+#import "RCDBaseSettingTableViewCell.h"
 
 @interface RCDGroupSettingsTableViewController
     : UITableViewController <UICollectionViewDataSource,
                              UICollectionViewDelegate, UIActionSheetDelegate,
                              UINavigationControllerDelegate,
-                             UIImagePickerControllerDelegate>
+                             UIImagePickerControllerDelegate,RCDBaseSettingTableViewCellDelegate>
+
++ (instancetype)groupSettingsTableViewController;
 
 @property(nonatomic, strong) RCDGroupInfo *Group;
 

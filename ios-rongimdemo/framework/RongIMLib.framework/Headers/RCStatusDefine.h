@@ -47,7 +47,8 @@ typedef NS_ENUM(NSInteger, RCConnectErrorCode) {
   /*!
    导航HTTP发送失败
 
-   @discussion 建立连接的临时错误码，SDK会做好自动重连，开发者无须处理。
+   @discussion 如果是偶尔出现此错误，SDK会做好自动重连，开发者无须处理。如果一直是这个错误，应该是您没有设置好ATS。
+   ATS默认只使用HTTPS协议，当HTTP协议被禁止时SDK会一直30004错误。您可以在我们iOS开发文档中搜索到ATS设置。
    */
   RC_NAVI_REQUEST_FAIL = 30004,
 
@@ -183,7 +184,7 @@ typedef NS_ENUM(NSInteger, RCConnectErrorCode) {
   RC_CONN_USER_BLOCKED = 31009,
 
   /*!
-   当前用户在其他设备上登陆，此设备被踢下线
+   当前用户在其他设备上登录，此设备被踢下线
    */
   RC_DISCONN_KICK = 31010,
 
@@ -390,12 +391,12 @@ typedef NS_ENUM(NSInteger, RCConnectionStatus) {
   ConnectionStatus_WIFI = 5,
 
   /*!
-   当前用户在其他设备上登陆，此设备被踢下线
+   当前用户在其他设备上登录，此设备被踢下线
    */
   ConnectionStatus_KICKED_OFFLINE_BY_OTHER_CLIENT = 6,
 
   /*!
-   当前用户在 Web 端登陆
+   当前用户在 Web 端登录
 
    @discussion 建立连接的临时状态，SDK会做好自动重连，开发者无须处理。
    */
@@ -858,5 +859,6 @@ typedef NS_ENUM(NSUInteger, RCLogLevel) {
    */
   RC_Log_Level_Info = 3,
 };
+
 
 #endif

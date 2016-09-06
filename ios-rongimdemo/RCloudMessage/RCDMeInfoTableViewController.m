@@ -19,7 +19,7 @@
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMLib/RongIMLib.h>
-#import "RCDMeButton.h"
+#import "RCDUIBarButtonItem.h"
 
 @interface RCDMeInfoTableViewController ()
 @property(weak, nonatomic) IBOutlet UILabel *currentUserNickNameLabel;
@@ -55,10 +55,16 @@
   self.currentUserPortraitView.layer.masksToBounds = YES;
   self.currentUserPortraitView.layer.cornerRadius = 6.0;
   
-  RCDMeButton *backBtn = [[RCDMeButton alloc] init];
-  [backBtn addTarget:self action:@selector(cilckBackBtn:) forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-  [self.navigationItem setLeftBarButtonItem:leftButton];
+  RCDUIBarButtonItem *leftBtn =
+  [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
+                                imageViewFrame:CGRectMake(-6, 4, 10, 17)
+                                   buttonTitle:@"我"
+                                    titleColor:[UIColor whiteColor]
+                                    titleFrame:CGRectMake(9, 4, 85, 17)
+                                   buttonFrame:CGRectMake(0, 6, 87, 23)
+                                        target:self
+                                        action:@selector(cilckBackBtn:)];
+  self.navigationItem.leftBarButtonItem = leftBtn;
 }
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
@@ -118,18 +124,40 @@
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES]; // 取消选中
+  
+  switch (indexPath.row) {
+    case 0: {
+      [self changePortrait];
+    }
+      break;
+      
+    case 1: {
+      RCDEditUserNameViewController *vc = [[RCDEditUserNameViewController alloc] init];
+      [self.navigationController pushViewController:vc
+                                           animated:YES];
+    }
+      break;
+    default:
+      break;
+  }
+  
+  
+  
+  
+  
+  
 
-  if (indexPath.section == 0 && indexPath.row == 1) {
-    NSLog(@"show the edit user name view");
-    UIStoryboard *storyboard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDEditUserNameViewController *editUserNameVC =
-        [storyboard instantiateViewControllerWithIdentifier:@"editUserNameVC"];
-    [self.navigationController pushViewController:editUserNameVC animated:YES];
-  }
-  if (indexPath.section == 0 && indexPath.row == 0) {
-    [self changePortrait];
-  }
+//  if (indexPath.section == 0 && indexPath.row == 1) {
+//    NSLog(@"show the edit user name view");
+//    UIStoryboard *storyboard =
+//        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    RCDEditUserNameViewController *editUserNameVC =
+//        [storyboard instantiateViewControllerWithIdentifier:@"editUserNameVC"];
+//    [self.navigationController pushViewController:editUserNameVC animated:YES];
+//  }
+//  if (indexPath.section == 0 && indexPath.row == 0) {
+//    
+//  }
 }
 
 - (void)changePortrait {

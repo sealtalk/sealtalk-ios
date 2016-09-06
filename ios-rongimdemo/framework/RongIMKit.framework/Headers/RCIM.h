@@ -38,6 +38,24 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageNotification;
 FOUNDATION_EXPORT NSString *const RCKitDispatchRecallMessageNotification;
 
 /*!
+ @const 收到已读回执的Notification
+ 
+ @discussion 收到消息已读回执之后 IMLib 更新消息状态之后，IMKit会分发此通知。
+ 
+ Notification的object为nil，userInfo为NSDictionary对象，
+ 其中key值分别为@"cType"、@"tId"、@"messageTime",
+ 对应的value为会话类型的NSNumber对象、会话的targetId、已阅读的最后一条消息的sendTime。
+ 如：
+ NSNumber *ctype = [notification.userInfo objectForKey:@"cType"];
+ NSNumber *time = [notification.userInfo objectForKey:@"messageTime"];
+ NSString *targetId = [notification.userInfo objectForKey:@"tId"];
+ NSString *fromUserId = [notification.userInfo objectForKey:@"fId"];
+ 
+ 收到这个消息之后可以更新这个会话中messageTime以前的消息UI为已读（底层数据库消息状态已经改为已读）。
+ */
+FOUNDATION_EXPORT NSString *const RCKitDispatchReadReceiptNotification;
+
+/*!
  @const 连接状态变化的Notification
  
  @discussion SDK连接状态发生变化时，SDK会分发此通知。
@@ -48,6 +66,23 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchRecallMessageNotification;
  RCKitDispatchConnectionStatusChangedNotification只要注册都可以收到通知；RCIMConnectionStatusDelegate需要设置监听，同时只能存在一个监听。
  */
 FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotification;
+
+/**
+ *  收到消息已读回执的响应
+ 通知的 object 中携带信息如下： @{@"targetId":targetId,
+ @"conversationType":@(conversationType),
+ @"messageUId": messageUId,
+ @"readCount":@(count)};
+ */
+FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptResponseNotification;
+
+/**
+ *  收到消息已读回执的请求
+ 通知的 object 中携带信息如下： @{@"targetId":targetId,
+ @"conversationType":@(conversationType),
+ @"messageUId": messageUId};
+ */
+FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification;
 
 #pragma mark - 用户信息提供者、群组信息提供者、群名片信息提供者
 
@@ -122,7 +157,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
 @optional
 
 /*!
- 获取当前群组成员列表的回调
+ 获取当前群组成员列表的回调（需要实现用户信息提供者 RCIMUserInfoDataSource）
  
  @param groupId     群ID
  @param resultBlock 获取成功 [userIdList:群成员ID列表]
@@ -538,22 +573,25 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  是否开启已读回执功能，默认值是NO
  
  @discussion 开启后会在聊天页面消息显示之后会发送已读回执给对方。
+ 
+ @warning **已废弃，请勿使用。**
+ 升级说明:请使用enabledReadReceiptConversationTypeList，设置开启回执的会话类型
  */
-@property(nonatomic, assign) BOOL enableReadReceipt;
+@property(nonatomic, assign) BOOL enableReadReceipt  __deprecated_msg("已废弃，请使用enabledReadReceiptConversationTypeList，设置开启回执的会话类型。");
 
 /*!
- 开启已读回执功能的会话类型，默认值为@[@(ConversationType_PRIVATE)]
+ 开启已读回执功能的会话类型，默认为空
  
- @discussion 需要先开启enableReadReceipt。开启后，这些会话类型的消息在聊天界面显示了之后会发送已读回执。目前仅支持单聊、群聊和讨论组。
+ @discussion 这些会话类型的消息在聊天界面显示了之后会发送已读回执。目前仅支持单聊、群聊和讨论组。
  */
-@property(nonatomic, copy) NSArray* readReceiptConversationTypeList;
+@property(nonatomic, copy) NSArray* enabledReadReceiptConversationTypeList;
 
 /*!
  是否开启多端同步未读状态的功能，默认值是NO
  
  @discussion 开启之后，用户在其他端上阅读过的消息，当前客户端会清掉该消息的未读数。目前仅支持单聊、群聊、讨论组。
  */
-@property(nonatomic, assign) BOOL enableSyncUnreadStatus;
+@property(nonatomic, assign) BOOL enableSyncReadStatus;
 
 /*!
  是否开启消息@提醒功能（只支持群聊和讨论组, App需要实现群成员数据源groupMemberDataSource），默认值是NO。
@@ -646,7 +684,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  @param successBlock    讨论组踢人成功的回调 [discussion:讨论组踢人成功返回的讨论组对象]
  @param errorBlock      讨论组踢人失败的回调 [status:讨论组踢人失败的错误码]
  
- @discussion 如果当前登陆用户不是此讨论组的创建者并且此讨论组没有开放加人权限，则会返回错误。
+ @discussion 如果当前登录用户不是此讨论组的创建者并且此讨论组没有开放加人权限，则会返回错误。
  
  @warning 不能使用此接口将自己移除，否则会返回错误。
  如果您需要退出该讨论组，可以使用-quitDiscussion:success:error:方法。
@@ -913,6 +951,23 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  */
 @property(nonatomic) CGFloat portraitImageViewCornerRadius;
 
+#pragma mark - Extension module
+/*!
+ 设置Extension Module的URL scheme。
+ @param scheme      URL scheme
+ @param moduleName  Extension module name
+ 
+ @discussion 有些第三方扩展（比如红包）需要打开其他应用（比如使用支付宝进行支付），然后等待返回结果。因此首先要为第三方扩展设置一个URL scheme并加入到info.plist中，然后再告诉该扩展模块scheme。
+ */
+- (void)setScheme:(NSString *)scheme forExtensionModule:(NSString *)moduleName;
+
+/*!
+ 第三方扩展处理openUrl
+ 
+ @param url     url
+ @return        YES处理，NO未处理。
+ */
+- (BOOL)openExtensionModuleUrl:(NSURL *)url;
 @end
 
 #endif

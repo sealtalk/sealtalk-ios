@@ -15,7 +15,7 @@
 #import "RCDConversationSettingTableViewHeaderItem.h"
 #import "RCDEditGroupNameViewController.h"
 #import "RCDGroupMembersTableViewController.h"
-#import "RCDGroupSettingsTableViewCell.h"
+//#import "RCDGroupSettingsTableViewCell.h"
 #import "RCDHttpTool.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDataBaseManager.h"
@@ -23,6 +23,11 @@
 #import <RongIMLib/RongIMLib.h>
 #import "RCDGroupAnnouncementViewController.h"
 #import "UIColor+RCColor.h"
+#import "RCDUserInfoManager.h"
+
+static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
+
+#define SwitchButtonTag  1111
 
 @interface RCDGroupSettingsTableViewController ()
 //开始会话
@@ -38,9 +43,7 @@
   NSInteger numberOfSections;
   RCConversation *currentConversation;
   BOOL enableNotification;
-  NSMutableArray *membersInfo;
   NSMutableArray *collectionViewResource;
-  NSMutableArray *GroupMembers;
   UICollectionView *headerView;
   NSString *groupId;
   NSString *creatorId;
@@ -48,6 +51,41 @@
   UIImage *image;
   NSData *data;
   MBProgressHUD *hud;
+}
+
++ (instancetype)groupSettingsTableViewController {
+    return [[[self class] alloc]init];
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+//        [self.tableView registerClass:[RCDBaseSettingTableViewCell class ] forCellReuseIdentifier:CellIdentifier];
+
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        [self initSubViews];
+    }
+    return self;
+}
+
+- (void)initSubViews {
+    
+}
+
+- (void)setGroup:(RCDGroupInfo *)Group {
+    _Group = Group;
+    if (_Group) {
+        groupId = _Group.groupId;
+        if (creatorId == nil) {
+            creatorId = _Group.creatorId;
+            if ([creatorId
+                 isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+                isCreator = YES;
+            }
+        }
+    }
 }
 
 - (void)viewDidLoad {
@@ -70,17 +108,6 @@
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
   numberOfSections = 0;
 
-  if (_Group) {
-    self.title = @"群组信息";
-    groupId = _Group.groupId;
-    if (creatorId == nil) {
-      creatorId = _Group.creatorId;
-      if ([creatorId
-              isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-        isCreator = YES;
-      }
-    }
-  }
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.frame = CGRectMake(0, 6, 87, 23);
     UIImageView *backImg = [[UIImageView alloc]
@@ -130,7 +157,13 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-  [self startLoad];
+    [super viewWillAppear:animated];
+    [self startLoad];
+    if(self.Group.number){
+        self.title = [NSString stringWithFormat:@"群组信息(%@)",self.Group.number];
+    }else{
+        self.title = @"群组信息";
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -188,63 +221,33 @@
 
         }];
   }
-
+  _GroupMemberList = [[RCDataBaseManager shareInstance] getGroupMember:groupId];
+  _GroupMemberList = [self moveCreator:_GroupMemberList];
+  NSArray *resultList = [[RCDUserInfoManager shareInstance] getFriendInfoList:_GroupMemberList];
+  _GroupMemberList = [[NSMutableArray alloc] initWithArray:resultList];
   if ([_GroupMemberList count] > 0) {
-    membersInfo = _GroupMemberList;
     /******************添加headerview*******************/
-    GroupMembers = [[NSMutableArray alloc] initWithArray:_GroupMemberList];
     collectionViewResource =
         [[NSMutableArray alloc] initWithArray:_GroupMemberList];
-    [self limitDisplayMemberCount];
-    UIImage *addImage = [UIImage imageNamed:@"add_member"];
-    [collectionViewResource addObject:addImage];
-    //判断如果是创建者，添加踢人按钮
-    if (isCreator == YES) {
-      UIImage *delImage = [UIImage imageNamed:@"delete_member"];
-      [collectionViewResource addObject:delImage];
-    }
-    [headerView reloadData];
-    headerView.frame = CGRectMake(
-        0, 0, [UIScreen mainScreen].bounds.size.width,
-        headerView.collectionViewLayout.collectionViewContentSize.height);
-    CGRect frame = headerView.frame;
-    frame.size.height += 14;
-    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:frame];
-    self.tableView.tableHeaderView.backgroundColor = [UIColor whiteColor];
-    [self.tableView.tableHeaderView addSubview:headerView];
+    [self setHeaderView];
   }
-  
+    __weak typeof(self) weakSelf = self;
     [RCDHTTPTOOL
      getGroupMembersWithGroupId:groupId
      Block:^(NSMutableArray *result) {
        if ([result count] > 0) {
-         [membersInfo removeAllObjects];
-         [membersInfo addObjectsFromArray:result];
-         [GroupMembers removeAllObjects];
-         [GroupMembers addObjectsFromArray:result];
-         [collectionViewResource removeAllObjects];
+           dispatch_async(dispatch_get_main_queue(), ^{
+               weakSelf.title = [NSString stringWithFormat:@"群组信息(%lu)",(unsigned long)result.count];
+           });
+         collectionViewResource = [NSMutableArray new];
+         _GroupMemberList = [NSMutableArray new];
+         [_GroupMemberList addObjectsFromArray:result];
+         _GroupMemberList = [self moveCreator:_GroupMemberList];
+         NSArray *resultList = [[RCDUserInfoManager shareInstance] getFriendInfoList:_GroupMemberList];
+         _GroupMemberList = [[NSMutableArray alloc] initWithArray:resultList];
          [collectionViewResource
-          addObjectsFromArray:result];
-         [self limitDisplayMemberCount];
-         UIImage *addImage =
-         [UIImage imageNamed:@"add_member"];
-         [collectionViewResource addObject:addImage];
-         if (isCreator == YES) {
-           UIImage *delImage =
-           [UIImage imageNamed:@"delete_member"];
-           [collectionViewResource addObject:delImage];
-         }
-         [headerView reloadData];
-         headerView.frame = CGRectMake(
-                                       0, 0,
-                                       [UIScreen mainScreen].bounds.size.width,
-                                       headerView.collectionViewLayout
-                                       .collectionViewContentSize.height);
-         CGRect frame = headerView.frame;
-         frame.size.height += 14;
-         self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:frame];
-         [self.tableView.tableHeaderView addSubview:headerView];
-         self.tableView.tableHeaderView.backgroundColor = [UIColor whiteColor];
+          addObjectsFromArray:_GroupMemberList];
+         [self setHeaderView];
          [self.tableView reloadData];
          [[RCDataBaseManager shareInstance]
           insertGroupMemberToDB:result
@@ -400,25 +403,27 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
   hud.labelText = @"上传头像中...";
   [hud show:YES];
-
+   __weak typeof(self) weakSelf = self;
   [RCDHTTPTOOL uploadImageToQiNiu:[RCIM sharedRCIM].currentUserInfo.userId
       ImageData:data
       success:^(NSString *url) {
         RCGroup *groupInfo = [RCGroup new];
-        groupInfo.groupId = _Group.groupId;
+        groupInfo.groupId = weakSelf.Group.groupId;
         groupInfo.portraitUri = url;
-        groupInfo.groupName = _Group.groupName;
+        groupInfo.groupName = weakSelf.Group.groupName;
+          weakSelf.Group.portraitUri = url;
         [[RCIM sharedRCIM] refreshGroupInfoCache:groupInfo
                                      withGroupId:groupInfo.groupId];
         [RCDHTTPTOOL setGroupPortraitUri:url
-                                 groupId:_Group.groupId
+                                 groupId:weakSelf.Group.groupId
                                 complete:^(BOOL result) {
                                   if (result == YES) {
                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                      RCDGroupSettingsTableViewCell *cell =
-                                          (RCDGroupSettingsTableViewCell *)
+                                      RCDBaseSettingTableViewCell *cell =
+                                          (RCDBaseSettingTableViewCell *)
                                               [self.tableView viewWithTag:1000];
-                                      cell.PortraitImg.image = image;
+                                        [cell.rightImageView sd_setImageWithURL:[NSURL URLWithString:self.Group.portraitUri]];
+//                                      cell.PortraitImg.image = image;
                                       //关闭HUD
                                       [hud hide:YES];
                                     });
@@ -449,9 +454,10 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         [alert show];
       }];
   dispatch_async(dispatch_get_main_queue(), ^{
-    RCDGroupSettingsTableViewCell *cell =
-        (RCDGroupSettingsTableViewCell *)[self.tableView viewWithTag:1000];
-    cell.PortraitImg.image = image;
+    RCDBaseSettingTableViewCell *cell =
+        (RCDBaseSettingTableViewCell *)[self.tableView viewWithTag:1000];
+      [cell.rightImageView sd_setImageWithURL:[NSURL URLWithString:self.Group.portraitUri]];
+//    cell.PortraitImg.image = image;
   });
 }
 
@@ -523,7 +529,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   if (actionSheet.tag == 100) {
     if (buttonIndex == 0) {
       NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-      RCDGroupSettingsTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+      RCDBaseSettingTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
       UIActivityIndicatorView *activityIndicatorView =
             [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
       float cellWidth = cell.bounds.size.width;
@@ -653,110 +659,78 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  static NSString *CellIdentifier = @"RCDGroupSettingsTableViewCell";
-  RCDGroupSettingsTableViewCell *cell =
-      (RCDGroupSettingsTableViewCell *)[tableView
-          dequeueReusableCellWithIdentifier:CellIdentifier];
-
-  if (indexPath.section == 0) {
-    cell.TitleLabel.text =
-        [NSString stringWithFormat:@"全部群成员(%@)", _Group.number];
-    cell.PortraitImg.hidden = YES;
-    cell.arrowImg.hidden = NO;
-    cell.switchBtn.hidden = YES;
-    cell.ContentLabel.hidden = YES;
-  }
-
-  if (indexPath.section == 1) {
-    switch (indexPath.row) {
-    case 0: {
-      cell.PortraitImg.contentMode = UIViewContentModeScaleAspectFill;
-      if ([RCIM sharedRCIM].globalConversationAvatarStyle ==
-              RC_USER_AVATAR_CYCLE &&
-          [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
-        cell.PortraitImg.layer.masksToBounds = YES;
-        cell.PortraitImg.layer.cornerRadius = 20.f;
-      } else {
-        cell.PortraitImg.layer.masksToBounds = YES;
-        cell.PortraitImg.layer.cornerRadius = 5.f;
-      }
-      cell.PortraitImg.hidden = NO;
-      if ([_Group.portraitUri isEqualToString:@""]) {
-        DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc]
-            initWithFrame:CGRectMake(0, 0, 100, 100)];
-        [defaultPortrait setColorAndLabel:groupId Nickname:_Group.groupName];
-        UIImage *portrait = [defaultPortrait imageFromView];
-        cell.PortraitImg.image = portrait;
-      } else {
-        [cell.PortraitImg
-            sd_setImageWithURL:[NSURL URLWithString:_Group.portraitUri]
-              placeholderImage:[UIImage imageNamed:@"icon_person"]];
-      }
-      cell.TitleLabel.text = @"群组头像";
-      cell.arrowImg.hidden = NO;
-      cell.switchBtn.hidden = YES;
-      cell.ContentLabel.hidden = YES;
-      cell.tag = 1000;
-    } break;
-    case 1: {
-      cell.TitleLabel.text = @"群组名称";
-      cell.PortraitImg.hidden = YES;
-      cell.switchBtn.hidden = YES;
-      cell.arrowImg.hidden = NO;
-      cell.ContentLabel.hidden = NO;
-      cell.ContentLabel.text = _Group.groupName;
-    } break;
-      case 2: {
-        cell.TitleLabel.text = @"群公告";
-        cell.PortraitImg.hidden = YES;
-        cell.switchBtn.hidden = YES;
-        cell.arrowImg.hidden = NO;
-        cell.ContentLabel.hidden = YES;
-      } break;
-
-    default:
-      break;
+    RCDBaseSettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    static NSString *cellIndeti = @"baseCell";
+    RCDBaseSettingTableViewCell *__cell = [tableView dequeueReusableCellWithIdentifier:cellIndeti];
+    
+    if(!cell){
+        cell = [[RCDBaseSettingTableViewCell alloc]init];
     }
-  }
-
-  if (indexPath.section == 2) {
-    switch (indexPath.row) {
-    case 0: {
-      cell.TitleLabel.text = @"消息免打扰";
-      cell.ContentLabel.hidden = YES;
-      cell.PortraitImg.hidden = YES;
-      cell.arrowImg.hidden = YES;
-      cell.switchBtn.hidden = NO;
-      cell.switchBtn.on = !enableNotification;
-      [cell.switchBtn addTarget:self
-                         action:@selector(clickNotificationBtn:)
-               forControlEvents:UIControlEventValueChanged];
-    } break;
-
-    case 1: {
-      cell.TitleLabel.text = @"会话置顶";
-      cell.ContentLabel.hidden = YES;
-      cell.PortraitImg.hidden = YES;
-      cell.arrowImg.hidden = YES;
-      cell.switchBtn.hidden = NO;
-      cell.switchBtn.on = currentConversation.isTop;
-      [cell.switchBtn addTarget:self
-                         action:@selector(clickIsTopBtn:)
-               forControlEvents:UIControlEventValueChanged];
-    } break;
-
-    case 2: {
-      cell.TitleLabel.text = @"清除聊天记录";
-      cell.switchBtn.hidden = YES;
-      cell.ContentLabel.hidden = YES;
-    } break;
-
-    default:
-      break;
+    if(!__cell) {
+        __cell = [[RCDBaseSettingTableViewCell alloc]initWithLeftImage:nil leftImageSize:CGSizeZero rightImae:[UIImage imageNamed:@"icon_person"] rightImageSize:CGSizeMake(25, 25)];
+        __cell.tag = 1000;
     }
-  }
-  cell.selectionStyle = UITableViewCellSelectionStyleNone;
-  return cell;
+
+    if (indexPath.section == 0) {
+        [cell setCellStyle:DefaultStyle];
+        cell.leftLabel.text = [NSString stringWithFormat:@"全部群成员(%@)", _Group.number];
+    }else if(indexPath.section == 1){
+        switch (indexPath.row) {
+            case 0:
+                [__cell setCellStyle:DefaultStyle];
+                __cell.leftLabel.text = @"群组头像";
+                if ([_Group.portraitUri isEqualToString:@""]) {
+                    DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc]
+                                                            initWithFrame:CGRectMake(0, 0, 100, 100)];
+                    [defaultPortrait setColorAndLabel:groupId Nickname:_Group.groupName];
+                    UIImage *portrait = [defaultPortrait imageFromView];
+                    __cell.rightImageView.image = portrait;
+                } else {
+                    [__cell.rightImageView
+                     sd_setImageWithURL:[NSURL URLWithString:_Group.portraitUri]
+                     placeholderImage:[UIImage imageNamed:@"icon_person"]];
+                }
+                return __cell;
+                break;
+            case 1:
+                [cell setCellStyle:DefaultStyle_RightLabel];
+                cell.leftLabel.text = @"群组名称";
+                cell.rightLabel.text = self.Group.groupName;
+                break;
+            case 2:
+                [cell setCellStyle:DefaultStyle];
+                cell.leftLabel.text = @"群公告";
+                break;
+            default:
+                break;
+        }
+    }else {
+        switch (indexPath.row) {
+            case 0:
+                [cell setCellStyle:SwitchStyle];
+                cell.leftLabel.text = @"消息免打扰";
+                cell.switchButton.on = !enableNotification;
+                cell.switchButton.tag = SwitchButtonTag;
+                break;
+            case 1:
+                [cell setCellStyle:SwitchStyle];
+                cell.leftLabel.text = @"会话置顶";
+                cell.switchButton.on = currentConversation.isTop;
+                cell.switchButton.tag = SwitchButtonTag + 1;
+                break;
+            case 2:
+                [cell setCellStyle:DefaultStyle];
+                cell.leftLabel.text= @"清除聊天记录";
+                break;
+            default:
+                break;
+        }
+    }
+    
+    cell.baseSettingTableViewDelegate = self;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView
@@ -778,7 +752,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     case 0:{
       RCDGroupMembersTableViewController *GroupMembersVC =
       [[RCDGroupMembersTableViewController alloc] init];
-      GroupMembersVC.GroupMembers = GroupMembers;
+      GroupMembersVC.GroupMembers =_GroupMemberList;
       [self.navigationController pushViewController:GroupMembersVC animated:YES];
     }break;
       
@@ -798,12 +772,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         case 1:
         {
           if (isCreator == YES) {
-            UIStoryboard *mainStoryboard =
-            [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            RCDEditGroupNameViewController *editGroupNameVC =
-            [mainStoryboard instantiateViewControllerWithIdentifier:
-             @"RCDEditGroupNameViewController"];
-            editGroupNameVC.Group = _Group;
+              //如果是创建者，进入修改群名称页面
+              RCDEditGroupNameViewController *editGroupNameVC = [RCDEditGroupNameViewController editGroupNameViewController];
+              editGroupNameVC.groupInfo = _Group;
             _Group = nil;
             [self.navigationController pushViewController:editGroupNameVC
                                                  animated:YES];
@@ -922,15 +893,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 - (void)collectionView:(UICollectionView *)collectionView
     didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-  UIStoryboard *mainStoryboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDContactSelectedTableViewController *contactSelectedVC =
-      [mainStoryboard instantiateViewControllerWithIdentifier:
-                          @"RCDContactSelectedTableViewController"];
+    RCDContactSelectedTableViewController * contactSelectedVC= [[RCDContactSelectedTableViewController alloc]init];
   contactSelectedVC.groupId = _Group.groupId;
   contactSelectedVC.isAllowsMultipleSelection = YES;
   NSMutableArray *membersId = [NSMutableArray new];
-  for (RCUserInfo *user in membersInfo) {
+  for (RCUserInfo *user in _GroupMemberList) {
     NSString *userId = user.userId;
     [membersId addObject:userId];
   }
@@ -971,8 +938,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       return;
     }
   }
-  membersInfo = [self moveCreator:membersInfo];
-  RCUserInfo *selectedUser = [membersInfo objectAtIndex:indexPath.row];
+  RCUserInfo *selectedUser = [_GroupMemberList objectAtIndex:indexPath.row];
   BOOL isFriend = NO;
   NSArray *friendList = [[RCDataBaseManager shareInstance] getAllFriends];
   for (RCDUserInfo *friend in friendList) {
@@ -989,17 +955,17 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     RCDPersonDetailViewController *detailViewController =
         [storyboard instantiateViewControllerWithIdentifier:
                         @"RCDPersonDetailViewController"];
-
     [self.navigationController pushViewController:detailViewController
                                          animated:YES];
-    detailViewController.userInfo = [membersInfo objectAtIndex:indexPath.row];
+    RCUserInfo *user = [_GroupMemberList objectAtIndex:indexPath.row];
+    detailViewController.userId = user.userId;
   } else {
     UIStoryboard *mainStoryboard =
         [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     RCDAddFriendViewController *addViewController = [mainStoryboard
         instantiateViewControllerWithIdentifier:@"RCDAddFriendViewController"];
     addViewController.targetUserInfo =
-        [membersInfo objectAtIndex:indexPath.row];
+        [_GroupMemberList objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:addViewController
                                          animated:YES];
   }
@@ -1039,7 +1005,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     return nil;
   }
   NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:GroupMemberList];
-  int index;
+  int index = 0;
   RCUserInfo *creator;
   for (int i = 0; i < [temp count]; i++) {
     RCUserInfo *user = [temp objectAtIndex:i];
@@ -1050,9 +1016,43 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       break;
     }
   }
+  if (creator == nil) {
+    return nil;
+      }
   [temp insertObject:creator atIndex:0];
   [temp removeObjectAtIndex:index+1];
   return temp;
 }
 
+- (void)setHeaderView
+{
+  [self limitDisplayMemberCount];
+  UIImage *addImage = [UIImage imageNamed:@"add_member"];
+  [collectionViewResource addObject:addImage];
+  //判断如果是创建者，添加踢人按钮
+  if (isCreator == YES) {
+    UIImage *delImage = [UIImage imageNamed:@"delete_member"];
+    [collectionViewResource addObject:delImage];
+  }
+  [headerView reloadData];
+  headerView.frame = CGRectMake(
+                                0, 0, [UIScreen mainScreen].bounds.size.width,
+                                headerView.collectionViewLayout.collectionViewContentSize.height);
+  CGRect frame = headerView.frame;
+  frame.size.height += 14;
+  self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:frame];
+  self.tableView.tableHeaderView.backgroundColor = [UIColor whiteColor];
+  [self.tableView.tableHeaderView addSubview:headerView];
+}
+
+#pragma mark - RCDBaseSettingTableViewCellDelegate
+- (void)onClickSwitchButton:(id)sender {
+    UISwitch *switchBtn = (UISwitch *)sender;
+    //如果是“消息免打扰”的switch点击
+    if(switchBtn.tag == SwitchButtonTag){
+        [self clickNotificationBtn:sender];
+    }else { //否则是“会话置顶”的switch点击
+        [self clickIsTopBtn:sender];
+    }
+}
 @end

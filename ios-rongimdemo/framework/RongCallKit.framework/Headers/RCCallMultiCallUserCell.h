@@ -28,7 +28,7 @@
 /*!
  用户状态的Label
  */
-@property(nonatomic, strong) UILabel *statusLabel;
+@property(nonatomic, strong) UIImageView *statusView;
 
 /*!
  设置用户通话信息和通话状态

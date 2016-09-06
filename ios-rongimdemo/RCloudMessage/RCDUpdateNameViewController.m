@@ -11,7 +11,27 @@
 #import "UIColor+RCColor.h"
 #import <RongIMKit/RongIMKit.h>
 
+
+NSString *const RCDUpdateNameTableViewCellIdentifier = @"RCDUpdateNameTableViewCellIdentifier";
+
+#define ScreenSize [UIScreen mainScreen].bounds.size
+
 @implementation RCDUpdateNameViewController
+
++ (instancetype)updateNameViewController {
+    return [[[self class] alloc] init];
+}
+
+- (instancetype)init {
+    self = [super init];
+    if(self){
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.tableView.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1];
+        [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:RCDUpdateNameTableViewCellIdentifier];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
   [super viewDidLoad];
@@ -32,7 +52,12 @@
              target:self
              action:@selector(rightBarButtonItemClicked:)];
 
-  self.tfName.text = self.displayText;
+  self.nameTextField.text = self.displayText;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.nameTextField.text = self.displayText;
 }
 
 - (void)backBarButtonItemClicked:(id)sender {
@@ -41,7 +66,7 @@
 
 - (void)rightBarButtonItemClicked:(id)sender {
   //保存讨论组名称
-  if (self.tfName.text.length == 0) {
+  if (self.nameTextField.text.length == 0) {
     UIAlertView *alertView =
         [[UIAlertView alloc] initWithTitle:nil
                                    message:@"请输入讨论组名称!"
@@ -52,7 +77,7 @@
     return;
   }
   //讨论组名称不能包含空格
-  NSRange range = [self.tfName.text rangeOfString:@" "];
+  NSRange range = [self.nameTextField.text rangeOfString:@" "];
   if (range.location != NSNotFound) {
     UIAlertView *alertView =
         [[UIAlertView alloc] initWithTitle:nil
@@ -66,12 +91,12 @@
 
   //回传值
   if (self.setDisplayTextCompletion) {
-    self.setDisplayTextCompletion(self.tfName.text);
+    self.setDisplayTextCompletion(self.nameTextField.text);
   }
 
   //保存设置
   [[RCIM sharedRCIM] setDiscussionName:self.targetId
-      name:self.tfName.text
+      name:self.nameTextField.text
       success:^{
 
       }
@@ -85,11 +110,39 @@
   [super viewWillDisappear:animated];
 
   //收起键盘
-  [self.tfName resignFirstResponder];
+  [self.nameTextField resignFirstResponder];
 }
 
+#pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView
     heightForHeaderInSection:(NSInteger)section {
   return 12.0f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44.0f;
+}
+
+#pragma mark - UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:RCDUpdateNameTableViewCellIdentifier forIndexPath:indexPath];
+    if(!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RCDUpdateNameTableViewCellIdentifier];
+    }
+    [cell.contentView addSubview:self.nameTextField];
+    return cell;
+}
+
+- (UITextField *)nameTextField {
+    if(!_nameTextField){
+        _nameTextField = [[UITextField alloc]initWithFrame:CGRectMake(8, 0, ScreenSize.width-8-8, 44.0f)];
+        _nameTextField.font = [UIFont systemFontOfSize:14];
+        _nameTextField.clearButtonMode = UITextFieldViewModeAlways;
+    }
+    return _nameTextField;
 }
 @end

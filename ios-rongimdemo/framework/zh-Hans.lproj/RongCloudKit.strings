@@ -178,8 +178,6 @@
 "VoIPVideoCallIncomingWithoutUserName"="你有一个视频聊天邀请";
 "VoIPMultiCallUserCollectionTitle"="群聊成员";
 "VoIPCallTotalTime"="通话时长";
-"VoIPMultiCallRemoteConnecting"="连接中";
-"VoIPMultiCallRemoteQuit"="已退出";
 "VoIPCallHasEnd"="已结束";
 "VoIPCallHasCancel"="已取消";
 "VoIPCallHasReject"="已拒绝";
@@ -211,3 +209,11 @@
 "chatListDate"="yyyy/M/d";
 "SameYearDate"="yy/M/d";
 "locale"="zh_CN";
+"readNum"="%d人已读";
+"read"="已读";
+"punctuation"="，";
+"Dawn"="凌晨 h:mm";
+"Forenoon"="上午 h:mm";
+"Noon"="中午 h:mm";
+"Afternoon"="下午 h:mm";
+"Evening"="晚上 h:mm";

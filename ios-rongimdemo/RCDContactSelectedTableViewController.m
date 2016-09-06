@@ -19,12 +19,15 @@
 #import "UIImageView+WebCache.h"
 #import "pinyin.h"
 #import "UIColor+RCColor.h"
+#import "RCDUserInfoManager.h"
+#import "RCDUtilities.h"
+#import "RCDUIBarButtonItem.h"
 
 @interface RCDContactSelectedTableViewController ()
 @property(nonatomic, strong) NSMutableArray *friends;
 @property(strong, nonatomic) NSMutableArray *friendsArr;
 @property(nonatomic, strong) NSMutableArray *tempOtherArr;
-//@property (nonatomic,strong) UILabel *noFriend;
+@property (nonatomic, strong) RCDUIBarButtonItem *rightBtn;
 
 @property(nonatomic, strong) NSIndexPath *selectIndexPath;
 
@@ -49,13 +52,30 @@ MBProgressHUD *hud;
 
   self.tableView.tableFooterView = [UIView new];
 
-  // rightBarButtonItem click event
-  self.navigationItem.rightBarButtonItem =
-      [[UIBarButtonItem alloc] initWithTitle:@"确定"
-                                       style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(clickedDone:)];
-  self.navigationItem.rightBarButtonItem.enabled = NO;
+  //自定义rightBarButtonItem
+  self.rightBtn =
+  [[RCDUIBarButtonItem alloc] initWithbuttonTitle:@"确定"
+                                       titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                                      buttonFrame:CGRectMake(0, 0, 50, 30)
+                                           target:self
+                                           action:@selector(clickedDone:)];
+  [self.rightBtn buttonIsCanClick:NO
+                      buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                    barButtonItem:self.rightBtn];
+  self.navigationItem.rightBarButtonItems = [self.rightBtn
+                                             setTranslation:self.rightBtn
+                                             translation:-11];
+  
+  
+  
+  
+//  self.navigationItem.rightBarButtonItem =
+//      [[UIBarButtonItem alloc] initWithTitle:@"确定"
+//                                       style:UIBarButtonItemStylePlain
+//                                      target:self
+//                                      action:@selector(clickedDone:)];
+//  self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
+//  self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,22 +85,23 @@ MBProgressHUD *hud;
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  if ([_allFriends count] > 0) {
-
-  } else {
+  if ([_allFriends count] <= 0) {
     [self getAllData];
   }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-  self.navigationItem.rightBarButtonItem.enabled = YES;
+  [self.rightBtn buttonIsCanClick:YES
+                      buttonColor:[UIColor whiteColor]
+                    barButtonItem:self.rightBtn];
   [hud hide:YES];
 }
 
 // clicked done
 - (void)clickedDone:(id)sender {
-  
-  self.navigationItem.rightBarButtonItem.enabled = NO;
+  [self.rightBtn buttonIsCanClick:NO
+                      buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                    barButtonItem:self.rightBtn];
   hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
   hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
   //    hud.labelText = @"";
@@ -132,7 +153,9 @@ MBProgressHUD *hud;
                          cancelButtonTitle:@"确定"
                          otherButtonTitles:nil, nil];
                      [alert show];
-                     self.navigationItem.rightBarButtonItem.enabled = YES;
+                     [self.rightBtn buttonIsCanClick:YES
+                                         buttonColor:[UIColor whiteColor]
+                                       barButtonItem:self.rightBtn];
                    }
                  }];
     return;
@@ -159,7 +182,9 @@ MBProgressHUD *hud;
                            cancelButtonTitle:@"确定"
                            otherButtonTitles:nil, nil];
                        [alert show];
-                       self.navigationItem.rightBarButtonItem.enabled = YES;
+                       [self.rightBtn buttonIsCanClick:YES
+                                           buttonColor:[UIColor whiteColor]
+                                         barButtonItem:self.rightBtn];
                      }
                    }];
     return;
@@ -215,11 +240,7 @@ MBProgressHUD *hud;
     }
   }
   if (self.forCreatingGroup) {
-    UIStoryboard *mainStoryboard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDCreateGroupViewController *createGroupVC =
-        [mainStoryboard instantiateViewControllerWithIdentifier:
-                            @"RCDCreateGroupViewController"];
+      RCDCreateGroupViewController *createGroupVC = [RCDCreateGroupViewController createGroupViewController];
     createGroupVC.GroupMemberIdList = seletedUsersId;
     [self.navigationController pushViewController:createGroupVC animated:YES];
     return;
@@ -283,7 +304,7 @@ MBProgressHUD *hud;
 
 - (CGFloat)tableView:(UITableView *)tableView
     heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 70.f;
+    return [RCDContactSelectedTableViewCell cellHeight];
 }
 
 // pinyin index
@@ -303,6 +324,9 @@ titleForHeaderInSection:(NSInteger)section {
     
   RCDContactSelectedTableViewCell *cell =
       [tableView dequeueReusableCellWithIdentifier:cellReuseIdentifier];
+    if(!cell){
+        cell = [[RCDContactSelectedTableViewCell alloc]init];
+    }
 
   [cell setUserInteractionEnabled:YES];
   [cell.nicknameLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
@@ -310,21 +334,9 @@ titleForHeaderInSection:(NSInteger)section {
   NSArray *arrayForKey = [self.allFriends objectForKey:key];
 
   RCDUserInfo *user = arrayForKey[indexPath.row];
-  if (user) {
-    cell.nicknameLabel.text = user.name;
-    if ([user.portraitUri isEqualToString:@""]) {
-      DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc]
-          initWithFrame:CGRectMake(0, 0, 100, 100)];
-      [defaultPortrait setColorAndLabel:user.userId Nickname:user.name];
-      UIImage *portrait = [defaultPortrait imageFromView];
-      cell.portraitImageView.image = portrait;
-    } else {
-      [cell.portraitImageView
-          sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
-            placeholderImage:[UIImage imageNamed:@"icon_person"]];
-    }
-  }
-
+  //给控件填充数据
+  [cell setModel:user];
+  
   //设置选中状态
   for (RCUserInfo *userInfo in self.seletedUsers) {
     if ([user.userId isEqualToString:userInfo.userId]) {
@@ -334,15 +346,7 @@ titleForHeaderInSection:(NSInteger)section {
       [cell setUserInteractionEnabled:NO];
     }
   }
-  if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
-      [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
-    cell.portraitImageView.layer.masksToBounds = YES;
-    cell.portraitImageView.layer.cornerRadius = 20.f;
-  } else {
-    cell.portraitImageView.layer.masksToBounds = YES;
-    cell.portraitImageView.layer.cornerRadius = 5.f;
-  }
-  cell.portraitImageView.contentMode = UIViewContentModeScaleAspectFill;
+  
     if(_isHideSelectedIcon){
         cell.selectedImageView .hidden = YES;
     }
@@ -352,7 +356,9 @@ titleForHeaderInSection:(NSInteger)section {
 // override delegate
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  self.navigationItem.rightBarButtonItem.enabled = YES;
+  [self.rightBtn buttonIsCanClick:YES
+                      buttonColor:[UIColor whiteColor]
+                    barButtonItem:self.rightBtn];
   RCDContactSelectedTableViewCell *cell =
       (RCDContactSelectedTableViewCell *)[tableView
           cellForRowAtIndexPath:indexPath];
@@ -391,7 +397,9 @@ titleForHeaderInSection:(NSInteger)section {
           cellForRowAtIndexPath:indexPath];
   [cell setSelected:NO];
   if ([tableView.indexPathsForSelectedRows count] == 0) {
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    [self.rightBtn buttonIsCanClick:NO
+                        buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                      barButtonItem:self.rightBtn];
   }
   self.selectIndexPath = nil;
 }
@@ -406,146 +414,45 @@ titleForHeaderInSection:(NSInteger)section {
   _allKeys = [NSMutableArray new];
   _friends = [NSMutableArray arrayWithArray:[[RCDataBaseManager shareInstance] getAllFriends]];
   if (_friends == nil || _friends.count < 1) {
+    
     //        _noFriend.hidden = YES;
-    [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
-                         complete:^(NSMutableArray *result) {
-                           _friends = result;
-                           for (RCDUserInfo *user in _friends) {
-                             if ([user.status isEqualToString:@"20"]) {
-                               [_friendsArr addObject:user];
-                             }
-                           }
-                           dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                             [self addOrDelGroupMembers];
-                             _allFriends =
-                                 [self sortedArrayWithPinYinDic:_friendsArr];
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                               [self.tableView reloadData];
-
-                             });
-                           });
-
-                         }];
+    [RCDDataSource
+     syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
+     complete:^(NSMutableArray *result) {
+       _friends = result;
+       [self dealWithFriendList];
+     }];
   } else {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-      for (RCDUserInfo *user in _friends) {
-        if ([user.status isEqualToString:@"20"]) {
-          [_friendsArr addObject:user];
-        }
-      }
-      [self addOrDelGroupMembers];
-      _allFriends = [self sortedArrayWithPinYinDic:_friendsArr];
-      dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-
-      });
+      [self dealWithFriendList];
     });
   }
 }
 
-#pragma mark - 拼音排序
-
-/**
- *  汉字转拼音
- *
- *  @param hanZi 汉字
- *
- *  @return 转换后的拼音
- */
-- (NSString *)hanZiToPinYinWithString:(NSString *)hanZi {
-  if (!hanZi)
-    return nil;
-  NSString *pinYinResult = [NSString string];
-  for (int j = 0; j < hanZi.length; j++) {
-    NSString *singlePinyinLetter = [[NSString
-        stringWithFormat:@"%c", pinyinFirstLetter([hanZi characterAtIndex:j])]
-        uppercaseString];
-    pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
-  }
-
-  return pinYinResult;
-}
-
-/**
- *  根据转换拼音后的字典排序
- *
- *  @param pinyinDic 转换后的字典
- *
- *  @return 对应排序的字典
- */
-- (NSMutableDictionary *)sortedArrayWithPinYinDic:(NSArray *)friends {
-  if (!friends)
-    return nil;
-    _keys = @[
-              @"A",
-              @"B",
-              @"C",
-              @"D",
-              @"E",
-              @"F",
-              @"G",
-              @"H",
-              @"I",
-              @"J",
-              @"K",
-              @"L",
-              @"M",
-              @"N",
-              @"O",
-              @"P",
-              @"Q",
-              @"R",
-              @"S",
-              @"T",
-              @"U",
-              @"V",
-              @"W",
-              @"X",
-              @"Y",
-              @"Z",
-              @"#"
-              ];
-
-  NSMutableDictionary *returnDic = [NSMutableDictionary new];
-  _tempOtherArr = [NSMutableArray new];
-  BOOL isReturn = NO;
-
-  for (NSString *key in _keys) {
-
-    if ([_tempOtherArr count]) {
-      isReturn = YES;
-    }
-
-    NSMutableArray *tempArr = [NSMutableArray new];
-    for (RCDUserInfo *user in friends) {
-
-      NSString *pyResult = [self hanZiToPinYinWithString:user.name];
-      NSString *firstLetter = [pyResult substringToIndex:1];
-      if ([firstLetter isEqualToString:key]) {
-        [tempArr addObject:user];
+-(void)dealWithFriendList{
+  
+  for (int i = 0; i < _friends.count; i++) {
+    RCDUserInfo *user = _friends[i];
+    if ([user.status isEqualToString:@"20"]) {
+      RCUserInfo *friend = [[RCDUserInfoManager shareInstance] getFriendInfoFromDB:user.userId];
+      if (friend == nil) {
+        friend = [[RCDUserInfoManager shareInstance] generateDefaultUserInfo:user.userId];
       }
-
-      if (isReturn)
-        continue;
-      char c = [pyResult characterAtIndex:0];
-      if (isalpha(c) == 0) {
-        [_tempOtherArr addObject:user];
+      [_friendsArr addObject:friend];
+      if (i == _friends.count - 1 ) {
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+          [self addOrDelGroupMembers];
+          NSMutableDictionary *resultDic = [RCDUtilities sortedArrayWithPinYinDic:_friendsArr];
+          _allFriends = resultDic[@"infoDic"];
+          _allKeys = resultDic[@"allKeys"];
+          dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            
+          });
+        });
       }
     }
-    if (![tempArr count])
-      continue;
-    [returnDic setObject:tempArr forKey:key];
   }
-  if ([_tempOtherArr count])
-    [returnDic setObject:_tempOtherArr forKey:@"#"];
-
-  _allKeys = [[returnDic allKeys]
-      sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-
-        return [obj1 compare:obj2 options:NSNumericSearch];
-      }];
-
-  return returnDic;
 }
 
 - (void)addOrDelGroupMembers {
@@ -553,7 +460,7 @@ titleForHeaderInSection:(NSInteger)section {
     NSMutableIndexSet *indexSets = [NSMutableIndexSet new];
     for (NSString *userId in _addGroupMembers) {
       for (int i = 0; i < _friendsArr.count; i++) {
-        RCDUserInfo *user = [_friendsArr objectAtIndex:i];
+        RCUserInfo *user = [_friendsArr objectAtIndex:i];
         if ([userId isEqualToString:user.userId]) {
           [indexSets addIndex:i];
         }
@@ -568,7 +475,7 @@ titleForHeaderInSection:(NSInteger)section {
     NSMutableIndexSet *indexSets = [NSMutableIndexSet new];
     for (RCUserInfo *member in _addDiscussionGroupMembers) {
       for (int i = 0; i < _friendsArr.count; i++) {
-        RCDUserInfo *user = [_friendsArr objectAtIndex:i];
+        RCUserInfo *user = [_friendsArr objectAtIndex:i];
         if ([member.userId isEqualToString:user.userId]) {
           [indexSets addIndex:i];
         }

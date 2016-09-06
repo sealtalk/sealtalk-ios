@@ -14,4 +14,8 @@
 + (UIImage *)imageNamed:(NSString *)name ofBundle:(NSString *)bundleName;
 + (NSString *)defaultGroupPortrait:(RCGroup *)groupInfo;
 + (NSString *)defaultUserPortrait:(RCUserInfo *)userInfo;
++ (NSString *)getIconCachePath:(NSString *)fileName;
++ (NSString *)hanZiToPinYinWithString:(NSString *)hanZi;
++ (NSString *)getFirstUpperLetter:(NSString *)hanzi;
++ (NSMutableDictionary *)sortedArrayWithPinYinDic:(NSArray *)userList;
 @end

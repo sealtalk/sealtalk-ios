@@ -66,6 +66,21 @@
  */
 - (void)onMessageRecalled:(long)messageId;
 
+/*!
+ 请求消息已读回执（收到需要阅读时发送回执的请求，收到此请求后在会话页面已经展示该 messageUId 对应的消息或者调用 getHistoryMessages 获取消息的时候，包含此 messageUId 的消息，需要调用
+ sendMessageReadReceiptResponse 接口发送消息阅读回执）
+ 
+ @param messageUId 请求已读回执的消息ID
+ */
+- (void)onMessageReceiptRequest:(RCConversationType)conversationType targetId:(NSString *)targetId messageUId:(NSString *)messageUId;
+
+/*!
+ 消息已读回执响应（收到阅读回执响应，可以按照 messageUId 更新消息的阅读数）
+ 
+ @param messageUId 已读回执的消息ID
+ */
+- (void)onMessageReceiptResponse:(RCConversationType)conversationType targetId:(NSString *)targetId messageUId:(NSString *)messageUId readerList:(NSMutableDictionary *)userIdList;
+
 @end
 
 #pragma mark - 连接状态监听器
@@ -438,6 +453,7 @@
                    success:(void (^)(long messageId))successBlock
                      error:(void (^)(RCErrorCode nErrorCode,
                                      long messageId))errorBlock;
+
 
 /*!
  发送媒体消息（图片消息或文本消息）
@@ -858,8 +874,8 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  @param timestamp           该会话中已阅读的最后一条消息的发送时间戳
 
  @discussion 消息回执功能目前只支持单聊, 如果使用Lib 可以注册监听
- RCLibDispatchReadReceiptNotification 通知,使用kit 直接开启RCIM.h
- 中enableReadReceipt。
+ RCLibDispatchReadReceiptNotification 通知,使用kit 直接设置RCIM.h
+ 中的enabledReadReceiptConversationTypeList。
 
  @warning 目前仅支持单聊。
  */
@@ -1455,7 +1471,7 @@ getConversationNotificationStatus:(RCConversationType)conversationType
  @param errorBlock      讨论组踢人失败的回调 [status:讨论组踢人失败的错误码]
 
  @discussion
- 如果当前登陆用户不是此讨论组的创建者并且此讨论组没有开放加人权限，则会返回错误。
+ 如果当前登录用户不是此讨论组的创建者并且此讨论组没有开放加人权限，则会返回错误。
 
  @warning 不能使用此接口将自己移除，否则会返回错误。
  如果您需要退出该讨论组，可以使用-quitDiscussion:success:error:方法。
@@ -1947,6 +1963,54 @@ startCustomerService:(NSString *)kefuId
                      humanValue:(int)value
                         suggest:(NSString *)suggest;
 
+/**
+ *  群组消息请求回执（对于需要阅读之后收到阅读回执的消息，可以调用这个接口来发送阅读回执请求）
+ *
+ *  @param conversationType 会话类型
+ *  @param targetId         targetId
+ *  @param messageUId       messageUId
+ *  @param successBlock     successBlock
+ *  @param errorBlock       errorBlock
+ *
+ *  @return
+ */
+- (void)sendReadReceiptRequest:(RCMessage *)message
+                              success:(void (^)())successBlock
+                                error:(void (^)(RCErrorCode nErrorCode))errorBlock;
+
+/**
+ *  已读回执（当收到阅读回执请求的时候，展现消息后可以调用此接口来发送消息阅读回执）
+ *
+ *  @param conversationType 会话类型
+ *  @param targetId         targetId
+ *  @param messageList      messageList
+ *  @param successBlock     successBlock
+ *  @param errorBlock       errorBlock
+ *
+ *  @return
+ */
+- (void)sendReadReceiptResponse:(RCConversationType)conversationType
+                              targetId:(NSString *)targetId
+                           messageList:(NSArray<RCMessage *> *)messageList
+                               success:(void (^)())successBlock
+                                 error:(void (^)(RCErrorCode nErrorCode))errorBlock;
+
+
+/**
+ *  同步会话阅读状态
+ *
+ *  @param conversationType 会话类型
+ *  @param targetId         targetId
+ *  @param successBlock     successBlock
+ *  @param errorBlock       errorBlock
+ */
+- (void)syncConversationReadStatus:(RCConversationType)conversationType
+                     targetId:(NSString *)targetId
+                         time:(long long)timestamp
+                      success:(void (^)())successBlock
+                        error:(void (^)(RCErrorCode nErrorCode))errorBlock;
+
+
 #pragma mark - Log
 
 /*!
@@ -1963,4 +2027,5 @@ startCustomerService:(NSString *)kefuId
 @property (nonatomic, strong, readonly) NSString *fileStoragePath;
 
 @end
+
 #endif

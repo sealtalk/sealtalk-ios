@@ -19,6 +19,7 @@
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMLib/RongIMLib.h>
+#import "RCDSettingsTableViewController.h"
 
 @interface RCDMeTableViewController ()
 @property(weak, nonatomic) IBOutlet UILabel *currentUserNameLabel;
@@ -88,10 +89,43 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if (indexPath.section == 2 && indexPath.row == 0) {
-    [self chatWithCustomerService];
+  switch (indexPath.section) {
+    case 0: {
+      
+    }
+      break;
+      
+    case 1: {
+      switch (indexPath.row) {
+        case 0: {
+          RCDSettingsTableViewController *vc = [[RCDSettingsTableViewController alloc] init];
+          [self.navigationController pushViewController:vc
+                                               animated:YES];
+        }
+          break;
+          
+        default:
+          break;
+      }
+    }
+      break;
+      
+    case 2: {
+      switch (indexPath.row) {
+        case 0: {
+          [self chatWithCustomerService];
+        }
+          break;
+          
+        default:
+          break;
+      }
+    }
+      break;
+    default:
+      break;
   }
-  [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView

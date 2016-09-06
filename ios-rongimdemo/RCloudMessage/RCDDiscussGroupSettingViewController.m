@@ -15,7 +15,6 @@
 #import "RCDHttpTool.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDRCIMDataSource.h"
-#import "RCDSelectPersonViewController.h"
 #import "RCDUpdateNameViewController.h"
 #import "RCDataBaseManager.h"
 
@@ -245,11 +244,7 @@
 
   //点击最后一个+号,调出选择联系人UI
   if (indexPathOfSelectedItem.row == settingTableViewHeader.users.count) {
-    UIStoryboard *mainStoryboard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDContactSelectedTableViewController *contactSelectedVC =
-        [mainStoryboard instantiateViewControllerWithIdentifier:
-                            @"RCDContactSelectedTableViewController"];
+    RCDContactSelectedTableViewController * contactSelectedVC= [[RCDContactSelectedTableViewController alloc]init];
     contactSelectedVC.addDiscussionGroupMembers = _userList;
     if (self.conversationType == ConversationType_DISCUSSION) {
       contactSelectedVC.discussiongroupId = self.targetId;
@@ -257,51 +252,6 @@
 
     [self.navigationController pushViewController:contactSelectedVC
                                          animated:YES];
-
-    //        UIStoryboard* mainStoryboard = [UIStoryboard
-    //        storyboardWithName:@"Main" bundle:nil];
-    //        RCDSelectPersonViewController* selectPersonVC = [mainStoryboard
-    //        instantiateViewControllerWithIdentifier:@"RCDSelectPersonViewController"];
-    //        [selectPersonVC setSeletedUsers:users];
-    //        //设置回调
-    //        selectPersonVC.clickDoneCompletion =
-    //        ^(RCDSelectPersonViewController* selectPersonViewController,
-    //        NSArray* selectedUsers) {
-    //
-    //            if (selectedUsers && selectedUsers.count) {
-    //                NSMutableArray *newUsers = [[NSMutableArray alloc]init];
-    //                for (int i=0;i<selectedUsers.count; i++) {
-    //                    RCUserInfo *user = (RCUserInfo *)selectedUsers[i];
-    //                    if (![_members.allKeys containsObject:user.userId]) {
-    //                        [_members setObject:user forKey:user.userId];
-    //                        [newUsers addObject:user];
-    //                    }
-    //                }
-    //                //创建者第一个显示
-    //                RCUserInfo *creator = _members[_creatorId];
-    //                if(creator){
-    //                    [_members removeObjectForKey:_creatorId];
-    //                    NSMutableArray *users = [[NSMutableArray
-    //                    alloc]initWithArray: _members.allValues];
-    //                    [users insertObject:creator atIndex:0];
-    //                    [self addUsers:users];
-    //                    [_members setObject:creator forKey:creator.userId];
-    //                }else{
-    //                    NSMutableArray *users = [[NSMutableArray
-    //                    alloc]initWithArray: _members.allValues];
-    //                    [self addUsers:users];
-    //                }
-    //
-    //                [self
-    //                createDiscussionOrInvokeMemberWithSelectedUsers:selectedUsers];
-    //
-    //            }
-    //
-    //            [selectPersonViewController.navigationController
-    //            popViewControllerAnimated:YES];
-    //        };
-    //        [self.navigationController pushViewController:selectPersonVC
-    //        animated:YES];
   }
 }
 
@@ -416,11 +366,7 @@
     RCDDiscussSettingCell *discussCell =
         (RCDDiscussSettingCell *)[tableView cellForRowAtIndexPath:indexPath];
     discussCell.lblTitle.text = @"讨论组名称";
-
-    UIStoryboard *storyboard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDUpdateNameViewController *updateNameViewController = [storyboard
-        instantiateViewControllerWithIdentifier:@"RCDUpdateNameViewController"];
+      RCDUpdateNameViewController *updateNameViewController = [RCDUpdateNameViewController updateNameViewController];
     updateNameViewController.targetId = self.targetId;
     updateNameViewController.displayText = discussCell.lblDiscussName.text;
     updateNameViewController.setDisplayTextCompletion = ^(NSString *text) {
@@ -497,7 +443,7 @@
                                    [mainStoryboard
                                        instantiateViewControllerWithIdentifier:
                                            @"RCDPersonDetailViewController"];
-                               temp.userInfo = user;
+                               temp.userId = user.userId;
                                [self.navigationController
                                    pushViewController:temp
                                              animated:YES];

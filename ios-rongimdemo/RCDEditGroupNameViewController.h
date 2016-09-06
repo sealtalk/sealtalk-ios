@@ -12,8 +12,21 @@
 @interface RCDEditGroupNameViewController
     : UIViewController <UITextFieldDelegate>
 
-@property(weak, nonatomic) IBOutlet UITextField *GroupNameLabel;
+/**
+ *  修改群名称页面的初始化方法
+ *
+ *  @return 实例对象
+ */
++ (instancetype)editGroupNameViewController;
 
-@property(nonatomic, strong) RCDGroupInfo *Group;
+/**
+ *  修改群名称的textFiled
+ */
+@property(nonatomic, strong) UITextField *groupNameTextField;
+
+/**
+ *  用户信息
+ */
+@property(nonatomic, strong) RCDGroupInfo *groupInfo;
 
 @end

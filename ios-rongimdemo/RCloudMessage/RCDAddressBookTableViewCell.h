@@ -7,12 +7,46 @@
 //
 
 #import <UIKit/UIKit.h>
+@class RCDUserInfo;
 
 @interface RCDAddressBookTableViewCell : UITableViewCell
-@property(weak, nonatomic) IBOutlet UILabel *lblName;
-@property(weak, nonatomic) IBOutlet UIImageView *imgvAva;
-@property(weak, nonatomic) IBOutlet UILabel *rightLabel;
-@property(weak, nonatomic) IBOutlet UIImageView *arrow;
-@property(strong, nonatomic) UIButton *acceptBtn;
+
+/**
+ *  cell高度
+ *
+ */
++ (CGFloat)cellHeight;
+
+/**
+ *  设置模型
+ *
+ *  @param user 设置用户信息模型，填充控件的数据
+ */
+- (void)setModel:(RCDUserInfo *)user;
+
+/**
+ *  昵称
+ */
+@property(nonatomic, strong) UILabel *nameLabel;
+
+/**
+ *  头像
+ */
+@property(nonatomic, strong) UIImageView *portraitImageView;
+
+/**
+ *  “已接受”、“已邀请”
+ */
+@property(nonatomic, strong) UILabel *rightLabel;
+
+/**
+ *  右箭头
+ */
+@property(nonatomic, strong) UIImageView *arrow;
+
+/**
+ *  “接受”按钮
+ */
+@property(nonatomic, strong) UIButton *acceptBtn;
 
 @end

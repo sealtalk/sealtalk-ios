@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface SortForTime : NSObject
-
 - (NSMutableArray *)sortForUpdateAt:(NSMutableArray *)updatedAtList order:(NSComparisonResult)order;
 
 @end

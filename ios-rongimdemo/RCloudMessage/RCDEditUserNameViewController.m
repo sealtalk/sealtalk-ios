@@ -16,8 +16,15 @@
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
 #import <RongIMLib/RongIMLib.h>
+#import "RCDUIBarButtonItem.h"
 
 @interface RCDEditUserNameViewController ()
+
+@property(nonatomic, strong) NSDictionary *subViews;
+
+@property (nonatomic, strong) RCDUIBarButtonItem *rightBtn;
+
+@property (nonatomic, strong) RCDUIBarButtonItem *leftBtn;
 
 @end
 
@@ -32,22 +39,11 @@
                      self.userName.text = userInfo.name;
                    });
                  }];
-  UIButton *rightBtn =
-      [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 34)];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(22.5, 0, 50, 34)];
-    label.text = @"保存";
-    [rightBtn addSubview:label];
-    [label setTextColor:[UIColor whiteColor]];
-  [rightBtn addTarget:self
-                action:@selector(saveUserName:)
-      forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *rightButton =
-      [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
-  [rightBtn setTintColor:[UIColor whiteColor]];
-  self.navigationItem.rightBarButtonItem = rightButton;
+  self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6"
+                                                    alpha:1.f];
+  [self setNavigationButton];
+  [self setSubViews];
   self.navigationItem.title = @"昵称修改";
-  self.BGView.layer.borderWidth = 0.5;
-  self.BGView.layer.borderColor = [HEXCOLOR(0xdfdfdf) CGColor];
 }
 
 - (void)saveUserName:(id)sender {
@@ -103,5 +99,96 @@
   // Dispose of any resources that can be recreated.
 }
 
+- (void)setNavigationButton {
+  self.leftBtn =
+  [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
+                                imageViewFrame:CGRectMake(-6, 4, 10, 17)
+                                   buttonTitle:@"返回"
+                                    titleColor:[UIColor whiteColor]
+                                    titleFrame:CGRectMake(9, 4, 85, 17)
+                                   buttonFrame:CGRectMake(0, 6, 87, 23)
+                                        target:self
+                                        action:@selector(clickBackBtn)];
+  self.navigationItem.leftBarButtonItem = self.leftBtn;
+  
+  self.rightBtn =
+  [[RCDUIBarButtonItem alloc] initWithbuttonTitle:@"保存"
+                                       titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                                      buttonFrame:CGRectMake(0, 0, 50, 30)
+                                           target:self
+                                           action:@selector(saveUserName:)];
+  [self.rightBtn buttonIsCanClick:NO
+                      buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                    barButtonItem:self.rightBtn];
+  self.navigationItem.rightBarButtonItems = [self.rightBtn
+                                             setTranslation:self.rightBtn
+                                             translation:-11];
+}
+
+- (void)setSubViews {
+  self.BGView = [UIView new];
+  self.BGView.backgroundColor = [UIColor whiteColor];
+  self.BGView.layer.borderWidth = 0.5;
+  self.BGView.layer.borderColor = [HEXCOLOR(0xdfdfdf) CGColor];
+  self.BGView.translatesAutoresizingMaskIntoConstraints = NO;
+  [self.view addSubview:self.BGView];
+  
+  self.userName = [UITextField new];
+  self.userName.borderStyle = UITextBorderStyleNone;
+  self.userName.clearButtonMode = UITextFieldViewModeAlways;
+  self.userName.font = [UIFont systemFontOfSize:16.f];
+  self.userName.textColor = [UIColor colorWithHexString:@"000000"
+                                                  alpha:1.f];
+  self.userName.delegate = self;
+  self.userName.translatesAutoresizingMaskIntoConstraints = NO;
+  [self.BGView addSubview:self.userName];
+  
+  self.subViews = NSDictionaryOfVariableBindings(_BGView,_userName);
+  
+  [self.view
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"V:|-15-[_BGView(44)]"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.view
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:|[_BGView]|"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.BGView
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:|-9-[_userName]-3-|"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.BGView
+   addConstraint:[NSLayoutConstraint constraintWithItem:_userName
+                                              attribute:NSLayoutAttributeCenterY
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:self.BGView
+                                              attribute:NSLayoutAttributeCenterY
+                                             multiplier:1
+                                               constant:0]];
+}
+
+- (void)clickBackBtn
+{
+  [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - UITextField Delegate
+- (BOOL)textField:(UITextField *)textField
+shouldChangeCharactersInRange:(NSRange)range
+replacementString:(NSString *)string {
+  [self.rightBtn buttonIsCanClick:YES
+                      buttonColor:[UIColor whiteColor]
+                    barButtonItem:self.rightBtn];
+  return YES;
+}
 
 @end

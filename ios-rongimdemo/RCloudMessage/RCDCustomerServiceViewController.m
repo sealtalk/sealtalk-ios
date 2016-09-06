@@ -25,7 +25,7 @@
     UIButton *button =
     [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     UIImageView *imageView =
-    [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"data"]];
+    [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Private_Setting"]];
     imageView.frame = CGRectMake(15, 5,16 , 17);
     [button addSubview:imageView];
     [button addTarget:self

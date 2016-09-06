@@ -14,6 +14,7 @@
 #import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
 #import "SortForTime.h"
+#import "RCDUserInfoManager.h"
 
 @implementation RCDHttpTool
 
@@ -278,6 +279,7 @@
             member.name = tempInfo[@"nickname"];
             member.portraitUri = tempInfo[@"portraitUri"];
             member.updatedAt = memberInfo[@"createdAt"];
+            member.displayName = memberInfo[@"displayName"];
             if (!member.portraitUri || member.portraitUri <= 0) {
               member.portraitUri = [RCDUtilities defaultUserPortrait:member];
             }
@@ -432,6 +434,7 @@
                 userInfo.userId = userDic[@"id"];
                 userInfo.name = userDic[@"nickname"];
                 userInfo.portraitUri = userDic[@"portraitUri"];
+                userInfo.displayName = dic[@"displayName"];
                 if (!userInfo.portraitUri || userInfo.portraitUri <= 0) {
                   userInfo.portraitUri =
                       [RCDUtilities defaultUserPortrait:userInfo];
@@ -611,33 +614,63 @@
 }
 
 - (void)updateUserInfo:(NSString *)userID
-               success:(void (^)(RCUserInfo *user))success
+               success:(void (^)(RCDUserInfo *user))success
                failure:(void (^)(NSError *err))failure {
-  [AFHttpTool getUserInfo:userID
-      success:^(id response) {
-        if (response) {
-          NSString *code = [NSString stringWithFormat:@"%@", response[@"code"]];
-          if ([code isEqualToString:@"200"]) {
-            NSDictionary *dic = response[@"result"];
-            RCUserInfo *user = [RCUserInfo new];
-            user.userId = dic[@"id"];
-            user.name = [dic objectForKey:@"nickname"];
-            user.portraitUri = [dic objectForKey:@"portraitUri"];
-            if (!user.portraitUri || user.portraitUri.length <= 0) {
-              user.portraitUri = [RCDUtilities defaultUserPortrait:user];
-            }
-            [[RCDataBaseManager shareInstance] insertUserToDB:user];
-            if (success) {
-              dispatch_async(dispatch_get_main_queue(), ^{
-                success(user);
-              });
-            }
-          }
-        }
-      }
-      failure:^(NSError *err) {
-        failure(err);
-      }];
+  [AFHttpTool
+   getFriendDetailsByID:userID
+   success:^(id response) {
+     if ([response[@"code"] integerValue] == 200) {
+       NSDictionary *dic = response[@"result"];
+       NSDictionary *infoDic = dic[@"user"];
+       RCUserInfo *user = [RCUserInfo new];
+       user.userId = infoDic[@"id"];
+       user.name = [infoDic objectForKey:@"nickname"];
+       NSString *portraitUri = [infoDic objectForKey:@"portraitUri"];
+       if (!portraitUri || portraitUri.length <= 0) {
+         portraitUri = [RCDUtilities defaultUserPortrait:user];
+       }
+       user.portraitUri = portraitUri;
+       [[RCDataBaseManager shareInstance] insertUserToDB:user];
+       
+       RCDUserInfo *Details = [[RCDataBaseManager shareInstance] getFriendInfo:userID];
+       Details.name = [infoDic objectForKey:@"nickname"];
+       Details.portraitUri = portraitUri;
+       Details.displayName = dic[@"displayName"];
+       [[RCDataBaseManager shareInstance] insertFriendToDB:Details];
+       if (success) {
+         dispatch_async(dispatch_get_main_queue(), ^{
+           success(Details);
+         });
+       }
+     }
+   } failure:^(NSError *err) {
+     failure(err);
+   }];
+//  [AFHttpTool getUserInfo:userID
+//      success:^(id response) {
+//        if (response) {
+//          NSString *code = [NSString stringWithFormat:@"%@", response[@"code"]];
+//          if ([code isEqualToString:@"200"]) {
+//            NSDictionary *dic = response[@"result"];
+//            RCUserInfo *user = [RCUserInfo new];
+//            user.userId = dic[@"id"];
+//            user.name = [dic objectForKey:@"nickname"];
+//            user.portraitUri = [dic objectForKey:@"portraitUri"];
+//            if (!user.portraitUri || user.portraitUri.length <= 0) {
+//              user.portraitUri = [RCDUtilities defaultUserPortrait:user];
+//            }
+//            [[RCDataBaseManager shareInstance] insertUserToDB:user];
+//            if (success) {
+//              dispatch_async(dispatch_get_main_queue(), ^{
+//                success(user);
+//              });
+//            }
+//          }
+//        }
+//      }
+//      failure:^(NSError *err) {
+//        failure(err);
+//      }];
 }
 
 - (void)uploadImageToQiNiu:(NSString *)userId
@@ -666,6 +699,7 @@
       NSDictionary *iOSResult = response[@"iOS"];
       NSString *sealtalkBuild = iOSResult[@"build"];
       NSString *applistURL = iOSResult[@"url"];
+      applistURL = @"https://cdn.ronghub.com/app.plist";
       
       NSDictionary *result = [[NSDictionary alloc] init];
       NSString *currentBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
@@ -692,6 +726,58 @@
   [dateFormatter setDateFormat:@"yyyyMMddHHmm"];
   NSDate *date = [dateFormatter dateFromString:build];
   return date;
+}
+
+//设置好友备注
+- (void)setFriendDisplayName:(NSString *)friendId
+                 displayName:(NSString *)displayName
+                     complete:(void (^)(BOOL))result {
+  [AFHttpTool setFriendDisplayName:friendId
+                       displayName:displayName
+                           success:^(id response) {
+                             if ([response[@"code"] integerValue] == 200) {
+                               result(YES);
+                             } else {
+                               result(NO);
+                             }
+                           } failure:^(NSError *err) {
+                             result(NO);
+                           }];
+}
+
+//获取用户详细资料
+- (void)getFriendDetailsWithFriendId:(NSString *)friendId
+                             success:(void (^)(RCDUserInfo *user))success
+                             failure:(void (^)(NSError *err))failure {
+  [AFHttpTool getFriendDetailsByID:friendId
+                           success:^(id response) {
+                             if ([response[@"code"] integerValue] == 200) {
+                               NSDictionary *dic = response[@"result"];
+                               NSDictionary *infoDic = dic[@"user"];
+                               RCUserInfo *user = [RCUserInfo new];
+                               user.userId = infoDic[@"id"];
+                               user.name = [infoDic objectForKey:@"nickname"];
+                               NSString *portraitUri = [infoDic objectForKey:@"portraitUri"];
+                               if (!portraitUri || portraitUri.length <= 0) {
+                                 portraitUri = [RCDUtilities defaultUserPortrait:user];
+                               }
+                               user.portraitUri = portraitUri;
+                               [[RCDataBaseManager shareInstance] insertUserToDB:user];
+                               
+                               RCDUserInfo *Details = [[RCDataBaseManager shareInstance] getFriendInfo:friendId];
+                               Details.name = [infoDic objectForKey:@"nickname"];
+                               Details.portraitUri = portraitUri;
+                               Details.displayName = dic[@"displayName"];
+                               [[RCDataBaseManager shareInstance] insertFriendToDB:Details];
+                               if (success) {
+                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                   success(Details);
+                                 });
+                               }
+                             }
+                           } failure:^(NSError *err) {
+                              failure(err);
+                           }];
 }
 
 @end

@@ -18,13 +18,12 @@
 #import "RCDPublicServiceListViewController.h"
 #import "RCDRCIMDataSource.h"
 #import "RCDSearchFriendViewController.h"
-#import "RCDSelectPersonViewController.h"
 #import "RCDUserInfo.h"
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
 #import "UITabBar+badge.h"
-
+#import "RCDUIBarButtonItem.h"
 @interface RCDChatListViewController ()
 
 //@property (nonatomic,strong) NSMutableArray *myDataSource;
@@ -114,9 +113,9 @@
   
   [[NSNotificationCenter defaultCenter]addObserver:self
                                           selector:@selector(updateBadgeValueForTabBarItem)
-                                              name:RCLibDispatchReadReceiptNotification
+                                              name:RCKitDispatchReadReceiptNotification
                                             object:nil];
-  
+    
   [self checkVersion];
 }
 
@@ -125,23 +124,20 @@
   _isClick = YES;
 
   //自定义rightBarButtonItem
-  UIButton *rightBtn =
-      [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 17, 17)];
-  [rightBtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
-  [rightBtn addTarget:self
-                action:@selector(showMenu:)
-      forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *rightButton =
-      [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
-  [rightBtn setTintColor:[UIColor whiteColor]];
-  UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]
-                                     initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                     target:nil action:nil];
-  negativeSpacer.width = -6;
-  self.tabBarController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:negativeSpacer, rightButton, nil];
+  RCDUIBarButtonItem *rightBtn =
+  [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"add"]
+                                imageViewFrame:CGRectMake(0, 0, 17, 17)
+                                   buttonTitle:nil
+                                    titleColor:nil
+                                    titleFrame:CGRectZero
+                                   buttonFrame:CGRectMake(0, 0, 17, 17)
+                                        target:self
+                                        action:@selector(showMenu:)];
+  self.tabBarController.navigationItem.rightBarButtonItems = [rightBtn setTranslation:rightBtn translation:-6];
+  
   self.tabBarController.navigationItem.title = @"会话";
 
-  [self notifyUpdateUnreadMessageCount];
+//  [self notifyUpdateUnreadMessageCount];
   [[NSNotificationCenter defaultCenter]
       addObserver:self
          selector:@selector(receiveNeedRefreshNotification:)
@@ -160,6 +156,7 @@
       removeObserver:self
                 name:@"kRCNeedReloadDiscussionListNotification"
               object:nil];
+
 }
 
 - (void)updateBadgeValueForTabBarItem {
@@ -202,7 +199,6 @@
       _conversationVC.userName = model.conversationTitle;
       _conversationVC.title = model.conversationTitle;
       _conversationVC.conversation = model;
-      _conversationVC.unReadMessage = model.unreadMessageCount;
       [self.navigationController pushViewController:_conversationVC
                                            animated:YES];
     }
@@ -223,11 +219,7 @@
         _conversationVC.title = @"系统消息";
       }
       if ([model.objectName isEqualToString:@"RC:ContactNtf"]) {
-        UIStoryboard *mainStoryboard =
-            [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        RCDAddressBookViewController *addressBookVC =
-            [mainStoryboard instantiateViewControllerWithIdentifier:
-                                @"RCDAddressBookViewController"];
+          RCDAddressBookViewController * addressBookVC= [RCDAddressBookViewController addressBookViewController];
         addressBookVC.needSyncFriendList = YES;
         
         [self.navigationController pushViewController:addressBookVC
@@ -261,11 +253,7 @@
           self.conversationListDataSource[indexPath.row];
 
       if ([model.objectName isEqualToString:@"RC:ContactNtf"]) {
-        UIStoryboard *mainStoryboard =
-            [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        RCDAddressBookViewController *addressBookVC =
-            [mainStoryboard instantiateViewControllerWithIdentifier:
-                                @"RCDAddressBookViewController"];
+          RCDAddressBookViewController * addressBookVC= [RCDAddressBookViewController addressBookViewController];
         [self.navigationController pushViewController:addressBookVC
                                              animated:YES];
       }
@@ -325,11 +313,7 @@
  *  @param sender sender description
  */
 - (void)pushChat:(id)sender {
-  UIStoryboard *mainStoryboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDContactSelectedTableViewController *contactSelectedVC =
-      [mainStoryboard instantiateViewControllerWithIdentifier:
-                          @"RCDContactSelectedTableViewController"];
+    RCDContactSelectedTableViewController *contactSelectedVC = [[RCDContactSelectedTableViewController alloc]init];
   //    contactSelectedVC.forCreatingDiscussionGroup = YES;
   contactSelectedVC.isAllowsMultipleSelection = NO;
   contactSelectedVC.titleStr = @"发起聊天";
@@ -342,11 +326,7 @@
  *  @param sender sender description
  */
 - (void)pushContactSelected:(id)sender {
-  UIStoryboard *mainStoryboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDContactSelectedTableViewController *contactSelectedVC =
-      [mainStoryboard instantiateViewControllerWithIdentifier:
-                          @"RCDContactSelectedTableViewController"];
+    RCDContactSelectedTableViewController *contactSelectedVC = [[RCDContactSelectedTableViewController alloc]init];
   contactSelectedVC.forCreatingGroup = YES;
   contactSelectedVC.isAllowsMultipleSelection = YES;
   contactSelectedVC.titleStr = @"选择联系人";
@@ -381,10 +361,7 @@
  *  @param sender sender description
  */
 - (void)pushAddressBook:(id)sender {
-  UIStoryboard *mainStoryboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDAddressBookViewController *addressBookVC = [mainStoryboard
-      instantiateViewControllerWithIdentifier:@"RCDAddressBookViewController"];
+    RCDAddressBookViewController *addressBookVC = [RCDAddressBookViewController addressBookViewController];
   [self.navigationController pushViewController:addressBookVC animated:YES];
 }
 
@@ -544,45 +521,9 @@
       [NSString stringWithFormat:@"来自%@的好友请求", userName];
   [cell.ivAva sd_setImageWithURL:[NSURL URLWithString:portraitUri]
                 placeholderImage:[UIImage imageNamed:@"system_notice"]];
-  cell.labelTime.text = [self ConvertMessageTime:model.sentTime / 1000];
+  cell.labelTime.text = [RCKitUtility ConvertMessageTime:model.sentTime/1000];
   cell.model = model;
   return cell;
-}
-
-#pragma mark - private
-- (NSString *)ConvertMessageTime:(long long)secs {
-  NSString *timeText = nil;
-
-  NSDate *messageDate = [NSDate dateWithTimeIntervalSince1970:secs];
-
-  //    DebugLog(@"messageDate==>%@",messageDate);
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"yyyy-MM-dd"];
-
-  NSString *strMsgDay = [formatter stringFromDate:messageDate];
-
-  NSDate *now = [NSDate date];
-  NSString *strToday = [formatter stringFromDate:now];
-  NSDate *yesterday =
-      [[NSDate alloc] initWithTimeIntervalSinceNow:-(24 * 60 * 60)];
-  NSString *strYesterday = [formatter stringFromDate:yesterday];
-
-  NSString *_yesterday = nil;
-  if ([strMsgDay isEqualToString:strToday]) {
-    [formatter setDateFormat:@"HH':'mm"];
-  } else if ([strMsgDay isEqualToString:strYesterday]) {
-    _yesterday = NSLocalizedStringFromTable(@"Yesterday", @"RongCloudKit", nil);
-    //[formatter setDateFormat:@"HH:mm"];
-  }
-
-  if (nil != _yesterday) {
-    timeText =
-        _yesterday; //[_yesterday stringByAppendingFormat:@" %@", timeText];
-  } else {
-    timeText = [formatter stringFromDate:messageDate];
-  }
-
-  return timeText;
 }
 
 //*********************插入自定义Cell*********************//
@@ -622,6 +563,10 @@
                    customModel.conversationModelType =
                        RC_CONVERSATION_MODEL_TYPE_CUSTOMIZATION;
                    customModel.extend = rcduserinfo_;
+                   customModel.conversationType = message.conversationType;
+                   customModel.targetId = message.targetId;
+                   customModel.sentTime = message.sentTime;
+                   customModel.receivedTime = message.receivedTime;
                    customModel.senderUserId = message.senderUserId;
                    customModel.lastestMessage = _contactNotificationMsg;
                    //[_myDataSource insertObject:customModel atIndex:0];
@@ -689,11 +634,7 @@
       _conversationVC.title = @"系统消息";
     }
     if ([model.objectName isEqualToString:@"RC:ContactNtf"]) {
-      UIStoryboard *mainStoryboard =
-          [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-      RCDAddressBookViewController *addressBookVC =
-          [mainStoryboard instantiateViewControllerWithIdentifier:
-                              @"RCDAddressBookViewController"];
+        RCDAddressBookViewController *addressBookVC = [RCDAddressBookViewController addressBookViewController];
       addressBookVC.needSyncFriendList = YES;
       [self.navigationController pushViewController:addressBookVC animated:YES];
       return;
@@ -723,11 +664,7 @@
     //        self.conversationListDataSource[indexPath.row];
 
     if ([model.objectName isEqualToString:@"RC:ContactNtf"]) {
-      UIStoryboard *mainStoryboard =
-          [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-      RCDAddressBookViewController *addressBookVC =
-          [mainStoryboard instantiateViewControllerWithIdentifier:
-                              @"RCDAddressBookViewController"];
+        RCDAddressBookViewController *addressBookVC = [RCDAddressBookViewController addressBookViewController];
       [self.navigationController pushViewController:addressBookVC animated:YES];
     }
   }
@@ -785,11 +722,7 @@
 }
 
 - (void)pushToCreateDiscussion:(id)sender {
-  UIStoryboard *mainStoryboard =
-  [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDContactSelectedTableViewController *contactSelectedVC =
-  [mainStoryboard instantiateViewControllerWithIdentifier:
-   @"RCDContactSelectedTableViewController"];
+  RCDContactSelectedTableViewController * contactSelectedVC= [[RCDContactSelectedTableViewController alloc]init];
   contactSelectedVC.forCreatingDiscussionGroup = YES;
   contactSelectedVC.isAllowsMultipleSelection = YES;
   contactSelectedVC.titleStr = @"选择联系人";

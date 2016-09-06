@@ -62,7 +62,7 @@
     cell = [[RCDContactTableViewCell alloc] init];
   }
   // Configure the cell...
-  RCUserInfo *user = _GroupMembers[indexPath.row];
+  RCDUserInfo *user = _GroupMembers[indexPath.row];
   if ([user.portraitUri isEqualToString:@""]) {
     DefaultPortraitView *defaultPortrait =
         [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
@@ -76,8 +76,9 @@
   cell.portraitView.layer.masksToBounds = YES;
   cell.portraitView.layer.cornerRadius = 5.f;
   cell.portraitView.contentMode = UIViewContentModeScaleAspectFill;
-  cell.nicknameLabel.text = user.name;
+
   cell.nicknameLabel.font = [UIFont systemFontOfSize:15.f];
+  cell.nicknameLabel.text = user.name;
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
   return cell;
@@ -108,7 +109,8 @@
 
     [self.navigationController pushViewController:detailViewController
                                          animated:YES];
-    detailViewController.userInfo = _GroupMembers[indexPath.row];
+    RCUserInfo *user = _GroupMembers[indexPath.row];
+    detailViewController.userId = user.userId;
   } else {
     RCDAddFriendViewController *addViewController = [mainStoryboard
         instantiateViewControllerWithIdentifier:@"RCDAddFriendViewController"];

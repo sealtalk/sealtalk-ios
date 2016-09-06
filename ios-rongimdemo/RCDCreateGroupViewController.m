@@ -30,6 +30,8 @@
                            [[UIScreen mainScreen] currentMode].size)           \
        : NO)
 
+#define RCScreenWidth [UIScreen mainScreen].bounds.size.width
+
 @interface RCDCreateGroupViewController () {
   NSData *data;
   UIImage *image;
@@ -37,54 +39,135 @@
   MBProgressHUD *hud;
   CGFloat deafultY;
 }
-
+@property (nonatomic,strong) UIView *blueLine;
 @end
 
 @implementation RCDCreateGroupViewController
 
++ (instancetype)createGroupViewController {
+    return [[[self class] alloc] init];
+}
+
+- (instancetype)init {
+    self= [super init];
+    if(self){
+        self.view.backgroundColor = [UIColor whiteColor];
+        [self initSubViews];
+    }
+    return self;
+}
+
+- (void)initSubViews {
+    self.DoneBtn.hidden = YES;
+    
+    //群组头像的UIImageView
+    CGFloat groupPortraitWidth = 100;
+    CGFloat groupPortraitHeight = groupPortraitWidth;
+    CGFloat groupPortraitX = RCScreenWidth/2.0-groupPortraitWidth/2.0;
+    CGFloat groupPortraitY = 80;
+    self.GroupPortrait = [[UIImageView alloc] initWithFrame:CGRectMake(groupPortraitX, groupPortraitY, groupPortraitWidth, groupPortraitHeight)];
+    self.GroupPortrait.image = [UIImage imageNamed:@"AddPhotoDefault"];
+    self.GroupPortrait.layer.masksToBounds = YES;
+    self.GroupPortrait.layer.cornerRadius = 5.f;
+    //为头像设置点击事件
+    self.GroupPortrait.userInteractionEnabled = YES;
+    UITapGestureRecognizer *singleClick =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(chosePortrait)];
+    [self.GroupPortrait addGestureRecognizer:singleClick];
+    
+    //群组名称的UITextField
+    CGFloat groupNameWidth = 200;
+    CGFloat groupNameHeight = 17;
+    CGFloat groupNameX = RCScreenWidth/2.0-groupNameWidth/2.0;
+    CGFloat groupNameY = CGRectGetMaxY(self.GroupPortrait.frame)+120;
+    self.GroupName = [[UITextField alloc]initWithFrame:CGRectMake(groupNameX, groupNameY, groupNameWidth, groupNameHeight)];
+    self.GroupName.font = [UIFont systemFontOfSize:14];
+    self.GroupName.placeholder = @"填写群名称（2-10个字符）";
+    self.GroupName.textAlignment = NSTextAlignmentCenter;
+    self.GroupName.delegate = self;
+    self.GroupName.returnKeyType = UIReturnKeyDone;
+    
+    
+    //底部蓝线
+    CGFloat blueLineWidth = 240;
+    CGFloat blueLineHeight = 1;
+    CGFloat blueLineX = RCScreenWidth/2.0-blueLineWidth/2.0;
+    CGFloat blueLineY = CGRectGetMaxY(self.GroupName.frame)+1;
+    self.blueLine = [[UIView alloc]initWithFrame:CGRectMake(blueLineX, blueLineY, blueLineWidth, blueLineHeight)];
+    self.blueLine.backgroundColor = [UIColor colorWithRed:0 green:135/255.0 blue:251/255.0 alpha:1];
+    
+    [self.view addSubview:self.GroupPortrait];
+    [self.view addSubview:self.GroupName];
+    [self.view addSubview:self.blueLine];
+    
+    //给整个view添加手势，隐藏键盘
+    UITapGestureRecognizer *resetBottomTapGesture =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(hideKeyboard:)];
+    [self.view addGestureRecognizer:resetBottomTapGesture];
+    
+    //创建rightBarButtonItem
+    UIBarButtonItem *item =
+    [[UIBarButtonItem alloc] initWithTitle:@"完成"
+                                     style:UIBarButtonItemStylePlain
+                                    target:self
+                                    action:@selector(ClickDoneBtn:)];
+    item.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
+    self.navigationItem.rightBarButtonItem = item;
+    
+    CGFloat navHeight = 44.0f;
+    CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    deafultY = navHeight + statusBarHeight;
+
+}
+
 - (void)viewDidLoad {
   [super viewDidLoad];
+    
+//    deafultY = self.navigationController.navigationBar.frame.size.height +
+//    [[UIApplication sharedApplication] statusBarFrame].size.height;
   // Do any additional setup after loading the view.
 
-  self.DoneBtn.hidden = YES;
-
-  self.GroupPortrait.layer.masksToBounds = YES;
-  self.GroupPortrait.layer.cornerRadius = 5.f;
-
-  //为头像设置点击事件
-  self.GroupPortrait.userInteractionEnabled = YES;
-  UITapGestureRecognizer *singleClick =
-      [[UITapGestureRecognizer alloc] initWithTarget:self
-                                              action:@selector(chosePortrait)];
-  [self.GroupPortrait addGestureRecognizer:singleClick];
-
-  //    //动态取邀请成员的数量
-  //    NSInteger membersCount = [self.GroupMemberList count];
-  //    self.InviteMemberCount.text = [NSString
-  //    stringWithFormat:@"被邀请成员(%ld)",(long)membersCount];
-  //
-  //    self.GroupMembers.backgroundColor = [UIColor clearColor];
-  //
-  //    memberIdsList = [[NSMutableArray alloc] init];
-
-  _GroupName.delegate = self;
-  _GroupName.returnKeyType = UIReturnKeyDone;
-
-  UITapGestureRecognizer *resetBottomTapGesture =
-      [[UITapGestureRecognizer alloc] initWithTarget:self
-                                              action:@selector(hideKeyboard:)];
-  [self.view addGestureRecognizer:resetBottomTapGesture];
-
-  UIBarButtonItem *item =
-      [[UIBarButtonItem alloc] initWithTitle:@"完成"
-                                       style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(ClickDoneBtn:)];
-  item.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
-  self.navigationItem.rightBarButtonItem = item;
-
-  deafultY = self.navigationController.navigationBar.frame.size.height +
-             [[UIApplication sharedApplication] statusBarFrame].size.height;
+//  self.DoneBtn.hidden = YES;
+//
+//  self.GroupPortrait.layer.masksToBounds = YES;
+//  self.GroupPortrait.layer.cornerRadius = 5.f;
+//
+//  //为头像设置点击事件
+//  self.GroupPortrait.userInteractionEnabled = YES;
+//  UITapGestureRecognizer *singleClick =
+//      [[UITapGestureRecognizer alloc] initWithTarget:self
+//                                              action:@selector(chosePortrait)];
+//  [self.GroupPortrait addGestureRecognizer:singleClick];
+//
+//  //    //动态取邀请成员的数量
+//  //    NSInteger membersCount = [self.GroupMemberList count];
+//  //    self.InviteMemberCount.text = [NSString
+//  //    stringWithFormat:@"被邀请成员(%ld)",(long)membersCount];
+//  //
+//  //    self.GroupMembers.backgroundColor = [UIColor clearColor];
+//  //
+//  //    memberIdsList = [[NSMutableArray alloc] init];
+//
+//  _GroupName.delegate = self;
+//  _GroupName.returnKeyType = UIReturnKeyDone;
+//
+//  UITapGestureRecognizer *resetBottomTapGesture =
+//      [[UITapGestureRecognizer alloc] initWithTarget:self
+//                                              action:@selector(hideKeyboard:)];
+//  [self.view addGestureRecognizer:resetBottomTapGesture];
+//
+//  UIBarButtonItem *item =
+//      [[UIBarButtonItem alloc] initWithTitle:@"完成"
+//                                       style:UIBarButtonItemStylePlain
+//                                      target:self
+//                                      action:@selector(ClickDoneBtn:)];
+//  item.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
+//  self.navigationItem.rightBarButtonItem = item;
+//
+//  deafultY = self.navigationController.navigationBar.frame.size.height +
+//             [[UIApplication sharedApplication] statusBarFrame].size.height;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -413,14 +496,14 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 }
 
 - (NSString *)getIconCachePath:(NSString *)fileName {
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                       NSUserDomainMask, YES);
-  NSString *filePath = [[paths objectAtIndex:0]
-      stringByAppendingPathComponent:
-          [NSString
-              stringWithFormat:@"CachedIcons/%@", fileName]]; // 保存文件的名称
+  NSString *cachPath = [NSSearchPathForDirectoriesInDomains(
+      NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+  NSString *filePath =
+      [cachPath stringByAppendingPathComponent:
+                    [NSString stringWithFormat:@"CachedIcons/%@",
+                                               fileName]]; // 保存文件的名称
 
-  NSString *dirPath = [[paths objectAtIndex:0]
+  NSString *dirPath = [cachPath
       stringByAppendingPathComponent:[NSString
                                          stringWithFormat:@"CachedIcons"]];
   NSFileManager *fileManager = [NSFileManager defaultManager];

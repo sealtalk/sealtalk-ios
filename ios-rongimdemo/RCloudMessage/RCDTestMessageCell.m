@@ -11,6 +11,17 @@
 #define Test_Message_Font_Size 16
 
 @implementation RCDTestMessageCell
++ (CGSize)sizeForMessageModel:(RCMessageModel *)model
+      withCollectionViewWidth:(CGFloat)collectionViewWidth
+         referenceExtraHeight:(CGFloat)extraHeight {
+  RCDTestMessage *message = (RCDTestMessage *)model.content;
+  CGSize size = [RCDTestMessageCell getBubbleBackgroundViewSize:message];
+  
+  CGFloat __messagecontentview_height = size.height;
+  __messagecontentview_height += extraHeight;
+  
+  return CGSizeMake(collectionViewWidth, __messagecontentview_height);
+}
 
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];

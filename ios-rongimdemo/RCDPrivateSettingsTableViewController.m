@@ -12,11 +12,15 @@
 #import "RCDPrivateSettingsCell.h"
 #import "RCDPrivateSettingsUserInfoCell.h"
 #import "UIImageView+WebCache.h"
+#import "RCDataBaseManager.h"
+#import "UIColor+RCColor.h"
 
 @interface RCDPrivateSettingsTableViewController ()
 
 //开始会话
 @property(strong, nonatomic) UIButton *btChat;
+
+@property(strong, nonatomic) RCDUserInfo *userInfo;
 
 @end
 
@@ -30,12 +34,12 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  // Uncomment the following line to preserve selection between presentations.
-  // self.clearsSelectionOnViewWillAppear = NO;
-
-  // Uncomment the following line to display an Edit button in the navigation
-  // bar for this view controller.
-  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+  //设置分割线颜色
+  self.tableView.separatorColor =
+  [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
+  if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
+  }
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.frame = CGRectMake(0, 6, 87, 23);
     UIImageView *backImg = [[UIImageView alloc]
@@ -110,7 +114,7 @@
   CGFloat heigh;
   switch (indexPath.section) {
   case 0:
-    heigh = 90.f;
+    heigh = 86.5f;
     break;
 
   case 1:
@@ -125,11 +129,24 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  static NSString *InfoCellIdentifier = @"RCDPrivateSettingsUserInfoCell";
-  RCDPrivateSettingsUserInfoCell *infoCell =
-      (RCDPrivateSettingsUserInfoCell *)[tableView
-          dequeueReusableCellWithIdentifier:InfoCellIdentifier];
-
+  RCDPrivateSettingsUserInfoCell *infoCell;
+  if (self.userInfo != nil) {
+    portraitUrl = self.userInfo.portraitUri;
+    if (self.userInfo.displayName.length > 0 && ![self.userInfo.displayName isEqualToString:@""]) {
+      infoCell = [[RCDPrivateSettingsUserInfoCell alloc] initWithIsHaveDisplayName:YES];
+      infoCell.NickNameLabel.text = self.userInfo.displayName;
+      infoCell.displayNameLabel.text = [NSString stringWithFormat:@"昵称: %@",self.userInfo.name];
+    } else {
+      infoCell = [[RCDPrivateSettingsUserInfoCell alloc] initWithIsHaveDisplayName:NO];
+      infoCell.NickNameLabel.text = self.userInfo.name;
+    }
+  } else {
+    infoCell = [[RCDPrivateSettingsUserInfoCell alloc] initWithIsHaveDisplayName:NO];
+    infoCell.NickNameLabel.text = [RCIM sharedRCIM].currentUserInfo.name;
+    portraitUrl = [RCIM sharedRCIM].currentUserInfo.portraitUri;
+  }
+  
+  
   static NSString *CellIdentifier = @"RCDPrivateSettingsCell";
   RCDPrivateSettingsCell *cell = (RCDPrivateSettingsCell *)[tableView
       dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -152,7 +169,6 @@
     infoCell.PortraitImageView.layer.masksToBounds = YES;
     infoCell.PortraitImageView.layer.cornerRadius = 5.f;
     infoCell.PortraitImageView.contentMode = UIViewContentModeScaleAspectFill;
-    infoCell.NickNameLabel.text = nickname;
     return infoCell;
   }
 
@@ -287,15 +303,9 @@
 }
 
 - (void)loadUserInfo:(NSString *)userId {
-  [RCDHTTPTOOL getUserInfoByUserID:userId
-                        completion:^(RCUserInfo *user) {
-                          portraitUrl = user.portraitUri;
-                          nickname = user.name;
-                          dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.tableView reloadData];
-                          });
-
-                        }];
+  if (![userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+    self.userInfo = [[RCDataBaseManager shareInstance] getFriendInfo:userId];
+  }
 }
 
 - (void)clickNotificationBtn:(id)sender {

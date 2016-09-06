@@ -112,7 +112,7 @@
 
 //从demo server 获取用户的信息，更新本地数据库
 - (void)updateUserInfo:(NSString *)userID
-               success:(void (^)(RCUserInfo *user))success
+               success:(void (^)(RCDUserInfo *user))success
                failure:(void (^)(NSError *err))failure;
 
 //上传图片到七牛的服务器
@@ -124,4 +124,13 @@
 //获取版本信息
 - (void)getVersioncomplete:(void (^)(NSDictionary *))versionInfo;
 
+//设置好友备注
+- (void)setFriendDisplayName:(NSString *)friendId
+                 displayName:(NSString *)displayName
+                    complete:(void (^)(BOOL))result;
+
+//获取用户详细资料
+- (void)getFriendDetailsWithFriendId:(NSString *)friendId
+                             success:(void (^)(RCDUserInfo *user))success
+                             failure:(void (^)(NSError *err))failure;
 @end

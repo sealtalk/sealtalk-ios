@@ -147,25 +147,4 @@
   return newImage;
 }
 
-/**
- *  汉字转拼音
- *
- *  @param hanZi 汉字
- *
- *  @return 转换后的拼音
- */
-- (NSString *)hanZiToPinYinWithString:(NSString *)hanZi {
-  if (!hanZi)
-    return nil;
-  NSString *pinYinResult = [NSString string];
-  for (int j = 0; j < hanZi.length; j++) {
-    NSString *singlePinyinLetter = [[NSString
-        stringWithFormat:@"%c", pinyinFirstLetter([hanZi characterAtIndex:j])]
-        uppercaseString];
-    pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
-  }
-
-  return pinYinResult;
-}
-
 @end

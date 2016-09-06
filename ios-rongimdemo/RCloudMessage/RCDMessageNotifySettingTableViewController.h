@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCDBaseSettingTableViewCell.h"
 
-@interface RCDMessageNotifySettingTableViewController : UITableViewController
+@interface RCDMessageNotifySettingTableViewController : UITableViewController<RCDBaseSettingTableViewCellDelegate>
 
 @end

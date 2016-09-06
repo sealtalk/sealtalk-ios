@@ -18,30 +18,25 @@
 #import "RCMessageModel.h"
 #import "RCConversationModel.h"
 
-///输入栏扩展输入的唯一标示
-#define PLUGIN_BOARD_ITEM_ALBUM_TAG      1001
-#define PLUGIN_BOARD_ITEM_CAMERA_TAG     1002
-#define PLUGIN_BOARD_ITEM_LOCATION_TAG   1003
-#define PLUGIN_BOARD_ITEM_VOIP_TAG       1004
-#define PLUGIN_BOARD_ITEM_VIDEO_VOIP_TAG 1005
-#define PLUGIN_BOARD_ITEM_FILE_TAG       1006
-
-
+/*!
+ 客服服务状态
+ */
 typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
-    /*!
-     无客服服务
-     */
-    RCCustomerService_NoService,
-    /*!
-     人工客服服务
-     */
-    RCCustomerService_HumanService,
-    /*!
-     机器人客服服务
-     */
-    RCCustomerService_RobotService
-};
+  /*!
+   无客服服务
+   */
+  RCCustomerService_NoService,
 
+  /*!
+   人工客服服务
+   */
+  RCCustomerService_HumanService,
+
+  /*!
+   机器人客服服务
+   */
+  RCCustomerService_RobotService
+};
 
 /*!
  聊天界面类
@@ -68,7 +63,6 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  当前会话的会话类型
  */
 @property(nonatomic) RCConversationType conversationType;
-
 
 /*!
  目标会话ID
@@ -128,14 +122,14 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 @property(nonatomic, assign) BOOL enableUnreadMessageIcon;
 
 /*!
- 右上角提示的未读消息数
- 
- @discussion 右上角未读消息数支持的最大值是150。
+ 该会话的未读消息数
  */
 @property(nonatomic, assign) NSInteger unReadMessage;
 
 /*!
  右上角未读消息数提示的Label
+ 
+ @discussion 当 150 >= unReadMessage > 10  右上角会显示未读消息数。
  */
 @property(nonatomic,strong) UILabel *unReadMessageLabel;
 
@@ -160,7 +154,6 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  */
 @property(nonatomic, strong) UILabel *unReadNewMessageLabel;
 
-
 #pragma mark - 输入工具栏
 
 /*!
@@ -176,14 +169,15 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 @property(nonatomic) RCChatSessionInputBarInputType defaultInputType;
 
 /*!
- 输入扩展功能板View
+ 输入框中内容发生变化的回调
+ 
+ @param inputTextView 文本输入框
+ @param range         当前操作的范围
+ @param text          插入的文本
  */
-@property(nonatomic, strong) RCPluginBoardView *pluginBoardView;
-
-/*!
- 表情View
- */
-@property(nonatomic, strong) RCEmojiBoardView *emojiBoardView;
+- (void)inputTextView:(UITextView *)inputTextView
+    shouldChangeTextInRange:(NSRange)range
+            replacementText:(NSString *)text;
 
 /*!
  扩展功能板的点击回调
@@ -195,44 +189,34 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
     clickedItemWithTag:(NSInteger)tag;
 
 /*!
- 输入框中内容发生变化的回调
- 
- @param inputTextView 文本输入框
- @param range         当前操作的范围
- @param text          插入的文本
- */
-- (void)inputTextView:(UITextView *)inputTextView shouldChangeTextInRange:(NSRange)range
-      replacementText:(NSString *)text;
-
-/*!
  设置输入框的输入状态
  
  @param inputBarStatus  输入框状态
  @param animated        是否使用动画效果
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此接口，可以直接替换为chatSessionInputBarControl的updateStatus:animated:接口，行为和实现完全一致。
  */
--(void)setChatSessionInputBarStatus:(KBottomBarStatus)inputBarStatus animated:(BOOL)animated;
+-(void)setChatSessionInputBarStatus:(KBottomBarStatus)inputBarStatus animated:(BOOL)animated
+__deprecated_msg("已废弃，请勿使用。");
+
+/*!
+ 输入扩展功能板View
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此属性，可以直接替换为chatSessionInputBarControl的pluginBoardView属性，行为和实现完全一致。
+ */
+@property(nonatomic, strong) __deprecated_msg("已废弃，请勿使用。") RCPluginBoardView *pluginBoardView;
+
+/*!
+ 表情View
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此属性，可以直接替换为chatSessionInputBarControl的emojiBoardView属性，行为和实现完全一致。
+ */
+@property(nonatomic, strong) __deprecated_msg("已废弃，请勿使用。") RCEmojiBoardView *emojiBoardView;
 
 #pragma mark - 显示设置
-
-/*!
- 设置在聊天界面中显示的头像形状，矩形或者圆形（全局有效）
- 
- @param avatarStyle 显示的头像形状
- 
- @discussion 默认值为矩形，即RC_USER_AVATAR_RECTANGLE。
- 请在viewDidLoad之前设置，此设置在SDK中全局有效。
- */
-- (void)setMessageAvatarStyle:(RCUserAvatarStyle)avatarStyle;
-
-/*!
- 设置聊天界面中显示的头像大小（全局有效），高度必须大于或者等于36
- 
- @param size 显示的头像形状
- 
- @discussion 默认值为46*46。
- 请在viewDidLoad之前设置，此设置在SDK中全局有效。
- */
-- (void)setMessagePortraitSize:(CGSize)size;
 
 /*!
  收到的消息是否显示发送者的名字
@@ -249,6 +233,34 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  -1表示不获取任何历史消息，0表示不特殊设置而使用SDK默认的设置（默认为获取10条），0<messageCount<=50为具体获取的消息数量,最大值为50。
  */
 @property(nonatomic, assign) int defaultHistoryMessageCountOfChatRoom;
+
+/*!
+ 设置在聊天界面中显示的头像形状，矩形或者圆形（全局有效）
+ 
+ @param avatarStyle 显示的头像形状
+ 
+ @discussion 默认值为矩形，即RC_USER_AVATAR_RECTANGLE。
+ 请在viewDidLoad之前设置，此设置在SDK中全局有效。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此方法，可以直接替换为[RCIM sharedRCIM]的globalMessageAvatarStyle属性，行为和实现完全一致。
+ */
+- (void)setMessageAvatarStyle:(RCUserAvatarStyle)avatarStyle
+__deprecated_msg("已废弃，请勿使用。");
+
+/*!
+ 设置聊天界面中显示的头像大小（全局有效），高度必须大于或者等于36
+ 
+ @param size 显示的头像形状
+ 
+ @discussion 默认值为46*46。
+ 请在viewDidLoad之前设置，此设置在SDK中全局有效。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此方法，可以直接替换为[RCIM sharedRCIM]的globalMessagePortraitSize属性，行为和实现完全一致。
+ */
+- (void)setMessagePortraitSize:(CGSize)size
+__deprecated_msg("已废弃，请勿使用。");
 
 #pragma mark - 界面操作
 
@@ -489,6 +501,15 @@ __deprecated_msg("已废弃，请勿使用。");
 __deprecated_msg("已废弃，请勿使用。");
 
 #pragma mark - 自定义消息
+/*!
+ 注册自定义消息的Cell
+ 
+ @param cellClass     自定义消息的类，该自定义消息需要继承于RCMessageContent
+ @param messageClass  自定义消息Cell对应的自定义消息
+ 
+ @discussion 你需要在cell中重写RCMessageBaseCell基类的sizeForMessageModel:withCollectionViewWidth:referenceExtraHeight:来计算cell的高度。
+ */
+- (void)registerClass:(Class)cellClass forMessageClass:(Class)messageClass;
 
 /*!
  注册自定义消息的Cell
@@ -498,8 +519,13 @@ __deprecated_msg("已废弃，请勿使用。");
  
  @discussion 聊天界面在显示时需要通过identifier唯一标示来进行Cell重用，以提高性能。
  我们建议您在identifier中添加前缀，请勿使用"rc"前缀的字符串，以免与融云内置消息的Cell冲突。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此接口，可以迁移到registerClass:forMessageClass:接口。
  */
-- (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
+- (void)registerClass:(Class)cellClass
+    forCellWithReuseIdentifier:(NSString *)identifier
+    __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  自定义消息Cell显示的回调
@@ -628,12 +654,12 @@ __deprecated_msg("已废弃，请勿使用。");
 #pragma mark - 语音消息、图片消息、位置消息、文件消息显示与操作
 
 /*!
- 开始录制语音消息
+ 开始录制语音消息的回调
  */
 - (void)onBeginRecordEvent;
 
 /*!
- 结束录制语音消息
+ 结束录制语音消息的回调
  */
 - (void)onEndRecordEvent;
 

@@ -9,11 +9,27 @@
 #import "RCDChangePasswordViewController.h"
 #import "AFHttpTool.h"
 #import "RCDCommonDefine.h"
+#import "UIColor+RCColor.h"
+#import "RCDUIBarButtonItem.h"
 
 @interface RCDChangePasswordViewController ()
-@property(weak, nonatomic) IBOutlet UITextField *oldPwd;
-@property(weak, nonatomic) IBOutlet UITextField *newsPwd;
-@property(weak, nonatomic) IBOutlet UITextField *confirmPwd;
+@property(nonatomic, strong) UILabel *oldPwdLabel;
+@property(nonatomic, strong) UILabel *newsPwdLabel;
+@property(nonatomic, strong) UILabel *confirmPwdLabel;
+
+
+@property(nonatomic, strong) UITextField *oldPwdTextField;
+@property(nonatomic, strong) UITextField *newsPwdTextField;
+@property(nonatomic, strong) UITextField *confirmPwdTextField;
+
+@property(nonatomic, strong) UIView *oldPwdView;
+@property(nonatomic, strong) UIView *newsPwdView;
+@property(nonatomic, strong) UIView *confirmPwdView;
+
+@property(nonatomic, strong) RCDUIBarButtonItem *leftBtn;
+@property(nonatomic, strong) RCDUIBarButtonItem *rightBtn;
+
+@property(nonatomic, strong) NSDictionary *subViews;
 
 @end
 
@@ -24,22 +40,13 @@
   // Do any additional setup after loading the view.
 
   self.navigationItem.title = @"密码修改";
+  
+  [self initialize];
+  [self setNavigationButton];
+  
+  self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6"
+                                                    alpha:1.f];
 
-  self.OldPasswordView.layer.borderWidth = 0.5;
-  self.OldPasswordView.layer.borderColor = [HEXCOLOR(0xdfdfdd) CGColor];
-
-  self.NewPasswordView.layer.borderWidth = 0.5;
-  self.NewPasswordView.layer.borderColor = [HEXCOLOR(0xdfdfdd) CGColor];
-
-  self.ConfirmPasswordView.layer.borderWidth = 0.5;
-  self.ConfirmPasswordView.layer.borderColor = [HEXCOLOR(0xdfdfdd) CGColor];
-
-  self.DoneButton.layer.borderWidth = 0.5;
-  self.DoneButton.layer.borderColor = [HEXCOLOR(0x0181dd) CGColor];
-  self.DoneButton.layer.cornerRadius = 5.f;
-  [self.DoneButton addTarget:self
-                      action:@selector(saveNewPassword:)
-            forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -47,24 +54,213 @@
   // Dispose of any resources that can be recreated.
 }
 
+- (void)initialize
+{
+  self.oldPwdLabel = [self setLabel:@"原密码"];
+  self.oldPwdView = [self setSubView];
+  self.oldPwdTextField = [self setTextField:nil];
+  [self.view addSubview:self.oldPwdLabel];
+  [self.view addSubview:self.oldPwdView];
+  [self.oldPwdView addSubview:self.oldPwdTextField];
+  
+  self.newsPwdLabel = [self setLabel:@"新密码"];
+  self.newsPwdView = [self setSubView];
+  self.newsPwdTextField = [self setTextField:@"6-16位字符，区分大小写"];
+  [self.view addSubview:self.newsPwdLabel];
+  [self.view addSubview:self.newsPwdView];
+  [self.newsPwdView addSubview:self.newsPwdTextField];
+  
+  self.confirmPwdLabel = [self setLabel:@"确认密码"];
+  self.confirmPwdView = [self setSubView];
+  self.confirmPwdTextField = [self setTextField:@"6-16位字符，区分大小写"];
+  [self.view addSubview:self.confirmPwdLabel];
+  [self.view addSubview:self.confirmPwdView];
+  [self.confirmPwdView addSubview:self.confirmPwdTextField];
+  
+  [self setAutoLayout];
+}
+
+- (void)setNavigationButton {
+  self.leftBtn =
+  [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
+                                imageViewFrame:CGRectMake(-6, 4, 10, 17)
+                                   buttonTitle:@"设置"
+                                    titleColor:[UIColor whiteColor]
+                                    titleFrame:CGRectMake(9, 4, 85, 17)
+                                   buttonFrame:CGRectMake(0, 6, 87, 23)
+                                        target:self
+                                        action:@selector(clickBackBtn)];
+  self.navigationItem.leftBarButtonItem = self.leftBtn;
+  
+  self.rightBtn =
+  [[RCDUIBarButtonItem alloc] initWithbuttonTitle:@"完成"
+                                       titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                                      buttonFrame:CGRectMake(0, 0, 50, 30)
+                                           target:self
+                                           action:@selector(saveNewPassword:)];
+  [self.rightBtn buttonIsCanClick:NO
+                      buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                    barButtonItem:self.rightBtn];
+  self.navigationItem.rightBarButtonItems = [self.rightBtn
+                                             setTranslation:self.rightBtn
+                                             translation:-11];
+}
+
+
+- (UILabel *)setLabel:(NSString *)labelName {
+  UILabel *label = [[UILabel alloc] init];
+  label.text = labelName;
+  label.font = [UIFont systemFontOfSize:14.f];
+  label.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
+  label.translatesAutoresizingMaskIntoConstraints = NO;
+  return label;
+}
+
+
+- (UIView *)setSubView {
+  UIView *subView = [[UIView alloc] init];
+  subView.backgroundColor = [UIColor whiteColor];
+  subView.layer.borderWidth = 0.5;
+  subView.layer.borderColor = [[UIColor colorWithHexString:@"dfdfdd" alpha:1.f] CGColor];
+  subView.translatesAutoresizingMaskIntoConstraints = NO;
+  return subView;
+}
+
+- (UITextField *)setTextField:(NSString *)placeholder {
+  UITextField *subTextField = [[UITextField alloc] init];
+  subTextField.borderStyle = UITextBorderStyleNone;
+  subTextField.clearButtonMode = UITextFieldViewModeAlways;
+  subTextField.secureTextEntry = YES;
+  subTextField.font = [UIFont systemFontOfSize:14.f];
+  subTextField.textColor = [UIColor colorWithHexString:@"000000"
+                                                 alpha:1.f];
+  if (placeholder != nil) {
+    subTextField.placeholder = placeholder;
+  }
+  subTextField.delegate = self;
+  subTextField.translatesAutoresizingMaskIntoConstraints = NO;
+  return subTextField;
+}
+
+- (void)setAutoLayout {
+  self.subViews = NSDictionaryOfVariableBindings(_oldPwdLabel, _oldPwdView, _oldPwdTextField, _newsPwdLabel, _newsPwdView, _newsPwdTextField, _confirmPwdLabel, _confirmPwdView, _confirmPwdTextField);
+  
+  
+  [self.view
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"V:|-9-[_oldPwdLabel]-8-[_oldPwdView(44)]-9-[_newsPwdLabel]-8-[_newsPwdView(44)]-9-[_confirmPwdLabel]-8-[_confirmPwdView(44)]"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.view
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:|-10-[_oldPwdLabel]"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.view
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:|[_oldPwdView]|"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.view
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:|-10-[_newsPwdLabel]"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  [self.view
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:|[_newsPwdView]|"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.view
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:|-10-[_confirmPwdLabel]"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.view
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:|[_confirmPwdView]|"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.oldPwdView
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:|-9-[_oldPwdTextField]-3-|"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.oldPwdView
+   addConstraint:[NSLayoutConstraint constraintWithItem:_oldPwdTextField
+                                              attribute:NSLayoutAttributeCenterY
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:self.oldPwdView
+                                              attribute:NSLayoutAttributeCenterY
+                                             multiplier:1
+                                               constant:0]];
+  
+  [self.newsPwdView
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:|-9-[_newsPwdTextField]-3-|"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.newsPwdView
+   addConstraint:[NSLayoutConstraint constraintWithItem:_newsPwdTextField
+                                              attribute:NSLayoutAttributeCenterY
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:self.newsPwdView
+                                              attribute:NSLayoutAttributeCenterY
+                                             multiplier:1
+                                               constant:0]];
+  
+  [self.confirmPwdView
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:|-9-[_confirmPwdTextField]-3-|"
+                   options:0
+                   metrics:nil
+                   views:self.subViews]];
+  
+  [self.confirmPwdView
+   addConstraint:[NSLayoutConstraint constraintWithItem:_confirmPwdTextField
+                                              attribute:NSLayoutAttributeCenterY
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:self.confirmPwdView
+                                              attribute:NSLayoutAttributeCenterY
+                                             multiplier:1
+                                               constant:0]];
+}
+
 - (void)saveNewPassword:(id)sender {
   __weak __typeof(&*self) weakSelf = self;
   NSString *userPwd = [DEFAULTS objectForKey:@"userPwd"];
-  if ([userPwd isEqualToString:self.oldPwd.text]) {
-    if (self.newsPwd.text.length > 20) {
+  if ([userPwd isEqualToString:self.oldPwdTextField.text]) {
+    if (self.newsPwdTextField.text.length > 20) {
       [self AlertShow:@"密码不能大于20位!"];
       return;
     }
-    if (self.newsPwd.text.length == 0) {
+    if (self.newsPwdTextField.text.length == 0) {
       [self AlertShow:@"密码不能为空!"];
       return;
     } else {
-      if ([self.newsPwd.text isEqualToString:self.confirmPwd.text]) {
-        [AFHttpTool changePassword:self.oldPwd.text
-            newPwd:self.newsPwd.text
+      if ([self.newsPwdTextField.text isEqualToString:self.confirmPwdTextField.text]) {
+        [AFHttpTool changePassword:self.oldPwdTextField.text
+            newPwd:self.newsPwdTextField.text
             success:^(id response) {
               if ([response[@"code"] intValue] == 200) {
-                [DEFAULTS setObject:self.newsPwd.text forKey:@"userPwd"];
+                [DEFAULTS setObject:self.newsPwdTextField.text forKey:@"userPwd"];
                 [DEFAULTS synchronize];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
               }
@@ -92,15 +288,17 @@
   [alert show];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little
-preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void) clickBackBtn {
+  [self.navigationController popViewControllerAnimated:YES];
 }
-*/
 
+#pragma mark - UITextField Delegate
+- (BOOL)textField:(UITextField *)textField
+shouldChangeCharactersInRange:(NSRange)range
+replacementString:(NSString *)string {
+  [self.rightBtn buttonIsCanClick:YES
+                      buttonColor:[UIColor whiteColor]
+                    barButtonItem:self.rightBtn];
+  return YES;
+}
 @end

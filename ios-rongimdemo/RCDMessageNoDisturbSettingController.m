@@ -14,17 +14,20 @@
 @property(nonatomic, strong) NSIndexPath *indexPath;
 @property(nonatomic, copy) NSString *start;
 @property(nonatomic, copy) NSString *end;
+@property(nonatomic, assign) BOOL displaySetting;
+@property(nonatomic, strong) UIDatePicker *datePicker;
 @end
 
 @implementation RCDMessageNoDisturbSettingController
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  self.displaySetting = NO;
   [self getNoDisturbStaus];
-  [self.tableView
-      selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]
-                  animated:YES
-            scrollPosition:UITableViewScrollPositionTop];
-  _indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+//  [self.tableView
+//      selectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]
+//                  animated:YES
+//            scrollPosition:UITableViewScrollPositionTop];
+//  _indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
 }
 
 - (void)getNoDisturbStaus {
@@ -39,8 +42,8 @@
     if (spansMin > 0) {
       dispatch_async(dispatch_get_main_queue(), ^{
         NSIndexPath *startIndexPath =
-            [NSIndexPath indexPathForRow:0 inSection:1];
-        NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
+            [NSIndexPath indexPathForRow:1 inSection:0];
+        NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
         UITableViewCell *startCell =
             [self.tableView cellForRowAtIndexPath:startIndexPath];
         UITableViewCell *endCell =
@@ -48,14 +51,16 @@
         weakSelf.swch.on = YES;
         startCell.detailTextLabel.text = startTime;
         endCell.detailTextLabel.text = endTime;
+        self.displaySetting = YES;
+        [self.tableView reloadData];
       });
     } else {
       dispatch_async(dispatch_get_main_queue(), ^{
         NSString *startT = [UserDefaults objectForKey:@"startTime"];
         NSString *endT = [UserDefaults objectForKey:@"endTime"];
         NSIndexPath *startIndexPath =
-            [NSIndexPath indexPathForRow:0 inSection:1];
-        NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
+            [NSIndexPath indexPathForRow:1 inSection:0];
+        NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
         UITableViewCell *startCell =
             [self.tableView cellForRowAtIndexPath:startIndexPath];
         UITableViewCell *endCell =
@@ -64,8 +69,8 @@
           startCell.detailTextLabel.text = startT;
           endCell.detailTextLabel.text = endT;
         } else {
-          startCell.detailTextLabel.text = @"00:00:00";
-          endCell.detailTextLabel.text = @"23:59:59";
+          startCell.detailTextLabel.text = @"23:00:00";
+          endCell.detailTextLabel.text = @"07:00:00";
         }
         weakSelf.swch.on = NO;
       });
@@ -76,9 +81,9 @@
           NSString *startT = [UserDefaults objectForKey:@"startTime"];
           NSString *endT = [UserDefaults objectForKey:@"endTime"];
           NSIndexPath *startIndexPath =
-              [NSIndexPath indexPathForRow:0 inSection:1];
+              [NSIndexPath indexPathForRow:1 inSection:0];
           NSIndexPath *endIndexPath =
-              [NSIndexPath indexPathForRow:1 inSection:1];
+              [NSIndexPath indexPathForRow:2 inSection:0];
           UITableViewCell *startCell =
               [self.tableView cellForRowAtIndexPath:startIndexPath];
           UITableViewCell *endCell =
@@ -87,8 +92,8 @@
             startCell.detailTextLabel.text = startT;
             endCell.detailTextLabel.text = endT;
           } else {
-            startCell.detailTextLabel.text = @"00:00:00";
-            endCell.detailTextLabel.text = @"23:59:59";
+            startCell.detailTextLabel.text = @"23:00:00";
+            endCell.detailTextLabel.text = @"07:00:00";
           }
           weakSelf.swch.on = NO;
         });
@@ -99,13 +104,19 @@
   [super viewDidLoad];
   _swch = [[UISwitch alloc] init];
   self.title = @"免打扰设置";
+  self.datePicker = [[UIDatePicker alloc] init];
+  self.datePicker.datePickerMode = UIDatePickerModeCountDownTimer;
+  [self.datePicker setDate:[NSDate date]];
+  [self.datePicker addTarget:self
+                      action:@selector(datePickerValueChanged:)
+            forControlEvents:UIControlEventValueChanged];
   self.tableView.tableFooterView = [UIView new];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-  NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-  NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
+  NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+  NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
   UITableViewCell *startCell =
       [self.tableView cellForRowAtIndexPath:startIndexPath];
   UITableViewCell *endCell =
@@ -160,22 +171,22 @@
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  return 2;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section {
   if (section == 0)
-    return 1;
-  return 3;
+    return 3;
+  return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView
     heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   if (indexPath.section == 0) {
-    return 200;
+    return 44;
   }
-  return 44;
+  return 200;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -187,43 +198,47 @@
                                   reuseIdentifier:@"MyCellReuseIdentifier"];
   }
   if (indexPath.section == 0) {
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    UIDatePicker *datePicker = [[UIDatePicker alloc] init];
-    datePicker.datePickerMode = UIDatePickerModeCountDownTimer;
-    [datePicker setDate:[NSDate date]];
-    [datePicker addTarget:self
-                   action:@selector(datePickerValueChanged:)
-         forControlEvents:UIControlEventValueChanged];
-    [cell.contentView addSubview:datePicker];
-  } else {
     switch (indexPath.row) {
-    case 0: {
-      cell.textLabel.text = @"开始时间";
-    } break;
-    case 1: {
-      cell.textLabel.text = @"结束时间";
-    } break;
-    default: {
-      cell.selectionStyle = UITableViewCellSelectionStyleNone;
-      cell.textLabel.text = @"屏蔽所有消息";
-      [_swch setFrame:CGRectMake(self.view.frame.size.width -
-                                     _swch.frame.size.width - 15,
-                                 6, 0, 0)];
-      [_swch addTarget:self
-                    action:@selector(setSwitchState:)
-          forControlEvents:UIControlEventValueChanged];
-      [cell.contentView addSubview:_swch];
-    } break;
+      case 0: {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.text = @"开启消息免打扰";
+        [_swch setFrame:CGRectMake(self.view.frame.size.width -
+                                   _swch.frame.size.width - 15,
+                                   6, 0, 0)];
+        [_swch addTarget:self
+                  action:@selector(setSwitchState:)
+        forControlEvents:UIControlEventValueChanged];
+        [cell.contentView addSubview:_swch];
+      } break;
+      case 1: {
+        cell.textLabel.text = @"开始时间";
+      } break;
+      case 2: {
+        cell.textLabel.text = @"结束时间";
+      } break;
+      default:
+        break;
     }
+  } else {
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell.contentView addSubview:self.datePicker];
   }
+  if (self.displaySetting == NO) {
+    cell.hidden = YES;
+    if (indexPath.section == 0 && indexPath.row == 0) {
+      cell.hidden = NO;
+    }
+    return cell;
+  }
+  cell.hidden = NO;
   return cell;
 }
 
 #pragma mark - Table view Delegate
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  if ((indexPath.section == 1 && indexPath.row == 0) ||
-      (indexPath.section == 1 && indexPath.row == 1)) {
+  if ((indexPath.section == 0 && indexPath.row == 1) ||
+      (indexPath.section == 0 && indexPath.row == 2)) {
     _indexPath = indexPath;
   }
 }
@@ -238,8 +253,8 @@
   NSString *currentDateStr = [dateFormatter stringFromDate:datePicker.date];
   UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_indexPath];
   cell.detailTextLabel.text = currentDateStr;
-  NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-  NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
+  NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+  NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
   UITableViewCell *startCell =
       [self.tableView cellForRowAtIndexPath:startIndexPath];
   UITableViewCell *endCell =
@@ -268,8 +283,14 @@
 
 #pragma mark - setSwitchState
 - (void)setSwitchState:(UISwitch *)swich {
-  NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-  NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
+  if (swich.on == YES) {
+    self.displaySetting = YES;
+  } else {
+    self.displaySetting = NO;
+  }
+  [self.tableView reloadData];
+  NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+  NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
   UITableViewCell *startCell =
       [self.tableView cellForRowAtIndexPath:startIndexPath];
   UITableViewCell *endCell =

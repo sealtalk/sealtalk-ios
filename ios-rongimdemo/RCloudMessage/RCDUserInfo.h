@@ -19,4 +19,6 @@
 @property(nonatomic, strong) NSString *status;
 
 @property(nonatomic, strong) NSString *updatedAt;
+
+@property(nonatomic, strong) NSString *displayName;
 @end

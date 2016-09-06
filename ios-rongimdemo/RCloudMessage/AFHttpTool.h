@@ -220,4 +220,15 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
 + (void)getVersionsuccess:(void (^)(id response))success
                   failure:(void (^)(NSError *err))failure;
 
+//设置好友备注
++ (void)setFriendDisplayName:(NSString *)friendId
+                 displayName:(NSString *)displayName
+                     success:(void (^)(id response))success
+                     failure:(void (^)(NSError *err))failure;
+
+//获取用户详细资料
++ (void)getFriendDetailsByID:(NSString *)friendId
+                     success:(void (^)(id response))success
+                     failure:(void (^)(NSError *err))failure;
+
 @end

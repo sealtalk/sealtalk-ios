@@ -10,7 +10,6 @@
 #import "RCDUserInfo.h"
 
 @implementation SortForTime
-
 - (NSMutableArray *)sortForUpdateAt:(NSMutableArray *)UserInfoList order:(NSComparisonResult)order{
 //  NSMutableArray *sortedList = [NSMutableArray new];
 //  NSMutableDictionary *tempDic = [NSMutableDictionary new];

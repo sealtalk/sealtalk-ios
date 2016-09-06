@@ -17,6 +17,7 @@
 #import "RCDSearchResultTableViewCell.h"
 #import "RCDUserInfo.h"
 #import "UIImageView+WebCache.h"
+#import "RCDUserInfoManager.h"
 
 @interface RCDSearchFriendViewController () <
     UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,
@@ -153,11 +154,29 @@
     [RCDHTTPTOOL searchUserByPhone:searchText
                           complete:^(NSMutableArray *result) {
                             if (result) {
-                              [_searchResult addObjectsFromArray:result];
-                              dispatch_async(dispatch_get_main_queue(), ^{
-                                [self.searchDisplayController
-                                        .searchResultsTableView reloadData];
-                              });
+                              for (RCDUserInfo *user in result) {
+                                if ([user.userId
+                                     isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+                                  [[RCDUserInfoManager shareInstance] getUserInfo:user.userId
+                                                                       completion:^(RCUserInfo *user) {
+                                                                         [_searchResult addObject:user];
+                                                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                                                           [self.searchDisplayController
+                                                                            .searchResultsTableView reloadData];
+                                                                         });
+                                                                       }];
+                                } else {
+                                [[RCDUserInfoManager shareInstance] getFriendInfo:user.userId
+                                                                       completion:^(RCUserInfo *user) {
+                                                                         [_searchResult addObject:user];
+                                                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                                                           [self.searchDisplayController
+                                                                            .searchResultsTableView reloadData];
+                                                                         });
+                                                                       }];
+                                }
+                               
+                              }
                             }
                           }];
   }
