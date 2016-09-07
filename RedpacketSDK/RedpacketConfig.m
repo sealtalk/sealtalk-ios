@@ -14,9 +14,6 @@
 #import "YZHRedpacketBridge.h"
 #import "RedpacketMessageModel.h"
 
-//	*此为演示地址* App需要修改为自己AppServer上的地址, 数据格式参考此地址给出的格式。
-static NSString *requestUrl = @"https://rpv2.yunzhanghu.com/api/sign?duid=";
-
 @interface RedpacketConfig ()
 
 @end
@@ -71,8 +68,8 @@ static NSString *requestUrl = @"https://rpv2.yunzhanghu.com/api/sign?duid=";
         
         // 获取应用自己的签名字段。实际应用中需要开发者自行提供相应在的签名计算服务
         
-        NSString *urlStr = [NSString stringWithFormat:@"%@%@",requestUrl, userId];
-        NSURL *url = [NSURL URLWithString:urlStr];
+        NSString *urlStr = [NSString stringWithFormat:@"https://rpv2.yunzhanghu.com/api/sign?duid=%@&dcode=1101#testrongyun", userId];
+        NSURL *url = [NSURL URLWithString:[urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         
         [[[AFHTTPRequestOperationManager manager] HTTPRequestOperationWithRequest:request
