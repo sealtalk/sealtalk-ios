@@ -84,11 +84,6 @@
                                                               self.redpacketControl.converstationInfo = user;
                                                           }];
         }
-//        else if (ConversationType_DISCUSSION == self.conversationType
-//                 || ConversationType_GROUP == self.conversationType) {
-//            // 设置群发红包
-//            
-//        }
         
         self.redpacketControl.converstationInfo = user;
         
@@ -151,21 +146,30 @@
         [self appendAndDisplayMessage:m];
     }
     else {
-//        if (NO == self.redpacketControl.converstationInfo.isGroup) {//如果不是群红包
-//            [self sendMessage:message pushContent:nil];
-//        }
-//        else {
-            RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
-                                                               targetId:self.targetId
-                                                           senderUserId:self.conversation.senderUserId
-                                                             sendStatus:SentStatus_SENT
-                                                                content:message];
-            [self appendAndDisplayMessage:m];
-            
-            // 按照 android 的需求修改发送红包的功能
-            RedpacketTakenOutgoingMessage *m2 = [RedpacketTakenOutgoingMessage messageWithRedpacket:redpacket];
-            [self sendMessage:m2 pushContent:nil];
-//        }
+        switch (redpacket.redpacketType) {
+            case RedpacketTypeSingle: {
+                [self sendMessage:message pushContent:nil];
+                break;
+            }
+            case RedpacketTypeGroup:
+            case RedpacketTypeRand:
+            case RedpacketTypeAvg:
+            case RedpacketTypeRandpri:
+            case RedpacketTypeMember:
+            case RedpacketTypeAdvertisement: {
+                RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
+                                                                   targetId:self.targetId
+                                                               senderUserId:self.conversation.senderUserId
+                                                                 sendStatus:SentStatus_SENT
+                                                                    content:message];
+                [self appendAndDisplayMessage:m];
+                
+                // 按照 android 的需求修改发送红包的功能
+                RedpacketTakenOutgoingMessage *m2 = [RedpacketTakenOutgoingMessage messageWithRedpacket:redpacket];
+                [self sendMessage:m2 pushContent:nil];
+                break;
+            }
+        }
     }
 }
 

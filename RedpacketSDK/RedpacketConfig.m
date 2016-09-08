@@ -65,11 +65,12 @@
 {
     NSString *userId = [RCIM sharedRCIM].currentUserInfo.userId;
     if(userId && [[YZHRedpacketBridge sharedBridge] isNeedUpdateSignWithUserId:userId]) {
-        
+    
         // 获取应用自己的签名字段。实际应用中需要开发者自行提供相应在的签名计算服务
         
         NSString *urlStr = [NSString stringWithFormat:@"https://rpv2.yunzhanghu.com/api/sign?duid=%@&dcode=1101#testrongyun", userId];
-        NSURL *url = [NSURL URLWithString:[urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlStr];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         
         [[[AFHTTPRequestOperationManager manager] HTTPRequestOperationWithRequest:request
