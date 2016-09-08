@@ -101,7 +101,7 @@
         } else {
 //            [self checkNewVersion];
         }
-    }else if (indexPath.section == 2 && indexPath.row == 2){
+    }else if (indexPath.section == 1 && indexPath.row == 1){
 #warning 红包相关
         RedpacketViewControl * redpacketControl = [[RedpacketViewControl alloc] init];
         redpacketControl.conversationController = self;
