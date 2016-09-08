@@ -63,7 +63,7 @@
   //在info.plist中打开Application supports iTunes file sharing
   //    if (![[[UIDevice currentDevice] model] isEqualToString:@"iPhone
   //    Simulator"]) {
-          [self redirectNSlogToDocumentFolder];
+//          [self redirectNSlogToDocumentFolder];
   //    }
   [self umengTrack];
 
