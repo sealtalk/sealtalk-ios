@@ -311,7 +311,7 @@
         case REDPACKET_TAG: {
             switch (self.conversationType) {
                 case ConversationType_PRIVATE:
-                    [self.redpacketControl presentRedPacketViewController];
+                    [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerSingle memberCount:0];
                     break;
                 case ConversationType_DISCUSSION:
                 {
@@ -336,9 +336,10 @@
                                                                                                        }];
                                                                  
                                                              }
-                                                             [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMembers:discussion.memberIdList];
+
+                                                             [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:discussion.memberIdList.count];
                                                          } error:^(RCErrorCode status) {
-                                                             [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMembers:@[]];
+                                                             [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:0];
                                                          }];
                 }
                     break;
@@ -355,7 +356,7 @@
                         }
                     
                     }];
-                    [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMembers:self.usersArray];
+                     [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:self.usersArray.count];
                 }
                     break;
                 default:
