@@ -289,7 +289,7 @@
             }
             RedpacketMessageModel * redPacketModel = ((RedpacketMessage *)model.content).redpacket;
             
-            [[RCDHttpTool shareInstance] getUserInfoByUserID:redPacketModel.toRedpacketReceiver.userId
+            [[RCDHttpTool shareInstance] getUserInfoByUserID:redPacketModel.redpacketReceiver.userId
                                                   completion:^(RCUserInfo *user) {
                                                       redPacketModel.toRedpacketReceiver.userNickname = user.name?user.name:user.userId;
                                                       [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
@@ -311,7 +311,7 @@
         case REDPACKET_TAG: {
             switch (self.conversationType) {
                 case ConversationType_PRIVATE:
-                    [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerSingle memberCount:0];
+                    [self.redpacketControl presentRedPacketViewController];
                     break;
                 case ConversationType_DISCUSSION:
                 {
@@ -336,9 +336,9 @@
                                                                                                        }];
                                                                  
                                                              }
-                                                             [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:self.usersArray.count];
+                                                             [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMembers:discussion.memberIdList];
                                                          } error:^(RCErrorCode status) {
-                                                             [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:0];
+                                                             [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMembers:@[]];
                                                          }];
                 }
                     break;
@@ -355,7 +355,7 @@
                         }
                     
                     }];
-                    [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:self.usersArray.count];
+                    [self.redpacketControl presentRedPacketMoreViewControllerWithGroupMembers:self.usersArray];
                 }
                     break;
                 default:
