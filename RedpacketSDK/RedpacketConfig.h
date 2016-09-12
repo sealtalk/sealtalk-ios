@@ -13,6 +13,5 @@
 
 + (instancetype)sharedConfig;
 + (void)config;
-+ (void)reconfig;
-+ (void)logout;
+
 @end

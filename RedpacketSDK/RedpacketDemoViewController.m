@@ -41,7 +41,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-#pragma mark - 设置红包功能
     self.usersArray = [NSMutableArray array];
     // 注册消息显示 Cell
     [self registerClass:[RedpacketMessageCell class] forCellWithReuseIdentifier:YZHRedpacketMessageTypeIdentifier];
@@ -54,10 +53,6 @@
         // 设置红包插件界面
         UIImage *icon = [UIImage imageNamed:REDPACKET_BUNDLE(@"redpacktSendBtn")];
         assert(icon);
-//        [self.pluginBoardView insertItemWithImage:icon
-//                                            title:NSLocalizedString(@"红包", @"红包")
-//                                          atIndex:0
-//                                              tag:REDPACKET_TAG];
         [self.pluginBoardView insertItemWithImage:icon title:NSLocalizedString(@"红包", @"红包") tag:REDPACKET_TAG];
         // 设置红包功能相关的参数
         self.redpacketControl = [[RedpacketViewControl alloc] init];
@@ -100,11 +95,8 @@
         }];
         
         // 通知 红包 SDK 刷新 Token
-        [[YZHRedpacketBridge sharedBridge] reRequestRedpacketUserToken:^(NSInteger code, NSString *msg) {
-            //to do token失效重请求策略
-        }];
+        [[YZHRedpacketBridge sharedBridge] reRequestRedpacketUserToken:nil];
     }
-#pragma mark -
 }
 
 - (void)didReceiveMemoryWarning {

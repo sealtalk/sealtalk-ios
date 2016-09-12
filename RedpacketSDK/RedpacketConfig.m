@@ -36,16 +36,6 @@
     [[self sharedConfig] config];
 }
 
-+ (void)logout
-{
-//    [[YZHRedpacketBridge sharedBridge] redpacketUserLoginOut];
-}
-
-+ (void)reconfig
-{
-    [self logout];
-    [[self sharedConfig] config];
-}
 
 - (void)configWithSignDict:(NSDictionary *)dict
 {
