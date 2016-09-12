@@ -91,9 +91,9 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 2 && indexPath.row == 0) {
+    if (indexPath.section == 3 && indexPath.row == 0) {
         [self chatWithCustomerService];
-    } else if (indexPath.section == 3 && indexPath.row == 0) {
+    } else if (indexPath.section == 4 && indexPath.row == 0) {
         if (self.hasNewVersion) {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.versionUrl]];
             self.hasNewVersion = NO;
@@ -101,7 +101,7 @@
         } else {
 //            [self checkNewVersion];
         }
-    }else if (indexPath.section == 1 && indexPath.row == 1){
+    }else if (indexPath.section == 2){
 #warning 红包相关
         RedpacketViewControl * redpacketControl = [[RedpacketViewControl alloc] init];
         redpacketControl.conversationController = self;
