@@ -253,8 +253,7 @@
     }
   }
       failure:^(NSError *err) {
-        NSMutableArray *tempArr = [NSMutableArray new];
-        tempArr = [[RCDataBaseManager shareInstance] getAllGroup];
+        NSMutableArray *tempArr = [[RCDataBaseManager shareInstance] getAllGroup];
         for (RCDGroupInfo *group in tempArr) {
           if (!group.portraitUri || group.portraitUri.length <= 0) {
             group.portraitUri = [RCDUtilities defaultGroupPortrait:group];
@@ -464,8 +463,6 @@
           } else {
             friendList(list);
           }
-        } else {
-          friendList(nil);
         }
       }
       failure:^(id response) {
@@ -506,7 +503,7 @@
               userList(list);
             });
           }
-        } else {
+        } else if(userList) {
           userList(nil);
         }
       }
@@ -522,12 +519,14 @@
           dispatch_async(dispatch_get_main_queue(), ^(void) {
             result(YES);
           });
-        } else {
+        } else if (result) {
           result(NO);
         }
       }
       failure:^(NSError *err) {
-        result(NO);
+        if(result) {
+          result(NO);
+        }
       }];
 }
 
@@ -535,11 +534,11 @@
                           complete:(void (^)(BOOL))result {
   [AFHttpTool processInviteFriendRequest:userId
       success:^(id response) {
-        if ([response[@"code"] intValue] == 200) {
+        if (result && [response[@"code"] intValue] == 200) {
           dispatch_async(dispatch_get_main_queue(), ^(void) {
             result(YES);
           });
-        } else {
+        } else if (result){
           result(NO);
         }
       }
@@ -555,9 +554,9 @@
   [AFHttpTool addToBlacklist:userId
       success:^(id response) {
         NSString *code = [NSString stringWithFormat:@"%@", response[@"code"]];
-        if ([code isEqualToString:@"200"]) {
+        if (result && [code isEqualToString:@"200"]) {
           result(YES);
-        } else {
+        } else if(result) {
           result(NO);
         }
       }
@@ -573,9 +572,9 @@
   [AFHttpTool removeToBlacklist:userId
       success:^(id response) {
         NSString *code = [NSString stringWithFormat:@"%@", response[@"code"]];
-        if ([code isEqualToString:@"200"]) {
+        if (result && [code isEqualToString:@"200"]) {
           result(YES);
-        } else {
+        } else if(result) {
           result(NO);
         }
       }
@@ -589,15 +588,17 @@
 - (void)getBlacklistcomplete:(void (^)(NSMutableArray *))blacklist {
   [AFHttpTool getBlacklistsuccess:^(id response) {
     NSString *code = [NSString stringWithFormat:@"%@", response[@"code"]];
-    if ([code isEqualToString:@"200"]) {
+    if (blacklist && [code isEqualToString:@"200"]) {
       NSMutableArray *result = response[@"result"];
       blacklist(result);
-    } else {
+    } else if(blacklist) {
       blacklist(nil);
     }
   }
       failure:^(NSError *err) {
-        blacklist(nil);
+        if(blacklist) {
+          blacklist(nil);
+        }
       }];
 }
 
@@ -698,10 +699,9 @@
     if (response) {
       NSDictionary *iOSResult = response[@"iOS"];
       NSString *sealtalkBuild = iOSResult[@"build"];
-      NSString *applistURL = iOSResult[@"url"];
-      applistURL = @"https://cdn.ronghub.com/app.plist";
+      NSString *applistURL = @"https://cdn.ronghub.com/app.plist";
       
-      NSDictionary *result = [[NSDictionary alloc] init];
+      NSDictionary *result;
       NSString *currentBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
       
       NSDate *currentBuildDate = [self stringToDate:currentBuild];

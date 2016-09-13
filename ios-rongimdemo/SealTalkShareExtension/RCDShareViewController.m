@@ -1,6 +1,6 @@
 //
 //  RCDShareViewController.m
-//  SealTalkShareExtention
+//  SealTalkShareExtension
 //
 //  Created by 张改红 on 16/8/4.
 //  Copyright © 2016年 RongCloud. All rights reserved.

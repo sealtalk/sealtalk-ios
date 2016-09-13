@@ -71,10 +71,10 @@ fi
 
 if [ -n "${MANUAL_DEMO_SERVER_URL}" ]; then
     sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/'$MANUAL_DEMO_SERVER_URL'\/"/g' ./RCloudMessage/AFHttpTool.m
-    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/'$MANUAL_DEMO_SERVER_URL'\/"/g' ./SealTalkShareExtention/RCDShareChatListController.m
+    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/'$MANUAL_DEMO_SERVER_URL'\/"/g' ./SealTalkShareExtension/RCDShareChatListController.m
 elif [ ${ENV_FLAG} == "dev" ]; then
     sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/api.hitalk.im\/"/g' ./RCloudMessage/AFHttpTool.m
-    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/api.hitalk.im\/"/g' ./SealTalkShareExtention/RCDShareChatListController.m
+    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/api.hitalk.im\/"/g' ./SealTalkShareExtension/RCDShareChatListController.m
 fi
 
 if [ -n "${MANUAL_NAVI_SERVER_URL}" ]; then

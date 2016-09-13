@@ -41,7 +41,7 @@
   if (dataDic) {
 //    NSURL *url = [NSURL URLWithString:dataDic[@"portraitUri"]];
 //    NSData *data = [NSData dataWithContentsOfURL:url];
-    UIImage *image = [[UIImage alloc] init];
+    UIImage *image;
     if (1) {//todo
       DefaultPortraitView *portraitView = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
       [portraitView setColorAndLabel:dataDic[@"targetId"]

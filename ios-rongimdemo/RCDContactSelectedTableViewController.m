@@ -91,6 +91,7 @@ MBProgressHUD *hud;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
   [self.rightBtn buttonIsCanClick:YES
                       buttonColor:[UIColor whiteColor]
                     barButtonItem:self.rightBtn];

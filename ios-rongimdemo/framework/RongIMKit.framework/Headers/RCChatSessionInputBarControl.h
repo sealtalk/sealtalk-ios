@@ -18,8 +18,8 @@
 #define PLUGIN_BOARD_ITEM_ALBUM_TAG      1001
 #define PLUGIN_BOARD_ITEM_CAMERA_TAG     1002
 #define PLUGIN_BOARD_ITEM_LOCATION_TAG   1003
-//#define PLUGIN_BOARD_ITEM_VOIP_TAG       1101
-//#define PLUGIN_BOARD_ITEM_VIDEO_VOIP_TAG 1102
+#define PLUGIN_BOARD_ITEM_VOIP_TAG       1101
+#define PLUGIN_BOARD_ITEM_VIDEO_VOIP_TAG 1102
 #define PLUGIN_BOARD_ITEM_FILE_TAG       1006
 
 /*!
@@ -330,6 +330,8 @@ __deprecated_msg("已废弃，请勿使用。");
  
  @param status          输入框状态
  @param animated        是否使用动画效果
+ 
+ @discussion 如果需要设置，请在输入框执行containerViewWillAppear之后（即聊天界面viewWillAppear之后）。
  */
 -(void)updateStatus:(KBottomBarStatus)status animated:(BOOL)animated;
 
@@ -524,5 +526,13 @@ __deprecated_msg("已废弃，请勿使用。");
  @param functionTag 功能标识
  */
 - (void)getSelectingUserIdList:(void (^)(NSArray<NSString *> *userIdList))completion functionTag:(NSInteger)functionTag;
+
+/*!
+ 获取待选择的UserId的用户信息
+ 
+ @param userId           用户ID
+ @return 用户信息
+ */
+- (RCUserInfo *)getSelectingUserInfo:(NSString *)userId;
 
 @end

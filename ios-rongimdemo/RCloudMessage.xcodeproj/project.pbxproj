@@ -254,7 +254,7 @@
 			containerPortal = E4D40F201A031F460045097C /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 17D7D1D71D534F56000AEC54;
-			remoteInfo = SealTalkShareExtention;
+			remoteInfo = SealTalkShareExtension;
 		};
 		A6447A161B1DBE6500EA2CEE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -535,7 +535,6 @@
 		A6BD04101B1E941D00ACAF17 /* RCloudMessage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = RCloudMessage.entitlements; path = RCloudMessage/RCloudMessage.entitlements; sourceTree = SOURCE_ROOT; };
 		A6BD04171B1EEA6B00ACAF17 /* RongIMLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongIMLib.framework; path = framework/RongIMLib.framework; sourceTree = SOURCE_ROOT; };
 		A6CF8A341BD4CB6E00F3EA1A /* RCConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = RCConfig.plist; path = framework/RCConfig.plist; sourceTree = SOURCE_ROOT; };
-		A6EA1F051D67164E00E89DF1 /* SealTalkShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = SealTalkShareExtension.entitlements; path = ../SealTalkShareExtension.entitlements; sourceTree = "<group>"; };
 		A6EFAB9E1BB0ED94007E9D67 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		A6EFABA21BB0EDD7007E9D67 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
@@ -731,6 +730,7 @@
 		F836AB131C226A7F00A1A5D2 /* RCDTestMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDTestMessageCell.h; path = RCloudMessage/RCDTestMessageCell.h; sourceTree = SOURCE_ROOT; };
 		F836AB141C226A7F00A1A5D2 /* RCDTestMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDTestMessageCell.m; path = RCloudMessage/RCDTestMessageCell.m; sourceTree = SOURCE_ROOT; };
 		F880EA781D0808B300FD5CC4 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		F8944F731D7FC3D100111E3A /* SealTalkShareExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = SealTalkShareExtension.entitlements; sourceTree = "<group>"; };
 		F8AD4A541CAE56A4006C1CBB /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		F8AD4A561CAE5702006C1CBB /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		F8AD4A581CAE5766006C1CBB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -800,9 +800,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		17D7D1D91D534F56000AEC54 /* SealTalkShareExtention */ = {
+		17D7D1D91D534F56000AEC54 /* SealTalkShareExtension */ = {
 			isa = PBXGroup;
 			children = (
+				F8944F731D7FC3D100111E3A /* SealTalkShareExtension.entitlements */,
 				17D7D1DA1D534F56000AEC54 /* RCDShareViewController.h */,
 				17D7D1DB1D534F56000AEC54 /* RCDShareViewController.m */,
 				17D7D1EB1D534FCD000AEC54 /* RCDShareChatListController.h */,
@@ -812,7 +813,7 @@
 				F82F1ACD1D62F3C50039AE45 /* Utilities */,
 				F82F1ACE1D62F3DA0039AE45 /* Supporting Files */,
 			);
-			path = SealTalkShareExtention;
+			path = SealTalkShareExtension;
 			sourceTree = "<group>";
 		};
 		46A831B81AC014B2001A533F /* FindPsw */ = {
@@ -1335,14 +1336,13 @@
 		E4D40F1F1A031F460045097C = {
 			isa = PBXGroup;
 			children = (
-				A6EA1F051D67164E00E89DF1 /* SealTalkShareExtension.entitlements */,
 				98F973D31D66B8ED007F1483 /* RCDUserInfoManager.h */,
 				98F973D41D66B8ED007F1483 /* RCDUserInfoManager.m */,
 				A6447A351B1DC0F400EA2CEE /* RCWatchKitCommon */,
 				E4D40F2A1A031F460045097C /* RCloudMessage */,
 				A6447A061B1DBE6500EA2CEE /* 融云 Demo WatchKit Extension */,
 				A6447A181B1DBE6500EA2CEE /* 融云 Demo WatchKit App */,
-				17D7D1D91D534F56000AEC54 /* SealTalkShareExtention */,
+				17D7D1D91D534F56000AEC54 /* SealTalkShareExtension */,
 				E4C4E7E71A0A309100140067 /* Frameworks */,
 				E4D40F291A031F460045097C /* Products */,
 			);
@@ -1606,7 +1606,6 @@
 		F82F1ACE1D62F3DA0039AE45 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A6EA1F051D67164E00E89DF1 /* SealTalkShareExtension.entitlements */,
 				17D7D1DD1D534F56000AEC54 /* MainInterface.storyboard */,
 				17D7D1E01D534F56000AEC54 /* Info.plist */,
 				17BE51CE1D5828EC0001418D /* check.png */,
@@ -1641,7 +1640,7 @@
 			dependencies = (
 			);
 			name = SealTalkShareExtension;
-			productName = SealTalkShareExtention;
+			productName = SealTalkShareExtension;
 			productReference = 17D7D1D81D534F56000AEC54 /* SealTalkShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
@@ -2075,7 +2074,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SealTalkShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -2083,7 +2081,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				INFOPLIST_FILE = SealTalkShareExtention/Info.plist;
+				INFOPLIST_FILE = SealTalkShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_LDFLAGS = "";
@@ -2098,7 +2096,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SealTalkShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2106,7 +2103,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				INFOPLIST_FILE = SealTalkShareExtention/Info.plist;
+				INFOPLIST_FILE = SealTalkShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_LDFLAGS = "";
@@ -2121,7 +2118,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SealTalkShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2129,7 +2125,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				INFOPLIST_FILE = SealTalkShareExtention/Info.plist;
+				INFOPLIST_FILE = SealTalkShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_LDFLAGS = "";
@@ -2144,7 +2140,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SealTalkShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2152,7 +2147,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				INFOPLIST_FILE = SealTalkShareExtention/Info.plist;
+				INFOPLIST_FILE = SealTalkShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_LDFLAGS = "";

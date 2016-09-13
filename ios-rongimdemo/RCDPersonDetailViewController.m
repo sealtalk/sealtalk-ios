@@ -102,6 +102,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+  [super viewWillAppear:animated];
   if (![self.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
     self.friendInfo = [[RCDataBaseManager shareInstance] getFriendInfo:self.userId];
     NSString *remarks = self.friendInfo.displayName;

@@ -486,8 +486,8 @@
  sendMessage:targetId:content:pushContent:pushData:success:error:方法
  或sendMessage:targetId:content:pushContent:success:error:方法进行发送，不要使用此方法。
  
- @warning 如果您使用IMKit，使用此方法发送媒体消息SDK会自动更新UI；
- 如果您使用IMLib，请使用RCIMClient中的同名方法发送媒体消息，不会自动更新UI。
+ @warning 如果您使用IMLib，可以使用此方法发送媒体消息；
+ 如果您使用IMKit，请使用RCIM中的同名方法发送媒体消息，否则不会自动更新UI。
  */
 - (RCMessage *)sendMediaMessage:(RCConversationType)conversationType
                        targetId:(NSString *)targetId
@@ -728,8 +728,8 @@ __deprecated_msg("已废弃，请勿使用。");
  sendMessage:targetId:content:pushContent:pushData:success:error:方法
  或sendMessage:targetId:content:pushContent:success:error:方法进行发送，不要使用此方法。
 
- 如果您使用IMKit，使用此方法发送图片消息SDK会自动更新UI；
- 如果您使用IMLib，请使用RCIMClient中的同名方法发送图片消息，不会自动更新UI。
+ 如果您使用IMLib，可以使用此方法发送图片消息；
+ 如果您使用IMKit，请使用RCIM中的同名方法发送图片消息，否则不会自动更新UI。
  
  @warning **已废弃，请勿使用。**
  升级说明：如果您之前使用了此接口，可以直接替换为sendMediaMessage:targetId:content:pushContent:pushData:progress:success:error:接口（pushData传为nil），行为和实现完全一致。
@@ -770,8 +770,8 @@ sendImageMessage:(RCConversationType)conversationType
  sendMessage:targetId:content:pushContent:pushData:success:error:方法
  或sendMessage:targetId:content:pushContent:success:error:方法进行发送，不要使用此方法。
 
- 如果您使用IMKit，使用此方法发送图片消息SDK会自动更新UI；
- 如果您使用IMLib，请使用RCIMClient中的同名方法发送图片消息，不会自动更新UI。
+ 如果您使用IMLib，可以使用此方法发送图片消息；
+ 如果您使用IMKit，请使用RCIM中的同名方法发送图片消息，否则不会自动更新UI。
 
  @warning **已废弃，请勿使用。**
  升级说明：如果您之前使用了此接口，可以直接替换为sendMediaMessage:targetId:content:pushContent:pushData:progress:success:error:接口，行为和实现完全一致。

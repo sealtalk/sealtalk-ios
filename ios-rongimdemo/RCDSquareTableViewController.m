@@ -73,7 +73,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-
+  [super viewWillAppear:animated];
   self.tabBarController.navigationItem.title = @"发现";
   self.tabBarController.navigationItem.rightBarButtonItems = nil;
   

@@ -1,6 +1,7 @@
 #ifndef _ivideoframeobserve_h
 #define _ivideoframeobserve_h
 
+#import <Foundation/Foundation.h>
 #import <AgoraRtcEngineKit/IAgoraMediaEngine.h>
 
 
@@ -19,6 +20,10 @@ extern "C" {
 #endif
 int agoraRegisterVideoFrameObserver(agora::media::IVideoFrameObserver *observer,
     bool useExternalResource = false, bool localPreview = true);
+  
+int agoraRegisterAudioFrameObserver(agora::media::IAudioFrameObserver* observer);
+  
+NSString *rcGetUserIdFromAgoraUID(int uid);
 #ifdef __cplusplus
 }
 #endif
