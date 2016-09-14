@@ -5,7 +5,7 @@ DK 接入文档
 ------------------
 
 
-1. clone demo:[https://github.com/YunzhanghuOpen/sealtalk-ios.git](https://github.com/YunzhanghuOpen/sealtalk-ios/tree/redpacket)
+1. clone demo:[https://github.com/YunzhanghuOpen/sealtalk-ios.git](https://github.com/YunzhanghuOpen/sealtalk-ios/tree/redpacket) 切换到redpacket分支
 
 2. 下载最新的红包 SDK 库文件 ( master 或者是 release )
 
@@ -63,12 +63,7 @@ DK 接入文档
 [RedpacketConfig configRedpacket];
 ```
 执行`红包 SDK` 的信息注册
-退出登录时需调用
-```objc
-#pragma mark - 红包相关功能
-[RedpacketConfig logout];
-```
-来清理`红包 SDK` 的信息注册
+
 如对注册信息有其他要求,请自行参考`RedpacketConfig`实现和`YZHRedpacketBridge`所提供API
 
     注册红包消息体

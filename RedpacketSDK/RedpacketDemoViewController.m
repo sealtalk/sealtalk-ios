@@ -128,14 +128,14 @@
 {
     RedpacketTakenMessage *message = [RedpacketTakenMessage messageWithRedpacket:redpacket];
     // 抢自己的红包不发消息，只自己显示抢红包消息
-    RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
-                                                       targetId:self.targetId
-                                                   senderUserId:self.conversation.senderUserId
-                                                     sendStatus:SentStatus_SENT
-                                                        content:message];
-    [self appendAndDisplayMessage:m];
-    
-    if ([redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]) {
+    if ([redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]) {//如果发送者是自己
+
+        RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
+                                                           targetId:self.targetId
+                                                       senderUserId:self.conversation.senderUserId
+                                                         sendStatus:SentStatus_SENT
+                                                            content:message];
+        [self appendAndDisplayMessage:m];
     }
     else {
         switch (redpacket.redpacketType) {
@@ -148,6 +148,13 @@
             case RedpacketTypeAvg:
             case RedpacketTypeRandpri:
             case RedpacketTypeMember:{
+                RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:self.conversationType
+                                                                   targetId:self.targetId
+                                                               senderUserId:self.conversation.senderUserId
+                                                                 sendStatus:SentStatus_SENT
+                                                                    content:message];
+                [self appendAndDisplayMessage:m];
+                
                 // 按照 android 的需求修改发送红包的功能
                 RedpacketTakenOutgoingMessage *m2 = [RedpacketTakenOutgoingMessage messageWithRedpacket:redpacket];
                 [self sendMessage:m2 pushContent:nil];
@@ -198,9 +205,13 @@
                return nil;
            }else if ([redpacket.currentUser.userId isEqualToString:redpacket.redpacketSender.userId]){
                
-               
-               RedpacketTakenOutgoingMessage *m2 = [RedpacketTakenOutgoingMessage messageWithRedpacket:redpacket];
-               [self sendMessage:m2 pushContent:nil];
+               RedpacketTakenMessage *takenMessage = [RedpacketTakenMessage messageWithRedpacket:redpacket];
+               RCMessage *m = [[RCIMClient sharedRCIMClient] insertMessage:message.conversationType
+                                                                  targetId:message.targetId
+                                                              senderUserId:redpacket.redpacketSender.userId
+                                                                sendStatus:SentStatus_SENT
+                                                                   content:takenMessage];
+               [self appendAndDisplayMessage:m];
                return nil;
            
            }
