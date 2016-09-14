@@ -188,7 +188,10 @@
 + (CGSize)getBubbleBackgroundViewSize:(RCMessageModel *)model {
     CGFloat height = 94.f;
     if (model.isDisplayMessageTime) {
-        height = 110.f;
+        height += 16.f;
+    }
+    if (model.isDisplayNickname) {
+        height += 14.f;
     }
     return CGSizeMake(320, height);
 }

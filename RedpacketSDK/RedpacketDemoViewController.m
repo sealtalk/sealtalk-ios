@@ -283,7 +283,8 @@
             
             [[RCDHttpTool shareInstance] getUserInfoByUserID:redPacketModel.redpacketReceiver.userId
                                                   completion:^(RCUserInfo *user) {
-                                                      redPacketModel.toRedpacketReceiver.userNickname = user.name?user.name:user.userId;
+                                                      redPacketModel.toRedpacketReceiver.userNickname = user.name?user.name:redPacketModel.redpacketReceiver.userId;
+                                                      redPacketModel.toRedpacketReceiver.userAvatar = user.portraitUri;
                                                       [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
                                                   }];
             
