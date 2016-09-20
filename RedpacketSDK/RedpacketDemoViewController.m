@@ -65,7 +65,7 @@
         // 虽然现在 userName 不被 viewController 保存，但是如果不设置 userNickname，会
         // 导致新消息显示的时候显示 (null) 数据
         user.userNickname = self.userName;
-        
+        self.redpacketControl.converstationInfo = user;
         if (ConversationType_PRIVATE == self.conversationType) {
             // 异步获取更多用户消息, 这是 Demo app 的 DataSource 逻辑
             [[RCDRCIMDataSource shareInstance] getUserInfoWithUserId:self.targetId
@@ -74,13 +74,13 @@
                                                               
                                                               user.userNickname = userInfo.name;
                                                               user.userAvatar = userInfo.portraitUri;
-                                                              
+                                                              user.userId = (userInfo.userId.length)?userInfo.userId:@"";
                                                               // 更新用户信息
                                                               self.redpacketControl.converstationInfo = user;
                                                           }];
         }
         
-        self.redpacketControl.converstationInfo = user;
+        
         
         __weak typeof(self) SELF = self;
         // 设置红包 SDK 功能回调
@@ -280,17 +280,18 @@
                 [self.chatSessionInputBarControl.inputTextView resignFirstResponder];
             }
             RedpacketMessageModel * redPacketModel = ((RedpacketMessage *)model.content).redpacket;
-            
-            [[RCDHttpTool shareInstance] getUserInfoByUserID:redPacketModel.redpacketReceiver.userId
-                                                  completion:^(RCUserInfo *user) {
-                                                      redPacketModel.toRedpacketReceiver.userNickname = user.name?user.name:redPacketModel.redpacketReceiver.userId;
-                                                      redPacketModel.toRedpacketReceiver.userAvatar = user.portraitUri;
-                                                      [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
-                                                  }];
-            
+            if (redPacketModel.redpacketSender.userId) {
+                [[RCDHttpTool shareInstance] getUserInfoByUserID:redPacketModel.redpacketSender.userId
+                                                      completion:^(RCUserInfo *user) {
+                                                          redPacketModel.redpacketSender.userNickname = user.name?user.name:redPacketModel.redpacketReceiver.userId;
+                                                          redPacketModel.redpacketSender.userAvatar = user.portraitUri;
+                                                          [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
+                                                      }];
+            } else {
+                [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
+            }
         }
-    }
-    else {
+    } else {
         [super didTapMessageCell:model];
     }
 }
