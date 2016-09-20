@@ -637,7 +637,7 @@ MBProgressHUD *hud;
     [DEFAULTS setObject:result forKey:@"SquareInfoList"];
     [DEFAULTS synchronize];
   }];
-
+    
   [AFHttpTool getUserInfo:userId
       success:^(id response) {
         if ([response[@"code"] intValue] == 200) {
@@ -656,6 +656,7 @@ MBProgressHUD *hud;
           [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
           [DEFAULTS setObject:user.name forKey:@"userNickName"];
           [DEFAULTS synchronize];
+          [RedpacketConfig config];
         }
       }
       failure:^(NSError *err){
