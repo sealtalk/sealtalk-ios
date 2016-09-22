@@ -53,7 +53,7 @@
     
     // 设置红包文字
     self.greetingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.greetingLabel.frame = CGRectMake(48, 19, 126, 15);
+    self.greetingLabel.frame = CGRectMake(48, 19, 148, 15);
     self.greetingLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.greetingLabel.font = [UIFont systemFontOfSize:Redpacket_Message_Font_Size];
     self.greetingLabel.textColor = [UIColor whiteColor];
