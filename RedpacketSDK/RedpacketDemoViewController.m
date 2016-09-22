@@ -272,23 +272,47 @@
 }
 
 #pragma mark - 红包插件点击事件
-- (void)didTapMessageCell:(RCMessageModel *)model
-{
+- (void)didTapMessageCell:(RCMessageModel *)model {
+    
     if ([model.content isKindOfClass:[RedpacketMessage class]]) {
         if(RedpacketMessageTypeRedpacket == ((RedpacketMessage *)model.content).redpacket.messageType) {
             if ([self.chatSessionInputBarControl.inputTextView isFirstResponder]) {
                 [self.chatSessionInputBarControl.inputTextView resignFirstResponder];
             }
+            
             RedpacketMessageModel * redPacketModel = ((RedpacketMessage *)model.content).redpacket;
-            if (redPacketModel.redpacketSender.userId) {
-                [[RCDHttpTool shareInstance] getUserInfoByUserID:redPacketModel.redpacketSender.userId
-                                                      completion:^(RCUserInfo *user) {
-                                                          redPacketModel.redpacketSender.userNickname = user.name?user.name:redPacketModel.redpacketReceiver.userId;
-                                                          redPacketModel.redpacketSender.userAvatar = user.portraitUri;
-                                                          [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
-                                                      }];
-            } else {
-                [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
+            switch (self.conversationType) {
+                case ConversationType_PRIVATE: {
+                    RCUserInfo* info = [[RCDataBaseManager shareInstance] getUserByUserId:redPacketModel.redpacketSender.userId];
+                    if (info) {
+                        if ([redPacketModel.redpacketSender.userId isEqualToString:info.userId]) {
+                            redPacketModel.redpacketSender.userNickname = info.name?info.name:redPacketModel.redpacketReceiver.userId;
+                            redPacketModel.redpacketSender.userAvatar = info.portraitUri;
+                        }
+                    }
+                    [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
+                    break;
+                }
+                case ConversationType_DISCUSSION:
+                case ConversationType_GROUP: {
+                    NSArray<RCUserInfo*> * members = [[RCDataBaseManager shareInstance] getGroupMember:self.targetId];
+                    [members enumerateObjectsUsingBlock:^(RCUserInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                        if ([obj isKindOfClass:[RCUserInfo class]]) {
+                            if ([redPacketModel.redpacketSender.userId isEqualToString:obj.userId]) {
+                                redPacketModel.redpacketSender.userNickname = obj.name?obj.name:redPacketModel.redpacketReceiver.userId;
+                                redPacketModel.redpacketSender.userAvatar = obj.portraitUri;
+                            }
+                            if ([redPacketModel.redpacketReceiver.userId isEqualToString:obj.userId]) {
+                                redPacketModel.redpacketReceiver.userNickname = obj.name?obj.name:redPacketModel.redpacketReceiver.userId;
+                                redPacketModel.redpacketReceiver.userAvatar = obj.portraitUri;
+                            }
+                        }
+                    }];
+                    [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
+                    break;
+                }
+                default:
+                    break;
             }
         }
     } else {

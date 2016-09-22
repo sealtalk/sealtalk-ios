@@ -53,11 +53,11 @@
     
     // 设置红包文字
     self.greetingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.greetingLabel.frame = CGRectMake(48, 19, 137, 15);
+    self.greetingLabel.frame = CGRectMake(48, 19, 126, 15);
+    self.greetingLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.greetingLabel.font = [UIFont systemFontOfSize:Redpacket_Message_Font_Size];
     self.greetingLabel.textColor = [UIColor whiteColor];
     self.greetingLabel.numberOfLines = 1;
-    [self.greetingLabel setLineBreakMode:NSLineBreakByCharWrapping];
     [self.greetingLabel setTextAlignment:NSTextAlignmentLeft];
     [self.bubbleBackgroundView addSubview:self.greetingLabel];
     
@@ -100,18 +100,6 @@
     [self.specialLable setLineBreakMode:NSLineBreakByCharWrapping];
     [self.specialLable setTextAlignment:NSTextAlignmentLeft];
     [self.bubbleBackgroundView addSubview:self.specialLable];
-    
-    
-    // 设置红包厂商图标
-//    icon = [RCKitUtility imageNamed:@"redPacket_yunAccount_icon" ofBundle:@"RedpacketCellResource.bundle"];
-//    self.orgIconView = [[UIImageView alloc] initWithImage:icon];
-//    [self.bubbleBackgroundView addSubview:self.orgIconView];
-//    
-//
-//    CGRect rt = self.orgIconView.frame;
-//    rt.origin = CGPointMake(165, 75);
-//    rt.size = CGSizeMake(21, 14);
-//    self.orgIconView.frame = rt;
 
     [self.statusContentView removeFromSuperview];
     self.statusContentView = nil;

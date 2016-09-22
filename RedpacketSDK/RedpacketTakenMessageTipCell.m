@@ -93,9 +93,9 @@
 
 + (CGSize)sizeForModel:(RCMessageModel *)model
 {
-    CGFloat height = 22.f;
+    CGFloat height = 30.f;
     if (model.isDisplayMessageTime) {
-        height = 56.f;
+        height += 34.f;
     }
     return CGSizeMake(320, height);
 }
