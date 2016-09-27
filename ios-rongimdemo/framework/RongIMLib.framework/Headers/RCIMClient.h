@@ -873,7 +873,7 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  @param targetId            目标会话ID
  @param timestamp           该会话中已阅读的最后一条消息的发送时间戳
 
- @discussion 消息回执功能目前只支持单聊, 如果使用Lib 可以注册监听
+ @discussion 此接口只支持单聊, 如果使用Lib 可以注册监听
  RCLibDispatchReadReceiptNotification 通知,使用kit 直接设置RCIM.h
  中的enabledReadReceiptConversationTypeList。
 
