@@ -10,63 +10,40 @@
 #import "RedpacketOpenConst.h"
 
 typedef NS_ENUM(NSInteger, RedpacketMessageType) {
-    
-    /**
-     *  红包消息
-     */
-    RedpacketMessageTypeRedpacket = 1001,
-    /**
-     *  红包被抢的消息
-     */
-    RedpacketMessageTypeTedpacketTakenMessage,
+
+    RedpacketMessageTypeRedpacket = 1001,           /***  红包消息*/
+    RedpacketMessageTypeTedpacketTakenMessage,      /***  红包被抢的消息*/
+    RedpacketMessageTypeTransfer                    /***  转账消息*/
 };
 
 typedef NS_ENUM(NSInteger, RedpacketType) {
-    /**
-     *  点对点红包
-     */
-    RedpacketTypeSingle = 2001,
-    /**
-     *  群组红包 (暂时留存)
-     */
-    RedpacketTypeGroup,
-    /**
-     *  拼手气红包
-     */
-    RedpacketTypeRand,
-    /**
-     *  普通红包
-     */
-    RedpacketTypeAvg,
-    /**
-     *  拼手气普通显示（一般用于系统发放）
-     */
-    RedpacketTypeRandpri,
-    /**
-     *  定向红包 （专属红包，目前支持一人）
-     */
-    RedpacketTypeMember
+    
+    RedpacketTypeSingle = 2001,     /***  点对点红包*/
+    RedpacketTypeGroup,             /***  群组红包 (暂时留存)*/
+    RedpacketTypeRand,              /***  拼手气红包*/
+    RedpacketTypeAvg,               /***  普通红包*/
+    RedpacketTypeRandpri,           /***  拼手气普通显示（一般用于系统发放）*/
+    RedpacketTypeMember,            /***  定向红包 （专属红包，目前支持一人）*/
+    RedpacketTypeAdvertisement,     /***  广告红包*/
+    RedpacketTransfer               /***  转账*/
 };
 
 typedef NS_ENUM(NSInteger, RedpacketStatusType) {
-    /**
-     *  红包可以抢
-     */
-    RedpacketStatusTypeCanGrab = 0,
-    /**
-     *  红包被抢完
-     */
-    RedpacketStatusTypeGrabFinish = 1,
-    /**
-     *  红包已过期
-     */
-    RedpacketStatusTypeOutDate = -1
+    
+    RedpacketStatusTypeCanGrab = 0,         /***  红包可以抢*/
+    RedpacketStatusTypeGrabFinish = 1,      /***  红包被抢完*/
+    RedpacketStatusTypeOutDate = -1         /***  红包已过期*/
+
 };
 
 @interface RedpacketUserInfo : NSObject <NSCopying>
 
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *userNickname;
+/**
+ *  用户名过长会发生截断,此处获取的是用户的原昵称
+ */
+@property (nonatomic, copy, readonly) NSString *userNicknameOrigin;
 @property (nonatomic, copy) NSString *userAvatar;
 //@property (nonatomic, assign) BOOL isGroup;
 
@@ -94,6 +71,7 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 
 @property (nonatomic, copy) NSString *redpacketGreeting;
 @property (nonatomic, copy) NSString *redpacketOrgName;
+@property (nonatomic, copy) NSString *tranferTime;
 
 //未来定制化留存
 @property (nonatomic, copy) NSString *redpacketIcon;
@@ -197,6 +175,11 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
  *  @return
  */
 + (BOOL)isRedpacketTakenMessage:(NSDictionary *)redpacketDic;
+
+/**
+ *  是否是转账消息
+ */
++ (BOOL)isRedpacketTransferMessage:(NSDictionary *)redpacketDic;
 
 /**
  *  字典转换成红包消息Model

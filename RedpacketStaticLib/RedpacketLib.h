@@ -2,7 +2,7 @@
 //  RedpacketLib.h
 //  RedpacketLib
 //
-//  Created by Mr.Yang on 16/9/21.
+//  Created by Mr.Yang on 16/9/20.
 //  Copyright © 2016年 Mr.Yang. All rights reserved.
 //
 

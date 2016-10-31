@@ -746,7 +746,6 @@
 		E7AC0AFE1D8FFC71000A97F3 /* AlipaySDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlipaySDK.h; sourceTree = "<group>"; };
 		E7AC0AFF1D8FFC71000A97F3 /* APayAuthInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APayAuthInfo.h; sourceTree = "<group>"; };
 		E7AC0B001D8FFC71000A97F3 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
-		E7AC0B011D8FFC71000A97F3 /* ApplyPaymentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyPaymentModel.h; sourceTree = "<group>"; };
 		E7AC0B031D8FFC71000A97F3 /* libRedpacketLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRedpacketLib.a; sourceTree = "<group>"; };
 		E7AC0B051D8FFC71000A97F3 /* NSDictionary+YZHExtern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+YZHExtern.h"; sourceTree = "<group>"; };
 		E7AC0B061D8FFC71000A97F3 /* RedpacketDataRequester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketDataRequester.h; sourceTree = "<group>"; };
@@ -1648,7 +1647,6 @@
 			children = (
 				E7AC0AFC1D8FFC71000A97F3 /* AlipayLib */,
 				E7AC0B001D8FFC71000A97F3 /* AlipaySDK.bundle */,
-				E7AC0B011D8FFC71000A97F3 /* ApplyPaymentModel.h */,
 				E7AC0B021D8FFC71000A97F3 /* lib */,
 				E7AC0B041D8FFC71000A97F3 /* private */,
 				E7AC0B0C1D8FFC71000A97F3 /* RedpacketErrorCode.h */,
@@ -1836,6 +1834,7 @@
 					};
 					A6447A041B1DBE6500EA2CEE = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = PUEB48NTQQ;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 						};
@@ -2372,6 +2371,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = PUEB48NTQQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/framework",
@@ -2512,6 +2512,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = PUEB48NTQQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/framework",
@@ -2563,6 +2564,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = PUEB48NTQQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/framework",
@@ -2596,6 +2598,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = PUEB48NTQQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/framework",

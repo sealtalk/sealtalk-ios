@@ -75,6 +75,21 @@ UIKIT_EXTERN NSString *const RedpacketKeyRedapcketCmd;
 UIKIT_EXTERN NSString *const RedpacketKeyRedapcketToAnyone;
 
 /**
+ *  转账
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedpacketTransfer;
+
+/**
+ *  转账时间
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedpacketTransferTime;
+
+/**
+ *  转账金额
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedpacketTransferAmout;
+
+/**
  *  定向红包的接收者id
  */
 UIKIT_EXTERN NSString *const RedpacketKeyRedapcketToReceiver;

@@ -306,6 +306,10 @@
                                 redPacketModel.redpacketReceiver.userNickname = obj.name?obj.name:redPacketModel.redpacketReceiver.userId;
                                 redPacketModel.redpacketReceiver.userAvatar = obj.portraitUri;
                             }
+                            if ([redPacketModel.toRedpacketReceiver.userId isEqualToString:obj.userId]) {
+                                redPacketModel.toRedpacketReceiver.userNickname = obj.name?obj.name:redPacketModel.redpacketReceiver.userId;
+                                redPacketModel.toRedpacketReceiver.userAvatar = obj.portraitUri;
+                            }
                         }
                     }];
                     [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
