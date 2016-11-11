@@ -24,13 +24,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+  [self setControllers];
   [self setTabBarItems];
   self.delegate = self;
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(changeSelectedIndex:)
+                                               name:@"ChangeTabBarIndex"
+                                             object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)setControllers {
+  RCDChatListViewController *chatVC = [[RCDChatListViewController alloc] init];
+  
+  RCDContactViewController *contactVC = [[RCDContactViewController alloc] init];
+  
+  RCDSquareTableViewController *discoveryVC = [[RCDSquareTableViewController alloc] init];
+   
+  RCDMeTableViewController *meVC = [[RCDMeTableViewController alloc] init];
+  
+  self.viewControllers = @[chatVC, contactVC, discoveryVC, meVC];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -46,21 +63,25 @@
 -(void)setTabBarItems {
   [self.viewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
     if ([obj isKindOfClass:[RCDChatListViewController class]]) {
+      obj.tabBarItem.title = @"会话";
       obj.tabBarItem.image = [[UIImage imageNamed:@"icon_chat"]
                                        imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
       obj.tabBarItem.selectedImage = [[UIImage imageNamed:@"icon_chat_hover"]
                                                imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     } else if ([obj isKindOfClass:[RCDContactViewController class]]) {
+      obj.tabBarItem.title = @"通讯录";
       obj.tabBarItem.image = [[UIImage imageNamed:@"contact_icon"]
                               imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
       obj.tabBarItem.selectedImage = [[UIImage imageNamed:@"contact_icon_hover"]
                                       imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     } else if ([obj isKindOfClass:[RCDSquareTableViewController class]]) {
+      obj.tabBarItem.title = @"发现";
       obj.tabBarItem.image = [[UIImage imageNamed:@"square"]
                               imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
       obj.tabBarItem.selectedImage = [[UIImage imageNamed:@"square_hover"]
                                       imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     } else if ([obj isKindOfClass:[RCDMeTableViewController class]]){
+      obj.tabBarItem.title = @"我";
       obj.tabBarItem.image = [[UIImage imageNamed:@"icon_me"]
                               imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
       obj.tabBarItem.selectedImage = [[UIImage imageNamed:@"icon_me_hover"]
@@ -80,7 +101,7 @@
       if (self.previousIndex == index) {
         //判断如果有未读数存在，发出定位到未读数会话的通知
         if ([[RCIMClient sharedRCIMClient] getTotalUnreadCount] > 0) {
-          [[NSNotificationCenter defaultCenter] postNotificationName:@"GotoNextCoversation" object:nil]; 
+          [[NSNotificationCenter defaultCenter] postNotificationName:@"GotoNextCoversation" object:nil];
         }
         self.previousIndex = index;
       }
@@ -103,5 +124,11 @@
     default:
       break;
   }
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"NotifyTabBarIndex" object:[NSString stringWithFormat:@"%lu",(unsigned long)index]];
+}
+
+-(void)changeSelectedIndex:(NSNotification *)notify {
+  NSInteger index = [notify.object integerValue];
+  self.selectedIndex = index;
 }
 @end

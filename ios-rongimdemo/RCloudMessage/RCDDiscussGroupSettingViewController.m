@@ -86,7 +86,7 @@
                              [_members setObject:user forKey:user.userId];
                              if (users.count == discussion.memberIdList.count) {
                                [weakSelf addUsers:users];
-                               [_userList addObject:user];
+                               [_userList addObjectsFromArray:users];
                              }
                            }];
             }
@@ -248,6 +248,7 @@
     contactSelectedVC.addDiscussionGroupMembers = _userList;
     if (self.conversationType == ConversationType_DISCUSSION) {
       contactSelectedVC.discussiongroupId = self.targetId;
+      contactSelectedVC.isAllowsMultipleSelection = YES;
     }
 
     [self.navigationController pushViewController:contactSelectedVC
@@ -436,13 +437,7 @@
                                  [userId isEqualToString:[RCIM sharedRCIM]
                                                              .currentUserInfo
                                                              .userId]) {
-                               UIStoryboard *mainStoryboard =
-                                   [UIStoryboard storyboardWithName:@"Main"
-                                                             bundle:nil];
-                               RCDPersonDetailViewController *temp =
-                                   [mainStoryboard
-                                       instantiateViewControllerWithIdentifier:
-                                           @"RCDPersonDetailViewController"];
+                                     RCDPersonDetailViewController *temp = [[RCDPersonDetailViewController alloc]init];
                                temp.userId = user.userId;
                                [self.navigationController
                                    pushViewController:temp
@@ -450,17 +445,19 @@
                                return;
                              }
                            }
-                           UIStoryboard *mainStoryboard =
-                               [UIStoryboard storyboardWithName:@"Main"
-                                                         bundle:nil];
-                           RCDAddFriendViewController *addViewController =
-                               [mainStoryboard
-                                   instantiateViewControllerWithIdentifier:
-                                       @"RCDAddFriendViewController"];
-                           addViewController.targetUserInfo = userInfo;
-                           [self.navigationController
-                               pushViewController:addViewController
-                                         animated:YES];
+                             RCDAddFriendViewController *addViewController =
+                             
+                             [[RCDAddFriendViewController alloc]init];
+                             
+                             
+                             
+                             addViewController.targetUserInfo = userInfo;
+                             
+                             [self.navigationController
+                              
+                              pushViewController:addViewController
+                              
+                              animated:YES];
 
                          }
                          failure:^(NSError *err) {

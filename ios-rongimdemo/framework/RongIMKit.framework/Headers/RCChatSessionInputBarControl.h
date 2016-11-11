@@ -1,6 +1,6 @@
 //
 //  RCChatSessionInputBarControl.h
-//  RongIMKit
+//  RongExtensionKit
 //
 //  Created by xugang on 15/2/12.
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
@@ -148,6 +148,16 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
 @interface RCChatSessionInputBarControl : UIView
 
 /*!
+ 当前的会话类型
+ */
+@property(nonatomic, assign) RCConversationType conversationType;
+
+/*!
+ 当前的会话ID
+ */
+@property(nonatomic, strong) NSString *targetId;
+
+/*!
  输入工具栏的点击回调监听
  */
 @property(weak, nonatomic) id<RCChatSessionInputBarControlDelegate> delegate;
@@ -215,6 +225,10 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
  */
 @property(assign, nonatomic, readonly) UIView *containerView;
 
+/*!
+ 当前的输入状态
+ */
+@property(nonatomic) KBottomBarStatus currentBottomBarStatus;
 /*!
  所处的聊天界面View
  
@@ -326,6 +340,10 @@ __deprecated_msg("已废弃，请勿使用。");
 - (void)containerViewDidAppear;
 
 /*!
+ View即将隐藏的回调
+ */
+- (void)containerViewWillDisappear;
+/*!
  设置输入框的输入状态
  
  @param status          输入框状态
@@ -388,6 +406,8 @@ __deprecated_msg("已废弃，请勿使用。");
  @discussion 选择结果通过delegate返回
  */
 - (void)openFileSelector;
+
+- (void)openDynamicFunction:(NSInteger)functionTag;
 
 /*!
  更新输入框的Frame

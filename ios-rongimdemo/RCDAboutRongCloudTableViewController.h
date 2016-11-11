@@ -10,10 +10,4 @@
 
 @interface RCDAboutRongCloudTableViewController : UITableViewController<UIAlertViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIImageView *NewVersionImage;
-
-@property (weak, nonatomic) IBOutlet UILabel *SDKVersionLabel;
-
-@property (weak, nonatomic) IBOutlet UILabel *SealTalkVersionLabel;
-
 @end

@@ -9,12 +9,12 @@
 #import <RongIMLib/RCUserInfo.h>
 #import <UIKit/UIKit.h>
 
-@interface RCDAddFriendViewController : UIViewController
+@interface RCDAddFriendViewController : UITableViewController
 
 @property(nonatomic, strong) RCUserInfo *targetUserInfo;
-@property(weak, nonatomic) IBOutlet UILabel *lblName;
-@property(weak, nonatomic) IBOutlet UIImageView *ivAva;
-@property(weak, nonatomic) IBOutlet UIButton *addFriendBtn;
-@property(weak, nonatomic) IBOutlet UIButton *startChat;
+@property(nonatomic, strong) UILabel *lblName;
+@property(nonatomic, strong) UIImageView *ivAva;
+@property(nonatomic, strong) UIButton *addFriendBtn;
+@property(nonatomic, strong) UIButton *startChat;
 
 @end

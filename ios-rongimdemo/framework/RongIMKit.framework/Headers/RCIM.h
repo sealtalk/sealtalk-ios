@@ -6,8 +6,6 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#ifndef __RongUIKit
-#define __RongUIKit
 #import <Foundation/Foundation.h>
 #import <RongIMLib/RongIMLib.h>
 #import "RCThemeDefine.h"
@@ -451,6 +449,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
  @param progressBlock       消息发送进度更新的回调 [progress:当前的发送进度, 0 <= progress <= 100, messageId:消息的ID]
  @param successBlock        消息发送成功的回调 [messageId:消息的ID]
  @param errorBlock          消息发送失败的回调 [errorCode:发送失败的错误码, messageId:消息的ID]
+ @param cancelBlock         用户取消了消息发送的回调 [messageId:消息的ID]
  @return                    发送的消息实体
  
  @discussion 当接收方离线并允许远程推送时，会收到远程推送。
@@ -469,7 +468,17 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
                        pushData:(NSString *)pushData
                        progress:(void (^)(int progress, long messageId))progressBlock
                         success:(void (^)(long messageId))successBlock
-                          error:(void (^)(RCErrorCode errorCode, long messageId))errorBlock;
+                          error:(void (^)(RCErrorCode errorCode, long messageId))errorBlock
+                         cancel:(void (^)(long messageId))cancelBlock;
+
+/*!
+ 取消发送中的媒体信息
+ 
+ @param messageId           媒体消息的messageId
+ 
+ @return YES表示取消成功，NO表示取消失败，即已经发送成功或者消息不存在。
+ */
+- (BOOL)cancelSendMediaMessage:(long)messageId;
 
 /*!
  下载消息中的媒体文件
@@ -478,6 +487,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
  @param progressBlock   下载进度更新的回调 [progress:当前的发送进度, 0 <= progress <= 100]
  @param successBlock    下载成功的回调 [mediaPath:下载完成后文件在本地的存储路径]
  @param errorBlock      下载失败的回调 [errorCode:下载失败的错误码]
+ @param cancelBlock     下载取消的回调 
  
  @discussion 媒体消息仅限于图片消息和文件消息。
  */
@@ -488,11 +498,11 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
                       cancel:(void (^)())cancelBlock;
 
 /*!
- 取消下载消息中的媒体信息
+ 取消下载中的媒体信息
  
- @param messageId           媒体消息的messageId
+ @param messageId 媒体消息的messageId
  
- @return true取消成功。false下载完成或者下载不存在
+ @return YES表示取消成功，NO表示取消失败，即已经下载完成或者消息不存在。
  */
 - (BOOL)cancelDownloadMediaMessage:(long)messageId;
 
@@ -519,7 +529,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
  如果您使用IMLib，请使用RCIMClient中的同名方法发送图片消息，不会自动更新UI。
  
  @warning  **已废弃，请勿使用。**
- 升级说明：如果您之前使用了此接口，可以直接替换为sendMediaMessage:targetId:content:pushContent:pushData:success:error:接口，行为和实现完全一致。
+ 升级说明：如果您之前使用了此接口，可以直接替换为sendMediaMessage:targetId:content:pushContent:pushData:success:error:cancel:接口，行为和实现完全一致。
  */
 - (RCMessage *)sendImageMessage:(RCConversationType)conversationType
                        targetId:(NSString *)targetId
@@ -530,6 +540,36 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
                         success:(void (^)(long messageId))successBlock
                           error:(void (^)(RCErrorCode errorCode, long messageId))errorBlock
 __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
+
+/*!
+ 发送定向消息，会自动更新UI
+ 
+ @param conversationType 发送消息的会话类型
+ @param targetId         发送消息的目标会话ID
+ @param userIdList       发送给的用户ID列表
+ @param content          消息的内容
+ @param pushContent      接收方离线时需要显示的远程推送内容
+ @param pushData         接收方离线时需要在远程推送中携带的非显示数据
+ @param successBlock     消息发送成功的回调 [messageId:消息的ID]
+ @param errorBlock       消息发送失败的回调 [errorCode:发送失败的错误码,
+ messageId:消息的ID]
+ 
+ @return 发送的消息实体
+ 
+ @discussion 此方法用于在群组和讨论组中发送消息给其中的部分用户，其它用户不会收到这条消息。
+ 如果您使用IMKit，使用此方法发送定向消息SDK会自动更新UI；
+ 如果您使用IMLib，请使用RCIMClient中的同名方法发送定向消息，不会自动更新UI。
+ 
+ @warning 此方法目前仅支持群组和讨论组。
+ */
+- (RCMessage *)sendDirectionalMessage:(RCConversationType)conversationType
+                             targetId:(NSString *)targetId
+                         toUserIdList:(NSArray *)userIdList
+                              content:(RCMessageContent *)content
+                          pushContent:(NSString *)pushContent
+                             pushData:(NSString *)pushData
+                              success:(void (^)(long messageId))successBlock
+                                error:(void (^)(RCErrorCode nErrorCode, long messageId))errorBlock;
 
 /*!
  发起VoIP语音通话
@@ -969,5 +1009,3 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  */
 - (BOOL)openExtensionModuleUrl:(NSURL *)url;
 @end
-
-#endif

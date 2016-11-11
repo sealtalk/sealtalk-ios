@@ -95,16 +95,21 @@ if [ ${ENV_FLAG} == "pri" ]; then
     sed -i '' -e 's/\/\/\[\[RCIMClient sharedRCIMClient\] setServerInfo/\[\[RCIMClient sharedRCIMClient\] setServerInfo/g' ./RCloudMessage/AppDelegate.m
 else
     sed -i '' -e '/for private cloud test/,/RONGCLOUD_FILE_SERVER\];/d' ./RCloudMessage/AppDelegate.m
+    if [ ${ENV_FLAG} == "pro" ]; then
+      # 删除用户状态接口
+      sed -i '' -e '/For Private Cloud Only ++/,/For Private Cloud Only --/d' ./RCDPersonDetailViewController.m
+    fi
 fi
 
 if [ ${DEV_FLAG} == "debug" ]
 then
 sed -i '' -e '/DEMO_VERSION_BOARD/s/@""/@"http:\/\/bj.rongcloud.net\/list.php"/g' ./RCloudMessage/RCDMeTableViewController.m
 sed -i '' -e '/redirectNSlogToDocumentFolder/s/\/\///g' ./RCloudMessage/AppDelegate.m
-sed  -i "" -e '/UIFileSharingEnabled/{n;s/false/true/; }' ./RCloudMessage/Info.plist
+sed -i "" -e '/UIFileSharingEnabled/{n;s/false/true/; }' ./RCloudMessage/Info.plist
 else
 sed -i '' -e '/redirectNSlogToDocumentFolder/s/\/\///g' ./RCloudMessage/AppDelegate.m
-sed  -i "" -e '/UIFileSharingEnabled/{n;s/false/true/; }' ./RCloudMessage/Info.plist
+sed -i "" -e '/UIFileSharingEnabled/{n;s/false/true/; }' ./RCloudMessage/Info.plist
+sed -i '' -e 's/RCDDebugTestFunction 1/\RCDDebugTestFunction 0/g' ./RCloudMessage/Utilities/RCDCommonDefine.h
 fi
 
 # 替换友盟 Key

@@ -16,6 +16,7 @@
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
 #import "UIColor+RCColor.h"
+#import "RCDChatViewController.h"
 
 // 是否iPhone5
 #define isiPhone5                                                              \
@@ -283,89 +284,100 @@ preparation before navigation
     hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
     hud.labelText = @"创建中...";
     [hud show:YES];
-
+    
     [[RCDHttpTool shareInstance]
-        createGroupWithGroupName:nameStr
-                 GroupMemberList:_GroupMemberIdList
-                        complete:^(NSString *groupId) {
-
-                          if (groupId) {
-                            if (image != nil) {
-                              [RCDHTTPTOOL
-                                  uploadImageToQiNiu:[RCIM sharedRCIM]
-                                                         .currentUserInfo.userId
-                                  ImageData:data
-                                  success:^(NSString *url) {
-                                    RCGroup *groupInfo = [RCGroup new];
-                                    groupInfo.portraitUri = url;
-                                    groupInfo.groupId = groupId;
-                                    groupInfo.groupName = nameStr;
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                      [RCDHTTPTOOL
-                                          setGroupPortraitUri:url
-                                                      groupId:groupId
-                                                     complete:^(BOOL result) {
-                                                       [[RCIM sharedRCIM]
-                                                           refreshGroupInfoCache:
-                                                               groupInfo
-                                                                     withGroupId:
-                                                                         groupId];
-                                                       if (result == YES) {
-
-                                                         [self.navigationController
-                                                             popToRootViewControllerAnimated:
-                                                                 YES]; //关闭HUD
-                                                         [hud hide:YES];
-                                                       }
-                                                       if (result == NO) {
-                                                         self.navigationItem
-                                                             .rightBarButtonItem
-                                                             .enabled =
-                                                             YES; //关闭HUD
-                                                         [hud hide:YES];
-                                                         [self Alert:@"创"
-                                                                     @"建群组"
-                                                                     @"失败，"
-                                                                     @"请检查"
-                                                                     @"你的网"
-                                                                     @"络设置"
-                                                                     @"。"];
-                                                       }
-                                                     }];
-                                    });
-
-                                  }
-                                  failure:^(NSError *err) {
-                                    self.navigationItem.rightBarButtonItem
-                                        .enabled = YES;
-                                    //关闭HUD
-                                    [hud hide:YES];
-                                    [self Alert:@"创"
-                                                @"建群组失败，请检查你的网络设"
-                                                @"置。"];
-                                  }];
-                            } else {
-
-                              RCGroup *groupInfo = [RCGroup new];
-                              groupInfo.portraitUri =
-                                  [self createDefaultPortrait:groupId
-                                                    GroupName:nameStr];
-                              groupInfo.groupId = groupId;
-                              groupInfo.groupName = nameStr;
-                              [[RCIM sharedRCIM] refreshGroupInfoCache:groupInfo
-                                                           withGroupId:groupId];
-                              [self.navigationController
-                                  popToRootViewControllerAnimated:YES];
-                            }
-                          } else {
-                            [hud hide:YES];
-                            self.navigationItem.rightBarButtonItem.enabled =
-                                YES;
-                            [self Alert:@"创"
-                                        @"建群组失败，请检查你的网络设置。"];
-                          }
-                        }];
+     createGroupWithGroupName:nameStr
+     GroupMemberList:_GroupMemberIdList
+     complete:^(NSString *groupId) {
+       
+       if (groupId) {
+         [RCDHTTPTOOL getGroupMembersWithGroupId:groupId
+                                           Block:^(NSMutableArray *result) {
+                                             //更新本地数据库中群组成员的信息
+                                           }];
+         if (image != nil) {
+           [RCDHTTPTOOL
+            uploadImageToQiNiu:[RCIM sharedRCIM]
+            .currentUserInfo.userId
+            ImageData:data
+            success:^(NSString *url) {
+              RCGroup *groupInfo = [RCGroup new];
+              groupInfo.portraitUri = url;
+              groupInfo.groupId = groupId;
+              groupInfo.groupName = nameStr;
+              dispatch_async(dispatch_get_main_queue(), ^{
+                [RCDHTTPTOOL
+                 setGroupPortraitUri:url
+                 groupId:groupId
+                 complete:^(BOOL result) {
+                   [[RCIM sharedRCIM]
+                    refreshGroupInfoCache:
+                    groupInfo
+                    withGroupId:
+                    groupId];
+                   if (result == YES) {
+                     [self gotoChatView:groupInfo.groupId groupName:groupInfo.groupName];
+                     //关闭HUD
+                     [hud hide:YES];
+                     [RCDHTTPTOOL getGroupByID:groupInfo.groupId
+                             successCompletion:^(RCDGroupInfo *group) {
+                               [[RCDataBaseManager shareInstance] insertGroupToDB:group];
+                             }];
+                   }
+                   if (result == NO) {
+                     self.navigationItem
+                     .rightBarButtonItem
+                     .enabled =
+                     YES; //关闭HUD
+                     [hud hide:YES];
+                     [self Alert:@"创建群组失败，请检查你的网络设置。"];
+                   }
+                 }];
+              });
+              
+            }
+            failure:^(NSError *err) {
+              self.navigationItem.rightBarButtonItem
+              .enabled = YES;
+              //关闭HUD
+              [hud hide:YES];
+              [self Alert:@"创建群组失败，请检查你的网络设置。"];
+            }];
+         } else {
+           
+           RCGroup *groupInfo = [RCGroup new];
+           groupInfo.portraitUri =
+           [self createDefaultPortrait:groupId
+                             GroupName:nameStr];
+           groupInfo.groupId = groupId;
+           groupInfo.groupName = nameStr;
+           [[RCIM sharedRCIM] refreshGroupInfoCache:groupInfo
+                                        withGroupId:groupId];
+           [RCDHTTPTOOL getGroupByID:groupInfo.groupId
+                   successCompletion:^(RCDGroupInfo *group) {
+                     [[RCDataBaseManager shareInstance] insertGroupToDB:group];
+                   }];
+           [self gotoChatView:groupInfo.groupId groupName:groupInfo.groupName];
+         }
+       } else {
+         [hud hide:YES];
+         self.navigationItem.rightBarButtonItem.enabled =
+         YES;
+         [self Alert:@"创建群组失败，请检查你的网络设置。"];
+       }
+     }];
   }
+}
+
+- (void)gotoChatView:(NSString *)groupId groupName:(NSString *)groupName{
+  RCDChatViewController *chatVC = [[RCDChatViewController alloc] init];
+  chatVC.needPopToRootView = YES;
+  chatVC.targetId = groupId;
+  chatVC.conversationType = ConversationType_GROUP;
+  chatVC.userName = groupName;
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.navigationController pushViewController:chatVC animated:YES];
+  });
 }
 
 - (void)Alert:(NSString *)alertContent {
@@ -424,7 +436,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
   if ([mediaType isEqual:@"public.image"]) {
     UIImage *originImage =
-        [info objectForKey:UIImagePickerControllerEditedImage];
+        [info objectForKey:UIImagePickerControllerOriginalImage];
 
     UIImage *scaleImage = [self scaleImage:originImage toScale:0.8];
 

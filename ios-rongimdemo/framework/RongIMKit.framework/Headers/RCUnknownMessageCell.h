@@ -6,10 +6,7 @@
 //  Copyright (c) 2015 RongCloud. All rights reserved.
 //
 
-#ifndef __RCUnknownMessageCell
-#define __RCUnknownMessageCell
-
-#import <RongIMKit/RongIMKit.h>
+#import "RCMessageBaseCell.h"
 
 /*!
  未知消息Cell
@@ -29,4 +26,3 @@
 - (void)setDataModel:(RCMessageModel *)model;
 
 @end
-#endif

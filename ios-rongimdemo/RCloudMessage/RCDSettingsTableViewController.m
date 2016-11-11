@@ -260,6 +260,7 @@
 
 //退出登录
 - (void)logout {
+  [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 #define DEFAULTS [NSUserDefaults standardUserDefaults]
   //    [DEFAULTS removeObjectForKey:@"userName"];
   //    [DEFAULTS removeObjectForKey:@"userPwd"];
@@ -270,10 +271,7 @@
 
   [[RCDataBaseManager shareInstance] closeDBForDisconnect];
 
-  UIStoryboard *storyboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDLoginViewController *loginVC =
-      [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+  RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
   UINavigationController *navi =
       [[UINavigationController alloc] initWithRootViewController:loginVC];
   self.view.window.rootViewController = navi;

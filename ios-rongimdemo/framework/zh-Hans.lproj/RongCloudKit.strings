@@ -1,10 +1,3 @@
-/* 
-  RongCloudKit.strings
-  RongIMKit
-
-  Created by xugang on 1/15/15.
-  Copyright (c) 2015 RongCloud. All rights reserved.
-*/
 "RC:ImgMsg"="[图片]";
 "RC:LBSMsg"="[位置]";
 "RC:VcMsg"="[语音]";
@@ -17,12 +10,6 @@
 "conversation_group_collection_title"="群助手";
 "conversation_discussion_collection_title"="讨论组助手";
 "conversation_systemMessage_collection_title"="系统消息助手";
-"hold_to_talk_title"="按住 说话";
-"release_to_send_title"="松开 发送";
-"slide_up_to_cancel_title"="手指上滑，取消发送";
-"release_to_cancel_title"="松开手指，取消发送";
-"message_too_short"="录音时间短";
-"whiteSpaceMessage"="不能发送空白消息";
 "OK"="确定";
 "Cancel"="取消";
 "speakerAccessRight"="您没有麦克风访问权限，请前往“设置-隐私-麦克风”选项中，允许访问您的手机麦克风!";
@@ -38,11 +25,6 @@
 "Back"="返回";
 "IsDeleteHistoryMsg"="是否删除历史消息？";
 "ConnectionIsNotReachable"="当前网络不可用，请检查你的网络设置";
-"Camera"="拍摄";
-"Photos"="照片";
-"Location"="位置";
-"File"="文件";
-"SendFile"="发送文件";
 "PreviewFile"="文件预览";
 "StartDownloadingFile"="开始下载";
 "FileIsDownloading"="下载中...";
@@ -50,7 +32,6 @@
 "FileDownloadCanceled"="下载已取消";
 "OpenFileInOtherApp"="在其他应用中打开";
 "Audio"="语音通话";
-"Albums"="相册列表";
 "unknown_message_cell_tip"="当前版本暂不支持查看此消息";
 "unknown_message_notification_tip"="收到一条不支持的消息";
 "Copy"="复制";
@@ -62,19 +43,13 @@
 "Save"="保存";
 "SavePhotoFailed"="图片保存失败";
 "SavePhotoSuccess"="图片保存成功";
-"PickLocation"="选取位置";
-"More"="更多";
 "Done"="完成";
-"Longitude"="经度";
-"Latitude"="纬度";
 "LocationInformation"="位置信息";
 "LocalNotificationShow"="显示";
-"PhotoAccessRight"="没有访问权限，请前往“设置-隐私-照片”选项中，允许访问您的照片";
 "MaxNumSelectPhoto"="最多选择9张";
 "AllPhoto"="全部照片";
 "NoPhotoTitle"="无照片或视频";
 "NoPhotoDesc"="您可以使用相机拍摄照片和视频，或使用iTunes将照片和视频同步到iPhone.";
-"Send"="发送";
 "SetToTop"="置顶聊天";
 "NewMsgNotification"="新消息通知";
 "ClearRecord"="清除聊天记录";
@@ -144,7 +119,6 @@
 "DateFormat"="MM月dd日";
 "MessageHasRead"="已读";
 "MessageHasSend"="已发";
-"Full_Image"="原图";
 "typing"="对方正在输入...";
 "Speaking"="对方正在讲话...";
 "Submit"="提交";
@@ -152,9 +126,6 @@
 "Robot_Comment_Title"="机器人是否解决了您的问题？";
 "Admin_Comment_Title"="请对我们本次的服务作出评价";
 "NOT_CUSTOM_SERVICE"="暂无客服在线";
-"Preview"="预览";
-"Location_Service"="无法获取你的位置信息，请到手机系统的[设置]->[隐私]->[定位服务]中打开定位服务，并允许应用使用定位服务。";
-"PhotoOniCloud"="该照片尚未从 iCloud 下载，请从系统相册中下载到本地后重新尝试。";
 "VoIPAudioCall"="语音通话";
 "VoIPVideoCall"="视频通话";
 "VoIPAudioCallExistedWarning"="正在进行语音通话，请稍后再试";
@@ -203,8 +174,6 @@
 "ImageHasBeenDeleted"="图片已被删除";
 "HaveMentioned"="[有人@我]";
 "HaveMentionedForNotification"="[有人@我]";
-"SelectMentionedUser"="选择提醒的人";
-"ToSearch"="搜索";
 "chatDate"="yyyy年M月d日";
 "chatListDate"="yyyy/M/d";
 "SameYearDate"="yy/M/d";
@@ -217,3 +186,34 @@
 "Noon"="中午 h:mm";
 "Afternoon"="下午 h:mm";
 "Evening"="晚上 h:mm";
+"CancelSendFile"="已取消";
+"hold_to_talk_title"="按住 说话";
+"release_to_send_title"="松开 发送";
+"slide_up_to_cancel_title"="手指上滑，取消发送";
+"release_to_cancel_title"="松开手指，取消发送";
+"message_too_short"="录音时间短";
+"whiteSpaceMessage"="不能发送空白消息";
+"OK"="确定";
+"Cancel"="取消";
+"speakerAccessRight"="您没有麦克风访问权限，请前往“设置-隐私-麦克风”选项中，允许访问您的手机麦克风!";
+"cameraAccessRight"="您没有相机访问权限，请前往“设置-隐私-相机”选项中，允许访问您的手机相机!";
+"Back"="返回";
+"Camera"="拍摄";
+"Photos"="照片";
+"Location"="位置";
+"File"="文件";
+"SendFile"="发送文件";
+"Albums"="相册列表";
+"PickLocation"="选取位置";
+"More"="更多";
+"Longitude"="经度";
+"Latitude"="纬度";
+"PhotoAccessRight"="没有访问权限，请前往“设置-隐私-照片”选项中，允许访问您的照片";
+"Send"="发送";
+"AccessRightTitle"="无法访问";
+"Full_Image"="原图";
+"Preview"="预览";
+"Location_Service"="无法获取你的位置信息，请到手机系统的[设置]->[隐私]->[定位服务]中打开定位服务，并允许应用使用定位服务。";
+"PhotoOniCloud"="该照片尚未从 iCloud 下载，请从系统相册中下载到本地后重新尝试。";
+"SelectMentionedUser"="选择提醒的人";
+"ToSearch"="搜索";

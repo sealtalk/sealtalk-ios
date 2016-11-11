@@ -6,12 +6,10 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#ifndef __RCConversationViewController
-#define __RCConversationViewController
 #import <UIKit/UIKit.h>
 #import "RCBaseViewController.h"
-#import "RCPluginBoardView.h"
 #import "RCChatSessionInputBarControl.h"
+#import "RCPluginBoardView.h"
 #import "RCEmojiBoardView.h"
 #import "RCThemeDefine.h"
 #import "RCMessageBaseCell.h"
@@ -464,6 +462,13 @@ __deprecated_msg("已废弃，请勿使用。");
                content:(RCMessageContent *)messageCotent;
 
 /*!
+ 取消了消息发送的回调
+ 
+ @param messageCotent   消息内容
+ */
+- (void)didCancelMessage:(RCMessageContent *)messageCotent;
+
+/*!
  即将在聊天界面插入消息的回调
  
  @param message 消息实体
@@ -738,6 +743,14 @@ __deprecated_msg("已废弃，请勿使用。");
 - (void)commentCustomerServiceWithStatus:(RCCustomerServiceStatus)serviceStatus commentId:(NSString *)commentId quitAfterComment:(BOOL)isQuit;
 
 /*!
+ 选择客服分组
+ @param  groupList    所有客服分组
+ @param  resultBlock  resultBlock
+ @discussion 重写这个方法你可以自己重写客服分组界面，当用户选择技能组后，调用resultBlock传入用户选择分组的groupId，如果用户没有选择，可以传nil，会自动分配一个客服分组
+ */
+- (void)onSelectCustomerServiceGroup:(NSArray *)groupList result:(void (^)(NSString *groupId))resultBlock;
+
+/*!
  离开客服界面
  
  @discussion 调用此方法离开客服VC。
@@ -762,4 +775,3 @@ __deprecated_msg("已废弃，请勿使用。");
 - (void)showChooseUserViewController:(void (^)(RCUserInfo *selectedUserInfo))selectedBlock
                               cancel:(void (^)())cancelBlock;
 @end
-#endif

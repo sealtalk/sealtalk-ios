@@ -162,9 +162,9 @@ typedef enum {
     self.opaque = YES;
     self.alpha = 0;
 
-    self.layer.shadowOpacity = 0.5;
-    self.layer.shadowOffset = CGSizeMake(2, 2);
-    self.layer.shadowRadius = 2;
+    self.layer.shadowOpacity = 0.3;
+    self.layer.shadowOffset = CGSizeMake(0, 0);
+    self.layer.shadowRadius = 5.0;
   }
 
   return self;
@@ -599,23 +599,6 @@ typedef enum {
 }
 
 - (void)drawBackground:(CGRect)frame inContext:(CGContextRef)context {
-  //    CGFloat R0 = 0.267, G0 = 0.303, B0 = 0.335;
-  //    CGFloat R1 = 0.040, G1 = 0.040, B1 = 0.040;
-  CGFloat R0 = 0.f, G0 = 0.f, B0 = 0.f;
-  CGFloat R1 = 0.f, G1 = 0.f, B1 = 0.f;
-
-  //    UIColor *tintColor = [KxMenu tintColor];
-  //    UIColor *tintColor = [UIColor colorWithHexString:@"0195FF" alpha:1.0f];
-  //修改背景色
-  UIColor *tintColor = [UIColor whiteColor];
-
-  if (tintColor) {
-
-    CGFloat a = 0.f;
-    [tintColor getRed:&R0 green:&G0 blue:&B0 alpha:&a];
-    //        [tintColor getRed:&R2 green:&G2 blue:&B2 alpha:&a];
-  }
-
   CGFloat X0 = frame.origin.x;
   CGFloat X1 = frame.origin.x + frame.size.width;
   CGFloat Y0 = frame.origin.y;
@@ -641,7 +624,7 @@ typedef enum {
     [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowY1}];
     [arrowPath addLineToPoint:(CGPoint){arrowXM, arrowY0}];
 
-    [[UIColor colorWithRed:R0 green:G0 blue:B0 alpha:1] set];
+    [[[UIColor whiteColor] colorWithAlphaComponent:1.0f] set];
 
     Y0 += kArrowSize;
 
@@ -658,7 +641,7 @@ typedef enum {
     [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowY0}];
     [arrowPath addLineToPoint:(CGPoint){arrowXM, arrowY1}];
 
-    [[UIColor colorWithRed:R1 green:G1 blue:B1 alpha:1] set];
+    [[[UIColor whiteColor] colorWithAlphaComponent:1.0f] set];
 
     Y1 -= kArrowSize;
 
@@ -676,7 +659,7 @@ typedef enum {
     [arrowPath addLineToPoint:(CGPoint){arrowX1, arrowY1}];
     [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowYM}];
 
-    [[UIColor colorWithRed:R0 green:G0 blue:B0 alpha:1] set];
+    [[[UIColor whiteColor] colorWithAlphaComponent:1.0f] set];
 
     X0 += kArrowSize;
 
@@ -694,7 +677,7 @@ typedef enum {
     [arrowPath addLineToPoint:(CGPoint){arrowX1, arrowY1}];
     [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowYM}];
 
-    [[UIColor colorWithRed:R1 green:G1 blue:B1 alpha:1] set];
+    [[[UIColor whiteColor] colorWithAlphaComponent:1.0f] set];
 
     X1 -= kArrowSize;
   }

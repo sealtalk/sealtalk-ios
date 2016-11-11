@@ -6,9 +6,6 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#ifndef __RongConversationModel
-#define __RongConversationModel
-
 #import <Foundation/Foundation.h>
 #import <RongIMLib/RongIMLib.h>
 
@@ -42,7 +39,7 @@ typedef NS_ENUM(NSUInteger, RCConversationModelType) {
 /*!
  会话Cell数据模型的显示类型
  */
-@property(nonatomic) RCConversationModelType conversationModelType;
+@property(nonatomic, assign) RCConversationModelType conversationModelType;
 
 /*!
  用户自定义的扩展数据
@@ -62,7 +59,7 @@ typedef NS_ENUM(NSUInteger, RCConversationModelType) {
 /*!
  会话的标题
  */
-@property(nonatomic, strong) NSString *conversationTitle;
+@property(nonatomic, copy) NSString *conversationTitle;
 
 /*!
  会话中的未读消息数
@@ -73,6 +70,16 @@ typedef NS_ENUM(NSUInteger, RCConversationModelType) {
  当前会话是否置顶
  */
 @property(nonatomic, assign) BOOL isTop;
+
+/*!
+ 置顶Cell的背景颜色
+ */
+@property(nonatomic, strong) UIColor *topCellBackgroundColor;
+
+/*!
+ 非置顶的Cell的背景颜色
+ */
+@property(nonatomic, strong) UIColor *cellBackgroundColor;
 
 /*!
  会话中最后一条消息的接收状态
@@ -127,6 +134,11 @@ typedef NS_ENUM(NSUInteger, RCConversationModelType) {
 @property(nonatomic, strong) RCMessageContent *lastestMessage;
 
 /*!
+ 会话中最后一条消息的方向
+ */
+@property(nonatomic, assign) RCMessageDirection lastestMessageDirection;
+
+/*!
  会话中最后一条消息的json Dictionary
  */
 @property(nonatomic, strong) NSDictionary *jsonDict;
@@ -141,12 +153,11 @@ typedef NS_ENUM(NSUInteger, RCConversationModelType) {
  
  @param conversationModelType 会话Cell数据模型的显示类型
  @param extend                用户自定义的扩展数据
- 
  @return 会话Cell的数据模型对象
  
  @warning **已废弃，请勿使用。**
  */
-- (id)init:(RCConversationModelType)conversationModelType exntend:(id)extend
+- (instancetype)init:(RCConversationModelType)conversationModelType exntend:(id)extend
 __deprecated_msg("已废弃，请勿使用。");
 
 /*!
@@ -155,11 +166,39 @@ __deprecated_msg("已废弃，请勿使用。");
  @param conversationModelType 会话Cell数据模型的显示类型
  @param conversation          会话
  @param extend                用户自定义的扩展数据
+ @return 会话Cell的数据模型对象
  
+ @warning **已废弃，请勿使用。**
+ */
+- (instancetype)init:(RCConversationModelType)conversationModelType
+        conversation:(RCConversation *)conversation
+              extend:(id)extend
+__deprecated_msg("已废弃，请勿使用。");
+
+/*!
+ 初始化会话显示数据模型
+ 
+ @param conversation          会话
+ @param extend                用户自定义的扩展数据
  @return 会话Cell的数据模型对象
  */
-- (id)init:(RCConversationModelType)conversationModelType conversation:(RCConversation *)conversation extend:(id)extend;
+- (instancetype)initWithConversation:(RCConversation *)conversation extend:(id)extend;
+
+/*!
+ 更新数据模型中的消息
+ 
+ @param message 此会话中最新的消息
+ */
+- (void)updateWithMessage:(RCMessage *)message;
+
+/*!
+ 会话和数据模型是否匹配
+ 
+ @param conversationType 会话类型
+ @param targetId         目标会话ID
+ @return 会话和数据模型是否匹配
+ */
+- (BOOL)isMatching:(RCConversationType)conversationType
+          targetId:(NSString *)targetId;
 
 @end
-
-#endif

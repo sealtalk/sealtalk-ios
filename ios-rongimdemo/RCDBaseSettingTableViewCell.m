@@ -8,12 +8,13 @@
 
 #import "RCDBaseSettingTableViewCell.h"
 #import "UIColor+RCColor.h"
+#import "UIImageView+WebCache.h"
 
 @interface RCDBaseSettingTableViewCell()
 
 @property(nonatomic, strong) NSDictionary *cellSubViews;
 
-@property(nonatomic, strong) NSArray *leftLabelConstraints;
+//@property(nonatomic, strong) NSArray *leftLabelConstraints;
 
 @property(nonatomic, strong) NSArray *rightLabelConstraints;
 
@@ -38,89 +39,19 @@
   return self;
 }
 
--(id)initWithLeftImage:(UIImage *)leftImage
+-(id)initWithLeftImageStr:(NSString *)leftImageStr
          leftImageSize:(CGSize)leftImageSize
-             rightImae:(UIImage *)rightImage
+             rightImaeStr:(NSString *)rightImageStr
         rightImageSize:(CGSize)rightImageSize {
   self = [super init];
   if (self) {
-//    [self initialize];
-    if (leftImage != nil) {
+    if (leftImageStr != nil) {
       self.leftImageView = [[UIImageView alloc] init];
-      self.leftImageView.translatesAutoresizingMaskIntoConstraints = NO;
-      self.leftImageView.image = leftImage;
-      [self.contentView addSubview:self.leftImageView];
-      
-      self.cellSubViews = NSDictionaryOfVariableBindings(_leftLabel,_rightLabel,_rightArrow,_switchButton,_leftImageView);
-
-      if (self.leftLabelConstraints != nil) {
-        [self.contentView removeConstraints:self.leftLabelConstraints];
-      }
-      self.leftLabelConstraints = [NSLayoutConstraint
-                                   constraintsWithVisualFormat:@"H:|-10-[_leftImageView(width)]-10-[_leftLabel]"
-                                   options:0
-                                   metrics:@{@"width":@(leftImageSize.width)}
-                                   views:self.cellSubViews];
-      [self.contentView
-       addConstraints:[NSLayoutConstraint
-                       constraintsWithVisualFormat:@"V:[_leftImageView(height)]"
-                       options:0
-                       metrics:@{@"height":@(leftImageSize.height)}
-                       views:self.cellSubViews]];
-      
-      [self.contentView
-       addConstraint:[NSLayoutConstraint constraintWithItem:_leftImageView
-                                                  attribute:NSLayoutAttributeCenterY
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.contentView
-                                                  attribute:NSLayoutAttributeCenterY
-                                                 multiplier:1
-                                                   constant:0]];
-      
-      [self.contentView addConstraints:self.leftLabelConstraints];
-      
-      [self setNeedsUpdateConstraints];
-      [self updateConstraintsIfNeeded];
-      [self layoutIfNeeded];
+      [self setImageView:self.leftImageView ImageStr:leftImageStr imageSize:leftImageSize LeftOrRight:0];
     }
-    
-    if (rightImage != nil) {
+    if (rightImageStr != nil) {
       self.rightImageView = [[UIImageView alloc] init];
-      self.rightImageView.translatesAutoresizingMaskIntoConstraints = NO;
-      self.rightImageView.image = rightImage;
-      [self.contentView addSubview:self.rightImageView];
-      
-      self.cellSubViews = NSDictionaryOfVariableBindings(_leftLabel,_rightLabel,_rightArrow,_switchButton,_rightImageView);
-      
-      if (self.rightLabelConstraints != nil) {
-        [self.contentView removeConstraints:self.rightLabelConstraints];
-      }
-      self.rightLabelConstraints = [NSLayoutConstraint
-                                   constraintsWithVisualFormat:@"H:[_rightImageView(width)]-13-[_rightArrow]-10-|"
-                                   options:0
-                                   metrics:@{@"width":@(rightImageSize.width)}
-                                   views:self.cellSubViews];
-      [self.contentView
-       addConstraints:[NSLayoutConstraint
-                       constraintsWithVisualFormat:@"V:[_rightImageView(height)]"
-                       options:0
-                       metrics:@{@"height":@(rightImageSize.height)}
-                       views:self.cellSubViews]];
-      
-      [self.contentView
-       addConstraint:[NSLayoutConstraint constraintWithItem:_rightImageView
-                                                  attribute:NSLayoutAttributeCenterY
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.contentView
-                                                  attribute:NSLayoutAttributeCenterY
-                                                 multiplier:1
-                                                   constant:0]];
-      
-      [self.contentView addConstraints:self.rightLabelConstraints];
-      
-      [self setNeedsUpdateConstraints];
-      [self updateConstraintsIfNeeded];
-      [self layoutIfNeeded];
+      [self setImageView:self.rightImageView ImageStr:rightImageStr imageSize:rightImageSize LeftOrRight:1];
     }
   }
   return self;
@@ -166,13 +97,6 @@
 }
 
 - (void)setLayout {
-  
-  self.leftLabelConstraints = [NSLayoutConstraint
-                                   constraintsWithVisualFormat:@"H:|-10-[_leftLabel]"
-                                   options:0
-                                   metrics:nil
-                                   views:self.cellSubViews];
-  [self.contentView addConstraints:self.leftLabelConstraints];
   [self.contentView
    addConstraints:[NSLayoutConstraint
                    constraintsWithVisualFormat:@"V:[_leftLabel(21)]"
@@ -188,12 +112,6 @@
                                              multiplier:1
                                                constant:0]];
   
-  self.rightLabelConstraints = [NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:[_rightLabel]-10-|"
-                               options:0
-                               metrics:nil
-                               views:self.cellSubViews];
-  [self.contentView addConstraints:self.rightLabelConstraints];
   [self.contentView
    addConstraints:[NSLayoutConstraint
                    constraintsWithVisualFormat:@"V:[_rightLabel(21)]"
@@ -208,13 +126,8 @@
                                               attribute:NSLayoutAttributeCenterY
                                              multiplier:1
                                                constant:0]];
+
   
-  [self.contentView
-   addConstraints:[NSLayoutConstraint
-                   constraintsWithVisualFormat:@"H:[_rightArrow(8)]-10-|"
-                   options:0
-                   metrics:nil
-                   views:self.cellSubViews]];
   [self.contentView
    addConstraints:[NSLayoutConstraint
                    constraintsWithVisualFormat:@"V:[_rightArrow(13)]"
@@ -229,22 +142,13 @@
                                               attribute:NSLayoutAttributeCenterY
                                              multiplier:1
                                                constant:0]];
-  
+
   [self.contentView
    addConstraints:[NSLayoutConstraint
-                   constraintsWithVisualFormat:@"H:[_switchButton]-10-|"
+                   constraintsWithVisualFormat:@"H:|-10-[_bottomLine]|"
                    options:0
                    metrics:nil
                    views:self.cellSubViews]];
-
-  [self.contentView
-   addConstraint:[NSLayoutConstraint constraintWithItem:_switchButton
-                                              attribute:NSLayoutAttributeCenterY
-                                              relatedBy:NSLayoutRelationEqual
-                                                 toItem:self.contentView
-                                              attribute:NSLayoutAttributeCenterY
-                                             multiplier:1
-                                               constant:0]];
   [self.contentView
    addConstraints:[NSLayoutConstraint
                    constraintsWithVisualFormat:@"V:[_bottomLine(0.5)]|"
@@ -253,47 +157,36 @@
                    views:self.cellSubViews]];
   
   [self.contentView
-   addConstraints:[NSLayoutConstraint
-                   constraintsWithVisualFormat:@"H:|-10-[_bottomLine]|"
-                   options:0
-                   metrics:nil
-                   views:self.cellSubViews]];
-  
+   addConstraint:[NSLayoutConstraint constraintWithItem:_switchButton
+                                              attribute:NSLayoutAttributeCenterY
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:self.contentView
+                                              attribute:NSLayoutAttributeCenterY
+                                             multiplier:1
+                                               constant:0]];
 }
 
 //设置cell的style
 - (void)setCellStyle:(RCDBaseSettingCellStyle)style {
+  NSString *constraints;
   switch (style) {
     case DefaultStyle: {
       self.rightLabel.hidden = YES;
       self.switchButton.hidden = YES;
+      constraints = @"H:|-10-[_leftLabel]-(>=10)-[_rightArrow(8)]-10-|";
     }
       break;
       
     case DefaultStyle_RightLabel_WithoutRightArrow: {
       self.rightArrow.hidden = YES;
       self.switchButton.hidden = YES;
+      constraints = @"H:|-10-[_leftLabel]-(>=10)-[_rightLabel]-10-|";
     }
       break;
       
     case DefaultStyle_RightLabel: {
       self.switchButton.hidden = YES;
-      if (self.rightLabelConstraints != nil) {
-        [self.contentView removeConstraints:self.rightLabelConstraints];
-      }
-      self.cellSubViews = NSDictionaryOfVariableBindings(_leftLabel,_rightLabel,_rightArrow,_switchButton);
-      self.rightLabelConstraints = [NSLayoutConstraint
-                                    constraintsWithVisualFormat:@"H:[_rightLabel]-13-[_rightArrow]-10-|"
-                                    options:0
-                                    metrics:nil
-                                    views:self.cellSubViews];
-      
-      [self.contentView addConstraints:self.rightLabelConstraints];
-      
-      [self setNeedsUpdateConstraints];
-      [self updateConstraintsIfNeeded];
-      [self layoutIfNeeded];
-
+      constraints = @"H:|-10-[_leftLabel]-(>=10)-[_rightLabel]-13-[_rightArrow(8)]-10-|";
     }
       break;
       
@@ -301,17 +194,25 @@
       self.rightLabel.hidden = YES;
       self.rightArrow.hidden = YES;
       self.switchButton.hidden = YES;
+      constraints = @"H:|-10-[_leftLabel]-10-|";
     }
       break;
       
     case SwitchStyle: {
     self.rightLabel.hidden = YES;
     self.rightArrow.hidden = YES;
+      constraints = @"H:|-10-[_leftLabel]-(>=10)-[_switchButton]-10-|";
     }
       break;
     default:
       break;
   }
+  [self.contentView
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:constraints
+                   options:0
+                   metrics:nil
+                   views:self.cellSubViews]];
 }
 
 - (void)onClickSwitch:(id)sender {
@@ -334,6 +235,92 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void)setImageView:(UIImageView *)imageView ImageStr:(NSString *)imageStr imageSize:(CGSize)imageSize LeftOrRight:(NSInteger)LeftOrRight{
+  self.switchButton.hidden = YES;
+  if (imageView == nil) {
+    imageView = [[UIImageView alloc] init];
+  }
+  if (imageStr != nil) {
+    if ([imageStr hasPrefix:@"http"] || [imageStr hasPrefix:@"file:"]) {
+      [imageView sd_setImageWithURL:[NSURL URLWithString:imageStr] placeholderImage:nil];
+    } else {
+      imageView.image = [UIImage imageNamed:imageStr];
+    }
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.contentView addSubview:imageView];
+    self.cellSubViews = NSDictionaryOfVariableBindings(_leftLabel,_rightLabel,_rightArrow,_switchButton,imageView);
+    
+    if (LeftOrRight == 0) {
+      if (self.leftLabelConstraints != nil) {
+        [self.contentView removeConstraints:self.leftLabelConstraints];
+      }
+      self.leftImageView = imageView;
+      self.leftLabelConstraints = [NSLayoutConstraint
+                                   constraintsWithVisualFormat:@"H:|-10-[imageView(width)]-8-[_leftLabel]-10-[_rightArrow(8)]-10-|"
+                                   options:0
+                                   metrics:@{@"width":@(imageSize.width)}
+                                   views:self.cellSubViews];
+      [self.contentView
+       addConstraints:[NSLayoutConstraint
+                       constraintsWithVisualFormat:@"V:[imageView(height)]"
+                       options:0
+                       metrics:@{@"height":@(imageSize.height)}
+                       views:self.cellSubViews]];
+      
+      [self.contentView
+       addConstraint:[NSLayoutConstraint constraintWithItem:imageView
+                                                  attribute:NSLayoutAttributeCenterY
+                                                  relatedBy:NSLayoutRelationEqual
+                                                     toItem:self.contentView
+                                                  attribute:NSLayoutAttributeCenterY
+                                                 multiplier:1
+                                                   constant:0]];
+      
+      [self.contentView addConstraints:self.leftLabelConstraints];
+    }
+    if (LeftOrRight == 1) {
+      if (self.rightLabelConstraints != nil) {
+        [self.contentView removeConstraints:self.rightLabelConstraints];
+      }
+      self.rightImageView = imageView;
+      self.rightLabelConstraints = [NSLayoutConstraint
+                                    constraintsWithVisualFormat:@"H:|-10-[_leftLabel]-(>=10)-[imageView(width)]-13-[_rightArrow(8)]-10-|"
+                                    options:0
+                                    metrics:@{@"width":@(imageSize.width)}
+                                    views:self.cellSubViews];
+      [self.contentView
+       addConstraints:[NSLayoutConstraint
+                       constraintsWithVisualFormat:@"V:[imageView(height)]"
+                       options:0
+                       metrics:@{@"height":@(imageSize.height)}
+                       views:self.cellSubViews]];
+      
+      [self.contentView
+       addConstraint:[NSLayoutConstraint constraintWithItem:imageView
+                                                  attribute:NSLayoutAttributeCenterY
+                                                  relatedBy:NSLayoutRelationEqual
+                                                     toItem:self.contentView
+                                                  attribute:NSLayoutAttributeCenterY
+                                                 multiplier:1
+                                                   constant:0]];
+      [self.contentView addConstraints:self.rightLabelConstraints];
+    }
+    [self setNeedsUpdateConstraints];
+    [self updateConstraintsIfNeeded];
+    [self layoutIfNeeded];
+  }
+}
+
+- (void)setLeftImageCornerRadius:(CGFloat)leftImageCornerRadius {
+    self.leftImageView.layer.masksToBounds = YES;
+    self.leftImageView.layer.cornerRadius = leftImageCornerRadius;
+}
+
+- (void)setRightImageCornerRadius:(CGFloat)rightImageCornerRadius {
+  self.rightImageView.layer.masksToBounds = YES;
+  self.rightImageView.layer.cornerRadius = rightImageCornerRadius;
 }
 
 @end

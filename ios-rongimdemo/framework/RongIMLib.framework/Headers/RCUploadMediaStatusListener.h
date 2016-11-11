@@ -39,18 +39,33 @@
 @property(nonatomic, strong) void (^errorBlock)(RCErrorCode errorCode);
 
 /*!
+ 上传取消需要调用的block
+ */
+@property(nonatomic, strong) void (^cancelBlock)();
+
+/*!
  初始化媒体文件上传进度更新的IMKit监听
 
  @param message             媒体文件消息的消息实体
  @param progressBlock       更新上传进度需要调用的block
  @param successBlock        上传成功需要调用的block
  @param errorBlock          上传失败需要调用的block
+ @param cancelBlock         上传取消需要调用的block(如果未实现，传nil即可)
 
  @return                    媒体文件上传进度更新的IMKit监听对象
  */
 - (instancetype)initWithMessage:(RCMessage *)message
                  uploadProgress:(void (^)(int progress))progressBlock
                   uploadSuccess:(void (^)(NSString *remoteUrl))successBlock
-                    uploadError:(void (^)(RCErrorCode errorCode))errorBlock;
+                    uploadError:(void (^)(RCErrorCode errorCode))errorBlock
+                   uploadCancel:(void (^)())cancelBlock;
+
+/*!
+ 取消当前上传
+ 
+ @discussion 如果您实现取消正在上传的媒体消息功能，则必须实现此回调。
+ 您需要在取消成功之后，调用cancelBlock通知SDK，SDK会自动更新UI。
+ */
+- (void)cancelUpload;
 
 @end

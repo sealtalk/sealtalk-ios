@@ -116,7 +116,7 @@
   [_header reloadData];
   _headerView.frame =
       CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width,
-                 _header.collectionViewLayout.collectionViewContentSize.height);
+                 _header.collectionViewLayout.collectionViewContentSize.height + 20);
   self.tableView.tableHeaderView = _headerView;
 }
 
@@ -181,7 +181,7 @@
 - (void)orientChange:(NSNotification *)noti {
   _headerView.frame =
       CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width,
-                 _header.collectionViewLayout.collectionViewContentSize.height);
+                 _header.collectionViewLayout.collectionViewContentSize.height + 20);
   self.tableView.tableHeaderView = _headerView;
 
   if (self.headerHidden) {
@@ -198,7 +198,7 @@
   [super viewWillAppear:animated];
   _headerView.frame =
       CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width,
-                 _header.collectionViewLayout.collectionViewContentSize.height);
+                 _header.collectionViewLayout.collectionViewContentSize.height + 20);
   self.tableView.tableHeaderView = _headerView;
   if (self.headerHidden) {
     self.tableView.tableHeaderView = nil;

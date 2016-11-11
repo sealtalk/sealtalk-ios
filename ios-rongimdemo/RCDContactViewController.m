@@ -21,9 +21,14 @@
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
 #import "pinyin.h"
+
+#define kScreenWidth [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+
 #import "RCDUserInfoManager.h"
 #import "RCDUtilities.h"
 #import "RCDUIBarButtonItem.h"
+
 
 @interface RCDContactViewController ()
 @property(strong, nonatomic) NSMutableArray *matchFriendList;
@@ -37,10 +42,53 @@
 
 @implementation RCDContactViewController
 
+- (void)setUpView{
+    [self.friendsTabelView
+     setBackgroundColor:[UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1]];
+    self.view.backgroundColor = [UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1];
+    
+    [self.view addSubview:self.friendsTabelView];
+    [self.view addSubview:self.searchFriendsBar];
+}
+
+- (UISearchBar *)searchFriendsBar {
+    if (!_searchFriendsBar) {
+        _searchFriendsBar=[[UISearchBar alloc]initWithFrame:CGRectMake(2, 0, kScreenWidth-4, 28)];
+        [_searchFriendsBar sizeToFit];
+        [_searchFriendsBar setPlaceholder:NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil)];
+        [_searchFriendsBar.layer setBorderWidth:0.5];
+        [_searchFriendsBar.layer setBorderColor:[UIColor colorWithRed:235.0/255 green:235.0/255 blue:235.0/255 alpha:1].CGColor];
+        [_searchFriendsBar setDelegate:self];
+        [_searchFriendsBar setKeyboardType:UIKeyboardTypeDefault];
+    }
+    return _searchFriendsBar;
+}
+
+- (UITableView *)friendsTabelView {
+    if (!_friendsTabelView) {
+        _friendsTabelView=[[UITableView alloc]initWithFrame:CGRectMake(0.0, 43.5, kScreenWidth, kScreenHeight-43.5-114) style:UITableViewStyleGrouped];
+        [_friendsTabelView setDelegate:self];
+        [_friendsTabelView setDataSource:self];
+        [_friendsTabelView setSectionIndexBackgroundColor:[UIColor clearColor]];
+        [_friendsTabelView setSectionIndexColor:[UIColor darkGrayColor]];
+        [_friendsTabelView setBackgroundColor:[UIColor colorWithRed:240.0/255 green:240.0/255 blue:240.0/255 alpha:1]];
+//        _friendsTabelView.style = UITableViewStyleGrouped;
+//        _friendsTabelView.tableHeaderView=self.searchFriendsBar;
+        //cell无数据时，不显示间隔线
+        UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
+        [_friendsTabelView setTableFooterView:v];
+    }
+    return _friendsTabelView;
+}
+
+
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-
+  self.edgesForExtendedLayout = UIRectEdgeNone;
+  self.navigationController.navigationBar.translucent = NO;
+  
+  [self setUpView];
   // initial data
   self.matchFriendList = [[NSMutableArray alloc] init];
   self.allFriendSectionDic = [[NSDictionary alloc] init];
@@ -154,6 +202,12 @@
   return 21.f;
 }
 
+//如果没有该方法，tableView会默认显示footerView，其高度与headerView等高
+//另外如果return 0或者0.0f是没有效果的
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.1f;
+}
+
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
   UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
@@ -206,6 +260,7 @@
      placeholderImage:[UIImage imageNamed:@"contact"]];
   } if (indexPath.section != 0) {
     NSString *letter = self.resultDic[@"allKeys"][indexPath.section -1];
+
     NSArray *sectionUserInfoList = self.allFriendSectionDic[letter];
     RCDUserInfo *userInfo = sectionUserInfoList[indexPath.row];
     if (userInfo) {
@@ -277,12 +332,8 @@
     } break;
 
     case 3: {
-      UIStoryboard *storyboard =
-          [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-      RCDPersonDetailViewController *detailViewController =
-          [storyboard instantiateViewControllerWithIdentifier:
-                          @"RCDPersonDetailViewController"];
-
+        RCDPersonDetailViewController *detailViewController =
+        [[RCDPersonDetailViewController alloc]init];
       [self.navigationController pushViewController:detailViewController
                                            animated:YES];
       detailViewController.userId = [RCIM sharedRCIM].currentUserInfo.userId;
@@ -304,10 +355,7 @@
   userInfo.portraitUri = user.portraitUri;
   userInfo.name = user.name;
 
-  UIStoryboard *storyboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDPersonDetailViewController *detailViewController = [storyboard
-      instantiateViewControllerWithIdentifier:@"RCDPersonDetailViewController"];
+    RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc]init];
   detailViewController.userId = user.userId;
   [self.navigationController pushViewController:detailViewController
                                        animated:YES];

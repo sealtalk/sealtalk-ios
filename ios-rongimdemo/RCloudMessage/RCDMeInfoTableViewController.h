@@ -12,9 +12,4 @@
     : UITableViewController <UIActionSheetDelegate,
                              UINavigationControllerDelegate,
                              UIImagePickerControllerDelegate>
-
-@property(weak, nonatomic) IBOutlet UILabel *NicknameLabel;
-
-@property(weak, nonatomic) IBOutlet UILabel *PhoneNumberLabel;
-
 @end

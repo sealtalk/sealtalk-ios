@@ -14,4 +14,6 @@
 
 @property(nonatomic, strong) NSString *userId;
 
++ (instancetype)privateSettingsTableViewController;
+
 @end

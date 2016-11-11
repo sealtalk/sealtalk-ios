@@ -55,7 +55,6 @@
     self.lblGroupId = [[UILabel alloc]initWithFrame:CGRectMake(lblGroupIdX, lblGroupIdY, lblGroupIdWidth, lblGroupIdHeight)];
     self.lblGroupId.font = [UIFont systemFontOfSize:12];
     
-    
     [self.contentView addSubview:self.imvGroupPort];
     [self.contentView addSubview:self.lblGroupName];
     [self.contentView addSubview:self.lblGroupId];

@@ -24,6 +24,8 @@
 
 @property (nonatomic, strong) MBProgressHUD *hud;
 
+@property (nonatomic, strong) NSString *displayName;
+
 @end
 
 @implementation RCDFrienfRemarksViewController
@@ -31,6 +33,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+  
+  self.navigationItem.title = @"设置备注";
   
   [self setNavigationButtons];
   
@@ -40,7 +44,6 @@
   
   [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textFieldEditChanged:)
                                               name:@"UITextFieldTextDidChangeNotification" object:self.remarks];
-  
 }
 
 - (void)didReceiveMemoryWarning {
@@ -149,6 +152,9 @@ if ([remarksStr isEqualToString:self.friendInfo.displayName]) {
   self.remarks.clearButtonMode = UITextFieldViewModeWhileEditing;
   if (self.friendInfo.displayName != nil) {
     self.remarks.text = self.friendInfo.displayName;
+    self.displayName = self.friendInfo.displayName;
+  } else {
+    self.displayName = @"";
   }
   [inputView addSubview:self.remarks];
   
@@ -189,18 +195,6 @@ if ([remarksStr isEqualToString:self.friendInfo.displayName]) {
                   multiplier:1
                   constant:0]];
   
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-//  if ((range.location == 0 && range.length == 1) || (range.location == 0 && range.length == 0 && string.length == 0)) {
-//    [self.rightLabel setTextColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]];
-//    self.rightBtn.userInteractionEnabled = NO;
-//  } else {
-    self.rightBtn.userInteractionEnabled = YES;
-    [self.rightLabel setTextColor:[UIColor whiteColor]];
-//  }
-  return YES;
 }
 
 - (void) aletrInfo:(NSString *)infoStr
@@ -251,6 +245,13 @@ if ([remarksStr isEqualToString:self.friendInfo.displayName]) {
         textField.text = [toBeString substringWithRange:rangeRange];
       }
     }
+  }
+  if (![toBeString isEqualToString:self.displayName]) {
+    self.rightBtn.userInteractionEnabled = YES;
+    [self.rightLabel setTextColor:[UIColor whiteColor]];
+  } else {
+    [self.rightLabel setTextColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]];
+    self.rightBtn.userInteractionEnabled = NO;
   }
 }
 

@@ -24,6 +24,7 @@
   dispatch_once(&predicate, ^{
     instance = [[[self class] alloc] init];
     instance.allGroups = [NSMutableArray new];
+    instance.allFriends = [NSMutableArray new];
   });
   return instance;
 }
@@ -214,6 +215,7 @@
     NSArray *allGroups = response[@"result"];
     NSMutableArray *tempArr = [NSMutableArray new];
     if (allGroups) {
+      NSMutableArray *groups = [NSMutableArray new];
       [[RCDataBaseManager shareInstance] clearGroupfromDB];
       for (NSDictionary *dic in allGroups) {
         NSDictionary *groupInfo = dic[@"group"];
@@ -239,15 +241,19 @@
         }
         [tempArr addObject:group];
         group.isJoin = YES;
-        dispatch_async(
-            dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-              [[RCDataBaseManager shareInstance] insertGroupToDB:group];
-            });
+        [groups addObject:group];
+//        dispatch_async(
+//            dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//              [[RCDataBaseManager shareInstance] insertGroupToDB:group];
+//            });
       }
-
-      if (block) {
-        block(tempArr);
-      }
+      [[RCDataBaseManager shareInstance] insertGroupsToDB:groups complete:^(BOOL result) {
+        if (result == YES) {
+          if (block) {
+            block(tempArr);
+          }
+        }
+      }];
     } else {
       block(nil);
     }
@@ -288,9 +294,13 @@
         //按加成员入群组时间的升序排列
         SortForTime *sort = [[SortForTime alloc] init];
         tempArr = [sort sortForUpdateAt:tempArr order:NSOrderedDescending];
-        if (block) {
-          block(tempArr);
-        }
+        [[RCDataBaseManager shareInstance] insertGroupMemberToDB:tempArr groupId:groupId complete:^(BOOL result) {
+          if (result == YES) {
+            if (block) {
+              block(tempArr);
+            }
+          }
+        }];
       }
       failure:^(NSError *err) {
         block(nil);
@@ -422,11 +432,10 @@
             [_allFriends removeAllObjects];
             NSArray *regDataArray = response[@"result"];
             [[RCDataBaseManager shareInstance] clearFriendsData];
+            NSMutableArray *userInfoList = [NSMutableArray new];
+            NSMutableArray *friendInfoList = [NSMutableArray new];
             for (int i = 0; i < regDataArray.count; i++) {
               NSDictionary *dic = [regDataArray objectAtIndex:i];
-              //                    if([[dic objectForKey:@"status"] intValue]
-              //                    != 1)
-              //                        continue;
               NSDictionary *userDic = dic[@"user"];
               if (![userDic[@"id"] isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
                 RCDUserInfo *userInfo = [RCDUserInfo new];
@@ -452,14 +461,20 @@
                 if (!user.portraitUri || user.portraitUri <= 0) {
                   user.portraitUri = [RCDUtilities defaultUserPortrait:user];
                 }
-                [[RCDataBaseManager shareInstance] insertUserToDB:user];
-                [[RCDataBaseManager shareInstance] insertFriendToDB:userInfo];
+                [userInfoList addObject:user];
+                [friendInfoList addObject:userInfo];
               }
             }
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-              friendList(list);
-            });
-
+            [[RCDataBaseManager shareInstance] insertUserListToDB:userInfoList complete:^(BOOL result) {
+              
+            }];
+            [[RCDataBaseManager shareInstance] insertFriendListToDB:friendInfoList complete:^(BOOL result) {
+              if (result == YES) {
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                  friendList(list);
+                });
+              }
+            }];
           } else {
             friendList(list);
           }
@@ -634,6 +649,9 @@
        [[RCDataBaseManager shareInstance] insertUserToDB:user];
        
        RCDUserInfo *Details = [[RCDataBaseManager shareInstance] getFriendInfo:userID];
+       if (Details == nil) {
+         Details = [[RCDUserInfo alloc] init];
+       }
        Details.name = [infoDic objectForKey:@"nickname"];
        Details.portraitUri = portraitUri;
        Details.displayName = dic[@"displayName"];
@@ -699,7 +717,7 @@
     if (response) {
       NSDictionary *iOSResult = response[@"iOS"];
       NSString *sealtalkBuild = iOSResult[@"build"];
-      NSString *applistURL = @"https://cdn.ronghub.com/app.plist";
+      NSString *applistURL = iOSResult[@"url"];
       
       NSDictionary *result;
       NSString *currentBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
@@ -765,6 +783,9 @@
                                [[RCDataBaseManager shareInstance] insertUserToDB:user];
                                
                                RCDUserInfo *Details = [[RCDataBaseManager shareInstance] getFriendInfo:friendId];
+                               if (Details == nil) {
+                                 Details = [[RCDUserInfo alloc] init];
+                               }
                                Details.name = [infoDic objectForKey:@"nickname"];
                                Details.portraitUri = portraitUri;
                                Details.displayName = dic[@"displayName"];

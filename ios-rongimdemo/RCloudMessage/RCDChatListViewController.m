@@ -24,8 +24,15 @@
 #import <RongIMKit/RongIMKit.h>
 #import "UITabBar+badge.h"
 #import "RCDUIBarButtonItem.h"
-@interface RCDChatListViewController ()
+#import "RCDSearchBar.h"
+#import "RCDSearchResultModel.h"
+#import "RCDSearchViewController.h"
+#import "RCDCommonDefine.h"
 
+@interface RCDChatListViewController ()<UISearchBarDelegate,RCDSearchViewDelegate>
+@property (nonatomic,strong)UINavigationController *searchNavigationController;
+@property (nonatomic,strong)UIView *headerView;
+@property (nonatomic,strong)RCDSearchBar *searchBar;
 //@property (nonatomic,strong) NSMutableArray *myDataSource;
 @property(nonatomic, strong) RCConversationModel *tempModel;
 
@@ -37,6 +44,20 @@
 @end
 
 @implementation RCDChatListViewController
+- (RCDSearchBar *)searchBar{
+  if (!_searchBar) {
+    _searchBar = [[RCDSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.conversationListTableView.frame.size.width, 44)];
+    
+  }
+  return _searchBar;
+}
+
+- (UIView *)headerView{
+  if (!_headerView) {
+    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.conversationListTableView.frame.size.width, 44)];
+  }
+  return _headerView;
+}
 
 /**
  *  此处使用storyboard初始化，代码初始化当前类时*****必须要设置会话类型和聚合类型*****
@@ -65,10 +86,34 @@
   return self;
 }
 
+- (id)init {
+  self = [super init];
+  if (self) {
+    //设置要显示的会话类型
+    [self setDisplayConversationTypes:@[
+                                        @(ConversationType_PRIVATE),
+                                        @(ConversationType_DISCUSSION),
+                                        @(ConversationType_APPSERVICE),
+                                        @(ConversationType_PUBLICSERVICE),
+                                        @(ConversationType_GROUP),
+                                        @(ConversationType_SYSTEM)
+                                        ]];
+    
+    //聚合会话类型
+    [self setCollectionConversationType:@[ @(ConversationType_SYSTEM) ]];
+    
+  }
+  return self;
+}
+
 - (void)viewDidLoad {
   [super viewDidLoad];
-
+  
   self.edgesForExtendedLayout = UIRectEdgeNone;
+  self.navigationController.navigationBar.translucent = NO;
+  self.searchBar.delegate = self;
+  [self.headerView addSubview:self.searchBar];
+  self.conversationListTableView.tableHeaderView = self.headerView;
 
   //设置tableView样式
   self.conversationListTableView.separatorColor =
@@ -115,14 +160,21 @@
                                           selector:@selector(updateBadgeValueForTabBarItem)
                                               name:RCKitDispatchReadReceiptNotification
                                             object:nil];
-    
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(refreshCell:)
+                                               name:@"RefreshConversationList"
+                                             object:nil];
+
+  
   [self checkVersion];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  self.navigationController.navigationBar.translucent = NO;
+  
   _isClick = YES;
-
   //自定义rightBarButtonItem
   RCDUIBarButtonItem *rightBtn =
   [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"add"]
@@ -144,7 +196,7 @@
              name:@"kRCNeedReloadDiscussionListNotification"
            object:nil];
   RCUserInfo *groupNotify = [[RCUserInfo alloc] initWithUserId:@"__system__"
-                                                          name:@"群组通知"
+                                                          name:@""
                                                       portrait:nil];
   [[RCIM sharedRCIM] refreshUserInfoCache:groupNotify withUserId:@"__system__"];
 }
@@ -271,7 +323,7 @@
  *
  *  @param sender sender description
  */
-- (IBAction)showMenu:(UIButton *)sender {
+- (void)showMenu:(UIButton *)sender {
   NSArray *menuItems = @[
 
     [KxMenuItem menuItem:@"发起聊天"
@@ -288,7 +340,7 @@
                    image:[UIImage imageNamed:@"addfriend_icon"]
                   target:self
                   action:@selector(pushAddFriend:)],
-#ifdef DEBUG
+#if RCDDebugTestFunction
     [KxMenuItem menuItem:@"创建讨论组"
                    image:[UIImage imageNamed:@"addfriend_icon"]
                   target:self
@@ -775,4 +827,36 @@
 - (void)updateForSharedMessageInsertSuccess{
   [self refreshConversationTableViewIfNeeded];
 }
+
+#pragma mark - UISearchBarDelegate
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+  [self.navigationController setNavigationBarHidden:YES animated:YES];
+  RCDSearchViewController *searchViewController = [[RCDSearchViewController alloc] init];
+  self.searchNavigationController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
+  searchViewController.delegate = self;
+  [self.navigationController.view addSubview:self.searchNavigationController.view];
+}
+
+- (void)onSearchCancelClick{
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.searchNavigationController.view removeFromSuperview];
+    [self.searchNavigationController removeFromParentViewController];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+  });
+}
+
+-(void)refreshCell:(NSNotification *)notify
+{
+  /*
+  NSString *row = [notify object];
+  RCConversationModel *model = [self.conversationListDataSource objectAtIndex:[row intValue]];
+  model.unreadMessageCount = 0;
+  NSIndexPath *indexPath=[NSIndexPath indexPathForRow:[row integerValue] inSection:0];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.conversationListTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+  });
+   */
+  [self refreshConversationTableViewIfNeeded];
+}
+
 @end

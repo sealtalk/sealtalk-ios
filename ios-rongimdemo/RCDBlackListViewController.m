@@ -61,9 +61,10 @@
       userInfo.userId = userID;
       userInfo.portraitUri = nil;
       userInfo.name = nil;
-      [[RCDataBaseManager shareInstance] insertBlackListToDB:userInfo];
       [blacklist addObject:userInfo];
     }
+    [[RCDataBaseManager shareInstance] insertBlackListUsersToDB:blacklist complete:^(BOOL result) {
+    }];
     NSArray *resultList = [[RCDUserInfoManager shareInstance] getFriendInfoList:blacklist];
     blacklist = [[NSMutableArray alloc] initWithArray:resultList];
     NSMutableDictionary *resultDic = [RCDUtilities sortedArrayWithPinYinDic:blacklist];
@@ -104,13 +105,18 @@
         withRowAnimation:UITableViewRowAnimationFade];
   } else {
     if (marray.count < 20) {
-      [self.tableView reloadData];
+        [self.mDictData setObject:marray forKey:key];
+        [self.tableView reloadData];
+        
+        
     } else {
       [self.mDictData setObject:marray forKey:key];
       [self.tableView deleteRowsAtIndexPaths:@[ indexPath ]
                             withRowAnimation:UITableViewRowAnimationFade];
     }
   }
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

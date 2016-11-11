@@ -54,8 +54,8 @@
       });
     } else {
       dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *startT = [UserDefaults objectForKey:@"startTime"];
-        NSString *endT = [UserDefaults objectForKey:@"endTime"];
+        NSString *startT = [UserDefaults objectForKey:[NSString stringWithFormat:@"startTime_%@",[RCIM sharedRCIM].currentUserInfo.userId]];
+        NSString *endT = [UserDefaults objectForKey:[NSString stringWithFormat:@"endTime_%@",[RCIM sharedRCIM].currentUserInfo.userId]];
         NSIndexPath *startIndexPath =
             [NSIndexPath indexPathForRow:1 inSection:0];
         NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
@@ -76,8 +76,8 @@
   }
       error:^(RCErrorCode status) {
         dispatch_async(dispatch_get_main_queue(), ^{
-          NSString *startT = [UserDefaults objectForKey:@"startTime"];
-          NSString *endT = [UserDefaults objectForKey:@"endTime"];
+          NSString *startT = [UserDefaults objectForKey:[NSString stringWithFormat:@"startTime_%@",[RCIM sharedRCIM].currentUserInfo.userId]];
+          NSString *endT = [UserDefaults objectForKey:[NSString stringWithFormat:@"endTime_%@",[RCIM sharedRCIM].currentUserInfo.userId]];
           NSIndexPath *startIndexPath =
               [NSIndexPath indexPathForRow:1 inSection:0];
           NSIndexPath *endIndexPath =
@@ -106,7 +106,7 @@
   self.datePicker.datePickerMode = UIDatePickerModeCountDownTimer;
   NSDateFormatter *formatterE = [[NSDateFormatter alloc] init];
   [formatterE setDateFormat:@"HH:mm:ss"];
-  NSString *startTime = [UserDefaults objectForKey:@"startTime"];
+  NSString *startTime = [UserDefaults objectForKey:[NSString stringWithFormat:@"startTime_%@",[RCIM sharedRCIM].currentUserInfo.userId]];
   if (startTime == nil) {
     startTime = @"23:00:00";
   }
@@ -139,22 +139,17 @@
     NSDate *startDate = [formatterE dateFromString:startTime];
     NSDate *endDate = [formatterE dateFromString:endTime];
     double timeDiff = [endDate timeIntervalSinceDate:startDate];
-    NSDate *laterTime = [startDate laterDate:endDate];
-    //开始时间大于结束时间，跨天设置
-    if ([laterTime isEqualToDate:startDate]) {
-      NSDate *dayEndTime = [formatterE dateFromString:@"23:59:59"];
-      NSDate *dayBeginTime = [formatterE dateFromString:@"00:00:00"];
-      double timeDiff1 = [dayEndTime timeIntervalSinceDate:startDate];
-      double timeDiff2 = [endDate timeIntervalSinceDate:dayBeginTime];
-      timeDiff = timeDiff1 + timeDiff2;
+    if (timeDiff < 0) {
+        startDate = [NSDate dateWithTimeInterval:-24*60*60 sinceDate:startDate];
+        timeDiff = [endDate timeIntervalSinceDate:startDate];
     }
 
     int timeDif = timeDiff / 60;
     [[RCIMClient sharedRCIMClient] setNotificationQuietHours:startTime
         spanMins:timeDif
         success:^{
-          [UserDefaults setObject:startTime forKey:@"startTime"];
-          [UserDefaults setObject:endTime forKey:@"endTime"];
+          [UserDefaults setObject:startTime forKey:[NSString stringWithFormat:@"startTime_%@",[RCIM sharedRCIM].currentUserInfo.userId]];
+          [UserDefaults setObject:endTime forKey:[NSString stringWithFormat:@"endTime_%@",[RCIM sharedRCIM].currentUserInfo.userId]];
         }
         error:^(RCErrorCode status) {
           dispatch_async(dispatch_get_main_queue(), ^{

@@ -12,12 +12,13 @@
 
 @interface RCDPersonDetailViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UIView *infoView;
+@property (nonatomic, strong) UIView *infoView;
 @property(nonatomic, strong) NSString *userId;
-@property(weak, nonatomic) IBOutlet UILabel *lblName;
-@property(weak, nonatomic) IBOutlet UIImageView *ivAva;
-@property(weak, nonatomic) IBOutlet UIButton *conversationBtn;
-@property(weak, nonatomic) IBOutlet UIButton *audioCallBtn;
-@property(weak, nonatomic) IBOutlet UIButton *videoCallBtn;
-@property (weak, nonatomic) IBOutlet UIView *bottomLine;
+@property(nonatomic, strong) UILabel *lblName;
+@property(nonatomic, strong) UIImageView *ivAva;
+@property(nonatomic, strong) UIButton *conversationBtn;
+@property(nonatomic, strong) UIButton *audioCallBtn;
+@property(nonatomic, strong) UIButton *videoCallBtn;
+@property (nonatomic, strong) UIView *bottomLine;
+
 @end

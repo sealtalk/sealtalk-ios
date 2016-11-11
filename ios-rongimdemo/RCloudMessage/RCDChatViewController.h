@@ -16,5 +16,5 @@
 @property(strong, nonatomic) RCConversationModel *conversation;
 
 @property BOOL needPopToRootView;
-
+-(UIView *)loadEmoticonView:(NSString *)identify index:(int)index;
 @end

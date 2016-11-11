@@ -65,8 +65,8 @@
 /*!
  对端用户开启或关闭了摄像头的状态
 
+ @param disabled  是否关闭摄像头
  @param userId    用户ID
- @param muted     是否关闭摄像头
  */
 - (void)remoteUserDidDisableCamera:(BOOL)disabled byUser:(NSString *)userId;
 
@@ -267,9 +267,7 @@
 - (BOOL)setMuted:(BOOL)muted;
 
 /*!
- 扬声器状态
-
- @param speakerEnabled 是否开启扬声器
+ 扬声器状态，是否开启扬声器
 
  @discussion 音频通话的默认值为NO，视频通话的默认值为YES。
  */
@@ -284,9 +282,7 @@
 - (BOOL)setSpeakerEnabled:(BOOL)speakerEnabled;
 
 /*!
- 摄像头状态
-
- @param muted 是否开启摄像头
+ 摄像头状态，是否开启摄像头
  */
 @property(nonatomic, readonly) BOOL cameraEnabled;
 

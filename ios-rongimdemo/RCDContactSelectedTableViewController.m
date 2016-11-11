@@ -31,6 +31,7 @@
 
 @property(nonatomic, strong) NSIndexPath *selectIndexPath;
 
+@property (nonatomic, strong) NSMutableArray *discussionGroupMemberIdList;
 @end
 
 @implementation RCDContactSelectedTableViewController
@@ -55,27 +56,25 @@ MBProgressHUD *hud;
   //自定义rightBarButtonItem
   self.rightBtn =
   [[RCDUIBarButtonItem alloc] initWithbuttonTitle:@"确定"
-                                       titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
-                                      buttonFrame:CGRectMake(0, 0, 50, 30)
+                                       titleColor:[UIColor colorWithHexString:@"000000" alpha:1.0]
+                                      buttonFrame:CGRectMake(0, 0, 90, 30)
                                            target:self
                                            action:@selector(clickedDone:)];
+  self.rightBtn.button.titleLabel.font = [UIFont systemFontOfSize:16];
+  [self.rightBtn.button setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, -10)];
   [self.rightBtn buttonIsCanClick:NO
                       buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
                     barButtonItem:self.rightBtn];
   self.navigationItem.rightBarButtonItems = [self.rightBtn
                                              setTranslation:self.rightBtn
                                              translation:-11];
-  
-  
-  
-  
-//  self.navigationItem.rightBarButtonItem =
-//      [[UIBarButtonItem alloc] initWithTitle:@"确定"
-//                                       style:UIBarButtonItemStylePlain
-//                                      target:self
-//                                      action:@selector(clickedDone:)];
-//  self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
-//  self.navigationItem.rightBarButtonItem.enabled = NO;
+  //当是讨论组加人的情况，先生成讨论组用户的ID列表
+  if (_addDiscussionGroupMembers.count > 0) {
+    self.discussionGroupMemberIdList = [NSMutableArray new];
+    for (RCUserInfo *memberInfo in _addDiscussionGroupMembers) {
+      [self.discussionGroupMemberIdList addObject:memberInfo.userId];
+    }
+  }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -139,11 +138,6 @@ MBProgressHUD *hud;
                   usersId:seletedUsersId
                  complete:^(BOOL result) {
                    if (result == YES) {
-                     [[NSNotificationCenter defaultCenter]
-                         postNotification:
-                             [NSNotification
-                                 notificationWithName:@"addGroupMemberList"
-                                               object:seletedUsers]];
                      [self.navigationController popViewControllerAnimated:YES];
                    } else {
                      [hud hide:YES];
@@ -167,11 +161,6 @@ MBProgressHUD *hud;
                     usersId:seletedUsersId
                    complete:^(BOOL result) {
                      if (result == YES) {
-                       [[NSNotificationCenter defaultCenter]
-                           postNotification:
-                               [NSNotification
-                                   notificationWithName:@"deleteGroupMemberList"
-                                                 object:seletedUsers]];
                        [self.navigationController
                            popViewControllerAnimated:YES];
                      } else {
@@ -261,6 +250,7 @@ MBProgressHUD *hud;
     dispatch_async(dispatch_get_main_queue(), ^{
       [self.navigationController pushViewController:chat animated:YES];
     });
+    return;
   }
   if (self.forCreatingDiscussionGroup) {
     NSMutableString *discussionTitle = [NSMutableString string];
@@ -351,6 +341,12 @@ titleForHeaderInSection:(NSInteger)section {
     if(_isHideSelectedIcon){
         cell.selectedImageView .hidden = YES;
     }
+    if ([self isContain:user.userId] == YES) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        cell.selectedImageView.image = [UIImage imageNamed:@"disable_select"];
+      });
+      cell.userInteractionEnabled = NO;
+    }
   return cell;
 }
 
@@ -364,7 +360,8 @@ titleForHeaderInSection:(NSInteger)section {
       (RCDContactSelectedTableViewCell *)[tableView
           cellForRowAtIndexPath:indexPath];
   [cell setSelected:YES];
-  if (self.selectIndexPath && self.selectIndexPath.row == indexPath.row) {
+//  if (self.selectIndexPath && self.selectIndexPath.row == indexPath.row) {
+  if(self.selectIndexPath && [self.selectIndexPath compare:indexPath]==NSOrderedSame){
     [cell setSelected:NO];
     self.selectIndexPath = nil;
   } else {
@@ -388,6 +385,12 @@ titleForHeaderInSection:(NSInteger)section {
         _selectUserList(userList);
         return;
     }
+    
+    if(self.isAllowsMultipleSelection){
+        NSArray *indexPaths = [self.tableView indexPathsForSelectedRows];
+        NSString *titleStr = [NSString stringWithFormat:@"确定(%zd)",[indexPaths count]];
+        [self.rightBtn.button setTitle:titleStr forState:UIControlStateNormal];
+    }
 
 }
 
@@ -403,6 +406,11 @@ titleForHeaderInSection:(NSInteger)section {
                       barButtonItem:self.rightBtn];
   }
   self.selectIndexPath = nil;
+    if(self.isAllowsMultipleSelection){
+        NSArray *indexPaths = [self.tableView indexPathsForSelectedRows];
+        NSString *titleStr = [NSString stringWithFormat:@"确定(%zd)",[indexPaths count]];
+        [self.rightBtn.button setTitle:titleStr forState:UIControlStateNormal];
+    }
 }
 
 #pragma mark - 获取好友并且排序
@@ -440,61 +448,42 @@ titleForHeaderInSection:(NSInteger)section {
         friend = [[RCDUserInfoManager shareInstance] generateDefaultUserInfo:user.userId];
       }
       [_friendsArr addObject:friend];
-      if (i == _friends.count - 1 ) {
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-          [self addOrDelGroupMembers];
-          NSMutableDictionary *resultDic = [RCDUtilities sortedArrayWithPinYinDic:_friendsArr];
-          _allFriends = resultDic[@"infoDic"];
-          _allKeys = resultDic[@"allKeys"];
-          dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-            
-          });
-        });
-      }
     }
   }
+  dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    [self deleteGroupMembers];
+    NSMutableDictionary *resultDic = [RCDUtilities sortedArrayWithPinYinDic:_friendsArr];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      _allFriends = resultDic[@"infoDic"];
+      _allKeys = resultDic[@"allKeys"];
+      [self.tableView reloadData];
+    });
+  });
 }
 
-- (void)addOrDelGroupMembers {
-  if (_addGroupMembers.count > 0) {
-    NSMutableIndexSet *indexSets = [NSMutableIndexSet new];
-    for (NSString *userId in _addGroupMembers) {
-      for (int i = 0; i < _friendsArr.count; i++) {
-        RCUserInfo *user = [_friendsArr objectAtIndex:i];
-        if ([userId isEqualToString:user.userId]) {
-          [indexSets addIndex:i];
-        }
-      }
-    }
-    [_friendsArr removeObjectsAtIndexes:indexSets];
-  }
+- (void)deleteGroupMembers {
   if (_delGroupMembers.count > 0) {
     _friendsArr = _delGroupMembers;
   }
-  if (_addDiscussionGroupMembers.count > 0) {
-    NSMutableIndexSet *indexSets = [NSMutableIndexSet new];
-    for (RCUserInfo *member in _addDiscussionGroupMembers) {
-      for (int i = 0; i < _friendsArr.count; i++) {
-        RCUserInfo *user = [_friendsArr objectAtIndex:i];
-        if ([member.userId isEqualToString:user.userId]) {
-          [indexSets addIndex:i];
-        }
-      }
-    }
-    [_friendsArr removeObjectsAtIndexes:indexSets];
+}
+
+- (BOOL)isContain:(NSString*)userId {
+  BOOL contain = NO;
+  NSArray *userList;
+  if (_addGroupMembers.count > 0) {
+    userList = _addGroupMembers;
   }
+  if (_addDiscussionGroupMembers.count > 0) {
+    userList = self.discussionGroupMemberIdList;
+  }
+  for (NSString *memberId in userList) {
+    if ([userId isEqualToString:memberId]) {
+      contain = YES;
+      break;
+    }
+  }
+  return contain;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little
-preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

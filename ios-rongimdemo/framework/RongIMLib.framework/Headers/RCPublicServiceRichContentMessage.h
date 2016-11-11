@@ -23,7 +23,7 @@
 
  @discussion 公众服务图文消息类，此消息会进行存储并计入未读消息数。
  */
-@interface RCPublicServiceRichContentMessage : RCMessageContent
+@interface RCPublicServiceRichContentMessage : RCMessageContent<NSCoding>
 
 /*!
  公众服务图文信息条目RCRichContentItem内容

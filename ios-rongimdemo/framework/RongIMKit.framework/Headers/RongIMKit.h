@@ -60,4 +60,5 @@ FOUNDATION_EXPORT const unsigned char RongIMKitVersionString[];
 #import <RongIMKit/RCConversationSettingTableViewHeader.h>
 #import <RongIMKit/RCPublicServiceProfileViewController.h>
 #import <RongIMKit/RongIMKitExtensionModule.h>
+#import <RongIMKit/RCEmoticonTabSource.h>
 /// VoIPCall

@@ -26,6 +26,8 @@
 
 @property (nonatomic, strong) RCDUIBarButtonItem *leftBtn;
 
+@property (nonatomic, strong) NSString *nickName;
+
 @end
 
 @implementation RCDEditUserNameViewController
@@ -37,6 +39,7 @@
                  completion:^(RCUserInfo *userInfo) {
                    dispatch_async(dispatch_get_main_queue(), ^{
                      self.userName.text = userInfo.name;
+                     self.nickName = self.userName.text;
                    });
                  }];
   self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6"
@@ -44,6 +47,9 @@
   [self setNavigationButton];
   [self setSubViews];
   self.navigationItem.title = @"昵称修改";
+  [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textFieldEditChanged:)
+                                              name:@"UITextFieldTextDidChangeNotification" object:self.userName];
+  
 }
 
 - (void)saveUserName:(id)sender {
@@ -133,6 +139,11 @@
   self.BGView.translatesAutoresizingMaskIntoConstraints = NO;
   [self.view addSubview:self.BGView];
   
+  UITapGestureRecognizer *clickBGView = [[UITapGestureRecognizer alloc]
+                                         initWithTarget:self
+                                         action:@selector(beginEditNickname)];
+  [self.BGView addGestureRecognizer:clickBGView];
+  
   self.userName = [UITextField new];
   self.userName.borderStyle = UITextBorderStyleNone;
   self.userName.clearButtonMode = UITextFieldViewModeAlways;
@@ -181,14 +192,23 @@
   [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark - UITextField Delegate
-- (BOOL)textField:(UITextField *)textField
-shouldChangeCharactersInRange:(NSRange)range
-replacementString:(NSString *)string {
-  [self.rightBtn buttonIsCanClick:YES
-                      buttonColor:[UIColor whiteColor]
-                    barButtonItem:self.rightBtn];
-  return YES;
+- (void)beginEditNickname {
+  [self.userName becomeFirstResponder];
+}
+
+-(void)textFieldEditChanged:(NSNotification *)obj
+{
+  UITextField *textField = (UITextField *)obj.object;
+  NSString *toBeString = textField.text;
+  if (![toBeString isEqualToString:self.nickName]) {
+    [self.rightBtn buttonIsCanClick:YES
+                        buttonColor:[UIColor whiteColor]
+                      barButtonItem:self.rightBtn];
+  } else {
+    [self.rightBtn buttonIsCanClick:NO
+                        buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                      barButtonItem:self.rightBtn];
+     }
 }
 
 @end

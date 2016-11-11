@@ -15,7 +15,6 @@
 #import "RCDConversationSettingTableViewHeaderItem.h"
 #import "RCDEditGroupNameViewController.h"
 #import "RCDGroupMembersTableViewController.h"
-//#import "RCDGroupSettingsTableViewCell.h"
 #import "RCDHttpTool.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDataBaseManager.h"
@@ -23,11 +22,11 @@
 #import <RongIMLib/RongIMLib.h>
 #import "RCDGroupAnnouncementViewController.h"
 #import "UIColor+RCColor.h"
+#import "RCDUtilities.h"
 #import "RCDUserInfoManager.h"
-
+#import "RCDGroupSettingsTableViewCell.h"
+#import "RCDSearchHistoryMessageController.h"
 static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
-
-#define SwitchButtonTag  1111
 
 @interface RCDGroupSettingsTableViewController ()
 //开始会话
@@ -61,8 +60,6 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 {
     self = [super init];
     if (self) {
-//        [self.tableView registerClass:[RCDBaseSettingTableViewCell class ] forCellReuseIdentifier:CellIdentifier];
-
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         [self initSubViews];
@@ -95,10 +92,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
   self.tableView.tableFooterView = [UIView new];
   self.tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
   self.tableView.separatorColor = HEXCOLOR(0xdfdfdf);
-  
-  if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
-  }
+  self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
   // Uncomment the following line to preserve selection between presentations.
   // self.clearsSelectionOnViewWillAppear = NO;
@@ -127,18 +121,11 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     [self.navigationItem setLeftBarButtonItem:leftButton];
 
-
-
   [[NSNotificationCenter defaultCenter]
-      addObserver:self
-         selector:@selector(addGroupMemberList:)
-             name:@"addGroupMemberList"
-           object:nil];
-  [[NSNotificationCenter defaultCenter]
-      addObserver:self
-         selector:@selector(deleteGroupMemberList:)
-             name:@"deleteGroupMemberList"
-           object:nil];
+   addObserver:self
+   selector:@selector(didReceiveMessageNotification:)
+   name:RCKitDispatchMessageNotification
+   object:nil];
 
   CGRect tempRect = CGRectMake(
       0, 0, [UIScreen mainScreen].bounds.size.width,
@@ -154,6 +141,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
   headerView.backgroundColor = [UIColor whiteColor];
   [headerView registerClass:[RCDConversationSettingTableViewHeaderItem class]
       forCellWithReuseIdentifier:@"RCDConversationSettingTableViewHeaderItem"];
+  [headerView registerClass:[RCDConversationSettingTableViewHeaderItem class]
+ forCellWithReuseIdentifier:@"RCDConversationSettingTableViewHeaderItemForSigns"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -203,10 +192,10 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
       [[RCIMClient sharedRCIMClient] getConversation:ConversationType_GROUP
                                             targetId:groupId];
   if (currentConversation.targetId == nil) {
-    numberOfSections = 2;
+    numberOfSections = 3;
     [self.tableView reloadData];
   } else {
-    numberOfSections = 3;
+    numberOfSections = 4;
     [[RCIMClient sharedRCIMClient]
         getConversationNotificationStatus:ConversationType_GROUP
         targetId:groupId
@@ -215,7 +204,9 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
           if (nStatus == NOTIFY) {
             enableNotification = YES;
           }
-          [self.tableView reloadData];
+          dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+          });
         }
         error:^(RCErrorCode status){
 
@@ -225,11 +216,25 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
   _GroupMemberList = [self moveCreator:_GroupMemberList];
   NSArray *resultList = [[RCDUserInfoManager shareInstance] getFriendInfoList:_GroupMemberList];
   _GroupMemberList = [[NSMutableArray alloc] initWithArray:resultList];
+    for (RCUserInfo *user in _GroupMemberList) {
+        [[RCDUserInfoManager shareInstance]
+         getFriendInfo:user.userId
+         completion:^(RCUserInfo *user) {
+             [[RCIM sharedRCIM] refreshUserInfoCache:user
+                                          withUserId:user.userId];
+           dispatch_async(dispatch_get_main_queue(), ^{
+             [self.tableView reloadData];
+           });
+         }];
+    }
+
   if ([_GroupMemberList count] > 0) {
     /******************添加headerview*******************/
     collectionViewResource =
         [[NSMutableArray alloc] initWithArray:_GroupMemberList];
-    [self setHeaderView];
+    //dispatch_async(dispatch_get_main_queue(), ^{
+      [self setHeaderView];
+   // });
   }
     __weak typeof(self) weakSelf = self;
     [RCDHTTPTOOL
@@ -238,8 +243,41 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
        if ([result count] > 0) {
            dispatch_async(dispatch_get_main_queue(), ^{
                weakSelf.title = [NSString stringWithFormat:@"群组信息(%lu)",(unsigned long)result.count];
+               RCDBaseSettingTableViewCell *cell =
+               (RCDBaseSettingTableViewCell *)
+               [weakSelf.tableView viewWithTag:RCDGroupSettingsTableViewCellGroupNameTag];
+               cell.leftLabel.text = [NSString stringWithFormat:@"全部群成员(%lu)", (unsigned long)result.count];
            });
          collectionViewResource = [NSMutableArray new];
+//<<<<<<< HEAD
+//         weakSelf.GroupMemberList = [NSMutableArray new];
+//         [collectionViewResource
+//          addObjectsFromArray:result];
+//         [weakSelf.GroupMemberList addObjectsFromArray:result];
+//         weakSelf.GroupMemberList = [weakSelf moveCreator:weakSelf.GroupMemberList];
+//         [weakSelf limitDisplayMemberCount];
+//         UIImage *addImage =
+//         [UIImage imageNamed:@"add_member"];
+//         [collectionViewResource addObject:addImage];
+//         if (isCreator == YES) {
+//           UIImage *delImage =
+//           [UIImage imageNamed:@"delete_member"];
+//           [collectionViewResource addObject:delImage];
+//         }
+//         [headerView reloadData];
+//           headerView.frame = CGRectMake(
+//                                         0, 0,
+//                                         [UIScreen mainScreen].bounds.size.width,
+//                                         headerView.collectionViewLayout
+//                                         .collectionViewContentSize.height);
+//           CGRect frame = headerView.frame;
+//           frame.size.height += 14;
+//           weakSelf.tableView.tableHeaderView = [[UIView alloc] initWithFrame:frame];
+//           [weakSelf.tableView.tableHeaderView addSubview:headerView];
+//           weakSelf.tableView.tableHeaderView.backgroundColor = [UIColor whiteColor];
+//
+//           [weakSelf.tableView reloadData];
+//=======
          _GroupMemberList = [NSMutableArray new];
          [_GroupMemberList addObjectsFromArray:result];
          _GroupMemberList = [self moveCreator:_GroupMemberList];
@@ -248,10 +286,16 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
          [collectionViewResource
           addObjectsFromArray:_GroupMemberList];
          [self setHeaderView];
-         [self.tableView reloadData];
+         dispatch_async(dispatch_get_main_queue(), ^{
+           [self.tableView reloadData];
+         });
+//>>>>>>> dev
          [[RCDataBaseManager shareInstance]
           insertGroupMemberToDB:result
-          groupId:groupId];
+          groupId:groupId
+          complete:^(BOOL results) {
+            
+          }];
          for (RCDUserInfo *user in result) {
            [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:user.userId];
          }
@@ -341,17 +385,6 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
   }
 
   self.tableView.tableFooterView = view;
-
-  //添加或删除群组成员后刷新数据
-  if (_Group == nil) {
-    [RCDHTTPTOOL getGroupByID:groupId
-            successCompletion:^(RCDGroupInfo *group) {
-              dispatch_async(dispatch_get_main_queue(), ^{
-                _Group = group;
-                [self.tableView reloadData];
-              });
-            }];
-  }
 }
 
 - (void)buttonChatAction:(id)sender {
@@ -390,7 +423,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
   if ([mediaType isEqual:@"public.image"]) {
     UIImage *originImage =
-        [info objectForKey:UIImagePickerControllerEditedImage];
+        [info objectForKey:UIImagePickerControllerOriginalImage];
 
     UIImage *scaleImage = [self scaleImage:originImage toScale:0.8];
     data = UIImageJPEGRepresentation(scaleImage, 0.00001);
@@ -411,7 +444,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         groupInfo.groupId = weakSelf.Group.groupId;
         groupInfo.portraitUri = url;
         groupInfo.groupName = weakSelf.Group.groupName;
-          weakSelf.Group.portraitUri = url;
+        weakSelf.Group.portraitUri = url;
         [[RCIM sharedRCIM] refreshGroupInfoCache:groupInfo
                                      withGroupId:groupInfo.groupId];
         [RCDHTTPTOOL setGroupPortraitUri:url
@@ -423,6 +456,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
                                           (RCDBaseSettingTableViewCell *)
                                               [self.tableView viewWithTag:1000];
                                         [cell.rightImageView sd_setImageWithURL:[NSURL URLWithString:self.Group.portraitUri]];
+                                      //在修改群组头像成功后，更新本地数据库。
+                                      [[RCDataBaseManager shareInstance] insertGroupToDB:self.Group];
 //                                      cell.PortraitImg.image = image;
                                       //关闭HUD
                                       [hud hide:YES];
@@ -455,7 +490,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       }];
   dispatch_async(dispatch_get_main_queue(), ^{
     RCDBaseSettingTableViewCell *cell =
-        (RCDBaseSettingTableViewCell *)[self.tableView viewWithTag:1000];
+        (RCDBaseSettingTableViewCell *)[self.tableView viewWithTag:RCDGroupSettingsTableViewCellGroupPortraitTag];
       [cell.rightImageView sd_setImageWithURL:[NSURL URLWithString:self.Group.portraitUri]];
 //    cell.PortraitImg.image = image;
   });
@@ -562,6 +597,23 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   }
   if (actionSheet.tag == 101) {
     if (buttonIndex == 0) {
+      //判断如果当前群组已经解散，直接删除消息和会话，并跳转到会话列表页面。
+      if ([_Group.isDismiss isEqualToString:@"YES"]) {
+        [[RCIMClient sharedRCIMClient]
+         clearMessages:ConversationType_GROUP
+         targetId:groupId];
+        
+        [[RCIMClient sharedRCIMClient]
+         removeConversation:ConversationType_GROUP
+         targetId:groupId];
+        
+        [[RCDataBaseManager shareInstance]
+         deleteGroupToDB:groupId];
+        [self.navigationController
+         popToRootViewControllerAnimated:YES];
+        return;
+      }
+
       [RCDHTTPTOOL
           quitGroupWithGroupId:groupId
                       complete:^(BOOL isOk) {
@@ -609,6 +661,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
                                [[RCIMClient sharedRCIMClient]
                                    removeConversation:ConversationType_GROUP
                                              targetId:groupId];
+                               [[RCDataBaseManager shareInstance] deleteGroupToDB:groupId];
                                [self.navigationController
                                    popToRootViewControllerAnimated:YES];
                              } else {
@@ -648,9 +701,13 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     break;
 
   case 2:
+    rows = 1;
+    break;
+      
+  case 3:
     rows = 3;
     break;
-
+      
   default:
     break;
   }
@@ -659,75 +716,16 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RCDBaseSettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    static NSString *cellIndeti = @"baseCell";
-    RCDBaseSettingTableViewCell *__cell = [tableView dequeueReusableCellWithIdentifier:cellIndeti];
-    
+    RCDGroupSettingsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(!cell){
-        cell = [[RCDBaseSettingTableViewCell alloc]init];
+            cell = [[RCDGroupSettingsTableViewCell alloc]initWithIndexPath:indexPath andGroupInfo:_Group];
     }
-    if(!__cell) {
-        __cell = [[RCDBaseSettingTableViewCell alloc]initWithLeftImage:nil leftImageSize:CGSizeZero rightImae:[UIImage imageNamed:@"icon_person"] rightImageSize:CGSizeMake(25, 25)];
-        __cell.tag = 1000;
+    //设置switchbutton的开关状态
+    if(indexPath.section == 3 && indexPath.row == 0){
+        cell.switchButton.on = !enableNotification;
+    }else if (indexPath.section ==3 && indexPath.row == 1){
+        cell.switchButton.on = currentConversation.isTop;
     }
-
-    if (indexPath.section == 0) {
-        [cell setCellStyle:DefaultStyle];
-        cell.leftLabel.text = [NSString stringWithFormat:@"全部群成员(%@)", _Group.number];
-    }else if(indexPath.section == 1){
-        switch (indexPath.row) {
-            case 0:
-                [__cell setCellStyle:DefaultStyle];
-                __cell.leftLabel.text = @"群组头像";
-                if ([_Group.portraitUri isEqualToString:@""]) {
-                    DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc]
-                                                            initWithFrame:CGRectMake(0, 0, 100, 100)];
-                    [defaultPortrait setColorAndLabel:groupId Nickname:_Group.groupName];
-                    UIImage *portrait = [defaultPortrait imageFromView];
-                    __cell.rightImageView.image = portrait;
-                } else {
-                    [__cell.rightImageView
-                     sd_setImageWithURL:[NSURL URLWithString:_Group.portraitUri]
-                     placeholderImage:[UIImage imageNamed:@"icon_person"]];
-                }
-                return __cell;
-                break;
-            case 1:
-                [cell setCellStyle:DefaultStyle_RightLabel];
-                cell.leftLabel.text = @"群组名称";
-                cell.rightLabel.text = self.Group.groupName;
-                break;
-            case 2:
-                [cell setCellStyle:DefaultStyle];
-                cell.leftLabel.text = @"群公告";
-                break;
-            default:
-                break;
-        }
-    }else {
-        switch (indexPath.row) {
-            case 0:
-                [cell setCellStyle:SwitchStyle];
-                cell.leftLabel.text = @"消息免打扰";
-                cell.switchButton.on = !enableNotification;
-                cell.switchButton.tag = SwitchButtonTag;
-                break;
-            case 1:
-                [cell setCellStyle:SwitchStyle];
-                cell.leftLabel.text = @"会话置顶";
-                cell.switchButton.on = currentConversation.isTop;
-                cell.switchButton.tag = SwitchButtonTag + 1;
-                break;
-            case 2:
-                [cell setCellStyle:DefaultStyle];
-                cell.leftLabel.text= @"清除聊天记录";
-                break;
-            default:
-                break;
-        }
-    }
-    
     cell.baseSettingTableViewDelegate = self;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -771,11 +769,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
          
         case 1:
         {
+          
           if (isCreator == YES) {
               //如果是创建者，进入修改群名称页面
               RCDEditGroupNameViewController *editGroupNameVC = [RCDEditGroupNameViewController editGroupNameViewController];
               editGroupNameVC.groupInfo = _Group;
-            _Group = nil;
             [self.navigationController pushViewController:editGroupNameVC
                                                  animated:YES];
           }
@@ -787,6 +785,10 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
          
           case 2:
         {
+          RCDGroupAnnouncementViewController *vc = [[RCDGroupAnnouncementViewController alloc] init];
+          vc.GroupId = _Group.groupId;
+          [self.navigationController pushViewController:vc animated:YES];
+          /*
           if (isCreator == YES) {
             RCDGroupAnnouncementViewController *vc = [[RCDGroupAnnouncementViewController alloc] init];
             vc.GroupId = _Group.groupId;
@@ -796,14 +798,21 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
           {
             [self showAlert:@"只有群主可以发布群公告"];
           }
+           */
         }break;
           
         default:
           break;
       }
     }break;
-      
-      case 2:
+    case 2:{
+      RCDSearchHistoryMessageController *searchViewController = [[RCDSearchHistoryMessageController alloc] init];
+      searchViewController.conversationType = ConversationType_GROUP;
+      searchViewController.targetId = self.Group.groupId;
+      [self.navigationController pushViewController:searchViewController animated:YES];
+    }
+      break;
+      case 3:
     {
       switch (indexPath.row) {
         case 2:
@@ -880,11 +889,14 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       }
       [cell setUserModel:user];
     } else {
-      UIImage *Image = collectionViewResource[indexPath.row];
-      cell.ivAva.image = nil;
-      cell.ivAva.image = Image;
-      cell.titleLabel.text = @"";
-        
+      RCDConversationSettingTableViewHeaderItem *cellForSigns = [collectionView dequeueReusableCellWithReuseIdentifier:
+                                                          @"RCDConversationSettingTableViewHeaderItemForSigns"
+                                                                                                   forIndexPath:indexPath];
+        UIImage *Image = collectionViewResource[indexPath.row];
+        cellForSigns.ivAva.image = nil;
+        cellForSigns.ivAva.image = Image;
+        cellForSigns.titleLabel.text = @"";
+        return cellForSigns;
     }
   }
   cell.ivAva.contentMode = UIViewContentModeScaleAspectFill;
@@ -907,7 +919,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     if (indexPath.row == collectionViewResource.count - 2) {
       contactSelectedVC.titleStr = @"选择联系人";
       contactSelectedVC.addGroupMembers = membersId;
-      _Group = nil;
       [self.navigationController pushViewController:contactSelectedVC
                                            animated:YES];
       return;
@@ -922,7 +933,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         }
       }
       contactSelectedVC.delGroupMembers = members;
-      _Group = nil;
       [self.navigationController pushViewController:contactSelectedVC
                                            animated:YES];
       return;
@@ -934,7 +944,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       contactSelectedVC.addGroupMembers = membersId;
       [self.navigationController pushViewController:contactSelectedVC
                                            animated:YES];
-      _Group = nil;
       return;
     }
   }
@@ -949,37 +958,49 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   }
   if (isFriend == YES ||
       [selectedUser.userId
-          isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-    UIStoryboard *storyboard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDPersonDetailViewController *detailViewController =
-        [storyboard instantiateViewControllerWithIdentifier:
-                        @"RCDPersonDetailViewController"];
-    [self.navigationController pushViewController:detailViewController
-                                         animated:YES];
-    RCUserInfo *user = [_GroupMemberList objectAtIndex:indexPath.row];
-    detailViewController.userId = user.userId;
+       isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+        RCDPersonDetailViewController *detailViewController =
+          [[RCDPersonDetailViewController alloc]init];
+        [self.navigationController pushViewController:detailViewController
+                                             animated:YES];
+        RCUserInfo *user = [_GroupMemberList objectAtIndex:indexPath.row];
+        detailViewController.userId = user.userId;
   } else {
-    UIStoryboard *mainStoryboard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDAddFriendViewController *addViewController = [mainStoryboard
-        instantiateViewControllerWithIdentifier:@"RCDAddFriendViewController"];
-    addViewController.targetUserInfo =
-        [_GroupMemberList objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:addViewController
-                                         animated:YES];
+      RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc]init];
+      
+      addViewController.targetUserInfo =
+      
+      [_GroupMemberList objectAtIndex:indexPath.row];
+      
+      [self.navigationController pushViewController:addViewController
+       
+                                           animated:YES];
   }
 }
 
-- (void)addGroupMemberList:(NSNotification *)notify {
-  [_GroupMemberList addObjectsFromArray:notify.object];
+- (void)didReceiveMessageNotification:(NSNotification *)notification {
+  RCMessage *message = notification.object;
+  if ([message.content isMemberOfClass:[RCGroupNotificationMessage class]]) {
+    RCGroupNotificationMessage *groupNotification = (RCGroupNotificationMessage *)message.content;
+    if ([groupNotification.operation isEqualToString:GroupNotificationMessage_GroupOperationQuit] || [groupNotification.operation isEqualToString:@"Dismiss"]) {
+      return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self startLoad];
+      [self refreshTabelViewInfo];
+    });
+  }
 }
 
-- (void)deleteGroupMemberList:(NSNotification *)notify {
-  NSArray *tempArray = notify.object;
-  for (RCUserInfo *user in tempArray) {
-    [_GroupMemberList removeObject:user];
-  }
+
+- (void)refreshTabelViewInfo {
+  [RCDHTTPTOOL getGroupByID:groupId
+          successCompletion:^(RCDGroupInfo *group) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+              _Group = group;
+              [self.tableView reloadData];
+            });
+          }];
 }
 
 - (void)limitDisplayMemberCount {
@@ -1034,15 +1055,21 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *delImage = [UIImage imageNamed:@"delete_member"];
     [collectionViewResource addObject:delImage];
   }
-  [headerView reloadData];
-  headerView.frame = CGRectMake(
-                                0, 0, [UIScreen mainScreen].bounds.size.width,
-                                headerView.collectionViewLayout.collectionViewContentSize.height);
-  CGRect frame = headerView.frame;
-  frame.size.height += 14;
-  self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:frame];
-  self.tableView.tableHeaderView.backgroundColor = [UIColor whiteColor];
-  [self.tableView.tableHeaderView addSubview:headerView];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [headerView reloadData];
+    headerView.frame = CGRectMake(
+                                  0, 0, [UIScreen mainScreen].bounds.size.width,
+                                  headerView.collectionViewLayout.collectionViewContentSize.height);
+    CGRect frame = headerView.frame;
+    frame.size.height += 14;
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:frame];
+    self.tableView.tableHeaderView.backgroundColor = [UIColor whiteColor];
+    [self.tableView.tableHeaderView addSubview:headerView];
+      
+      UIView *separatorLine = [[UIView alloc]initWithFrame:CGRectMake(10, frame.size.height-1, frame.size.width-10, 1)];
+      separatorLine.backgroundColor = [UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1];
+      [self.tableView.tableHeaderView addSubview:separatorLine];
+  });
 }
 
 #pragma mark - RCDBaseSettingTableViewCellDelegate

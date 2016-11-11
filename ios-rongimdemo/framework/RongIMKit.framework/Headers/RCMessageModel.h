@@ -114,6 +114,10 @@
  */
 @property(nonatomic,assign)BOOL isCanSendReadReceipt;
 
+/*!
+ 已读人数
+ 
+ */
 @property(nonatomic,assign)NSInteger readReceiptCount;
 
 /*!

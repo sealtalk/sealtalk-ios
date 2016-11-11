@@ -37,7 +37,17 @@
 - (void)syncGroups {
   //开发者调用自己的服务器接口获取所属群组信息
   [RCDHTTPTOOL getMyGroupsWithBlock:^(NSMutableArray *result) {
-    }];
+    for (RCDGroupInfo *group in result) {
+      [RCDHTTPTOOL getGroupMembersWithGroupId:group.groupId Block:^(NSMutableArray *result) {
+        [[RCDataBaseManager shareInstance]
+         insertGroupMemberToDB:result
+         groupId:group.groupId
+         complete:^(BOOL result) {
+           
+         }];
+      }];
+    }
+  }];
 }
 
 - (void)syncFriendList:(NSString *)userId

@@ -20,10 +20,16 @@
 #import "UIImageView+WebCache.h"
 #import <RongIMLib/RongIMLib.h>
 #import "RCDSettingsTableViewController.h"
+#import "RCDMeInfoTableViewController.h"
+#import "RCDAboutRongCloudTableViewController.h"
+#import "RCDBaseSettingTableViewCell.h"
+#import "RCDMeDetailsCell.h"
+#import "RCDMeCell.h"
+
+/* RedPacket_FTR */
+#import <JrmfPacketKit/JrmfPacketManager.h>
 
 @interface RCDMeTableViewController ()
-@property(weak, nonatomic) IBOutlet UILabel *currentUserNameLabel;
-@property(weak, nonatomic) IBOutlet UIImageView *currentUserPortrait;
 @property(nonatomic) BOOL hasNewVersion;
 @property(nonatomic) NSString *versionUrl;
 @property(nonatomic, strong) NSString *versionString;
@@ -40,20 +46,16 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  
+  self.edgesForExtendedLayout = UIRectEdgeNone;
+  self.navigationController.navigationBar.translucent = NO;
   self.tableView.tableFooterView = [UIView new];
-  //设置分割线颜色
-  self.tableView.separatorColor =
-      [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
-  if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
-  }
-  //    self.currentUserNameLabel.text = [DEFAULTS objectForKey:@"userName"];;
+  self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+  self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
   self.tabBarController.navigationItem.rightBarButtonItem = nil;
   self.tabBarController.navigationController.navigationBar.tintColor =
       [UIColor whiteColor];
-
-  self.currentUserPortrait.layer.masksToBounds = YES;
-  self.currentUserPortrait.layer.cornerRadius = 5.f;
 
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(setUserPortrait:)
@@ -61,25 +63,13 @@
                                              object:nil];
 
   isSyncCurrentUserInfo = NO;
-  self.currentUserNameLabel.text = [DEFAULTS stringForKey:@"userNickName"];
-  [self.currentUserPortrait
-      sd_setImageWithURL:[NSURL
-                             URLWithString:[DEFAULTS
-                                               stringForKey:@"userPortraitUri"]]
-        placeholderImage:[UIImage imageNamed:@"icon_person"]];
-  
-  self.needUpdateImage.layer.cornerRadius = 5.f;
-  NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
-  if ([isNeedUpdate isEqualToString:@"YES"]) {
-    self.needUpdateImage.hidden = NO;
-  }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   self.tabBarController.navigationItem.title = @"我";
   self.tabBarController.navigationItem.rightBarButtonItems = nil;
-  [self syncCurrentUserInfo];
+  [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -87,11 +77,132 @@
   // Dispose of any resources that can be recreated.
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+  NSInteger rows;
+  switch (section) {
+    case 0:
+      rows = 1;
+      break;
+      
+    case 1:
+    /* RedPacket_FTR */ //添加了红包，row+=1；
+      rows = 2;
+      break;
+      
+    case 2:
+      rows = 2;
+      break;
+      
+    default:
+      break;
+  }
+  return rows;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+  return 3;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  static NSString *reusableCellWithIdentifier = @"RCDMeCell";
+  RCDMeCell *cell = [self.tableView
+                                       dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
+  
+  static NSString *detailsCellWithIdentifier = @"RCDMeDetailsCell";
+  RCDMeDetailsCell *detailsCell = [self.tableView
+                                       dequeueReusableCellWithIdentifier:detailsCellWithIdentifier];
+  if (cell == nil) {
+    cell = [[RCDMeCell alloc] init];
+  }
+  if (detailsCell == nil) {
+    detailsCell = [[RCDMeDetailsCell alloc] init];
+  }
+  switch (indexPath.section) {
+    case 0: {
+      switch (indexPath.row) {
+        case 0: {
+          return detailsCell;
+        }
+          break;
+          
+        default:
+          break;
+      }
+    }
+      break;
+      
+    case 1: {
+        switch (indexPath.row) {
+            case 0: {
+                [cell setCellWithImageName:@"setting_up" labelName:@"帐号设置"];
+            }
+                break;
+          
+          /* RedPacket_FTR */ //wallet cell
+            case 1: {
+                [cell setCellWithImageName:@"wallet" labelName:@"我的钱包"];
+            }
+            default:
+                break;
+        }
+      return cell;
+    }
+      break;
+      
+    case 2: {
+      switch (indexPath.row) {
+        case 0:{
+          [cell setCellWithImageName:@"sevre_inactive" labelName:@"意见反馈"];
+          return cell;
+        }
+          break;
+          
+        case 1:{
+          [cell setCellWithImageName:@"about_rongcloud" labelName:@"关于 SealTalk"];
+          NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
+          if ([isNeedUpdate isEqualToString:@"YES"]) {
+            [cell addRedpointImageView];
+          }
+          return cell;
+        }
+          break;
+        default:
+          break;
+      }
+    }
+      break;
+      
+    default:
+      break;
+  }
+  
+  return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  CGFloat height;
+  switch (indexPath.section) {
+    case 0:{
+          height = 88.f;
+      }
+      break;
+      
+    default:
+      height = 44.f;
+      break;
+  }
+  return height;
+}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   switch (indexPath.section) {
     case 0: {
-      
+      RCDMeInfoTableViewController *vc = [[RCDMeInfoTableViewController alloc] init];
+      [self.navigationController pushViewController:vc animated:YES];
     }
       break;
       
@@ -103,6 +214,11 @@
                                                animated:YES];
         }
           break;
+        /* RedPacket_FTR */ //open my wallet
+          case 1: {
+              [JrmfPacketManager getEventOpenWallet];
+          }
+              break;
           
         default:
           break;
@@ -117,6 +233,11 @@
         }
           break;
           
+        case 1: {
+          RCDAboutRongCloudTableViewController *vc = [[RCDAboutRongCloudTableViewController alloc] init];
+          [self.navigationController pushViewController:vc animated:YES];
+        }
+          break;
         default:
           break;
       }
@@ -125,15 +246,11 @@
     default:
       break;
   }
-//  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView
     heightForHeaderInSection:(NSInteger)section {
-  if (section == 0) {
     return 15.f;
-  }
-  return 5.f;
 }
 
 - (void)setUserPortrait:(NSNotification *)notifycation {
@@ -191,76 +308,5 @@
   [self.navigationController pushViewController:chatService animated:YES];
 }
 
-- (void)syncCurrentUserInfo {
-  [AFHttpTool getUserInfo:[RCIM sharedRCIM].currentUserInfo.userId
-      success:^(id response) {
-        if ([response[@"code"] intValue] == 200) {
-          NSDictionary *result = response[@"result"];
-          NSString *userId = result[@"id"];
-          NSString *nickname = result[@"nickname"];
-          NSString *portraitUri = result[@"portraitUri"];
-          RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:userId
-                                                           name:nickname
-                                                       portrait:portraitUri];
-          if (!user.portraitUri || user.portraitUri.length <= 0) {
-            user.portraitUri = [RCDUtilities defaultUserPortrait:user];
-          }
-          [[RCDataBaseManager shareInstance] insertUserToDB:user];
-          [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:userId];
-          [RCIM sharedRCIM].currentUserInfo = user;
-          [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
-          [DEFAULTS setObject:user.name forKey:@"userNickName"];
-          [DEFAULTS synchronize];
-          isSyncCurrentUserInfo = YES;
-          [self setNicknameAndPortrait];
-        }
-      }
-      failure:^(NSError *err) {
-        isSyncCurrentUserInfo = YES;
-        [self setNicknameAndPortrait];
-      }];
-}
 
-- (void)setNicknameAndPortrait {
-  NSString *portraitUrl = [DEFAULTS stringForKey:@"userPortraitUri"];
-  if ([portraitUrl isEqualToString:@""]) {
-    DefaultPortraitView *defaultPortrait =
-        [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-    [defaultPortrait setColorAndLabel:[RCIM sharedRCIM].currentUserInfo.userId
-                             Nickname:[DEFAULTS stringForKey:@"userNickName"]];
-    UIImage *portrait = [defaultPortrait imageFromView];
-    self.currentUserPortrait.image = portrait;
-    NSData *data = UIImagePNGRepresentation(portrait);
-    [RCDHTTPTOOL uploadImageToQiNiu:[RCIM sharedRCIM].currentUserInfo.userId
-        ImageData:data
-        success:^(NSString *url) {
-          [DEFAULTS setObject:url forKey:@"userPortraitUri"];
-          [DEFAULTS synchronize];
-          RCUserInfo *user = [RCUserInfo new];
-          user.userId = [RCIM sharedRCIM].currentUserInfo.userId;
-          user.portraitUri = url;
-          user.name = [DEFAULTS stringForKey:@"userNickName"];
-          [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:user.userId];
-          dispatch_async(dispatch_get_main_queue(), ^{
-            [self.currentUserPortrait
-                sd_setImageWithURL:[NSURL URLWithString:url]
-                  placeholderImage:portrait];
-          });
-        }
-        failure:^(NSError *err){
-
-        }];
-  } else {
-    [self.currentUserPortrait
-        sd_setImageWithURL:
-            [NSURL URLWithString:[DEFAULTS stringForKey:@"userPortraitUri"]]
-          placeholderImage:[UIImage imageNamed:@"icon_person"]];
-  }
-  if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
-      [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
-    self.currentUserPortrait.layer.masksToBounds = YES;
-    self.currentUserPortrait.layer.cornerRadius = 30.f;
-  }
-  self.currentUserNameLabel.text = [DEFAULTS stringForKey:@"userNickName"];
-}
 @end

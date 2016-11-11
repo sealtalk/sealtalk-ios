@@ -187,7 +187,14 @@ typedef NS_ENUM(NSInteger, RCConnectErrorCode) {
    当前用户在其他设备上登录，此设备被踢下线
    */
   RC_DISCONN_KICK = 31010,
-
+  
+  /*!
+   连接被拒绝
+   
+   @discussion 建立连接的临时错误码，SDK会做好自动重连，开发者无须处理。
+   */
+  RC_CONN_REFUSED = 32061,
+  
   /*!
    SDK没有初始化
 
@@ -284,6 +291,16 @@ typedef NS_ENUM(NSInteger, RCErrorCode) {
   RC_CHATROOM_IS_FULL = 23411,
 
   /*!
+   聊天室接口参数无效
+   */
+  RC_PARAMETER_INVALID_CHATROOM = 23412,
+
+  /*!
+   聊天室云存储业务未开通
+   */
+  RC_ROAMING_SERVICE_UNAVAILABLE_CHATROOM = 23414,
+
+  /*!
    当前连接不可用（连接已经被释放）
    */
   RC_CHANNEL_INVALID = 30001,
@@ -328,6 +345,10 @@ typedef NS_ENUM(NSInteger, RCErrorCode) {
    无效的公众号。(由会话类型和Id所标识的公众号会话是无效的)
    */
   INVALID_PUBLIC_NUMBER = 29201,
+  /*!
+    消息大小超限，消息体（序列化成json格式之后的内容）最大128k bytes。
+   */
+   RC_MSG_SIZE_OUT_OF_LIMIT = 30016
 };
 
 #pragma mark - 连接状态
@@ -617,7 +638,7 @@ typedef NS_ENUM(NSUInteger, RCMessagePersistent) {
   MessagePersistent_ISCOUNTED = 3,
 
   /*!
-   在本地不存储，不计入未读数，并且如果对方不在线，服务器会直接丢弃该消息，对方如果之后再上线也不会再收到此消息。
+   在本地不存储，不计入未读数，并且如果对方不在线，服务器会直接丢弃该消息，对方如果之后再上线也不会再收到此消息(聊天室类型除外，此类消息聊天室会视为普通消息)。
 
    @discussion 一般用于发送输入状态之类的消息，该类型消息的messageUId为nil。
    */
@@ -673,7 +694,12 @@ typedef NS_ENUM(NSUInteger, RCSentStatus) {
   /*!
    对方已销毁
    */
-  SentStatus_DESTROYED = 60
+  SentStatus_DESTROYED = 60,
+  
+  /*!
+   发送已取消
+   */
+  SentStatus_CANCELED = 70
 };
 
 #pragma mark RCReceivedStatus - 消息的接收状态
@@ -704,14 +730,12 @@ typedef NS_ENUM(NSUInteger, RCReceivedStatus) {
   ReceivedStatus_DOWNLOADED = 4,
 
   /*!
-   该消息已经被其他登录的多端收取过。（即改消息已经被其他端收取过后。当前端才登录，并重新拉取了这条消息。客户可以通过这个状态更新
-   UI，比如不再提示）。
+   该消息已经被其他登录的多端收取过。（即该消息已经被其他端收取过后。当前端才登录，并重新拉取了这条消息。客户可以通过这个状态更新UI，比如不再提示）。
    */
   ReceivedStatus_RETRIEVED = 8,
 
   /*!
-   该消息是被多端同时收取的。（即其他端正同时登录，一条消息被同时发往多端。客户可以通过这个状态值更新自己的某些
-   UI状态）。
+   该消息是被多端同时收取的。（即其他端正同时登录，一条消息被同时发往多端。客户可以通过这个状态值更新自己的某些UI状态）。
    */
   ReceivedStatus_MULTIPLERECEIVE = 16,
 
@@ -860,5 +884,51 @@ typedef NS_ENUM(NSUInteger, RCLogLevel) {
   RC_Log_Level_Info = 3,
 };
 
+#pragma mark RCTimestampOrder - 历史消息查询顺序
+/*!
+ 日志级别
+ */
+typedef NS_ENUM(NSUInteger, RCTimestampOrder) {
+    /*!
+     *  降序, 按照时间戳从大到小
+     */
+    RC_Timestamp_Desc = 0,
+    
+    /*!
+     *  升序, 按照时间戳从小到大
+     */
+    RC_Timestamp_Asc = 1,
+};
+
+#pragma mark RCPlatform - 在线平台
+/*!
+ 在线平台
+ */
+typedef NS_ENUM(NSUInteger, RCPlatform) {
+  /*!
+   其它平台
+   */
+  RCPlatform_Other = 0,
+  
+  /*!
+   iOS
+   */
+  RCPlatform_iOS = 1,
+  
+  /*!
+   Android
+   */
+  RCPlatform_Android = 2,
+  
+  /*!
+   Web
+   */
+  RCPlatform_Web = 3,
+  
+  /*!
+   PC
+   */
+  RCPlatform_PC = 4
+};
 
 #endif

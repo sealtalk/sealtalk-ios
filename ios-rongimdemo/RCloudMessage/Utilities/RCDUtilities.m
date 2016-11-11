@@ -112,12 +112,25 @@
   }
   NSString *pinYinResult = [NSString string];
   for (int j = 0; j < hanZi.length; j++) {
-    NSString *singlePinyinLetter = [[NSString
-                                     stringWithFormat:@"%c", pinyinFirstLetter([hanZi characterAtIndex:j])]
-                                    uppercaseString];
+    NSString *singlePinyinLetter = nil;
+    if ([self isChinese:[hanZi substringWithRange:NSMakeRange(j, 1)]]) {
+      singlePinyinLetter = [[NSString
+        stringWithFormat:@"%c", pinyinFirstLetter([hanZi characterAtIndex:j])]
+       uppercaseString];
+    }else{
+      singlePinyinLetter = [hanZi substringWithRange:NSMakeRange(j, 1)];
+    }
+    
     pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
   }
   return pinYinResult;
+}
+
++ (BOOL)isChinese:(NSString *)text
+{
+  NSString *match = @"(^[\u4e00-\u9fa5]+$)";
+  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF matches %@", match];
+  return [predicate evaluateWithObject:text];
 }
 
 + (NSString *)getFirstUpperLetter:(NSString *)hanzi {
@@ -217,6 +230,32 @@
   [resultDic setObject:infoDic forKey:@"infoDic"];
   [resultDic setObject:allKeys forKey:@"allKeys"];
   return resultDic;
+}
+
++ (BOOL)isContains:(NSString *)firstString withString:(NSString *)secondString{
+  if (firstString.length == 0 || secondString.length == 0) {
+    return NO;
+  }
+  NSString *twoStr = [[secondString stringByReplacingOccurrencesOfString:@" "  withString:@""] lowercaseString];
+  if ([[firstString lowercaseString] containsString:[secondString lowercaseString]] || [[firstString lowercaseString] containsString:twoStr]
+      || [[[self hanZiToPinYinWithString:firstString] lowercaseString] containsString:twoStr]) {
+    return YES;
+  }
+  return NO;
+}
+
++ (UIImage*) getImageWithColor:(UIColor*)color andHeight:(CGFloat)height
+{
+  CGRect r= CGRectMake(0.0f, 0.0f, 1.0f, height);
+  UIGraphicsBeginImageContext(r.size);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  
+  CGContextSetFillColorWithColor(context, [color CGColor]);
+  CGContextFillRect(context, r);
+  
+  UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return img;
 }
 
 @end

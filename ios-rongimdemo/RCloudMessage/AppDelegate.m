@@ -25,11 +25,14 @@
 #import <RongIMKit/RongIMKit.h>
 #import "RCDNavigationViewController.h"
 #import "RCDUtilities.h"
+#import "RCDMainTabBarViewController.h"
 
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" //offline key
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
 
 #define UMENG_APPKEY @"563755cbe0f55a5cb300139c"
+
+#define LOG_EXPIRE_TIME -7*24*60*60
 
 #define iPhone6                                                                \
   ([UIScreen instancesRespondToSelector:@selector(currentMode)]                \
@@ -50,6 +53,9 @@
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  self.window.backgroundColor = [UIColor whiteColor];
+  [self.window makeKeyAndVisible];
 
   //重定向log到本地问题
   //在info.plist中打开Application supports iTunes file sharing
@@ -62,7 +68,7 @@
   
   //为了在启动页面不显示statusBar，所以在工程设置里面把statusBar隐藏了，在启动页面过后，显示statusBar。
   application.statusBarHidden = NO;
-  
+
   [self umengTrack];
   /**
    *  推送说明：
@@ -85,8 +91,12 @@
 
   }
 
+  
+  /* RedPacket_FTR  */
+  //需要在info.plist加上您的红包的scheme，注意一定不能与其它应用重复
   //设置扩展Module的Url Scheme。
-  //[[RCIM sharedRCIM] setScheme:@"rongcloudRedPacket" forExtensionModule:@"RedPacket"];
+  [[RCIM sharedRCIM] setScheme:@"rongCloudRedPacket" forExtensionModule:@"JrmfPacketManager"];
+  
   
   // 注册自定义测试消息
   [[RCIM sharedRCIM] registerMessageType:[RCDTestMessage class]];
@@ -137,11 +147,11 @@
   //    [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
   //    [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
 
-  //通话设置群组成员列表提供者
-  [RCCall sharedRCCall].groupMemberDataSource = RCDDataSource;
-
 //  设置通话视频分辨率
 //  [[RCCallClient sharedRCCallClient] setVideoProfile:RC_VIDEO_PROFILE_480P];
+  
+  //设置Log级别，开发阶段打印详细log
+  [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;
   
   //登录
   NSString *token = [DEFAULTS objectForKey:@"userToken"];
@@ -152,6 +162,10 @@
   NSString *userPortraitUri = [DEFAULTS objectForKey:@"userPortraitUri"];
 
   if (token.length && userId.length && password.length && !debugMode) {
+    RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
+    RCDNavigationViewController *rootNavi = [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
+    self.window.rootViewController = rootNavi;
+    [self insertSharedMessageIfNeed];
     RCUserInfo *_currentUserInfo =
         [[RCUserInfo alloc] initWithUserId:userId
                                       name:userNickName
@@ -184,35 +198,13 @@
               }
               failure:^(NSError *err){
               }];
-          //设置当前的用户信息
-
-          //同步群组
-          //调用connectWithToken时数据库会同步打开，不用再等到block返回之后再访问数据库，因此不需要这里刷新
-          //这里仅保证之前已经成功登录过，如果第一次登录必须等block
-          //返回之后才操作数据
-          //          dispatch_async(dispatch_get_main_queue(), ^{
-          //            UIStoryboard *storyboard =
-          //                [UIStoryboard storyboardWithName:@"Main"
-          //                bundle:nil];
-          //            UINavigationController *rootNavi = [storyboard
-          //                instantiateViewControllerWithIdentifier:@"rootNavi"];
-          //            self.window.rootViewController = rootNavi;
-          //          });
-          [self insertSharedMessageIfNeed];
         }
         error:^(RCConnectErrorCode status) {
-          RCUserInfo *_currentUserInfo =
-              [[RCUserInfo alloc] initWithUserId:userId
-                                            name:userName
-                                        portrait:nil];
-          [RCIMClient sharedRCIMClient].currentUserInfo = _currentUserInfo;
           [RCDDataSource syncGroups];
           NSLog(@"connect error %ld", (long)status);
           dispatch_async(dispatch_get_main_queue(), ^{
-            UIStoryboard *storyboard =
-                [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            RCDNavigationViewController *rootNavi = [storyboard
-                instantiateViewControllerWithIdentifier:@"rootNavi"];
+            RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
+            RCDNavigationViewController *rootNavi = [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
             self.window.rootViewController = rootNavi;
           });
         }
@@ -247,9 +239,6 @@
     
   } else {
     RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
-    // [loginVC defaultLogin];
-    // RCDLoginViewController* loginVC = [storyboard
-    // instantiateViewControllerWithIdentifier:@"loginVC"];
     RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
                                           initWithRootViewController:loginVC];
     self.window.rootViewController = _navi;
@@ -418,14 +407,18 @@
   // and it begins the transition to the background state.
   // Use this method to pause ongoing tasks, disable timers, and throttle down
   // OpenGL ES frame rates. Games should use this method to pause the game.
-  int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
-    @(ConversationType_PRIVATE),
-    @(ConversationType_DISCUSSION),
-    @(ConversationType_APPSERVICE),
-    @(ConversationType_PUBLICSERVICE),
-    @(ConversationType_GROUP)
-  ]];
-  application.applicationIconBadgeNumber = unreadMsgCount;
+  RCConnectionStatus status = [[RCIMClient sharedRCIMClient] getConnectionStatus];
+  if (status != ConnectionStatus_SignUp) {
+    int unreadMsgCount = [[RCIMClient sharedRCIMClient]
+                          getUnreadCount:@[
+                                           @(ConversationType_PRIVATE),
+                                           @(ConversationType_DISCUSSION),
+                                           @(ConversationType_APPSERVICE),
+                                           @(ConversationType_PUBLICSERVICE),
+                                           @(ConversationType_GROUP)
+                                           ]];
+    application.applicationIconBadgeNumber = unreadMsgCount;
+  }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -480,8 +473,9 @@
       richMsg.url = [sharedInfo objectForKey:@"url"];
       richMsg.imageURL = [sharedInfo objectForKey:@"imageURL"];
       richMsg.extra = [sharedInfo objectForKey:@"extra"];
-      long long sendTime = [[sharedInfo objectForKey:@"sharedTime"] longLongValue];
-      RCMessage *message = [[RCIMClient sharedRCIMClient] insertOutgoingMessage:[[sharedInfo objectForKey:@"conversationType"] intValue] targetId:[sharedInfo objectForKey:@"targetId"] sentStatus:SentStatus_SENT content:richMsg sentTime:sendTime];
+//      long long sendTime = [[sharedInfo objectForKey:@"sharedTime"] longLongValue];
+//      RCMessage *message = [[RCIMClient sharedRCIMClient] insertOutgoingMessage:[[sharedInfo objectForKey:@"conversationType"] intValue] targetId:[sharedInfo objectForKey:@"targetId"] sentStatus:SentStatus_SENT content:richMsg sentTime:sendTime];
+      RCMessage *message = [[RCIMClient sharedRCIMClient] insertOutgoingMessage:[[sharedInfo objectForKey:@"conversationType"] intValue] targetId:[sharedInfo objectForKey:@"targetId"] sentStatus:SentStatus_SENT content:richMsg];
       [[NSNotificationCenter defaultCenter] postNotificationName:@"RCDSharedMessageInsertSuccess" object:message];
     }
     [shareUserDefaults removeObjectForKey:@"sharedMessages"];
@@ -526,7 +520,9 @@
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                        NSUserDomainMask, YES);
   NSString *documentDirectory = [paths objectAtIndex:0];
-
+  
+  [self removeExpireLogFiles:documentDirectory];
+  
   NSDate *currentDate = [NSDate date];
   NSDateFormatter *dateformatter = [[NSDateFormatter alloc] init];
   [dateformatter setDateFormat:@"MMddHHmmss"];
@@ -612,10 +608,7 @@
   [DEFAULTS removeObjectForKey:@"userToken"];
   [DEFAULTS removeObjectForKey:@"userCookie"];
   if (self.window.rootViewController != nil) {
-    UIStoryboard *storyboard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDLoginViewController *loginVC =
-        [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+    RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
     RCDNavigationViewController *navi = [[RCDNavigationViewController alloc]
                                           initWithRootViewController:loginVC];
     self.window.rootViewController = navi;
@@ -650,9 +643,6 @@
         otherButtonTitles:nil, nil];
     [alert show];
     RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
-    // [loginVC defaultLogin];
-    // RCDLoginViewController* loginVC = [storyboard
-    // instantiateViewControllerWithIdentifier:@"loginVC"];
     RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
                                           initWithRootViewController:loginVC];
     self.window.rootViewController = _navi;
@@ -718,6 +708,8 @@
   }
 }
 
+/* RedPacket_FTR  */
+//如果您使用了红包等融云的第三方扩展，请实现下面两个openURL方法
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
   if ([[RCIM sharedRCIM] openExtensionModuleUrl:url]) {
     return YES;
@@ -822,11 +814,9 @@
                        complete:^(NSMutableArray *friends){
                        }];
   dispatch_async(dispatch_get_main_queue(), ^{
-    UIStoryboard *storyboard =
-    [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDNavigationViewController *rootNavi =
-    [storyboard instantiateViewControllerWithIdentifier:@"rootNavi"];
-    [ShareApplicationDelegate window].rootViewController = rootNavi;
+    RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
+    RCDNavigationViewController *rootNavi = [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
+    self.window.rootViewController = rootNavi;
     
   });
 }
@@ -849,6 +839,45 @@
     self.window.rootViewController = _navi;
     
   });
+}
+
+-(void)removeExpireLogFiles:(NSString *)logPath {
+  //删除超过时间的log文件
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  NSArray *fileList = [[NSArray alloc] initWithArray:[fileManager contentsOfDirectoryAtPath:logPath error:nil]];
+  NSDate *currentDate = [NSDate date];
+  NSDate *expireDate = [NSDate dateWithTimeIntervalSinceNow: LOG_EXPIRE_TIME];
+  NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+  NSDateComponents *fileComp = [[NSDateComponents alloc] init];
+  NSInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+  fileComp = [calendar components:unitFlags fromDate:currentDate];
+  for (NSString *fileName in fileList) {
+    //rcMMddHHmmss.log length is 16
+    if (fileName.length != 16) {
+      continue;
+    }
+    if (![[fileName substringWithRange:NSMakeRange(0, 2)] isEqualToString:@"rc"]) {
+      continue;
+    }
+    int month = [[fileName substringWithRange:NSMakeRange(2, 2)] intValue];
+    int date = [[fileName substringWithRange:NSMakeRange(4, 2)] intValue];
+    if (month > 0) {
+      [fileComp setMonth:month];
+    } else {
+      continue;
+    }
+    if (date > 0) {
+      [fileComp setDay:date];
+    } else {
+      continue;
+    }
+    NSDate *fileDate = [calendar dateFromComponents:fileComp];
+    
+    if ([fileDate compare:currentDate] == NSOrderedDescending || [fileDate compare:expireDate] == NSOrderedAscending) {
+      [fileManager removeItemAtPath:[logPath stringByAppendingPathComponent:fileName] error:nil];
+    }
+  }
+
 }
 
 @end

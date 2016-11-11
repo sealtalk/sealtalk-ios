@@ -23,7 +23,7 @@
 
  @discussion 图文消息类，此消息会进行存储并计入未读消息数。
  */
-@interface RCRichContentMessage : RCMessageContent
+@interface RCRichContentMessage : RCMessageContent<NSCoding>
 
 /*!
  图文消息的标题

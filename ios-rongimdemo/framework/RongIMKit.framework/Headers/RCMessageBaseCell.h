@@ -6,9 +6,6 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#ifndef __RCMessageBaseCell
-#define __RCMessageBaseCell
-
 #import <UIKit/UIKit.h>
 #import <RongIMLib/RongIMLib.h>
 #import "RCMessageModel.h"
@@ -110,4 +107,3 @@ UIKIT_EXTERN NSString *const KNotificationMessageBaseCellUpdateSendingStatus;
 - (void)messageCellUpdateSendingStatusEvent:(NSNotification *)notification;
 
 @end
-#endif

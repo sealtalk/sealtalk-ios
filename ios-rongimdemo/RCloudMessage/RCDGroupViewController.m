@@ -86,21 +86,12 @@ UITableViewDataSource, UITableViewDelegate>
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.navigationItem.title = @"群组";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    UILabel *titleView = [[UILabel alloc]
-                          initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-    titleView.backgroundColor = [UIColor clearColor];
-    titleView.font = [UIFont boldSystemFontOfSize:19];
-    titleView.textColor = [UIColor whiteColor];
-    titleView.textAlignment = NSTextAlignmentCenter;
-    titleView.text = @"群组";
-    self.tabBarController.navigationItem.titleView = titleView;
-    
+  
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
 }
 

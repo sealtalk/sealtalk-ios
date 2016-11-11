@@ -102,6 +102,11 @@ __deprecated_msg("已废弃，请勿使用。");
 @property(nonatomic, strong) RCMessageContent *lastestMessage;
 
 /*!
+ 会话中最后一条消息的方向
+ */
+@property(nonatomic, assign) RCMessageDirection lastestMessageDirection;
+
+/*!
  会话中最后一条消息的json Dictionary
  
  @discussion 此字段存放最后一条消息内容中未编码的json数据。

@@ -23,7 +23,7 @@
  @discussion 命令消息类，此消息会进行存储，但不计入未读消息数。
  与RCCommandMessage的区别是，此消息会进行存储并在界面上显示。
  */
-@interface RCCommandNotificationMessage : RCMessageContent
+@interface RCCommandNotificationMessage : RCMessageContent<NSCoding>
 
 /*!
  命令提醒的名称

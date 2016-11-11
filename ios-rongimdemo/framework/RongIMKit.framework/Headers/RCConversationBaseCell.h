@@ -6,10 +6,8 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#ifndef __RCConversationBaseTableCell
-#define __RCConversationBaseTableCell
-#import <UIKit/UIKit.h>
 #import "RCConversationModel.h"
+#import <UIKit/UIKit.h>
 
 /*!
  会话Cell基类
@@ -23,10 +21,9 @@
 
 /*!
  设置会话Cell的数据模型
- 
+
  @param model 会话Cell的数据模型
  */
 - (void)setDataModel:(RCConversationModel *)model;
 
 @end
-#endif

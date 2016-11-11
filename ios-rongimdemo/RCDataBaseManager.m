@@ -132,6 +132,25 @@ static NSString *const groupMemberTableName = @"GROUPMEMBERTABLE";
   }];
 }
 
+//存储用户列表信息
+- (void)insertUserListToDB:(NSMutableArray *)userList complete:(void (^)(BOOL))result{
+  
+  if (userList == nil || [userList count] < 1)
+    return;
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    [self.dbQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+      for (RCUserInfo *user in userList) {
+        NSString *insertSql = @"REPLACE INTO USERTABLE (userid, name, portraitUri) VALUES (?, ?, ?)";
+        if (user.portraitUri.length <= 0) {
+          user.portraitUri = [RCDUtilities defaultUserPortrait:user];
+        }
+        [db executeUpdate:insertSql, user.userId, user.name, user.portraitUri];
+      }
+    }];
+    result (YES);
+  });
+}
+
 //插入黑名单列表
 - (void)insertBlackListToDB:(RCUserInfo *)user {
   NSString *insertSql =
@@ -140,6 +159,21 @@ static NSString *const groupMemberTableName = @"GROUPMEMBERTABLE";
   [self.dbQueue inDatabase:^(FMDatabase *db) {
     [db executeUpdate:insertSql, user.userId, user.name, user.portraitUri];
   }];
+}
+
+- (void)insertBlackListUsersToDB:(NSMutableArray *)userList complete:(void (^)(BOOL))result{
+  
+  if (userList == nil || [userList count] < 1)
+    return;
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    [self.dbQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+      for (RCUserInfo *user in userList) {
+        NSString *insertSql = @"REPLACE INTO BLACKTABLE (userid, name, portraitUri) VALUES (?, ?, ?)";
+        [db executeUpdate:insertSql, user.userId, user.name, user.portraitUri];
+      }
+    }];
+    result (YES);
+  });
 }
 
 //获取黑名单列表
@@ -236,6 +270,28 @@ static NSString *const groupMemberTableName = @"GROUPMEMBERTABLE";
   }];
 }
 
+- (void)insertGroupsToDB:(NSMutableArray *)groupList complete:(void (^)(BOOL))result{
+  
+  if (groupList == nil || [groupList count] < 1)
+    return;
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    [self.dbQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+      for (RCDGroupInfo *group in groupList) {
+        NSString *insertSql = @"REPLACE INTO GROUPTABLEV2 (groupId, "
+        @"name,portraitUri,inNumber,maxNumber,introduce,"
+        @"creatorId,creatorTime,isJoin,isDismiss) VALUES "
+        @"(?,?,?,?,?,?,?,?,?,?)";
+        [db executeUpdate:insertSql, group.groupId, group.groupName,
+         group.portraitUri, group.number, group.maxNumber,
+         group.introduce, group.creatorId, group.creatorTime,
+         [NSString stringWithFormat:@"%d", group.isJoin],
+         group.isDismiss];
+      }
+    }];
+    result (YES);
+  });
+}
+
 //从表中获取群组信息
 - (RCDGroupInfo *)getGroupByGroupId:(NSString *)groupId {
   __block RCDGroupInfo *model = nil;
@@ -291,7 +347,7 @@ static NSString *const groupMemberTableName = @"GROUPMEMBERTABLE";
 
   [self.dbQueue inDatabase:^(FMDatabase *db) {
     FMResultSet *rs =
-        [db executeQuery:@"SELECT * FROM GROUPTABLEV2 ORDER BY groupId"];
+        [db executeQuery:@"SELECT * FROM GROUPTABLEV2"];
     while ([rs next]) {
       RCDGroupInfo *model;
       model = [[RCDGroupInfo alloc] init];
@@ -313,7 +369,9 @@ static NSString *const groupMemberTableName = @"GROUPMEMBERTABLE";
 
 //存储群组成员信息
 - (void)insertGroupMemberToDB:(NSMutableArray *)groupMemberList
-                      groupId:(NSString *)groupId {
+                      groupId:(NSString *)groupId
+                     complete:(void (^)(BOOL))result
+{
   if (groupMemberList == nil || [groupMemberList count] < 1)
     return;
 
@@ -334,6 +392,7 @@ static NSString *const groupMemberTableName = @"GROUPMEMBERTABLE";
          user.portraitUri];
       }
     }];
+    result (YES);
     });
 }
 
@@ -363,7 +422,7 @@ static NSString *const groupMemberTableName = @"GROUPMEMBERTABLE";
 //存储好友信息
 - (void)insertFriendToDB:(RCDUserInfo *)friendInfo {
   NSString *insertSql = @"REPLACE INTO FRIENDSTABLE (userid, name, "
-                        @"portraitUri, status,updatedAt,displayName) VALUES (?, ?, ?, ?, "@"?, ?)";
+                        @"portraitUri, status, updatedAt, displayName) VALUES (?, ?, ?, ?, "@"?, ?)";
 
   [self.dbQueue inDatabase:^(FMDatabase *db) {
     [db executeUpdate:insertSql, friendInfo.userId, friendInfo.name,
@@ -372,6 +431,25 @@ static NSString *const groupMemberTableName = @"GROUPMEMBERTABLE";
   }];
   
 }
+
+- (void)insertFriendListToDB:(NSMutableArray *)FriendList complete:(void (^)(BOOL))result{
+  
+  if (FriendList == nil || [FriendList count] < 1)
+    return;
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    [self.dbQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+      for (RCDUserInfo *friendInfo in FriendList) {
+        NSString *insertSql = @"REPLACE INTO FRIENDSTABLE (userid, name, "
+        @"portraitUri, status, updatedAt, displayName) VALUES (?, ?, ?, ?, "@"?, ?)";
+        [db executeUpdate:insertSql, friendInfo.userId, friendInfo.name,
+         friendInfo.portraitUri, friendInfo.status,
+         friendInfo.updatedAt, friendInfo.displayName];
+      }
+    }];
+    result (YES);
+  });
+}
+
 
 //从表中获取所有好友信息 //RCUserInfo
 - (NSArray *)getAllFriends {

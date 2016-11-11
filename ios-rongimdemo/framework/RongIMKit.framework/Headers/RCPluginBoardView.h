@@ -1,6 +1,6 @@
 //
-//  RCPluginBoard.h
-//  CollectionViewTest
+//  RCPluginBoardView.h
+//  RongExtensionKit
 //
 //  Created by Liv on 15/3/15.
 //  Copyright (c) 2015年 RongCloud. All rights reserved.

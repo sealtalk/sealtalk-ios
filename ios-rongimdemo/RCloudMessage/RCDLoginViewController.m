@@ -24,6 +24,7 @@
 #import <RongIMKit/RongIMKit.h>
 #import "UIColor+RCColor.h"
 #import "RCDNavigationViewController.h"
+#import "RCDMainTabBarViewController.h"
 
 @interface RCDLoginViewController () <UITextFieldDelegate, RCIMConnectionStatusDelegate>
 
@@ -665,11 +666,9 @@ MBProgressHUD *hud;
                        complete:^(NSMutableArray *friends){
                        }];
   dispatch_async(dispatch_get_main_queue(), ^{
-    UIStoryboard *storyboard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDNavigationViewController *rootNavi =
-        [storyboard instantiateViewControllerWithIdentifier:@"rootNavi"];
-    [ShareApplicationDelegate window].rootViewController = rootNavi;
+    RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
+    RCDNavigationViewController *rootNavi = [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
+    [UIApplication sharedApplication].delegate.window.rootViewController = rootNavi;
   });
 }
 /**

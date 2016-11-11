@@ -10,6 +10,9 @@
 #import "UIColor+RCColor.h"
 #import "RCDCommonDefine.h"
 #import "RCDUIBarButtonItem.h"
+#import "RCDBaseSettingTableViewCell.h"
+#import "RCDLogoTableViewCell.h"
+#import "RCDVersionCell.h"
 
 @interface RCDAboutRongCloudTableViewController ()
 @property(nonatomic, strong) NSArray *urls;
@@ -34,27 +37,10 @@
   [super viewDidLoad];
   [self setPoweredView];
   self.tableView.tableFooterView = [UIView new];
+  self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+  self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
   
-  NSString *version = [[[NSBundle mainBundle] infoDictionary]
-                       objectForKey:@"CFBundleShortVersionString"];
-  self.SDKVersionLabel.text = version;
-  self.SDKVersionLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.0];
-  
-  NSString *SealTalkVersion = [[[NSBundle mainBundle] infoDictionary]
-                       objectForKey:@"SealTalk Version"];
-  self.SealTalkVersionLabel.text = SealTalkVersion;
-  self.SealTalkVersionLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.0];
-  
-  NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
-  if ([isNeedUpdate isEqualToString:@"YES"]) {
-    _NewVersionImage.hidden = NO;
-  }
-    //设置分割线颜色
-    self.tableView.separatorColor =
-    [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
-    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
-    }
+  self.navigationItem.title = @"关于 SealTalk";
   
   RCDUIBarButtonItem *leftBtn =
   [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
@@ -68,8 +54,130 @@
   self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+  return 6;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+  return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  static NSString *reusableCellWithIdentifier = @"RCDBaseSettingTableViewCell";
+  RCDBaseSettingTableViewCell *cell = [self.tableView
+                                       dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
+  
+  static NSString *logoCellWithIdentifier = @"RCDLogoTableViewCell";
+  RCDLogoTableViewCell *logoCell = [self.tableView
+                                       dequeueReusableCellWithIdentifier:logoCellWithIdentifier];
+  
+  static NSString *versionCellWithIdentifier = @"RCDVersionCell";
+  RCDVersionCell *versionCell = [self.tableView
+                                    dequeueReusableCellWithIdentifier:versionCellWithIdentifier];
+  
+  if (cell == nil) {
+    cell = [[RCDBaseSettingTableViewCell alloc] init];
+  }
+  if (logoCell == nil) {
+    logoCell = [[RCDLogoTableViewCell alloc] init];
+  }
+  if (versionCell == nil) {
+    versionCell = [[RCDVersionCell alloc] init];
+  }
+  switch (indexPath.section) {
+    case 0: {
+      switch (indexPath.row) {
+        case 0: {
+          return logoCell;
+        }
+          break;
+          
+        case 1: {
+          [cell setCellStyle:DefaultStyle];
+          cell.leftLabel.text = @"更新日志";
+          return cell;
+        }
+          break;
+          
+        case 2: {
+          [cell setCellStyle:DefaultStyle];
+          cell.leftLabel.text = @"功能介绍";
+          return cell;
+        }
+          break;
+          
+        case 3: {
+          [cell setCellStyle:DefaultStyle];
+          cell.leftLabel.text = @"官方网站";
+          return cell;
+        }
+          break;
+          
+        case 4: {
+          [versionCell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
+          versionCell.leftLabel.text = @"SealTalk 版本";
+          NSString *SealTalkVersion = [[[NSBundle mainBundle] infoDictionary]
+                                       objectForKey:@"SealTalk Version"];
+          versionCell.rightLabel.text = SealTalkVersion;
+          NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
+          if ([isNeedUpdate isEqualToString:@"YES"]) {
+            [versionCell addNewImageView];
+          }
+          return versionCell;
+        }
+          break;
+          
+        case 5: {
+          [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
+          cell.leftLabel.text = @"SDK 版本";
+          NSString *version = [[[NSBundle mainBundle] infoDictionary]
+                               objectForKey:@"CFBundleShortVersionString"];
+          cell.rightLabel.text = version;
+          cell.selectionStyle = UITableViewCellSelectionStyleNone;
+          return cell;
+        }
+          break;
+          
+        default:
+          break;
+      }
+    }
+      break;
+      
+    default:
+      break;
+  }
+  return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  CGFloat height;
+  switch (indexPath.section) {
+    case 0:{
+      switch (indexPath.row) {
+        case 0:
+          height = 141.f;
+          break;
+          
+        default:
+          height = 44.f;
+          break;
+      }
+    }
+      break;
+      
+    default:
+      break;
+  }
+  return height;
+}
+
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+   [tableView deselectRowAtIndexPath:indexPath animated:YES]; // 取消选中
   NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
   if (indexPath.section == 0 && indexPath.row == 4) {
     if ([isNeedUpdate isEqualToString:@"YES"]) {
@@ -106,23 +214,44 @@
 -(void)gotoDebugModel
 {
     NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
-  if ([isDisplayID isEqualToString:@"YES"]) {
+   NSString *isDisplayOnlineStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"];
+  if ([isDisplayID isEqualToString:@"YES"] && [isDisplayOnlineStatus isEqualToString:@"YES"]) {
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:nil
                           message:@"Debug模式"
                           delegate:self
                           cancelButtonTitle:@"确定"
-                          otherButtonTitles:@"强制Crash",@"关闭显示ID", nil];
+                          otherButtonTitles:@"强制Crash",@"关闭显示ID",@"关闭显示在线状态", nil];
     alert.delegate = self;
     [alert show];
     
-  } else {
+  } else if (isDisplayID == nil && [isDisplayOnlineStatus isEqualToString:@"YES"]) {
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:nil
                           message:@"Debug模式"
                           delegate:self
                           cancelButtonTitle:@"确定"
-                          otherButtonTitles:@"强制Crash",@"显示ID", nil];
+                          otherButtonTitles:@"强制Crash",@"显示ID",@"关闭显示在线状态", nil];
+    alert.delegate = self;
+    [alert show];
+  } else if ([isDisplayID isEqualToString:@"YES"] && isDisplayOnlineStatus == nil) {
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:nil
+                          message:@"Debug模式"
+                          delegate:self
+                          cancelButtonTitle:@"确定"
+                          otherButtonTitles:@"强制Crash",@"关闭显示ID",@"显示在线状态", nil];
+    alert.delegate = self;
+    [alert show];
+  }
+  
+  else {
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:nil
+                          message:@"Debug模式"
+                          delegate:self
+                          cancelButtonTitle:@"确定"
+                          otherButtonTitles:@"强制Crash",@"显示ID",@"显示在线状态", nil];
     alert.delegate = self;
     [alert show];
   }
@@ -147,6 +276,19 @@
   }
 }
 
+-(void) setIsDisplayOnlineStatus
+{
+  NSString *isDisplayOnlineStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"];
+  if ([isDisplayOnlineStatus isEqualToString:@"YES"]) {
+    [DEFAULTS setObject:nil forKey:@"isDisplayOnlineStatus"];
+    [DEFAULTS synchronize];
+  } else {
+    [DEFAULTS setObject:@"YES" forKey:@"isDisplayOnlineStatus"];
+    [DEFAULTS synchronize];
+    
+  }
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
   switch (buttonIndex) {
@@ -156,6 +298,10 @@
       
     case 2:
       [self setIsDisplayId];
+      break;
+      
+    case 3:
+      [self setIsDisplayOnlineStatus];
       break;
       
     default:
@@ -204,5 +350,34 @@
 -(void)cilckBackBtn:(id)sender
 {
   [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)addNewImageView:(RCDBaseSettingTableViewCell *)cell {
+  UIImageView *newImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"new"]];
+  newImageView.translatesAutoresizingMaskIntoConstraints = NO;
+  [cell.contentView addSubview:newImageView];
+  UILabel *leftLabel =  cell.leftLabel;
+  NSDictionary *views = NSDictionaryOfVariableBindings(leftLabel,newImageView);
+  [cell.contentView
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:[leftLabel]-10-[newImageView(50)]"
+                   options:0
+                   metrics:nil
+                   views:views]];
+  [cell.contentView
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"V:[newImageView(23)]"
+                   options:0
+                   metrics:nil
+                   views:views]];
+  [cell.contentView
+   addConstraint:[NSLayoutConstraint constraintWithItem:newImageView
+                                              attribute:NSLayoutAttributeCenterY
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:cell.contentView
+                                              attribute:NSLayoutAttributeCenterY
+                                             multiplier:1
+                                               constant:0]];
+  
 }
 @end

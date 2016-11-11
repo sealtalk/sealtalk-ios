@@ -22,7 +22,7 @@
 
  @discussion 通知消息类，此消息会进行存储，但不计入未读消息数。
  */
-@interface RCInformationNotificationMessage : RCMessageContent
+@interface RCInformationNotificationMessage : RCMessageContent<NSCoding>
 
 /*!
  通知的内容

@@ -90,12 +90,10 @@ MBProgressHUD *hud;
 - (void)getAllData {
   _friends = [NSMutableArray
       arrayWithArray:[[RCDataBaseManager shareInstance] getAllFriends]];
-  if ([_friends count] > 0) {
     self.hideSectionHeader = YES;
     _friends = [self sortForFreindList:_friends];
     tag = 0;
     [self.tableView reloadData];
-  }
   if (isSyncFriends == NO) {
     [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
                          complete:^(NSMutableArray *result) {
@@ -163,6 +161,7 @@ MBProgressHUD *hud;
   chatViewController.targetId = userInfo.userId;
   chatViewController.title = userInfo.name;
   chatViewController.displayUserNameInCell = NO;
+  chatViewController.needPopToRootView = YES;
   [self.navigationController pushViewController:chatViewController
                                        animated:YES];
 }
