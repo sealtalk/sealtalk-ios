@@ -156,11 +156,6 @@
    name:@"RCDSharedMessageInsertSuccess"
    object:nil];
   
-  [[NSNotificationCenter defaultCenter]addObserver:self
-                                          selector:@selector(updateBadgeValueForTabBarItem)
-                                              name:RCKitDispatchReadReceiptNotification
-                                            object:nil];
-  
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(refreshCell:)
                                                name:@"RefreshConversationList"
@@ -650,10 +645,8 @@
                    });
                  }];
   } else {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      //调用父类刷新未读消息数
-      [super didReceiveMessageNotification:notification];
-    });
+    //调用父类刷新未读消息数
+    [super didReceiveMessageNotification:notification];
   }
 }
 - (void)didTapCellPortrait:(RCConversationModel *)model {
@@ -721,17 +714,18 @@
     }
   }
 }
+/*
 //会话有新消息通知的时候显示数字提醒，设置为NO,不显示数字只显示红点
-//-(void)willDisplayConversationTableCell:(RCConversationBaseCell *)cell
-//atIndexPath:(NSIndexPath *)indexPath
-//{
-//    RCConversationModel *model=
-//    self.conversationListDataSource[indexPath.row];
-//
-//    if (model.conversationType == ConversationType_PRIVATE) {
-//        ((RCConversationCell *)cell).isShowNotificationNumber = NO;
-//    }
-//}
+-(void)willDisplayConversationTableCell:(RCConversationBaseCell *)cell
+atIndexPath:(NSIndexPath *)indexPath
+{
+    RCConversationModel *model=
+  self.conversationListDataSource[indexPath.row];
+    if (model.conversationType == ConversationType_PRIVATE) {
+        ((RCConversationCell *)cell).isShowNotificationNumber = NO;
+    }
+}
+ */
 - (void)notifyUpdateUnreadMessageCount {
   [self updateBadgeValueForTabBarItem];
 }

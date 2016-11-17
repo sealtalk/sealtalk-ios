@@ -941,6 +941,8 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  @param conversationType    会话类型
  @param targetId            目标会话ID
  @param timestamp           该会话中已阅读的最后一条消息的发送时间戳
+ @param successBlock        发送成功的回调
+ @param errorBlock          发送失败的回调[nErrorCode: 失败的错误码]
 
  @discussion 此接口只支持单聊, 如果使用Lib 可以注册监听
  RCLibDispatchReadReceiptNotification 通知,使用kit 直接设置RCIM.h
@@ -950,7 +952,9 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  */
 - (void)sendReadReceiptMessage:(RCConversationType)conversationType
                       targetId:(NSString *)targetId
-                          time:(long long)timestamp;
+                          time:(long long)timestamp
+                       success:(void (^)())successBlock
+                         error:(void (^)(RCErrorCode nErrorCode))errorBlock;
 
 /*!
  请求消息阅读回执
@@ -1374,6 +1378,14 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  @return                    该类型的会话中所有的未读消息数
  */
 - (int)getUnreadCount:(NSArray *)conversationTypes;
+
+/*!
+ 获取某个类型的会话中所有未读的被@的消息数
+ 
+ @param conversationTypes   会话类型的数组
+ @return                    该类型的会话中所有未读的被@的消息数
+ */
+- (int)getUnreadMentionedCount:(NSArray *)conversationTypes;
 
 /*!
  清除某个会话中的未读消息数

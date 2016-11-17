@@ -10,4 +10,8 @@
 
 @interface RCDMainTabBarViewController : UITabBarController<UITabBarControllerDelegate>
 
++ (RCDMainTabBarViewController *)shareInstance;
+
+@property (nonatomic, assign) NSUInteger selectedTabBarIndex;
+
 @end

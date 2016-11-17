@@ -2075,7 +2075,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#echo \"*Begin copy redpacket libray*\"\n#if [ ! -d \"framework/JrmfIMLib\" ]; then\ncp -rf ../ios-3rd-vendor/jrmf/AlipaySDK ./framework/\ncp -rf ../ios-3rd-vendor/jrmf/JrmfIMLib ./framework/\n#else\n#SIZE1=`stat ./framework/JrmfIMLib/JrmfPacketKit.framework/JrmfPacketKit | awk '{print $8}'`\n#SIZE2=`stat ../ios-3rd-vendor/jrmf/JrmfIMLib/JrmfPacketKit.framework/JrmfPacketKit | awk '{print $8}'`\n\n#if [ $SIZE1==$SIZE2 ]\n#then\n#SIZE3=`stat ./framework/JrmfIMLib/JYangToolKit.framework/JYangToolKit | awk '{print $8}'`\n#SIZE4=`stat ../ios-3rd-vendor/jrmf/JrmfIMLib/JYangToolKit.framework/JYangToolKit | awk '{print $8}'`\n\n#if [ $SIZE3==$SIZE4 ]\n#then\n#echo \"no need copy redpacket library, already exist!\"\n#else\n#cp -rf ../ios-3rd-vendor/jrmf/AlipaySDK ./framework/\n#cp -rf ../ios-3rd-vendor/jrmf/JrmfIMLib ./framework/\n#fi\n#else\n#cp -rf ../ios-3rd-vendor/jrmf/AlipaySDK ./framework/\n#cp -rf ../ios-3rd-vendor/jrmf/JrmfIMLib ./framework/\n#fi\n#fi\necho \"*Finished copy redpacket libray*\"";
+			shellScript = "sh xcodebuild.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 

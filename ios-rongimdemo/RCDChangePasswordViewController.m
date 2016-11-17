@@ -47,6 +47,8 @@
   self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6"
                                                     alpha:1.f];
 
+  [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textFieldEditChanged:)
+                                              name:@"UITextFieldTextDidChangeNotification" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -247,14 +249,11 @@
   __weak __typeof(&*self) weakSelf = self;
   NSString *userPwd = [DEFAULTS objectForKey:@"userPwd"];
   if ([userPwd isEqualToString:self.oldPwdTextField.text]) {
-    if (self.newsPwdTextField.text.length > 20) {
-      [self AlertShow:@"密码不能大于20位!"];
-      return;
+    NSInteger newPwdLength = self.newsPwdTextField.text.length;
+    if (newPwdLength <6 || newPwdLength > 20) {
+      [self AlertShow:@"密码必须为6-16位字符，区分大小写"];
     }
-    if (self.newsPwdTextField.text.length == 0) {
-      [self AlertShow:@"密码不能为空!"];
-      return;
-    } else {
+    else {
       if ([self.newsPwdTextField.text isEqualToString:self.confirmPwdTextField.text]) {
         [AFHttpTool changePassword:self.oldPwdTextField.text
             newPwd:self.newsPwdTextField.text
@@ -270,12 +269,12 @@
             }];
 
       } else {
-        [self AlertShow:@"确认密码填写有误"];
+        [self AlertShow:@"填写的确认密码与新密码不一致"];
       }
     }
 
   } else {
-    [self AlertShow:@"原密码填写有误"];
+    [self AlertShow:@"原密码填写错误"];
   }
 }
 
@@ -292,13 +291,17 @@
   [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark - UITextField Delegate
-- (BOOL)textField:(UITextField *)textField
-shouldChangeCharactersInRange:(NSRange)range
-replacementString:(NSString *)string {
-  [self.rightBtn buttonIsCanClick:YES
-                      buttonColor:[UIColor whiteColor]
-                    barButtonItem:self.rightBtn];
-  return YES;
+-(void)textFieldEditChanged:(NSNotification *)obj
+{
+  if (self.oldPwdTextField.text.length > 0 || self.newsPwdTextField.text.length > 0 || self.confirmPwdTextField.text.length > 0) {
+    [self.rightBtn buttonIsCanClick:YES
+                        buttonColor:[UIColor whiteColor]
+                      barButtonItem:self.rightBtn];
+
+  } else {
+    [self.rightBtn buttonIsCanClick:NO
+                        buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                      barButtonItem:self.rightBtn];
+  }
 }
 @end

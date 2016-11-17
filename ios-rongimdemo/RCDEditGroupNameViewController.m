@@ -11,6 +11,7 @@
 #import <RongIMKit/RongIMKit.h>
 #import "UIColor+RCColor.h"
 #import "RCDUIBarButtonItem.h"
+#import "RCDataBaseManager.h"
 
 @interface RCDEditGroupNameViewController ()
 
@@ -119,6 +120,9 @@
                                 [[RCIM sharedRCIM]
                                     refreshGroupInfoCache:groupInfo
                                               withGroupId:_groupInfo.groupId];
+                                RCDGroupInfo *tempGroupInfo = [[RCDataBaseManager shareInstance] getGroupByGroupId:groupInfo.groupId];
+                                tempGroupInfo.groupName = nameStr;
+                                [[RCDataBaseManager shareInstance] insertGroupToDB:tempGroupInfo];
                                 [self.navigationController
                                     popViewControllerAnimated:YES];
                               }

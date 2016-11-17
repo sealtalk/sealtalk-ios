@@ -18,6 +18,8 @@
 #import "RCDUserInfo.h"
 #import "UIImageView+WebCache.h"
 #import "RCDUserInfoManager.h"
+#import "RCDataBaseManager.h"
+#import "RCDPersonDetailViewController.h"
 
 @interface RCDSearchFriendViewController () <
 UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,UISearchDisplayDelegate,
@@ -147,10 +149,27 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [alert show];
     } else if (user &&
                tableView == self.searchDisplayController.searchResultsTableView) {
+      NSMutableArray *cacheList = [[NSMutableArray alloc]
+                                   initWithArray:[[RCDataBaseManager shareInstance] getAllFriends]];
+      BOOL isFriend = NO;
+      for (RCDUserInfo *tempInfo in cacheList) {
+        if ([tempInfo.userId isEqualToString:user.userId] &&
+            [tempInfo.status isEqualToString:@"20"]) {
+          isFriend = YES;
+          break;
+        }
+      }
+      if (isFriend == YES) {
+        RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc]init];
+        detailViewController.userId = user.userId;
+        [self.navigationController pushViewController:detailViewController
+                                             animated:YES];
+      } else {
         RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc]init];
         addViewController.targetUserInfo = userInfo;
         [self.navigationController pushViewController:addViewController
                                              animated:YES];
+      }
     }
 }
 

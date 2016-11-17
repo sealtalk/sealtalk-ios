@@ -704,6 +704,16 @@
                 [[RCIM sharedRCIM] refreshGroupInfoCache:group
                                              withGroupId:group.groupId];
               }];
+    } else if ([msg.operation isEqualToString:@"Quit"] || [msg.operation isEqualToString:@"Add"] || [msg.operation isEqualToString:@"Kicked"]) {
+      [RCDHTTPTOOL getGroupMembersWithGroupId:message.targetId
+                                        Block:^(NSMutableArray *result) {
+                                          [[RCDataBaseManager shareInstance]
+                                           insertGroupMemberToDB:result
+                                           groupId:message.targetId
+                                           complete:^(BOOL results) {
+                                             
+                                           }];
+                                        }];
     }
   }
 }

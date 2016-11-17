@@ -113,15 +113,11 @@
     [self initUnreadCountButton:CGRectMake(x, y, 22, 18) tag:888+index badgeValue:badgeValue];
   }
   if (badgeValue >= 100) {
-    RCDTabBarBtn *btn = [[RCDTabBarBtn alloc] initWithFrame:CGRectMake(x, y, 26, 18)];
-    UILabel *badgeLabel = [[UILabel alloc] init];
-    badgeLabel.frame = CGRectMake(6, -3, 24, 15);
-    badgeLabel.text = @"...";
-    badgeLabel.textColor = [UIColor whiteColor];
-    [btn addSubview:badgeLabel];
+    RCDTabBarBtn *btn = [[RCDTabBarBtn alloc] initWithFrame:CGRectMake(x, y, 22, 18)];
+    [btn setImage:[UIImage imageNamed:@"more"] forState:UIControlStateNormal];
     [self addSubview:btn];
     btn.tag = 888+index;
-    btn.layer.cornerRadius = 9;//圆形
+   // btn.layer.cornerRadius = 9;//圆形
   }
 }
 

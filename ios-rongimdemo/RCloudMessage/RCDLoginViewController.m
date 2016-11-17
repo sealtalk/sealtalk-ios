@@ -34,6 +34,8 @@
 
 @property(weak, nonatomic) IBOutlet UITextField *pwdTextField;
 
+@property(nonatomic, strong) NSTimer *retryTime;
+
 @property(nonatomic, strong) UIView *headBackground;
 @property(nonatomic, strong) UIImageView *rongLogo;
 @property(nonatomic, strong) UIView *inputBackground;
@@ -617,14 +619,32 @@ MBProgressHUD *hud;
       [(UITextField *)[self.view viewWithTag:UserTextFieldTag] text];
   NSString *userPwd =
       [(UITextField *)[self.view viewWithTag:PassWordFieldTag] text];
+    
+    if(self.retryTime){
+        [self invalidateRetryTime];
+    }
 
+    self.retryTime = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(retryConnectionFailed) userInfo:nil repeats:NO];
+    
   [self login:userName password:userPwd];
+}
+
+- (void)retryConnectionFailed {
+    [[RCIM sharedRCIM] disconnect];
+    [self invalidateRetryTime];
+    [hud hide:YES];
+}
+
+- (void)invalidateRetryTime {
+    [self.retryTime invalidate];
+    self.retryTime = nil;
 }
 
 - (void)loginSuccess:(NSString *)userName
               userId:(NSString *)userId
                token:(NSString *)token
             password:(NSString *)password {
+  [self invalidateRetryTime];
   //保存默认用户
   [DEFAULTS setObject:userName forKey:@"userName"];
   [DEFAULTS setObject:password forKey:@"userPwd"];

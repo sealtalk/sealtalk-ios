@@ -50,8 +50,11 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchRecallMessageNotification;
  NSString *fromUserId = [notification.userInfo objectForKey:@"fId"];
  
  收到这个消息之后可以更新这个会话中messageTime以前的消息UI为已读（底层数据库消息状态已经改为已读）。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此通知，可以直接替换为RCLibDispatchReadReceiptNotification通知，行为和内容完全一致。
  */
-FOUNDATION_EXPORT NSString *const RCKitDispatchReadReceiptNotification;
+FOUNDATION_EXPORT NSString *const RCKitDispatchReadReceiptNotification __deprecated_msg("已废弃，请使用RCLibDispatchReadReceiptNotification通知。");
 
 /*!
  @const 连接状态变化的Notification

@@ -21,7 +21,4 @@
 
 @property(nonatomic, strong) RCDGroupInfo *Group;
 
-@property(nonatomic, strong) NSMutableArray *GroupMemberList;
-
-
 @end

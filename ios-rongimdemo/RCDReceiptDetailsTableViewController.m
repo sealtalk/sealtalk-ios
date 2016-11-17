@@ -173,6 +173,7 @@
 }
 
 -(void)setHeaderViewAutolayout {
+  self.headerView.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.headerViewHeight);
   [self.headerView
    addConstraints:[NSLayoutConstraint
                    constraintsWithVisualFormat:@"H:|-9.5-[_nameLabel]-100-|"
@@ -195,7 +196,7 @@
                    metrics:nil
                    views:self.headerSubViews]];
   NSUInteger lines = [self numberOfRowsInLabel:self.messageContentLabel];
-  if (lines < 4) {
+  if (lines <= 4) {
     self.openAndCloseButton.hidden = YES;
 
     self.MessageContentLabelConstraints = [NSLayoutConstraint
@@ -210,7 +211,7 @@
     self.headerView.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.headerViewHeight);
     self.tableView.tableHeaderView = self.headerView;
   }
-  if (lines >= 4) {
+  if (lines > 4) {
     self.MessageContentLabelConstraints = [[NSLayoutConstraint
                                             constraintsWithVisualFormat:@"V:|-7.5-[_nameLabel(21)]-7-[_messageContentLabel]-8.5-[_openAndCloseButton(14)]"
                                             options:0

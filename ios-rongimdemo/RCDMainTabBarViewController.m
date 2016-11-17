@@ -21,6 +21,15 @@
 
 @implementation RCDMainTabBarViewController
 
++ (RCDMainTabBarViewController *)shareInstance {
+  static RCDMainTabBarViewController *instance = nil;
+  static dispatch_once_t predicate;
+  dispatch_once(&predicate, ^{
+    instance = [[[self class] alloc] init];
+  });
+  return instance;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -95,6 +104,7 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
   NSUInteger index = tabBarController.selectedIndex;
+  [RCDMainTabBarViewController shareInstance].selectedTabBarIndex = index;
   switch (index) {
     case 0:
     {
@@ -124,7 +134,6 @@
     default:
       break;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:@"NotifyTabBarIndex" object:[NSString stringWithFormat:@"%lu",(unsigned long)index]];
 }
 
 -(void)changeSelectedIndex:(NSNotification *)notify {

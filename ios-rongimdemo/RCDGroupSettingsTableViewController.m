@@ -147,7 +147,9 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+  if (collectionViewResource.count < 1) {
     [self startLoad];
+  }
     if(self.Group.number){
         self.title = [NSString stringWithFormat:@"群组信息(%@)",self.Group.number];
     }else{
@@ -212,11 +214,11 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
         }];
   }
-  _GroupMemberList = [[RCDataBaseManager shareInstance] getGroupMember:groupId];
-  _GroupMemberList = [self moveCreator:_GroupMemberList];
-  NSArray *resultList = [[RCDUserInfoManager shareInstance] getFriendInfoList:_GroupMemberList];
-  _GroupMemberList = [[NSMutableArray alloc] initWithArray:resultList];
-    for (RCUserInfo *user in _GroupMemberList) {
+  NSMutableArray *groupMemberList = [[RCDataBaseManager shareInstance] getGroupMember:groupId];
+  groupMemberList = [self moveCreator:groupMemberList];
+  NSArray *resultList = [[RCDUserInfoManager shareInstance] getFriendInfoList:groupMemberList];
+  groupMemberList = [[NSMutableArray alloc] initWithArray:resultList];
+    for (RCUserInfo *user in groupMemberList) {
         [[RCDUserInfoManager shareInstance]
          getFriendInfo:user.userId
          completion:^(RCUserInfo *user) {
@@ -228,10 +230,10 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
          }];
     }
 
-  if ([_GroupMemberList count] > 0) {
+  if ([groupMemberList count] > 0) {
     /******************添加headerview*******************/
     collectionViewResource =
-        [[NSMutableArray alloc] initWithArray:_GroupMemberList];
+        [[NSMutableArray alloc] initWithArray:groupMemberList];
     //dispatch_async(dispatch_get_main_queue(), ^{
       [self setHeaderView];
    // });
@@ -245,51 +247,16 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                weakSelf.title = [NSString stringWithFormat:@"群组信息(%lu)",(unsigned long)result.count];
                RCDBaseSettingTableViewCell *cell =
                (RCDBaseSettingTableViewCell *)
-               [weakSelf.tableView viewWithTag:RCDGroupSettingsTableViewCellGroupNameTag];
+               [self.tableView viewWithTag:RCDGroupSettingsTableViewCellGroupNameTag];
                cell.leftLabel.text = [NSString stringWithFormat:@"全部群成员(%lu)", (unsigned long)result.count];
            });
          collectionViewResource = [NSMutableArray new];
-//<<<<<<< HEAD
-//         weakSelf.GroupMemberList = [NSMutableArray new];
-//         [collectionViewResource
-//          addObjectsFromArray:result];
-//         [weakSelf.GroupMemberList addObjectsFromArray:result];
-//         weakSelf.GroupMemberList = [weakSelf moveCreator:weakSelf.GroupMemberList];
-//         [weakSelf limitDisplayMemberCount];
-//         UIImage *addImage =
-//         [UIImage imageNamed:@"add_member"];
-//         [collectionViewResource addObject:addImage];
-//         if (isCreator == YES) {
-//           UIImage *delImage =
-//           [UIImage imageNamed:@"delete_member"];
-//           [collectionViewResource addObject:delImage];
-//         }
-//         [headerView reloadData];
-//           headerView.frame = CGRectMake(
-//                                         0, 0,
-//                                         [UIScreen mainScreen].bounds.size.width,
-//                                         headerView.collectionViewLayout
-//                                         .collectionViewContentSize.height);
-//           CGRect frame = headerView.frame;
-//           frame.size.height += 14;
-//           weakSelf.tableView.tableHeaderView = [[UIView alloc] initWithFrame:frame];
-//           [weakSelf.tableView.tableHeaderView addSubview:headerView];
-//           weakSelf.tableView.tableHeaderView.backgroundColor = [UIColor whiteColor];
-//
-//           [weakSelf.tableView reloadData];
-//=======
-         _GroupMemberList = [NSMutableArray new];
-         [_GroupMemberList addObjectsFromArray:result];
-         _GroupMemberList = [self moveCreator:_GroupMemberList];
-         NSArray *resultList = [[RCDUserInfoManager shareInstance] getFriendInfoList:_GroupMemberList];
-         _GroupMemberList = [[NSMutableArray alloc] initWithArray:resultList];
-         [collectionViewResource
-          addObjectsFromArray:_GroupMemberList];
+         NSMutableArray *tempArray = result;
+         tempArray = [self moveCreator:tempArray];
+         NSArray *resultList = [[RCDUserInfoManager shareInstance] getFriendInfoList:tempArray];
+         NSMutableArray *groupMemberList = [[NSMutableArray alloc] initWithArray:resultList];
+         collectionViewResource = [groupMemberList mutableCopy];
          [self setHeaderView];
-         dispatch_async(dispatch_get_main_queue(), ^{
-           [self.tableView reloadData];
-         });
-//>>>>>>> dev
          [[RCDataBaseManager shareInstance]
           insertGroupMemberToDB:result
           groupId:groupId
@@ -750,7 +717,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     case 0:{
       RCDGroupMembersTableViewController *GroupMembersVC =
       [[RCDGroupMembersTableViewController alloc] init];
-      GroupMembersVC.GroupMembers =_GroupMemberList;
+      NSMutableArray *groupMemberList = [[RCDataBaseManager shareInstance] getGroupMember:_Group.groupId];
+      groupMemberList = [self moveCreator:groupMemberList];
+      GroupMembersVC.GroupMembers = groupMemberList;
       [self.navigationController pushViewController:GroupMembersVC animated:YES];
     }break;
       
@@ -909,9 +878,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   contactSelectedVC.groupId = _Group.groupId;
   contactSelectedVC.isAllowsMultipleSelection = YES;
   NSMutableArray *membersId = [NSMutableArray new];
-  for (RCUserInfo *user in _GroupMemberList) {
-    NSString *userId = user.userId;
-    [membersId addObject:userId];
+  for (id user in collectionViewResource) {
+    if ([user isKindOfClass:[RCUserInfo class]]) {
+      NSString *userId = ((RCUserInfo*)user).userId;
+      [membersId addObject:userId];
+    }
   }
   //判断如果是创建者
   if (isCreator == YES) {
@@ -925,11 +896,16 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     }
     //点减号
     if (indexPath.row == collectionViewResource.count - 1) {
+      if (collectionViewResource.count == 3) {
+        return;
+      }
       contactSelectedVC.titleStr = @"移除成员";
       NSMutableArray *members = [NSMutableArray new];
-      for (RCUserInfo *user in _GroupMemberList) {
-        if (![user.userId isEqualToString:creatorId]) {
-          [members addObject:user];
+      for (id user in collectionViewResource) {
+        if ([user isKindOfClass:[RCUserInfo class]]) {
+          if (![((RCUserInfo *)user).userId isEqualToString:creatorId]) {
+            [members addObject:user];
+          }
         }
       }
       contactSelectedVC.delGroupMembers = members;
@@ -947,7 +923,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       return;
     }
   }
-  RCUserInfo *selectedUser = [_GroupMemberList objectAtIndex:indexPath.row];
+  RCUserInfo *selectedUser = [collectionViewResource objectAtIndex:indexPath.row];
   BOOL isFriend = NO;
   NSArray *friendList = [[RCDataBaseManager shareInstance] getAllFriends];
   for (RCDUserInfo *friend in friendList) {
@@ -963,14 +939,14 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
           [[RCDPersonDetailViewController alloc]init];
         [self.navigationController pushViewController:detailViewController
                                              animated:YES];
-        RCUserInfo *user = [_GroupMemberList objectAtIndex:indexPath.row];
+        RCUserInfo *user = [collectionViewResource objectAtIndex:indexPath.row];
         detailViewController.userId = user.userId;
   } else {
       RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc]init];
       
       addViewController.targetUserInfo =
       
-      [_GroupMemberList objectAtIndex:indexPath.row];
+      [collectionViewResource objectAtIndex:indexPath.row];
       
       [self.navigationController pushViewController:addViewController
        
@@ -982,13 +958,28 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   RCMessage *message = notification.object;
   if ([message.content isMemberOfClass:[RCGroupNotificationMessage class]]) {
     RCGroupNotificationMessage *groupNotification = (RCGroupNotificationMessage *)message.content;
-    if ([groupNotification.operation isEqualToString:GroupNotificationMessage_GroupOperationQuit] || [groupNotification.operation isEqualToString:@"Dismiss"]) {
+    if ([groupNotification.operation isEqualToString:@"Dismiss"]) {
       return;
+    } else if ([groupNotification.operation isEqualToString:@"Quit"] || [groupNotification.operation isEqualToString:@"Add"] || [groupNotification.operation isEqualToString:@"Kicked"]) {
+      [RCDHTTPTOOL getGroupMembersWithGroupId:message.targetId
+                                        Block:^(NSMutableArray *result) {
+                                          [[RCDataBaseManager shareInstance]
+                                           insertGroupMemberToDB:result
+                                           groupId:message.targetId
+                                           complete:^(BOOL results) {
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                               self.title = [NSString stringWithFormat:@"群组信息(%lu)",(unsigned long)result.count];
+                                               [self refreshHeaderView];
+                                               [self refreshTabelViewInfo];
+                                             });
+                                           }];
+                                        }];
+    } else if ([groupNotification.operation isEqualToString:@"Rename"]) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshTabelViewInfo];
+      });
+
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self startLoad];
-      [self refreshTabelViewInfo];
-    });
   }
 }
 
@@ -1001,6 +992,13 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
               [self.tableView reloadData];
             });
           }];
+}
+
+- (void)refreshHeaderView {
+  NSMutableArray *groupMemberList = [[RCDataBaseManager shareInstance] getGroupMember:groupId];
+  collectionViewResource =
+  [[NSMutableArray alloc] initWithArray:groupMemberList];
+  [self setHeaderView];
 }
 
 - (void)limitDisplayMemberCount {

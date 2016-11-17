@@ -186,7 +186,16 @@ __deprecated_msg("已废弃，请勿使用。");
  @param model 会话数据模型
  @return 是否包含未读的@消息
  */
-+ (BOOL)getConversationMentionedStatus:(RCConversationModel *)model;
++ (BOOL)getConversationUnreadMentionedStatus:(RCConversationModel *)model;
+
+/*!
+ 同步会话多端阅读状态
+ 
+ @param conversation 会话
+ 
+ @discussion 会根据已经设置的RCIM的enabledReadReceiptConversationTypeList属性进行过滤、同步。
+ */
++ (void)syncConversationReadStatusIfEnabled:(RCConversation *)conversation;
 
 /*!
  获取汉字对应的拼音首字母

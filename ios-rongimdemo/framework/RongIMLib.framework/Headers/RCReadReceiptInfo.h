@@ -10,7 +10,6 @@
 
 @interface RCReadReceiptInfo : NSObject
 
-
 /*!
  是否需要回执消息
  */

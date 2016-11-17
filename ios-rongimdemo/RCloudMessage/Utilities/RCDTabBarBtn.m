@@ -12,6 +12,7 @@
 #import "RCDTabBarBtn.h"
 #import "UIColor+RCColor.h"
 #import <RongIMKit/RongIMKit.h>
+#import "RCDMainTabBarViewController.h"
 
 @interface RCDTabBarBtn()
 
@@ -183,13 +184,20 @@
   [self removeFromSuperview];
   NSArray *conversationList = [[RCIMClient sharedRCIMClient] getConversationList:@[@(ConversationType_PRIVATE),@(ConversationType_DISCUSSION),@(ConversationType_APPSERVICE),@(ConversationType_PUBLICSERVICE),@(ConversationType_GROUP),@(ConversationType_SYSTEM)]];
   dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    NSMutableArray *syncConversations = [[NSMutableArray alloc] init];
     for (int i = 0; i < conversationList.count; i++) {
       RCConversation *conversation = conversationList[i];
       if (conversation.unreadMessageCount > 0) {
         [[RCIMClient sharedRCIMClient] clearMessagesUnreadStatus:conversation.conversationType targetId:conversation.targetId];
+        [syncConversations addObject:conversation];
       }
     }
      [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshConversationList" object:nil];
+    
+    for (RCConversation *conversation in syncConversations) {
+      [NSThread sleepForTimeInterval:0.2];
+      [RCKitUtility syncConversationReadStatusIfEnabled:conversation];
+    }
   });
   [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
@@ -285,7 +293,7 @@
   CGFloat widthDelta = MAX(44.0 - bounds.size.width, 0);
   CGFloat heightDelta = MAX(44.0 - bounds.size.height, 0);
   bounds = CGRectInset(bounds, -0.5 * widthDelta, -0.5 * heightDelta);
-  if (self.tabBarIndex.intValue > 0) {
+  if ([RCDMainTabBarViewController shareInstance].selectedTabBarIndex > 0) {
     bounds = CGRectZero;
   }
   return CGRectContainsPoint(bounds, point);

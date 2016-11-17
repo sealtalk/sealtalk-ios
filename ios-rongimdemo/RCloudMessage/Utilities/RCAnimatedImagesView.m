@@ -57,7 +57,7 @@
 
   for (int i = 0; i < 2; i++) {
     UIImageView *imageView = [[UIImageView alloc]
-        initWithFrame:CGRectMake(-imageViewsBorderOffset * 3.3,
+        initWithFrame:CGRectMake(-imageViewsBorderOffset * 3,
                                  -imageViewsBorderOffset,
                                  self.bounds.size.width +
                                      (imageViewsBorderOffset * 2),
