@@ -329,7 +329,7 @@
     
     
 #warning 配置红包信息
-    [RedpacketConfig config];
+    [RedpacketConfig sharedConfig];
 #warning - 注册自定义消息体
     [[RCIM sharedRCIM] registerMessageType:[RedpacketMessage class]];
     [[RCIM sharedRCIM] registerMessageType:[RedpacketTakenMessage class]];

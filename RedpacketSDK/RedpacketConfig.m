@@ -14,7 +14,9 @@
 #import "YZHRedpacketBridge.h"
 #import "RedpacketMessageModel.h"
 
-@interface RedpacketConfig ()
+@interface RedpacketConfig ()<YZHRedpacketBridgeDelegate>
+
+@property (nonatomic,strong)RedpacketRegisitModel * regisitModel;
 
 @end
 
@@ -27,37 +29,26 @@
     dispatch_once(&onceToken, ^{
         config = [[RedpacketConfig alloc] init];
         [[YZHRedpacketBridge sharedBridge] setDataSource:config];
+        [[YZHRedpacketBridge sharedBridge] setDelegate:config];
     });
     return config;
 }
 
-+ (void)config
-{
-    [[self sharedConfig] config];
+
+- (RedpacketUserInfo *)redpacketUserInfo {
+    RedpacketUserInfo *user = [[RedpacketUserInfo alloc] init];
+    RCUserInfo *info = [[RCIM sharedRCIM] getUserInfoCache:[RCIM sharedRCIM].currentUserInfo.userId];
+    user.userId = info.userId;
+    user.userNickname = info.name;
+    user.userAvatar = info.portraitUri;
+    return user;
 }
 
-
-- (void)configWithSignDict:(NSDictionary *)dict
-{
-    NSString *partner = [dict valueForKey:@"partner"];
-    NSString *appUserId = [dict valueForKey:@"user_id"];
-    unsigned long timeStamp = [[dict valueForKey:@"timestamp"] unsignedLongValue];
-    NSString *sign = [dict valueForKey:@"sign"];
-    
-    
-    [[YZHRedpacketBridge sharedBridge] configWithSign:sign
-                                              partner:partner
-                                            appUserId:appUserId
-                                            timeStamp:timeStamp];
-}
-
-- (void)config
-{
+- (void)redpacketFetchRegisitParam:(FetchRegisitParamBlock)fetchBlock withError:(NSError *)error {
     NSString *userId = [RCIM sharedRCIM].currentUserInfo.userId;
-    if(userId && [[YZHRedpacketBridge sharedBridge] isNeedUpdateSignWithUserId:userId]) {
-    
+    [YZHRedpacketBridge sharedBridge].isDebug = YES;
+    if(userId) {
         // 获取应用自己的签名字段。实际应用中需要开发者自行提供相应在的签名计算服务
-        
         NSString *urlStr = [NSString stringWithFormat:@"https://rpv2.yunzhanghu.com/api/sign?duid=%@&dcode=1101#testrongyun", userId];
         urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *url = [NSURL URLWithString:urlStr];
@@ -66,22 +57,18 @@
         [[[AFHTTPRequestOperationManager manager] HTTPRequestOperationWithRequest:request
                                                                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                                               if ([responseObject isKindOfClass:[NSDictionary class]]) {
-                                                                                  [self configWithSignDict:responseObject];
+                                                                                  NSString *partner = [responseObject valueForKey:@"partner"];
+                                                                                  NSString *appUserId = [responseObject valueForKey:@"user_id"];
+                                                                                  NSString *timeStamp = [responseObject valueForKey:@"timestamp"];
+                                                                                  NSString *sign = [responseObject valueForKey:@"sign"];
+                                                                                  RedpacketRegisitModel * regisitModel = [RedpacketRegisitModel signModelWithAppUserId:appUserId signString:sign partner:partner andTimeStamp:timeStamp];
+                                                                                  fetchBlock(regisitModel);
                                                                               }
                                                                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                              fetchBlock(nil);
                                                                               NSLog(@"request redpacket sign failed:%@", error);
                                                                           }] start];
     }
-}
-
-- (RedpacketUserInfo *)redpacketUserInfo
-{
-    RedpacketUserInfo *user = [[RedpacketUserInfo alloc] init];
-    RCUserInfo *info = [[RCIM sharedRCIM] getUserInfoCache:[RCIM sharedRCIM].currentUserInfo.userId];
-    user.userId = info.userId;
-    user.userNickname = info.name;
-    user.userAvatar = info.portraitUri;
-    return user;
 }
 
 @end

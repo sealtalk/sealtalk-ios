@@ -25,7 +25,8 @@ typedef NS_ENUM(NSInteger, RedpacketType) {
     RedpacketTypeRandpri,           /***  拼手气普通显示（一般用于系统发放）*/
     RedpacketTypeMember,            /***  定向红包 （专属红包，目前支持一人）*/
     RedpacketTypeAdvertisement,     /***  广告红包*/
-    RedpacketTransfer               /***  转账*/
+    RedpacketTransfer,              /***  转账*/
+    RedpacketTypeAmount             /***  小额随机红包*/
 };
 
 typedef NS_ENUM(NSInteger, RedpacketStatusType) {
@@ -145,7 +146,7 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 @property (nonatomic, strong) RedpacketViewModel *redpacket;
 
 /**
- *  红包相关信息外挂
+ *  红包详情页使用字典信息
  */
 @property (nonatomic, strong)   NSDictionary *redpacketDetailDic;
 

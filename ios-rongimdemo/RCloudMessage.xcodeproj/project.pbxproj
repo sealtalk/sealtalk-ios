@@ -234,6 +234,7 @@
 		E4E939CC1AD65E1E001E0AC6 /* UITextFiled+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939C91AD65E1E001E0AC6 /* UITextFiled+Shake.m */; };
 		E4E939D21AD6805E001E0AC6 /* RCDPersonDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939D11AD6805E001E0AC6 /* RCDPersonDetailViewController.m */; };
 		E4FCD7C41AD69DFB00915650 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FCD7C31AD69DFB00915650 /* ImageIO.framework */; };
+		E7315BB41DCC79E700A8DB47 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7315BB11DCC79E700A8DB47 /* libWeChatSDK.a */; };
 		E75E22771D7D50E0005F6F8D /* RedpacketCellResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E75E22661D7D50E0005F6F8D /* RedpacketCellResource.bundle */; };
 		E75E22791D7D50E0005F6F8D /* RedpacketConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E75E226A1D7D50E0005F6F8D /* RedpacketConfig.m */; };
 		E75E227A1D7D50E0005F6F8D /* RedpacketDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E75E226C1D7D50E0005F6F8D /* RedpacketDemoViewController.m */; };
@@ -727,6 +728,9 @@
 		E4E939D01AD6805E001E0AC6 /* RCDPersonDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPersonDetailViewController.h; sourceTree = SOURCE_ROOT; };
 		E4E939D11AD6805E001E0AC6 /* RCDPersonDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPersonDetailViewController.m; sourceTree = SOURCE_ROOT; };
 		E4FCD7C31AD69DFB00915650 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		E7315BB11DCC79E700A8DB47 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		E7315BB21DCC79E700A8DB47 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		E7315BB31DCC79E700A8DB47 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		E75E22661D7D50E0005F6F8D /* RedpacketCellResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RedpacketCellResource.bundle; sourceTree = "<group>"; };
 		E75E22691D7D50E0005F6F8D /* RedpacketConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketConfig.h; sourceTree = "<group>"; };
 		E75E226A1D7D50E0005F6F8D /* RedpacketConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedpacketConfig.m; sourceTree = "<group>"; };
@@ -807,6 +811,7 @@
 				A68AFAF41CCF0B3700F16B3D /* RongCallKit.framework in Frameworks */,
 				E7AC0B141D8FFC71000A97F3 /* AlipaySDK.a in Frameworks */,
 				F8AD4A5B1CAE5782006C1CBB /* CoreMotion.framework in Frameworks */,
+				E7315BB41DCC79E700A8DB47 /* libWeChatSDK.a in Frameworks */,
 				E4C330FA1A0C724400E31B9A /* CoreMedia.framework in Frameworks */,
 				F8AD4A571CAE5702006C1CBB /* libicucore.tbd in Frameworks */,
 				E4C330F21A0C721D00E31B9A /* AVFoundation.framework in Frameworks */,
@@ -1619,6 +1624,16 @@
 			name = SettingViewController;
 			sourceTree = "<group>";
 		};
+		E7315BB01DCC79E700A8DB47 /* WXPay */ = {
+			isa = PBXGroup;
+			children = (
+				E7315BB11DCC79E700A8DB47 /* libWeChatSDK.a */,
+				E7315BB21DCC79E700A8DB47 /* WXApi.h */,
+				E7315BB31DCC79E700A8DB47 /* WXApiObject.h */,
+			);
+			path = WXPay;
+			sourceTree = "<group>";
+		};
 		E75E22651D7D50E0005F6F8D /* RedpacketSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -1645,6 +1660,7 @@
 		E7AC0AFB1D8FFC71000A97F3 /* RedpacketStaticLib */ = {
 			isa = PBXGroup;
 			children = (
+				E7315BB01DCC79E700A8DB47 /* WXPay */,
 				E7AC0AFC1D8FFC71000A97F3 /* AlipayLib */,
 				E7AC0B001D8FFC71000A97F3 /* AlipaySDK.bundle */,
 				E7AC0B021D8FFC71000A97F3 /* lib */,
@@ -2350,6 +2366,7 @@
 					"$(PROJECT_DIR)/framework",
 					"$(PROJECT_DIR)/RCloudMessage/Utilities/UMAnalytics",
 					"$(PROJECT_DIR)/../RedpacketStaticLib/lib",
+					"$(PROJECT_DIR)/../RedpacketStaticLib/WXPay",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-fembed-bitcode";
@@ -2490,6 +2507,7 @@
 					"$(PROJECT_DIR)/framework",
 					"$(PROJECT_DIR)/RCloudMessage/Utilities/UMAnalytics",
 					"$(PROJECT_DIR)/../RedpacketStaticLib/lib",
+					"$(PROJECT_DIR)/../RedpacketStaticLib/WXPay",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-fembed-bitcode";
@@ -2782,6 +2800,7 @@
 					"$(PROJECT_DIR)/framework",
 					"$(PROJECT_DIR)/RCloudMessage/Utilities/UMAnalytics",
 					"$(PROJECT_DIR)/../RedpacketStaticLib/lib",
+					"$(PROJECT_DIR)/../RedpacketStaticLib/WXPay",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-fembed-bitcode";
@@ -2821,6 +2840,7 @@
 					"$(PROJECT_DIR)/framework",
 					"$(PROJECT_DIR)/RCloudMessage/Utilities/UMAnalytics",
 					"$(PROJECT_DIR)/../RedpacketStaticLib/lib",
+					"$(PROJECT_DIR)/../RedpacketStaticLib/WXPay",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-fembed-bitcode";

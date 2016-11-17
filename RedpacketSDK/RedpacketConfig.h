@@ -12,6 +12,6 @@
 @interface RedpacketConfig : NSObject <YZHRedpacketBridgeDataSource>
 
 + (instancetype)sharedConfig;
-+ (void)config;
+
 
 @end

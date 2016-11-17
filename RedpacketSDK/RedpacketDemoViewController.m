@@ -94,15 +94,9 @@
             [SELF sendRedpacketMessage:redpacket];
         }];
         
-        // 通知 红包 SDK 刷新 Token
-        [[YZHRedpacketBridge sharedBridge] reRequestRedpacketUserToken:nil];
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 /*
 #pragma mark - Navigation

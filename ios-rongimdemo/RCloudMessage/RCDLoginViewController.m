@@ -656,7 +656,6 @@ MBProgressHUD *hud;
           [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
           [DEFAULTS setObject:user.name forKey:@"userNickName"];
           [DEFAULTS synchronize];
-          [RedpacketConfig config];
         }
       }
       failure:^(NSError *err){
