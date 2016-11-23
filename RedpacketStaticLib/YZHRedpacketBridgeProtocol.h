@@ -28,6 +28,7 @@ typedef void (^FetchRegisitParamBlock)(RedpacketRegisitModel *model);
 @protocol YZHRedpacketBridgeDelegate <NSObject>
 
 @optional
+
 - (void)redpacketError:(NSString *)error withErrorCode:(NSInteger)code __deprecated_msg("方法已经停止使用，请使用redpacketFetchRegisitParam: withError:");
 
 @required

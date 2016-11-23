@@ -38,13 +38,21 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 };
 
 @interface RedpacketUserInfo : NSObject <NSCopying>
-
+/**
+ *  用户的Id,
+ */
 @property (nonatomic, copy) NSString *userId;
+/**
+ *  用户的昵称,
+ */
 @property (nonatomic, copy) NSString *userNickname;
 /**
  *  用户名过长会发生截断,此处获取的是用户的原昵称
  */
 @property (nonatomic, copy, readonly) NSString *userNicknameOrigin;
+/**
+ *  用户的头像地址,
+ */
 @property (nonatomic, copy) NSString *userAvatar;
 //@property (nonatomic, assign) BOOL isGroup;
 

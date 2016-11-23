@@ -13,7 +13,7 @@
 typedef NS_ENUM(NSInteger,RPSendRedPacketViewControllerType){
     RPSendRedPacketViewControllerSingle, //点对点红包
     RPSendRedPacketViewControllerGroup,  //普通群红包
-    RPSendRedPacketViewControllerMember, //包含专属红包的群红包
+    RPSendRedPacketViewControllerMember, //专属红包（包含普通群红包功能）
     RPSendRedPacketViewControllerRand,   //小额度随机红包
 };
 
@@ -21,18 +21,19 @@ typedef NS_ENUM(NSInteger,RPSendRedPacketViewControllerType){
 
 @optional
 /**
- *  发送红包包括专属红包 需实现
- *  获取定向红包中的群成员列表
+ *  获取定向(专属)红包中的群成员列表
  */
 - (void)getGroupMemberListCompletionHandle:(void (^)(NSArray<RedpacketUserInfo *> * groupMemberList))completionHandle;
 
 /**
- *  广告红包事件触发
- *  广告红包需深度合作。具体请联系商务
+ *  广告红包事件触发，需深度合作。具体请联系商务
+ *  客服热线: 400-6565-739
+ *  业务咨询: BD@yunzhanghu.com
  */
 - (void)advertisementRedPacketAction:(NSDictionary *)args;
 
 - (NSArray<RedpacketUserInfo *> *)groupMemberList __deprecated_msg("请用getGroupMemberListCompletionHandle：方法替换");
+
 @end
 
 
