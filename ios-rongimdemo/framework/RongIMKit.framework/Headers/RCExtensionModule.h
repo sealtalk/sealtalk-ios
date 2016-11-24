@@ -147,4 +147,15 @@
  */
 - (void)inputTextViewDidChange:(UITextView *)inputTextView
                     inInputBar:(RCChatSessionInputBarControl *)inputBarControl;
+
+///*!
+// 点击加号面板中按钮的回调
+// 
+// @param emojiView       加号面板
+// @param addButton       加号中的每一项
+// @param inputBarControl 面板所在的输入工具栏
+// */
+//- (void)pluginBoard:(RCPluginBoardView *)pluginBoardView
+// clickedItemWithTag:(NSInteger)tag
+//         inInputBar:(RCChatSessionInputBarControl *)inputBarControl;
 @end

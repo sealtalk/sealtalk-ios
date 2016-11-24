@@ -7,4 +7,7 @@ fi
 if [ -d "../ios-3rd-vendor/jrmf/JrmfIMLib" ]; then
 cp -rf ../ios-3rd-vendor/jrmf/JrmfIMLib ./framework/
 fi
+if [ -d "../ios-3rd-vendor/ifly" ]; then
+cp -rf ../ios-3rd-vendor/ifly ./framework/
+fi
 echo "Copy 3rd framework end."

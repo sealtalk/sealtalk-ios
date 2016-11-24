@@ -32,6 +32,12 @@
 		17F7A84C1DAE187200E27D25 /* RCDSearchResultViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F7A8431DAE187200E27D25 /* RCDSearchResultViewCell.m */; };
 		17F7A84D1DAE187200E27D25 /* RCDSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F7A8451DAE187200E27D25 /* RCDSearchViewController.m */; };
 		17F7A8741DAFBFF100E27D25 /* RCDSearchHistoryMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F7A8731DAFBFF100E27D25 /* RCDSearchHistoryMessageController.m */; };
+		27AADC261DDC4DB800E1AE31 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AADC251DDC4DB800E1AE31 /* AddressBook.framework */; };
+		27AADC271DDC4DCE00E1AE31 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C3310B1A0C729600E31B9A /* QuartzCore.framework */; };
+		27AADC281DDC4DD800E1AE31 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17B181861D587B0F0061E02B /* Foundation.framework */; };
+		27C42ED51DE2FD7B003E2306 /* RongiFlyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C42ED41DE2FD7B003E2306 /* RongiFlyKit.framework */; };
+		27C42EEC1DE30637003E2306 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C42EEA1DE30637003E2306 /* iflyMSC.framework */; };
+		27C42EED1DE30637003E2306 /* RongCloudiFly.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27C42EEB1DE30637003E2306 /* RongCloudiFly.bundle */; };
 		2E29FF351DC1BE7300AF2DF0 /* JrmfInfo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2E29FF2F1DC1BE7300AF2DF0 /* JrmfInfo.strings */; };
 		2E29FF361DC1BE7300AF2DF0 /* JResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E29FF311DC1BE7300AF2DF0 /* JResource.bundle */; };
 		2E29FF371DC1BE7300AF2DF0 /* JrmfPacketKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E29FF321DC1BE7300AF2DF0 /* JrmfPacketKit.framework */; };
@@ -69,12 +75,12 @@
 		9891E8E61D82AC4400E874AB /* RCDVersionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9891E8E51D82AC4400E874AB /* RCDVersionCell.m */; };
 		9899D8331DBDAA1C00AD60F8 /* RCDTabBarBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 9899D8321DBDAA1C00AD60F8 /* RCDTabBarBtn.m */; };
 		98A3E70A1D45F961007989E7 /* RCDNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98A3E7091D45F961007989E7 /* RCDNavigationViewController.m */; };
+		98A670751DDD5478007D426D /* RCDNoFriendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98A670741DDD5478007D426D /* RCDNoFriendView.m */; };
 		98AB3C091D38940600C3B87C /* SortForTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AB3C081D38940600C3B87C /* SortForTime.m */; };
-		98BC0E0A1D9CEA990017D4F2 /* RCDReceiptDetailsTableViewCell.h in Sources */ = {isa = PBXBuildFile; fileRef = 98BC0E041D9CE8AB0017D4F2 /* RCDReceiptDetailsTableViewCell.h */; };
 		98BC0E0B1D9CEA990017D4F2 /* RCDReceiptDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98BC0E051D9CE8AB0017D4F2 /* RCDReceiptDetailsTableViewCell.m */; };
-		98BC0E0C1D9CEA990017D4F2 /* RCDReceiptDetailsTableViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 98BC0E061D9CE8AB0017D4F2 /* RCDReceiptDetailsTableViewController.h */; };
 		98BC0E0D1D9CEA990017D4F2 /* RCDReceiptDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98BC0E071D9CE8AB0017D4F2 /* RCDReceiptDetailsTableViewController.m */; };
 		98BD8A761D6D3E1600FE717D /* RCDUIBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 98BD8A751D6D3E1600FE717D /* RCDUIBarButtonItem.m */; };
+		98C8B2911DB85E9C00D42297 /* RCDContactSelectedCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C8B2901DB85E9C00D42297 /* RCDContactSelectedCollectionViewCell.m */; };
 		98D3C9D11D4C464D006FDF67 /* RCDMainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D3C9D01D4C464D006FDF67 /* RCDMainTabBarViewController.m */; };
 		98E4A6021DC08980007C3D1C /* RCDSquareCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98E4A6011DC08980007C3D1C /* RCDSquareCell.m */; };
 		98F7B0A61D826151005B2E42 /* RCDMeDetailsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F7B0A51D826151005B2E42 /* RCDMeDetailsCell.m */; };
@@ -261,6 +267,7 @@
 		E4E939D21AD6805E001E0AC6 /* RCDPersonDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939D11AD6805E001E0AC6 /* RCDPersonDetailViewController.m */; };
 		E4FCD7C41AD69DFB00915650 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FCD7C31AD69DFB00915650 /* ImageIO.framework */; };
 		F821B7F51BE75BFD00F0D14C /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F821B7F41BE75BFD00F0D14C /* libMobClickLibrary.a */; };
+		F82B55401DE03E40007392BD /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F82B553F1DE03E40007392BD /* SafariServices.framework */; };
 		F836AB0E1C2262C400A1A5D2 /* RCDTestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = F836AB0D1C2262C400A1A5D2 /* RCDTestMessage.m */; };
 		F836AB151C226A7F00A1A5D2 /* RCDTestMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F836AB141C226A7F00A1A5D2 /* RCDTestMessageCell.m */; };
 		F880EA791D0808B300FD5CC4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F880EA781D0808B300FD5CC4 /* VideoToolbox.framework */; };
@@ -356,6 +363,10 @@
 		17F7A8451DAE187200E27D25 /* RCDSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSearchViewController.m; sourceTree = SOURCE_ROOT; };
 		17F7A8721DAFBFF100E27D25 /* RCDSearchHistoryMessageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSearchHistoryMessageController.h; sourceTree = SOURCE_ROOT; };
 		17F7A8731DAFBFF100E27D25 /* RCDSearchHistoryMessageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSearchHistoryMessageController.m; sourceTree = SOURCE_ROOT; };
+		27AADC251DDC4DB800E1AE31 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		27C42ED41DE2FD7B003E2306 /* RongiFlyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongiFlyKit.framework; path = framework/RongiFlyKit.framework; sourceTree = SOURCE_ROOT; };
+		27C42EEA1DE30637003E2306 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = "<group>"; };
+		27C42EEB1DE30637003E2306 /* RongCloudiFly.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RongCloudiFly.bundle; sourceTree = "<group>"; };
 		2E29FF301DC1BE7300AF2DF0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/JrmfInfo.strings; sourceTree = "<group>"; };
 		2E29FF311DC1BE7300AF2DF0 /* JResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JResource.bundle; sourceTree = "<group>"; };
 		2E29FF321DC1BE7300AF2DF0 /* JrmfPacketKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JrmfPacketKit.framework; sourceTree = "<group>"; };
@@ -421,6 +432,8 @@
 		9899D8321DBDAA1C00AD60F8 /* RCDTabBarBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDTabBarBtn.m; sourceTree = "<group>"; };
 		98A3E7081D45F961007989E7 /* RCDNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDNavigationViewController.h; sourceTree = SOURCE_ROOT; };
 		98A3E7091D45F961007989E7 /* RCDNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDNavigationViewController.m; sourceTree = SOURCE_ROOT; };
+		98A670731DDD5478007D426D /* RCDNoFriendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDNoFriendView.h; sourceTree = "<group>"; };
+		98A670741DDD5478007D426D /* RCDNoFriendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDNoFriendView.m; sourceTree = "<group>"; };
 		98AB3C071D38940600C3B87C /* SortForTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SortForTime.h; path = SDWebImage/SortForTime.h; sourceTree = "<group>"; };
 		98AB3C081D38940600C3B87C /* SortForTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SortForTime.m; path = SDWebImage/SortForTime.m; sourceTree = "<group>"; };
 		98BC0E041D9CE8AB0017D4F2 /* RCDReceiptDetailsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDReceiptDetailsTableViewCell.h; sourceTree = SOURCE_ROOT; };
@@ -429,6 +442,8 @@
 		98BC0E071D9CE8AB0017D4F2 /* RCDReceiptDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDReceiptDetailsTableViewController.m; sourceTree = SOURCE_ROOT; };
 		98BD8A741D6D3E1600FE717D /* RCDUIBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDUIBarButtonItem.h; sourceTree = "<group>"; };
 		98BD8A751D6D3E1600FE717D /* RCDUIBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDUIBarButtonItem.m; sourceTree = "<group>"; };
+		98C8B28F1DB85E9C00D42297 /* RCDContactSelectedCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDContactSelectedCollectionViewCell.h; sourceTree = SOURCE_ROOT; };
+		98C8B2901DB85E9C00D42297 /* RCDContactSelectedCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDContactSelectedCollectionViewCell.m; sourceTree = SOURCE_ROOT; };
 		98D3C9CF1D4C464D006FDF67 /* RCDMainTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDMainTabBarViewController.h; sourceTree = SOURCE_ROOT; };
 		98D3C9D01D4C464D006FDF67 /* RCDMainTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDMainTabBarViewController.m; sourceTree = SOURCE_ROOT; };
 		98E4A6001DC08980007C3D1C /* RCDSquareCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSquareCell.h; sourceTree = SOURCE_ROOT; };
@@ -787,6 +802,7 @@
 		F821B7F21BE75BF500F0D14C /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClick.h; path = UMAnalytics/MobClick.h; sourceTree = "<group>"; };
 		F821B7F31BE75BF500F0D14C /* MobClickSocialAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClickSocialAnalytics.h; path = UMAnalytics/MobClickSocialAnalytics.h; sourceTree = "<group>"; };
 		F821B7F41BE75BFD00F0D14C /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = ../RCloudMessage/Utilities/UMAnalytics/libMobClickLibrary.a; sourceTree = "<group>"; };
+		F82B553F1DE03E40007392BD /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		F836AB0C1C2262C400A1A5D2 /* RCDTestMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDTestMessage.h; path = RCloudMessage/RCDTestMessage.h; sourceTree = SOURCE_ROOT; };
 		F836AB0D1C2262C400A1A5D2 /* RCDTestMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDTestMessage.m; path = RCloudMessage/RCDTestMessage.m; sourceTree = SOURCE_ROOT; };
 		F836AB131C226A7F00A1A5D2 /* RCDTestMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDTestMessageCell.h; path = RCloudMessage/RCDTestMessageCell.h; sourceTree = SOURCE_ROOT; };
@@ -826,6 +842,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4C4E7E41A0A2F2800140067 /* CoreGraphics.framework in Frameworks */,
+				27AADC281DDC4DD800E1AE31 /* Foundation.framework in Frameworks */,
+				E4C4E7E61A0A2F2E00140067 /* UIKit.framework in Frameworks */,
+				27AADC271DDC4DCE00E1AE31 /* QuartzCore.framework in Frameworks */,
+				E4C3310E1A0C72A000E31B9A /* SystemConfiguration.framework in Frameworks */,
+				E4C330F41A0C722300E31B9A /* AudioToolbox.framework in Frameworks */,
+				27AADC261DDC4DB800E1AE31 /* AddressBook.framework in Frameworks */,
+				E4C330F21A0C721D00E31B9A /* AVFoundation.framework in Frameworks */,
+				E4C330FC1A0C724A00E31B9A /* CoreTelephony.framework in Frameworks */,
+				27C42ED51DE2FD7B003E2306 /* RongiFlyKit.framework in Frameworks */,
+				E4C497211A24849E00098C8A /* CoreLocation.framework in Frameworks */,
+				A6EFAB9F1BB0ED94007E9D67 /* libz.tbd in Frameworks */,
+				F82B55401DE03E40007392BD /* SafariServices.framework in Frameworks */,
 				F880EA791D0808B300FD5CC4 /* VideoToolbox.framework in Frameworks */,
 				A68AFAF41CCF0B3700F16B3D /* RongCallKit.framework in Frameworks */,
 				2E29FF371DC1BE7300AF2DF0 /* JrmfPacketKit.framework in Frameworks */,
@@ -833,31 +862,24 @@
 				E4C330FA1A0C724400E31B9A /* CoreMedia.framework in Frameworks */,
 				2E29FF381DC1BE7300AF2DF0 /* JYangToolKit.framework in Frameworks */,
 				F8AD4A571CAE5702006C1CBB /* libicucore.tbd in Frameworks */,
-				E4C330F21A0C721D00E31B9A /* AVFoundation.framework in Frameworks */,
-				E4C330F41A0C722300E31B9A /* AudioToolbox.framework in Frameworks */,
 				F8AD4A551CAE56A4006C1CBB /* PushKit.framework in Frameworks */,
 				A68AFAFD1CCF1ECE00F16B3D /* AgoraRtcEngineKit.framework in Frameworks */,
 				A68AFAF21CCF0B1600F16B3D /* RongCallLib.framework in Frameworks */,
 				A6EFABA71BB0EDFB007E9D67 /* libc++.tbd in Frameworks */,
 				A6EFABA51BB0EDE1007E9D67 /* libsqlite3.tbd in Frameworks */,
 				A6EFABA11BB0EDAC007E9D67 /* libxml2.tbd in Frameworks */,
-				A6EFAB9F1BB0ED94007E9D67 /* libz.tbd in Frameworks */,
 				2E29FF3D1DC1BE8400AF2DF0 /* AlipaySDK.framework in Frameworks */,
 				F821B7F51BE75BFD00F0D14C /* libMobClickLibrary.a in Frameworks */,
 				8CCBC9871AEDDF8600BA1135 /* AssetsLibrary.framework in Frameworks */,
 				E4FCD7C41AD69DFB00915650 /* ImageIO.framework in Frameworks */,
 				E4C497231A2484DB00098C8A /* MapKit.framework in Frameworks */,
-				E4C497211A24849E00098C8A /* CoreLocation.framework in Frameworks */,
-				E4C3310E1A0C72A000E31B9A /* SystemConfiguration.framework in Frameworks */,
 				5111B07B1AE6A11A00317E71 /* RongIMKit.framework in Frameworks */,
 				F8B7DBD21BAC189700E9F9BD /* libopencore-amrnb.a in Frameworks */,
 				E4C330FE1A0C725200E31B9A /* CoreVideo.framework in Frameworks */,
-				E4C330FC1A0C724A00E31B9A /* CoreTelephony.framework in Frameworks */,
+				27C42EEC1DE30637003E2306 /* iflyMSC.framework in Frameworks */,
 				E4C330F81A0C723A00E31B9A /* CoreAudio.framework in Frameworks */,
 				A6BD04181B1EEA6B00ACAF17 /* RongIMLib.framework in Frameworks */,
 				E4C330F61A0C722F00E31B9A /* CFNetwork.framework in Frameworks */,
-				E4C4E7E61A0A2F2E00140067 /* UIKit.framework in Frameworks */,
-				E4C4E7E41A0A2F2800140067 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -946,6 +968,16 @@
 			);
 			name = GroupSetting;
 			sourceTree = "<group>";
+		};
+		27C42EE91DE30637003E2306 /* ifly */ = {
+			isa = PBXGroup;
+			children = (
+				27C42EEA1DE30637003E2306 /* iflyMSC.framework */,
+				27C42EEB1DE30637003E2306 /* RongCloudiFly.bundle */,
+			);
+			name = ifly;
+			path = framework/ifly;
+			sourceTree = SOURCE_ROOT;
 		};
 		2E29FF2E1DC1BE7300AF2DF0 /* JrmfIMLib */ = {
 			isa = PBXGroup;
@@ -1370,6 +1402,8 @@
 				9B447DC61CF82926005D3ED5 /* RCDContactViewController.m */,
 				98FD3F1C1D5CC48F007A70DE /* RCDFrienfRemarksViewController.h */,
 				98FD3F1D1D5CC48F007A70DE /* RCDFrienfRemarksViewController.m */,
+				98C8B28F1DB85E9C00D42297 /* RCDContactSelectedCollectionViewCell.h */,
+				98C8B2901DB85E9C00D42297 /* RCDContactSelectedCollectionViewCell.m */,
 			);
 			name = AddressBook;
 			sourceTree = "<group>";
@@ -1529,6 +1563,10 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27C42EE91DE30637003E2306 /* ifly */,
+				27C42ED41DE2FD7B003E2306 /* RongiFlyKit.framework */,
+				27AADC251DDC4DB800E1AE31 /* AddressBook.framework */,
+				F82B553F1DE03E40007392BD /* SafariServices.framework */,
 				2E29FF391DC1BE8400AF2DF0 /* AlipaySDK */,
 				2E29FF2E1DC1BE7300AF2DF0 /* JrmfIMLib */,
 				17B181861D587B0F0061E02B /* Foundation.framework */,
@@ -1695,6 +1733,8 @@
 				98BD8A751D6D3E1600FE717D /* RCDUIBarButtonItem.m */,
 				98F973D31D66B8ED007F1483 /* RCDUserInfoManager.h */,
 				98F973D41D66B8ED007F1483 /* RCDUserInfoManager.m */,
+				98A670731DDD5478007D426D /* RCDNoFriendView.h */,
+				98A670741DDD5478007D426D /* RCDNoFriendView.m */,
 			);
 			name = Utilities;
 			path = RCloudMessage/Utilities;
@@ -2049,6 +2089,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E29FF3C1DC1BE8400AF2DF0 /* AlipaySDK.bundle in Resources */,
+				27C42EED1DE30637003E2306 /* RongCloudiFly.bundle in Resources */,
 				2E29FF351DC1BE7300AF2DF0 /* JrmfInfo.strings in Resources */,
 				8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */,
 				2E29FF361DC1BE7300AF2DF0 /* JResource.bundle in Resources */,
@@ -2141,10 +2182,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98BC0E0A1D9CEA990017D4F2 /* RCDReceiptDetailsTableViewCell.h in Sources */,
 				98BC0E0B1D9CEA990017D4F2 /* RCDReceiptDetailsTableViewCell.m in Sources */,
 				17F7A8461DAE187200E27D25 /* RCDLabel.m in Sources */,
-				98BC0E0C1D9CEA990017D4F2 /* RCDReceiptDetailsTableViewController.h in Sources */,
 				98BC0E0D1D9CEA990017D4F2 /* RCDReceiptDetailsTableViewController.m in Sources */,
 				9B447DEE1CF82926005D3ED5 /* RCDGroupMembersTableViewController.m in Sources */,
 				4666842A1B5DEC04000B7504 /* RCDConversationSettingClearMessageCell.m in Sources */,
@@ -2185,6 +2224,7 @@
 				E4E939761AD65AC7001E0AC6 /* RCDAddressBookTableViewCell.m in Sources */,
 				46E17CC81B0EC32A001AC57A /* FMDatabaseAdditions.m in Sources */,
 				E4E939CC1AD65E1E001E0AC6 /* UITextFiled+Shake.m in Sources */,
+				98C8B2911DB85E9C00D42297 /* RCDContactSelectedCollectionViewCell.m in Sources */,
 				9891E8DD1D8263F700E874AB /* RCDMeCell.m in Sources */,
 				9B447DE61CF82926005D3ED5 /* RCDChangePasswordViewController.m in Sources */,
 				E4E9399A1AD65C3B001E0AC6 /* RCDFindPswViewController.m in Sources */,
@@ -2226,6 +2266,7 @@
 				17F7A84B1DAE187200E27D25 /* RCDSearchResultModel.m in Sources */,
 				E4E9398E1AD65BC0001E0AC6 /* RCDServiceViewController.m in Sources */,
 				E4E939501AD65A95001E0AC6 /* UIProgressView+AFNetworking.m in Sources */,
+				98A670751DDD5478007D426D /* RCDNoFriendView.m in Sources */,
 				A6447A3E1B1DC12500EA2CEE /* RCWKRequestHandler.m in Sources */,
 				986A192A1D751FFC00FFEA2F /* RCDBaseSettingTableViewCell.m in Sources */,
 				E4E939BE1AD65D30001E0AC6 /* RCDMessageNotifySettingTableViewController.m in Sources */,
@@ -2522,6 +2563,7 @@
 					"$(PROJECT_DIR)/framework",
 					"$(PROJECT_DIR)/framework/JrmfIMLib",
 					"$(PROJECT_DIR)/framework/AlipaySDK",
+					"$(PROJECT_DIR)/framework/ifly",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -2665,6 +2707,7 @@
 					"$(PROJECT_DIR)/framework",
 					"$(PROJECT_DIR)/framework/JrmfIMLib",
 					"$(PROJECT_DIR)/framework/AlipaySDK",
+					"$(PROJECT_DIR)/framework/ifly",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -2967,6 +3010,7 @@
 					"$(PROJECT_DIR)/framework",
 					"$(PROJECT_DIR)/framework/JrmfIMLib",
 					"$(PROJECT_DIR)/framework/AlipaySDK",
+					"$(PROJECT_DIR)/framework/ifly",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -3005,6 +3049,7 @@
 					"$(PROJECT_DIR)/framework",
 					"$(PROJECT_DIR)/framework/JrmfIMLib",
 					"$(PROJECT_DIR)/framework/AlipaySDK",
+					"$(PROJECT_DIR)/framework/ifly",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;

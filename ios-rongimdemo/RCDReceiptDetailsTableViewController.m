@@ -14,6 +14,7 @@
 #import "RCDUIBarButtonItem.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDAddFriendViewController.h"
+#import "RCDCommonDefine.h"
 
 @interface RCDReceiptDetailsTableViewController ()<RCDReceiptDetailsCellDelegate>
 
@@ -102,7 +103,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   if (self.cellHeight == 0 && self.headerViewHeight > 0) {
     //屏幕的高度 - sectionHeader的高度 - 导航栏的高度 = cell的高度
-    self.cellHeight = [UIScreen mainScreen].bounds.size.height - self.headerViewHeight - 15 - 64;
+    self.cellHeight = RCDscreenHeight - self.headerViewHeight - 15 - 64;
   }
   return  self.cellHeight;
 }

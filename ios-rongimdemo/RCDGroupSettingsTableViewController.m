@@ -128,7 +128,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
    object:nil];
 
   CGRect tempRect = CGRectMake(
-      0, 0, [UIScreen mainScreen].bounds.size.width,
+      0, 0, RCDscreenWidth,
       headerView.collectionViewLayout.collectionViewContentSize.height);
   UICollectionViewFlowLayout *flowLayout =
       [[UICollectionViewFlowLayout alloc] init];
@@ -245,8 +245,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
        if ([result count] > 0) {
            dispatch_async(dispatch_get_main_queue(), ^{
                weakSelf.title = [NSString stringWithFormat:@"群组信息(%lu)",(unsigned long)result.count];
-               RCDBaseSettingTableViewCell *cell =
-               (RCDBaseSettingTableViewCell *)
+               RCDGroupSettingsTableViewCell *cell =
+               (RCDGroupSettingsTableViewCell *)
                [self.tableView viewWithTag:RCDGroupSettingsTableViewCellGroupNameTag];
                cell.leftLabel.text = [NSString stringWithFormat:@"全部群成员(%lu)", (unsigned long)result.count];
            });
@@ -1056,7 +1056,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   dispatch_async(dispatch_get_main_queue(), ^{
     [headerView reloadData];
     headerView.frame = CGRectMake(
-                                  0, 0, [UIScreen mainScreen].bounds.size.width,
+                                  0, 0, RCDscreenWidth,
                                   headerView.collectionViewLayout.collectionViewContentSize.height);
     CGRect frame = headerView.frame;
     frame.size.height += 14;

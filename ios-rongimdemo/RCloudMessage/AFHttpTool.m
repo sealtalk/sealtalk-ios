@@ -367,7 +367,7 @@
       NSMutableDictionary *ret = [NSMutableDictionary dictionary];
       [params addEntriesFromDictionary:ret];
 
-      NSString *url = @"http://upload.qiniu.com";
+      NSString *url = @"https://up.qbox.me";
 
       NSData *imageData = fileData;
 

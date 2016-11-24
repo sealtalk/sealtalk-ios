@@ -33,7 +33,7 @@
 }
 
 - (void)setDataModel:(RCDSearchResultModel *)model{
-  float namelLabelWidth = [UIScreen mainScreen].bounds.size.width-20-48-9.5;
+  float namelLabelWidth = RCDscreenWidth-20-48-9.5;
   if (model.time) {
     self.timeLabel.hidden = NO;
     namelLabelWidth -= 100;
@@ -57,7 +57,7 @@
     self.otherLabel.hidden = NO;
     CGFloat height= CGRectGetMaxY(self.headerView.frame)-20;
     CGFloat width = CGRectGetMaxX(self.headerView.frame)+9.5;
-    CGFloat additionalLabelWidth = [UIScreen mainScreen].bounds.size.width-20-48-9.5;
+    CGFloat additionalLabelWidth = RCDscreenWidth-20-48-9.5;
     if(model.searchType == RCDSearchGroup){
       self.otherLabel.frame = CGRectMake(width,height, 35,16);
       self.additionalLabel.frame = CGRectMake(width+35,height, additionalLabelWidth-CGRectGetWidth(self.otherLabel.frame), 16);
@@ -118,7 +118,7 @@
   self.nameLabel.textColor = HEXCOLOR(0x000000);
   [self.contentView addSubview:self.nameLabel];
   
-  self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width-100-10, (65-48)/2, 100,17)];
+  self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(RCDscreenWidth-100-10, (65-48)/2, 100,17)];
   self.timeLabel.textColor = HEXCOLOR(0x999999);
   self.timeLabel.font = [UIFont systemFontOfSize:15.f];
   self.timeLabel.textAlignment = NSTextAlignmentRight;

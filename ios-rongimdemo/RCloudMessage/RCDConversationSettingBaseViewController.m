@@ -12,6 +12,7 @@
 #import "RCDConversationSettingTableViewCell.h"
 #import "RCDConversationSettingTableViewHeader.h"
 #import <RongIMLib/RongIMLib.h>
+#import "RCDCommonDefine.h"
 
 #define CellReuseIdentifierCellIsTop @"CellIsTop"
 #define CellReuseIdentifierCellNewMessageNotify @"CellNewMessageNotify"
@@ -115,7 +116,7 @@
   self.users = users;
   [_header reloadData];
   _headerView.frame =
-      CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width,
+      CGRectMake(0, 0, RCDscreenWidth,
                  _header.collectionViewLayout.collectionViewContentSize.height + 20);
   self.tableView.tableHeaderView = _headerView;
 }
@@ -180,7 +181,7 @@
 // landspace notification
 - (void)orientChange:(NSNotification *)noti {
   _headerView.frame =
-      CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width,
+      CGRectMake(0, 0, RCDscreenWidth,
                  _header.collectionViewLayout.collectionViewContentSize.height + 20);
   self.tableView.tableHeaderView = _headerView;
 
@@ -197,7 +198,7 @@
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   _headerView.frame =
-      CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width,
+      CGRectMake(0, 0, RCDscreenWidth,
                  _header.collectionViewLayout.collectionViewContentSize.height + 20);
   self.tableView.tableHeaderView = _headerView;
   if (self.headerHidden) {

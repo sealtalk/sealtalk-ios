@@ -13,6 +13,7 @@
 #import <RongIMKit/RongIMKit.h>
 #import "RCDUserInfoManager.h"
 #import "RCDHttpTool.h"
+#import "RCDCommonDefine.h"
 
 @interface RCDReceiptDetailsTableViewCell()<UICollectionViewDataSource,
 UICollectionViewDelegate>
@@ -105,7 +106,7 @@ UICollectionViewDelegate>
                    constraintsWithVisualFormat:@"H:|[_hasReadButton(width)][_verticalLine(1)]"
                    options:0
                    metrics:@{@"width" :
-                   @([UIScreen mainScreen].bounds.size.width / 2 - 1)
+                   @(RCDscreenWidth / 2 - 1)
                    }
                    views:self.CellSubviews]];
   [self.contentView
@@ -134,7 +135,7 @@ UICollectionViewDelegate>
                    constraintsWithVisualFormat:@"H:[_unReadButton(width)]|"
                    options:0
                    metrics:@{@"width" :
-                               @([UIScreen mainScreen].bounds.size.width / 2 - 1)
+                               @(RCDscreenWidth / 2 - 1)
                              }
                    views:self.CellSubviews]];
   [self.contentView
@@ -215,7 +216,7 @@ UICollectionViewDelegate>
   if (self.collectionViewResource.count == userList.count) {
     //cell的高度 - button的高度 - 蓝色线的高度 = collectionView的高度
     CGRect tempRect = CGRectMake(
-                                 0, 44.5, [UIScreen mainScreen].bounds.size.width,self.cellHeight - 44 - 1);
+                                 0, 44.5, RCDscreenWidth,self.cellHeight - 44 - 1);
     UICollectionViewFlowLayout *flowLayout =
     [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;

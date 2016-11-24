@@ -726,6 +726,14 @@ __deprecated_msg("已废弃，请勿使用。");
  */
 - (void)onPublicServiceMenuItemSelected:(RCPublicServiceMenuItem *)selectedMenuItem;
 
+/*!
+ 点击公众号Cell中的URL的回调
+ 
+ @param url   被点击的URL
+ @param model 被点击的Cell对应的Model
+ */
+- (void)didTapUrlInPublicServiceMessageCell:(NSString *)url model:(RCMessageModel *)model;
+
 #pragma mark - 客服
 /*!
  用户的详细信息，此数据用于上传用户信息到客服后台，数据的nickName和portraitUrl必须填写。

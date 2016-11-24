@@ -20,6 +20,8 @@
 #import <RongIMLib/RongIMLib.h>
 #include <ctype.h>
 #import "UIColor+RCColor.h"
+#import "RCDNoFriendView.h"
+#import "RCDCommonDefine.h"
 
 @interface RCDAddressBookViewController ()
 
@@ -27,7 +29,7 @@
 @property(nonatomic, strong) NSMutableArray *tempOtherArr;
 @property(nonatomic, strong) NSMutableArray *friends;
 @property(nonatomic, strong) NSMutableDictionary *friendsDic;
-//@property (nonatomic,strong) UILabel *noFriend;
+@property (nonatomic,strong) RCDNoFriendView *noFriendView;
 
 @end
 
@@ -63,6 +65,8 @@ MBProgressHUD *hud;
 
   tag = 0;
   isSyncFriends = NO;
+  
+  
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -90,15 +94,30 @@ MBProgressHUD *hud;
 - (void)getAllData {
   _friends = [NSMutableArray
       arrayWithArray:[[RCDataBaseManager shareInstance] getAllFriends]];
+  if (_friends.count > 0) {
     self.hideSectionHeader = YES;
     _friends = [self sortForFreindList:_friends];
     tag = 0;
     [self.tableView reloadData];
+  } else {
+    CGRect frame = CGRectMake(0, 0, RCDscreenWidth, RCDscreenHeight - 64);
+    self.noFriendView = [[RCDNoFriendView alloc] initWithFrame:frame];
+    self.noFriendView.displayLabel.text = @"暂无数据";
+    [self.view addSubview:self.noFriendView];
+    [self.view bringSubviewToFront:self.noFriendView];
+  }
   if (isSyncFriends == NO) {
     [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
                          complete:^(NSMutableArray *result) {
                            isSyncFriends = YES;
-                           [self getAllData];
+                           if (result > 0) {
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                               if (self.noFriendView != nil) {
+                                 [self.noFriendView removeFromSuperview];
+                               }
+                             });
+                             [self getAllData];
+                           }
                          }];
   }
 }

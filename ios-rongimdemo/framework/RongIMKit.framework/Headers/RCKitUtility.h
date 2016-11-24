@@ -206,4 +206,12 @@ __deprecated_msg("已废弃，请勿使用。");
  */
 + (NSString *)getPinYinUpperFirstLetters:(NSString *)hanZi;
 
+/*!
+ 在SFSafariViewController或WebViewController中打开URL
+ 
+ @param url             URL
+ @param viewController  基于哪个页面弹出新的页面
+ */
++ (void)openURLInSafariViewOrWebView:(NSString *)url base:(UIViewController *)viewController;
+
 @end

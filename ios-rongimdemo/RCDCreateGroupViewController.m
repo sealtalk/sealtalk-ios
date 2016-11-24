@@ -17,6 +17,7 @@
 #import <RongIMKit/RongIMKit.h>
 #import "UIColor+RCColor.h"
 #import "RCDChatViewController.h"
+#import "RCDCommonDefine.h"
 
 // 是否iPhone5
 #define isiPhone5                                                              \
@@ -30,8 +31,6 @@
        ? CGSizeEqualToSize(CGSizeMake(640, 960),                               \
                            [[UIScreen mainScreen] currentMode].size)           \
        : NO)
-
-#define RCScreenWidth [UIScreen mainScreen].bounds.size.width
 
 @interface RCDCreateGroupViewController () {
   NSData *data;
@@ -64,7 +63,7 @@
     //群组头像的UIImageView
     CGFloat groupPortraitWidth = 100;
     CGFloat groupPortraitHeight = groupPortraitWidth;
-    CGFloat groupPortraitX = RCScreenWidth/2.0-groupPortraitWidth/2.0;
+    CGFloat groupPortraitX = RCDscreenWidth/2.0-groupPortraitWidth/2.0;
     CGFloat groupPortraitY = 80;
     self.GroupPortrait = [[UIImageView alloc] initWithFrame:CGRectMake(groupPortraitX, groupPortraitY, groupPortraitWidth, groupPortraitHeight)];
     self.GroupPortrait.image = [UIImage imageNamed:@"AddPhotoDefault"];
@@ -80,7 +79,7 @@
     //群组名称的UITextField
     CGFloat groupNameWidth = 200;
     CGFloat groupNameHeight = 17;
-    CGFloat groupNameX = RCScreenWidth/2.0-groupNameWidth/2.0;
+    CGFloat groupNameX = RCDscreenWidth/2.0-groupNameWidth/2.0;
     CGFloat groupNameY = CGRectGetMaxY(self.GroupPortrait.frame)+120;
     self.GroupName = [[UITextField alloc]initWithFrame:CGRectMake(groupNameX, groupNameY, groupNameWidth, groupNameHeight)];
     self.GroupName.font = [UIFont systemFontOfSize:14];
@@ -93,7 +92,7 @@
     //底部蓝线
     CGFloat blueLineWidth = 240;
     CGFloat blueLineHeight = 1;
-    CGFloat blueLineX = RCScreenWidth/2.0-blueLineWidth/2.0;
+    CGFloat blueLineX = RCDscreenWidth/2.0-blueLineWidth/2.0;
     CGFloat blueLineY = CGRectGetMaxY(self.GroupName.frame)+1;
     self.blueLine = [[UIView alloc]initWithFrame:CGRectMake(blueLineX, blueLineY, blueLineWidth, blueLineHeight)];
     self.blueLine.backgroundColor = [UIColor colorWithRed:0 green:135/255.0 blue:251/255.0 alpha:1];

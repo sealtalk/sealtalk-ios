@@ -570,7 +570,7 @@ MBProgressHUD *hud;
 
 - (void)viewDidDisappear:(BOOL)animated {
   [super viewDidDisappear:animated];
-
+  [self invalidateRetryTime];
   [self.animatedImagesView stopAnimating];
 }
 

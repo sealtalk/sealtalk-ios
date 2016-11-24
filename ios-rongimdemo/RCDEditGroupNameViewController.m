@@ -12,6 +12,7 @@
 #import "UIColor+RCColor.h"
 #import "RCDUIBarButtonItem.h"
 #import "RCDataBaseManager.h"
+#import "RCDCommonDefine.h"
 
 @interface RCDEditGroupNameViewController ()
 
@@ -35,7 +36,7 @@
 }
 
 - (void)initSubViews {
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat screenWidth = RCDscreenWidth;
     
     //backgroundView
     UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 10, screenWidth, 44)];
@@ -110,9 +111,6 @@
                            groupName:nameStr
                             complete:^(BOOL result) {
                               if (result == YES) {
-                                [[NSNotificationCenter defaultCenter]
-                                    postNotificationName:@"renameGroupName"
-                                                  object:_groupNameTextField.text];
                                 RCGroup *groupInfo = [RCGroup new];
                                 groupInfo.groupId = _groupInfo.groupId;
                                 groupInfo.groupName = nameStr;

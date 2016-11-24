@@ -16,5 +16,9 @@
 
 #define RCDDebugTestFunction 0
 
+#define RCDscreenWidth [UIScreen mainScreen].bounds.size.width
+#define RCDscreenHeight [UIScreen mainScreen].bounds.size.height
+
+
 #endif
 

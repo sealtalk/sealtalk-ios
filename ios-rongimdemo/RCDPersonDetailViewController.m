@@ -27,8 +27,9 @@
 @property(nonatomic, strong) NSArray *constraintNameLabel;
 @property(nonatomic, strong) NSArray *constraintdisplayNameLabel;
 @property(nonatomic, strong) UILabel *displayNameLabel;
-@property(nonatomic, strong) UILabel *phoneNumber;
+@property(nonatomic, strong) UILabel *phoneNumberLabel;
 @property(nonatomic, strong) UILabel *onlineStatusLabel;
+@property(nonatomic, strong) NSString *phonenumber;
 @end
 
 @implementation RCDPersonDetailViewController
@@ -53,9 +54,9 @@
   self.lblName.translatesAutoresizingMaskIntoConstraints = NO;
   [self.infoView addSubview:self.lblName];
   
-  self.phoneNumber = [[UILabel alloc]init];
-  self.phoneNumber.translatesAutoresizingMaskIntoConstraints = NO;
-  [self.infoView addSubview:self.phoneNumber];
+  self.phoneNumberLabel = [[UILabel alloc]init];
+  self.phoneNumberLabel.translatesAutoresizingMaskIntoConstraints = NO;
+  [self.infoView addSubview:self.phoneNumberLabel];
   
   self.onlineStatusLabel = [[UILabel alloc] init];
   self.onlineStatusLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -107,13 +108,7 @@
     self.friendInfo = [[RCDataBaseManager shareInstance] getFriendInfo:self.userId];
     portraitUri = self.friendInfo.portraitUri;
     [self setLayoutForFriend];
-    NSString *remarks = self.friendInfo.displayName;
     self.displayNameLabel = [[UILabel alloc] init];
-    if (remarks != nil && ![remarks isEqualToString:@""]) {
-      [self setLayoutIsHaveRemarks:YES];
-    } else {
-      [self setLayoutIsHaveRemarks:NO];
-    }
   } else {
     portraitUri = [RCIM sharedRCIM].currentUserInfo.portraitUri;
     [self setLayoutForSelf];
@@ -203,13 +198,12 @@
   [self displayOnlineStatus];
   
   if (![self.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-    self.friendInfo = [[RCDataBaseManager shareInstance] getFriendInfo:self.userId];
-    NSString *remarks = self.friendInfo.displayName;
-    if (remarks != nil && ![remarks isEqualToString:@""]) {
-      [self setLayoutIsHaveRemarks:YES];
-    } else {
-      [self setLayoutIsHaveRemarks:NO];
-    }
+      NSString *remarks = self.friendInfo.displayName;
+      if (remarks != nil && ![remarks isEqualToString:@""]) {
+          [self setLayoutIsHaveRemarks:YES];
+      } else {
+          [self setLayoutIsHaveRemarks:NO];
+      }
   }
 }
 
@@ -441,16 +435,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                              options:0
                              metrics:nil
                              views:self.subViews]];
-  //=======
-  //                                                                      options:0
-  //                                                                      metrics:nil
-  //                                                                        views:self.subViews]];
-  //
-  //    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_audioCallBtn(43)]"
-  //                                                                      options:0
-  //                                                                      metrics:nil
-  //                                                                        views:self.subViews]];
-  //>>>>>>> ReceiptDetails
+  
   [self.view addConstraints:[NSLayoutConstraint
                              constraintsWithVisualFormat:@"V:[_videoCallBtn(43)]"
                              options:0
@@ -632,23 +617,33 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     self.lblName.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
     self.lblName.font = [UIFont systemFontOfSize:14.f];
     
-    self.phoneNumber.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
-    self.phoneNumber.font = [UIFont systemFontOfSize:14.f];
-    self.phoneNumber.text = @"手机号: --";
+
+    self.phoneNumberLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
+    self.phoneNumberLabel.font = [UIFont systemFontOfSize:14.f];
+    self.phoneNumberLabel.text = @"手机号: --";
+    self.phoneNumberLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *clickPhoneNumber = [[UITapGestureRecognizer alloc]
+                                                initWithTarget:self
+                                                action:@selector(doCall:)];
     [AFHttpTool getFriendDetailsByID:self.friendInfo.userId
                              success:^(id response) {
                                if ([response[@"code"] integerValue] == 200) {
                                  NSDictionary *dic = response[@"result"];
                                  NSDictionary *infoDic = dic[@"user"];
-                                 self.phoneNumber.text = [NSString stringWithFormat:@"手机号: %@",[infoDic objectForKey:@"phone"]];
-                                 
+                                 self.phoneNumberLabel.text = [NSString stringWithFormat:@"手机号: %@",[infoDic objectForKey:@"phone"]];
+                                   //创建 NSMutableAttributedString
+                                   NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString: self.phoneNumberLabel.text];
+                                   [attributedStr addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithHexString:@"0099ff" alpha:1.f] range: NSMakeRange(5, 11)];
+                                   self.phoneNumberLabel.attributedText = attributedStr;
+                                 self.phonenumber = [NSString stringWithFormat:@"%@",[infoDic objectForKey:@"phone"]];
+                                 [self.phoneNumberLabel addGestureRecognizer:clickPhoneNumber];
                                  
                                }
                              } failure:^(NSError *err) {
                              }];
     
     
-    self.subViews = NSDictionaryOfVariableBindings(_displayNameLabel,_phoneNumber,_lblName);
+    self.subViews = NSDictionaryOfVariableBindings(_displayNameLabel,_phoneNumberLabel,_lblName);
     
       
       [self.infoView
@@ -664,7 +659,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
    
       [self.infoView
        addConstraint:[NSLayoutConstraint
-                      constraintWithItem:self.phoneNumber
+                      constraintWithItem:self.phoneNumberLabel
                       attribute:NSLayoutAttributeLeft
                       relatedBy:NSLayoutRelationEqual
                       toItem:self.lblName
@@ -673,7 +668,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                       constant:0]];
 
       
-      self.constraintdisplayNameLabel = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-14-[_displayNameLabel]-5-[_phoneNumber]-3-[_lblName]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_displayNameLabel,_phoneNumber,_lblName)];
+      self.constraintdisplayNameLabel = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-14-[_displayNameLabel]-5-[_phoneNumberLabel]-3-[_lblName]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_displayNameLabel,_phoneNumberLabel,_lblName)];
 
       [self.infoView addConstraints:self.constraintdisplayNameLabel];
 
@@ -683,38 +678,41 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     self.lblName.text = self.friendInfo.name;
     self.lblName.font = [UIFont systemFontOfSize:16.f];
     self.lblName.textColor = [UIColor colorWithHexString:@"000000" alpha:1.f];
-    
-    self.phoneNumber.text = @"手机号: --";
+    self.phoneNumberLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *clickPhoneNumber = [[UITapGestureRecognizer alloc]
+                                                initWithTarget:self
+                                                action:@selector(doCall:)];
+    self.phoneNumberLabel.text = @"手机号: --";
     [AFHttpTool getFriendDetailsByID:self.friendInfo.userId
                              success:^(id response) {
                                if ([response[@"code"] integerValue] == 200) {
                                  NSDictionary *dic = response[@"result"];
                                  NSDictionary *infoDic = dic[@"user"];
-                                 self.phoneNumber.text = [NSString stringWithFormat:@"手机号: %@",[infoDic objectForKey:@"phone"]];
-                                 
-                                 
+                                 self.phoneNumberLabel.text = [NSString stringWithFormat:@"手机号: %@",[infoDic objectForKey:@"phone"]];
+                                   //创建 NSMutableAttributedString
+                                   NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString: self.phoneNumberLabel.text];
+                                   [attributedStr addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithHexString:@"0099ff" alpha:1.f] range: NSMakeRange(5, 11)];
+                                   self.phoneNumberLabel.attributedText = attributedStr;
+                                 self.phonenumber = [NSString stringWithFormat:@"%@",[infoDic objectForKey:@"phone"]];
+                                 [self.phoneNumberLabel addGestureRecognizer:clickPhoneNumber];
                                }
                              } failure:^(NSError *err) {
                              }];
-    self.phoneNumber.font = [UIFont systemFontOfSize:14.f];
-    self.phoneNumber.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
+    self.phoneNumberLabel.font = [UIFont systemFontOfSize:14.f];
+
+    self.phoneNumberLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
     
-    self.subViews = NSDictionaryOfVariableBindings(_displayNameLabel,_phoneNumber,_lblName);
-      //self.subViews = NSDictionaryOfVariableBindings(_phoneNumber,_lblName);
-    
-      [self.infoView
+    self.subViews = NSDictionaryOfVariableBindings(_displayNameLabel,_phoneNumberLabel,_lblName);
+    [self.infoView
        addConstraint:[NSLayoutConstraint
-                      constraintWithItem:self.phoneNumber
+                      constraintWithItem:self.phoneNumberLabel
                       attribute:NSLayoutAttributeLeft
                       relatedBy:NSLayoutRelationEqual
                       toItem:self.lblName
                       attribute:NSLayoutAttributeLeft
                       multiplier:1
                       constant:0]];
-
-    
-      
-      self.constraintdisplayNameLabel = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_lblName(16)]-8-[_phoneNumber(14)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_displayNameLabel,_phoneNumber,_lblName)];
+      self.constraintdisplayNameLabel = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_lblName(16)]-8-[_phoneNumberLabel(14)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_displayNameLabel,_phoneNumberLabel,_lblName)];
       
       
       [self.infoView addConstraints:self.constraintdisplayNameLabel];
@@ -722,17 +720,17 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
   }
   [self.infoView addConstraints:[NSLayoutConstraint
-                                 constraintsWithVisualFormat:@"H:[_phoneNumber]-8-[_onlineStatusLabel]"
+                                 constraintsWithVisualFormat:@"H:[_phoneNumberLabel]-8-[_onlineStatusLabel]"
                                  options:0
                                  metrics:nil
-                                 views:NSDictionaryOfVariableBindings(_phoneNumber,_onlineStatusLabel)]];
+                                 views:NSDictionaryOfVariableBindings(_phoneNumberLabel,_onlineStatusLabel)]];
   
   [self.infoView
    addConstraint:[NSLayoutConstraint
                   constraintWithItem:_onlineStatusLabel
                   attribute:NSLayoutAttributeCenterY
                   relatedBy:NSLayoutRelationEqual
-                  toItem:_phoneNumber
+                  toItem:_phoneNumberLabel
                   attribute:NSLayoutAttributeCenterY
                   multiplier:1
                   constant:0]];
@@ -755,6 +753,13 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
   NSString *isDisplayOnlineStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"];
   if ([isDisplayOnlineStatus isEqualToString:@"YES"]) {
   }
+}
+
+- (void)doCall:(id)sender {
+  NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",self.phonenumber];
+  UIWebView *callWebview = [[UIWebView alloc] init];
+  [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+  [self.view addSubview:callWebview];
 }
 
 @end

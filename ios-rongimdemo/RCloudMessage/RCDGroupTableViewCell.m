@@ -12,6 +12,7 @@
 #import <RongIMKit/RongIMKit.h>
 #import "UIImageView+WebCache.h"
 #import "DefaultPortraitView.h"
+#import "RCDCommonDefine.h"
 
 #define CellHeight 54.5f
 
@@ -27,7 +28,7 @@
 }
 
 - (void)initSubviews {
-    CGFloat cellWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat cellWidth = RCDscreenWidth;
     CGFloat cellHeight = CellHeight;
     //群组头像
     CGFloat imvGroupPortWidth = 36;

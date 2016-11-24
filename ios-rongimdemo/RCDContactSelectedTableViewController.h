@@ -9,15 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <RongIMLib/RongIMLib.h>
 
-@interface RCDContactSelectedTableViewController : UITableViewController
+@interface RCDContactSelectedTableViewController : UIViewController<UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property(nonatomic, strong) NSArray *keys;
 
 @property(nonatomic, strong) NSMutableDictionary *allFriends;
 
 @property(nonatomic, strong) NSArray *allKeys;
-
-@property(nonatomic, strong) NSArray *seletedUsers;
 
 @property(nonatomic, strong) NSString *titleStr;
 
@@ -34,6 +32,8 @@
 @property(nonatomic, strong) NSMutableArray *addDiscussionGroupMembers;
 
 @property(nonatomic, strong) NSString *discussiongroupId;
+
+@property(nonatomic, strong) UISearchBar *searchBar;
 
 @property(nonatomic, strong) void (^selectUserList)(NSArray<RCUserInfo *> *selectedUserList);
 

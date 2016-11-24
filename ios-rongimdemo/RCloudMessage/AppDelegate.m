@@ -143,9 +143,11 @@
   [RCIM sharedRCIM].enableMessageRecall = YES;
   
   
-  //    //设置头像为圆形
-  //    [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
-  //    [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
+//  设置头像为圆形
+//  [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
+//  [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
+//   设置优先使用WebView打开URL
+//  [RCIM sharedRCIM].embeddedWebViewPreferred = YES;
 
 //  设置通话视频分辨率
 //  [[RCCallClient sharedRCCallClient] setVideoProfile:RC_VIDEO_PROFILE_480P];
@@ -697,23 +699,30 @@
                                           targetId:message.targetId];
       [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_GROUP
                                                targetId:message.targetId];
-    } else if ([msg.operation isEqualToString:@"Rename"]) {
+    } else if ([msg.operation isEqualToString:@"Quit"]   ||
+               [msg.operation isEqualToString:@"Add"]    ||
+               [msg.operation isEqualToString:@"Kicked"] ||
+               [msg.operation isEqualToString:@"Rename"]) {
+      if (![msg.operation isEqualToString:@"Rename"]) {
+        [RCDHTTPTOOL getGroupMembersWithGroupId:message.targetId
+                                          Block:^(NSMutableArray *result) {
+                                            [[RCDataBaseManager shareInstance]
+                                             insertGroupMemberToDB:result
+                                             groupId:message.targetId
+                                             complete:^(BOOL results) {
+                                               
+                                             }];
+                                          }];
+      }
       [RCDHTTPTOOL getGroupByID:message.targetId
               successCompletion:^(RCDGroupInfo *group) {
                 [[RCDataBaseManager shareInstance] insertGroupToDB:group];
                 [[RCIM sharedRCIM] refreshGroupInfoCache:group
                                              withGroupId:group.groupId];
+                [[NSNotificationCenter defaultCenter]
+                 postNotificationName:@"UpdeteGroupInfo"
+                 object:message.targetId];
               }];
-    } else if ([msg.operation isEqualToString:@"Quit"] || [msg.operation isEqualToString:@"Add"] || [msg.operation isEqualToString:@"Kicked"]) {
-      [RCDHTTPTOOL getGroupMembersWithGroupId:message.targetId
-                                        Block:^(NSMutableArray *result) {
-                                          [[RCDataBaseManager shareInstance]
-                                           insertGroupMemberToDB:result
-                                           groupId:message.targetId
-                                           complete:^(BOOL results) {
-                                             
-                                           }];
-                                        }];
     }
   }
 }

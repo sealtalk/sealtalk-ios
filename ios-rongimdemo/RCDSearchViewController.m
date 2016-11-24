@@ -95,7 +95,7 @@
 }
 
 - (void)loadSearchView{
-  self.searchView = [[UIView alloc] initWithFrame:CGRectMake( 0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
+  self.searchView = [[UIView alloc] initWithFrame:CGRectMake( 0, 0, RCDscreenWidth, 44)];
   
   _searchBars = [[RCDSearchBar alloc] initWithFrame:CGRectZero];
   _searchBars.delegate = self;

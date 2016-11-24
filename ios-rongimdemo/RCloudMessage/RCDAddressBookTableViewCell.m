@@ -11,6 +11,7 @@
 #import "DefaultPortraitView.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
+#import "RCDCommonDefine.h"
 
 #define CellHeight 65.0f
 
@@ -28,7 +29,7 @@
 - (void)initSubviews {
     CGFloat cellWidth = self.frame.size.width;
     CGFloat cellHeight = CellHeight;
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat screenWidth = RCDscreenWidth;
     if(cellWidth<screenWidth){
         cellWidth = screenWidth;
     }

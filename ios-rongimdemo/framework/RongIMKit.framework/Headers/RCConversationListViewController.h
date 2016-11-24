@@ -257,6 +257,14 @@
  */
 - (void)refreshConversationTableViewWithConversationModel:(RCConversationModel *)conversationModel;
 
+
+/*!
+ 当用户退出登陆时，是否还能继续显示会话列表
+ 
+ @discussion 默认值为YES。
+ */
+@property(nonatomic, assign) BOOL showConversationListWhileLogOut;
+
 #pragma mark - 其他
 
 /*!

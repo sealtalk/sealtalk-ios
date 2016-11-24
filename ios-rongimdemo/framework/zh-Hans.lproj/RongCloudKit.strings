@@ -217,3 +217,6 @@
 "PhotoOniCloud"="该照片尚未从 iCloud 下载，请从系统相册中下载到本地后重新尝试。";
 "SelectMentionedUser"="选择提醒的人";
 "ToSearch"="搜索";
+"VoiceInput"="语音输入";
+"Clear"="清空";
+"Send"="发送";

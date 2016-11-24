@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "RCChatSessionInputBarControl.h"
 
-typedef void (^RCConversationPluginItemTapBlock)();
+typedef void (^RCConversationPluginItemTapBlock)(RCChatSessionInputBarControl *chatSessionInputBar);
 
 /*!
  Plugin board item信息

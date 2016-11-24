@@ -426,6 +426,10 @@
   NSMutableArray *list = [NSMutableArray new];
 
   [AFHttpTool getFriendListFromServerSuccess:^(id response) {
+    if (((NSArray*)response[@"result"]).count == 0) {
+      friendList(nil);
+      return;
+    }
         NSString *code = [NSString stringWithFormat:@"%@", response[@"code"]];
         if (friendList) {
           if ([code isEqualToString:@"200"]) {
@@ -436,8 +440,9 @@
             NSMutableArray *friendInfoList = [NSMutableArray new];
             for (int i = 0; i < regDataArray.count; i++) {
               NSDictionary *dic = [regDataArray objectAtIndex:i];
+            
               NSDictionary *userDic = dic[@"user"];
-              if (![userDic[@"id"] isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+              if ([userDic isKindOfClass:[NSDictionary class]] && ![userDic[@"id"] isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
                 RCDUserInfo *userInfo = [RCDUserInfo new];
                 userInfo.userId = userDic[@"id"];
                 userInfo.name = userDic[@"nickname"];

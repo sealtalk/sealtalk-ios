@@ -246,15 +246,16 @@
 /*!
  设置导航服务器和上传文件服务器信息
 
- @param naviServer     导航服务器地址, 域名(cn.xxx.com[:port])或者 IP
- 地址(xxx.xxx.xxx.xxx[:port]),默认端口为80
- @param fileServer     文件服务器地址, 域名(cn.xxx.com[:port])或者 IP
- 地址(xxx.xxx.xxx.xxx[:port]),默认端口为80
+ @param naviServer     导航服务器地址，具体的格式参考下面的说明
+ @param fileServer     文件服务器地址，具体的格式参考下面的说明
  @return               是否设置成功
 
  @warning 仅限独立数据中心使用，使用前必须先联系商务开通。
  @discussion
  naviServer必须为有效的服务器地址，fileServer如果想使用默认的，可以传nil。
+ naviServer和fileServer的格式说明：
+ 1、如果使用https，则设置为https://cn.xxx.com:port或https://cn.xxx.com格式，其中域名部分也可以是IP，如果不指定端口，将默认使用443端口。
+ 2、如果使用http，则设置为cn.xxx.com:port或cn.xxx.com格式，其中域名部分也可以是IP，如果不指定端口，将默认使用80端口。
  */
 - (BOOL)setServerInfo:(NSString *)naviServer fileServer:(NSString *)fileServer;
 
@@ -676,29 +677,29 @@ __deprecated_msg("已废弃，请勿使用。");
  */
 - (BOOL)cancelDownloadMediaMessage:(long)messageId;
 
-/*!
- 发送状态消息
-
- @param conversationType    会话类型
- @param targetId            目标会话ID
- @param content             消息内容
- @param successBlock        发送消息成功的回调 [messageId:消息的ID]
- @param errorBlock          发送消息失败的回调 [nErrorCode:发送失败的错误码,
- messageId:消息的ID]
-
- @discussion 通过此方法发送的消息，根据接收方的状态进行投递。
- 如果接收方不在线，则不会收到远程推送，再上线也不会收到此消息。
-
- @warning **已废弃，请勿使用。**
- 升级说明：如果您之前使用了此接口，可以直接替换为sendMessage:targetId:content:pushContent:pushData:success:error:接口（pushContent和pushData传为nil），行为和实现完全一致。
- */
-- (RCMessage *)sendStatusMessage:(RCConversationType)conversationType
-                        targetId:(NSString *)targetId
-                         content:(RCMessageContent *)content
-                         success:(void (^)(long messageId))successBlock
-                           error:(void (^)(RCErrorCode nErrorCode,
-                                           long messageId))errorBlock
-    __deprecated_msg("已废弃，请勿使用。");
+///*!
+// 发送状态消息
+//
+// @param conversationType    会话类型
+// @param targetId            目标会话ID
+// @param content             消息内容
+// @param successBlock        发送消息成功的回调 [messageId:消息的ID]
+// @param errorBlock          发送消息失败的回调 [nErrorCode:发送失败的错误码,
+// messageId:消息的ID]
+//
+// @discussion 通过此方法发送的消息，根据接收方的状态进行投递。
+// 如果接收方不在线，则不会收到远程推送，再上线也不会收到此消息。
+//
+// @warning **已废弃，请勿使用。**
+// 升级说明：如果您之前使用了此接口，可以直接替换为sendMessage:targetId:content:pushContent:pushData:success:error:接口（pushContent和pushData传为nil），行为和实现完全一致。
+// */
+//- (RCMessage *)sendStatusMessage:(RCConversationType)conversationType
+//                        targetId:(NSString *)targetId
+//                         content:(RCMessageContent *)content
+//                         success:(void (^)(long messageId))successBlock
+//                           error:(void (^)(RCErrorCode nErrorCode,
+//                                           long messageId))errorBlock
+//    __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  发送消息
@@ -1930,6 +1931,9 @@ getConversationNotificationStatus:(RCConversationType)conversationType
 
  @param URLString   准备打开的URL
  @return            公众服务使用的WebView Controller
+ 
+ @discussion 如果您选在用WebView打开URL连接，则您需要在App的Info.plist的NSAppTransportSecurity中增加NSAllowsArbitraryLoadsInWebContent和NSAllowsArbitraryLoads字段，并在苹果审核的时候提供额外的说明。
+ 更多内容可以参考：https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW55
  */
 - (UIViewController *)getPublicServiceWebViewController:(NSString *)URLString;
 

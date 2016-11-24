@@ -70,15 +70,29 @@ elif [ ${ENV_FLAG} == "dev" ]; then
 fi
 
 if [ -n "${MANUAL_DEMO_SERVER_URL}" ]; then
-    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/'$MANUAL_DEMO_SERVER_URL'\/"/g' ./RCloudMessage/AFHttpTool.m
-    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/'$MANUAL_DEMO_SERVER_URL'\/"/g' ./SealTalkShareExtension/RCDShareChatListController.m
+    if [[ ${MANUAL_DEMO_SERVER_URL:0:4} -eq "http" ]]; then
+        sed -i '' -e 's?http://api.sealtalk.im?'$MANUAL_DEMO_SERVER_URL'?g' ./RCloudMessage/AFHttpTool.m
+        sed -i '' -e 's?http://api.sealtalk.im?'$MANUAL_DEMO_SERVER_URL'?g' ./SealTalkShareExtension/RCDShareChatListController.m
+    else
+        sed -i '' -e 's?http://api.sealtalk.im?http://'$MANUAL_DEMO_SERVER_URL'?g' ./RCloudMessage/AFHttpTool.m
+        sed -i '' -e 's?http://api.sealtalk.im?http://'$MANUAL_DEMO_SERVER_URL'?g' ./SealTalkShareExtension/RCDShareChatListController.m
+    fi
+
+    if [[ ${MANUAL_DEMO_SERVER_URL:0:5} -eq "https" ]]; then
+        sed -i '' -e 's/api.sealtalk.im/'${MANUAL_DEMO_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    elif [[ ${MANUAL_DEMO_SERVER_URL:0:4} -eq "http" ]]; then
+        sed -i '' -e 's/api.sealtalk.im/'${MANUAL_DEMO_SERVER_URL/http\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    else
+        sed -i '' -e 's/api.sealtalk.im/'$MANUAL_DEMO_SERVER_URL'/g' ./RCloudMessage/Info.plist
+    fi
 elif [ ${ENV_FLAG} == "dev" ]; then
-    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/api.hitalk.im\/"/g' ./RCloudMessage/AFHttpTool.m
-    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/api.hitalk.im\/"/g' ./SealTalkShareExtension/RCDShareChatListController.m
+    sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./RCloudMessage/AFHttpTool.m
+    sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./SealTalkShareExtension/RCDShareChatListController.m
+    sed -i '' -e 's/api.sealtalk.im/api.hitalk.im/g' ./RCloudMessage/Info.plist
 fi
 
 if [ -n "${MANUAL_NAVI_SERVER_URL}" ]; then
-    sed -i '' -e '/RONGCLOUD_IM_NAVI/s/@"nav.cn.ronghub.com"/@"'$MANUAL_NAVI_SERVER_URL'"/g' ./RCloudMessage/AppDelegate.m
+    sed -i '' -e '/RONGCLOUD_IM_NAVI/s?nav.cn.ronghub.com?'$MANUAL_NAVI_SERVER_URL'?g' ./RCloudMessage/AppDelegate.m
 fi
 
 if [ -n "${MANUAL_FILE_SERVER_URL}" ]; then

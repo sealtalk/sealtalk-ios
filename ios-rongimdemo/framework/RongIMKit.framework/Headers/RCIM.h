@@ -994,6 +994,17 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  */
 @property(nonatomic) CGFloat portraitImageViewCornerRadius;
 
+#pragma mark - 网页展示模式
+/*!
+ 点击Cell中的URL时，优先使用WebView还是SFSafariViewController打开。
+ 
+ @discussion 默认为NO。
+ 如果设置为YES，将使用WebView打开URL链接，则您需要在App的Info.plist的NSAppTransportSecurity中增加NSAllowsArbitraryLoadsInWebContent和NSAllowsArbitraryLoads字段，并在苹果审核的时候提供额外的说明。
+ 如果设置为NO，将优先使用SFSafariViewController，在iOS 8及之前的系统中使用WebView，在审核的时候不需要提供额外说明。
+ 更多内容可以参考：https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW55
+ */
+@property(nonatomic, assign) BOOL embeddedWebViewPreferred;
+
 #pragma mark - Extension module
 /*!
  设置Extension Module的URL scheme。

@@ -208,14 +208,17 @@ NSMutableDictionary *userInputStatus;
 
   //刷新个人或群组的信息
   [self refreshUserInfoOrGroupInfo];
+  
+  if (self.conversationType == ConversationType_GROUP) {
+    //群组改名之后，更新当前页面的Title
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTitleForGroup:)
+                                                 name:@"UpdeteGroupInfo"
+                                               object:nil];
 
-  //群组改名之后，更新当前页面的Title
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(renameGroupName:)
-                                               name:@"renameGroupName"
-                                             object:nil];
+  }
 
-  //群组改名之后，更新当前页面的Title
+  //清除历史消息
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(clearHistoryMSG:)
                                                name:@"ClearHistoryMsg"
@@ -300,8 +303,16 @@ NSMutableDictionary *userInputStatus;
   self.navigationItem.rightBarButtonItem = rightBtn;
 }
 
-- (void)renameGroupName:(NSNotification *)notification {
-  self.title = [notification object];
+- (void)updateTitleForGroup:(NSNotification *)notification {
+  NSString *groupId = notification.object;
+  if ([groupId isEqualToString:self.targetId]) {
+    RCDGroupInfo *tempInfo = [[RCDataBaseManager shareInstance] getGroupByGroupId:self.targetId];
+    
+    int count = tempInfo.number.intValue;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      self.title = [NSString stringWithFormat:@"%@(%d)",tempInfo.groupName,count];
+    });
+  }
 }
 
 - (void)clearHistoryMSG:(NSNotification *)notification {
@@ -974,6 +985,9 @@ NSMutableDictionary *userInputStatus;
     RCMessage *message = [[RCIMClient sharedRCIMClient] getMessageByUId:model.messageUId];
     NSMutableDictionary *readReceiptUserList = message.readReceiptInfo.userIdList;
     NSArray *hasReadUserList = [readReceiptUserList allKeys];
+    if (hasReadUserList.count > 1) {
+      hasReadUserList = [self sortForHasReadList:readReceiptUserList];
+    }
     vc.targetId = self.targetId;
     vc.messageContent = messageContent.content;
     vc.messageSendTime = sendTime;
@@ -981,5 +995,21 @@ NSMutableDictionary *userInputStatus;
     [self.navigationController pushViewController:vc animated:YES];
   }
 }
+
+-(NSArray *)sortForHasReadList: (NSDictionary *)readReceiptUserDic {
+  NSArray *result;
+  NSArray *sortedKeys = [readReceiptUserDic keysSortedByValueUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+    if ([obj1 integerValue] > [obj2 integerValue]) {
+      return (NSComparisonResult)NSOrderedDescending;
+    }
+    if ([obj1 integerValue] < [obj2 integerValue]) {
+      return (NSComparisonResult)NSOrderedAscending;
+    }
+    return (NSComparisonResult)NSOrderedSame;
+  }];
+  result = [sortedKeys copy];
+  return result;
+}
+
 
 @end

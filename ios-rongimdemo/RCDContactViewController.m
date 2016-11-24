@@ -21,9 +21,7 @@
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
 #import "pinyin.h"
-
-#define kScreenWidth [UIScreen mainScreen].bounds.size.width
-#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#import "RCDCommonDefine.h"
 
 #import "RCDUserInfoManager.h"
 #import "RCDUtilities.h"
@@ -53,7 +51,7 @@
 
 - (UISearchBar *)searchFriendsBar {
     if (!_searchFriendsBar) {
-        _searchFriendsBar=[[UISearchBar alloc]initWithFrame:CGRectMake(2, 0, kScreenWidth-4, 28)];
+        _searchFriendsBar=[[UISearchBar alloc]initWithFrame:CGRectMake(2, 0, RCDscreenWidth-4, 28)];
         [_searchFriendsBar sizeToFit];
         [_searchFriendsBar setPlaceholder:NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil)];
         [_searchFriendsBar.layer setBorderWidth:0.5];
@@ -66,7 +64,7 @@
 
 - (UITableView *)friendsTabelView {
     if (!_friendsTabelView) {
-        _friendsTabelView=[[UITableView alloc]initWithFrame:CGRectMake(0.0, 43.5, kScreenWidth, kScreenHeight-43.5-114) style:UITableViewStyleGrouped];
+        _friendsTabelView=[[UITableView alloc]initWithFrame:CGRectMake(0.0, 43.5, RCDscreenWidth, RCDscreenHeight-43.5-114) style:UITableViewStyleGrouped];
         [_friendsTabelView setDelegate:self];
         [_friendsTabelView setDataSource:self];
         [_friendsTabelView setSectionIndexBackgroundColor:[UIColor clearColor]];
