@@ -14,3 +14,5 @@ FOUNDATION_EXPORT double RongiFlyKitVersionNumber;
 //! Project version string for RongiFlyKit.
 FOUNDATION_EXPORT const unsigned char RongiFlyKitVersionString[];
 
+//iFlyKit核心类
+#import <RongiFlyKit/RCiFlyKit.h>

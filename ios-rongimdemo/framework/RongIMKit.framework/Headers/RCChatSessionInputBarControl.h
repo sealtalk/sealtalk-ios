@@ -22,6 +22,7 @@
 #define PLUGIN_BOARD_ITEM_VIDEO_VOIP_TAG 1102
 #define PLUGIN_BOARD_ITEM_FILE_TAG       1006
 
+
 /*!
  输入工具栏的显示布局
  */
@@ -534,6 +535,13 @@ __deprecated_msg("已废弃，请勿使用。");
  @param filePathList   被选中的文件路径list
  */
 - (void)fileDidSelect:(NSArray *)filePathList;
+
+/*!
+ 输入工具栏状态变化时的回调
+ 
+ @param bottomBarStatus 当前状态
+ */
+-(void)chatSessionInputBarStatusChanged:(KBottomBarStatus)bottomBarStatus;
 @end
 
 

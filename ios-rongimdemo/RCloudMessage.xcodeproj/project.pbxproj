@@ -271,6 +271,8 @@
 		F836AB0E1C2262C400A1A5D2 /* RCDTestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = F836AB0D1C2262C400A1A5D2 /* RCDTestMessage.m */; };
 		F836AB151C226A7F00A1A5D2 /* RCDTestMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F836AB141C226A7F00A1A5D2 /* RCDTestMessageCell.m */; };
 		F880EA791D0808B300FD5CC4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F880EA781D0808B300FD5CC4 /* VideoToolbox.framework */; };
+		F894EC391DF7E47600EFD084 /* BQMM.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F894EC371DF7E47600EFD084 /* BQMM.bundle */; };
+		F894EC3A1DF7E47600EFD084 /* BQMMRongCloudExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F894EC381DF7E47600EFD084 /* BQMMRongCloudExt.framework */; };
 		F8AD4A551CAE56A4006C1CBB /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AD4A541CAE56A4006C1CBB /* PushKit.framework */; };
 		F8AD4A571CAE5702006C1CBB /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AD4A561CAE5702006C1CBB /* libicucore.tbd */; };
 		F8AD4A5B1CAE5782006C1CBB /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AD4A5A1CAE5782006C1CBB /* CoreMotion.framework */; };
@@ -809,6 +811,8 @@
 		F836AB141C226A7F00A1A5D2 /* RCDTestMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDTestMessageCell.m; path = RCloudMessage/RCDTestMessageCell.m; sourceTree = SOURCE_ROOT; };
 		F880EA781D0808B300FD5CC4 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		F8944F731D7FC3D100111E3A /* SealTalkShareExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = SealTalkShareExtension.entitlements; sourceTree = "<group>"; };
+		F894EC371DF7E47600EFD084 /* BQMM.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = BQMM.bundle; path = framework/bqmm/BQMM.bundle; sourceTree = SOURCE_ROOT; };
+		F894EC381DF7E47600EFD084 /* BQMMRongCloudExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BQMMRongCloudExt.framework; path = framework/bqmm/BQMMRongCloudExt.framework; sourceTree = SOURCE_ROOT; };
 		F8AD4A541CAE56A4006C1CBB /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		F8AD4A561CAE5702006C1CBB /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		F8AD4A581CAE5766006C1CBB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -867,6 +871,7 @@
 				A68AFAF21CCF0B1600F16B3D /* RongCallLib.framework in Frameworks */,
 				A6EFABA71BB0EDFB007E9D67 /* libc++.tbd in Frameworks */,
 				A6EFABA51BB0EDE1007E9D67 /* libsqlite3.tbd in Frameworks */,
+				F894EC3A1DF7E47600EFD084 /* BQMMRongCloudExt.framework in Frameworks */,
 				A6EFABA11BB0EDAC007E9D67 /* libxml2.tbd in Frameworks */,
 				2E29FF3D1DC1BE8400AF2DF0 /* AlipaySDK.framework in Frameworks */,
 				F821B7F51BE75BFD00F0D14C /* libMobClickLibrary.a in Frameworks */,
@@ -972,6 +977,7 @@
 		27C42EE91DE30637003E2306 /* ifly */ = {
 			isa = PBXGroup;
 			children = (
+				27C42ED41DE2FD7B003E2306 /* RongiFlyKit.framework */,
 				27C42EEA1DE30637003E2306 /* iflyMSC.framework */,
 				27C42EEB1DE30637003E2306 /* RongCloudiFly.bundle */,
 			);
@@ -1563,8 +1569,8 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F894EC361DF7E3A200EFD084 /* BQMM */,
 				27C42EE91DE30637003E2306 /* ifly */,
-				27C42ED41DE2FD7B003E2306 /* RongiFlyKit.framework */,
 				27AADC251DDC4DB800E1AE31 /* AddressBook.framework */,
 				F82B553F1DE03E40007392BD /* SafariServices.framework */,
 				2E29FF391DC1BE8400AF2DF0 /* AlipaySDK */,
@@ -1912,6 +1918,15 @@
 			name = Cell;
 			sourceTree = "<group>";
 		};
+		F894EC361DF7E3A200EFD084 /* BQMM */ = {
+			isa = PBXGroup;
+			children = (
+				F894EC371DF7E47600EFD084 /* BQMM.bundle */,
+				F894EC381DF7E47600EFD084 /* BQMMRongCloudExt.framework */,
+			);
+			name = BQMM;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2088,6 +2103,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F894EC391DF7E47600EFD084 /* BQMM.bundle in Resources */,
 				2E29FF3C1DC1BE8400AF2DF0 /* AlipaySDK.bundle in Resources */,
 				27C42EED1DE30637003E2306 /* RongCloudiFly.bundle in Resources */,
 				2E29FF351DC1BE7300AF2DF0 /* JrmfInfo.strings in Resources */,
@@ -2564,6 +2580,7 @@
 					"$(PROJECT_DIR)/framework/JrmfIMLib",
 					"$(PROJECT_DIR)/framework/AlipaySDK",
 					"$(PROJECT_DIR)/framework/ifly",
+					"$(PROJECT_DIR)/framework/bqmm",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -2708,6 +2725,7 @@
 					"$(PROJECT_DIR)/framework/JrmfIMLib",
 					"$(PROJECT_DIR)/framework/AlipaySDK",
 					"$(PROJECT_DIR)/framework/ifly",
+					"$(PROJECT_DIR)/framework/bqmm",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -3011,6 +3029,7 @@
 					"$(PROJECT_DIR)/framework/JrmfIMLib",
 					"$(PROJECT_DIR)/framework/AlipaySDK",
 					"$(PROJECT_DIR)/framework/ifly",
+					"$(PROJECT_DIR)/framework/bqmm",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -3050,6 +3069,7 @@
 					"$(PROJECT_DIR)/framework/JrmfIMLib",
 					"$(PROJECT_DIR)/framework/AlipaySDK",
 					"$(PROJECT_DIR)/framework/ifly",
+					"$(PROJECT_DIR)/framework/bqmm",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;

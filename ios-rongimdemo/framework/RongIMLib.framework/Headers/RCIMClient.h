@@ -1006,6 +1006,22 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  撤回消息
  
  @param message      需要撤回的消息
+ @param pushContent 当下发 push 消息时，在通知栏里会显示这个字段。如果不设置该字段，无法接受到 push 推送。
+ @param successBlock 撤回成功的回调 [messageId:撤回的消息ID，该消息已经变更为新的消息]
+ @param errorBlock   撤回失败的回调 [errorCode:撤回失败错误码]
+ 
+ @warning 仅支持单聊、群组和讨论组。
+ */
+- (void)recallMessage:(RCMessage *)message
+          pushContent:(NSString *)pushContent
+              success:(void (^)(long messageId))successBlock
+                error:(void(^)(RCErrorCode errorcode))errorBlock;
+
+
+/*!
+ 撤回消息
+ 
+ @param message      需要撤回的消息
  @param successBlock 撤回成功的回调 [messageId:撤回的消息ID，该消息已经变更为新的消息]
  @param errorBlock   撤回失败的回调 [errorCode:撤回失败错误码]
  */

@@ -67,10 +67,12 @@ if [ -n "${MANUAL_DEMO_APPKEY}" ]; then
     sed -i '' -e '/RONGCLOUD_IM_APPKEY/s/@"n19jmcy59f1q9"/@"'$MANUAL_DEMO_APPKEY'"/g' ./RCloudMessage/AppDelegate.m
 elif [ ${ENV_FLAG} == "dev" ]; then
     sed -i '' -e '/RONGCLOUD_IM_APPKEY/s/@"n19jmcy59f1q9"/@"e0x9wycfx7flq"/g' ./RCloudMessage/AppDelegate.m
+elif [ ${ENV_FLAG} == "pre" ]; then
+    sed -i '' -e '/RONGCLOUD_IM_APPKEY/s/@"n19jmcy59f1q9"/@"c9kqb3rdkbb8j"/g' ./RCloudMessage/AppDelegate.m
 fi
 
 if [ -n "${MANUAL_DEMO_SERVER_URL}" ]; then
-    if [[ ${MANUAL_DEMO_SERVER_URL:0:4} -eq "http" ]]; then
+    if [[ $MANUAL_DEMO_SERVER_URL =~ ^http ]]; then
         sed -i '' -e 's?http://api.sealtalk.im?'$MANUAL_DEMO_SERVER_URL'?g' ./RCloudMessage/AFHttpTool.m
         sed -i '' -e 's?http://api.sealtalk.im?'$MANUAL_DEMO_SERVER_URL'?g' ./SealTalkShareExtension/RCDShareChatListController.m
     else
@@ -78,9 +80,9 @@ if [ -n "${MANUAL_DEMO_SERVER_URL}" ]; then
         sed -i '' -e 's?http://api.sealtalk.im?http://'$MANUAL_DEMO_SERVER_URL'?g' ./SealTalkShareExtension/RCDShareChatListController.m
     fi
 
-    if [[ ${MANUAL_DEMO_SERVER_URL:0:5} -eq "https" ]]; then
+    if [[ $MANUAL_DEMO_SERVER_URL =~ ^https ]]; then
         sed -i '' -e 's/api.sealtalk.im/'${MANUAL_DEMO_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
-    elif [[ ${MANUAL_DEMO_SERVER_URL:0:4} -eq "http" ]]; then
+    elif [[ $MANUAL_DEMO_SERVER_URL =~ ^http ]]; then
         sed -i '' -e 's/api.sealtalk.im/'${MANUAL_DEMO_SERVER_URL/http\:\/\//""}'/g' ./RCloudMessage/Info.plist
     else
         sed -i '' -e 's/api.sealtalk.im/'$MANUAL_DEMO_SERVER_URL'/g' ./RCloudMessage/Info.plist
@@ -89,18 +91,43 @@ elif [ ${ENV_FLAG} == "dev" ]; then
     sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./RCloudMessage/AFHttpTool.m
     sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./SealTalkShareExtension/RCDShareChatListController.m
     sed -i '' -e 's/api.sealtalk.im/api.hitalk.im/g' ./RCloudMessage/Info.plist
+elif [ ${ENV_FLAG} == "pre" ]; then
+    sed -i '' -e 's?http://api.sealtalk.im?http://apiqa.rongcloud.net?g' ./RCloudMessage/AFHttpTool.m
+    sed -i '' -e 's?http://api.sealtalk.im?http://apiqa.rongcloud.net?g' ./SealTalkShareExtension/RCDShareChatListController.m
+    sed -i '' -e 's/api.sealtalk.im/apiqa.rongcloud.net/g' ./RCloudMessage/Info.plist
 fi
 
 if [ -n "${MANUAL_NAVI_SERVER_URL}" ]; then
     sed -i '' -e '/RONGCLOUD_IM_NAVI/s?nav.cn.ronghub.com?'$MANUAL_NAVI_SERVER_URL'?g' ./RCloudMessage/AppDelegate.m
+    if [[ $MANUAL_NAVI_SERVER_URL =~ ^https ]]; then
+        sed -i '' -e 's/nav.cn.ronghub.com/'${MANUAL_NAVI_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    elif [[ $MANUAL_NAVI_SERVER_URL =~ ^http ]]; then
+        sed -i '' -e 's/nav.cn.ronghub.com/'${MANUAL_NAVI_SERVER_URL/http\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    else
+        sed -i '' -e 's/nav.cn.ronghub.com/'$MANUAL_NAVI_SERVER_URL'/g' ./RCloudMessage/Info.plist
+    fi
 fi
 
 if [ -n "${MANUAL_FILE_SERVER_URL}" ]; then
     sed -i '' -e '/RONGCLOUD_FILE_SERVER/s/@"img.cn.ronghub.com"/@"'$MANUAL_FILE_SERVER_URL'"/g' ./RCloudMessage/AppDelegate.m
+    if [[ $MANUAL_FILE_SERVER_URL =~ ^https ]]; then
+        sed -i '' -e 's/rongcloud-image.ronghub.com/'${MANUAL_FILE_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
+        sed -i '' -e 's/rongcloud-file.cn.ronghub.com/'${MANUAL_FILE_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    elif [[ $MANUAL_FILE_SERVER_URL =~ ^http ]]; then
+        sed -i '' -e 's/rongcloud-image.ronghub.com/'${MANUAL_FILE_SERVER_URL/http\:\/\//""}'/g' ./RCloudMessage/Info.plist
+        sed -i '' -e 's/rongcloud-file.ronghub.com/'${MANUAL_FILE_SERVER_URL/http\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    else
+        sed -i '' -e 's/rongcloud-image.ronghub.com/'$MANUAL_FILE_SERVER_URL'/g' ./RCloudMessage/Info.plist
+        sed -i '' -e 's/rongcloud-file.ronghub.com/'$MANUAL_FILE_SERVER_URL'/g' ./RCloudMessage/Info.plist
+    fi
 fi
 
 if [ ${ENV_FLAG} == "dev" ]; then
     sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU145760441681012"/g' ./RCloudMessage/RCDMeTableViewController.m
+    sed -i '' -e 's/nav.cn.ronghub.com/navxiaoqiao.cn.ronghub.com/g' ./RCloudMessage/Info.plist
+elif [ ${ENV_FLAG} == "pre" ]; then
+    sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU147980517733135"/g' ./RCloudMessage/RCDMeTableViewController.m
+    sed -i '' -e 's/nav.cn.ronghub.com/navqa.cn.ronghub.com/g' ./RCloudMessage/Info.plist
 fi
 
 if [ ${ENV_FLAG} == "pri" ]; then

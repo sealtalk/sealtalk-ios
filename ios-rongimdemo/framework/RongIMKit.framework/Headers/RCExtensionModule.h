@@ -49,6 +49,13 @@
 - (void)destroyModule;
 
 /*!
+ 当前登陆的用户信息变化的回调
+ 
+ @param userInfo 当前登陆的用户信息
+ */
+- (void)didCurrentUserInfoUpdated:(RCUserInfo *)userInfo;
+
+/*!
  处理收到的消息
  
  @param message  收到的消息
@@ -147,6 +154,17 @@
  */
 - (void)inputTextViewDidChange:(UITextView *)inputTextView
                     inInputBar:(RCChatSessionInputBarControl *)inputBarControl;
+
+/*!
+ 输入工具栏状态发生变化的回调
+ 
+ @param status           输入工具栏当前状态
+ @param inputBarControl  输入工具栏
+ */
+
+- (void)inputBarStatusDidChange:(KBottomBarStatus)status
+                     inInputBar:(RCChatSessionInputBarControl *)inputBarControl;
+
 
 ///*!
 // 点击加号面板中按钮的回调

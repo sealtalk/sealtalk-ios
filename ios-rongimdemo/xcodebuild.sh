@@ -10,4 +10,7 @@ fi
 if [ -d "../ios-3rd-vendor/ifly" ]; then
 cp -rf ../ios-3rd-vendor/ifly ./framework/
 fi
+if [ -d "../ios-3rd-vendor/bqmm" ]; then
+cp -rf ../ios-3rd-vendor/bqmm ./framework/
+fi
 echo "Copy 3rd framework end."
