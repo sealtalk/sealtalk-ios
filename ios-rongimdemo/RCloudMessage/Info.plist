@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.8.3 Stable</string>
+	<string>2.8.4 Stable</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -42,7 +42,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>201612082049</string>
+	<string>201612191851</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -143,7 +143,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>访问相册</string>
 	<key>SealTalk Version</key>
-	<string>1.1.9</string>
+	<string>1.1.10</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

@@ -11,6 +11,9 @@
 #import "AFNetworking.h"
 #import "RCDCommonDefine.h"
 #import <RongIMKit/RongIMKit.h>
+
+#import "RCDSettingUserDefaults.h"
+
 #define DevDemoServer                                                          \
   @"http://119.254.110.241/" // Beijing SUN-QUAN 测试环境（北京）
 #define ProDemoServer                                                          \
@@ -40,7 +43,18 @@
                    params:(NSDictionary *)params
                   success:(void (^)(id response))success
                   failure:(void (^)(NSError *err))failure {
-  NSURL *baseURL = [NSURL URLWithString:DemoServer];
+    NSURL *baseURL =  nil;
+    BOOL isPrivateMode = NO;
+#if RCDPrivateCloudManualMode
+    isPrivateMode = YES;
+#endif
+  
+    if(isPrivateMode){
+        NSString *baseStr = [RCDSettingUserDefaults getRCDemoServer];
+        baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@",baseStr]];
+    }else {
+        baseURL = [NSURL URLWithString:DemoServer];
+    }
   //获得请求管理者
   AFHTTPRequestOperationManager *mgr =
       [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];

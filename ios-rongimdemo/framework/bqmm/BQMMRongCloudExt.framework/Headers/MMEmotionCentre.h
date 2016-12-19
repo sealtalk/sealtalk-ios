@@ -180,6 +180,12 @@ typedef enum
 - (void)shouldShowShotcutPopoverAboveView:(nonnull UIView *)attchedView
                                 withInput:(nonnull UIResponder<UITextInput> *)input;
 
+
+/**
+ dismiss `prompts`
+ */
+- (void)dismissShotcutPopover;
+
 /**
  * Enabled means Keyboard will show Unicode Emoji Tap; Default is Enabled
  *  @param enable       enable

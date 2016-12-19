@@ -22,6 +22,7 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   [self notifyUpdateUnreadMessageCount];
+  /*
     UIButton *button =
     [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     UIImageView *imageView =
@@ -33,9 +34,11 @@
      forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBarButton =
     [[UIBarButtonItem alloc] initWithCustomView:button];
-    self.navigationItem.rightBarButtonItem = rightBarButton;
+   */
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
+/*
 - (void)rightBarButtonItemClicked:(id)sender {
   RCDSettingBaseViewController *settingVC =
       [[RCDSettingBaseViewController alloc] init];
@@ -53,6 +56,7 @@
   };
   [self.navigationController pushViewController:settingVC animated:YES];
 }
+*/
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];

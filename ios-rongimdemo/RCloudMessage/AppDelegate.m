@@ -26,6 +26,8 @@
 #import "RCDNavigationViewController.h"
 #import "RCDUtilities.h"
 #import "RCDMainTabBarViewController.h"
+#import "RCDSettingUserDefaults.h"
+#import "RCDSettingServerUrlViewController.h"
 
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" //offline key
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
@@ -82,14 +84,37 @@
       当使用"生产／线上环境"的appkey测试推送时，必须用Distribution的证书打包，并且在后台上传"生产／线上环境"的推送证书，证书必须是distribution的。
    */
 
-  BOOL debugMode = [[NSUserDefaults standardUserDefaults]
-      boolForKey:@"rongcloud appkey debug"];
-  // debugMode是为了切换appkey测试用的，请应用忽略关于debugMode的信息，这里直接调用init。
-  if (!debugMode) {
-
+    BOOL debugMode = NO;
+#if RCDPrivateCloudManualMode
+    debugMode = YES;
+#endif
+  // debugMode是为了动态切换导航server地址和文件server地址，公有云用户可以忽略
+  if (debugMode) {
     //初始化融云SDK
-    [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY];
+      NSString *appKey = [RCDSettingUserDefaults getRCAppKey];
+      if(appKey){
+          //debug模式初始化sdk
+          [[RCIM sharedRCIM] initWithAppKey:appKey];
+          NSString *navServer = [RCDSettingUserDefaults getRCNaviServer];
+          NSString *fileUrlver = [RCDSettingUserDefaults getRCFileServer];
+          //设置导航server和文件server地址
+          [[RCIMClient sharedRCIMClient ]setServerInfo:navServer fileServer:fileUrlver];
+          RCDLoginViewController *settingVC = [[RCDLoginViewController alloc] init];
+          RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
+                                              initWithRootViewController:settingVC];
+          self.window.rootViewController = _navi;
+      }else{
+        RCDSettingServerUrlViewController *settingVC = [[RCDSettingServerUrlViewController alloc] init];
+        RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
+                                              initWithRootViewController:settingVC];
+        self.window.rootViewController = _navi;
 
+      }
+    
+  }else {
+    //非debug模式初始化sdk
+    [[RCIM sharedRCIM]initWithAppKey:RONGCLOUD_IM_APPKEY];
+    
   }
 
   
@@ -105,7 +130,8 @@
   //设置会话列表头像和会话界面头像
 
   [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
-  
+  [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;
+
   [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
   //    [RCIM sharedRCIM].portraitImageViewCornerRadius = 10;
   //开启用户信息和群组信息的持久化
@@ -164,7 +190,7 @@
   NSString *userNickName = [DEFAULTS objectForKey:@"userNickName"];
   NSString *userPortraitUri = [DEFAULTS objectForKey:@"userPortraitUri"];
 
-  if (token.length && userId.length && password.length && !debugMode) {
+  if (token.length && userId.length && password.length) {
     RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
     RCDNavigationViewController *rootNavi = [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
     self.window.rootViewController = rootNavi;
@@ -241,9 +267,10 @@
         }];
     
   } else {
-    RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
+    RCDLoginViewController *vc = [[RCDLoginViewController alloc] init];
     RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
-                                          initWithRootViewController:loginVC];
+                                            initWithRootViewController:vc];
+
     self.window.rootViewController = _navi;
   }
 

@@ -38,6 +38,8 @@
 		27C42ED51DE2FD7B003E2306 /* RongiFlyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C42ED41DE2FD7B003E2306 /* RongiFlyKit.framework */; };
 		27C42EEC1DE30637003E2306 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C42EEA1DE30637003E2306 /* iflyMSC.framework */; };
 		27C42EED1DE30637003E2306 /* RongCloudiFly.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27C42EEB1DE30637003E2306 /* RongCloudiFly.bundle */; };
+		27D6FF9C1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D6FF9B1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m */; };
+		27D6FF9F1DFE4D2C00053F69 /* RCDSettingUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D6FF9E1DFE4D2C00053F69 /* RCDSettingUserDefaults.m */; };
 		2E29FF351DC1BE7300AF2DF0 /* JrmfInfo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2E29FF2F1DC1BE7300AF2DF0 /* JrmfInfo.strings */; };
 		2E29FF361DC1BE7300AF2DF0 /* JResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E29FF311DC1BE7300AF2DF0 /* JResource.bundle */; };
 		2E29FF371DC1BE7300AF2DF0 /* JrmfPacketKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E29FF321DC1BE7300AF2DF0 /* JrmfPacketKit.framework */; };
@@ -369,6 +371,10 @@
 		27C42ED41DE2FD7B003E2306 /* RongiFlyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongiFlyKit.framework; path = framework/RongiFlyKit.framework; sourceTree = SOURCE_ROOT; };
 		27C42EEA1DE30637003E2306 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = "<group>"; };
 		27C42EEB1DE30637003E2306 /* RongCloudiFly.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RongCloudiFly.bundle; sourceTree = "<group>"; };
+		27D6FF9A1DFE4D2100053F69 /* RCDSettingServerUrlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSettingServerUrlViewController.h; sourceTree = SOURCE_ROOT; };
+		27D6FF9B1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSettingServerUrlViewController.m; sourceTree = SOURCE_ROOT; };
+		27D6FF9D1DFE4D2C00053F69 /* RCDSettingUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSettingUserDefaults.h; sourceTree = SOURCE_ROOT; };
+		27D6FF9E1DFE4D2C00053F69 /* RCDSettingUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSettingUserDefaults.m; sourceTree = SOURCE_ROOT; };
 		2E29FF301DC1BE7300AF2DF0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/JrmfInfo.strings; sourceTree = "<group>"; };
 		2E29FF311DC1BE7300AF2DF0 /* JResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JResource.bundle; sourceTree = "<group>"; };
 		2E29FF321DC1BE7300AF2DF0 /* JrmfPacketKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JrmfPacketKit.framework; sourceTree = "<group>"; };
@@ -1478,6 +1484,10 @@
 			children = (
 				E4BFAE601A1219D8007165B1 /* RCDLoginViewController.h */,
 				E4BFAE611A1219D8007165B1 /* RCDLoginViewController.m */,
+				27D6FF9A1DFE4D2100053F69 /* RCDSettingServerUrlViewController.h */,
+				27D6FF9B1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m */,
+				27D6FF9D1DFE4D2C00053F69 /* RCDSettingUserDefaults.h */,
+				27D6FF9E1DFE4D2C00053F69 /* RCDSettingUserDefaults.m */,
 				A6827BDC1B15E52C000B9862 /* AppkeyModel.h */,
 				A6827BDD1B15E52C000B9862 /* AppkeyModel.m */,
 				A6827BDF1B15E94A000B9862 /* SelectAppKeyViewController.h */,
@@ -2229,6 +2239,7 @@
 				E4E939661AD65A95001E0AC6 /* SDWebImageCompat.m in Sources */,
 				98BD8A761D6D3E1600FE717D /* RCDUIBarButtonItem.m in Sources */,
 				9B447DF61CF82926005D3ED5 /* RCDPrivateSettingsUserInfoCell.m in Sources */,
+				27D6FF9F1DFE4D2C00053F69 /* RCDSettingUserDefaults.m in Sources */,
 				E4E939AB1AD65CC2001E0AC6 /* RCDSearchFriendViewController.m in Sources */,
 				E4E939721AD65A95001E0AC6 /* UIView+WebCacheOperation.m in Sources */,
 				E4E939D21AD6805E001E0AC6 /* RCDPersonDetailViewController.m in Sources */,
@@ -2280,6 +2291,7 @@
 				17F7A8481DAE187200E27D25 /* RCDSearchDataManager.m in Sources */,
 				E4BFAE271A121839007165B1 /* main.m in Sources */,
 				17F7A84B1DAE187200E27D25 /* RCDSearchResultModel.m in Sources */,
+				27D6FF9C1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m in Sources */,
 				E4E9398E1AD65BC0001E0AC6 /* RCDServiceViewController.m in Sources */,
 				E4E939501AD65A95001E0AC6 /* UIProgressView+AFNetworking.m in Sources */,
 				98A670751DDD5478007D426D /* RCDNoFriendView.m in Sources */,

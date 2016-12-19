@@ -260,12 +260,9 @@
 - (void)chatWithCustomerService {
   RCDCustomerServiceViewController *chatService =
       [[RCDCustomerServiceViewController alloc] init];
-//#define SERVICE_ID @"KEFU145760441681012" //智齿Test kefu id
-  
-#define SERVICE_ID @"KEFU146001495753714"
+  #define SERVICE_ID @"KEFU146001495753714"
   // live800  KEFU146227005669524   live800的客服ID
   // zhichi   KEFU146001495753714   智齿的客服ID
-  chatService.userName = @"客服";
   chatService.conversationType = ConversationType_CUSTOMERSERVICE;
 
   chatService.targetId = SERVICE_ID;
@@ -303,7 +300,7 @@
   csInfo.define = @"自定义信息";
 
   chatService.csInfo = csInfo;
-  chatService.title = chatService.userName;
+  chatService.title = @"客服";
 
   [self.navigationController pushViewController:chatService animated:YES];
 }

@@ -330,7 +330,7 @@
   if (!_urls) {
     NSArray *section0 =
     [NSArray arrayWithObjects:@"http://rongcloud.cn/",
-     @"http://www.rongcloud.cn/changelog",
+     @"http://blog.rongcloud.cn/?page_id=1569",
      @"http://rongcloud.cn/features",
      @"http://rongcloud.cn/", nil];
     _urls = [NSArray arrayWithObjects:section0, nil];

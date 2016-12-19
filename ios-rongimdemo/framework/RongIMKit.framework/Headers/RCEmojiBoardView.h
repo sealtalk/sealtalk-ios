@@ -69,12 +69,18 @@
  */
 @property(nonatomic, weak) id<RCEmojiViewDelegate> delegate;
 
-
 /*!
  表情区域的大小
  */
 @property(nonatomic, assign,readonly)CGSize contentViewSize;
 
+/**
+ *  init
+ *
+ *  @param frame            frame
+ *  @param delegate         实现RCEmojiViewDelegate的实体
+ */
+- (instancetype)initWithFrame:(CGRect)frame delegate:(id<RCEmojiViewDelegate>)delegate;
 /*!
  加载表情Label
  */

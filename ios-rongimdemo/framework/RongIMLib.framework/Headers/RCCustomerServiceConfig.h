@@ -45,4 +45,10 @@
  * 人工服务的评价选项，array的数据是RCEvaluateItem类型
  */
 @property(nonatomic, strong) NSArray *humanEvaluateItems;
+
+@property(nonatomic) int adminTipTime;
+@property(nonatomic, strong) NSString *adminTipWord;
+
+@property(nonatomic) int userTipTime;
+@property(nonatomic, strong) NSString *userTipWord;
 @end

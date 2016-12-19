@@ -232,11 +232,16 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
   NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
 
+  
   if ([mediaType isEqual:@"public.image"]) {
+    //获取原图
     UIImage *originImage =
         [info objectForKey:UIImagePickerControllerOriginalImage];
-
-    UIImage *scaleImage = [self scaleImage:originImage toScale:0.8];
+    //获取截取区域
+     CGRect captureRect = [[info objectForKey:UIImagePickerControllerCropRect] CGRectValue];
+    //获取截取区域的图像
+    UIImage *captureImage = [self getSubImage:originImage Rect:captureRect];
+    UIImage *scaleImage = [self scaleImage:captureImage toScale:0.8];
     data = UIImageJPEGRepresentation(scaleImage, 0.00001);
   }
   image = [UIImage imageWithData:data];
@@ -299,6 +304,20 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
                              otherButtonTitles:nil];
         [alert show];
       }];
+}
+
+-(UIImage*)getSubImage:(UIImage *)originImage Rect:(CGRect)rect
+{
+  CGImageRef subImageRef = CGImageCreateWithImageInRect(originImage.CGImage, rect);
+  CGRect smallBounds = CGRectMake(0, 0, CGImageGetWidth(subImageRef), CGImageGetHeight(subImageRef));
+  
+  UIGraphicsBeginImageContext(smallBounds.size);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextDrawImage(context, smallBounds, subImageRef);
+  UIImage* smallImage = [UIImage imageWithCGImage:subImageRef];
+  UIGraphicsEndImageContext();
+  
+  return smallImage;
 }
 
 - (UIImage *)scaleImage:(UIImage *)tempImage toScale:(float)scaleSize {

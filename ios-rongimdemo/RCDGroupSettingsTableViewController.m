@@ -390,9 +390,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
   if ([mediaType isEqual:@"public.image"]) {
     UIImage *originImage =
-        [info objectForKey:UIImagePickerControllerOriginalImage];
-
-    UIImage *scaleImage = [self scaleImage:originImage toScale:0.8];
+    [info objectForKey:UIImagePickerControllerOriginalImage];
+    CGRect captureRect = [[info objectForKey:UIImagePickerControllerCropRect] CGRectValue];
+    UIImage *captureImage = [self getSubImage:originImage Rect:captureRect];
+    
+    UIImage *scaleImage = [self scaleImage:captureImage toScale:0.8];
     data = UIImageJPEGRepresentation(scaleImage, 0.00001);
   }
 
@@ -461,6 +463,20 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       [cell.rightImageView sd_setImageWithURL:[NSURL URLWithString:self.Group.portraitUri]];
 //    cell.PortraitImg.image = image;
   });
+}
+
+-(UIImage*)getSubImage:(UIImage *)originImage Rect:(CGRect)rect
+{
+  CGImageRef subImageRef = CGImageCreateWithImageInRect(originImage.CGImage, rect);
+  CGRect smallBounds = CGRectMake(0, 0, CGImageGetWidth(subImageRef), CGImageGetHeight(subImageRef));
+  
+  UIGraphicsBeginImageContext(smallBounds.size);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextDrawImage(context, smallBounds, subImageRef);
+  UIImage* smallImage = [UIImage imageWithCGImage:subImageRef];
+  UIGraphicsEndImageContext();
+  
+  return smallImage;
 }
 
 - (UIImage *)scaleImage:(UIImage *)Image toScale:(float)scaleSize {

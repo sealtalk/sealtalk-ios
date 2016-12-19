@@ -494,6 +494,7 @@
 
   __block NSString *userName = nil;
   __block NSString *portraitUri = nil;
+  RCContactNotificationMessage *_contactNotificationMsg = nil;
 
   __weak RCDChatListViewController *weakSelf = self;
   //此处需要添加根据userid来获取用户信息的逻辑，extend字段不存在于DB中，当数据来自db时没有extend字段内容，只有userid
@@ -502,7 +503,7 @@
     if (model.conversationType == ConversationType_SYSTEM &&
         [model.lastestMessage
             isMemberOfClass:[RCContactNotificationMessage class]]) {
-      RCContactNotificationMessage *_contactNotificationMsg =
+      _contactNotificationMsg =
           (RCContactNotificationMessage *)model.lastestMessage;
       if (_contactNotificationMsg.sourceUserId == nil) {
         RCDChatListCell *cell =
@@ -564,8 +565,14 @@
   RCDChatListCell *cell =
       [[RCDChatListCell alloc] initWithStyle:UITableViewCellStyleDefault
                              reuseIdentifier:@""];
-  cell.lblDetail.text =
-      [NSString stringWithFormat:@"来自%@的好友请求", userName];
+  NSString *operation = _contactNotificationMsg.operation;
+  NSString *operationContent;
+  if ([operation isEqualToString:@"Request"]) {
+    operationContent = [NSString stringWithFormat:@"来自%@的好友请求", userName];
+  } else if ([operation isEqualToString:@"AcceptResponse"]) {
+    operationContent = [NSString stringWithFormat:@"%@通过了你的好友请求", userName];
+  }
+  cell.lblDetail.text = operationContent;
   [cell.ivAva sd_setImageWithURL:[NSURL URLWithString:portraitUri]
                 placeholderImage:[UIImage imageNamed:@"system_notice"]];
   cell.labelTime.text = [RCKitUtility ConvertMessageTime:model.sentTime/1000];
