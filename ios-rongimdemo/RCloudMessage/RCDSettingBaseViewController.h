@@ -34,7 +34,7 @@ typedef void(^rcdClearHistory)(BOOL isSuccess);
 @property(nonatomic, assign) RCConversationType conversationType;
 
 /**
- *  清除历史消息后，会话界面调用roload data
+ *  清除历史消息后，会话页面调用roload data
  */
 @property(nonatomic, copy) rcdClearHistory clearHistoryCompletion;
 

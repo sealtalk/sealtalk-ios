@@ -147,7 +147,7 @@
  @param model                   当前点击的会话的Model
  @param indexPath               当前会话在列表数据源中的索引值
 
- @discussion 您需要重写此点击事件，跳转到指定会话的聊天界面。
+ @discussion 您需要重写此点击事件，跳转到指定会话的会话页面。
  如果点击聚合Cell进入具体的子会话列表，在跳转时，需要将isEnteredToCollectionViewController设置为YES。
  */
 - (void)onSelectedTableRow:(RCConversationModelType)conversationModelType

@@ -21,6 +21,7 @@
 #define PLUGIN_BOARD_ITEM_VOIP_TAG       1101
 #define PLUGIN_BOARD_ITEM_VIDEO_VOIP_TAG 1102
 #define PLUGIN_BOARD_ITEM_FILE_TAG       1006
+#define PLUGIN_BOARD_ITEM_EVA_TAG        1103
 
 
 /*!
@@ -222,7 +223,7 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
 @property(strong, nonatomic) UIButton *additionalButton;
 
 /*!
- 所处的聊天界面View
+ 所处的会话页面View
  */
 @property(assign, nonatomic, readonly) UIView *containerView;
 
@@ -231,7 +232,7 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
  */
 @property(nonatomic) KBottomBarStatus currentBottomBarStatus;
 /*!
- 所处的聊天界面View
+ 所处的会话页面View
  
  @warning  **已废弃，请勿使用。**
  升级说明：如果您之前使用了此属性，可以直接替换为contextView属性，行为和实现完全一致。
@@ -291,7 +292,7 @@ __deprecated_msg("已废弃，请勿使用。");
  初始化输入工具栏
  
  @param frame            显示的Frame
- @param containerView    所处的聊天界面View
+ @param containerView    所处的会话页面View
  @param controlType      菜单类型
  @param controlStyle     显示布局
  @param defaultInputType 默认的输入模式
@@ -310,7 +311,7 @@ __deprecated_msg("已废弃，请勿使用。");
  @param type  菜单类型
  @param style 显示布局
  
- @discussion 您可以在聊天界面RCConversationViewController的viewDidLoad之后设置，改变输入工具栏的样式。
+ @discussion 您可以在会话页面RCConversationViewController的viewDidLoad之后设置，改变输入工具栏的样式。
  */
 - (void)setInputBarType:(RCChatSessionInputBarControlType)type
                   style:(RCChatSessionInputBarControlStyle)style;
@@ -350,7 +351,7 @@ __deprecated_msg("已废弃，请勿使用。");
  @param status          输入框状态
  @param animated        是否使用动画效果
  
- @discussion 如果需要设置，请在输入框执行containerViewWillAppear之后（即聊天界面viewWillAppear之后）。
+ @discussion 如果需要设置，请在输入框执行containerViewWillAppear之后（即会话页面viewWillAppear之后）。
  */
 -(void)updateStatus:(KBottomBarStatus)status animated:(BOOL)animated;
 

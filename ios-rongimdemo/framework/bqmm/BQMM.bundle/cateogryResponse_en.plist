@@ -15,13 +15,13 @@
 					<key>author</key>
 					<string>Mojif</string>
 					<key>banner</key>
-					<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/banner/1466064045001_750x400.jpg</string>
+					<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/banner/1466064045001_750x400.jpg</string>
 					<key>chat_icon</key>
-					<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/chaticon/1466064826964_50x50_color.png</string>
+					<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/chaticon/1466064826964_50x50_color.png</string>
 					<key>copyright</key>
 					<string>Mojif</string>
 					<key>cover</key>
-					<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/cover/1466064816559_240x240.png</string>
+					<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/cover/1466064816559_240x240.png</string>
 					<key>createtime</key>
 					<integer>1466065150000</integer>
 					<key>emoticions</key>
@@ -38,11 +38,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064847799_01.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064847799_01.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064876054_01.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064876054_01.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -56,11 +56,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064908639_02.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064908639_02.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064912775_02.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064912775_02.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -74,11 +74,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064924856_03.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064924856_03.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064928898_03.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064928898_03.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -92,11 +92,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064942646_04.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064942646_04.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064960499_04.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064960499_04.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -110,11 +110,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064973749_05.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064973749_05.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064976312_05.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064976312_05.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -128,11 +128,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064980403_06.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064980403_06.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064982674_06.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064982674_06.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -146,11 +146,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064987249_07.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064987249_07.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064990182_07.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064990182_07.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -164,11 +164,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064994963_08.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466064994963_08.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064997273_08.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466064997273_08.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -182,11 +182,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065001923_09.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065001923_09.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065004095_09.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065004095_09.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -200,11 +200,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065008157_10.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065008157_10.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065010226_10.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065010226_10.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -218,11 +218,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065014530_11.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065014530_11.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065017674_11.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065017674_11.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -236,11 +236,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065021828_12.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065021828_12.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065023945_12.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065023945_12.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -254,11 +254,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065029243_13.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065029243_13.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065031201_13.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065031201_13.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -272,11 +272,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065035640_14.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065035640_14.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065037875_14.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065037875_14.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -290,11 +290,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065041536_15.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065041536_15.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065043325_15.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065043325_15.png</string>
 						</dict>
 						<dict>
 							<key>emo_code</key>
@@ -308,11 +308,11 @@
 							<key>is_emoji</key>
 							<false/>
 							<key>main_image</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065047042_16.gif</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/mainicon/1466065047042_16.gif</string>
 							<key>package_id</key>
 							<string>d455625bb12a44669e310546981c0457</string>
 							<key>thumbail</key>
-							<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065049601_16.png</string>
+							<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/thumicon/1466065049601_16.png</string>
 						</dict>
 					</array>
 					<key>guid</key>
@@ -329,11 +329,11 @@
 					<key>packageType</key>
 					<string>0</string>
 					<key>preload</key>
-					<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/preload/1466064828959_50x50_grey.png</string>
+					<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/preload/1466064828959_50x50_grey.png</string>
 					<key>promotion</key>
 					<false/>
 					<key>recommend_pic</key>
-					<string>http://7xl6jm.com2.z0.glb.qiniucdn.com/@/emoticonPacket/d455625bb12a44669e310546981c0457/recommendPic/1466064824622_262x262.png</string>
+					<string>https://dn-bqmm.qbox.me/@/emoticonPacket/d455625bb12a44669e310546981c0457/recommendPic/1466064824622_262x262.png</string>
 					<key>updatetime</key>
 					<integer>1466663720000</integer>
 				</dict>

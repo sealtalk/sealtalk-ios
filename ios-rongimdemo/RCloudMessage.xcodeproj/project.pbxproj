@@ -40,12 +40,16 @@
 		27C42EED1DE30637003E2306 /* RongCloudiFly.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27C42EEB1DE30637003E2306 /* RongCloudiFly.bundle */; };
 		27D6FF9C1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D6FF9B1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m */; };
 		27D6FF9F1DFE4D2C00053F69 /* RCDSettingUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D6FF9E1DFE4D2C00053F69 /* RCDSettingUserDefaults.m */; };
-		2E29FF351DC1BE7300AF2DF0 /* JrmfInfo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2E29FF2F1DC1BE7300AF2DF0 /* JrmfInfo.strings */; };
-		2E29FF361DC1BE7300AF2DF0 /* JResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E29FF311DC1BE7300AF2DF0 /* JResource.bundle */; };
-		2E29FF371DC1BE7300AF2DF0 /* JrmfPacketKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E29FF321DC1BE7300AF2DF0 /* JrmfPacketKit.framework */; };
-		2E29FF381DC1BE7300AF2DF0 /* JYangToolKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E29FF331DC1BE7300AF2DF0 /* JYangToolKit.framework */; };
 		2E29FF3C1DC1BE8400AF2DF0 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E29FF3A1DC1BE8400AF2DF0 /* AlipaySDK.bundle */; };
 		2E29FF3D1DC1BE8400AF2DF0 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E29FF3B1DC1BE8400AF2DF0 /* AlipaySDK.framework */; };
+		2E6B9A1A1E127BF7006EA6B4 /* JrmfInfo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2E6B9A181E127BF7006EA6B4 /* JrmfInfo.strings */; };
+		2E6B9A1E1E127C0C006EA6B4 /* JrmfInfo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2E6B9A1C1E127C0C006EA6B4 /* JrmfInfo.strings */; };
+		2E7A36E11E03A876005231BE /* JResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E7A36DB1E03A876005231BE /* JResource.bundle */; };
+		2E7A36E21E03A876005231BE /* jrmf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 2E7A36DC1E03A876005231BE /* jrmf.cer */; };
+		2E7A36E31E03A876005231BE /* JrmfPacketKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7A36DD1E03A876005231BE /* JrmfPacketKit.framework */; };
+		2E7A36E41E03A876005231BE /* JrmfWalletKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7A36DE1E03A876005231BE /* JrmfWalletKit.framework */; };
+		2E7A36E51E03A876005231BE /* JYangToolKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7A36DF1E03A876005231BE /* JYangToolKit.framework */; };
+		2E7A36E61E03A876005231BE /* WalletResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E7A36E01E03A876005231BE /* WalletResource.bundle */; };
 		466684241B5DEA10000B7504 /* RCDSettingBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684231B5DEA10000B7504 /* RCDSettingBaseViewController.m */; };
 		466684271B5DEA5B000B7504 /* RCDConversationSettingBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684261B5DEA5B000B7504 /* RCDConversationSettingBaseViewController.m */; };
 		4666842A1B5DEC04000B7504 /* RCDConversationSettingClearMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684291B5DEC04000B7504 /* RCDConversationSettingClearMessageCell.m */; };
@@ -375,13 +379,16 @@
 		27D6FF9B1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSettingServerUrlViewController.m; sourceTree = SOURCE_ROOT; };
 		27D6FF9D1DFE4D2C00053F69 /* RCDSettingUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSettingUserDefaults.h; sourceTree = SOURCE_ROOT; };
 		27D6FF9E1DFE4D2C00053F69 /* RCDSettingUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSettingUserDefaults.m; sourceTree = SOURCE_ROOT; };
-		2E29FF301DC1BE7300AF2DF0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/JrmfInfo.strings; sourceTree = "<group>"; };
-		2E29FF311DC1BE7300AF2DF0 /* JResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JResource.bundle; sourceTree = "<group>"; };
-		2E29FF321DC1BE7300AF2DF0 /* JrmfPacketKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JrmfPacketKit.framework; sourceTree = "<group>"; };
-		2E29FF331DC1BE7300AF2DF0 /* JYangToolKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JYangToolKit.framework; sourceTree = "<group>"; };
-		2E29FF341DC1BE7300AF2DF0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/JrmfInfo.strings"; sourceTree = "<group>"; };
 		2E29FF3A1DC1BE8400AF2DF0 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
 		2E29FF3B1DC1BE8400AF2DF0 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
+		2E6B9A191E127BF7006EA6B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JrmfInfo.strings; sourceTree = "<group>"; };
+		2E6B9A1D1E127C0C006EA6B4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = JrmfInfo.strings; sourceTree = "<group>"; };
+		2E7A36DB1E03A876005231BE /* JResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JResource.bundle; sourceTree = "<group>"; };
+		2E7A36DC1E03A876005231BE /* jrmf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = jrmf.cer; sourceTree = "<group>"; };
+		2E7A36DD1E03A876005231BE /* JrmfPacketKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JrmfPacketKit.framework; sourceTree = "<group>"; };
+		2E7A36DE1E03A876005231BE /* JrmfWalletKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JrmfWalletKit.framework; sourceTree = "<group>"; };
+		2E7A36DF1E03A876005231BE /* JYangToolKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JYangToolKit.framework; sourceTree = "<group>"; };
+		2E7A36E01E03A876005231BE /* WalletResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WalletResource.bundle; sourceTree = "<group>"; };
 		466684221B5DEA10000B7504 /* RCDSettingBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = RCDSettingBaseViewController.h; path = RCloudMessage/RCDSettingBaseViewController.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		466684231B5DEA10000B7504 /* RCDSettingBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = RCDSettingBaseViewController.m; path = RCloudMessage/RCDSettingBaseViewController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		466684251B5DEA5B000B7504 /* RCDConversationSettingBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = RCDConversationSettingBaseViewController.h; path = RCloudMessage/RCDConversationSettingBaseViewController.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -854,12 +861,14 @@
 			files = (
 				E4C4E7E41A0A2F2800140067 /* CoreGraphics.framework in Frameworks */,
 				27AADC281DDC4DD800E1AE31 /* Foundation.framework in Frameworks */,
+				2E7A36E31E03A876005231BE /* JrmfPacketKit.framework in Frameworks */,
 				E4C4E7E61A0A2F2E00140067 /* UIKit.framework in Frameworks */,
 				27AADC271DDC4DCE00E1AE31 /* QuartzCore.framework in Frameworks */,
 				E4C3310E1A0C72A000E31B9A /* SystemConfiguration.framework in Frameworks */,
 				E4C330F41A0C722300E31B9A /* AudioToolbox.framework in Frameworks */,
 				27AADC261DDC4DB800E1AE31 /* AddressBook.framework in Frameworks */,
 				E4C330F21A0C721D00E31B9A /* AVFoundation.framework in Frameworks */,
+				2E7A36E51E03A876005231BE /* JYangToolKit.framework in Frameworks */,
 				E4C330FC1A0C724A00E31B9A /* CoreTelephony.framework in Frameworks */,
 				27C42ED51DE2FD7B003E2306 /* RongiFlyKit.framework in Frameworks */,
 				E4C497211A24849E00098C8A /* CoreLocation.framework in Frameworks */,
@@ -867,10 +876,8 @@
 				F82B55401DE03E40007392BD /* SafariServices.framework in Frameworks */,
 				F880EA791D0808B300FD5CC4 /* VideoToolbox.framework in Frameworks */,
 				A68AFAF41CCF0B3700F16B3D /* RongCallKit.framework in Frameworks */,
-				2E29FF371DC1BE7300AF2DF0 /* JrmfPacketKit.framework in Frameworks */,
 				F8AD4A5B1CAE5782006C1CBB /* CoreMotion.framework in Frameworks */,
 				E4C330FA1A0C724400E31B9A /* CoreMedia.framework in Frameworks */,
-				2E29FF381DC1BE7300AF2DF0 /* JYangToolKit.framework in Frameworks */,
 				F8AD4A571CAE5702006C1CBB /* libicucore.tbd in Frameworks */,
 				F8AD4A551CAE56A4006C1CBB /* PushKit.framework in Frameworks */,
 				A68AFAFD1CCF1ECE00F16B3D /* AgoraRtcEngineKit.framework in Frameworks */,
@@ -887,6 +894,7 @@
 				5111B07B1AE6A11A00317E71 /* RongIMKit.framework in Frameworks */,
 				F8B7DBD21BAC189700E9F9BD /* libopencore-amrnb.a in Frameworks */,
 				E4C330FE1A0C725200E31B9A /* CoreVideo.framework in Frameworks */,
+				2E7A36E41E03A876005231BE /* JrmfWalletKit.framework in Frameworks */,
 				27C42EEC1DE30637003E2306 /* iflyMSC.framework in Frameworks */,
 				E4C330F81A0C723A00E31B9A /* CoreAudio.framework in Frameworks */,
 				A6BD04181B1EEA6B00ACAF17 /* RongIMLib.framework in Frameworks */,
@@ -994,10 +1002,14 @@
 		2E29FF2E1DC1BE7300AF2DF0 /* JrmfIMLib */ = {
 			isa = PBXGroup;
 			children = (
-				2E29FF2F1DC1BE7300AF2DF0 /* JrmfInfo.strings */,
-				2E29FF311DC1BE7300AF2DF0 /* JResource.bundle */,
-				2E29FF321DC1BE7300AF2DF0 /* JrmfPacketKit.framework */,
-				2E29FF331DC1BE7300AF2DF0 /* JYangToolKit.framework */,
+				2E6B9A171E127BF7006EA6B4 /* en.lproj */,
+				2E7A36DB1E03A876005231BE /* JResource.bundle */,
+				2E7A36DC1E03A876005231BE /* jrmf.cer */,
+				2E7A36DD1E03A876005231BE /* JrmfPacketKit.framework */,
+				2E7A36DE1E03A876005231BE /* JrmfWalletKit.framework */,
+				2E7A36DF1E03A876005231BE /* JYangToolKit.framework */,
+				2E7A36E01E03A876005231BE /* WalletResource.bundle */,
+				2E6B9A1B1E127C0C006EA6B4 /* zh-Hans.lproj */,
 			);
 			name = JrmfIMLib;
 			path = framework/JrmfIMLib;
@@ -1011,6 +1023,23 @@
 			);
 			name = AlipaySDK;
 			path = framework/AlipaySDK;
+			sourceTree = SOURCE_ROOT;
+		};
+		2E6B9A171E127BF7006EA6B4 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				2E6B9A181E127BF7006EA6B4 /* JrmfInfo.strings */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
+		2E6B9A1B1E127C0C006EA6B4 /* zh-Hans.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				2E6B9A1C1E127C0C006EA6B4 /* JrmfInfo.strings */,
+			);
+			name = "zh-Hans.lproj";
+			path = "framework/JrmfIMLib/zh-Hans.lproj";
 			sourceTree = SOURCE_ROOT;
 		};
 		46A831B81AC014B2001A533F /* FindPsw */ = {
@@ -2116,14 +2145,17 @@
 				F894EC391DF7E47600EFD084 /* BQMM.bundle in Resources */,
 				2E29FF3C1DC1BE8400AF2DF0 /* AlipaySDK.bundle in Resources */,
 				27C42EED1DE30637003E2306 /* RongCloudiFly.bundle in Resources */,
-				2E29FF351DC1BE7300AF2DF0 /* JrmfInfo.strings in Resources */,
+				2E6B9A1E1E127C0C006EA6B4 /* JrmfInfo.strings in Resources */,
+				2E6B9A1A1E127BF7006EA6B4 /* JrmfInfo.strings in Resources */,
+				2E7A36E11E03A876005231BE /* JResource.bundle in Resources */,
 				8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */,
-				2E29FF361DC1BE7300AF2DF0 /* JResource.bundle in Resources */,
 				E42A2E5A1AAEE76800F4C3AB /* Main.storyboard in Resources */,
 				5111B07D1AE6A11A00317E71 /* RongCloud.bundle in Resources */,
+				2E7A36E21E03A876005231BE /* jrmf.cer in Resources */,
 				A6CF8A351BD4CB6E00F3EA1A /* RCConfig.plist in Resources */,
 				E4BFAE251A121839007165B1 /* Images.xcassets in Resources */,
 				510624851AD63A9E00348452 /* RongCloudKit.strings in Resources */,
+				2E7A36E61E03A876005231BE /* WalletResource.bundle in Resources */,
 				987653631D796C5B008A6BF0 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2400,11 +2432,18 @@
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
-		2E29FF2F1DC1BE7300AF2DF0 /* JrmfInfo.strings */ = {
+		2E6B9A181E127BF7006EA6B4 /* JrmfInfo.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				2E29FF301DC1BE7300AF2DF0 /* en */,
-				2E29FF341DC1BE7300AF2DF0 /* zh-Hans */,
+				2E6B9A191E127BF7006EA6B4 /* en */,
+			);
+			name = JrmfInfo.strings;
+			sourceTree = "<group>";
+		};
+		2E6B9A1C1E127C0C006EA6B4 /* JrmfInfo.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2E6B9A1D1E127C0C006EA6B4 /* zh-Hans */,
 			);
 			name = JrmfInfo.strings;
 			sourceTree = "<group>";

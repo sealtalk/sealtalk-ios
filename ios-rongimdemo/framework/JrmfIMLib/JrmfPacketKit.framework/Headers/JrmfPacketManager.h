@@ -14,11 +14,6 @@
 @interface JrmfPacketManager : NSObject
 
 /**
- 打开我的钱包
- */
-+ (void)getEventOpenWallet;
-
-/**
  获取当前SDK版本
 
  @return SDK版本

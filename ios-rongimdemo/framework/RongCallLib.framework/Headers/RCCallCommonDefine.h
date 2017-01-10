@@ -23,6 +23,19 @@ typedef NS_ENUM(NSInteger, RCCallMediaType) {
   RCCallMediaVideo = 2,
 };
 
+/*!
+ 通话质量
+ */
+typedef NS_ENUM(NSUInteger, RCCallQuality) {
+  RCCall_Quality_Unknown = 0,
+  RCCall_Quality_Excellent = 1,
+  RCCall_Quality_Good = 2,
+  RCCall_Quality_Poor = 3,
+  RCCall_Quality_Bad = 4,
+  RCCall_Quality_VBad = 5,
+  RCCall_Quality_Down = 6,
+};
+
 #pragma mark - Call
 
 /*!

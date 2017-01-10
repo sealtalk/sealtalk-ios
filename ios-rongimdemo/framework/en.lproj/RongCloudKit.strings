@@ -92,7 +92,8 @@
 "JoinChatRoomFailed"="Failed to join chatroom";
 "Connecting..."="Connecting...";
 "FromFriendInvitation"="From %@ friend invitation";
-"AddFriendInvitation"="Add Friend Invitation";
+"AcceptFriendRequest"="Accept your friend request";
+"AddFriendRequest"="Add Friend Invitation";
 "ReadAll"="Read all";
 "OfficialAccounts"="Official Accounts";
 "Share"="Share Name Card";
@@ -130,6 +131,7 @@
 "VoIPVideoCall"="Video Call";
 "VoIPAudioCallExistedWarning"="Voice call is on. Try again later.";
 "VoIPVideoCallExistedWarning"="Video call is on. Try again later.";
+"AudioHoldingWarning"="Audio is holding by other function. Try again later.";
 "VoIPCallSelectMember"="Select Members";
 "VoIPAudioCallMaxNumSelectMember"="Up to %d members";
 "VoIPVideoCallMaxNumSelectMember"="Up to %d members";

@@ -214,7 +214,6 @@ __deprecated_msg("已废弃，请勿使用。");
  */
 + (void)openURLInSafariViewOrWebView:(NSString *)url base:(UIViewController *)viewController;
 
-
 /**
  检查url是否以http或https开头，如果不是，为其头部追加http://
 
@@ -224,4 +223,13 @@ __deprecated_msg("已废弃，请勿使用。");
  */
 + (NSString *)checkOrAppendHttpForUrl:(NSString *)url;
 
+/*!
+ 验证手机号
+ */
++ (BOOL)validateCellPhoneNumber:(NSString *)cellNum;
+
+/*!
+ 验证邮箱
+ */
++ (BOOL) validateEmail:(NSString *)email;
 @end

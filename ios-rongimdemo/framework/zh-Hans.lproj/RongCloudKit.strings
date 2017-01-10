@@ -92,6 +92,7 @@
 "JoinChatRoomFailed"="加入聊天室失败";
 "Connecting..."="连接中...";
 "FromFriendInvitation"="来自%@的好友请求";
+"AcceptFriendRequest"="通过了你的好友请求";
 "AddFriendInvitation"="添加好友请求";
 "ReadAll"="阅读全文";
 "OfficialAccounts"="公共账号";
@@ -130,6 +131,7 @@
 "VoIPVideoCall"="视频通话";
 "VoIPAudioCallExistedWarning"="正在进行语音通话，请稍后再试";
 "VoIPVideoCallExistedWarning"="正在进行视频通话，请稍后再试";
+"AudioHoldingWarning"="声音通道正被占用，请稍后再试";
 "VoIPCallSelectMember"="选择成员";
 "VoIPAudioCallMaxNumSelectMember"="最多允许%d人同时语音聊天";
 "VoIPVideoCallMaxNumSelectMember"="最多允许%d人同时视频聊天";

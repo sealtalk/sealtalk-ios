@@ -25,6 +25,11 @@
 @property(nonatomic, strong) UILabel *remoteNameLabel;
 
 /*!
+ 全屏的视频View
+ */
+@property(nonatomic, strong) UIView *mainVideoView;
+
+/*!
  通话接通后，界面右上角的视频View
  */
 @property(nonatomic, strong) UIView *subVideoView;

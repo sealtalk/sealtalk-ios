@@ -110,19 +110,13 @@
  */
 - (BOOL)isVideoCallEnabled:(RCConversationType)conversationType;
 
-/*!
- 是否支持在服务器端录制当前通话
- 
- @return 是否支持在服务器端录制当前通话
- */
-- (BOOL)isServerRecordingEnabled;
-
 /**
  * 设置本地视频属性，可用此接口设置本地视频分辨率。
  *
  * @param profile profile
  */
 - (void)setVideoProfile:(RCVideoProfile)profile;
+
 /*!
  当前的通话会话实体
  */

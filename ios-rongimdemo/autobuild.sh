@@ -128,6 +128,9 @@ if [ ${ENV_FLAG} == "dev" ]; then
 elif [ ${ENV_FLAG} == "pre" ]; then
     sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU147980517733135"/g' ./RCloudMessage/RCDMeTableViewController.m
     sed -i '' -e 's/nav.cn.ronghub.com/navqa.cn.ronghub.com/g' ./RCloudMessage/Info.plist
+elif [ ${ENV_FLAG} == "pri" ]; then
+    sed -i '' -e '/SERVICE_ID_XIAONENG1/s/@"kf_4029_1483495902343"/@"zf_1000_1481459114694"/g' ./RCloudMessage/RCDMeTableViewController.m
+    sed -i '' -e '/SERVICE_ID_XIAONENG2/s/@"op_1000_1483495280515"/@"zf_1000_1480591492399"/g' ./RCloudMessage/RCDMeTableViewController.m
 fi
 
 if [ ${ENV_FLAG} == "pri" ]; then

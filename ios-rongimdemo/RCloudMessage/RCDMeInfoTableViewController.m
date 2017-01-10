@@ -240,7 +240,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     //获取截取区域
      CGRect captureRect = [[info objectForKey:UIImagePickerControllerCropRect] CGRectValue];
     //获取截取区域的图像
-    UIImage *captureImage = [self getSubImage:originImage Rect:captureRect];
+    UIImage *captureImage = [self getSubImage:originImage Rect:captureRect imageOrientation:originImage.imageOrientation];
     UIImage *scaleImage = [self scaleImage:captureImage toScale:0.8];
     data = UIImageJPEGRepresentation(scaleImage, 0.00001);
   }
@@ -306,7 +306,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       }];
 }
 
--(UIImage*)getSubImage:(UIImage *)originImage Rect:(CGRect)rect
+-(UIImage*)getSubImage:(UIImage *)originImage Rect:(CGRect)rect imageOrientation:(UIImageOrientation)imageOrientation
 {
   CGImageRef subImageRef = CGImageCreateWithImageInRect(originImage.CGImage, rect);
   CGRect smallBounds = CGRectMake(0, 0, CGImageGetWidth(subImageRef), CGImageGetHeight(subImageRef));
@@ -314,9 +314,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   UIGraphicsBeginImageContext(smallBounds.size);
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextDrawImage(context, smallBounds, subImageRef);
-  UIImage* smallImage = [UIImage imageWithCGImage:subImageRef];
+  UIImage* smallImage = [UIImage imageWithCGImage:subImageRef scale:1.f orientation:imageOrientation];
   UIGraphicsEndImageContext();
-  
   return smallImage;
 }
 

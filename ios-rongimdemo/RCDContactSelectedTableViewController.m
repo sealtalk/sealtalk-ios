@@ -285,24 +285,13 @@ MBProgressHUD *hud;
       [self.navigationController pushViewController:chat animated:YES];
     });
   } else {
-    NSArray *indexPaths = [self.tableView indexPathsForSelectedRows];
     // get seleted users
     NSMutableArray *seletedUsers = [NSMutableArray new];
     NSMutableArray *seletedUsersId = [NSMutableArray new];
-    for (NSIndexPath *indexPath in indexPaths) {
-      NSString *key = [self.allKeys objectAtIndex:indexPath.section];
-      NSArray *arrayForKey = [self.allFriends objectForKey:key];
-      RCDUserInfo *user = arrayForKey[indexPath.row];
-      //转成RCDUserInfo
-      RCUserInfo *userInfo = [RCUserInfo new];
-      userInfo.userId = user.userId;
-      userInfo.name = user.name;
-      userInfo.portraitUri = user.portraitUri;
-      [[RCIM sharedRCIM] refreshUserInfoCache:userInfo
-                                   withUserId:userInfo.userId];
+    for (RCUserInfo *user in self.collectionViewResource) {
       [seletedUsersId addObject:user.userId];
-      [seletedUsers addObject:userInfo];
     }
+    seletedUsers = [self.collectionViewResource mutableCopy];
     if (_selectUserList) {
       NSArray<RCUserInfo *> *userList = [NSArray arrayWithArray:seletedUsers];
       _selectUserList(userList);
@@ -927,7 +916,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-  if ([self.searchField.text isEqualToString:@"搜索"]) {
+  if ([self.searchField.text isEqualToString:@"搜索"] || [self.searchField.text isEqualToString:@"Search"]) {
     self.searchField.leftView = nil;
     self.searchField.text = @"";
   }

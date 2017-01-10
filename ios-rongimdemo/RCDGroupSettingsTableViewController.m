@@ -392,7 +392,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *originImage =
     [info objectForKey:UIImagePickerControllerOriginalImage];
     CGRect captureRect = [[info objectForKey:UIImagePickerControllerCropRect] CGRectValue];
-    UIImage *captureImage = [self getSubImage:originImage Rect:captureRect];
+    UIImage *captureImage = [self getSubImage:originImage Rect:captureRect imageOrientation:originImage.imageOrientation];
     
     UIImage *scaleImage = [self scaleImage:captureImage toScale:0.8];
     data = UIImageJPEGRepresentation(scaleImage, 0.00001);
@@ -465,7 +465,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   });
 }
 
--(UIImage*)getSubImage:(UIImage *)originImage Rect:(CGRect)rect
+-(UIImage*)getSubImage:(UIImage *)originImage Rect:(CGRect)rect imageOrientation:(UIImageOrientation)imageOrientation
 {
   CGImageRef subImageRef = CGImageCreateWithImageInRect(originImage.CGImage, rect);
   CGRect smallBounds = CGRectMake(0, 0, CGImageGetWidth(subImageRef), CGImageGetHeight(subImageRef));
@@ -473,9 +473,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   UIGraphicsBeginImageContext(smallBounds.size);
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextDrawImage(context, smallBounds, subImageRef);
-  UIImage* smallImage = [UIImage imageWithCGImage:subImageRef];
+  UIImage* smallImage = [UIImage imageWithCGImage:subImageRef scale:1.f orientation:imageOrientation];
   UIGraphicsEndImageContext();
-  
   return smallImage;
 }
 
@@ -894,7 +893,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   contactSelectedVC.groupId = _Group.groupId;
   contactSelectedVC.isAllowsMultipleSelection = YES;
   NSMutableArray *membersId = [NSMutableArray new];
-  for (id user in collectionViewResource) {
+  NSMutableArray *groupMemberList = [[RCDataBaseManager shareInstance] getGroupMember:_Group.groupId];
+  for (id user in groupMemberList) {
     if ([user isKindOfClass:[RCUserInfo class]]) {
       NSString *userId = ((RCUserInfo*)user).userId;
       [membersId addObject:userId];
@@ -917,7 +917,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       }
       contactSelectedVC.titleStr = @"移除成员";
       NSMutableArray *members = [NSMutableArray new];
-      for (id user in collectionViewResource) {
+      for (id user in groupMemberList) {
         if ([user isKindOfClass:[RCUserInfo class]]) {
           if (![((RCUserInfo *)user).userId isEqualToString:creatorId]) {
             [members addObject:user];

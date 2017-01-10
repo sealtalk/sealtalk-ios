@@ -157,7 +157,6 @@
  */
 + (NSString *)getCorrectedFilePath:(NSString *)localPath;
 
-
 /*!
  * 获取文件存储路径
  */
@@ -234,6 +233,17 @@
  @return    设备型号
  */
 + (NSString *)currentDeviceModel;
+
+/*!
+ 获取非换行的字符串
+ 
+ @param originalString 原始的字符串
+ 
+ @return 非换行的字符串
+ 
+ @discussion 所有换行符将被替换成单个空格
+ */
++ (NSString *)getNowrapString:(NSString *)originalString;
 
 @end
 #endif

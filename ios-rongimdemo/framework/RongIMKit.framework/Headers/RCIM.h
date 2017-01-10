@@ -615,7 +615,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
 /*!
  是否开启已读回执功能，默认值是NO
  
- @discussion 开启后会在聊天页面消息显示之后会发送已读回执给对方。
+ @discussion 开启后会在会话页面消息显示之后会发送已读回执给对方。
  
  @warning **已废弃，请勿使用。**
  升级说明:请使用enabledReadReceiptConversationTypeList，设置开启回执的会话类型
@@ -625,7 +625,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
 /*!
  开启已读回执功能的会话类型，默认为空
  
- @discussion 这些会话类型的消息在聊天界面显示了之后会发送已读回执。目前仅支持单聊、群聊和讨论组。
+ @discussion 这些会话类型的消息在会话页面显示了之后会发送已读回执。目前仅支持单聊、群聊和讨论组。
  */
 @property(nonatomic, copy) NSArray* enabledReadReceiptConversationTypeList;
 
@@ -652,12 +652,12 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
 @property(nonatomic, assign) NSUInteger maxRecallDuration;
 
 /*!
- 是否在聊天界面和会话列表界面显示未注册的消息类型，默认值是NO
+ 是否在会话页面和会话列表界面显示未注册的消息类型，默认值是NO
  
  @discussion App不断迭代开发，可能会在以后的新版本中不断增加某些自定义类型的消息，但是已经发布的老版本无法识别此类消息。
  针对这种情况，可以预先定义好未注册的消息的显示，以提升用户体验（如提示当前版本不支持，引导用户升级版本等）
  
- 未注册的消息，可以通过RCConversationViewController中的rcUnkownConversationCollectionView:cellForItemAtIndexPath:和rcUnkownConversationCollectionView:layout:sizeForItemAtIndexPath:方法定制在聊天界面的显示。
+ 未注册的消息，可以通过RCConversationViewController中的rcUnkownConversationCollectionView:cellForItemAtIndexPath:和rcUnkownConversationCollectionView:layout:sizeForItemAtIndexPath:方法定制在会话页面的显示。
  未注册的消息，可以通过修改unknown_message_cell_tip字符串资源定制在会话列表界面的显示。
  */
 @property(nonatomic, assign) BOOL showUnkownMessage;
@@ -837,7 +837,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，可以更新SDK缓存的用户信息。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新该用户的显示信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)refreshUserInfoCache:(RCUserInfo *)userInfo
                   withUserId:(NSString *)userId;
@@ -855,7 +855,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，会清空SDK中所有的用户信息缓存。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新所显示的用户信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)clearUserInfoCache;
 
@@ -875,7 +875,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，可以更新SDK缓存的群组信息。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新该群组的显示信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)refreshGroupInfoCache:(RCGroup *)groupInfo
                   withGroupId:(NSString *)groupId;
@@ -893,7 +893,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，会清空SDK中所有的群组信息缓存。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新所显示的群组信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)clearGroupInfoCache;
 
@@ -925,7 +925,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，可以更新SDK缓存的群名片信息。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新该群名片的显示信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)refreshGroupUserInfoCache:(RCUserInfo *)userInfo
                        withUserId:(NSString *)userId
@@ -936,7 +936,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，会清空SDK中所有的群名片信息缓存。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新所显示的群名片信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)clearGroupUserInfoCache;
 
@@ -973,21 +973,21 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
 @property(nonatomic) CGSize globalConversationPortraitSize;
 
 /*!
- SDK聊天界面中显示的头像形状，矩形或者圆形
+ SDK会话页面中显示的头像形状，矩形或者圆形
  
  @discussion 默认值为矩形，即RC_USER_AVATAR_RECTANGLE
  */
 @property(nonatomic) RCUserAvatarStyle globalMessageAvatarStyle;
 
 /*!
- SDK聊天界面中显示的头像大小
+ SDK会话页面中显示的头像大小
  
  @discussion 默认值为40*40
  */
 @property(nonatomic) CGSize globalMessagePortraitSize;
 
 /*!
- SDK会话列表界面和聊天界面的头像的圆角曲率半径
+ SDK会话列表界面和会话页面的头像的圆角曲率半径
  
  @discussion 默认值为4，只有当头像形状设置为矩形时才会生效。
  参考RCIM的globalConversationAvatarStyle和globalMessageAvatarStyle。

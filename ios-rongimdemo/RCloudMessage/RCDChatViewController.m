@@ -60,7 +60,9 @@ NSMutableDictionary *userInputStatus;
             //      self.defaultInputType = RCChatSessionInputBarInputExtention;
         }
     }
-  
+    //默认输入类型为语音
+    //self.defaultInputType = RCChatSessionInputBarInputExtention;
+
   [self refreshTitle];
 }
 
@@ -186,7 +188,7 @@ NSMutableDictionary *userInputStatus;
   //默认输入类型为语音
   // self.defaultInputType = RCChatSessionInputBarInputExtention;
 
-  /***********如何在会话界面插入提醒消息***********************
+  /***********如何在会话页面插入提醒消息***********************
 
       RCInformationNotificationMessage *warningMsg =
      [RCInformationNotificationMessage
@@ -365,7 +367,7 @@ NSMutableDictionary *userInputStatus;
     settingVC.conversationType = self.conversationType;
     settingVC.targetId = self.targetId;
     settingVC.conversationTitle = self.userName;
-    //设置讨论组标题时，改变当前聊天界面的标题
+    //设置讨论组标题时，改变当前会话页面的标题
     settingVC.setDiscussTitleCompletion = ^(NSString *discussTitle) {
       self.title = discussTitle;
     };
@@ -549,13 +551,13 @@ NSMutableDictionary *userInputStatus;
 - (void)onShowRealTimeLocationView {
   [self showRealTimeLocationViewController];
 }
-- (RCMessageContent *)willSendMessage:(RCMessageContent *)messageCotent {
+- (RCMessageContent *)willSendMessage:(RCMessageContent *)messageContent {
   //可以在这里修改将要发送的消息
-  if ([messageCotent isMemberOfClass:[RCTextMessage class]]) {
-    // RCTextMessage *textMsg = (RCTextMessage *)messageCotent;
+  if ([messageContent isMemberOfClass:[RCTextMessage class]]) {
+    // RCTextMessage *textMsg = (RCTextMessage *)messageContent;
     // textMsg.extra = @"";
   }
-  return messageCotent;
+  return messageContent;
 }
 
 #pragma mark override

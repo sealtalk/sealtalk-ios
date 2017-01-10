@@ -863,6 +863,71 @@ typedef NS_ENUM(NSUInteger, RCCSModeType) {
   RC_CS_RobotFirst = 3,
 };
 
+/*!
+ 客服评价时机
+ */
+typedef NS_ENUM(NSUInteger, RCCSEvaEntryPoint) {
+  /*!
+   离开客服评价
+   */
+  RCCSEvaLeave = 0,
+  
+  /*!
+   在扩展中展示客户主动评价按钮，离开客服不评价
+   */
+  RCCSEvaExtention = 1,
+};
+
+/*!
+ 客服留言类型
+ */
+typedef NS_ENUM(NSUInteger, RCCSLMType) {
+  /*!
+   本地Native页面留言
+   */
+  RCCSLMNative = 0,
+  
+  /*!
+   web页面留言
+   */
+  RCCSLMWeb = 1,
+};
+
+/*!
+ 客服问题解决状态
+ */
+typedef NS_ENUM(NSUInteger, RCCSResolveStatus) {
+  /*!
+   未解决
+   */
+  RCCSUnresolved = 0,
+  
+  /*!
+   已解决
+   */
+  RCCSResolved = 1,
+  
+  /*!
+   解决中
+   */
+  RCCSResolving = 2,
+};
+
+/*!
+ 客服评价类型
+ */
+typedef NS_ENUM(NSUInteger, RCCSEvaType) {
+  /*!
+   人工机器人分开评价
+   */
+  RCCSEvaSeparately = 0,
+  
+  /*!
+   人工机器人统一评价
+   */
+  EVA_UNIFIED = 1,
+};
+
 #pragma mark RCLogLevel - 日志级别
 /*!
  日志级别

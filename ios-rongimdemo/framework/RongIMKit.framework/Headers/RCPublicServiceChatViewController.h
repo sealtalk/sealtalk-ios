@@ -10,7 +10,7 @@
 #import "RCConversationViewController.h"
 
 /*!
- 公众服务聊天界面的ViewController
+ 公众服务会话页面的ViewController
  */
 @interface RCPublicServiceChatViewController : RCConversationViewController
 

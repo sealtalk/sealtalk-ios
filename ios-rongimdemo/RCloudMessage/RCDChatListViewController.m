@@ -225,7 +225,7 @@
 }
 
 /**
- *  点击进入会话界面
+ *  点击进入会话页面
  *
  *  @param conversationModelType 会话类型
  *  @param model                 会话数据

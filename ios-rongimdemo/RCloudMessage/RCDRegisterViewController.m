@@ -800,10 +800,10 @@
   if (![self checkContent])
     return;
 
-  RCNetworkStatus stauts =
+  RCNetworkStatus status =
       [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
 
-  if (RC_NotReachable == stauts) {
+  if (RC_NotReachable == status) {
     _errorMsgLb.text = @"当前网络不可用，请检查！";
   }
   NSString *userName =

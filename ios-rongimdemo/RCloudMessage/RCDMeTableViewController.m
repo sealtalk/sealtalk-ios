@@ -27,7 +27,11 @@
 #import "RCDMeCell.h"
 
 /* RedPacket_FTR */
-#import <JrmfPacketKit/JrmfPacketManager.h>
+#import <JrmfWalletKit/JrmfWalletKit.h>
+
+#define SERVICE_ID @"KEFU146001495753714"
+#define SERVICE_ID_XIAONENG1 @"kf_4029_1483495902343"
+#define SERVICE_ID_XIAONENG2 @"op_1000_1483495280515"
 
 @interface RCDMeTableViewController ()
 @property(nonatomic) BOOL hasNewVersion;
@@ -91,7 +95,11 @@
       break;
       
     case 2:
+#if RCDDebugTestFunction
+      rows = 4;
+#else
       rows = 2;
+#endif
       break;
       
     default:
@@ -169,6 +177,18 @@
           return cell;
         }
           break;
+#if RCDDebugTestFunction
+        case 2:{
+          [cell setCellWithImageName:@"sevre_inactive" labelName:@"小能客服1"];
+          return cell;
+        }
+          break;
+        case 3:{
+          [cell setCellWithImageName:@"sevre_inactive" labelName:@"小能客服2"];
+          return cell;
+        }
+          break;
+#endif
         default:
           break;
       }
@@ -216,7 +236,7 @@
           break;
         /* RedPacket_FTR */ //open my wallet
           case 1: {
-              [JrmfPacketManager getEventOpenWallet];
+              [JrmfWalletSDK openWallet];
           }
               break;
           
@@ -229,7 +249,7 @@
     case 2: {
       switch (indexPath.row) {
         case 0: {
-          [self chatWithCustomerService];
+          [self chatWithCustomerService:SERVICE_ID];
         }
           break;
           
@@ -238,6 +258,16 @@
           [self.navigationController pushViewController:vc animated:YES];
         }
           break;
+#if RCDDebugTestFunction
+        case 2: {
+          [self chatWithCustomerService:SERVICE_ID_XIAONENG1];
+        }
+          break;
+        case 3: {
+          [self chatWithCustomerService:SERVICE_ID_XIAONENG2];
+        }
+          break;
+#endif
         default:
           break;
       }
@@ -257,15 +287,15 @@
   userPortrait = [notifycation object];
 }
 
-- (void)chatWithCustomerService {
+- (void)chatWithCustomerService:(NSString *)kefuId {
   RCDCustomerServiceViewController *chatService =
       [[RCDCustomerServiceViewController alloc] init];
-  #define SERVICE_ID @"KEFU146001495753714"
+
   // live800  KEFU146227005669524   live800的客服ID
   // zhichi   KEFU146001495753714   智齿的客服ID
   chatService.conversationType = ConversationType_CUSTOMERSERVICE;
 
-  chatService.targetId = SERVICE_ID;
+  chatService.targetId = kefuId;
 
   //上传用户信息，nickname是必须要填写的
   RCCustomerServiceInfo *csInfo = [[RCCustomerServiceInfo alloc] init];

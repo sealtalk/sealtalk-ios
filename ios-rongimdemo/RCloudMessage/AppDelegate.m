@@ -29,9 +29,9 @@
 #import "RCDSettingUserDefaults.h"
 #import "RCDSettingServerUrlViewController.h"
 
-//#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" //offline key
+#define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" //offline key
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
-#define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
+//#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // online key
 
 #define UMENG_APPKEY @"563755cbe0f55a5cb300139c"
 
@@ -127,7 +127,7 @@
   // 注册自定义测试消息
   [[RCIM sharedRCIM] registerMessageType:[RCDTestMessage class]];
 
-  //设置会话列表头像和会话界面头像
+  //设置会话列表头像和会话页面头像
 
   [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
   [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;

@@ -20,14 +20,14 @@
 
 #pragma mark - Cell
 /*!
- 获取会话界面的cell信息。
+ 获取会话页面的cell信息。
  
  @param conversationType  会话类型
  @param targetId          targetId
  
  @return cell信息列表。
  
- @discussion 当进入到会话界面时，SDK需要了解扩展模块的消息对应的MessageCell和reuseIdentifier。
+ @discussion 当进入到会话页面时，SDK需要了解扩展模块的消息对应的MessageCell和reuseIdentifier。
  */
 - (NSArray<RCExtensionMessageCellInfo *> *)getMessageCellInfoList:(RCConversationType)conversationType
                                                          targetId:(NSString *)targetId;

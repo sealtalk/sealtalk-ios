@@ -40,7 +40,12 @@
 
   //设置字母Label
   UILabel *firstCharacterLabel = [[UILabel alloc] init];
-  NSString *firstLetter = [nickname substringToIndex:1];
+  NSString *firstLetter = nil;
+  if(nickname.length > 0){
+    firstLetter = [nickname substringToIndex:1];
+  }else {
+    firstLetter = @"#";
+  }
   firstCharacterLabel.text = firstLetter;
   firstCharacterLabel.textColor = [UIColor whiteColor];
   firstCharacterLabel.textAlignment = NSTextAlignmentCenter;

@@ -17,5 +17,5 @@ FOUNDATION_EXPORT const unsigned char JrmfPacketManagerKitVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <JrmfPacketManagerKit/PublicHeader.h>
 
 
-#import <JrmfPacketManagerKit/JrmfPacketManager.h>
+#import <JrmfPacketKit/JrmfPacketManager.h>
 

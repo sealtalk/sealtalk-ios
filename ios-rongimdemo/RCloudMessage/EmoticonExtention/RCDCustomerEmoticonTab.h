@@ -38,6 +38,6 @@
  */
 - (UIView *)loadEmoticonView:(NSString *)identify index:(int)index;
 
-@property(nonatomic, weak) RCDChatViewController *chartView;
+//@property(nonatomic, weak) RCDChatViewController *chartView;
 @end
 

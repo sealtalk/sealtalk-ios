@@ -40,7 +40,7 @@
 @property(nonatomic) RCUserAvatarStyle portraitStyle;
 
 /*!
- 当前界面的是否源于聊天会话界面
+ 当前界面的是否源于聊天会话页面
  */
 @property(nonatomic) BOOL fromConversation;
 

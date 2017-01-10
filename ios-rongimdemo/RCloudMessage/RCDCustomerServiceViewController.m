@@ -71,7 +71,7 @@
   //需要调用super的实现
   [super leftBarButtonItemPressed:sender];
 
-  [self.navigationController popViewControllerAnimated:YES];
+  [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 //评价客服，并离开当前会话
