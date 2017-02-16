@@ -52,6 +52,7 @@
 
 @property(nonatomic) int userTipTime;
 @property(nonatomic, strong) NSString *userTipWord;
+
 /*!
  * 评价时机
  */
@@ -84,12 +85,12 @@
 @property(nonatomic, assign) int disableLocation;
 
 /*!
- * 自定义评价
+ * 自定义留言
  */
 @property(nonatomic, copy) NSString *leaveMessageWebUrl;
 
 /*!
- * 默认评价样式
+ * 默认留言样式
  */
 @property(nonatomic, copy) NSArray<RCCSLeaveMessageItem *> *leaveMessageNativeInfo;
 @end

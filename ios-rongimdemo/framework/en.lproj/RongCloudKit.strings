@@ -145,10 +145,10 @@
 "VoIPCallMute"="Mute";
 "VoIPCallSpeaker"="Speaker";
 "VoIPCallWaitingForRemoteAccept"="Awaiting response...";
-"VoIPAudioCallIncoming"="Invites you to voice call";
-"VoIPVideoCallIncoming"="Invites you to video call";
-"VoIPAudioCallIncomingWithoutUserName"="Invites you to voice call";
-"VoIPVideoCallIncomingWithoutUserName"="Invites you to video call";
+"VoIPAudioCallIncoming"=" invites you to voice call";
+"VoIPVideoCallIncoming"=" invites you to video call";
+"VoIPAudioCallIncomingWithoutUserName"="You have a voice call";
+"VoIPVideoCallIncomingWithoutUserName"="You have a video call";
 "VoIPMultiCallUserCollectionTitle"="Members";
 "VoIPCallTotalTime"="Duration";
 "VoIPCallHasEnd"="Cancelled";

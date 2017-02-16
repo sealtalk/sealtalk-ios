@@ -358,9 +358,16 @@ NSMutableDictionary *userInputStatus;
  */
 - (void)rightBarButtonItemClicked:(id)sender {
   if (self.conversationType == ConversationType_PRIVATE) {
-    RCDPrivateSettingsTableViewController *settingsVC = [RCDPrivateSettingsTableViewController privateSettingsTableViewController];
-    settingsVC.userId = self.targetId;
-    [self.navigationController pushViewController:settingsVC animated:YES];
+    RCDUserInfo *friendInfo = [[RCDataBaseManager shareInstance] getFriendInfo:self.targetId];
+    if (![friendInfo.status isEqualToString:@"20"]) {
+      RCDAddFriendViewController *vc = [[RCDAddFriendViewController alloc] init];
+      vc.targetUserInfo = friendInfo;
+      [self.navigationController pushViewController:vc animated:YES];
+    } else {
+      RCDPrivateSettingsTableViewController *settingsVC = [RCDPrivateSettingsTableViewController privateSettingsTableViewController];
+      settingsVC.userId = self.targetId;
+      [self.navigationController pushViewController:settingsVC animated:YES];
+    }
   } else if (self.conversationType == ConversationType_DISCUSSION) {
     RCDDiscussGroupSettingViewController *settingVC =
         [[RCDDiscussGroupSettingViewController alloc] init];
@@ -1013,5 +1020,15 @@ NSMutableDictionary *userInputStatus;
   return result;
 }
 
+- (BOOL)stayAfterJoinChatRoomFailed {
+  //加入聊天室失败之后，是否还停留在会话界面
+  return [[[NSUserDefaults standardUserDefaults] objectForKey:@"stayAfterJoinChatRoomFailed"] isEqualToString:@"YES"];
+}
+
+- (void)alertErrorAndLeft:(NSString *)errorInfo {
+  if (![self stayAfterJoinChatRoomFailed]) {
+    [super alertErrorAndLeft:errorInfo];
+  }
+}
 
 @end

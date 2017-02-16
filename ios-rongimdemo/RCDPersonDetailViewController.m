@@ -47,6 +47,7 @@
   [self.view addSubview:self.infoView];
   
   self.ivAva = [[UIImageView alloc]init];
+  self.ivAva.contentMode = UIViewContentModeScaleAspectFill;
   self.ivAva.translatesAutoresizingMaskIntoConstraints = NO;
   [self.infoView addSubview:self.ivAva];
   

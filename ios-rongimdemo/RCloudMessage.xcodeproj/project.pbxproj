@@ -946,6 +946,14 @@
 			name = SearchView;
 			sourceTree = "<group>";
 		};
+		27579B631E10D28700A30A62 /* PTT */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = PTT;
+			path = framework/PTT;
+			sourceTree = SOURCE_ROOT;
+		};
 		27C02B7C1D8E4B730082728C /* GroupCreate */ = {
 			isa = PBXGroup;
 			children = (
@@ -1608,6 +1616,7 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27579B631E10D28700A30A62 /* PTT */,
 				F894EC361DF7E3A200EFD084 /* BQMM */,
 				27C42EE91DE30637003E2306 /* ifly */,
 				27AADC251DDC4DB800E1AE31 /* AddressBook.framework */,
@@ -2632,6 +2641,7 @@
 					"$(PROJECT_DIR)/framework/AlipaySDK",
 					"$(PROJECT_DIR)/framework/ifly",
 					"$(PROJECT_DIR)/framework/bqmm",
+					"$(PROJECT_DIR)/framework/PTT",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -2777,6 +2787,7 @@
 					"$(PROJECT_DIR)/framework/AlipaySDK",
 					"$(PROJECT_DIR)/framework/ifly",
 					"$(PROJECT_DIR)/framework/bqmm",
+					"$(PROJECT_DIR)/framework/PTT",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -3081,6 +3092,7 @@
 					"$(PROJECT_DIR)/framework/AlipaySDK",
 					"$(PROJECT_DIR)/framework/ifly",
 					"$(PROJECT_DIR)/framework/bqmm",
+					"$(PROJECT_DIR)/framework/PTT",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -3121,6 +3133,7 @@
 					"$(PROJECT_DIR)/framework/AlipaySDK",
 					"$(PROJECT_DIR)/framework/ifly",
 					"$(PROJECT_DIR)/framework/bqmm",
+					"$(PROJECT_DIR)/framework/PTT",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;

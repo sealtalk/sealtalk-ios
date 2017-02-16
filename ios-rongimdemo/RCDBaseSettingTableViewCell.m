@@ -47,10 +47,12 @@
   if (self) {
     if (leftImageStr != nil) {
       self.leftImageView = [[UIImageView alloc] init];
+      self.leftImageView.contentMode = UIViewContentModeScaleAspectFill;
       [self setImageView:self.leftImageView ImageStr:leftImageStr imageSize:leftImageSize LeftOrRight:0];
     }
     if (rightImageStr != nil) {
       self.rightImageView = [[UIImageView alloc] init];
+      self.rightImageView.contentMode = UIViewContentModeScaleAspectFill;
       [self setImageView:self.rightImageView ImageStr:rightImageStr imageSize:rightImageSize LeftOrRight:1];
     }
   }

@@ -79,6 +79,15 @@
  */
 - (void)didTapReceiptCountView:(RCMessageModel *)model;
 
+/*!
+ 点击媒体消息取消发送按钮
+ 
+ @param model 媒体消息Cell的数据模型
+ 
+ @discussion 仅支持取消文件消息的发送
+ */
+- (void)didTapCancelUploadButton:(RCMessageModel *)model;
+
 #pragma mark - 客服机器人评价
 /*!
  机器人解答问题，点击是否解决问题的回调

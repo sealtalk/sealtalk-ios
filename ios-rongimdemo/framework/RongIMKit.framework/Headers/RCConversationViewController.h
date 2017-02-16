@@ -167,6 +167,13 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 @property(nonatomic) RCChatSessionInputBarInputType defaultInputType;
 
 /*!
+ 会话扩展显示区域
+ 
+ @discussion 可以自定义显示会话页面的view。
+ */
+@property(nonatomic, strong)UIView *extensionView;
+
+/*!
  输入框中内容发生变化的回调
  
  @param inputTextView 文本输入框
@@ -231,6 +238,15 @@ __deprecated_msg("已废弃，请勿使用。");
  -1表示不获取任何历史消息，0表示不特殊设置而使用SDK默认的设置（默认为获取10条），0<messageCount<=50为具体获取的消息数量,最大值为50。注：如果是7.x系统获取历史消息数量不要大于30
  */
 @property(nonatomic, assign) int defaultHistoryMessageCountOfChatRoom;
+
+/*!
+ 提示用户信息并推出当前会话界面
+ 
+ @param errorInfo 错误提示
+ 
+ @discussion 在聊天室加入失败SDK会调用此接口，提示用户并退出聊天室。如果您需要修改提示或者不退出，可以重写此方法。
+ */
+- (void)alertErrorAndLeft:(NSString *)errorInfo;
 
 /*!
  设置在会话页面中显示的头像形状，矩形或者圆形（全局有效）
@@ -327,6 +343,15 @@ __deprecated_msg("已废弃，请勿使用。");
 - (void)uploadMedia:(RCMessage *)message
      uploadListener:(RCUploadMediaStatusListener *)uploadListener;
 
+/*!
+ 取消上传媒体消息。
+ 
+ @param model        媒体消息（文件消息）的Model
+ 
+ @discussion 如果您通过sendMediaMessage:pushContent:appUpload:发送媒体消息（上传媒体内容到App服务器），需要
+ 重写此函数，在此函数中取消掉您的上传，并调用uploadListener的cancelBlock告诉融云SDK该发送已经取消。目前仅支持文件消息的取消
+ */
+- (void)cancelUploadMedia:(RCMessageModel *)model;
 /*!
  重新发送消息
  
@@ -746,6 +771,11 @@ __deprecated_msg("已废弃，请勿使用。");
  用户的详细信息，此数据用于上传用户信息到客服后台，数据的nickName和portraitUrl必须填写。
  */
 @property (nonatomic, strong)RCCustomerServiceInfo *csInfo;
+
+/*!
+客服评价弹出时间，在客服页面停留超过这个时间，离开客服会弹出评价提示框，默认为60s
+ */
+@property (nonatomic, assign)NSTimeInterval csEvaInterval;
 /*!
  评价客服服务,然后离开当前VC的。此方法有可能在离开客服会话页面触发，也可能是客服在后台推送评价触发，也可能用户点击机器人知识库评价触发。应用可以重写此方法来自定义客服评价界面。应用不要直接调用此方法。
  

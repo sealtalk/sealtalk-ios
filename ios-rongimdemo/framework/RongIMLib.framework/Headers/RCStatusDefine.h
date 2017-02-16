@@ -276,7 +276,7 @@ typedef NS_ENUM(NSInteger, RCErrorCode) {
   FORBIDDEN_IN_CHATROOM = 23408,
 
   /*!
-   已被踢出聊天室
+   已被踢出并禁止加入聊天室
    */
   KICKED_FROM_CHATROOM = 23409,
 
@@ -507,12 +507,12 @@ typedef NS_ENUM(NSUInteger, RCSDKRunningMode) {
   /*!
    前台运行状态
    */
-  RCSDKRunningMode_Backgroud = 0,
+  RCSDKRunningMode_Background = 0,
 
   /*!
    后台运行状态
    */
-  RCSDKRunningMode_Foregroud = 1
+  RCSDKRunningMode_Foreground = 1
 };
 
 #pragma mark - 会话相关
@@ -876,6 +876,11 @@ typedef NS_ENUM(NSUInteger, RCCSEvaEntryPoint) {
    在扩展中展示客户主动评价按钮，离开客服不评价
    */
   RCCSEvaExtention = 1,
+  
+  /*!
+   无评价入口
+   */
+  RCCSEvaNone = 2,
 };
 
 /*!

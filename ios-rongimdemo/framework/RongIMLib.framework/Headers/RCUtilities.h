@@ -14,6 +14,7 @@
 #define __RCUtilities
 
 #import <UIKit/UIKit.h>
+#import "RCMessage.h"
 
 /*!
  工具类
@@ -244,6 +245,22 @@
  @discussion 所有换行符将被替换成单个空格
  */
 + (NSString *)getNowrapString:(NSString *)originalString;
+
+/**
+ 获取消息类型对应的描述
+
+ @param mediaType 消息类型
+ @return 描述
+ */
++ (NSString *)getMediaTypeString:(RCMediaType)mediaType;
+
+/**
+ 获取消息内容对应的媒体类型
+
+ @param content 消息内容
+ @return 媒体类型，如果是不支持的媒体类型或者消息，将返回-1
+ */
++ (RCMediaType)getMediaType:(RCMessageContent *)content;
 
 @end
 #endif

@@ -145,10 +145,10 @@
 "VoIPCallMute"="静音";
 "VoIPCallSpeaker"="免提";
 "VoIPCallWaitingForRemoteAccept"="正在等待对方接受邀请...";
-"VoIPAudioCallIncoming"="邀请你进行语音聊天";
-"VoIPVideoCallIncoming"="邀请你进行视频聊天";
-"VoIPAudioCallIncomingWithoutUserName"="你有一个语音聊天邀请";
-"VoIPVideoCallIncomingWithoutUserName"="你有一个视频聊天邀请";
+"VoIPAudioCallIncoming"="邀请您进行语音聊天";
+"VoIPVideoCallIncoming"="邀请您进行视频聊天";
+"VoIPAudioCallIncomingWithoutUserName"="您有一个语音聊天邀请";
+"VoIPVideoCallIncomingWithoutUserName"="您有一个视频聊天邀请";
 "VoIPMultiCallUserCollectionTitle"="群聊成员";
 "VoIPCallTotalTime"="通话时长";
 "VoIPCallHasEnd"="已结束";

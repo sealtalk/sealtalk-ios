@@ -571,7 +571,7 @@
 - (void)didReceiveMessageNotification:(NSNotification *)notification {
   NSNumber *left = [notification.userInfo objectForKey:@"left"];
   if ([RCIMClient sharedRCIMClient].sdkRunningMode ==
-          RCSDKRunningMode_Backgroud &&
+          RCSDKRunningMode_Background &&
       0 == left.integerValue) {
     int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
       @(ConversationType_PRIVATE),

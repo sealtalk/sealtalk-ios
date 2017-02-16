@@ -659,7 +659,7 @@
                    animations:^{
 
                      self.view.frame =
-                         CGRectMake(0.f, -50, self.view.frame.size.width,
+                         CGRectMake(0.f, -150, self.view.frame.size.width,
                                     self.view.frame.size.height);
                      _headBackground.frame =
                          CGRectMake(0, 70, self.view.bounds.size.width, 50);

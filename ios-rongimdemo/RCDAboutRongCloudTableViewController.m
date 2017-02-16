@@ -213,48 +213,28 @@
 
 -(void)gotoDebugModel
 {
-    NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
-   NSString *isDisplayOnlineStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"];
-  if ([isDisplayID isEqualToString:@"YES"] && [isDisplayOnlineStatus isEqualToString:@"YES"]) {
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:nil
-                          message:@"Debug模式"
-                          delegate:self
-                          cancelButtonTitle:@"确定"
-                          otherButtonTitles:@"强制Crash",@"关闭显示ID",@"关闭显示在线状态", nil];
-    alert.delegate = self;
-    [alert show];
-    
-  } else if (isDisplayID == nil && [isDisplayOnlineStatus isEqualToString:@"YES"]) {
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:nil
-                          message:@"Debug模式"
-                          delegate:self
-                          cancelButtonTitle:@"确定"
-                          otherButtonTitles:@"强制Crash",@"显示ID",@"关闭显示在线状态", nil];
-    alert.delegate = self;
-    [alert show];
-  } else if ([isDisplayID isEqualToString:@"YES"] && isDisplayOnlineStatus == nil) {
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:nil
-                          message:@"Debug模式"
-                          delegate:self
-                          cancelButtonTitle:@"确定"
-                          otherButtonTitles:@"强制Crash",@"关闭显示ID",@"显示在线状态", nil];
-    alert.delegate = self;
-    [alert show];
+  NSString *isDisplayID = @"显示ID";
+  if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"] isEqualToString:@"YES"]) {
+    isDisplayID = @"关闭显示ID";
+  }
+  NSString *isDisplayOnlineStatus = @"显示在线状态";
+  if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"] isEqualToString:@"YES"]) {
+    isDisplayOnlineStatus = @"关闭显示在线状态";
   }
   
-  else {
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:nil
-                          message:@"Debug模式"
-                          delegate:self
-                          cancelButtonTitle:@"确定"
-                          otherButtonTitles:@"强制Crash",@"显示ID",@"显示在线状态", nil];
-    alert.delegate = self;
-    [alert show];
+  NSString *stayAfterJoinChatRoomFailed = @"加入聊天室失败仍停留在会话界面";
+  if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"stayAfterJoinChatRoomFailed"] isEqualToString:@"YES"]) {
+    stayAfterJoinChatRoomFailed = @"加入聊天室失败自动退出会话界面";
   }
+  
+  UIAlertView *alert = [[UIAlertView alloc]
+                        initWithTitle:nil
+                        message:@"Debug模式"
+                        delegate:self
+                        cancelButtonTitle:@"确定"
+                        otherButtonTitles:@"强制Crash",isDisplayID,isDisplayOnlineStatus,stayAfterJoinChatRoomFailed, nil];
+  alert.delegate = self;
+  [alert show];
 }
 
 //force crash for test
@@ -263,7 +243,7 @@
   x = x/x;
 }
 
--(void) setIsDisplayId
+-(void)setIsDisplayId
 {
   NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
   if ([isDisplayID isEqualToString:@"YES"]) {
@@ -276,7 +256,7 @@
   }
 }
 
--(void) setIsDisplayOnlineStatus
+-(void)setIsDisplayOnlineStatus
 {
   NSString *isDisplayOnlineStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"];
   if ([isDisplayOnlineStatus isEqualToString:@"YES"]) {
@@ -286,6 +266,18 @@
     [DEFAULTS setObject:@"YES" forKey:@"isDisplayOnlineStatus"];
     [DEFAULTS synchronize];
     
+  }
+}
+
+-(void)setStayAfterJoinChatRoomFailed
+{
+  NSString *stayAfterJoinChatRoomFailed = [[NSUserDefaults standardUserDefaults] objectForKey:@"stayAfterJoinChatRoomFailed"];
+  if ([stayAfterJoinChatRoomFailed isEqualToString:@"YES"]) {
+    [DEFAULTS setObject:nil forKey:@"stayAfterJoinChatRoomFailed"];
+    [DEFAULTS synchronize];
+  } else {
+    [DEFAULTS setObject:@"YES" forKey:@"stayAfterJoinChatRoomFailed"];
+    [DEFAULTS synchronize];
   }
 }
 
@@ -302,6 +294,10 @@
       
     case 3:
       [self setIsDisplayOnlineStatus];
+      break;
+      
+    case 4:
+      [self setStayAfterJoinChatRoomFailed];
       break;
       
     default:

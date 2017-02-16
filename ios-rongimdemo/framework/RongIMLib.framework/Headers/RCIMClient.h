@@ -113,6 +113,50 @@
 
 @end
 
+#pragma mark - 聊天室监听器
+
+/*!
+ IMLib聊天室状态的的监听器
+ 
+ @discussion
+ 设置IMLib的聊天室状态监听器，请参考RCIMClient的setChatRoomStatusDelegate:方法。
+ */
+@protocol RCChatRoomStatusDelegate <NSObject>
+
+/*!
+ 开始加入聊天室的回调
+ 
+ @param chatroomId 聊天室ID
+ */
+- (void)onChatRoomJoining:(NSString *)chatroomId;
+
+/*!
+ 加入聊天室成功的回调
+ 
+ @param chatroomId 聊天室ID
+ */
+- (void)onChatRoomJoined:(NSString *)chatroomId;
+
+/*!
+ 加入聊天室失败的回调
+ 
+ @param chatroomId 聊天室ID
+ @param errorCode  加入失败的错误码
+ 
+ @discussion 如果错误码是KICKED_FROM_CHATROOM或RC_CHATROOM_NOT_EXIST，则不会自动重新加入聊天室，App需要按照自己的逻辑处理。
+ */
+- (void)onChatRoomJoinFailed:(NSString *)chatroomId
+                   errorCode:(RCErrorCode)errorCode;
+
+/*!
+ 退出聊天室成功的回调
+ 
+ @param chatroomId 聊天室ID
+ */
+- (void)onChatRoomQuited:(NSString *)chatroomId;
+
+@end
+
 #pragma mark - 输入状态监听器
 
 /*!
@@ -1846,6 +1890,13 @@ getConversationNotificationStatus:(RCConversationType)conversationType
                 success:(void (^)(RCChatRoomInfo *chatRoomInfo))successBlock
                   error:(void (^)(RCErrorCode status))errorBlock;
 
+/*!
+ 设置IMLib的聊天室状态监听器
+ 
+ @param delegate IMLib聊天室状态监听器
+ */
+- (void)setChatRoomStatusDelegate:(id<RCChatRoomStatusDelegate>)delegate;
+
 #pragma mark - 公众服务
 
 /*!
@@ -2018,12 +2069,20 @@ getConversationNotificationStatus:(RCConversationType)conversationType
 - (NSString *)getSDKVersion;
 
 /*!
- 将AMR格式的音频数据转化为WAV格式的音频数据
+ 将AMR格式的音频数据转化为WAV格式的音频数据，数据开头携带WAVE文件头
 
  @param data    AMR格式的音频数据，必须是AMR-NB的格式
  @return        WAV格式的音频数据
  */
 - (NSData *)decodeAMRToWAVE:(NSData *)data;
+
+/*!
+ 将AMR格式的音频数据转化为WAV格式的音频数据，数据开头不携带WAVE文件头
+ 
+ @param data    AMR格式的音频数据，必须是AMR-NB的格式
+ @return        WAV格式的音频数据
+ */
+- (NSData *)decodeAMRToWAVEWithoutHeader:(NSData *)data;
 
 /*!
  将WAV格式的音频数据转化为AMR格式的音频数据（8KHz采样）
@@ -2154,7 +2213,7 @@ startCustomerService:(NSString *)kefuId
  @param dialogId              对话ID，客服请求评价的对话ID
  @param value                 分数，取值范围1-5
  @param suggest               客户建议
- @param resolveStatus         解决状态，取值范围0-2
+ @param resolveStatus         解决状态，如果没有解决状态，这里可以随意赋值，SDK不会处理
  @discussion 此方法依赖startCustomerService方法。可在客服结束之前或之后调用。
  @discussion
  有些客服服务商会主动邀请评价，pullEvaluationBlock会被调用到，当评价完成后调用本函数同步到服务器，dialogId填pullEvaluationBlock返回的dialogId。若是离开会话触发的评价或者在加号扩展中主动触发的评价，dialogID为nil

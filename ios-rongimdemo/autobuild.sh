@@ -158,6 +158,10 @@ else
 sed -i '' -e '/redirectNSlogToDocumentFolder/s/\/\///g' ./RCloudMessage/AppDelegate.m
 sed -i "" -e '/UIFileSharingEnabled/{n;s/false/true/; }' ./RCloudMessage/Info.plist
 sed -i '' -e 's/RCDDebugTestFunction 1/\RCDDebugTestFunction 0/g' ./RCloudMessage/Utilities/RCDCommonDefine.h
+# 去除demo中PTT相关依赖
+sed -i '' -e '/RongCloudPTT/d' ./RCloudMessage.xcodeproj/project.pbxproj
+sed -i '' -e '/RongPTTKit/d' ./RCloudMessage.xcodeproj/project.pbxproj
+sed -i '' -e '/RongPTTLib/d' ./RCloudMessage.xcodeproj/project.pbxproj
 fi
 
 # 替换友盟 Key

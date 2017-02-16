@@ -38,4 +38,35 @@
  @param messageModel   被点击MessageCell的model
  */
 - (void)didTapMessageCell:(RCMessageModel *)messageModel;
+
+/**
+ 会话页面 WillAppear 时会调用，可以自己修改 extensionView 的 frame 及内容
+ 
+ @param conversationType 会话类型
+ @param targetId         targetId
+ @param extensionView    扩展view
+ */
+- (void)extensionViewWillAppear:(RCConversationType)conversationType
+                       targetId:(NSString *)targetId
+                  extensionView:(UIView *)extensionView;
+
+/**
+ 会话页面 WillDisappear 时会调用（如果您的扩展模块里有其他需要改变会话页面的 extensionView,在收到这个方法之后就应该终止修改）
+ 
+ @param conversationType 会话类型
+ @param targetId         targetId
+ */
+- (void)extensionViewWillDisappear:(RCConversationType)conversationType
+                          targetId:(NSString *)targetId;
+
+
+/**
+ 会话页面即将被销毁，点击会话页面左上角的“返回”按钮会触发这个回调
+ 
+ @param conversationType 会话类型
+ @param targetId targetId
+ */
+- (void)containerViewWillDestroy:(RCConversationType)conversationType
+                        targetId:(NSString *)targetId;
+
 @end

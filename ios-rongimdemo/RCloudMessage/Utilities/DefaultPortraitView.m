@@ -40,6 +40,7 @@
 
   //设置字母Label
   UILabel *firstCharacterLabel = [[UILabel alloc] init];
+
   NSString *firstLetter = nil;
   if(nickname.length > 0){
     firstLetter = [nickname substringToIndex:1];

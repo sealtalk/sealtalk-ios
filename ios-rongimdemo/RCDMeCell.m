@@ -18,15 +18,6 @@
 }
 */
 
-+ (RCDMeCell *)shareInstance {
-  static RCDMeCell *instance = nil;
-  static dispatch_once_t predicate;
-  dispatch_once(&predicate, ^{
-    instance = [[[self class] alloc] init];
-  });
-  return instance;
-}
-
 - (void)setCellWithImageName:(NSString *)imageName labelName:(NSString *)labelName {
   [self setImageView:self.leftImageView ImageStr:imageName imageSize:CGSizeMake(18, 18) LeftOrRight:0];
   self.leftLabel.text = labelName;
