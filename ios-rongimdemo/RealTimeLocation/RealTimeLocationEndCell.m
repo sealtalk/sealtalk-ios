@@ -9,6 +9,14 @@
 #import "RealTimeLocationEndCell.h"
 
 @implementation RealTimeLocationEndCell
++ (CGSize)sizeForMessageModel:(RCMessageModel *)model
+      withCollectionViewWidth:(CGFloat)collectionViewWidth
+         referenceExtraHeight:(CGFloat)extraHeight {
+  CGFloat __messagecontentview_height = 21.0f;
+  __messagecontentview_height += extraHeight;
+  
+  return CGSizeMake(collectionViewWidth, __messagecontentview_height);
+}
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {

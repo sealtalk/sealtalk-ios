@@ -6,8 +6,6 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#ifndef __RCBaseViewController
-#define __RCBaseViewController
 #import <UIKit/UIKit.h>
 #import <RongIMLib/RongIMLib.h>
 
@@ -24,4 +22,3 @@
 //如果需要实现滑动返回，请参考知识库http://support.rongcloud.cn/kb/NTEx 
 //@property(nonatomic, assign) BOOL enableInteractivePopGestureRecognizer;
 @end
-#endif

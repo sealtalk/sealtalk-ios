@@ -13,11 +13,11 @@
     : UIViewController <UITableViewDataSource, UITableViewDelegate,
                         UISearchBarDelegate, UISearchControllerDelegate>
 
-@property(weak, nonatomic) IBOutlet UISearchBar *searchFriendsBar;
+@property(nonatomic, strong) UISearchBar *searchFriendsBar;
+@property(nonatomic, strong) UITableView *friendsTabelView;
 
 @property(nonatomic, strong) NSDictionary *allFriendSectionDic;
 
-@property(weak, nonatomic) IBOutlet UITableView *friendsTabelView;
 
 @property(nonatomic, strong) NSArray *seletedUsers;
 

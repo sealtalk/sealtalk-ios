@@ -11,6 +11,8 @@
 
 @interface RCDAddressBookViewController : UITableViewController
 
++ (instancetype)addressBookViewController;
+
 @property(nonatomic, strong) NSArray *keys;
 
 @property(nonatomic, strong) NSMutableDictionary *allFriends;

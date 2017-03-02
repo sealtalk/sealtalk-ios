@@ -25,8 +25,11 @@
 #import "UIColor+RCColor.h"
 #import "RedpacketConfig.h"
 #import "RCDNavigationViewController.h"
+#import "RCDMainTabBarViewController.h"
+#import "RCDSettingServerUrlViewController.h"
+#import "RCDSettingUserDefaults.h"
 
-@interface RCDLoginViewController () <UITextFieldDelegate, RCIMConnectionStatusDelegate>
+@interface RCDLoginViewController () <UITextFieldDelegate, RCIMConnectionStatusDelegate,UIAlertViewDelegate>
 
 
 @property(retain, nonatomic) IBOutlet RCAnimatedImagesView *animatedImagesView;
@@ -35,6 +38,8 @@
 
 @property(weak, nonatomic) IBOutlet UITextField *pwdTextField;
 
+@property(nonatomic, strong) NSTimer *retryTime;
+
 @property(nonatomic, strong) UIView *headBackground;
 @property(nonatomic, strong) UIImageView *rongLogo;
 @property(nonatomic, strong) UIView *inputBackground;
@@ -42,10 +47,10 @@
 @property(nonatomic, strong) UILabel *errorMsgLb;
 @property(nonatomic, strong) UITextField *passwordTextField;
 
+@property(nonatomic, strong) UIButton *settingButton ;
+
 @property(nonatomic, strong) AppkeyModel *currentModel;
 
-@property(nonatomic, strong) UILabel *appKeyLabel;
-@property(nonatomic, strong) UIButton *changeKeyButton;
 @property(nonatomic) int loginFailureTimes;
 @property(nonatomic) BOOL rcDebug;
 
@@ -63,35 +68,12 @@
 @synthesize inputBackground = _inputBackground;
 MBProgressHUD *hud;
 
-- (void)onChangeKey:(id)sender {
-  if (sender == self.changeKeyButton) {
-    SelectAppKeyViewController *selectAppkeyVC =
-        [[SelectAppKeyViewController alloc] init];
-    selectAppkeyVC.result = ^(AppkeyModel *selectedModel) {
-      if (selectedModel) {
-        self.currentModel = selectedModel;
-        self.appKeyLabel.text = selectedModel.appKey;
-      }
-    };
-
-    [self.navigationController pushViewController:selectAppkeyVC animated:YES];
-  }
-}
 - (void)viewDidLoad {
   [super viewDidLoad];
-  self.rcDebug = [[NSUserDefaults standardUserDefaults]
-      boolForKey:@"rongcloud appkey debug"];
-  if (self.rcDebug) { //测试切换appkey使用
-    NSDictionary *defaultValues = [NSDictionary
-        dictionaryWithObjectsAndKeys:@[
-          @"z3v5yqkbv8v30",
-          @"lmxuhwagxrxmd",
-          @"e0x9wycfx7flq"
-        ],
-                                     @"keys", @[ @1, @2, @0 ], @"envs", nil];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:defaultValues];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-  }
+  self.rcDebug = NO;
+#if RCDPrivateCloudManualMode
+  self.rcDebug = YES;
+#endif
   
   _loginFailureTimes = 0;
 
@@ -112,24 +94,6 @@ MBProgressHUD *hud;
   _headBackground.backgroundColor =
       [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0.2];
   [self.view addSubview:_headBackground];
-
-  if (self.rcDebug) {
-    self.appKeyLabel =
-        [[UILabel alloc] initWithFrame:CGRectMake(5, 20, 150, 40)];
-    self.appKeyLabel.text = @"请选择AppKey";
-
-    self.changeKeyButton =
-        [[UIButton alloc] initWithFrame:CGRectMake(150, 20, 120, 40)];
-    [self.changeKeyButton setTitle:@"选择" forState:UIControlStateNormal];
-    [self.changeKeyButton addTarget:self
-                             action:@selector(onChangeKey:)
-                   forControlEvents:UIControlEventTouchUpInside];
-    [self.changeKeyButton setBackgroundColor:[UIColor redColor]];
-    self.changeKeyButton.imageView.contentMode = UIViewContentModeCenter;
-
-    [self.view addSubview:self.appKeyLabel];
-    [self.view addSubview:self.changeKeyButton];
-  }
 
   UIButton *registerHeadButton =
       [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 50)];
@@ -213,9 +177,6 @@ MBProgressHUD *hud;
   userNameTextField.text = [self getDefaultUserName];
   userNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
   userNameTextField.adjustsFontSizeToFitWidth = YES;
-  [userNameTextField addTarget:self
-                        action:@selector(textFieldDidChange:)
-              forControlEvents:UIControlEventEditingChanged];
   userNameTextField.keyboardType = UIKeyboardTypeNumberPad;
 
   [_inputBackground addSubview:userNameTextField];
@@ -249,6 +210,18 @@ MBProgressHUD *hud;
   loginButton.imageView.contentMode = UIViewContentModeCenter;
   loginButton.translatesAutoresizingMaskIntoConstraints = NO;
   [_inputBackground addSubview:loginButton];
+    
+    //设置按钮
+    UIButton *settingButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [settingButton setTitle:@"私有云设置" forState:UIControlStateNormal];
+    [settingButton setTitleColor:[[UIColor alloc]initWithRed:153 green:153 blue:153 alpha:0.5] forState:UIControlStateNormal];
+    [settingButton.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:17.0]];
+    [settingButton addTarget:self action:@selector(settingEvent) forControlEvents:UIControlEventTouchUpInside];
+    settingButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [_inputBackground addSubview:settingButton];
+    self.settingButton = settingButton;
+    settingButton.hidden = !self.rcDebug;
+  
   UIButton *userProtocolButton = [[UIButton alloc] initWithFrame:CGRectZero];
   //    [userProtocolButton setTitle:@"阅读用户协议"
   //    forState:UIControlStateNormal];
@@ -298,6 +271,8 @@ MBProgressHUD *hud;
                       action:@selector(registerEvent)
             forControlEvents:UIControlEventTouchUpInside];
   [bottomBackground addSubview:forgetPswButton];
+    
+    
   
   CGRect screenBounds = self.view.frame;
   UILabel *footerLabel = [[UILabel alloc] init];
@@ -347,7 +322,7 @@ MBProgressHUD *hud;
           [NSLayoutConstraint
               constraintsWithVisualFormat:@"V:|-70-[_rongLogo(100)]-10-[_"
                                           @"errorMsgLb(==10)]-20-[_"
-                                          @"inputBackground(180)]-20-["
+                                          @"inputBackground(320)]-20-["
                                           @"userProtocolButton(==20)]"
                                   options:0
                                   metrics:nil
@@ -388,9 +363,9 @@ MBProgressHUD *hud;
                                     constant:0];
   [self.view addConstraint:userProtocolLabelConstraint];
   NSDictionary *inputViews = NSDictionaryOfVariableBindings(
-      userNameTextField, passwordTextField, loginButton);
+      userNameTextField, passwordTextField, loginButton,settingButton);
 
-  NSArray *inputViewConstraints = [[[
+  NSArray *inputViewConstraints = [[[[
       [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[userNameTextField]|"
                                               options:0
                                               metrics:nil
@@ -402,15 +377,7 @@ MBProgressHUD *hud;
                                   metrics:nil
                                     views:inputViews]]
       arrayByAddingObjectsFromArray:[NSLayoutConstraint
-                                        constraintsWithVisualFormat:@"V:|["
-                                                                    @"userName"
-                                                                    @"TextFiel"
-                                                                    @"d(60)]-["
-                                                                    @"password"
-                                                                    @"TextFiel"
-                                                                    @"d(60)]-["
-                                                                    @"loginBut"
-                                                                    @"ton(50)]"
+                                        constraintsWithVisualFormat:@"V:|[userNameTextField(60)]-[passwordTextField(60)]-[loginButton(50)]-40-[settingButton(50)]"
                                                             options:0
                                                             metrics:nil
                                                               views:inputViews]]
@@ -418,9 +385,18 @@ MBProgressHUD *hud;
           [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[loginButton]|"
                                                   options:0
                                                   metrics:nil
-                                                    views:inputViews]];
+                                                    views:inputViews]]
+arrayByAddingObjectsFromArray:
+    [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[settingButton]|"
+                                            options:0
+                                            metrics:nil
+                                              views:inputViews]];
 
   [_inputBackground addConstraints:inputViewConstraints];
+    
+    
+//    CGPoint footerLabelCenter = footerLabel.center;
+//    settingButton.center = CGPointMake(footerLabelCenter.x, footerLabelCenter.y-12);
 
   [[NSNotificationCenter defaultCenter]
       addObserver:self
@@ -443,34 +419,9 @@ MBProgressHUD *hud;
                animated:NO];
   [self.view setNeedsLayout];
   [self.view setNeedsUpdateConstraints];
+    
 }
 
-//用户名输入时改变字体大小
-- (void)textFieldDidChange:(UITextField *)textField {
-  if (textField.text.length == 0) {
-    [textField setFont:[UIFont fontWithName:@"Heiti SC" size:18.0]];
-  } else {
-    [textField setFont:[UIFont fontWithName:@"Heiti SC" size:25.0]];
-  }
-
-  if ([textField.text isEqualToString:@"appkeydebug"]) {
-    [[NSUserDefaults standardUserDefaults] setBool:!self.rcDebug
-                                            forKey:@"rongcloud appkey debug"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    UIAlertView *alert = [[UIAlertView alloc]
-            initWithTitle:@"Alert"
-                  message:(!self.rcDebug
-                               ? @"进入debug模式，请重新启动应用！"
-                               : @"退出debug模式，请重新启动应用")
-                 delegate:self
-        cancelButtonTitle:@"Cancel"
-        otherButtonTitles:nil, nil];
-    [alert show];
-    self.rcDebug = !self.rcDebug;
-    exit(0);
-    return;
-  }
-}
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
   [self.view endEditing:YES];
 }
@@ -569,13 +520,19 @@ MBProgressHUD *hud;
 
 - (void)viewDidDisappear:(BOOL)animated {
   [super viewDidDisappear:animated];
-
+  [self invalidateRetryTime];
   [self.animatedImagesView stopAnimating];
 }
 
 /*阅读用户协议*/
 - (void)userProtocolEvent {
 }
+
+- (void)settingEvent {
+    RCDSettingServerUrlViewController *temp = [[RCDSettingServerUrlViewController alloc]init];
+    [self.navigationController pushViewController:temp animated:YES];
+}
+
 /*注册*/
 - (void)registerEvent {
   RCDRegisterViewController *temp = [[RCDRegisterViewController alloc] init];
@@ -618,14 +575,32 @@ MBProgressHUD *hud;
       [(UITextField *)[self.view viewWithTag:UserTextFieldTag] text];
   NSString *userPwd =
       [(UITextField *)[self.view viewWithTag:PassWordFieldTag] text];
+    
+    if(self.retryTime){
+        [self invalidateRetryTime];
+    }
 
+    self.retryTime = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(retryConnectionFailed) userInfo:nil repeats:NO];
+    
   [self login:userName password:userPwd];
+}
+
+- (void)retryConnectionFailed {
+    [[RCIM sharedRCIM] disconnect];
+    [self invalidateRetryTime];
+    [hud hide:YES];
+}
+
+- (void)invalidateRetryTime {
+    [self.retryTime invalidate];
+    self.retryTime = nil;
 }
 
 - (void)loginSuccess:(NSString *)userName
               userId:(NSString *)userId
                token:(NSString *)token
             password:(NSString *)password {
+  [self invalidateRetryTime];
   //保存默认用户
   [DEFAULTS setObject:userName forKey:@"userName"];
   [DEFAULTS setObject:password forKey:@"userPwd"];
@@ -667,11 +642,9 @@ MBProgressHUD *hud;
                        complete:^(NSMutableArray *friends){
                        }];
   dispatch_async(dispatch_get_main_queue(), ^{
-    UIStoryboard *storyboard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDNavigationViewController *rootNavi =
-        [storyboard instantiateViewControllerWithIdentifier:@"rootNavi"];
-    [ShareApplicationDelegate window].rootViewController = rootNavi;
+    RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
+    RCDNavigationViewController *rootNavi = [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
+    [UIApplication sharedApplication].delegate.window.rootViewController = rootNavi;
   });
 }
 /**
@@ -690,7 +663,7 @@ MBProgressHUD *hud;
   self.loginToken = token;
   self.loginPassword = password;
   
-  //登陆融云服务器
+  //登录融云服务器
   [[RCIM sharedRCIM] connectWithToken:token
       success:^(NSString *userId) {
         NSLog([NSString
@@ -701,13 +674,23 @@ MBProgressHUD *hud;
       }
       error:^(RCConnectErrorCode status) {
         //关闭HUD
-        [hud hide:YES];
-        NSLog(@"RCConnectErrorCode is %ld", (long)status);
-        _errorMsgLb.text = [NSString stringWithFormat:@"登陆失败！Status: %zd", status];
-        [_pwdTextField shake];
-        
-        //SDK会自动重连登陆，这时候需要监听连接状态
-        [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
+
+//        [hud hide:YES];
+//        NSLog(@"RCConnectErrorCode is %ld", (long)status);
+//        _errorMsgLb.text = [NSString stringWithFormat:@"登陆失败！Status: %zd", status];
+//        [_pwdTextField shake];
+          dispatch_async(dispatch_get_main_queue(), ^{
+              //关闭HUD
+              [hud hide:YES];
+              NSLog(@"RCConnectErrorCode is %ld", (long)status);
+              _errorMsgLb.text = [NSString stringWithFormat:@"登录失败！Status: %zd", status];
+              [_pwdTextField shake];
+              
+              //SDK会自动重连登录，这时候需要监听连接状态
+              [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
+          });
+//        //SDK会自动重连登陆，这时候需要监听连接状态
+//        [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
       }
       tokenIncorrect:^{
         NSLog(@"IncorrectToken");
@@ -734,13 +717,14 @@ MBProgressHUD *hud;
 }
 
 /**
- *  登陆
+ *  登录
  */
 - (void)login:(NSString *)userName password:(NSString *)password {
-  RCNetworkStatus stauts =
+  
+  RCNetworkStatus status =
       [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
 
-  if (RC_NotReachable == stauts) {
+  if (RC_NotReachable == status) {
     _errorMsgLb.text = @"当前网络不可用，请检查！";
     return;
   } else {
@@ -749,9 +733,6 @@ MBProgressHUD *hud;
 
   if ([self validateUserName:userName userPwd:password]) {
 
-    if (self.rcDebug) {
-      [[RCIM sharedRCIM] initWithAppKey:@"n19jmcy59f1q9"];
-    }
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.color = [UIColor colorWithHexString:@"343637" alpha:0.8];
     hud.labelText = @"登录中...";
@@ -795,11 +776,6 @@ MBProgressHUD *hud;
   } else if (userPwd.length == 0) {
     alertMessage = @"密码不能为空!";
     return NO;
-  }
-  if (self.rcDebug) {
-    if (self.currentModel == nil) {
-      alertMessage = @"请选择AppKey";
-    }
   }
 
   if (alertMessage) {

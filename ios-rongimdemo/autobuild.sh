@@ -10,9 +10,10 @@ configuration="Release"
 DEV_FLAG=""
 VER_FLAG=""
 RELEASE_FLAG="Stable"
-BIN_DIR="bin"
 ENV_FLAG="pro"
 PROFILE_FLAG="distribution"
+BIN_DIR="bin"
+BUILD_DIR="build"
 CUR_PATH=$(pwd)
 
 for i in "$@"
@@ -66,44 +67,101 @@ if [ -n "${MANUAL_DEMO_APPKEY}" ]; then
     sed -i '' -e '/RONGCLOUD_IM_APPKEY/s/@"n19jmcy59f1q9"/@"'$MANUAL_DEMO_APPKEY'"/g' ./RCloudMessage/AppDelegate.m
 elif [ ${ENV_FLAG} == "dev" ]; then
     sed -i '' -e '/RONGCLOUD_IM_APPKEY/s/@"n19jmcy59f1q9"/@"e0x9wycfx7flq"/g' ./RCloudMessage/AppDelegate.m
+elif [ ${ENV_FLAG} == "pre" ]; then
+    sed -i '' -e '/RONGCLOUD_IM_APPKEY/s/@"n19jmcy59f1q9"/@"c9kqb3rdkbb8j"/g' ./RCloudMessage/AppDelegate.m
 fi
 
 if [ -n "${MANUAL_DEMO_SERVER_URL}" ]; then
-    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/'$MANUAL_DEMO_SERVER_URL'\/"/g' ./RCloudMessage/AFHttpTool.m
-    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/'$MANUAL_DEMO_SERVER_URL'\/"/g' ./SealTalkShareExtention/RCDShareChatListController.m
+    if [[ $MANUAL_DEMO_SERVER_URL =~ ^http ]]; then
+        sed -i '' -e 's?http://api.sealtalk.im?'$MANUAL_DEMO_SERVER_URL'?g' ./RCloudMessage/AFHttpTool.m
+        sed -i '' -e 's?http://api.sealtalk.im?'$MANUAL_DEMO_SERVER_URL'?g' ./SealTalkShareExtension/RCDShareChatListController.m
+    else
+        sed -i '' -e 's?http://api.sealtalk.im?http://'$MANUAL_DEMO_SERVER_URL'?g' ./RCloudMessage/AFHttpTool.m
+        sed -i '' -e 's?http://api.sealtalk.im?http://'$MANUAL_DEMO_SERVER_URL'?g' ./SealTalkShareExtension/RCDShareChatListController.m
+    fi
+
+    if [[ $MANUAL_DEMO_SERVER_URL =~ ^https ]]; then
+        sed -i '' -e 's/api.sealtalk.im/'${MANUAL_DEMO_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    elif [[ $MANUAL_DEMO_SERVER_URL =~ ^http ]]; then
+        sed -i '' -e 's/api.sealtalk.im/'${MANUAL_DEMO_SERVER_URL/http\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    else
+        sed -i '' -e 's/api.sealtalk.im/'$MANUAL_DEMO_SERVER_URL'/g' ./RCloudMessage/Info.plist
+    fi
 elif [ ${ENV_FLAG} == "dev" ]; then
-    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/api.hitalk.im\/"/g' ./RCloudMessage/AFHttpTool.m
-    sed -i '' -e 's/@"http:\/\/api.sealtalk.im\/"/@"http:\/\/api.hitalk.im\/"/g' ./SealTalkShareExtention/RCDShareChatListController.m
+    sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./RCloudMessage/AFHttpTool.m
+    sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./SealTalkShareExtension/RCDShareChatListController.m
+    sed -i '' -e 's/api.sealtalk.im/api.hitalk.im/g' ./RCloudMessage/Info.plist
+elif [ ${ENV_FLAG} == "pre" ]; then
+    sed -i '' -e 's?http://api.sealtalk.im?http://apiqa.rongcloud.net?g' ./RCloudMessage/AFHttpTool.m
+    sed -i '' -e 's?http://api.sealtalk.im?http://apiqa.rongcloud.net?g' ./SealTalkShareExtension/RCDShareChatListController.m
+    sed -i '' -e 's/api.sealtalk.im/apiqa.rongcloud.net/g' ./RCloudMessage/Info.plist
 fi
 
 if [ -n "${MANUAL_NAVI_SERVER_URL}" ]; then
-    sed -i '' -e '/RONGCLOUD_IM_NAVI/s/@"nav.cn.ronghub.com"/@"'$MANUAL_NAVI_SERVER_URL'"/g' ./RCloudMessage/AppDelegate.m
+    sed -i '' -e '/RONGCLOUD_IM_NAVI/s?nav.cn.ronghub.com?'$MANUAL_NAVI_SERVER_URL'?g' ./RCloudMessage/AppDelegate.m
+    if [[ $MANUAL_NAVI_SERVER_URL =~ ^https ]]; then
+        sed -i '' -e 's/nav.cn.ronghub.com/'${MANUAL_NAVI_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    elif [[ $MANUAL_NAVI_SERVER_URL =~ ^http ]]; then
+        sed -i '' -e 's/nav.cn.ronghub.com/'${MANUAL_NAVI_SERVER_URL/http\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    else
+        sed -i '' -e 's/nav.cn.ronghub.com/'$MANUAL_NAVI_SERVER_URL'/g' ./RCloudMessage/Info.plist
+    fi
 fi
 
 if [ -n "${MANUAL_FILE_SERVER_URL}" ]; then
     sed -i '' -e '/RONGCLOUD_FILE_SERVER/s/@"img.cn.ronghub.com"/@"'$MANUAL_FILE_SERVER_URL'"/g' ./RCloudMessage/AppDelegate.m
+    if [[ $MANUAL_FILE_SERVER_URL =~ ^https ]]; then
+        sed -i '' -e 's/rongcloud-image.ronghub.com/'${MANUAL_FILE_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
+        sed -i '' -e 's/rongcloud-file.cn.ronghub.com/'${MANUAL_FILE_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    elif [[ $MANUAL_FILE_SERVER_URL =~ ^http ]]; then
+        sed -i '' -e 's/rongcloud-image.ronghub.com/'${MANUAL_FILE_SERVER_URL/http\:\/\//""}'/g' ./RCloudMessage/Info.plist
+        sed -i '' -e 's/rongcloud-file.ronghub.com/'${MANUAL_FILE_SERVER_URL/http\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    else
+        sed -i '' -e 's/rongcloud-image.ronghub.com/'$MANUAL_FILE_SERVER_URL'/g' ./RCloudMessage/Info.plist
+        sed -i '' -e 's/rongcloud-file.ronghub.com/'$MANUAL_FILE_SERVER_URL'/g' ./RCloudMessage/Info.plist
+    fi
 fi
 
 if [ ${ENV_FLAG} == "dev" ]; then
     sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU145760441681012"/g' ./RCloudMessage/RCDMeTableViewController.m
+    sed -i '' -e 's/nav.cn.ronghub.com/navxiaoqiao.cn.ronghub.com/g' ./RCloudMessage/Info.plist
+elif [ ${ENV_FLAG} == "pre" ]; then
+    sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU147980517733135"/g' ./RCloudMessage/RCDMeTableViewController.m
+    sed -i '' -e 's/nav.cn.ronghub.com/navqa.cn.ronghub.com/g' ./RCloudMessage/Info.plist
+elif [ ${ENV_FLAG} == "pri" ]; then
+    sed -i '' -e '/SERVICE_ID_XIAONENG1/s/@"kf_4029_1483495902343"/@"zf_1000_1481459114694"/g' ./RCloudMessage/RCDMeTableViewController.m
+    sed -i '' -e '/SERVICE_ID_XIAONENG2/s/@"op_1000_1483495280515"/@"zf_1000_1480591492399"/g' ./RCloudMessage/RCDMeTableViewController.m
 fi
 
 if [ ${ENV_FLAG} == "pri" ]; then
     sed -i '' -e 's/\/\/NSString \*RONGCLOUD_IM_NAVI/NSString \*RONGCLOUD_IM_NAVI/g' ./RCloudMessage/AppDelegate.m
     sed -i '' -e 's/\/\/NSString \*RONGCLOUD_FILE_SERVER/NSString \*RONGCLOUD_FILE_SERVER/g' ./RCloudMessage/AppDelegate.m
     sed -i '' -e 's/\/\/\[\[RCIMClient sharedRCIMClient\] setServerInfo/\[\[RCIMClient sharedRCIMClient\] setServerInfo/g' ./RCloudMessage/AppDelegate.m
+    if [ -z "${MANUAL_DEMO_APPKEY}" ] && [ -z "${MANUAL_DEMO_SERVER_URL}" ] &&  [ -z "${MANUAL_NAVI_SERVER_URL}" ] && [ -z "${MANUAL_FILE_SERVER_URL}" ]; then
+        sed -i '' -e 's/RCDPrivateCloudManualMode 0/\RCDPrivateCloudManualMode 1/g' ./RCloudMessage/Utilities/RCDCommonDefine.h
+    fi
+    cp -af RCloudMessage/private_test.plist RCloudMessage/info.plist
 else
     sed -i '' -e '/for private cloud test/,/RONGCLOUD_FILE_SERVER\];/d' ./RCloudMessage/AppDelegate.m
+    if [ ${ENV_FLAG} == "pro" ]; then
+      # 删除用户状态接口
+      sed -i '' -e '/For Private Cloud Only ++/,/For Private Cloud Only --/d' ./RCDPersonDetailViewController.m
+    fi
 fi
 
 if [ ${DEV_FLAG} == "debug" ]
 then
 sed -i '' -e '/DEMO_VERSION_BOARD/s/@""/@"http:\/\/bj.rongcloud.net\/list.php"/g' ./RCloudMessage/RCDMeTableViewController.m
 sed -i '' -e '/redirectNSlogToDocumentFolder/s/\/\///g' ./RCloudMessage/AppDelegate.m
-sed  -i "" -e '/UIFileSharingEnabled/{n;s/false/true/; }' ./RCloudMessage/Info.plist
+sed -i "" -e '/UIFileSharingEnabled/{n;s/false/true/; }' ./RCloudMessage/Info.plist
 else
 sed -i '' -e '/redirectNSlogToDocumentFolder/s/\/\///g' ./RCloudMessage/AppDelegate.m
-sed  -i "" -e '/UIFileSharingEnabled/{n;s/false/true/; }' ./RCloudMessage/Info.plist
+sed -i "" -e '/UIFileSharingEnabled/{n;s/false/true/; }' ./RCloudMessage/Info.plist
+sed -i '' -e 's/RCDDebugTestFunction 1/\RCDDebugTestFunction 0/g' ./RCloudMessage/Utilities/RCDCommonDefine.h
+# 去除demo中PTT相关依赖
+sed -i '' -e '/RongCloudPTT/d' ./RCloudMessage.xcodeproj/project.pbxproj
+sed -i '' -e '/RongPTTKit/d' ./RCloudMessage.xcodeproj/project.pbxproj
+sed -i '' -e '/RongPTTLib/d' ./RCloudMessage.xcodeproj/project.pbxproj
 fi
 
 # 替换友盟 Key
@@ -112,10 +170,10 @@ sed -i '' -e '/UMENG_APPKEY/s/@"563755cbe0f55a5cb300139c"/@"5637263b67e58e772200
 if [ ${PROFILE_FLAG} == "dev" ]
 then
 configuration="AutoDebug"
-BUILD_APP_PROFILE="c5ab9e5c-4bc1-4a91-b684-3dcb1f55e557"
-BUILD_WATCHKIT_EXTENSION_PROFILE="6f5c5d79-fd4f-4ec4-9495-d690b12a5fae"
-BUILD_WATCHKIT_APP_PROFILE="82080891-c055-4a61-a536-cbf2b76903bb"
-BUILD_SHARE_PROFILE="b752e5e6-86ea-4a87-a1ee-7c6221a8a877"
+BUILD_APP_PROFILE="34ef6289-ff30-423e-ae84-de957621ae8f"
+BUILD_WATCHKIT_EXTENSION_PROFILE="c361fc31-181d-43c5-9d2d-17466939e93f"
+BUILD_WATCHKIT_APP_PROFILE="3219a56b-1f02-4e39-8ada-02180b2326a3"
+BUILD_SHARE_PROFILE="1f6f4a71-aa6c-4ba5-9748-76a7c8efb6d9"
 else
 configuration="AutoRelease"
 # Release可以使用Automatic
@@ -149,19 +207,25 @@ sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./融云\ Dem
 PROJECT_NAME="RCloudMessage.xcodeproj"
 targetName="SealTalk"
 TARGET_DECIVE="iphoneos"
-#TARGET_I386="iphonesimulator"
 
-if [ ! -d "$BIN_DIR" ]; then
+rm -rf DerivedData
+rm -rf "$BIN_DIR"
+rm -rf "$BUILD_DIR"
 mkdir -p "$BIN_DIR"
-fi
-
-xcodebuild clean -configuration $configuration -sdk $TARGET_DECIVE APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
-#xcodebuild clean -configuration $configuration -sdk $TARGET_I386
+mkdir -p "$BUILD_DIR"
+xcodebuild clean -alltargets
 
 echo "***开始build iphoneos文件***"
-xcodebuild -project ${PROJECT_NAME} -target $targetName -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}" CODE_SIGN_IDENTITY="${BUILD_CODE_SIGN_IDENTITY}"
-xcrun -sdk $TARGET_DECIVE PackageApplication -v ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app -o ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.ipa
-cp -af ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.app.dSYM
+if [ ${PROFILE_FLAG} == "dev" ]; then
+  xcodebuild -project ${PROJECT_NAME} -target $targetName -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}"
+  xcrun -sdk $TARGET_DECIVE PackageApplication -v ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app -o ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.ipa
+  cp -af ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.app.dSYM
+else
+  xcodebuild -scheme "${targetName}" archive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}"
+  xcodebuild -exportArchive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -exportOptionsPlist "archive.plist" -exportPath "./${BIN_DIR}"
+  mv ./${BIN_DIR}/${targetName}.ipa ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.ipa
+  cp -af ./${BUILD_DIR}/${targetName}.xcarchive/dSYMs/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.app.dSYM
+fi
 
 echo "***编译结束***"
 

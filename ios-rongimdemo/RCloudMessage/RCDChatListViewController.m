@@ -18,15 +18,21 @@
 #import "RCDPublicServiceListViewController.h"
 #import "RCDRCIMDataSource.h"
 #import "RCDSearchFriendViewController.h"
-#import "RCDSelectPersonViewController.h"
 #import "RCDUserInfo.h"
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
 #import "UITabBar+badge.h"
+#import "RCDUIBarButtonItem.h"
+#import "RCDSearchBar.h"
+#import "RCDSearchResultModel.h"
+#import "RCDSearchViewController.h"
+#import "RCDCommonDefine.h"
 
-@interface RCDChatListViewController ()
-
+@interface RCDChatListViewController ()<UISearchBarDelegate,RCDSearchViewDelegate>
+@property (nonatomic,strong)UINavigationController *searchNavigationController;
+@property (nonatomic,strong)UIView *headerView;
+@property (nonatomic,strong)RCDSearchBar *searchBar;
 //@property (nonatomic,strong) NSMutableArray *myDataSource;
 @property(nonatomic, strong) RCConversationModel *tempModel;
 
@@ -38,6 +44,20 @@
 @end
 
 @implementation RCDChatListViewController
+- (RCDSearchBar *)searchBar{
+  if (!_searchBar) {
+    _searchBar = [[RCDSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.conversationListTableView.frame.size.width, 44)];
+    
+  }
+  return _searchBar;
+}
+
+- (UIView *)headerView{
+  if (!_headerView) {
+    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.conversationListTableView.frame.size.width, 44)];
+  }
+  return _headerView;
+}
 
 /**
  *  此处使用storyboard初始化，代码初始化当前类时*****必须要设置会话类型和聚合类型*****
@@ -66,10 +86,34 @@
   return self;
 }
 
+- (id)init {
+  self = [super init];
+  if (self) {
+    //设置要显示的会话类型
+    [self setDisplayConversationTypes:@[
+                                        @(ConversationType_PRIVATE),
+                                        @(ConversationType_DISCUSSION),
+                                        @(ConversationType_APPSERVICE),
+                                        @(ConversationType_PUBLICSERVICE),
+                                        @(ConversationType_GROUP),
+                                        @(ConversationType_SYSTEM)
+                                        ]];
+    
+    //聚合会话类型
+    [self setCollectionConversationType:@[ @(ConversationType_SYSTEM) ]];
+    
+  }
+  return self;
+}
+
 - (void)viewDidLoad {
   [super viewDidLoad];
-
+  
   self.edgesForExtendedLayout = UIRectEdgeNone;
+  self.navigationController.navigationBar.translucent = NO;
+  self.searchBar.delegate = self;
+  [self.headerView addSubview:self.searchBar];
+  self.conversationListTableView.tableHeaderView = self.headerView;
 
   //设置tableView样式
   self.conversationListTableView.separatorColor =
@@ -112,43 +156,42 @@
    name:@"RCDSharedMessageInsertSuccess"
    object:nil];
   
-  [[NSNotificationCenter defaultCenter]addObserver:self
-                                          selector:@selector(updateBadgeValueForTabBarItem)
-                                              name:RCLibDispatchReadReceiptNotification
-                                            object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(refreshCell:)
+                                               name:@"RefreshConversationList"
+                                             object:nil];
+
   
   [self checkVersion];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  self.navigationController.navigationBar.translucent = NO;
+  
   _isClick = YES;
-
   //自定义rightBarButtonItem
-  UIButton *rightBtn =
-      [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 17, 17)];
-  [rightBtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
-  [rightBtn addTarget:self
-                action:@selector(showMenu:)
-      forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *rightButton =
-      [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
-  [rightBtn setTintColor:[UIColor whiteColor]];
-  UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]
-                                     initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                     target:nil action:nil];
-  negativeSpacer.width = -6;
-  self.tabBarController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:negativeSpacer, rightButton, nil];
+  RCDUIBarButtonItem *rightBtn =
+  [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"add"]
+                                imageViewFrame:CGRectMake(0, 0, 17, 17)
+                                   buttonTitle:nil
+                                    titleColor:nil
+                                    titleFrame:CGRectZero
+                                   buttonFrame:CGRectMake(0, 0, 17, 17)
+                                        target:self
+                                        action:@selector(showMenu:)];
+  self.tabBarController.navigationItem.rightBarButtonItems = [rightBtn setTranslation:rightBtn translation:-6];
+  
   self.tabBarController.navigationItem.title = @"会话";
 
-  [self notifyUpdateUnreadMessageCount];
+//  [self notifyUpdateUnreadMessageCount];
   [[NSNotificationCenter defaultCenter]
       addObserver:self
          selector:@selector(receiveNeedRefreshNotification:)
              name:@"kRCNeedReloadDiscussionListNotification"
            object:nil];
   RCUserInfo *groupNotify = [[RCUserInfo alloc] initWithUserId:@"__system__"
-                                                          name:@"群组通知"
+                                                          name:@""
                                                       portrait:nil];
   [[RCIM sharedRCIM] refreshUserInfoCache:groupNotify withUserId:@"__system__"];
 }
@@ -160,6 +203,7 @@
       removeObserver:self
                 name:@"kRCNeedReloadDiscussionListNotification"
               object:nil];
+
 }
 
 - (void)updateBadgeValueForTabBarItem {
@@ -181,7 +225,7 @@
 }
 
 /**
- *  点击进入会话界面
+ *  点击进入会话页面
  *
  *  @param conversationModelType 会话类型
  *  @param model                 会话数据
@@ -202,7 +246,6 @@
       _conversationVC.userName = model.conversationTitle;
       _conversationVC.title = model.conversationTitle;
       _conversationVC.conversation = model;
-      _conversationVC.unReadMessage = model.unreadMessageCount;
       [self.navigationController pushViewController:_conversationVC
                                            animated:YES];
     }
@@ -223,11 +266,7 @@
         _conversationVC.title = @"系统消息";
       }
       if ([model.objectName isEqualToString:@"RC:ContactNtf"]) {
-        UIStoryboard *mainStoryboard =
-            [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        RCDAddressBookViewController *addressBookVC =
-            [mainStoryboard instantiateViewControllerWithIdentifier:
-                                @"RCDAddressBookViewController"];
+          RCDAddressBookViewController * addressBookVC= [RCDAddressBookViewController addressBookViewController];
         addressBookVC.needSyncFriendList = YES;
         
         [self.navigationController pushViewController:addressBookVC
@@ -261,11 +300,7 @@
           self.conversationListDataSource[indexPath.row];
 
       if ([model.objectName isEqualToString:@"RC:ContactNtf"]) {
-        UIStoryboard *mainStoryboard =
-            [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        RCDAddressBookViewController *addressBookVC =
-            [mainStoryboard instantiateViewControllerWithIdentifier:
-                                @"RCDAddressBookViewController"];
+          RCDAddressBookViewController * addressBookVC= [RCDAddressBookViewController addressBookViewController];
         [self.navigationController pushViewController:addressBookVC
                                              animated:YES];
       }
@@ -283,7 +318,7 @@
  *
  *  @param sender sender description
  */
-- (IBAction)showMenu:(UIButton *)sender {
+- (void)showMenu:(UIButton *)sender {
   NSArray *menuItems = @[
 
     [KxMenuItem menuItem:@"发起聊天"
@@ -300,7 +335,7 @@
                    image:[UIImage imageNamed:@"addfriend_icon"]
                   target:self
                   action:@selector(pushAddFriend:)],
-#ifdef DEBUG
+#if RCDDebugTestFunction
     [KxMenuItem menuItem:@"创建讨论组"
                    image:[UIImage imageNamed:@"addfriend_icon"]
                   target:self
@@ -325,11 +360,7 @@
  *  @param sender sender description
  */
 - (void)pushChat:(id)sender {
-  UIStoryboard *mainStoryboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDContactSelectedTableViewController *contactSelectedVC =
-      [mainStoryboard instantiateViewControllerWithIdentifier:
-                          @"RCDContactSelectedTableViewController"];
+    RCDContactSelectedTableViewController *contactSelectedVC = [[RCDContactSelectedTableViewController alloc]init];
   //    contactSelectedVC.forCreatingDiscussionGroup = YES;
   contactSelectedVC.isAllowsMultipleSelection = NO;
   contactSelectedVC.titleStr = @"发起聊天";
@@ -343,11 +374,7 @@
  *  @param sender sender description
  */
 - (void)pushContactSelected:(id)sender {
-  UIStoryboard *mainStoryboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDContactSelectedTableViewController *contactSelectedVC =
-      [mainStoryboard instantiateViewControllerWithIdentifier:
-                          @"RCDContactSelectedTableViewController"];
+    RCDContactSelectedTableViewController *contactSelectedVC = [[RCDContactSelectedTableViewController alloc]init];
   contactSelectedVC.forCreatingGroup = YES;
   contactSelectedVC.isAllowsMultipleSelection = YES;
   contactSelectedVC.titleStr = @"选择联系人";
@@ -382,10 +409,7 @@
  *  @param sender sender description
  */
 - (void)pushAddressBook:(id)sender {
-  UIStoryboard *mainStoryboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDAddressBookViewController *addressBookVC = [mainStoryboard
-      instantiateViewControllerWithIdentifier:@"RCDAddressBookViewController"];
+    RCDAddressBookViewController *addressBookVC = [RCDAddressBookViewController addressBookViewController];
   [self.navigationController pushViewController:addressBookVC animated:YES];
 }
 
@@ -471,6 +495,7 @@
 
   __block NSString *userName = nil;
   __block NSString *portraitUri = nil;
+  RCContactNotificationMessage *_contactNotificationMsg = nil;
 
   __weak RCDChatListViewController *weakSelf = self;
   //此处需要添加根据userid来获取用户信息的逻辑，extend字段不存在于DB中，当数据来自db时没有extend字段内容，只有userid
@@ -479,7 +504,7 @@
     if (model.conversationType == ConversationType_SYSTEM &&
         [model.lastestMessage
             isMemberOfClass:[RCContactNotificationMessage class]]) {
-      RCContactNotificationMessage *_contactNotificationMsg =
+      _contactNotificationMsg =
           (RCContactNotificationMessage *)model.lastestMessage;
       if (_contactNotificationMsg.sourceUserId == nil) {
         RCDChatListCell *cell =
@@ -541,49 +566,19 @@
   RCDChatListCell *cell =
       [[RCDChatListCell alloc] initWithStyle:UITableViewCellStyleDefault
                              reuseIdentifier:@""];
-  cell.lblDetail.text =
-      [NSString stringWithFormat:@"来自%@的好友请求", userName];
+  NSString *operation = _contactNotificationMsg.operation;
+  NSString *operationContent;
+  if ([operation isEqualToString:@"Request"]) {
+    operationContent = [NSString stringWithFormat:@"来自%@的好友请求", userName];
+  } else if ([operation isEqualToString:@"AcceptResponse"]) {
+    operationContent = [NSString stringWithFormat:@"%@通过了你的好友请求", userName];
+  }
+  cell.lblDetail.text = operationContent;
   [cell.ivAva sd_setImageWithURL:[NSURL URLWithString:portraitUri]
                 placeholderImage:[UIImage imageNamed:@"system_notice"]];
-  cell.labelTime.text = [self ConvertMessageTime:model.sentTime / 1000];
+  cell.labelTime.text = [RCKitUtility ConvertMessageTime:model.sentTime/1000];
   cell.model = model;
   return cell;
-}
-
-#pragma mark - private
-- (NSString *)ConvertMessageTime:(long long)secs {
-  NSString *timeText = nil;
-
-  NSDate *messageDate = [NSDate dateWithTimeIntervalSince1970:secs];
-
-  //    DebugLog(@"messageDate==>%@",messageDate);
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"yyyy-MM-dd"];
-
-  NSString *strMsgDay = [formatter stringFromDate:messageDate];
-
-  NSDate *now = [NSDate date];
-  NSString *strToday = [formatter stringFromDate:now];
-  NSDate *yesterday =
-      [[NSDate alloc] initWithTimeIntervalSinceNow:-(24 * 60 * 60)];
-  NSString *strYesterday = [formatter stringFromDate:yesterday];
-
-  NSString *_yesterday = nil;
-  if ([strMsgDay isEqualToString:strToday]) {
-    [formatter setDateFormat:@"HH':'mm"];
-  } else if ([strMsgDay isEqualToString:strYesterday]) {
-    _yesterday = NSLocalizedStringFromTable(@"Yesterday", @"RongCloudKit", nil);
-    //[formatter setDateFormat:@"HH:mm"];
-  }
-
-  if (nil != _yesterday) {
-    timeText =
-        _yesterday; //[_yesterday stringByAppendingFormat:@" %@", timeText];
-  } else {
-    timeText = [formatter stringFromDate:messageDate];
-  }
-
-  return timeText;
 }
 
 //*********************插入自定义Cell*********************//
@@ -623,6 +618,10 @@
                    customModel.conversationModelType =
                        RC_CONVERSATION_MODEL_TYPE_CUSTOMIZATION;
                    customModel.extend = rcduserinfo_;
+                   customModel.conversationType = message.conversationType;
+                   customModel.targetId = message.targetId;
+                   customModel.sentTime = message.sentTime;
+                   customModel.receivedTime = message.receivedTime;
                    customModel.senderUserId = message.senderUserId;
                    customModel.lastestMessage = _contactNotificationMsg;
                    //[_myDataSource insertObject:customModel atIndex:0];
@@ -654,10 +653,8 @@
                    });
                  }];
   } else {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      //调用父类刷新未读消息数
-      [super didReceiveMessageNotification:notification];
-    });
+    //调用父类刷新未读消息数
+    [super didReceiveMessageNotification:notification];
   }
 }
 - (void)didTapCellPortrait:(RCConversationModel *)model {
@@ -690,11 +687,7 @@
       _conversationVC.title = @"系统消息";
     }
     if ([model.objectName isEqualToString:@"RC:ContactNtf"]) {
-      UIStoryboard *mainStoryboard =
-          [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-      RCDAddressBookViewController *addressBookVC =
-          [mainStoryboard instantiateViewControllerWithIdentifier:
-                              @"RCDAddressBookViewController"];
+        RCDAddressBookViewController *addressBookVC = [RCDAddressBookViewController addressBookViewController];
       addressBookVC.needSyncFriendList = YES;
       [self.navigationController pushViewController:addressBookVC animated:YES];
       return;
@@ -724,26 +717,23 @@
     //        self.conversationListDataSource[indexPath.row];
 
     if ([model.objectName isEqualToString:@"RC:ContactNtf"]) {
-      UIStoryboard *mainStoryboard =
-          [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-      RCDAddressBookViewController *addressBookVC =
-          [mainStoryboard instantiateViewControllerWithIdentifier:
-                              @"RCDAddressBookViewController"];
+        RCDAddressBookViewController *addressBookVC = [RCDAddressBookViewController addressBookViewController];
       [self.navigationController pushViewController:addressBookVC animated:YES];
     }
   }
 }
+/*
 //会话有新消息通知的时候显示数字提醒，设置为NO,不显示数字只显示红点
-//-(void)willDisplayConversationTableCell:(RCConversationBaseCell *)cell
-//atIndexPath:(NSIndexPath *)indexPath
-//{
-//    RCConversationModel *model=
-//    self.conversationListDataSource[indexPath.row];
-//
-//    if (model.conversationType == ConversationType_PRIVATE) {
-//        ((RCConversationCell *)cell).isShowNotificationNumber = NO;
-//    }
-//}
+-(void)willDisplayConversationTableCell:(RCConversationBaseCell *)cell
+atIndexPath:(NSIndexPath *)indexPath
+{
+    RCConversationModel *model=
+  self.conversationListDataSource[indexPath.row];
+    if (model.conversationType == ConversationType_PRIVATE) {
+        ((RCConversationCell *)cell).isShowNotificationNumber = NO;
+    }
+}
+ */
 - (void)notifyUpdateUnreadMessageCount {
   [self updateBadgeValueForTabBarItem];
 }
@@ -786,11 +776,7 @@
 }
 
 - (void)pushToCreateDiscussion:(id)sender {
-  UIStoryboard *mainStoryboard =
-  [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDContactSelectedTableViewController *contactSelectedVC =
-  [mainStoryboard instantiateViewControllerWithIdentifier:
-   @"RCDContactSelectedTableViewController"];
+  RCDContactSelectedTableViewController * contactSelectedVC= [[RCDContactSelectedTableViewController alloc]init];
   contactSelectedVC.forCreatingDiscussionGroup = YES;
   contactSelectedVC.isAllowsMultipleSelection = YES;
   contactSelectedVC.titleStr = @"选择联系人";
@@ -843,4 +829,36 @@
 - (void)updateForSharedMessageInsertSuccess{
   [self refreshConversationTableViewIfNeeded];
 }
+
+#pragma mark - UISearchBarDelegate
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+  [self.navigationController setNavigationBarHidden:YES animated:YES];
+  RCDSearchViewController *searchViewController = [[RCDSearchViewController alloc] init];
+  self.searchNavigationController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
+  searchViewController.delegate = self;
+  [self.navigationController.view addSubview:self.searchNavigationController.view];
+}
+
+- (void)onSearchCancelClick{
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.searchNavigationController.view removeFromSuperview];
+    [self.searchNavigationController removeFromParentViewController];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+  });
+}
+
+-(void)refreshCell:(NSNotification *)notify
+{
+  /*
+  NSString *row = [notify object];
+  RCConversationModel *model = [self.conversationListDataSource objectAtIndex:[row intValue]];
+  model.unreadMessageCount = 0;
+  NSIndexPath *indexPath=[NSIndexPath indexPathForRow:[row integerValue] inSection:0];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.conversationListTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+  });
+   */
+  [self refreshConversationTableViewIfNeeded];
+}
+
 @end

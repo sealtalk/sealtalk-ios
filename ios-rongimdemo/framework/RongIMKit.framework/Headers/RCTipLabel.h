@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 RongCloud. All rights reserved.
 //
 
-#ifndef __RCTipLabel
-#define __RCTipLabel
 #import <UIKit/UIKit.h>
 #import "RCAttributedLabel.h"
 
@@ -29,4 +27,3 @@
 + (instancetype)greyTipLabel;
 
 @end
-#endif

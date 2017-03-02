@@ -9,27 +9,88 @@
 #ifndef RCCallCommonDefine_h
 #define RCCallCommonDefine_h
 
+/*!
+ 媒体类型
+ */
 typedef NS_ENUM(NSInteger, RCCallMediaType) {
+  /*!
+   音频
+   */
   RCCallMediaAudio = 1,
+  /*!
+   视频
+   */
   RCCallMediaVideo = 2,
+};
+
+/*!
+ 通话质量
+ */
+typedef NS_ENUM(NSUInteger, RCCallQuality) {
+  RCCall_Quality_Unknown = 0,
+  RCCall_Quality_Excellent = 1,
+  RCCall_Quality_Good = 2,
+  RCCall_Quality_Poor = 3,
+  RCCall_Quality_Bad = 4,
+  RCCall_Quality_VBad = 5,
+  RCCall_Quality_Down = 6,
 };
 
 #pragma mark - Call
 
+/*!
+ 错误码
+ */
 typedef NS_ENUM(NSInteger, RCCallErrorCode) {
+  /*!
+   成功
+   */
   RCCallSuccess = 0,
+  /*!
+   网络不可用
+   */
   RCCallNetworkUnavailable = 1,
+  /*!
+   已经处于通话中了
+   */
   RCCallOneCallExisted = 2,
+  /*!
+   无效操作
+   */
   RCCallOperationUnavailable = 3,
+  /*!
+   参数错误
+   */
   RCCallInvalidParam = 4,
+  /*!
+   网络不稳定
+   */
   RCCallNetworkUnstable = 5,
+  /*!
+   媒体服务请求失败
+   */
   RCCallMediaRequestFailed = 6,
+  /*!
+   媒体服务初始化失败
+   */
   RCCallMediaServerNotReady = 7,
+  /*!
+   媒体服务未初始化
+   */
   RCCallMediaServerNotInitialized = 8,
+  /*!
+   媒体服务请求超时
+   */
   RCCallMediaRequestTimeout = 9,
+  /*!
+   未知的媒体服务错误
+   */
   RCCallMediaUnkownError = 10,
 };
 
+/*!
+ 通话结束原因
+ */
 typedef NS_ENUM(NSInteger, RCCallDisconnectReason) {
   /*!
    己方取消已发出的通话请求
@@ -90,23 +151,59 @@ typedef NS_ENUM(NSInteger, RCCallDisconnectReason) {
   RCCallDisconnectReasonRemoteNetworkError = 17,
 };
 
+/*!
+ 通话视频参数
+ */
 typedef NS_ENUM(NSInteger, RCVideoProfile) {
-                                           // res       fps  kbps
-  RC_VIDEO_PROFILE_120P = 0,               // 160x120   15   80
-  RC_VIDEO_PROFILE_180P = 10,              // 320x180   15   160
-  RC_VIDEO_PROFILE_240P = 20,              // 320x240   15   200
-  RC_VIDEO_PROFILE_360P = 30,              // 640x360   15   400
-  RC_VIDEO_PROFILE_480P = 40,              // 640x480   15   500
-  RC_VIDEO_PROFILE_720P = 50,              // 1280x720  15   1000
+  /*!
+   320x240, 15fps, 200kbps
+   */
+  RC_VIDEO_PROFILE_240P = 20,
+  /*!
+   640x360, 15fps, 400kbps
+   */
+  RC_VIDEO_PROFILE_360P = 30,
+  /*!
+   640x480, 15fps, 500kbps
+   */
+  RC_VIDEO_PROFILE_480P = 40,
+  /*!
+   1280x720, 15fps, 1000kbps
+   */
+  RC_VIDEO_PROFILE_720P = 50,
+  /*!
+   默认的视频参数
+   */
   RC_VIDEO_PROFILE_DEFAULT = RC_VIDEO_PROFILE_360P,
 };
 
+/*!
+ 通话状态
+ */
 typedef NS_ENUM(NSInteger, RCCallStatus) {
-  //    RCCallIdle   = 0,
+  /*!
+   初始状态
+   */
+//  RCCallIdle   = 0,
+  /*!
+   正在呼出
+   */
   RCCallDialing = 1,
+  /*!
+   正在呼入
+   */
   RCCallIncoming = 2,
+  /*!
+   收到一个通话呼入后，正在振铃
+   */
   RCCallRinging = 3,
+  /*!
+   正在通话
+   */
   RCCallActive = 4,
+  /*!
+   已经挂断
+   */
   RCCallHangup = 5,
 };
 

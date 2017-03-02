@@ -8,8 +8,11 @@
 
 #import "RCDAboutRongCloudTableViewController.h"
 #import "UIColor+RCColor.h"
-#import "RCDMeButton.h"
 #import "RCDCommonDefine.h"
+#import "RCDUIBarButtonItem.h"
+#import "RCDBaseSettingTableViewCell.h"
+#import "RCDLogoTableViewCell.h"
+#import "RCDVersionCell.h"
 
 @interface RCDAboutRongCloudTableViewController ()
 @property(nonatomic, strong) NSArray *urls;
@@ -34,34 +37,147 @@
   [super viewDidLoad];
   [self setPoweredView];
   self.tableView.tableFooterView = [UIView new];
+  self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+  self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
   
-  NSString *version = [[[NSBundle mainBundle] infoDictionary]
-                       objectForKey:@"CFBundleShortVersionString"];
-  _SDKVersionLabel.text = [NSString stringWithFormat:@"SDK 版本 %@", version];
+  self.navigationItem.title = @"关于 SealTalk";
   
-  NSString *SealTalkVersion = [[[NSBundle mainBundle] infoDictionary]
-                       objectForKey:@"SealTalk Version"];
-  self.SealTalkVersionLabel.text = [NSString stringWithFormat:@"SealTalk 版本 %@",SealTalkVersion];
+  RCDUIBarButtonItem *leftBtn =
+  [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
+                                imageViewFrame:CGRectMake(-6, 4, 10, 17)
+                                   buttonTitle:@"我"
+                                    titleColor:[UIColor whiteColor]
+                                    titleFrame:CGRectMake(9, 4, 85, 17)
+                                   buttonFrame:CGRectMake(0, 6, 87, 23)
+                                        target:self
+                                        action:@selector(cilckBackBtn:)];
+  self.navigationItem.leftBarButtonItem = leftBtn;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+  return 6;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+  return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  static NSString *reusableCellWithIdentifier = @"RCDBaseSettingTableViewCell";
+  RCDBaseSettingTableViewCell *cell = [self.tableView
+                                       dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
   
-  NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
-  if ([isNeedUpdate isEqualToString:@"YES"]) {
-    _NewVersionImage.hidden = NO;
+  static NSString *logoCellWithIdentifier = @"RCDLogoTableViewCell";
+  RCDLogoTableViewCell *logoCell = [self.tableView
+                                       dequeueReusableCellWithIdentifier:logoCellWithIdentifier];
+  
+  static NSString *versionCellWithIdentifier = @"RCDVersionCell";
+  RCDVersionCell *versionCell = [self.tableView
+                                    dequeueReusableCellWithIdentifier:versionCellWithIdentifier];
+  
+  if (cell == nil) {
+    cell = [[RCDBaseSettingTableViewCell alloc] init];
   }
-    //设置分割线颜色
-    self.tableView.separatorColor =
-    [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
-    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
+  if (logoCell == nil) {
+    logoCell = [[RCDLogoTableViewCell alloc] init];
+  }
+  if (versionCell == nil) {
+    versionCell = [[RCDVersionCell alloc] init];
+  }
+  switch (indexPath.section) {
+    case 0: {
+      switch (indexPath.row) {
+        case 0: {
+          return logoCell;
+        }
+          break;
+          
+        case 1: {
+          [cell setCellStyle:DefaultStyle];
+          cell.leftLabel.text = @"更新日志";
+          return cell;
+        }
+          break;
+          
+        case 2: {
+          [cell setCellStyle:DefaultStyle];
+          cell.leftLabel.text = @"功能介绍";
+          return cell;
+        }
+          break;
+          
+        case 3: {
+          [cell setCellStyle:DefaultStyle];
+          cell.leftLabel.text = @"官方网站";
+          return cell;
+        }
+          break;
+          
+        case 4: {
+          [versionCell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
+          versionCell.leftLabel.text = @"SealTalk 版本";
+          NSString *SealTalkVersion = [[[NSBundle mainBundle] infoDictionary]
+                                       objectForKey:@"SealTalk Version"];
+          versionCell.rightLabel.text = SealTalkVersion;
+          NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
+          if ([isNeedUpdate isEqualToString:@"YES"]) {
+            [versionCell addNewImageView];
+          }
+          return versionCell;
+        }
+          break;
+          
+        case 5: {
+          [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
+          cell.leftLabel.text = @"SDK 版本";
+          NSString *version = [[[NSBundle mainBundle] infoDictionary]
+                               objectForKey:@"CFBundleShortVersionString"];
+          cell.rightLabel.text = version;
+          cell.selectionStyle = UITableViewCellSelectionStyleNone;
+          return cell;
+        }
+          break;
+          
+        default:
+          break;
+      }
     }
-  
-  RCDMeButton *backBtn = [[RCDMeButton alloc] init];
-  [backBtn addTarget:self action:@selector(cilckBackBtn:) forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-  [self.navigationItem setLeftBarButtonItem:leftButton];
+      break;
+      
+    default:
+      break;
+  }
+  return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  CGFloat height;
+  switch (indexPath.section) {
+    case 0:{
+      switch (indexPath.row) {
+        case 0:
+          height = 141.f;
+          break;
+          
+        default:
+          height = 44.f;
+          break;
+      }
+    }
+      break;
+      
+    default:
+      break;
+  }
+  return height;
 }
 
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+   [tableView deselectRowAtIndexPath:indexPath animated:YES]; // 取消选中
   NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
   if (indexPath.section == 0 && indexPath.row == 4) {
     if ([isNeedUpdate isEqualToString:@"YES"]) {
@@ -97,27 +213,28 @@
 
 -(void)gotoDebugModel
 {
-    NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
-  if ([isDisplayID isEqualToString:@"YES"]) {
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:nil
-                          message:@"Debug模式"
-                          delegate:self
-                          cancelButtonTitle:@"确定"
-                          otherButtonTitles:@"强制Crash",@"关闭显示ID", nil];
-    alert.delegate = self;
-    [alert show];
-    
-  } else {
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:nil
-                          message:@"Debug模式"
-                          delegate:self
-                          cancelButtonTitle:@"确定"
-                          otherButtonTitles:@"强制Crash",@"显示ID", nil];
-    alert.delegate = self;
-    [alert show];
+  NSString *isDisplayID = @"显示ID";
+  if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"] isEqualToString:@"YES"]) {
+    isDisplayID = @"关闭显示ID";
   }
+  NSString *isDisplayOnlineStatus = @"显示在线状态";
+  if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"] isEqualToString:@"YES"]) {
+    isDisplayOnlineStatus = @"关闭显示在线状态";
+  }
+  
+  NSString *stayAfterJoinChatRoomFailed = @"加入聊天室失败仍停留在会话界面";
+  if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"stayAfterJoinChatRoomFailed"] isEqualToString:@"YES"]) {
+    stayAfterJoinChatRoomFailed = @"加入聊天室失败自动退出会话界面";
+  }
+  
+  UIAlertView *alert = [[UIAlertView alloc]
+                        initWithTitle:nil
+                        message:@"Debug模式"
+                        delegate:self
+                        cancelButtonTitle:@"确定"
+                        otherButtonTitles:@"强制Crash",isDisplayID,isDisplayOnlineStatus,stayAfterJoinChatRoomFailed, nil];
+  alert.delegate = self;
+  [alert show];
 }
 
 //force crash for test
@@ -126,7 +243,7 @@
   x = x/x;
 }
 
--(void) setIsDisplayId
+-(void)setIsDisplayId
 {
   NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
   if ([isDisplayID isEqualToString:@"YES"]) {
@@ -139,6 +256,31 @@
   }
 }
 
+-(void)setIsDisplayOnlineStatus
+{
+  NSString *isDisplayOnlineStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"];
+  if ([isDisplayOnlineStatus isEqualToString:@"YES"]) {
+    [DEFAULTS setObject:nil forKey:@"isDisplayOnlineStatus"];
+    [DEFAULTS synchronize];
+  } else {
+    [DEFAULTS setObject:@"YES" forKey:@"isDisplayOnlineStatus"];
+    [DEFAULTS synchronize];
+    
+  }
+}
+
+-(void)setStayAfterJoinChatRoomFailed
+{
+  NSString *stayAfterJoinChatRoomFailed = [[NSUserDefaults standardUserDefaults] objectForKey:@"stayAfterJoinChatRoomFailed"];
+  if ([stayAfterJoinChatRoomFailed isEqualToString:@"YES"]) {
+    [DEFAULTS setObject:nil forKey:@"stayAfterJoinChatRoomFailed"];
+    [DEFAULTS synchronize];
+  } else {
+    [DEFAULTS setObject:@"YES" forKey:@"stayAfterJoinChatRoomFailed"];
+    [DEFAULTS synchronize];
+  }
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
   switch (buttonIndex) {
@@ -148,6 +290,14 @@
       
     case 2:
       [self setIsDisplayId];
+      break;
+      
+    case 3:
+      [self setIsDisplayOnlineStatus];
+      break;
+      
+    case 4:
+      [self setStayAfterJoinChatRoomFailed];
       break;
       
     default:
@@ -176,7 +326,7 @@
   if (!_urls) {
     NSArray *section0 =
     [NSArray arrayWithObjects:@"http://rongcloud.cn/",
-     @"http://www.rongcloud.cn/changelog",
+     @"http://blog.rongcloud.cn/?page_id=1569",
      @"http://rongcloud.cn/features",
      @"http://rongcloud.cn/", nil];
     _urls = [NSArray arrayWithObjects:section0, nil];
@@ -196,5 +346,34 @@
 -(void)cilckBackBtn:(id)sender
 {
   [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)addNewImageView:(RCDBaseSettingTableViewCell *)cell {
+  UIImageView *newImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"new"]];
+  newImageView.translatesAutoresizingMaskIntoConstraints = NO;
+  [cell.contentView addSubview:newImageView];
+  UILabel *leftLabel =  cell.leftLabel;
+  NSDictionary *views = NSDictionaryOfVariableBindings(leftLabel,newImageView);
+  [cell.contentView
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"H:[leftLabel]-10-[newImageView(50)]"
+                   options:0
+                   metrics:nil
+                   views:views]];
+  [cell.contentView
+   addConstraints:[NSLayoutConstraint
+                   constraintsWithVisualFormat:@"V:[newImageView(23)]"
+                   options:0
+                   metrics:nil
+                   views:views]];
+  [cell.contentView
+   addConstraint:[NSLayoutConstraint constraintWithItem:newImageView
+                                              attribute:NSLayoutAttributeCenterY
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:cell.contentView
+                                              attribute:NSLayoutAttributeCenterY
+                                             multiplier:1
+                                               constant:0]];
+  
 }
 @end

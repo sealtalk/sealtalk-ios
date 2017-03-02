@@ -8,23 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <RongCallLib/RongCallLib.h>
-#import <RongIMLib/RongIMLib.h>
+#import <RongIMKit/RongIMKit.h>
 
-/*!
- 群组成员列表提供者
- */
-@protocol RCCallGroupMemberDataSource <NSObject>
-@optional
-
-/*!
- 获取当前群组成员列表的回调
-
- @param groupId     群ID
- @param resultBlock 获取成功 [userIdList:群成员ID列表]
- */
-- (void)getAllMembersOfGroup:(NSString *)groupId
-                      result:(void (^)(NSArray *userIdList))resultBlock;
-@end
+#define RCCallGroupMemberDataSource RCIMGroupMemberDataSource //接口向后兼容
 
 /*!
  融云CallKit核心类
@@ -48,9 +34,12 @@
 
 /*!
  群组成员列表提供者
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此属性，可以直接替换为[RCIM sharedRCIM]的groupMemberDataSource属性，行为和实现完全一致。
  */
 @property(nonatomic, weak) id<RCCallGroupMemberDataSource>
-    groupMemberDataSource;
+    groupMemberDataSource __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  获取融云通话界面组件CallKit的核心类单例

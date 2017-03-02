@@ -12,7 +12,11 @@
 #import "RCDLoginViewController.h"
 #import <RongIMLib/RongIMLib.h>
 #import "UIColor+RCColor.h"
-#import "RCDMeButton.h"
+#import "RCDUIBarButtonItem.h"
+#import "RCDPrivacyTableViewController.h"
+#import "RCDMessageNotifySettingTableViewController.h"
+#import "RCDBaseSettingTableViewCell.h"
+
 @interface RCDSettingsTableViewController () <UIAlertViewDelegate>
 
 @end
@@ -22,26 +26,23 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  // Uncomment the following line to preserve selection between presentations.
-  // self.clearsSelectionOnViewWillAppear = NO;
-
-  // Uncomment the following line to display an Edit button in the navigation
-  // bar for this view controller.
-  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-  // self.automaticallyAdjustsScrollViewInsets = false;
   self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
   self.tableView.tableFooterView = [UIView new];
-    //设置分割线颜色
-    self.tableView.separatorColor =
-    [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
-    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
-    }
+  self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6"
+                                                         alpha:1.f];
   
-  RCDMeButton *backBtn = [[RCDMeButton alloc] init];
-  [backBtn addTarget:self action:@selector(cilckBackBtn:) forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-  [self.navigationItem setLeftBarButtonItem:leftButton];
+  self.navigationItem.title = @"帐号设置";
+  RCDUIBarButtonItem *leftBtn =
+  [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
+                                imageViewFrame:CGRectMake(-6, 4, 10, 17)
+                                   buttonTitle:@"我"
+                                    titleColor:[UIColor whiteColor]
+                                    titleFrame:CGRectMake(9, 4, 85, 17)
+                                   buttonFrame:CGRectMake(0, 6, 87, 23)
+                                        target:self
+                                        action:@selector(cilckBackBtn:)];
+  self.navigationItem.leftBarButtonItem = leftBtn;
+  self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,48 +52,163 @@
 
 #pragma mark - Table view Delegate
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+  return 3;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+  NSUInteger row;
+  switch (section) {
+    case 0:
+      row = 3;
+      break;
+      
+    case 1:
+      row = 1;
+      break;
+      
+    case 2:
+      row = 1;
+      break;
+      
+    default:
+      break;
+  }
+  return row;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  static NSString *reusableCellWithIdentifier = @"RCDBaseSettingTableViewCell";
+  RCDBaseSettingTableViewCell *cell = [self.tableView
+                                       dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
+  if (cell == nil) {
+    cell = [[RCDBaseSettingTableViewCell alloc] init];
+  }
+  [cell setCellStyle:DefaultStyle];
+  switch (indexPath.section) {
+    case 0: {
+      switch (indexPath.row) {
+        case 0: {
+          
+          cell.leftLabel.text = @"密码修改";
+        }
+          break;
+          
+        case 1: {
+          cell.leftLabel.text = @"隐私";
+        }
+          break;
+          
+        case 2: {
+          cell.leftLabel.text = @"新消息通知";
+        }
+          break;
+          
+        default:
+          break;
+      }
+    }
+      break;
+      
+    case 1: {
+    cell.leftLabel.text = @"清除缓存";
+    }
+      break;
+      
+    case 2: {
+      return [self createQuitCell];
+    }
+      break;
+      
+    default:
+      break;
+  }
+  
+  return cell;
+}
+
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES]; // 取消选中
-  if (0 == indexPath.section && 0 == indexPath.row) {
-    NSLog(@"show the change password view");
-    UIStoryboard *storyboard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDChangePasswordViewController *changePasswordVC = [storyboard
-        instantiateViewControllerWithIdentifier:@"changePasswordVC"];
-    [self.navigationController pushViewController:changePasswordVC
-                                         animated:YES];
-  }
+  switch (indexPath.section) {
+    case 0: {
+      switch (indexPath.row) {
+        case 0:{
+          RCDChangePasswordViewController *vc = [[RCDChangePasswordViewController alloc] init];
+          [self.navigationController pushViewController:vc
+                                               animated:YES];
+        }
+          break;
+          
+        case 1:{
+          RCDPrivacyTableViewController *vc = [[RCDPrivacyTableViewController alloc] init];
+          [self.navigationController pushViewController:vc animated:YES];
+        }
+          break;
+          
+        case 2: {
+          RCDMessageNotifySettingTableViewController *vc = [[RCDMessageNotifySettingTableViewController alloc] init];
+          [self.navigationController pushViewController:vc
+                                               animated:YES];
+        }
+          break;
+        default:
+          break;
+      }
+    }
+      break;
+      
+    case 1: {
+      switch (indexPath.row) {
+        case 0:{
+          //清除缓存
+          UIAlertView *alertView =
+          [[UIAlertView alloc] initWithTitle:nil
+                                     message:@"是否清理缓存？"
+                                    delegate:self
+                           cancelButtonTitle:@"取消"
+                           otherButtonTitles:@"确定", nil];
+          alertView.tag = 1011;
+          [alertView show];
 
-  if (1 == indexPath.section && 0 == indexPath.row) {
-    //清除缓存
-    UIAlertView *alertView =
-        [[UIAlertView alloc] initWithTitle:nil
-                                   message:@"是否清理缓存？"
-                                  delegate:self
-                         cancelButtonTitle:@"取消"
-                         otherButtonTitles:@"确定", nil];
-    alertView.tag = 1011;
-    [alertView show];
-  } else if (2 == indexPath.section && 0 == indexPath.row) {
-    //退出登陆
-    UIAlertView *alertView =
-        [[UIAlertView alloc] initWithTitle:nil
-                                   message:@"是否退出登录？"
-                                  delegate:self
-                         cancelButtonTitle:@"取消"
-                         otherButtonTitles:@"确定", nil];
-    alertView.tag = 1010;
-    [alertView show];
+        }
+          break;
+          
+        default:
+          break;
+      }
+    }
+      break;
+      
+    case 2:{
+      switch (indexPath.row) {
+        case 0:{
+          //退出登录
+          UIAlertView *alertView =
+          [[UIAlertView alloc] initWithTitle:nil
+                                     message:@"是否退出登录？"
+                                    delegate:self
+                           cancelButtonTitle:@"取消"
+                           otherButtonTitles:@"确定", nil];
+          alertView.tag = 1010;
+          [alertView show];
+        }
+          break;
+          
+        default:
+          break;
+      }
+    }
+    default:
+      break;
   }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView
     heightForHeaderInSection:(NSInteger)section {
-  if (section == 0) {
     return 15.f;
-  }
-  return 5.f;
 }
 
 #pragma mark - UIAlertView Delegate
@@ -142,8 +258,9 @@
   [alertView show];
 }
 
-//退出登陆
+//退出登录
 - (void)logout {
+  [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 #define DEFAULTS [NSUserDefaults standardUserDefaults]
   //    [DEFAULTS removeObjectForKey:@"userName"];
   //    [DEFAULTS removeObjectForKey:@"userPwd"];
@@ -154,10 +271,7 @@
 
   [[RCDataBaseManager shareInstance] closeDBForDisconnect];
 
-  UIStoryboard *storyboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDLoginViewController *loginVC =
-      [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+  RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
   UINavigationController *navi =
       [[UINavigationController alloc] initWithRootViewController:loginVC];
   self.view.window.rootViewController = navi;
@@ -165,9 +279,43 @@
   //[[RCIMClient sharedRCIMClient]disconnect:NO];
 }
 
--(void)cilckBackBtn:(id)sender
-{
+-(void)cilckBackBtn:(id)sender {
   [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (UITableViewCell *)createQuitCell {
+ UITableViewCell *quitCell = [[UITableViewCell alloc] init];
+  UILabel *label = [[UILabel alloc] init];
+  label.font = [UIFont systemFontOfSize:16];
+  label.textColor = [UIColor colorWithHexString:@"000000"
+                                          alpha:1.0];
+  label.text = @"退出登录";
+  label.translatesAutoresizingMaskIntoConstraints = NO;
+  quitCell.contentView.layer.borderWidth = 0.5;
+  quitCell.contentView.layer.borderColor = [[UIColor
+                                            colorWithHexString:@"dfdfdf"
+                                             alpha:1.0] CGColor];
+  
+  [quitCell setSeparatorInset:UIEdgeInsetsMake(0, 100, 0, 1000)];
+  [quitCell.contentView addSubview:label];
+  [quitCell.contentView
+   addConstraint:[NSLayoutConstraint constraintWithItem:label
+                                              attribute:NSLayoutAttributeCenterY
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:quitCell.contentView
+                                              attribute:NSLayoutAttributeCenterY
+                                             multiplier:1
+                                               constant:0]];
+  
+  [quitCell.contentView
+   addConstraint:[NSLayoutConstraint constraintWithItem:label
+                                              attribute:NSLayoutAttributeCenterX
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:quitCell.contentView
+                                              attribute:NSLayoutAttributeCenterX
+                                             multiplier:1
+                                               constant:0]];
+  return quitCell;
 }
 
 @end

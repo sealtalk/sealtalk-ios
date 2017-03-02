@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "redpoint.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "redpoint.png",
       "scale" : "2x"
     },
     {

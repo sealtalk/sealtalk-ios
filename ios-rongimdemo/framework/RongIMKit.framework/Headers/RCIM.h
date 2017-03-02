@@ -6,8 +6,6 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#ifndef __RongUIKit
-#define __RongUIKit
 #import <Foundation/Foundation.h>
 #import <RongIMLib/RongIMLib.h>
 #import "RCThemeDefine.h"
@@ -38,6 +36,27 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageNotification;
 FOUNDATION_EXPORT NSString *const RCKitDispatchRecallMessageNotification;
 
 /*!
+ @const 收到已读回执的Notification
+ 
+ @discussion 收到消息已读回执之后 IMLib 更新消息状态之后，IMKit会分发此通知。
+ 
+ Notification的object为nil，userInfo为NSDictionary对象，
+ 其中key值分别为@"cType"、@"tId"、@"messageTime",
+ 对应的value为会话类型的NSNumber对象、会话的targetId、已阅读的最后一条消息的sendTime。
+ 如：
+ NSNumber *ctype = [notification.userInfo objectForKey:@"cType"];
+ NSNumber *time = [notification.userInfo objectForKey:@"messageTime"];
+ NSString *targetId = [notification.userInfo objectForKey:@"tId"];
+ NSString *fromUserId = [notification.userInfo objectForKey:@"fId"];
+ 
+ 收到这个消息之后可以更新这个会话中messageTime以前的消息UI为已读（底层数据库消息状态已经改为已读）。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此通知，可以直接替换为RCLibDispatchReadReceiptNotification通知，行为和内容完全一致。
+ */
+FOUNDATION_EXPORT NSString *const RCKitDispatchReadReceiptNotification __deprecated_msg("已废弃，请使用RCLibDispatchReadReceiptNotification通知。");
+
+/*!
  @const 连接状态变化的Notification
  
  @discussion SDK连接状态发生变化时，SDK会分发此通知。
@@ -48,6 +67,23 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchRecallMessageNotification;
  RCKitDispatchConnectionStatusChangedNotification只要注册都可以收到通知；RCIMConnectionStatusDelegate需要设置监听，同时只能存在一个监听。
  */
 FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotification;
+
+/**
+ *  收到消息已读回执的响应
+ 通知的 object 中携带信息如下： @{@"targetId":targetId,
+ @"conversationType":@(conversationType),
+ @"messageUId": messageUId,
+ @"readCount":@(count)};
+ */
+FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptResponseNotification;
+
+/**
+ *  收到消息已读回执的请求
+ 通知的 object 中携带信息如下： @{@"targetId":targetId,
+ @"conversationType":@(conversationType),
+ @"messageUId": messageUId};
+ */
+FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification;
 
 #pragma mark - 用户信息提供者、群组信息提供者、群名片信息提供者
 
@@ -122,7 +158,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
 @optional
 
 /*!
- 获取当前群组成员列表的回调
+ 获取当前群组成员列表的回调（需要实现用户信息提供者 RCIMUserInfoDataSource）
  
  @param groupId     群ID
  @param resultBlock 获取成功 [userIdList:群成员ID列表]
@@ -416,6 +452,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
  @param progressBlock       消息发送进度更新的回调 [progress:当前的发送进度, 0 <= progress <= 100, messageId:消息的ID]
  @param successBlock        消息发送成功的回调 [messageId:消息的ID]
  @param errorBlock          消息发送失败的回调 [errorCode:发送失败的错误码, messageId:消息的ID]
+ @param cancelBlock         用户取消了消息发送的回调 [messageId:消息的ID]
  @return                    发送的消息实体
  
  @discussion 当接收方离线并允许远程推送时，会收到远程推送。
@@ -434,7 +471,17 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
                        pushData:(NSString *)pushData
                        progress:(void (^)(int progress, long messageId))progressBlock
                         success:(void (^)(long messageId))successBlock
-                          error:(void (^)(RCErrorCode errorCode, long messageId))errorBlock;
+                          error:(void (^)(RCErrorCode errorCode, long messageId))errorBlock
+                         cancel:(void (^)(long messageId))cancelBlock;
+
+/*!
+ 取消发送中的媒体信息
+ 
+ @param messageId           媒体消息的messageId
+ 
+ @return YES表示取消成功，NO表示取消失败，即已经发送成功或者消息不存在。
+ */
+- (BOOL)cancelSendMediaMessage:(long)messageId;
 
 /*!
  下载消息中的媒体文件
@@ -443,6 +490,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
  @param progressBlock   下载进度更新的回调 [progress:当前的发送进度, 0 <= progress <= 100]
  @param successBlock    下载成功的回调 [mediaPath:下载完成后文件在本地的存储路径]
  @param errorBlock      下载失败的回调 [errorCode:下载失败的错误码]
+ @param cancelBlock     下载取消的回调 
  
  @discussion 媒体消息仅限于图片消息和文件消息。
  */
@@ -453,11 +501,11 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
                       cancel:(void (^)())cancelBlock;
 
 /*!
- 取消下载消息中的媒体信息
+ 取消下载中的媒体信息
  
- @param messageId           媒体消息的messageId
+ @param messageId 媒体消息的messageId
  
- @return true取消成功。false下载完成或者下载不存在
+ @return YES表示取消成功，NO表示取消失败，即已经下载完成或者消息不存在。
  */
 - (BOOL)cancelDownloadMediaMessage:(long)messageId;
 
@@ -484,7 +532,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
  如果您使用IMLib，请使用RCIMClient中的同名方法发送图片消息，不会自动更新UI。
  
  @warning  **已废弃，请勿使用。**
- 升级说明：如果您之前使用了此接口，可以直接替换为sendMediaMessage:targetId:content:pushContent:pushData:success:error:接口，行为和实现完全一致。
+ 升级说明：如果您之前使用了此接口，可以直接替换为sendMediaMessage:targetId:content:pushContent:pushData:success:error:cancel:接口，行为和实现完全一致。
  */
 - (RCMessage *)sendImageMessage:(RCConversationType)conversationType
                        targetId:(NSString *)targetId
@@ -495,6 +543,36 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchConnectionStatusChangedNotificati
                         success:(void (^)(long messageId))successBlock
                           error:(void (^)(RCErrorCode errorCode, long messageId))errorBlock
 __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
+
+/*!
+ 发送定向消息，会自动更新UI
+ 
+ @param conversationType 发送消息的会话类型
+ @param targetId         发送消息的目标会话ID
+ @param userIdList       发送给的用户ID列表
+ @param content          消息的内容
+ @param pushContent      接收方离线时需要显示的远程推送内容
+ @param pushData         接收方离线时需要在远程推送中携带的非显示数据
+ @param successBlock     消息发送成功的回调 [messageId:消息的ID]
+ @param errorBlock       消息发送失败的回调 [errorCode:发送失败的错误码,
+ messageId:消息的ID]
+ 
+ @return 发送的消息实体
+ 
+ @discussion 此方法用于在群组和讨论组中发送消息给其中的部分用户，其它用户不会收到这条消息。
+ 如果您使用IMKit，使用此方法发送定向消息SDK会自动更新UI；
+ 如果您使用IMLib，请使用RCIMClient中的同名方法发送定向消息，不会自动更新UI。
+ 
+ @warning 此方法目前仅支持群组和讨论组。
+ */
+- (RCMessage *)sendDirectionalMessage:(RCConversationType)conversationType
+                             targetId:(NSString *)targetId
+                         toUserIdList:(NSArray *)userIdList
+                              content:(RCMessageContent *)content
+                          pushContent:(NSString *)pushContent
+                             pushData:(NSString *)pushData
+                              success:(void (^)(long messageId))successBlock
+                                error:(void (^)(RCErrorCode nErrorCode, long messageId))errorBlock;
 
 /*!
  发起VoIP语音通话
@@ -537,23 +615,26 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
 /*!
  是否开启已读回执功能，默认值是NO
  
- @discussion 开启后会在聊天页面消息显示之后会发送已读回执给对方。
+ @discussion 开启后会在会话页面消息显示之后会发送已读回执给对方。
+ 
+ @warning **已废弃，请勿使用。**
+ 升级说明:请使用enabledReadReceiptConversationTypeList，设置开启回执的会话类型
  */
-@property(nonatomic, assign) BOOL enableReadReceipt;
+@property(nonatomic, assign) BOOL enableReadReceipt  __deprecated_msg("已废弃，请使用enabledReadReceiptConversationTypeList，设置开启回执的会话类型。");
 
 /*!
- 开启已读回执功能的会话类型，默认值为@[@(ConversationType_PRIVATE)]
+ 开启已读回执功能的会话类型，默认为空
  
- @discussion 需要先开启enableReadReceipt。开启后，这些会话类型的消息在聊天界面显示了之后会发送已读回执。目前仅支持单聊、群聊和讨论组。
+ @discussion 这些会话类型的消息在会话页面显示了之后会发送已读回执。目前仅支持单聊、群聊和讨论组。
  */
-@property(nonatomic, copy) NSArray* readReceiptConversationTypeList;
+@property(nonatomic, copy) NSArray* enabledReadReceiptConversationTypeList;
 
 /*!
  是否开启多端同步未读状态的功能，默认值是NO
  
  @discussion 开启之后，用户在其他端上阅读过的消息，当前客户端会清掉该消息的未读数。目前仅支持单聊、群聊、讨论组。
  */
-@property(nonatomic, assign) BOOL enableSyncUnreadStatus;
+@property(nonatomic, assign) BOOL enableSyncReadStatus;
 
 /*!
  是否开启消息@提醒功能（只支持群聊和讨论组, App需要实现群成员数据源groupMemberDataSource），默认值是NO。
@@ -571,12 +652,12 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
 @property(nonatomic, assign) NSUInteger maxRecallDuration;
 
 /*!
- 是否在聊天界面和会话列表界面显示未注册的消息类型，默认值是NO
+ 是否在会话页面和会话列表界面显示未注册的消息类型，默认值是NO
  
  @discussion App不断迭代开发，可能会在以后的新版本中不断增加某些自定义类型的消息，但是已经发布的老版本无法识别此类消息。
  针对这种情况，可以预先定义好未注册的消息的显示，以提升用户体验（如提示当前版本不支持，引导用户升级版本等）
  
- 未注册的消息，可以通过RCConversationViewController中的rcUnkownConversationCollectionView:cellForItemAtIndexPath:和rcUnkownConversationCollectionView:layout:sizeForItemAtIndexPath:方法定制在聊天界面的显示。
+ 未注册的消息，可以通过RCConversationViewController中的rcUnkownConversationCollectionView:cellForItemAtIndexPath:和rcUnkownConversationCollectionView:layout:sizeForItemAtIndexPath:方法定制在会话页面的显示。
  未注册的消息，可以通过修改unknown_message_cell_tip字符串资源定制在会话列表界面的显示。
  */
 @property(nonatomic, assign) BOOL showUnkownMessage;
@@ -646,7 +727,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  @param successBlock    讨论组踢人成功的回调 [discussion:讨论组踢人成功返回的讨论组对象]
  @param errorBlock      讨论组踢人失败的回调 [status:讨论组踢人失败的错误码]
  
- @discussion 如果当前登陆用户不是此讨论组的创建者并且此讨论组没有开放加人权限，则会返回错误。
+ @discussion 如果当前登录用户不是此讨论组的创建者并且此讨论组没有开放加人权限，则会返回错误。
  
  @warning 不能使用此接口将自己移除，否则会返回错误。
  如果您需要退出该讨论组，可以使用-quitDiscussion:success:error:方法。
@@ -756,7 +837,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，可以更新SDK缓存的用户信息。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新该用户的显示信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)refreshUserInfoCache:(RCUserInfo *)userInfo
                   withUserId:(NSString *)userId;
@@ -774,7 +855,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，会清空SDK中所有的用户信息缓存。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新所显示的用户信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)clearUserInfoCache;
 
@@ -794,7 +875,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，可以更新SDK缓存的群组信息。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新该群组的显示信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)refreshGroupInfoCache:(RCGroup *)groupInfo
                   withGroupId:(NSString *)groupId;
@@ -812,7 +893,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，会清空SDK中所有的群组信息缓存。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新所显示的群组信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)clearGroupInfoCache;
 
@@ -844,7 +925,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，可以更新SDK缓存的群名片信息。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新该群名片的显示信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)refreshGroupUserInfoCache:(RCUserInfo *)userInfo
                        withUserId:(NSString *)userId
@@ -855,7 +936,7 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
  
  @discussion 使用此方法，会清空SDK中所有的群名片信息缓存。
  但是处于性能和使用场景权衡，SDK不会在当前View立即自动刷新（会在切换到其他View的时候再刷新所显示的群名片信息）。
- 如果您想立即刷新，您可以在会话列表或者聊天界面reload强制刷新。
+ 如果您想立即刷新，您可以在会话列表或者会话页面reload强制刷新。
  */
 - (void)clearGroupUserInfoCache;
 
@@ -892,27 +973,53 @@ __deprecated_msg("已废弃，请使用sendMediaMessage函数。");
 @property(nonatomic) CGSize globalConversationPortraitSize;
 
 /*!
- SDK聊天界面中显示的头像形状，矩形或者圆形
+ SDK会话页面中显示的头像形状，矩形或者圆形
  
  @discussion 默认值为矩形，即RC_USER_AVATAR_RECTANGLE
  */
 @property(nonatomic) RCUserAvatarStyle globalMessageAvatarStyle;
 
 /*!
- SDK聊天界面中显示的头像大小
+ SDK会话页面中显示的头像大小
  
  @discussion 默认值为40*40
  */
 @property(nonatomic) CGSize globalMessagePortraitSize;
 
 /*!
- SDK会话列表界面和聊天界面的头像的圆角曲率半径
+ SDK会话列表界面和会话页面的头像的圆角曲率半径
  
  @discussion 默认值为4，只有当头像形状设置为矩形时才会生效。
  参考RCIM的globalConversationAvatarStyle和globalMessageAvatarStyle。
  */
 @property(nonatomic) CGFloat portraitImageViewCornerRadius;
 
-@end
+#pragma mark - 网页展示模式
+/*!
+ 点击Cell中的URL时，优先使用WebView还是SFSafariViewController打开。
+ 
+ @discussion 默认为NO。
+ 如果设置为YES，将使用WebView打开URL链接，则您需要在App的Info.plist的NSAppTransportSecurity中增加NSAllowsArbitraryLoadsInWebContent和NSAllowsArbitraryLoads字段，并在苹果审核的时候提供额外的说明。
+ 如果设置为NO，将优先使用SFSafariViewController，在iOS 8及之前的系统中使用WebView，在审核的时候不需要提供额外说明。
+ 更多内容可以参考：https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW55
+ */
+@property(nonatomic, assign) BOOL embeddedWebViewPreferred;
 
-#endif
+#pragma mark - Extension module
+/*!
+ 设置Extension Module的URL scheme。
+ @param scheme      URL scheme
+ @param moduleName  Extension module name
+ 
+ @discussion 有些第三方扩展（比如红包）需要打开其他应用（比如使用支付宝进行支付），然后等待返回结果。因此首先要为第三方扩展设置一个URL scheme并加入到info.plist中，然后再告诉该扩展模块scheme。
+ */
+- (void)setScheme:(NSString *)scheme forExtensionModule:(NSString *)moduleName;
+
+/*!
+ 第三方扩展处理openUrl
+ 
+ @param url     url
+ @return        YES处理，NO未处理。
+ */
+- (BOOL)openExtensionModuleUrl:(NSURL *)url;
+@end

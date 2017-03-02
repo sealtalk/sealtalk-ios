@@ -12,10 +12,14 @@
     : UIViewController <UITextFieldDelegate, UIActionSheetDelegate,
                         UIImagePickerControllerDelegate,
                         UINavigationControllerDelegate>
-@property(weak, nonatomic) IBOutlet UIImageView *GroupPortrait;
-@property(weak, nonatomic) IBOutlet UITextField *GroupName;
-@property(weak, nonatomic) IBOutlet UIButton *DoneBtn;
-@property(strong, nonatomic) NSMutableArray *GroupMemberIdList;
-- (IBAction)ClickDoneBtn:(id)sender;
+
++ (instancetype)createGroupViewController;
+
+@property (nonatomic, strong) UIImageView *GroupPortrait;
+@property (nonatomic, strong) UITextField *GroupName;
+@property (nonatomic, strong) UIButton *DoneBtn;
+@property (nonatomic, strong) NSMutableArray *GroupMemberIdList;
+- (void)ClickDoneBtn:(id)sender;
+
 
 @end

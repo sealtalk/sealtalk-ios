@@ -36,5 +36,7 @@
 @property(nonatomic, strong) NSString *skillId;
 @property(nonatomic, strong) NSArray *listUrl;
 @property(nonatomic, strong) NSString *define; //自定义信息
+@property(nonatomic, strong) NSString *productId;//商品id
+
 - (NSData *)encode;
 @end

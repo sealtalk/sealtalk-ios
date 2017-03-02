@@ -186,6 +186,7 @@
 
  @param conversationType 会话类型
  @param targetId         会话目标ID
+ @param mediaType        通话媒体类型
  @param userIdList       邀请的用户ID列表
 
  @return ViewController

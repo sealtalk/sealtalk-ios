@@ -11,6 +11,9 @@
 #import "AFNetworking.h"
 #import "RCDCommonDefine.h"
 #import <RongIMKit/RongIMKit.h>
+
+#import "RCDSettingUserDefaults.h"
+
 #define DevDemoServer                                                          \
   @"http://119.254.110.241/" // Beijing SUN-QUAN 测试环境（北京）
 #define ProDemoServer                                                          \
@@ -18,6 +21,7 @@
 #define PrivateCloudDemoServer @"http://139.217.26.223/" //私有云测试
 
 #define DemoServer @"http://api.sealtalk.im/" //线上正式环境
+//#define DemoServer @"http://apiqa.rongcloud.net/" //线上非正式环境
 //#define DemoServer @"http://api.hitalk.im/" //测试环境
 
 //#define ContentType @"text/plain"
@@ -39,7 +43,18 @@
                    params:(NSDictionary *)params
                   success:(void (^)(id response))success
                   failure:(void (^)(NSError *err))failure {
-  NSURL *baseURL = [NSURL URLWithString:DemoServer];
+    NSURL *baseURL =  nil;
+    BOOL isPrivateMode = NO;
+#if RCDPrivateCloudManualMode
+    isPrivateMode = YES;
+#endif
+  
+    if(isPrivateMode){
+        NSString *baseStr = [RCDSettingUserDefaults getRCDemoServer];
+        baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@",baseStr]];
+    }else {
+        baseURL = [NSURL URLWithString:DemoServer];
+    }
   //获得请求管理者
   AFHTTPRequestOperationManager *mgr =
       [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
@@ -367,7 +382,7 @@
       NSMutableDictionary *ret = [NSMutableDictionary dictionary];
       [params addEntriesFromDictionary:ret];
 
-      NSString *url = @"http://upload.qiniu.com";
+      NSString *url = @"https://up.qbox.me";
 
       NSData *imageData = fileData;
 
@@ -639,4 +654,31 @@
                         failure:failure];
 }
 
+//设置好友备注
++ (void)setFriendDisplayName:(NSString *)friendId
+                 displayName:(NSString *)displayName
+                    success:(void (^)(id response))success
+                    failure:(void (^)(NSError *err))failure {
+  NSDictionary *params = @{
+                           @"friendId" : friendId,
+                           @"displayName" : displayName
+                           };
+  [AFHttpTool requestWihtMethod:RequestMethodTypePost
+                            url:@"friendship/set_display_name"
+                         params:params
+                        success:success
+                        failure:failure];
+}
+
+//获取用户详细资料
++ (void)getFriendDetailsByID:(NSString *)friendId
+                    success:(void (^)(id response))success
+                    failure:(void (^)(NSError *err))failure {
+  [AFHttpTool
+   requestWihtMethod:RequestMethodTypeGet
+   url:[NSString stringWithFormat:@"friendship/%@/profile", friendId]
+   params:nil
+   success:success
+   failure:failure];
+}
 @end

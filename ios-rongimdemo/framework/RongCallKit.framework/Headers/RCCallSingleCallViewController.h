@@ -25,6 +25,11 @@
 @property(nonatomic, strong) UILabel *remoteNameLabel;
 
 /*!
+ 全屏的视频View
+ */
+@property(nonatomic, strong) UIView *mainVideoView;
+
+/*!
  通话接通后，界面右上角的视频View
  */
 @property(nonatomic, strong) UIView *subVideoView;
@@ -42,8 +47,8 @@
 /*!
  初始化单人音视频ViewController并发起通话
 
- @param conversationType 会话类型
- @param targetId         会话目标ID
+ @param targetId         会话ID
+ @param mediaType        通话媒体类型
 
  @return 单人音视频ViewController
  */

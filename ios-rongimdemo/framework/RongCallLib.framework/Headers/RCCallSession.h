@@ -65,8 +65,8 @@
 /*!
  对端用户开启或关闭了摄像头的状态
 
+ @param disabled  是否关闭摄像头
  @param userId    用户ID
- @param muted     是否关闭摄像头
  */
 - (void)remoteUserDidDisableCamera:(BOOL)disabled byUser:(NSString *)userId;
 
@@ -105,33 +105,13 @@
 - (void)errorDidOccur:(RCCallErrorCode)error;
 
 /*!
- 开启在服务器录制当前通话的回调
+ 当前通话网络状态的回调，该回调方法每两秒触发一次
  
- @param startSuccess 是否成功开始录制
- @param errorCode    失败的错误码
+ @param txQuality   上行网络质量
+ @param rxQuality   下行网络质量
  */
-- (void)resultForStartServerRecording:(BOOL)startSuccess
-                            errorCode:(RCCallErrorCode)errorCode;
-
-/*!
- 停止在服务器录制当前通话的回调
- 
- @param stopSuccess 是否成功停止
- @param errorCode   失败的错误码
- */
-- (void)resultForStopServerRecording:(BOOL)stopSuccess
-                           errorCode:(RCCallErrorCode)errorCode;
-
-/*!
- 查询当前通话在服务器的录制状态的回调
- 
- @param fetchSuccess 是否成功查询成功。如果为YES，则表示查询成功，isRecording为服务器当前是否正在录制的状态
- @param isRecording  服务器是否正在录制
- @param errorCode    查询失败的错误码
- */
-- (void)resultForFetchServerRecordingStatus:(BOOL)fetchSuccess
-                                     status:(BOOL)isRecording
-                                  errorCode:(RCCallErrorCode)errorCode;
+- (void)networkTxQuality:(RCCallQuality)txQuality
+               rxQuality:(RCCallQuality)rxQuality;
 
 @end
 
@@ -267,9 +247,7 @@
 - (BOOL)setMuted:(BOOL)muted;
 
 /*!
- 扬声器状态
-
- @param speakerEnabled 是否开启扬声器
+ 扬声器状态，是否开启扬声器
 
  @discussion 音频通话的默认值为NO，视频通话的默认值为YES。
  */
@@ -284,9 +262,7 @@
 - (BOOL)setSpeakerEnabled:(BOOL)speakerEnabled;
 
 /*!
- 摄像头状态
-
- @param muted 是否开启摄像头
+ 摄像头状态，是否开启摄像头
  */
 @property(nonatomic, readonly) BOOL cameraEnabled;
 
@@ -306,26 +282,5 @@
  @return 是否切换成功
  */
 - (BOOL)switchCameraMode;
-
-/*!
- 开始在服务器录制当前通话
- 
- @discussion 调用此接口的时候，当前通话必须已经接通。
- */
-- (void)startServerRecording;
-
-/*!
- 停止在服务器录制当前通话
- 
- @discussion 调用此接口的时候，当前通话必须已经接通。
- */
-- (void)stopServerRecording;
-
-/*!
- 查询当前通话在服务器端的录制状态
- 
- @discussion 调用此接口的时候，当前通话必须已经接通。
- */
-- (void)fetchServerRecordingStatus;
 
 @end

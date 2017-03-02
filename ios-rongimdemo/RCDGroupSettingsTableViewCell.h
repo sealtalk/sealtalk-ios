@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCDBaseSettingTableViewCell.h"
+@class RCDGroupInfo;
 
-@interface RCDGroupSettingsTableViewCell : UITableViewCell
+#define RCDGroupSettingsTableViewCellGroupNameTag 999
+#define RCDGroupSettingsTableViewCellGroupPortraitTag 1000
+#define SwitchButtonTag  1111
 
-@property(weak, nonatomic) IBOutlet UILabel *TitleLabel;
-@property(weak, nonatomic) IBOutlet UILabel *ContentLabel;
-@property(weak, nonatomic) IBOutlet UISwitch *switchBtn;
-@property(weak, nonatomic) IBOutlet UIImageView *arrowImg;
-@property(weak, nonatomic) IBOutlet UIImageView *PortraitImg;
-
+@interface RCDGroupSettingsTableViewCell : RCDBaseSettingTableViewCell
+- (instancetype)initWithIndexPath:(NSIndexPath *)indexPath andGroupInfo:(RCDGroupInfo *)groupInfo;
 @end

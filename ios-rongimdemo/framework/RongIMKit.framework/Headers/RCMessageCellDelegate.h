@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 RongCloud. All rights reserved.
 //
 
-#ifndef RongIMKit_RCMessageCellDelegate_h
-#define RongIMKit_RCMessageCellDelegate_h
 #import "RCMessageModel.h"
 
 /*!
@@ -72,6 +70,24 @@
  */
 - (void)didTapmessageFailedStatusViewForResend:(RCMessageModel *)model;
 
+/*!
+ 点击消息阅读人数View的回调
+ 
+ @param model 消息Cell的数据模型
+ 
+ @discussion 仅支持群组和讨论组
+ */
+- (void)didTapReceiptCountView:(RCMessageModel *)model;
+
+/*!
+ 点击媒体消息取消发送按钮
+ 
+ @param model 媒体消息Cell的数据模型
+ 
+ @discussion 仅支持取消文件消息的发送
+ */
+- (void)didTapCancelUploadButton:(RCMessageModel *)model;
+
 #pragma mark - 客服机器人评价
 /*!
  机器人解答问题，点击是否解决问题的回调
@@ -131,4 +147,3 @@
 - (void)didTapPublicServiceMessageFailedStatusViewForResend:(RCMessageModel *)model;
 
 @end
-#endif

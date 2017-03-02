@@ -6,9 +6,10 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import "RCDChatViewController.h"
 #import "RCDAddFriendViewController.h"
 #import "RCDChatViewController.h"
+#import "RCDChatViewController.h"
+#import "RCDContactSelectedTableViewController.h"
 #import "RCDDiscussGroupSettingViewController.h"
 #import "RCDGroupSettingsTableViewController.h"
 #import "RCDHttpTool.h"
@@ -19,6 +20,9 @@
 #import "RCDRoomSettingViewController.h"
 #import "RCDTestMessage.h"
 #import "RCDTestMessageCell.h"
+#import "RCDUIBarButtonItem.h"
+#import "RCDUserInfoManager.h"
+#import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
 #import "RCDataBaseManager.h"
 #import "RealTimeLocationEndCell.h"
@@ -26,21 +30,51 @@
 #import "RealTimeLocationStatusView.h"
 #import "RealTimeLocationViewController.h"
 #import <RongIMKit/RongIMKit.h>
-#import "RCDContactSelectedTableViewController.h"
+#import "RCDCustomerEmoticonTab.h"
+#import "RCDReceiptDetailsTableViewController.h"
 
-@interface RCDChatViewController () <UIActionSheetDelegate,
-                                     RCRealTimeLocationObserver,
-                                     RealTimeLocationStatusViewDelegate,
-                                     UIAlertViewDelegate, RCMessageCellDelegate>
+@interface RCDChatViewController () <
+    UIActionSheetDelegate, RCRealTimeLocationObserver,
+    RealTimeLocationStatusViewDelegate, UIAlertViewDelegate,
+    RCMessageCellDelegate>
 @property(nonatomic, weak) id<RCRealTimeLocationProxy> realTimeLocation;
 @property(nonatomic, strong)
     RealTimeLocationStatusView *realTimeLocationStatusView;
 @property(nonatomic, strong) RCDGroupInfo *groupInfo;
-@property(nonatomic, strong) NSMutableArray *groupMemberList;
+
+-(UIView *)loadEmoticonView:(NSString *)identify index:(int)index;
 @end
 
-@implementation RCDChatViewController
+NSMutableDictionary *userInputStatus;
 
+@implementation RCDChatViewController
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+    NSString *userInputStatusKey = [NSString stringWithFormat:@"%lu--%@",(unsigned long)self.conversationType,self.targetId];
+    if (userInputStatus && [userInputStatus.allKeys containsObject:userInputStatusKey]) {
+        KBottomBarStatus inputType = (KBottomBarStatus)[userInputStatus[userInputStatusKey] integerValue];
+        //输入框记忆功能，如果退出时是语音输入，再次进入默认语音输入
+        if (inputType == KBottomBarRecordStatus) {
+            self.defaultInputType = RCChatSessionInputBarInputVoice;
+        }else if (inputType == KBottomBarPluginStatus){
+            //      self.defaultInputType = RCChatSessionInputBarInputExtention;
+        }
+    }
+    //默认输入类型为语音
+    //self.defaultInputType = RCChatSessionInputBarInputExtention;
+
+  [self refreshTitle];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    KBottomBarStatus inputType = self.chatSessionInputBarControl.currentBottomBarStatus;
+    if (!userInputStatus) {
+        userInputStatus = [NSMutableDictionary new];
+    }
+    NSString *userInputStatusKey = [NSString stringWithFormat:@"%lu--%@",(unsigned long)self.conversationType,self.targetId];
+    [userInputStatus setObject:[NSString stringWithFormat:@"%ld",(long)inputType]  forKey:userInputStatusKey];
+}
 - (void)viewDidLoad {
   [super viewDidLoad];
   self.enableSaveNewPhotoToLocalSystem = YES;
@@ -55,7 +89,9 @@
               if ([discussion.memberIdList
                       containsObject:[RCIMClient sharedRCIMClient]
                                          .currentUserInfo.userId]) {
-                [self setRightNavigationItem:[UIImage imageNamed:@"Private_Setting"] withFrame:CGRectMake(15,3.5,16,18.5)];
+                [self setRightNavigationItem:[UIImage
+                                                 imageNamed:@"Private_Setting"]
+                                   withFrame:CGRectMake(15, 3.5, 16, 18.5)];
               } else {
                 self.navigationItem.rightBarButtonItem = nil;
               }
@@ -64,10 +100,12 @@
           error:^(RCErrorCode status){
 
           }];
-    }else if (self.conversationType == ConversationType_GROUP){
-        [self setRightNavigationItem:[UIImage imageNamed:@"Group_Setting"] withFrame:CGRectMake(10, 3.5,21,19.5)];
+    } else if (self.conversationType == ConversationType_GROUP) {
+      [self setRightNavigationItem:[UIImage imageNamed:@"Group_Setting"]
+                         withFrame:CGRectMake(10, 3.5, 21, 19.5)];
     } else {
-        [self setRightNavigationItem:[UIImage imageNamed:@"Private_Setting"] withFrame:CGRectMake(15,3.5,16 ,18.5)];
+      [self setRightNavigationItem:[UIImage imageNamed:@"Private_Setting"]
+                         withFrame:CGRectMake(15, 3.5, 16, 18.5)];
     }
 
   } else {
@@ -76,11 +114,9 @@
 
   /*******************实时地理位置共享***************/
   [self registerClass:[RealTimeLocationStartCell class]
-      forCellWithReuseIdentifier:RCRealTimeLocationStartMessageTypeIdentifier];
+      forMessageClass:[RCRealTimeLocationStartMessage class]];
   [self registerClass:[RealTimeLocationEndCell class]
-      forCellWithReuseIdentifier:RCRealTimeLocationEndMessageTypeIdentifier];
-  [self registerClass:[RCUnknownMessageCell class]
-      forCellWithReuseIdentifier:RCUnknownMessageTypeIdentifier];
+      forMessageClass:[RCRealTimeLocationEndMessage class]];
 
   __weak typeof(&*self) weakSelf = self;
   [[RCRealTimeLocationManager sharedManager]
@@ -99,20 +135,21 @@
 
   ///注册自定义测试消息Cell
   [self registerClass:[RCDTestMessageCell class]
-      forCellWithReuseIdentifier:RCDTestMessageTypeIdentifier];
-  
+      forMessageClass:[RCDTestMessage class]];
+
   [self notifyUpdateUnreadMessageCount];
-  
-  
+
   //加号区域增加发送文件功能，Kit中已经默认实现了该功能，但是为了SDK向后兼容性，目前SDK默认不开启该入口，可以参考以下代码在加号区域中增加发送文件功能。
   UIImage *imageFile = [RCKitUtility imageNamed:@"actionbar_file_icon"
                                        ofBundle:@"RongCloud.bundle"];
+
   
   [self.pluginBoardView insertItemWithImage:imageFile
-                                      title:NSLocalizedStringFromTable(@"File", @"RongCloudKit", nil)
+                                      title:NSLocalizedStringFromTable(
+                                                @"File", @"RongCloudKit", nil)
                                     atIndex:3
                                         tag:PLUGIN_BOARD_ITEM_FILE_TAG];
-  
+
   //    self.chatSessionInputBarControl.hidden = YES;
   //    CGRect intputTextRect = self.conversationMessageCollectionView.frame;
   //    intputTextRect.size.height = intputTextRect.size.height+50;
@@ -151,7 +188,7 @@
   //默认输入类型为语音
   // self.defaultInputType = RCChatSessionInputBarInputExtention;
 
-  /***********如何在会话界面插入提醒消息***********************
+  /***********如何在会话页面插入提醒消息***********************
 
       RCInformationNotificationMessage *warningMsg =
      [RCInformationNotificationMessage
@@ -159,7 +196,9 @@
       BOOL saveToDB = NO;  //是否保存到数据库中
       RCMessage *savedMsg ;
       if (saveToDB) {
-          savedMsg = [[RCIMClient sharedRCIMClient] insertOutgoingMessage:self.conversationType targetId:self.targetId sentStatus:SentStatus_SENT content:warningMsg];
+          savedMsg = [[RCIMClient sharedRCIMClient]
+     insertOutgoingMessage:self.conversationType targetId:self.targetId
+     sentStatus:SentStatus_SENT content:warningMsg];
       } else {
           savedMsg =[[RCMessage alloc] initWithType:self.conversationType
      targetId:self.targetId direction:MessageDirection_SEND messageId:-1
@@ -168,27 +207,81 @@
       [self appendAndDisplayMessage:savedMsg];
   */
   //    self.enableContinuousReadUnreadVoice = YES;//开启语音连读功能
-  
+
   //刷新个人或群组的信息
   [self refreshUserInfoOrGroupInfo];
+  
+  if (self.conversationType == ConversationType_GROUP) {
+    //群组改名之后，更新当前页面的Title
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTitleForGroup:)
+                                                 name:@"UpdeteGroupInfo"
+                                               object:nil];
 
-  //群组改名之后，更新当前页面的Title
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(renameGroupName:)
-                                               name:@"renameGroupName"
-                                             object:nil];
+  }
 
-  //群组改名之后，更新当前页面的Title
+  //清除历史消息
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(clearHistoryMSG:)
                                                name:@"ClearHistoryMsg"
                                              object:nil];
-  
+
   [[NSNotificationCenter defaultCenter]
-   addObserver:self
-   selector:@selector(updateForSharedMessageInsertSuccess:)
-   name:@"RCDSharedMessageInsertSuccess"
-   object:nil];
+      addObserver:self
+         selector:@selector(updateForSharedMessageInsertSuccess:)
+             name:@"RCDSharedMessageInsertSuccess"
+           object:nil];
+
+//  //表情面板添加自定义表情包
+//  UIImage *icon = [RCKitUtility imageNamed:@"emoji_btn_normal"
+//                                  ofBundle:@"RongCloud.bundle"];
+//  RCDCustomerEmoticonTab *emoticonTab1 = [RCDCustomerEmoticonTab new];
+//  emoticonTab1.identify = @"1";
+//  emoticonTab1.image = icon;
+//  emoticonTab1.pageCount = 2;
+//  emoticonTab1.chartView = self;
+//
+//  [self.emojiBoardView addEmojiTab:emoticonTab1];
+//
+//  RCDCustomerEmoticonTab *emoticonTab2 = [RCDCustomerEmoticonTab new];
+//  emoticonTab2.identify = @"2";
+//  emoticonTab2.image = icon;
+//  emoticonTab2.pageCount = 4;
+//  emoticonTab2.chartView = self;
+//
+//  [self.emojiBoardView addEmojiTab:emoticonTab2];
+}
+
+/**
+ *  返回的 view 大小必须等于 contentViewSize （宽度 = 屏幕宽度，高度 = 186）
+ *
+ *  @param identify 表情包标示
+ *  @param index    index
+ *
+ *  @return view
+ */
+- (UIView *)loadEmoticonView:(NSString *)identify index:(int)index {
+  UIView *view11 = [[UIView alloc]
+      initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 186)];
+  view11.backgroundColor = [UIColor blackColor];
+  switch (index) {
+  case 1:
+    view11.backgroundColor = [UIColor yellowColor];
+    break;
+  case 2:
+    view11.backgroundColor = [UIColor redColor];
+    break;
+  case 3:
+    view11.backgroundColor = [UIColor greenColor];
+    break;
+  case 4:
+    view11.backgroundColor = [UIColor grayColor];
+    break;
+
+  default:
+    break;
+  }
+  return view11;
 }
 
 - (void)updateForSharedMessageInsertSuccess:(NSNotification *)notification {
@@ -200,85 +293,28 @@
 }
 
 - (void)setRightNavigationItem:(UIImage *)image withFrame:(CGRect)frame {
-    UIButton *button =
-    [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
-    UIImageView *imageView =
-    [[UIImageView alloc] initWithImage:image];
-    imageView.frame = frame;
-    [button addSubview:imageView];
-    [button addTarget:self
-               action:@selector(rightBarButtonItemClicked:)
-     forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightBarButton =
-    [[UIBarButtonItem alloc] initWithCustomView:button];
-    self.navigationItem.rightBarButtonItem = rightBarButton;
+  RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc]
+      initContainImage:image
+        imageViewFrame:frame
+           buttonTitle:nil
+            titleColor:nil
+            titleFrame:CGRectZero
+           buttonFrame:CGRectMake(0, 0, 25, 25)
+                target:self
+                action:@selector(rightBarButtonItemClicked:)];
+  self.navigationItem.rightBarButtonItem = rightBtn;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-  [super viewWillAppear:animated];
-  if (self.conversationType == ConversationType_GROUP) {
-    _groupMemberList =
-        [[RCDataBaseManager shareInstance] getGroupMember:self.targetId];
-    [RCDHTTPTOOL
-             getGroupByID:self.targetId
-        successCompletion:^(RCDGroupInfo *group) {
-          dispatch_async(dispatch_get_main_queue(), ^{
-            _groupInfo = group;
-            //判断如果是解散的群组，不显示导航栏的setting按钮。
-            if ([group.isDismiss isEqualToString:@"YES"]) {
-              self.navigationItem.rightBarButtonItem = nil;
-            }
-            [[RCDataBaseManager shareInstance] insertGroupToDB:group];
-            _groupMemberList = [[RCDataBaseManager shareInstance]
-                getGroupMember:self.targetId];
-            _groupMemberList= [self moveCreator:_groupMemberList group:group];
-            if ([_groupMemberList count] == 0) {
-              [RCDHTTPTOOL
-                  getGroupMembersWithGroupId:self.targetId
-                                       Block:^(NSMutableArray *result) {
-                                         if ([result count] != 0) {
-                                           if (result.count > 1) {
-                                             result = [self moveCreator:result group:group];
-                                           }
-                                           _groupMemberList = result;
-                                           [[RCDataBaseManager shareInstance]
-                                               insertGroupMemberToDB:result
-                                                             groupId:
-                                                                 self.targetId];
-                                         }
-
-                                       }];
-            }
-          });
-        }];
+- (void)updateTitleForGroup:(NSNotification *)notification {
+  NSString *groupId = notification.object;
+  if ([groupId isEqualToString:self.targetId]) {
+    RCDGroupInfo *tempInfo = [[RCDataBaseManager shareInstance] getGroupByGroupId:self.targetId];
+    
+    int count = tempInfo.number.intValue;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      self.title = [NSString stringWithFormat:@"%@(%d)",tempInfo.groupName,count];
+    });
   }
-}
-
-//将创建者挪到第一的位置
--(NSMutableArray *) moveCreator:(NSMutableArray *)GroupMemberList group:(RCDGroupInfo *)group
-{
-  if (GroupMemberList ==nil || GroupMemberList.count == 0) {
-    return nil;
-  }
-  NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:GroupMemberList];
-  int index;
-  RCUserInfo *creator;
-  for (int i = 0; i < [temp count]; i++) {
-    RCUserInfo *user = [temp objectAtIndex:i];
-    if ([group.creatorId isEqualToString:user.userId]) {
-      index = i;
-      creator = user;
-      break;
-    }
-  }
-  [temp insertObject:creator atIndex:0];
-  [temp removeObjectAtIndex:index+1];
-  return temp;
-}
-
-
-- (void)renameGroupName:(NSNotification *)notification {
-  self.title = [notification object];
 }
 
 - (void)clearHistoryMSG:(NSNotification *)notification {
@@ -322,34 +358,23 @@
  */
 - (void)rightBarButtonItemClicked:(id)sender {
   if (self.conversationType == ConversationType_PRIVATE) {
-
-    //    RCDPrivateSettingViewController *settingVC =
-    //        [[RCDPrivateSettingViewController alloc] init];
-    //    settingVC.conversationType = self.conversationType;
-    //    settingVC.targetId = self.targetId;
-    //    settingVC.conversationTitle = self.userName;
-    //    //设置讨论组标题时，改变当前聊天界面的标题
-    //    settingVC.setDiscussTitleCompletion = ^(NSString *discussTitle) {
-    //      self.title = discussTitle;
-    //    };
-
-    UIStoryboard *secondStroyBoard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RCDPrivateSettingsTableViewController *settingsVC =
-        [secondStroyBoard instantiateViewControllerWithIdentifier:
-                              @"RCDPrivateSettingsTableViewController"];
-    settingsVC.userId = self.targetId;
-    //
-    [self.navigationController pushViewController:settingsVC animated:YES];
-
+    RCDUserInfo *friendInfo = [[RCDataBaseManager shareInstance] getFriendInfo:self.targetId];
+    if (![friendInfo.status isEqualToString:@"20"]) {
+      RCDAddFriendViewController *vc = [[RCDAddFriendViewController alloc] init];
+      vc.targetUserInfo = friendInfo;
+      [self.navigationController pushViewController:vc animated:YES];
+    } else {
+      RCDPrivateSettingsTableViewController *settingsVC = [RCDPrivateSettingsTableViewController privateSettingsTableViewController];
+      settingsVC.userId = self.targetId;
+      [self.navigationController pushViewController:settingsVC animated:YES];
+    }
   } else if (self.conversationType == ConversationType_DISCUSSION) {
-
     RCDDiscussGroupSettingViewController *settingVC =
         [[RCDDiscussGroupSettingViewController alloc] init];
     settingVC.conversationType = self.conversationType;
     settingVC.targetId = self.targetId;
     settingVC.conversationTitle = self.userName;
-    //设置讨论组标题时，改变当前聊天界面的标题
+    //设置讨论组标题时，改变当前会话页面的标题
     settingVC.setDiscussTitleCompletion = ^(NSString *discussTitle) {
       self.title = discussTitle;
     };
@@ -366,30 +391,16 @@
 
     [self.navigationController pushViewController:settingVC animated:YES];
   }
-
-  //聊天室设置
-  else if (self.conversationType == ConversationType_CHATROOM) {
-    RCDRoomSettingViewController *settingVC =
-        [[RCDRoomSettingViewController alloc] init];
-    settingVC.conversationType = self.conversationType;
-    settingVC.targetId = self.targetId;
-    [self.navigationController pushViewController:settingVC animated:YES];
-  }
-
   //群组设置
   else if (self.conversationType == ConversationType_GROUP) {
-    UIStoryboard *secondStroyBoard =
-        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     RCDGroupSettingsTableViewController *settingsVC =
-        [secondStroyBoard instantiateViewControllerWithIdentifier:
-                              @"RCDGroupSettingsTableViewController"];
+        [RCDGroupSettingsTableViewController groupSettingsTableViewController];
     if (_groupInfo == nil) {
       settingsVC.Group =
           [[RCDataBaseManager shareInstance] getGroupByGroupId:self.targetId];
     } else {
       settingsVC.Group = _groupInfo;
     }
-    settingsVC.GroupMemberList = _groupMemberList;
     [self.navigationController pushViewController:settingsVC animated:YES];
   }
   //客服设置
@@ -430,12 +441,15 @@
  *  @param imageMessageContent 图片消息内容
  */
 - (void)presentImagePreviewController:(RCMessageModel *)model {
-    RCImageSlideController *previewController = [[RCImageSlideController alloc]init];
-    previewController.messageModel = model;
-    
-    UINavigationController *nav = [[UINavigationController alloc]
-                                   initWithRootViewController:previewController];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+  RCImageSlideController *previewController =
+      [[RCImageSlideController alloc] init];
+  previewController.messageModel = model;
+
+  UINavigationController *nav = [[UINavigationController alloc]
+      initWithRootViewController:previewController];
+  [self.navigationController presentViewController:nav
+                                          animated:YES
+                                        completion:nil];
 }
 
 - (void)didLongTouchMessageCell:(RCMessageModel *)model inView:(UIView *)view {
@@ -471,7 +485,7 @@
     backImg.frame = CGRectMake(-6, 4, 10, 17);
     [backBtn addSubview:backImg];
     UILabel *backText =
-        [[UILabel alloc] initWithFrame:CGRectMake(9,4, 85, 17)];
+        [[UILabel alloc] initWithFrame:CGRectMake(9, 4, 85, 17)];
     backText.text = backString; // NSLocalizedStringFromTable(@"Back",
                                 // @"RongCloudKit", nil);
     //   backText.font = [UIFont systemFontOfSize:17];
@@ -544,66 +558,13 @@
 - (void)onShowRealTimeLocationView {
   [self showRealTimeLocationViewController];
 }
-- (RCMessageContent *)willSendMessage:(RCMessageContent *)messageCotent {
-  if ([messageCotent isMemberOfClass:[RCTextMessage class]]) {
-    RCTextMessage *textMsg = (RCTextMessage *)messageCotent;
-    textMsg.extra = @"";
+- (RCMessageContent *)willSendMessage:(RCMessageContent *)messageContent {
+  //可以在这里修改将要发送的消息
+  if ([messageContent isMemberOfClass:[RCTextMessage class]]) {
+    // RCTextMessage *textMsg = (RCTextMessage *)messageContent;
+    // textMsg.extra = @"";
   }
-  return messageCotent;
-}
-
-#pragma mark override
-/**
- *  重写方法实现自定义消息的显示
- *
- *  @param collectionView collectionView
- *  @param indexPath      indexPath
- *
- *  @return RCMessageTemplateCell
- */
-- (RCMessageBaseCell *)rcConversationCollectionView:
-                           (UICollectionView *)collectionView
-                             cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-  RCMessageModel *model =
-      [self.conversationDataRepository objectAtIndex:indexPath.row];
-
-  if (!self.displayUserNameInCell) {
-    if (model.messageDirection == MessageDirection_RECEIVE) {
-      model.isDisplayNickname = NO;
-    }
-  }
-  RCMessageContent *messageContent = model.content;
-  RCMessageBaseCell *cell = nil;
-  if ([messageContent isMemberOfClass:[RCRealTimeLocationStartMessage class]]) {
-    RealTimeLocationStartCell *__cell =
-        [collectionView dequeueReusableCellWithReuseIdentifier:
-                            RCRealTimeLocationStartMessageTypeIdentifier
-                                                  forIndexPath:indexPath];
-    [__cell setDataModel:model];
-    [__cell setDelegate:self];
-    //__cell.locationDelegate=self;
-    cell = __cell;
-    return cell;
-  } else if ([messageContent
-                 isMemberOfClass:[RCRealTimeLocationEndMessage class]]) {
-    RealTimeLocationEndCell *__cell =
-        [collectionView dequeueReusableCellWithReuseIdentifier:
-                            RCRealTimeLocationEndMessageTypeIdentifier
-                                                  forIndexPath:indexPath];
-    [__cell setDataModel:model];
-    cell = __cell;
-    return cell;
-  } else if ([messageContent isMemberOfClass:[RCDTestMessage class]]) {
-    RCDTestMessageCell *cell = [collectionView
-        dequeueReusableCellWithReuseIdentifier:RCDTestMessageTypeIdentifier
-                                  forIndexPath:indexPath];
-    [cell setDataModel:model];
-    [cell setDelegate:self];
-    return cell;
-  } else {
-    return [super rcConversationCollectionView:collectionView
-                        cellForItemAtIndexPath:indexPath];
-  }
+  return messageContent;
 }
 
 #pragma mark override
@@ -614,21 +575,27 @@
   }
 }
 
-- (NSArray<UIMenuItem *> *)getLongTouchMessageCellMenuList:(RCMessageModel *)model {
-  NSMutableArray<UIMenuItem *> *menuList = [[super getLongTouchMessageCellMenuList:model] mutableCopy];
+- (NSArray<UIMenuItem *> *)getLongTouchMessageCellMenuList:
+    (RCMessageModel *)model {
+  NSMutableArray<UIMenuItem *> *menuList =
+      [[super getLongTouchMessageCellMenuList:model] mutableCopy];
   /*
   在这里添加删除菜单。
-  [menuList enumerateObjectsUsingBlock:^(UIMenuItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-    if ([obj.title isEqualToString:@"删除"] || [obj.title isEqualToString:@"delete"]) {
+  [menuList enumerateObjectsUsingBlock:^(UIMenuItem * _Nonnull obj, NSUInteger
+ idx, BOOL * _Nonnull stop) {
+    if ([obj.title isEqualToString:@"删除"] || [obj.title
+ isEqualToString:@"delete"]) {
       [menuList removeObjectAtIndex:idx];
       *stop = YES;
     }
   }];
-  
- UIMenuItem *forwardItem = [[UIMenuItem alloc] initWithTitle:@"转发" action:@selector(onForwardMessage:)];
+
+ UIMenuItem *forwardItem = [[UIMenuItem alloc] initWithTitle:@"转发"
+ action:@selector(onForwardMessage:)];
  [menuList addObject:forwardItem];
-   
-  如果您不需要修改，不用重写此方法，或者直接return［super getLongTouchMessageCellMenuList:model]。
+
+  如果您不需要修改，不用重写此方法，或者直接return［super
+ getLongTouchMessageCellMenuList:model]。
   */
   return menuList;
 }
@@ -636,150 +603,71 @@
 - (void)didTapCellPortrait:(NSString *)userId {
   if (self.conversationType == ConversationType_GROUP ||
       self.conversationType == ConversationType_DISCUSSION) {
-    [[RCDRCIMDataSource shareInstance]
-        getUserInfoWithUserId:userId
-                   completion:^(RCUserInfo *userInfo) {
-                     [[RCDHttpTool shareInstance] updateUserInfo:userId
-                         success:^(RCUserInfo *user) {
-                           if (![userInfo.name isEqualToString:user.name]) {
-                             [[RCIM sharedRCIM]
-                                 refreshUserInfoCache:user
-                                           withUserId:user.userId];
-                           }
-                           NSArray *friendList = [
-                               [RCDataBaseManager shareInstance] getAllFriends];
-                           BOOL isGotoDetailView = NO;
-                           for (RCDUserInfo *USER in friendList) {
-                             if ([userId isEqualToString:USER.userId] &&
-                                 [USER.status isEqualToString:@"20"]) {
-                               isGotoDetailView = YES;
-                             } else if ([userId
-                                            isEqualToString:[RCIM sharedRCIM]
-                                                                .currentUserInfo
-                                                                .userId]) {
-                               isGotoDetailView = YES;
-                             }
-                           }
-                           if (isGotoDetailView == YES) {
-                             UIStoryboard *mainStoryboard =
-                                 [UIStoryboard storyboardWithName:@"Main"
-                                                           bundle:nil];
-                             RCDPersonDetailViewController *temp =
-                                 [mainStoryboard
-                                     instantiateViewControllerWithIdentifier:
-                                         @"RCDPersonDetailViewController"];
-                             temp.userInfo = user;
-                             [self.navigationController pushViewController:temp
-                                                                  animated:YES];
-                           } else {
-                             UIStoryboard *mainStoryboard =
-                                 [UIStoryboard storyboardWithName:@"Main"
-                                                           bundle:nil];
-                             RCDAddFriendViewController *addViewController =
-                                 [mainStoryboard
-                                     instantiateViewControllerWithIdentifier:
-                                         @"RCDAddFriendViewController"];
-                             addViewController.targetUserInfo = userInfo;
-                             [self.navigationController
-                                 pushViewController:addViewController
-                                           animated:YES];
-                           }
-                         }
-                         failure:^(NSError *err){
-
-                         }];
-                   }];
+    if (![userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+      [[RCDUserInfoManager shareInstance]
+          getFriendInfo:userId
+             completion:^(RCUserInfo *user) {
+               [[RCIM sharedRCIM] refreshUserInfoCache:user
+                                            withUserId:user.userId];
+               [self gotoNextPage:user];
+             }];
+    } else {
+      [[RCDUserInfoManager shareInstance]
+          getUserInfo:userId
+           completion:^(RCUserInfo *user) {
+             [[RCIM sharedRCIM] refreshUserInfoCache:user
+                                          withUserId:user.userId];
+             [self gotoNextPage:user];
+           }];
+    }
+  }
+  if (self.conversationType == ConversationType_PRIVATE) {
+    [[RCDUserInfoManager shareInstance] getUserInfo:userId
+                                         completion:^(RCUserInfo *user) {
+                                           [[RCIM sharedRCIM]
+                                            refreshUserInfoCache:user
+                                            withUserId:user.userId];
+                                           [self gotoNextPage:user];
+                                         }];
   }
 }
 
-#pragma mark override
-/**
- *  重写方法实现自定义消息的显示的高度
- *
- *  @param collectionView       collectionView
- *  @param collectionViewLayout collectionViewLayout
- *  @param indexPath            indexPath
- *
- *  @return 显示的高度
- */
-- (CGSize)
-rcConversationCollectionView:(UICollectionView *)collectionView
-                      layout:(UICollectionViewLayout *)collectionViewLayout
-      sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-  RCMessageModel *model =
-      [self.conversationDataRepository objectAtIndex:indexPath.row];
-  RCMessageContent *messageContent = model.content;
-  CGFloat height = 0.0;
-  if (model.isDisplayNickname) {
-    if (model.messageDirection == MessageDirection_RECEIVE) {
-      height = 16;
+- (void)gotoNextPage:(RCUserInfo *)user {
+  NSArray *friendList = [[RCDataBaseManager shareInstance] getAllFriends];
+  BOOL isGotoDetailView = NO;
+  for (RCDUserInfo *friend in friendList) {
+    if ([user.userId isEqualToString:friend.userId] &&
+        [friend.status isEqualToString:@"20"]) {
+      isGotoDetailView = YES;
+    } else if ([user.userId
+                   isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+      isGotoDetailView = YES;
     }
   }
-  if (model.isDisplayMessageTime) {
-    height += 45;
-  }
-  if ([messageContent isMemberOfClass:[RCRealTimeLocationStartMessage class]]) {
-    if (model.isDisplayMessageTime) {
-      return CGSizeMake(collectionView.frame.size.width, 40 + 10 + 10 + height);
-    }
-    return CGSizeMake(collectionView.frame.size.width, 40 + 10 + 10 + height);
-  }else if ([messageContent isMemberOfClass:[RCRealTimeLocationEndMessage class]]) {
-      return CGSizeMake(collectionView.frame.size.width-30*2,
-                        10+21+10+height);
-  } else if ([messageContent isMemberOfClass:[RCDTestMessage class]]) {
-    RCDTestMessage *message = (RCDTestMessage *)messageContent;
-    CGSize size = [RCDTestMessageCell getBubbleBackgroundViewSize:message];
-    return CGSizeMake(collectionView.frame.size.width, size.height+height + 10 + 10);
+  if (isGotoDetailView == YES) {
+      RCDPersonDetailViewController *temp =
+      [[RCDPersonDetailViewController alloc]init];
+    temp.userId = user.userId;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self.navigationController pushViewController:temp animated:YES];
+    });
   } else {
-    return [super rcConversationCollectionView:collectionView
-                                        layout:collectionViewLayout
-                        sizeForItemAtIndexPath:indexPath];
+    RCDAddFriendViewController *vc = [[RCDAddFriendViewController alloc] init];
+    vc.targetUserInfo = user;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self.navigationController
+       pushViewController:vc
+       animated:YES];
+    });
   }
 }
-//
+
 ///**
 // *  重写方法实现未注册的消息的显示
-// *  如：新版本增加了某种自定义消息，但是老版本不能识别，开发者可以在旧版本中预先自定义这种未识别的消息的显示
+// *
+// 如：新版本增加了某种自定义消息，但是老版本不能识别，开发者可以在旧版本中预先自定义这种未识别的消息的显示
 // *  需要设置RCIM showUnkownMessage属性
-// *
-// *  @param collectionView collectionView
-// *  @param indexPath      indexPath
-// *
-// *  @return RCMessageTemplateCell
-// */
-//- (RCMessageBaseCell *)
-//rcUnkownConversationCollectionView:(UICollectionView *)collectionView
-//            cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-//  RCMessageModel *model =
-//      [self.conversationDataRepository objectAtIndex:indexPath.row];
-//  NSLog(@"message objectName = %@", model.objectName);
-//  RCMessageCell *cell = [collectionView
-//      dequeueReusableCellWithReuseIdentifier:RCUnknownMessageTypeIdentifier
-//                                forIndexPath:indexPath];
-//  [cell setDataModel:model];
-//  return cell;
-//}
-//
-///**
-// *  重写方法实现未注册的消息的显示的高度
-// *  如：新版本增加了某种自定义消息，但是老版本不能识别，开发者可以在旧版本中预先自定义这种未识别的消息的显示
-// *  需要设置RCIM showUnkownMessage属性
-// *
-// *  @param collectionView       collectionView
-// *  @param collectionViewLayout collectionViewLayout
-// *  @param indexPath            indexPath
-// *
-// *  @return 显示的高度
-// */
-//- (CGSize)rcUnkownConversationCollectionView:(UICollectionView *)collectionView
-//                                      layout:(UICollectionViewLayout *)
-//                                                 collectionViewLayout
-//                      sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-//  RCMessageModel *model =
-//      [self.conversationDataRepository objectAtIndex:indexPath.row];
-//  NSLog(@"message objectName = %@", model.objectName);
-//  return CGSizeMake(collectionView.frame.size.width, 66);
-//}
+// **
 
 #pragma mark override
 - (void)resendMessage:(RCMessageContent *)messageContent {
@@ -1000,75 +888,147 @@ rcConversationCollectionView:(UICollectionView *)collectionView
   }
 }
 
--(void)refreshUserInfoOrGroupInfo
-{
+- (void)refreshUserInfoOrGroupInfo {
   //打开单聊强制从demo server 获取用户信息更新本地数据库
+
   if (self.conversationType == ConversationType_PRIVATE) {
     if (![self.targetId
-          isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+            isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+      __weak typeof(self) weakSelf = self;
       [[RCDRCIMDataSource shareInstance]
-       getUserInfoWithUserId:self.targetId
-       completion:^(RCUserInfo *userInfo) {
-         [[RCDHttpTool shareInstance] updateUserInfo:self.targetId
-                                             success:^(RCUserInfo *user) {
-                                               //                if (![userInfo.name
-                                               //                isEqualToString:user.name]) {
-                                               self.navigationItem.title = user.name;
-                                               [[RCIM sharedRCIM]
-                                                refreshUserInfoCache:user
-                                                withUserId:user.userId];
-                                               RCDUserInfo *friendInfo =
-                                               [[RCDataBaseManager shareInstance]
-                                                getFriendInfo:user.userId];
-                                               friendInfo.name = user.name;
-                                               friendInfo.portraitUri = user.portraitUri;
-                                               [[RCDataBaseManager shareInstance]
-                                                insertFriendToDB:friendInfo];
-                                               //                    [[NSNotificationCenter
-                                               //                    defaultCenter]
-                                               //                     postNotificationName:@"kRCUpdateUserNameNotification"
-                                               //                     object:user];
-                                               //                }
-                                               
-                                             }
-                                             failure:^(NSError *err){
-                                               
-                                             }];
-       }];
+          getUserInfoWithUserId:self.targetId
+                     completion:^(RCUserInfo *userInfo) {
+                       [[RCDHttpTool shareInstance]
+                           updateUserInfo:weakSelf.targetId
+                           success:^(RCDUserInfo *user) {
+                             RCUserInfo *updatedUserInfo =
+                                 [[RCUserInfo alloc] init];
+                             updatedUserInfo.userId = user.userId;
+                             if (user.displayName.length > 0) {
+                               updatedUserInfo.name = user.displayName;
+                             } else {
+                               updatedUserInfo.name = user.name;
+                             }
+                             updatedUserInfo.portraitUri = user.portraitUri;
+                             weakSelf.navigationItem.title =
+                                 updatedUserInfo.name;
+                             [[RCIM sharedRCIM]
+                                 refreshUserInfoCache:updatedUserInfo
+                                           withUserId:updatedUserInfo.userId];
+                           }
+                           failure:^(NSError *err){
+
+                           }];
+                     }];
     }
-  }
-  
+      }
+  //刷新自己头像昵称
+      [[RCDUserInfoManager shareInstance]
+       getUserInfo:[RCIM sharedRCIM].currentUserInfo.userId
+       completion:^(RCUserInfo *user) {
+           [[RCIM sharedRCIM] refreshUserInfoCache:user
+                                        withUserId:user.userId];
+       }];
+       
+
   //打开群聊强制从demo server 获取群组信息更新本地数据库
   if (self.conversationType == ConversationType_GROUP) {
+    __weak typeof(self) weakSelf = self;
     [RCDHTTPTOOL getGroupByID:self.targetId
             successCompletion:^(RCDGroupInfo *group) {
-              RCGroup *Group = [[RCGroup alloc] initWithGroupId:self.targetId groupName:group.groupName portraitUri:group.portraitUri];
-              [[RCIM sharedRCIM] refreshGroupInfoCache:Group withGroupId:self.targetId];
+              RCGroup *Group =
+                  [[RCGroup alloc] initWithGroupId:weakSelf.targetId
+                                         groupName:group.groupName
+                                       portraitUri:group.portraitUri];
+              [[RCIM sharedRCIM] refreshGroupInfoCache:Group
+                                           withGroupId:weakSelf.targetId];
+              dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf refreshTitle];
+              });
             }];
+  }
+  //更新群组成员用户信息的本地缓存
+  dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    NSMutableArray *groupList =
+        [[RCDataBaseManager shareInstance] getGroupMember:self.targetId];
+    NSArray *resultList =
+        [[RCDUserInfoManager shareInstance] getFriendInfoList:groupList];
+    groupList = [[NSMutableArray alloc] initWithArray:resultList];
+    for (RCUserInfo *user in groupList) {
+      if ([user.portraitUri isEqualToString:@""]) {
+        user.portraitUri = [RCDUtilities defaultUserPortrait:user];
+      }
+      if ([user.portraitUri hasPrefix:@"file:///"]) {
+        NSString *filePath = [RCDUtilities
+            getIconCachePath:[NSString
+                                 stringWithFormat:@"user%@.png", user.userId]];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+          NSURL *portraitPath = [NSURL fileURLWithPath:filePath];
+          user.portraitUri = [portraitPath absoluteString];
+        } else {
+          user.portraitUri = [RCDUtilities defaultUserPortrait:user];
+        }
+      }
+      [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:user.userId];
+    }
+  });
+}
+
+- (void)refreshTitle{
+  if (self.userName == nil) {
+    return;
+  }
+    int count = [[[RCDataBaseManager shareInstance] getGroupByGroupId:self.targetId].number intValue];
+    if(self.conversationType == ConversationType_GROUP && count > 0){
+        self.title = [NSString stringWithFormat:@"%@(%d)",self.userName,count];
+    }else{
+        self.title = self.userName;
+    }
+}
+
+- (void)didTapReceiptCountView:(RCMessageModel *)model {
+  if ([model.content isKindOfClass:[RCTextMessage class]]) {
+    RCDReceiptDetailsTableViewController *vc = [[RCDReceiptDetailsTableViewController alloc] init];
+    RCTextMessage *messageContent = (RCTextMessage *)model.content;
+   NSString *sendTime = [RCKitUtility ConvertMessageTime:model.sentTime/1000];
+    RCMessage *message = [[RCIMClient sharedRCIMClient] getMessageByUId:model.messageUId];
+    NSMutableDictionary *readReceiptUserList = message.readReceiptInfo.userIdList;
+    NSArray *hasReadUserList = [readReceiptUserList allKeys];
+    if (hasReadUserList.count > 1) {
+      hasReadUserList = [self sortForHasReadList:readReceiptUserList];
+    }
+    vc.targetId = self.targetId;
+    vc.messageContent = messageContent.content;
+    vc.messageSendTime = sendTime;
+    vc.hasReadUserList = hasReadUserList;
+    [self.navigationController pushViewController:vc animated:YES];
   }
 }
 
-//- (void)showChooseUserViewController:(void (^)(RCUserInfo *selectedUserInfo))selectedBlock
-//                              cancel:(void (^)())cancelBlock {
-//    if(self.conversationType == ConversationType_GROUP || self.conversationType == ConversationType_DISCUSSION){
-//      UIStoryboard *mainStoryboard =
-//      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//      RCDContactSelectedTableViewController *contactSelectedVC =
-//      [mainStoryboard instantiateViewControllerWithIdentifier:
-//       @"RCDContactSelectedTableViewController"];
-//      //    contactSelectedVC.forCreatingDiscussionGroup = YES;
-//      contactSelectedVC.isAllowsMultipleSelection = NO;
-//      contactSelectedVC.isHideSelectedIcon = YES;
-//      contactSelectedVC.titleStr = @"选择好友";
-//      __weak typeof(&*self) weakSelf = self;
-//      contactSelectedVC.selectUserList = ^(NSArray<RCUserInfo *> *selectedUserList) {
-//        if (selectedUserList.count > 0) {
-//          selectedBlock(selectedUserList[0]);
-//        }
-//        [weakSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
-//      };
-//      [self.navigationController presentViewController:contactSelectedVC animated:YES completion:nil];
-//    }
-//}
+-(NSArray *)sortForHasReadList: (NSDictionary *)readReceiptUserDic {
+  NSArray *result;
+  NSArray *sortedKeys = [readReceiptUserDic keysSortedByValueUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+    if ([obj1 integerValue] > [obj2 integerValue]) {
+      return (NSComparisonResult)NSOrderedDescending;
+    }
+    if ([obj1 integerValue] < [obj2 integerValue]) {
+      return (NSComparisonResult)NSOrderedAscending;
+    }
+    return (NSComparisonResult)NSOrderedSame;
+  }];
+  result = [sortedKeys copy];
+  return result;
+}
+
+- (BOOL)stayAfterJoinChatRoomFailed {
+  //加入聊天室失败之后，是否还停留在会话界面
+  return [[[NSUserDefaults standardUserDefaults] objectForKey:@"stayAfterJoinChatRoomFailed"] isEqualToString:@"YES"];
+}
+
+- (void)alertErrorAndLeft:(NSString *)errorInfo {
+  if (![self stayAfterJoinChatRoomFailed]) {
+    [super alertErrorAndLeft:errorInfo];
+  }
+}
 
 @end

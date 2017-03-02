@@ -39,5 +39,15 @@
  */
 @property(nonatomic, strong) UIImageView *bubbleBackgroundView;
 
+/*!
+ 取消发送的Button
+ */
+@property(nonatomic, strong) UIButton *cancelSendButton;
+
+/*!
+ 显示“已取消”的Label
+ */
+@property(nonatomic, strong) UILabel *cancelLabel;
+
 @end
 

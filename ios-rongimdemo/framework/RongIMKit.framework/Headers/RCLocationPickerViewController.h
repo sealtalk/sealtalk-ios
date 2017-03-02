@@ -1,12 +1,11 @@
 //
 //  RCLocationPickerViewController.h
-//  iOS-IMKit
+//  RongExtensionKit
 //
 //  Created by YangZigang on 14/10/31.
 //  Copyright (c) 2014年 RongCloud. All rights reserved.
 //
 
-#import "RCBaseViewController.h"
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <UIKit/UIKit.h>
@@ -28,7 +27,7 @@ typedef void (^OnPoiSearchResult)(NSArray *pois, BOOL clearPreviousResult, BOOL 
  地理位置选取的ViewController
  */
 @interface RCLocationPickerViewController
-: RCBaseViewController <CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate>
+: UIViewController <CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 /*!
  地理位置选择完成之后的回调

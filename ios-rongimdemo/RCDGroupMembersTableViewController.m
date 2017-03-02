@@ -15,8 +15,11 @@
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
+#import "RCDUIBarButtonItem.h"
 
 @interface RCDGroupMembersTableViewController ()
+
+@property (nonatomic, strong) RCDUIBarButtonItem *leftBtn;
 
 @end
 
@@ -35,6 +38,17 @@
 
   self.title = [NSString stringWithFormat:@"群组成员(%lu)",
                                           (unsigned long)[_GroupMembers count]];
+  
+  self.leftBtn =
+  [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
+                                imageViewFrame:CGRectMake(-6, 4, 10, 17)
+                                   buttonTitle:@"返回"
+                                    titleColor:[UIColor whiteColor]
+                                    titleFrame:CGRectMake(9, 4, 85, 17)
+                                   buttonFrame:CGRectMake(0, 6, 87, 23)
+                                        target:self
+                                        action:@selector(clickBackBtn)];
+  self.navigationItem.leftBarButtonItem = self.leftBtn;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,7 +76,7 @@
     cell = [[RCDContactTableViewCell alloc] init];
   }
   // Configure the cell...
-  RCUserInfo *user = _GroupMembers[indexPath.row];
+  RCDUserInfo *user = _GroupMembers[indexPath.row];
   if ([user.portraitUri isEqualToString:@""]) {
     DefaultPortraitView *defaultPortrait =
         [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
@@ -76,8 +90,9 @@
   cell.portraitView.layer.masksToBounds = YES;
   cell.portraitView.layer.cornerRadius = 5.f;
   cell.portraitView.contentMode = UIViewContentModeScaleAspectFill;
-  cell.nicknameLabel.text = user.name;
+
   cell.nicknameLabel.font = [UIFont systemFontOfSize:15.f];
+  cell.nicknameLabel.text = user.name;
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
   return cell;
@@ -91,8 +106,6 @@
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   RCUserInfo *user = _GroupMembers[indexPath.row];
-  UIStoryboard *mainStoryboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
   BOOL isFriend = NO;
   NSArray *friendList = [[RCDataBaseManager shareInstance] getAllFriends];
   for (RCDUserInfo *friend in friendList) {
@@ -102,22 +115,23 @@
     }
   }
   if (isFriend == YES || [user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-    RCDPersonDetailViewController *detailViewController =
-        [mainStoryboard instantiateViewControllerWithIdentifier:
-                        @"RCDPersonDetailViewController"];
+      RCDPersonDetailViewController *detailViewController =
+      [[RCDPersonDetailViewController alloc]init];
 
     [self.navigationController pushViewController:detailViewController
                                          animated:YES];
-    detailViewController.userInfo = _GroupMembers[indexPath.row];
+    RCUserInfo *user = _GroupMembers[indexPath.row];
+    detailViewController.userId = user.userId;
   } else {
-    RCDAddFriendViewController *addViewController = [mainStoryboard
-        instantiateViewControllerWithIdentifier:@"RCDAddFriendViewController"];
+      RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc]init];
     addViewController.targetUserInfo = _GroupMembers[indexPath.row];
     [self.navigationController pushViewController:addViewController
                                          animated:YES];
   }
 }
 
-
+- (void)clickBackBtn {
+  [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end

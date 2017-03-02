@@ -21,22 +21,72 @@
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
 #import "pinyin.h"
+#import "RCDCommonDefine.h"
+
+#import "RCDUserInfoManager.h"
+#import "RCDUtilities.h"
+#import "RCDUIBarButtonItem.h"
+
 
 @interface RCDContactViewController ()
 @property(strong, nonatomic) NSMutableArray *matchFriendList;
 @property(strong, nonatomic) NSArray *defaultCellsTitle;
 @property(strong, nonatomic) NSArray *defaultCellsPortrait;
-@property (nonatomic, assign) BOOL hasSyncFriendList;
-@property (nonatomic, assign) BOOL isBeginSearch;
+@property(nonatomic, assign) BOOL hasSyncFriendList;
+@property(nonatomic, assign) BOOL isBeginSearch;
+@property(nonatomic, strong) NSMutableDictionary *resultDic;
 
 @end
 
 @implementation RCDContactViewController
 
+- (void)setUpView{
+    [self.friendsTabelView
+     setBackgroundColor:[UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1]];
+    self.view.backgroundColor = [UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1];
+    
+    [self.view addSubview:self.friendsTabelView];
+    [self.view addSubview:self.searchFriendsBar];
+}
+
+- (UISearchBar *)searchFriendsBar {
+    if (!_searchFriendsBar) {
+        _searchFriendsBar=[[UISearchBar alloc]initWithFrame:CGRectMake(2, 0, RCDscreenWidth-4, 28)];
+        [_searchFriendsBar sizeToFit];
+        [_searchFriendsBar setPlaceholder:NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil)];
+        [_searchFriendsBar.layer setBorderWidth:0.5];
+        [_searchFriendsBar.layer setBorderColor:[UIColor colorWithRed:235.0/255 green:235.0/255 blue:235.0/255 alpha:1].CGColor];
+        [_searchFriendsBar setDelegate:self];
+        [_searchFriendsBar setKeyboardType:UIKeyboardTypeDefault];
+    }
+    return _searchFriendsBar;
+}
+
+- (UITableView *)friendsTabelView {
+    if (!_friendsTabelView) {
+        _friendsTabelView=[[UITableView alloc]initWithFrame:CGRectMake(0.0, 43.5, RCDscreenWidth, RCDscreenHeight-43.5-114) style:UITableViewStyleGrouped];
+        [_friendsTabelView setDelegate:self];
+        [_friendsTabelView setDataSource:self];
+        [_friendsTabelView setSectionIndexBackgroundColor:[UIColor clearColor]];
+        [_friendsTabelView setSectionIndexColor:[UIColor darkGrayColor]];
+        [_friendsTabelView setBackgroundColor:[UIColor colorWithRed:240.0/255 green:240.0/255 blue:240.0/255 alpha:1]];
+//        _friendsTabelView.style = UITableViewStyleGrouped;
+//        _friendsTabelView.tableHeaderView=self.searchFriendsBar;
+        //cell无数据时，不显示间隔线
+        UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
+        [_friendsTabelView setTableFooterView:v];
+    }
+    return _friendsTabelView;
+}
+
+
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-
+  self.edgesForExtendedLayout = UIRectEdgeNone;
+  self.navigationController.navigationBar.translucent = NO;
+  
+  [self setUpView];
   // initial data
   self.matchFriendList = [[NSMutableArray alloc] init];
   self.allFriendSectionDic = [[NSDictionary alloc] init];
@@ -72,9 +122,9 @@
   self.searchFriendsBar.placeholder = @"搜索";
 
   self.defaultCellsTitle = [NSArray
-      arrayWithObjects:@"新朋友", @"群组", @"公众号", @"我", nil];
+      arrayWithObjects:@"新朋友", @"群组", @"公众号", nil];
   self.defaultCellsPortrait = [NSArray
-      arrayWithObjects:@"newFriend", @"defaultGroup", @"publicNumber",@"contact_me", nil];
+      arrayWithObjects:@"newFriend", @"defaultGroup", @"publicNumber", nil];
   
   self.isBeginSearch = NO;
 }
@@ -84,22 +134,19 @@
 
   [self.searchFriendsBar resignFirstResponder];
   [self sortAndRefreshWithList:[self getAllFriendList]];
-  UIButton *rightBtn =
-      [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 20)];
-  [rightBtn setImage:[UIImage imageNamed:@"add_friend"] forState:UIControlStateNormal];
-  [rightBtn addTarget:self
-                action:@selector(pushAddFriend:)
-      forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *rightButton =
-      [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
-  [rightBtn setTintColor:[UIColor whiteColor]];
-  UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]
-      initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                           target:nil
-                           action:nil];
-  negativeSpacer.width = -6;
-  self.tabBarController.navigationItem.rightBarButtonItems =
-      [NSArray arrayWithObjects:negativeSpacer, rightButton, nil];
+  
+  //自定义rightBarButtonItem
+  RCDUIBarButtonItem *rightBtn =
+  [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"add_friend"]
+                                imageViewFrame:CGRectMake(0, 0, 18, 20)
+                                   buttonTitle:nil
+                                    titleColor:nil
+                                    titleFrame:CGRectZero
+                                   buttonFrame:CGRectMake(0, 0, 18, 20)
+                                        target:self
+                                        action:@selector(pushAddFriend:)];
+  self.tabBarController.navigationItem.rightBarButtonItems = [rightBtn setTranslation:rightBtn translation:-6];
+  
   self.tabBarController.navigationItem.title = @"通讯录";
 }
 
@@ -135,14 +182,14 @@
       rows = 4;
     }
   } else {
-    NSString *letter = [self getFriendClassifiedLetterList][section -1];
+    NSString *letter = self.resultDic[@"allKeys"][section -1];
     rows = [self.allFriendSectionDic[letter] count];
   }
   return rows;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  return [self.allFriendSectionDic count] + 1;
+  return [self.resultDic[@"allKeys"] count] + 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -151,6 +198,12 @@
     return 0;
   }
   return 21.f;
+}
+
+//如果没有该方法，tableView会默认显示footerView，其高度与headerView等高
+//另外如果return 0或者0.0f是没有效果的
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.1f;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -169,7 +222,7 @@
   if (section == 0) {
     title.text = nil;
   } else {
-    title.text = [self getFriendClassifiedLetterList][section -1];
+    title.text = self.resultDic[@"allKeys"][section - 1];
   }
   
   return view;
@@ -185,14 +238,8 @@
       cell = [[RCDContactTableViewCell alloc] init];
   }
 
-  if (indexPath.section == 0) {
+  if (indexPath.section == 0 && indexPath.row < 3) {
     cell.nicknameLabel.text = [_defaultCellsTitle objectAtIndex:indexPath.row];
-    if (indexPath.row == 3) {
-      if ([isDisplayID isEqualToString:@"YES"]) {
-        cell.userIdLabel.text = [RCIM sharedRCIM].currentUserInfo.userId;
-      }
-    }
-
       [cell.portraitView
           setImage:[UIImage
                        imageNamed:[NSString
@@ -200,16 +247,25 @@
                                           @"%@",
                                           [_defaultCellsPortrait
                                               objectAtIndex:indexPath.row]]]];
-  } else {
-    NSString *letter = [self getFriendClassifiedLetterList][indexPath.section -1];
-    NSArray *sectionUserInfoList = self.allFriendSectionDic[letter];
+  }
+  if (indexPath.section == 0 && indexPath.row == 3) {
+      if ([isDisplayID isEqualToString:@"YES"]) {
+        cell.userIdLabel.text = [RCIM sharedRCIM].currentUserInfo.userId;
+      }
+    cell.nicknameLabel.text = [RCIM sharedRCIM].currentUserInfo.name;
+    [cell.portraitView
+     sd_setImageWithURL:[NSURL URLWithString:[RCIM sharedRCIM].currentUserInfo.portraitUri]
+     placeholderImage:[UIImage imageNamed:@"contact"]];
+  } if (indexPath.section != 0) {
+    NSString *letter = self.resultDic[@"allKeys"][indexPath.section -1];
 
+    NSArray *sectionUserInfoList = self.allFriendSectionDic[letter];
     RCDUserInfo *userInfo = sectionUserInfoList[indexPath.row];
     if (userInfo) {
       if ([isDisplayID isEqualToString:@"YES"]) {
         cell.userIdLabel.text = userInfo.userId;
       }
-      cell.nicknameLabel.text = userInfo.name;
+        cell.nicknameLabel.text = userInfo.name;
       if ([userInfo.portraitUri isEqualToString:@""]) {
         DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc]
             initWithFrame:CGRectMake(0, 0, 100, 100)];
@@ -231,7 +287,6 @@
     cell.portraitView.layer.masksToBounds = YES;
     cell.portraitView.layer.cornerRadius = 5.f;
   }
-  //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   cell.selectionStyle = UITableViewCellSelectionStyleDefault;
   cell.portraitView.contentMode = UIViewContentModeScaleAspectFill;
   cell.nicknameLabel.font = [UIFont systemFontOfSize:15.f];
@@ -244,7 +299,7 @@
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-  return [self getFriendClassifiedLetterList];
+  return self.resultDic[@"allKeys"];
 }
 
 - (void)tableView:(UITableView *)tableView
@@ -253,21 +308,14 @@
   if (indexPath.section == 0) {
     switch (indexPath.row) {
     case 0: {
-      UIStoryboard *mainStoryboard =
-          [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-      RCDAddressBookViewController *addressBookVC =
-          [mainStoryboard instantiateViewControllerWithIdentifier:
-                              @"RCDAddressBookViewController"];
+        RCDAddressBookViewController *addressBookVC = [RCDAddressBookViewController addressBookViewController];
       [self.navigationController pushViewController:addressBookVC animated:YES];
       return;
     } break;
 
     case 1: {
-      UIStoryboard *mainStoryboard =
-          [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-      RCDGroupViewController *addressBookVC = [mainStoryboard
-          instantiateViewControllerWithIdentifier:@"RCDGroupViewController"];
-      [self.navigationController pushViewController:addressBookVC animated:YES];
+        RCDGroupViewController *groupVC = [[RCDGroupViewController alloc]init];
+      [self.navigationController pushViewController:groupVC animated:YES];
       return;
 
     } break;
@@ -282,15 +330,11 @@
     } break;
 
     case 3: {
-      UIStoryboard *storyboard =
-          [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-      RCDPersonDetailViewController *detailViewController =
-          [storyboard instantiateViewControllerWithIdentifier:
-                          @"RCDPersonDetailViewController"];
-
+        RCDPersonDetailViewController *detailViewController =
+        [[RCDPersonDetailViewController alloc]init];
       [self.navigationController pushViewController:detailViewController
                                            animated:YES];
-      detailViewController.userInfo = [RCIM sharedRCIM].currentUserInfo;
+      detailViewController.userId = [RCIM sharedRCIM].currentUserInfo.userId;
       return;
     }
 
@@ -298,12 +342,9 @@
       break;
     }
   }
-    NSString *letter = [self getFriendClassifiedLetterList][indexPath.section -1];
+    NSString *letter = self.resultDic[@"allKeys"][indexPath.section -1];
     NSArray *sectionUserInfoList = self.allFriendSectionDic[letter];
     user = sectionUserInfoList[indexPath.row];
-    if ([user.status intValue] == 10) {
-      return;
-    }
   if (user == nil) {
     return;
   }
@@ -312,14 +353,10 @@
   userInfo.portraitUri = user.portraitUri;
   userInfo.name = user.name;
 
-  UIStoryboard *storyboard =
-      [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  RCDPersonDetailViewController *detailViewController = [storyboard
-      instantiateViewControllerWithIdentifier:@"RCDPersonDetailViewController"];
-
+    RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc]init];
+  detailViewController.userId = user.userId;
   [self.navigationController pushViewController:detailViewController
                                        animated:YES];
-  detailViewController.userInfo = userInfo;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -339,10 +376,10 @@
   if (searchText.length <= 0) {
     [self sortAndRefreshWithList:[self getAllFriendList]];
   } else {
-    for (RCDUserInfo *userInfo in [self getAllFriendList]) {
+    for (RCUserInfo *userInfo in [self getAllFriendList]) {
       //忽略大小写去判断是否包含
       if ([userInfo.name rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound
-          || [[self hanZiToPinYinWithString:userInfo.name] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
+          || [[RCDUtilities hanZiToPinYinWithString:userInfo.name] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
         [self.matchFriendList addObject:userInfo];
       }
     }
@@ -383,7 +420,6 @@
       [friendList addObject:user];
     }
   }
-  
   if (friendList.count <= 0 && !self.hasSyncFriendList) {
     [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
                          complete:^(NSMutableArray *result) {
@@ -391,86 +427,21 @@
                            [self sortAndRefreshWithList:[self getAllFriendList]];
                          }];
   }
+  //如有好友备注，则显示备注
+  NSArray *resultList = [[RCDUserInfoManager shareInstance]
+                         getFriendInfoList:friendList];
   
-  return [friendList copy];
+  return resultList;
 }
 
 - (void)sortAndRefreshWithList:(NSArray *)friendList {
   dispatch_async(dispatch_get_global_queue(0, 0), ^{
-    NSDictionary *sortFriendDic = [self getFriendClassifiedDic:friendList];
+    self.resultDic = [RCDUtilities sortedArrayWithPinYinDic:friendList];
     dispatch_async(dispatch_get_main_queue(), ^{
-      self.allFriendSectionDic = sortFriendDic;
+      self.allFriendSectionDic = self.resultDic[@"infoDic"];
       [self.friendsTabelView reloadData];
     });
   });
-}
-
-#pragma mark - 拼音排序
-
-/**
- *  汉字转拼音
- *
- *  @param hanZi 汉字
- *
- *  @return 转换后的拼音
- */
-- (NSString *)hanZiToPinYinWithString:(NSString *)hanZi {
-  if (!hanZi) {
-    return nil;
-  }
-  NSString *pinYinResult = [NSString string];
-  for (int j = 0; j < hanZi.length; j++) {
-    NSString *singlePinyinLetter = [[NSString
-        stringWithFormat:@"%c", pinyinFirstLetter([hanZi characterAtIndex:j])]
-        uppercaseString];
-    pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
-  }
-  return pinYinResult;
-}
-
-- (NSString *)getFirstUpperLetter:(NSString *)hanzi {
-  NSString *pinyin = [self hanZiToPinYinWithString:hanzi];
-  NSString *firstUpperLetter = [[pinyin substringToIndex:1] uppercaseString];
-  if ([firstUpperLetter compare:@"A"] != NSOrderedAscending &&
-      [firstUpperLetter compare:@"Z"] != NSOrderedDescending) {
-    return firstUpperLetter;
-  } else {
-    return @"#";
-  }
-}
-
-- (NSDictionary *)getFriendClassifiedDic:(NSArray *)allFriends {
-  if (!allFriends) {
-    return nil;
-  }
-  
-  NSMutableDictionary *friendClassifiedDic = [[NSMutableDictionary alloc] init];
-  for (RCDUserInfo *userInfo in allFriends) {
-    NSString *firstLetter = [self getFirstUpperLetter:userInfo.name];
-    if (!friendClassifiedDic[firstLetter]) {
-      [friendClassifiedDic setObject:[[NSMutableArray alloc] init] forKey:firstLetter];
-    }
-    [friendClassifiedDic[firstLetter] addObject:userInfo];
-  }
-  
-  for (NSMutableArray *oneList in [friendClassifiedDic allValues]) {
-    [oneList sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-      RCDUserInfo *userInfo1 = (RCDUserInfo *)obj1;
-      RCDUserInfo *userInfo2 = (RCDUserInfo *)obj2;
-      return [[self getFirstUpperLetter:userInfo1.name]
-              compare:[self getFirstUpperLetter:userInfo2.name]];
-    }];
-  }
-  return [friendClassifiedDic copy];
-}
-
-- (NSArray *)getFriendClassifiedLetterList {
-  NSArray *classifiedLetter = [self.allFriendSectionDic allKeys];
-  return [classifiedLetter sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-    NSString *letter1 = (NSString *)obj1;
-    NSString *letter2 = (NSString *)obj2;
-    return [letter1 compare:letter2];
-  }];
 }
 
 /**

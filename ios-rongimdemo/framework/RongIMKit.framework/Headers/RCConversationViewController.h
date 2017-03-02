@@ -6,45 +6,38 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#ifndef __RCConversationViewController
-#define __RCConversationViewController
 #import <UIKit/UIKit.h>
 #import "RCBaseViewController.h"
-#import "RCPluginBoardView.h"
 #import "RCChatSessionInputBarControl.h"
+#import "RCPluginBoardView.h"
 #import "RCEmojiBoardView.h"
 #import "RCThemeDefine.h"
 #import "RCMessageBaseCell.h"
 #import "RCMessageModel.h"
 #import "RCConversationModel.h"
 
-///输入栏扩展输入的唯一标示
-#define PLUGIN_BOARD_ITEM_ALBUM_TAG      1001
-#define PLUGIN_BOARD_ITEM_CAMERA_TAG     1002
-#define PLUGIN_BOARD_ITEM_LOCATION_TAG   1003
-#define PLUGIN_BOARD_ITEM_VOIP_TAG       1004
-#define PLUGIN_BOARD_ITEM_VIDEO_VOIP_TAG 1005
-#define PLUGIN_BOARD_ITEM_FILE_TAG       1006
-
-
+/*!
+ 客服服务状态
+ */
 typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
-    /*!
-     无客服服务
-     */
-    RCCustomerService_NoService,
-    /*!
-     人工客服服务
-     */
-    RCCustomerService_HumanService,
-    /*!
-     机器人客服服务
-     */
-    RCCustomerService_RobotService
+  /*!
+   无客服服务
+   */
+  RCCustomerService_NoService,
+
+  /*!
+   人工客服服务
+   */
+  RCCustomerService_HumanService,
+
+  /*!
+   机器人客服服务
+   */
+  RCCustomerService_RobotService
 };
 
-
 /*!
- 聊天界面类
+ 会话页面类
  */
 @interface RCConversationViewController: RCBaseViewController
 <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, UIScrollViewDelegate>
@@ -52,12 +45,12 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 #pragma mark - 初始化
 
 /*!
- 初始化聊天界面
+ 初始化会话页面
  
  @param conversationType 会话类型
  @param targetId         目标会话ID
  
- @return 聊天界面对象
+ @return 会话页面对象
  */
 - (id)initWithConversationType:(RCConversationType)conversationType
                       targetId:(NSString *)targetId;
@@ -68,7 +61,6 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  当前会话的会话类型
  */
 @property(nonatomic) RCConversationType conversationType;
-
 
 /*!
  目标会话ID
@@ -82,7 +74,7 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  */
 @property(nonatomic, strong) __deprecated_msg("已废弃，请勿使用。") NSString *userName;
 
-#pragma mark - 聊天界面属性
+#pragma mark - 会话页面属性
 
 /*!
  聊天内容的消息Cell数据模型的数据源
@@ -92,12 +84,12 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 @property(nonatomic, strong) NSMutableArray *conversationDataRepository;
 
 /*!
- 聊天界面的CollectionView
+ 会话页面的CollectionView
  */
 @property(nonatomic, strong) UICollectionView *conversationMessageCollectionView;
 
 /*!
- 聊天界面的CollectionView Layout
+ 会话页面的CollectionView Layout
  */
 @property(nonatomic, strong) UICollectionViewFlowLayout *customFlowLayout;
 
@@ -122,20 +114,20 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  当收到的消息超过一个屏幕时，进入会话之后，是否在右上角提示上方存在的未读消息数
  
  @discussion 默认值为NO。
- 开启该提示功能之后，当一个会话收到大量消息时（操作一个屏幕能显示的内容），
+ 开启该提示功能之后，当一个会话收到大量消息时（超过一个屏幕能显示的内容），
  进入该会话后，会在右上角提示用户上方存在的未读消息数，用户点击该提醒按钮，会跳转到最开始的未读消息。
  */
 @property(nonatomic, assign) BOOL enableUnreadMessageIcon;
 
 /*!
- 右上角提示的未读消息数
- 
- @discussion 右上角未读消息数支持的最大值是150。
+ 该会话的未读消息数
  */
 @property(nonatomic, assign) NSInteger unReadMessage;
 
 /*!
  右上角未读消息数提示的Label
+ 
+ @discussion 当 150 >= unReadMessage > 10  右上角会显示未读消息数。
  */
 @property(nonatomic,strong) UILabel *unReadMessageLabel;
 
@@ -146,10 +138,10 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 
 #pragma mark 右下角的未读消息数提示
 /*!
- 当前阅读区域的下方收到消息时，是否在聊天界面的右下角提示下方存在未读消息
+ 当前阅读区域的下方收到消息时，是否在会话页面的右下角提示下方存在未读消息
  
  @discussion 默认值为NO。
- 开启该提示功能之后，当聊天界面滑动到最下方时，此会话中收到消息会自动更新；
+ 开启该提示功能之后，当会话页面滑动到最下方时，此会话中收到消息会自动更新；
  当用户停留在上方某个区域阅读时，此会话收到消息时，会在右下角显示未读消息提示，而不会自动滚动到最下方，
  用户点击该提醒按钮，会滚动到最下方。
  */
@@ -160,11 +152,10 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  */
 @property(nonatomic, strong) UILabel *unReadNewMessageLabel;
 
-
 #pragma mark - 输入工具栏
 
 /*!
- 聊天界面下方的输入工具栏
+ 会话页面下方的输入工具栏
  */
 @property(nonatomic, strong) RCChatSessionInputBarControl *chatSessionInputBarControl;
 
@@ -176,14 +167,22 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 @property(nonatomic) RCChatSessionInputBarInputType defaultInputType;
 
 /*!
- 输入扩展功能板View
+ 会话扩展显示区域
+ 
+ @discussion 可以自定义显示会话页面的view。
  */
-@property(nonatomic, strong) RCPluginBoardView *pluginBoardView;
+@property(nonatomic, strong)UIView *extensionView;
 
 /*!
- 表情View
+ 输入框中内容发生变化的回调
+ 
+ @param inputTextView 文本输入框
+ @param range         当前操作的范围
+ @param text          插入的文本
  */
-@property(nonatomic, strong) RCEmojiBoardView *emojiBoardView;
+- (void)inputTextView:(UITextView *)inputTextView
+    shouldChangeTextInRange:(NSRange)range
+            replacementText:(NSString *)text;
 
 /*!
  扩展功能板的点击回调
@@ -195,44 +194,34 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
     clickedItemWithTag:(NSInteger)tag;
 
 /*!
- 输入框中内容发生变化的回调
- 
- @param inputTextView 文本输入框
- @param range         当前操作的范围
- @param text          插入的文本
- */
-- (void)inputTextView:(UITextView *)inputTextView shouldChangeTextInRange:(NSRange)range
-      replacementText:(NSString *)text;
-
-/*!
  设置输入框的输入状态
  
  @param inputBarStatus  输入框状态
  @param animated        是否使用动画效果
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此接口，可以直接替换为chatSessionInputBarControl的updateStatus:animated:接口，行为和实现完全一致。
  */
--(void)setChatSessionInputBarStatus:(KBottomBarStatus)inputBarStatus animated:(BOOL)animated;
+-(void)setChatSessionInputBarStatus:(KBottomBarStatus)inputBarStatus animated:(BOOL)animated
+__deprecated_msg("已废弃，请勿使用。");
+
+/*!
+ 输入扩展功能板View
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此属性，可以直接替换为chatSessionInputBarControl的pluginBoardView属性，行为和实现完全一致。
+ */
+@property(nonatomic, strong) __deprecated_msg("已废弃，请勿使用。") RCPluginBoardView *pluginBoardView;
+
+/*!
+ 表情View
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此属性，可以直接替换为chatSessionInputBarControl的emojiBoardView属性，行为和实现完全一致。
+ */
+@property(nonatomic, strong) __deprecated_msg("已废弃，请勿使用。") RCEmojiBoardView *emojiBoardView;
 
 #pragma mark - 显示设置
-
-/*!
- 设置在聊天界面中显示的头像形状，矩形或者圆形（全局有效）
- 
- @param avatarStyle 显示的头像形状
- 
- @discussion 默认值为矩形，即RC_USER_AVATAR_RECTANGLE。
- 请在viewDidLoad之前设置，此设置在SDK中全局有效。
- */
-- (void)setMessageAvatarStyle:(RCUserAvatarStyle)avatarStyle;
-
-/*!
- 设置聊天界面中显示的头像大小（全局有效），高度必须大于或者等于36
- 
- @param size 显示的头像形状
- 
- @discussion 默认值为46*46。
- 请在viewDidLoad之前设置，此设置在SDK中全局有效。
- */
-- (void)setMessagePortraitSize:(CGSize)size;
 
 /*!
  收到的消息是否显示发送者的名字
@@ -246,9 +235,46 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  设置进入聊天室需要获取的历史消息数量（仅在当前会话为聊天室时生效）
  
  @discussion 此属性需要在viewDidLoad之前进行设置。
- -1表示不获取任何历史消息，0表示不特殊设置而使用SDK默认的设置（默认为获取10条），0<messageCount<=50为具体获取的消息数量,最大值为50。
+ -1表示不获取任何历史消息，0表示不特殊设置而使用SDK默认的设置（默认为获取10条），0<messageCount<=50为具体获取的消息数量,最大值为50。注：如果是7.x系统获取历史消息数量不要大于30
  */
 @property(nonatomic, assign) int defaultHistoryMessageCountOfChatRoom;
+
+/*!
+ 提示用户信息并推出当前会话界面
+ 
+ @param errorInfo 错误提示
+ 
+ @discussion 在聊天室加入失败SDK会调用此接口，提示用户并退出聊天室。如果您需要修改提示或者不退出，可以重写此方法。
+ */
+- (void)alertErrorAndLeft:(NSString *)errorInfo;
+
+/*!
+ 设置在会话页面中显示的头像形状，矩形或者圆形（全局有效）
+ 
+ @param avatarStyle 显示的头像形状
+ 
+ @discussion 默认值为矩形，即RC_USER_AVATAR_RECTANGLE。
+ 请在viewDidLoad之前设置，此设置在SDK中全局有效。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此方法，可以直接替换为[RCIM sharedRCIM]的globalMessageAvatarStyle属性，行为和实现完全一致。
+ */
+- (void)setMessageAvatarStyle:(RCUserAvatarStyle)avatarStyle
+__deprecated_msg("已废弃，请勿使用。");
+
+/*!
+ 设置会话页面中显示的头像大小（全局有效），高度必须大于或者等于36
+ 
+ @param size 显示的头像形状
+ 
+ @discussion 默认值为46*46。
+ 请在viewDidLoad之前设置，此设置在SDK中全局有效。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此方法，可以直接替换为[RCIM sharedRCIM]的globalMessagePortraitSize属性，行为和实现完全一致。
+ */
+- (void)setMessagePortraitSize:(CGSize)size
+__deprecated_msg("已废弃，请勿使用。");
 
 #pragma mark - 界面操作
 
@@ -264,7 +290,7 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  
  @param sender 事件发起者
  
- @discussion 其中包含了一些聊天界面退出的清理工作，如退出讨论组等。
+ @discussion 其中包含了一些会话页面退出的清理工作，如退出讨论组等。
  如果您重写此方法，请注意调用super。
  */
 - (void)leftBarButtonItemPressed:(id)sender;
@@ -273,7 +299,7 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 
 #pragma mark 发送消息
 /*!
- 发送消息(除图片消息外的所有消息)
+ 发送消息
  
  @param messageContent 消息的内容
  @param pushContent    接收方离线时需要显示的远程推送内容
@@ -288,23 +314,6 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  */
 - (void)sendMessage:(RCMessageContent *)messageContent
         pushContent:(NSString *)pushContent;
-
-/*!
- 发送媒体消息（图片消息或文件消息）
- 
- @param messageContent 消息的内容
- @param pushContent    接收方离线时需要显示的远程推送内容
- 
- @discussion 当接收方离线并允许远程推送时，会收到远程推送。
- 远程推送中包含两部分内容，一是pushContent，用于显示；二是pushData，用于携带不显示的数据。
- 
- SDK内置的消息类型，如果您将pushContent置为nil，会使用默认的推送格式进行远程推送。
- 自定义类型的消息，需要您自己设置pushContent来定义推送内容，否则将不会进行远程推送。
- 
- 如果您需要设置发送的pushData，可以使用RCIM的发送媒体消息接口。
- */
-- (void)sendMediaMessage:(RCMessageContent *)messageContent
-             pushContent:(NSString *)pushContent;
 
 /*!
  发送媒体消息(上传图片或文件到App指定的服务器)
@@ -335,11 +344,20 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
      uploadListener:(RCUploadMediaStatusListener *)uploadListener;
 
 /*!
+ 取消上传媒体消息。
+ 
+ @param model        媒体消息（文件消息）的Model
+ 
+ @discussion 如果您通过sendMediaMessage:pushContent:appUpload:发送媒体消息（上传媒体内容到App服务器），需要
+ 重写此函数，在此函数中取消掉您的上传，并调用uploadListener的cancelBlock告诉融云SDK该发送已经取消。目前仅支持文件消息的取消
+ */
+- (void)cancelUploadMedia:(RCMessageModel *)model;
+/*!
  重新发送消息
  
  @param messageContent 消息的内容
  
- @discussion 发送消息失败，点击小红点时，会将本地存储的原消息实体删除，会回调此接口将消息内容重新发送。
+ @discussion 发送消息失败，点击小红点时，会将本地存储的原消息实体删除，回调此接口将消息内容重新发送。
  如果您需要重写此接口，请注意调用super。
  */
 - (void)resendMessage:(RCMessageContent *)messageContent;
@@ -359,9 +377,31 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  如果您需要设置发送的pushData，可以使用RCIM的发送图片消息接口。
  
  @warning  **已废弃，请勿使用。**
- 升级说明：如果您之前使用了此接口，可以直接替换为sendMediaMessage:pushContent:接口，行为和实现完全一致。
+ 升级说明：如果您之前使用了此接口，可以直接替换为sendMessage:pushContent:接口，行为和实现完全一致。
  */
 - (void)sendImageMessage:(RCImageMessage *)imageMessage
+             pushContent:(NSString *)pushContent
+__deprecated_msg("已废弃，请勿使用。");
+
+/*!
+ 发送媒体消息（图片消息或文件消息）
+ 
+ @param messageContent 消息的内容
+ @param pushContent    接收方离线时需要显示的远程推送内容
+ 
+ @discussion 当接收方离线并允许远程推送时，会收到远程推送。
+ 远程推送中包含两部分内容，一是pushContent，用于显示；二是pushData，用于携带不显示的数据。
+ 
+ SDK内置的消息类型，如果您将pushContent置为nil，会使用默认的推送格式进行远程推送。
+ 自定义类型的消息，需要您自己设置pushContent来定义推送内容，否则将不会进行远程推送。
+ 
+ 如果您需要设置发送的pushData，可以使用RCIM的发送媒体消息接口。
+ 
+ @warning **已废弃，请勿使用。**
+ 升级说明：所有的消息都通过sendMessage:pushContent:这个统一接口进行发送。
+ 如果您之前使用了此接口，可以直接替换成sendMessage:pushContent:接口，行为和实现完全一致。
+ */
+- (void)sendMediaMessage:(RCMessageContent *)messageContent
              pushContent:(NSString *)pushContent
 __deprecated_msg("已废弃，请勿使用。");
 
@@ -403,11 +443,13 @@ __deprecated_msg("已废弃，请勿使用。");
 
 #pragma mark 插入消息
 /*!
- 在聊天界面中插入一条消息
+ 在会话页面中插入一条消息并展示
  
  @param message 消息实体
  
  @discussion 通过此方法插入一条消息，会将消息实体对应的内容Model插入数据源中，并更新UI。
+ 请注意，这条消息只会在 UI 上插入，并不会存入数据库。
+ 用户调用这个接口插入消息之后，如果退出会话页面再次进入的时候，这条消息将不再显示。
  */
 - (void)appendAndDisplayMessage:(RCMessage *)message;
 
@@ -433,32 +475,39 @@ __deprecated_msg("已废弃，请勿使用。");
 /*!
  准备发送消息的回调
  
- @param messageCotent 消息内容
+ @param messageContent 消息内容
  
  @return 修改后的消息内容
  
  @discussion 此回调在消息准备向外发送时会回调，您可以在此回调中对消息内容进行过滤和修改等操作。
  如果此回调的返回值不为nil，SDK会对外发送返回的消息内容。
  */
-- (RCMessageContent *)willSendMessage:(RCMessageContent *)messageCotent;
+- (RCMessageContent *)willSendMessage:(RCMessageContent *)messageContent;
 
 /*!
  发送消息完成的回调
  
- @param stauts          发送状态，0表示成功，非0表示失败
- @param messageCotent   消息内容
+ @param status          发送状态，0表示成功，非0表示失败
+ @param messageContent   消息内容
  */
-- (void)didSendMessage:(NSInteger)stauts
-               content:(RCMessageContent *)messageCotent;
+- (void)didSendMessage:(NSInteger)status
+               content:(RCMessageContent *)messageContent;
 
 /*!
- 即将在聊天界面插入消息的回调
+ 取消了消息发送的回调
+ 
+ @param messageContent   消息内容
+ */
+- (void)didCancelMessage:(RCMessageContent *)messageContent;
+
+/*!
+ 即将在会话页面插入消息的回调
  
  @param message 消息实体
  @return        修改后的消息实体
  
  @discussion 此回调在消息准备插入数据源的时候会回调，您可以在此回调中对消息进行过滤和修改操作。
- 如果此回调的返回值不为nil，SDK会将返回消息实体对应的消息Cell数据模型插入数据源，并在聊天界面中显示。
+ 如果此回调的返回值不为nil，SDK会将返回消息实体对应的消息Cell数据模型插入数据源，并在会话页面中显示。
  */
 - (RCMessage *)willAppendAndDisplayMessage:(RCMessage *)message;
 
@@ -489,6 +538,15 @@ __deprecated_msg("已废弃，请勿使用。");
 __deprecated_msg("已废弃，请勿使用。");
 
 #pragma mark - 自定义消息
+/*!
+ 注册自定义消息的Cell
+ 
+ @param cellClass     自定义消息的类，该自定义消息需要继承于RCMessageContent
+ @param messageClass  自定义消息Cell对应的自定义消息
+ 
+ @discussion 你需要在cell中重写RCMessageBaseCell基类的sizeForMessageModel:withCollectionViewWidth:referenceExtraHeight:来计算cell的高度。
+ */
+- (void)registerClass:(Class)cellClass forMessageClass:(Class)messageClass;
 
 /*!
  注册自定义消息的Cell
@@ -496,10 +554,15 @@ __deprecated_msg("已废弃，请勿使用。");
  @param cellClass   自定义消息的类，该自定义消息需要继承于RCMessageContent
  @param identifier  自定义消息Cell的唯一标示符
  
- @discussion 聊天界面在显示时需要通过identifier唯一标示来进行Cell重用，以提高性能。
+ @discussion 会话页面在显示时需要通过identifier唯一标示来进行Cell重用，以提高性能。
  我们建议您在identifier中添加前缀，请勿使用"rc"前缀的字符串，以免与融云内置消息的Cell冲突。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此接口，可以迁移到registerClass:forMessageClass:接口。
  */
-- (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
+- (void)registerClass:(Class)cellClass
+    forCellWithReuseIdentifier:(NSString *)identifier
+    __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  自定义消息Cell显示的回调
@@ -509,7 +572,7 @@ __deprecated_msg("已废弃，请勿使用。");
  @return                自定义消息需要显示的Cell
  
  @discussion 自定义消息如果需要显示，则必须先通过RCIM的registerMessageType:注册该自定义消息类型，
- 并在聊天界面中通过registerClass:forCellWithReuseIdentifier:注册该自定义消息的Cell，否则将此回调将不会被调用。
+ 并在会话页面中通过registerClass:forCellWithReuseIdentifier:注册该自定义消息的Cell，否则将此回调将不会被调用。
  */
 - (RCMessageBaseCell *)rcConversationCollectionView:(UICollectionView *)collectionView
                              cellForItemAtIndexPath:(NSIndexPath *)indexPath;
@@ -523,7 +586,7 @@ __deprecated_msg("已废弃，请勿使用。");
  @return                        自定义消息Cell需要显示的高度
  
  @discussion 自定义消息如果需要显示，则必须先通过RCIM的registerMessageType:注册该自定义消息类型，
- 并在聊天界面中通过registerClass:forCellWithReuseIdentifier:注册该自定义消息的Cell，否则将此回调将不会被调用。
+ 并在会话页面中通过registerClass:forCellWithReuseIdentifier:注册该自定义消息的Cell，否则将此回调将不会被调用。
  */
 - (CGSize)rcConversationCollectionView:(UICollectionView *)collectionView
                                 layout:(UICollectionViewLayout *)collectionViewLayout
@@ -628,12 +691,12 @@ __deprecated_msg("已废弃，请勿使用。");
 #pragma mark - 语音消息、图片消息、位置消息、文件消息显示与操作
 
 /*!
- 开始录制语音消息
+ 开始录制语音消息的回调
  */
 - (void)onBeginRecordEvent;
 
 /*!
- 结束录制语音消息
+ 结束录制语音消息的回调
  */
 - (void)onEndRecordEvent;
 
@@ -695,13 +758,26 @@ __deprecated_msg("已废弃，请勿使用。");
  */
 - (void)onPublicServiceMenuItemSelected:(RCPublicServiceMenuItem *)selectedMenuItem;
 
+/*!
+ 点击公众号Cell中的URL的回调
+ 
+ @param url   被点击的URL
+ @param model 被点击的Cell对应的Model
+ */
+- (void)didTapUrlInPublicServiceMessageCell:(NSString *)url model:(RCMessageModel *)model;
+
 #pragma mark - 客服
 /*!
  用户的详细信息，此数据用于上传用户信息到客服后台，数据的nickName和portraitUrl必须填写。
  */
 @property (nonatomic, strong)RCCustomerServiceInfo *csInfo;
+
 /*!
- 评价客服服务,然后离开当前VC的。此方法有可能在离开客服会话界面触发，也可能是客服在后台推送评价触发，也可能用户点击机器人知识库评价触发。应用可以重写此方法来自定义客服评价界面。应用不要直接调用此方法。
+客服评价弹出时间，在客服页面停留超过这个时间，离开客服会弹出评价提示框，默认为60s
+ */
+@property (nonatomic, assign)NSTimeInterval csEvaInterval;
+/*!
+ 评价客服服务,然后离开当前VC的。此方法有可能在离开客服会话页面触发，也可能是客服在后台推送评价触发，也可能用户点击机器人知识库评价触发。应用可以重写此方法来自定义客服评价界面。应用不要直接调用此方法。
  
  @param serviceStatus  当前的服务类型。
  @param commentId      评论ID。当是用户主动离开客服会话时，这个id是null；当客服在后台推送评价请求时，这个id是对话id；当用户点击机器人应答评价时，这个是机器人知识库id。
@@ -710,6 +786,14 @@ __deprecated_msg("已废弃，请勿使用。");
  @discussion sdk会在需要评价时调用此函数。如需自定义评价界面，请根据demo的RCDCustomerServiceViewController中的示例来重写此函数。
  */
 - (void)commentCustomerServiceWithStatus:(RCCustomerServiceStatus)serviceStatus commentId:(NSString *)commentId quitAfterComment:(BOOL)isQuit;
+
+/*!
+ 选择客服分组
+ @param  groupList    所有客服分组
+ @param  resultBlock  resultBlock
+ @discussion 重写这个方法你可以自己重写客服分组界面，当用户选择技能组后，调用resultBlock传入用户选择分组的groupId，如果用户没有选择，可以传nil，会自动分配一个客服分组
+ */
+- (void)onSelectCustomerServiceGroup:(NSArray *)groupList result:(void (^)(NSString *groupId))resultBlock;
 
 /*!
  离开客服界面
@@ -736,4 +820,3 @@ __deprecated_msg("已废弃，请勿使用。");
 - (void)showChooseUserViewController:(void (^)(RCUserInfo *selectedUserInfo))selectedBlock
                               cancel:(void (^)())cancelBlock;
 @end
-#endif

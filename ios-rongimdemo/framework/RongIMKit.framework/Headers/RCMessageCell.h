@@ -6,8 +6,6 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#ifndef __RCMessageCommonCell
-#define __RCMessageCommonCell
 #import "RCMessageBaseCell.h"
 #import "RCThemeDefine.h"
 #import "RCMessageCellNotificationModel.h"
@@ -82,6 +80,34 @@
 @property(nonatomic, strong) UIView *messageHasReadStatusView;
 
 /*!
+ 显示是否消息回执的Button
+ 
+ @discussion 仅在群组和讨论组中显示
+ */
+@property(nonatomic, strong) UIButton *receiptView;
+
+/*!
+ 消息阅读人数的Label
+ 
+ @discussion 仅在群组和讨论组中显示
+ */
+@property(nonatomic, strong) UILabel *receiptCountLabel;
+
+/*!
+ 显示群是否消息回执的Button
+ 
+ @warning 如果您使用了该属性，可以迁移到receiptView，完全一致。
+ */
+@property(nonatomic, strong) UIButton *groupAndDiscussionReceiptView __deprecated_msg("已废弃，请勿使用。");
+
+/*!
+ 消息阅读人数的Label
+ 
+ @warning 如果您使用了该属性，可以迁移到receiptCountLabel，完全一致。
+ */
+@property(nonatomic, strong) UILabel *groupAndDiscussionReceiptCountView __deprecated_msg("已废弃，请勿使用。");
+
+/*!
  显示消息发送成功状态的View
  */
 @property(nonatomic, strong) UIView *messageSendSuccessStatusView;
@@ -101,4 +127,3 @@
 - (void)updateStatusContentView:(RCMessageModel *)model;
 
 @end
-#endif

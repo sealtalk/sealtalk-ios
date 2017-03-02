@@ -14,6 +14,7 @@
 #define __RCUtilities
 
 #import <UIKit/UIKit.h>
+#import "RCMessage.h"
 
 /*!
  工具类
@@ -122,7 +123,7 @@
  
  @param text 文字
  @param font 字体
- @param size 文字显示的容器大小
+ @param constrainedSize 文字显示的容器大小
  
  @return 文字显示的尺寸
  
@@ -156,7 +157,6 @@
  @return 修正后的文件路径
  */
 + (NSString *)getCorrectedFilePath:(NSString *)localPath;
-
 
 /*!
  * 获取文件存储路径
@@ -215,6 +215,13 @@
 + (NSString *)currentNetWork;
 
 /*!
+ 获取当前网络类型
+ 
+ @return    当前网络类型
+ */
++ (NSString *)currentNetworkType;
+
+/*!
  获取系统版本
 
  @return    系统版本
@@ -227,6 +234,33 @@
  @return    设备型号
  */
 + (NSString *)currentDeviceModel;
+
+/*!
+ 获取非换行的字符串
+ 
+ @param originalString 原始的字符串
+ 
+ @return 非换行的字符串
+ 
+ @discussion 所有换行符将被替换成单个空格
+ */
++ (NSString *)getNowrapString:(NSString *)originalString;
+
+/**
+ 获取消息类型对应的描述
+
+ @param mediaType 消息类型
+ @return 描述
+ */
++ (NSString *)getMediaTypeString:(RCMediaType)mediaType;
+
+/**
+ 获取消息内容对应的媒体类型
+
+ @param content 消息内容
+ @return 媒体类型，如果是不支持的媒体类型或者消息，将返回-1
+ */
++ (RCMediaType)getMediaType:(RCMessageContent *)content;
 
 @end
 #endif

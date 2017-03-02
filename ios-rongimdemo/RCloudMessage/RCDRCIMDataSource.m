@@ -16,6 +16,7 @@
 #import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
 #import <RongIMLib/RongIMLib.h>
+#import "RCDUserInfoManager.h"
 
 @interface RCDRCIMDataSource ()
 
@@ -36,7 +37,17 @@
 - (void)syncGroups {
   //开发者调用自己的服务器接口获取所属群组信息
   [RCDHTTPTOOL getMyGroupsWithBlock:^(NSMutableArray *result) {
-    }];
+    for (RCDGroupInfo *group in result) {
+      [RCDHTTPTOOL getGroupMembersWithGroupId:group.groupId Block:^(NSMutableArray *result) {
+        [[RCDataBaseManager shareInstance]
+         insertGroupMemberToDB:result
+         groupId:group.groupId
+         complete:^(BOOL result) {
+           
+         }];
+      }];
+    }
+  }];
 }
 
 - (void)syncFriendList:(NSString *)userId
@@ -62,38 +73,31 @@
 - (void)getUserInfoWithUserId:(NSString *)userId
                    completion:(void (^)(RCUserInfo *))completion {
   NSLog(@"getUserInfoWithUserId ----- %@", userId);
-
+  RCUserInfo *user = [RCUserInfo new];
   if (userId == nil || [userId length] == 0) {
-    RCUserInfo *user = [RCUserInfo new];
     user.userId = userId;
     user.portraitUri = @"";
     user.name = @"";
     completion(user);
     return;
   }
-  if ([userId isEqualToString:@"kefu114"]) {
-    RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:@"kefu114"
-                                                     name:@"客服"
-                                                 portrait:@""];
-    completion(user);
-    return;
-  }
   //开发者调自己的服务器接口根据userID异步请求数据
-  [RCDHTTPTOOL
-      getUserInfoByUserID:userId
-               completion:^(RCUserInfo *user) {
-                 if (user) {
-                   [[RCIM sharedRCIM] refreshUserInfoCache:user
-                                                withUserId:user.userId];
-                   completion(user);
-                 } else {
-                   RCUserInfo *user = [RCUserInfo new];
-                   user.userId = userId;
-                   user.name = [NSString stringWithFormat:@"name%@", userId];
-                   user.portraitUri = [RCDUtilities defaultUserPortrait:user];
-                   completion(user);
-                 }
-               }];
+  if (![userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+    [[RCDUserInfoManager shareInstance] getFriendInfo:userId
+                                                  completion:^(RCUserInfo *user) {
+                                                    completion(user);
+                                                  }];
+  } else {
+    [[RCDUserInfoManager shareInstance] getUserInfo:userId
+                                         completion:^(RCUserInfo *user) {
+                                           [[RCIM sharedRCIM]
+                                            refreshUserInfoCache:user
+                                            withUserId:user.userId];
+                                           
+                                            completion(user);
+    }];
+  }
+  return;
 }
 
 #pragma mark - RCIMGroupUserInfoDataSource

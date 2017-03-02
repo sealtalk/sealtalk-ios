@@ -707,7 +707,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
   // Center HUD
   CGRect allRect = self.bounds;
-  // Draw rounded HUD backgroud rect
+  // Draw rounded HUD background rect
   CGRect boxRect =
       CGRectMake(round((allRect.size.width - size.width) / 2) + self.xOffset,
                  round((allRect.size.height - size.height) / 2) + self.yOffset,

@@ -16,6 +16,8 @@
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
 #import "UIColor+RCColor.h"
+#import "RCDChatViewController.h"
+#import "RCDCommonDefine.h"
 
 // 是否iPhone5
 #define isiPhone5                                                              \
@@ -37,54 +39,135 @@
   MBProgressHUD *hud;
   CGFloat deafultY;
 }
-
+@property (nonatomic,strong) UIView *blueLine;
 @end
 
 @implementation RCDCreateGroupViewController
 
++ (instancetype)createGroupViewController {
+    return [[[self class] alloc] init];
+}
+
+- (instancetype)init {
+    self= [super init];
+    if(self){
+        self.view.backgroundColor = [UIColor whiteColor];
+        [self initSubViews];
+    }
+    return self;
+}
+
+- (void)initSubViews {
+    self.DoneBtn.hidden = YES;
+    
+    //群组头像的UIImageView
+    CGFloat groupPortraitWidth = 100;
+    CGFloat groupPortraitHeight = groupPortraitWidth;
+    CGFloat groupPortraitX = RCDscreenWidth/2.0-groupPortraitWidth/2.0;
+    CGFloat groupPortraitY = 80;
+    self.GroupPortrait = [[UIImageView alloc] initWithFrame:CGRectMake(groupPortraitX, groupPortraitY, groupPortraitWidth, groupPortraitHeight)];
+    self.GroupPortrait.image = [UIImage imageNamed:@"AddPhotoDefault"];
+    self.GroupPortrait.layer.masksToBounds = YES;
+    self.GroupPortrait.layer.cornerRadius = 5.f;
+    //为头像设置点击事件
+    self.GroupPortrait.userInteractionEnabled = YES;
+    UITapGestureRecognizer *singleClick =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(chosePortrait)];
+    [self.GroupPortrait addGestureRecognizer:singleClick];
+    
+    //群组名称的UITextField
+    CGFloat groupNameWidth = 200;
+    CGFloat groupNameHeight = 17;
+    CGFloat groupNameX = RCDscreenWidth/2.0-groupNameWidth/2.0;
+    CGFloat groupNameY = CGRectGetMaxY(self.GroupPortrait.frame)+120;
+    self.GroupName = [[UITextField alloc]initWithFrame:CGRectMake(groupNameX, groupNameY, groupNameWidth, groupNameHeight)];
+    self.GroupName.font = [UIFont systemFontOfSize:14];
+    self.GroupName.placeholder = @"填写群名称（2-10个字符）";
+    self.GroupName.textAlignment = NSTextAlignmentCenter;
+    self.GroupName.delegate = self;
+    self.GroupName.returnKeyType = UIReturnKeyDone;
+    
+    
+    //底部蓝线
+    CGFloat blueLineWidth = 240;
+    CGFloat blueLineHeight = 1;
+    CGFloat blueLineX = RCDscreenWidth/2.0-blueLineWidth/2.0;
+    CGFloat blueLineY = CGRectGetMaxY(self.GroupName.frame)+1;
+    self.blueLine = [[UIView alloc]initWithFrame:CGRectMake(blueLineX, blueLineY, blueLineWidth, blueLineHeight)];
+    self.blueLine.backgroundColor = [UIColor colorWithRed:0 green:135/255.0 blue:251/255.0 alpha:1];
+    
+    [self.view addSubview:self.GroupPortrait];
+    [self.view addSubview:self.GroupName];
+    [self.view addSubview:self.blueLine];
+    
+    //给整个view添加手势，隐藏键盘
+    UITapGestureRecognizer *resetBottomTapGesture =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(hideKeyboard:)];
+    [self.view addGestureRecognizer:resetBottomTapGesture];
+    
+    //创建rightBarButtonItem
+    UIBarButtonItem *item =
+    [[UIBarButtonItem alloc] initWithTitle:@"完成"
+                                     style:UIBarButtonItemStylePlain
+                                    target:self
+                                    action:@selector(ClickDoneBtn:)];
+    item.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
+    self.navigationItem.rightBarButtonItem = item;
+    
+    CGFloat navHeight = 44.0f;
+    CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    deafultY = navHeight + statusBarHeight;
+
+}
+
 - (void)viewDidLoad {
   [super viewDidLoad];
+    
+//    deafultY = self.navigationController.navigationBar.frame.size.height +
+//    [[UIApplication sharedApplication] statusBarFrame].size.height;
   // Do any additional setup after loading the view.
 
-  self.DoneBtn.hidden = YES;
-
-  self.GroupPortrait.layer.masksToBounds = YES;
-  self.GroupPortrait.layer.cornerRadius = 5.f;
-
-  //为头像设置点击事件
-  self.GroupPortrait.userInteractionEnabled = YES;
-  UITapGestureRecognizer *singleClick =
-      [[UITapGestureRecognizer alloc] initWithTarget:self
-                                              action:@selector(chosePortrait)];
-  [self.GroupPortrait addGestureRecognizer:singleClick];
-
-  //    //动态取邀请成员的数量
-  //    NSInteger membersCount = [self.GroupMemberList count];
-  //    self.InviteMemberCount.text = [NSString
-  //    stringWithFormat:@"被邀请成员(%ld)",(long)membersCount];
-  //
-  //    self.GroupMembers.backgroundColor = [UIColor clearColor];
-  //
-  //    memberIdsList = [[NSMutableArray alloc] init];
-
-  _GroupName.delegate = self;
-  _GroupName.returnKeyType = UIReturnKeyDone;
-
-  UITapGestureRecognizer *resetBottomTapGesture =
-      [[UITapGestureRecognizer alloc] initWithTarget:self
-                                              action:@selector(hideKeyboard:)];
-  [self.view addGestureRecognizer:resetBottomTapGesture];
-
-  UIBarButtonItem *item =
-      [[UIBarButtonItem alloc] initWithTitle:@"完成"
-                                       style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(ClickDoneBtn:)];
-  item.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
-  self.navigationItem.rightBarButtonItem = item;
-
-  deafultY = self.navigationController.navigationBar.frame.size.height +
-             [[UIApplication sharedApplication] statusBarFrame].size.height;
+//  self.DoneBtn.hidden = YES;
+//
+//  self.GroupPortrait.layer.masksToBounds = YES;
+//  self.GroupPortrait.layer.cornerRadius = 5.f;
+//
+//  //为头像设置点击事件
+//  self.GroupPortrait.userInteractionEnabled = YES;
+//  UITapGestureRecognizer *singleClick =
+//      [[UITapGestureRecognizer alloc] initWithTarget:self
+//                                              action:@selector(chosePortrait)];
+//  [self.GroupPortrait addGestureRecognizer:singleClick];
+//
+//  //    //动态取邀请成员的数量
+//  //    NSInteger membersCount = [self.GroupMemberList count];
+//  //    self.InviteMemberCount.text = [NSString
+//  //    stringWithFormat:@"被邀请成员(%ld)",(long)membersCount];
+//  //
+//  //    self.GroupMembers.backgroundColor = [UIColor clearColor];
+//  //
+//  //    memberIdsList = [[NSMutableArray alloc] init];
+//
+//  _GroupName.delegate = self;
+//  _GroupName.returnKeyType = UIReturnKeyDone;
+//
+//  UITapGestureRecognizer *resetBottomTapGesture =
+//      [[UITapGestureRecognizer alloc] initWithTarget:self
+//                                              action:@selector(hideKeyboard:)];
+//  [self.view addGestureRecognizer:resetBottomTapGesture];
+//
+//  UIBarButtonItem *item =
+//      [[UIBarButtonItem alloc] initWithTitle:@"完成"
+//                                       style:UIBarButtonItemStylePlain
+//                                      target:self
+//                                      action:@selector(ClickDoneBtn:)];
+//  item.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
+//  self.navigationItem.rightBarButtonItem = item;
+//
+//  deafultY = self.navigationController.navigationBar.frame.size.height +
+//             [[UIApplication sharedApplication] statusBarFrame].size.height;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -200,89 +283,100 @@ preparation before navigation
     hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
     hud.labelText = @"创建中...";
     [hud show:YES];
-
+    
     [[RCDHttpTool shareInstance]
-        createGroupWithGroupName:nameStr
-                 GroupMemberList:_GroupMemberIdList
-                        complete:^(NSString *groupId) {
-
-                          if (groupId) {
-                            if (image != nil) {
-                              [RCDHTTPTOOL
-                                  uploadImageToQiNiu:[RCIM sharedRCIM]
-                                                         .currentUserInfo.userId
-                                  ImageData:data
-                                  success:^(NSString *url) {
-                                    RCGroup *groupInfo = [RCGroup new];
-                                    groupInfo.portraitUri = url;
-                                    groupInfo.groupId = groupId;
-                                    groupInfo.groupName = nameStr;
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                      [RCDHTTPTOOL
-                                          setGroupPortraitUri:url
-                                                      groupId:groupId
-                                                     complete:^(BOOL result) {
-                                                       [[RCIM sharedRCIM]
-                                                           refreshGroupInfoCache:
-                                                               groupInfo
-                                                                     withGroupId:
-                                                                         groupId];
-                                                       if (result == YES) {
-
-                                                         [self.navigationController
-                                                             popToRootViewControllerAnimated:
-                                                                 YES]; //关闭HUD
-                                                         [hud hide:YES];
-                                                       }
-                                                       if (result == NO) {
-                                                         self.navigationItem
-                                                             .rightBarButtonItem
-                                                             .enabled =
-                                                             YES; //关闭HUD
-                                                         [hud hide:YES];
-                                                         [self Alert:@"创"
-                                                                     @"建群组"
-                                                                     @"失败，"
-                                                                     @"请检查"
-                                                                     @"你的网"
-                                                                     @"络设置"
-                                                                     @"。"];
-                                                       }
-                                                     }];
-                                    });
-
-                                  }
-                                  failure:^(NSError *err) {
-                                    self.navigationItem.rightBarButtonItem
-                                        .enabled = YES;
-                                    //关闭HUD
-                                    [hud hide:YES];
-                                    [self Alert:@"创"
-                                                @"建群组失败，请检查你的网络设"
-                                                @"置。"];
-                                  }];
-                            } else {
-
-                              RCGroup *groupInfo = [RCGroup new];
-                              groupInfo.portraitUri =
-                                  [self createDefaultPortrait:groupId
-                                                    GroupName:nameStr];
-                              groupInfo.groupId = groupId;
-                              groupInfo.groupName = nameStr;
-                              [[RCIM sharedRCIM] refreshGroupInfoCache:groupInfo
-                                                           withGroupId:groupId];
-                              [self.navigationController
-                                  popToRootViewControllerAnimated:YES];
-                            }
-                          } else {
-                            [hud hide:YES];
-                            self.navigationItem.rightBarButtonItem.enabled =
-                                YES;
-                            [self Alert:@"创"
-                                        @"建群组失败，请检查你的网络设置。"];
-                          }
-                        }];
+     createGroupWithGroupName:nameStr
+     GroupMemberList:_GroupMemberIdList
+     complete:^(NSString *groupId) {
+       
+       if (groupId) {
+         [RCDHTTPTOOL getGroupMembersWithGroupId:groupId
+                                           Block:^(NSMutableArray *result) {
+                                             //更新本地数据库中群组成员的信息
+                                           }];
+         if (image != nil) {
+           [RCDHTTPTOOL
+            uploadImageToQiNiu:[RCIM sharedRCIM]
+            .currentUserInfo.userId
+            ImageData:data
+            success:^(NSString *url) {
+              RCGroup *groupInfo = [RCGroup new];
+              groupInfo.portraitUri = url;
+              groupInfo.groupId = groupId;
+              groupInfo.groupName = nameStr;
+              dispatch_async(dispatch_get_main_queue(), ^{
+                [RCDHTTPTOOL
+                 setGroupPortraitUri:url
+                 groupId:groupId
+                 complete:^(BOOL result) {
+                   [[RCIM sharedRCIM]
+                    refreshGroupInfoCache:
+                    groupInfo
+                    withGroupId:
+                    groupId];
+                   if (result == YES) {
+                     [self gotoChatView:groupInfo.groupId groupName:groupInfo.groupName];
+                     //关闭HUD
+                     [hud hide:YES];
+                     [RCDHTTPTOOL getGroupByID:groupInfo.groupId
+                             successCompletion:^(RCDGroupInfo *group) {
+                               [[RCDataBaseManager shareInstance] insertGroupToDB:group];
+                             }];
+                   }
+                   if (result == NO) {
+                     self.navigationItem
+                     .rightBarButtonItem
+                     .enabled =
+                     YES; //关闭HUD
+                     [hud hide:YES];
+                     [self Alert:@"创建群组失败，请检查你的网络设置。"];
+                   }
+                 }];
+              });
+              
+            }
+            failure:^(NSError *err) {
+              self.navigationItem.rightBarButtonItem
+              .enabled = YES;
+              //关闭HUD
+              [hud hide:YES];
+              [self Alert:@"创建群组失败，请检查你的网络设置。"];
+            }];
+         } else {
+           
+           RCGroup *groupInfo = [RCGroup new];
+           groupInfo.portraitUri =
+           [self createDefaultPortrait:groupId
+                             GroupName:nameStr];
+           groupInfo.groupId = groupId;
+           groupInfo.groupName = nameStr;
+           [[RCIM sharedRCIM] refreshGroupInfoCache:groupInfo
+                                        withGroupId:groupId];
+           [RCDHTTPTOOL getGroupByID:groupInfo.groupId
+                   successCompletion:^(RCDGroupInfo *group) {
+                     [[RCDataBaseManager shareInstance] insertGroupToDB:group];
+                   }];
+           [self gotoChatView:groupInfo.groupId groupName:groupInfo.groupName];
+         }
+       } else {
+         [hud hide:YES];
+         self.navigationItem.rightBarButtonItem.enabled =
+         YES;
+         [self Alert:@"创建群组失败，请检查你的网络设置。"];
+       }
+     }];
   }
+}
+
+- (void)gotoChatView:(NSString *)groupId groupName:(NSString *)groupName{
+  RCDChatViewController *chatVC = [[RCDChatViewController alloc] init];
+  chatVC.needPopToRootView = YES;
+  chatVC.targetId = groupId;
+  chatVC.conversationType = ConversationType_GROUP;
+  chatVC.userName = groupName;
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.navigationController pushViewController:chatVC animated:YES];
+  });
 }
 
 - (void)Alert:(NSString *)alertContent {
@@ -341,18 +435,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
   if ([mediaType isEqual:@"public.image"]) {
     UIImage *originImage =
-        [info objectForKey:UIImagePickerControllerEditedImage];
-
-    UIImage *scaleImage = [self scaleImage:originImage toScale:0.8];
-
-    //        if (UIImagePNGRepresentation(scaleImage) == nil)
-    //        {
-    //            data = UIImageJPEGRepresentation(scaleImage, 0.00001);
-    //        }
-    //        else
-    //        {
-    //            data = UIImagePNGRepresentation(scaleImage);
-    //        }
+    [info objectForKey:UIImagePickerControllerOriginalImage];
+    CGRect captureRect = [[info objectForKey:UIImagePickerControllerCropRect] CGRectValue];
+    UIImage *captureImage = [self getSubImage:originImage Rect:captureRect imageOrientation:originImage.imageOrientation];
+    
+    UIImage *scaleImage = [self scaleImage:captureImage toScale:0.8];
     data = UIImageJPEGRepresentation(scaleImage, 0.00001);
   }
 
@@ -361,6 +448,19 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   dispatch_async(dispatch_get_main_queue(), ^{
     self.GroupPortrait.image = image;
   });
+}
+
+-(UIImage*)getSubImage:(UIImage *)originImage Rect:(CGRect)rect imageOrientation:(UIImageOrientation)imageOrientation
+{
+  CGImageRef subImageRef = CGImageCreateWithImageInRect(originImage.CGImage, rect);
+  CGRect smallBounds = CGRectMake(0, 0, CGImageGetWidth(subImageRef), CGImageGetHeight(subImageRef));
+  
+  UIGraphicsBeginImageContext(smallBounds.size);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextDrawImage(context, smallBounds, subImageRef);
+  UIImage* smallImage = [UIImage imageWithCGImage:subImageRef scale:1.f orientation:imageOrientation];
+  UIGraphicsEndImageContext();
+  return smallImage;
 }
 
 - (UIImage *)scaleImage:(UIImage *)Image toScale:(float)scaleSize {
@@ -413,14 +513,14 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 }
 
 - (NSString *)getIconCachePath:(NSString *)fileName {
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                       NSUserDomainMask, YES);
-  NSString *filePath = [[paths objectAtIndex:0]
-      stringByAppendingPathComponent:
-          [NSString
-              stringWithFormat:@"CachedIcons/%@", fileName]]; // 保存文件的名称
+  NSString *cachPath = [NSSearchPathForDirectoriesInDomains(
+      NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+  NSString *filePath =
+      [cachPath stringByAppendingPathComponent:
+                    [NSString stringWithFormat:@"CachedIcons/%@",
+                                               fileName]]; // 保存文件的名称
 
-  NSString *dirPath = [[paths objectAtIndex:0]
+  NSString *dirPath = [cachPath
       stringByAppendingPathComponent:[NSString
                                          stringWithFormat:@"CachedIcons"]];
   NSFileManager *fileManager = [NSFileManager defaultManager];

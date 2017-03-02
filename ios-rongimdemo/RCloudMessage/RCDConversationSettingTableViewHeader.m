@@ -11,6 +11,7 @@
 #import "RCDUtilities.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMLib/RongIMLib.h>
+#import "RCDCommonDefine.h"
 
 @interface RCDConversationSettingTableViewHeader () <
     RCDConversationSettingTableViewHeaderItemDelegate>
@@ -27,7 +28,7 @@
 
 - (instancetype)init {
   CGRect tempRect =
-      CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 120);
+      CGRectMake(0, 0, RCDscreenWidth, 120);
   UICollectionViewFlowLayout *flowLayout =
       [[UICollectionViewFlowLayout alloc] init];
   flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;

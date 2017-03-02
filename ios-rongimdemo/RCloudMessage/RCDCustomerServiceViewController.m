@@ -22,10 +22,11 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   [self notifyUpdateUnreadMessageCount];
+  /*
     UIButton *button =
     [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     UIImageView *imageView =
-    [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"data"]];
+    [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Private_Setting"]];
     imageView.frame = CGRectMake(15, 5,16 , 17);
     [button addSubview:imageView];
     [button addTarget:self
@@ -33,9 +34,11 @@
      forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBarButton =
     [[UIBarButtonItem alloc] initWithCustomView:button];
-    self.navigationItem.rightBarButtonItem = rightBarButton;
+   */
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
+/*
 - (void)rightBarButtonItemClicked:(id)sender {
   RCDSettingBaseViewController *settingVC =
       [[RCDSettingBaseViewController alloc] init];
@@ -53,6 +56,7 @@
   };
   [self.navigationController pushViewController:settingVC animated:YES];
 }
+*/
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
@@ -67,7 +71,7 @@
   //需要调用super的实现
   [super leftBarButtonItemPressed:sender];
 
-  [self.navigationController popViewControllerAnimated:YES];
+  [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 //评价客服，并离开当前会话

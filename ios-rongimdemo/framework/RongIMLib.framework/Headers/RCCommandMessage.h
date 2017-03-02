@@ -18,7 +18,7 @@
  @discussion 命令消息类，此消息不存储不计入未读消息数。
  与RCCommandNotificationMessage的区别是，此消息不存储，也不会在界面上显示。
  */
-@interface RCCommandMessage : RCMessageContent
+@interface RCCommandMessage : RCMessageContent<NSCoding>
 
 /*!
 命令的名称

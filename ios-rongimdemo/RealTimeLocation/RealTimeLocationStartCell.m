@@ -18,6 +18,14 @@
 #define RC_REAL_TIME_LOCATION_CELL_LOCATION_ICON_HEIGHT 20
 
 @implementation RealTimeLocationStartCell
++ (CGSize)sizeForMessageModel:(RCMessageModel *)model
+      withCollectionViewWidth:(CGFloat)collectionViewWidth
+         referenceExtraHeight:(CGFloat)extraHeight {
+  CGFloat __messagecontentview_height = 40.0f;
+  __messagecontentview_height += extraHeight;
+  
+  return CGSizeMake(collectionViewWidth, __messagecontentview_height);
+}
 
 - (void)setDataModel:(RCMessageModel *)model {
   [super setDataModel:model];

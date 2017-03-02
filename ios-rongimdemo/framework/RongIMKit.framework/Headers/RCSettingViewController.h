@@ -34,7 +34,7 @@ typedef void (^clearHistory)(BOOL isSuccess);
 /*!
  清空会话中所有消息的回调
  
- @discussion 在清空消息的的回调中,您需要调用聊天界面的reloadData进行刷新。
+ @discussion 在清空消息的的回调中,您需要调用会话页面的reloadData进行刷新。
  */
 @property(nonatomic, copy) clearHistory clearHistoryCompletion;
 

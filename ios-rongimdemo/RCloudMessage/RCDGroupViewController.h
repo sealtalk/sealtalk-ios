@@ -10,5 +10,5 @@
 //#import "RCGroupListViewController.h"
 
 @interface RCDGroupViewController : UITableViewController
-
+//+ (instancetype)groupViewController;
 @end

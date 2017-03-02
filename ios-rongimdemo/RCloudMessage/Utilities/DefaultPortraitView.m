@@ -40,7 +40,13 @@
 
   //设置字母Label
   UILabel *firstCharacterLabel = [[UILabel alloc] init];
-  NSString *firstLetter = [nickname substringToIndex:1];
+
+  NSString *firstLetter = nil;
+  if(nickname.length > 0){
+    firstLetter = [nickname substringToIndex:1];
+  }else {
+    firstLetter = @"#";
+  }
   firstCharacterLabel.text = firstLetter;
   firstCharacterLabel.textColor = [UIColor whiteColor];
   firstCharacterLabel.textAlignment = NSTextAlignmentCenter;
@@ -145,27 +151,6 @@
   UIGraphicsEndImageContext();
 
   return newImage;
-}
-
-/**
- *  汉字转拼音
- *
- *  @param hanZi 汉字
- *
- *  @return 转换后的拼音
- */
-- (NSString *)hanZiToPinYinWithString:(NSString *)hanZi {
-  if (!hanZi)
-    return nil;
-  NSString *pinYinResult = [NSString string];
-  for (int j = 0; j < hanZi.length; j++) {
-    NSString *singlePinyinLetter = [[NSString
-        stringWithFormat:@"%c", pinyinFirstLetter([hanZi characterAtIndex:j])]
-        uppercaseString];
-    pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
-  }
-
-  return pinYinResult;
 }
 
 @end

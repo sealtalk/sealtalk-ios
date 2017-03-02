@@ -1,6 +1,6 @@
 //
-//  RCPluginBoard.h
-//  CollectionViewTest
+//  RCPluginBoardView.h
+//  RongExtensionKit
 //
 //  Created by Liv on 15/3/15.
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
@@ -13,12 +13,22 @@
 /*!
  输入扩展功能板的View
  */
-@interface RCPluginBoardView : UICollectionView
+@interface RCPluginBoardView : UIView
 
 /*!
  当前所有的扩展项
  */
 @property(nonatomic, strong) NSMutableArray *allItems;
+
+/*!
+ 展示所有的功能按钮
+ */
+@property(nonatomic,strong) UICollectionView *contentView;
+
+/*!
+ 扩展view ，此视图会覆盖加号区域其他视图，默认隐藏
+ */
+@property(nonatomic, strong) UIView *extensionView;
 
 /*!
  扩展功能板的点击回调

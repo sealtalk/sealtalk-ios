@@ -1,10 +1,3 @@
-/* 
-  RongCloudKit.strings
-  RongIMKit
-
-  Created by xugang on 1/15/15.
-  Copyright (c) 2015 RongCloud. All rights reserved.
-*/
 "RC:ImgMsg"="[Image]";
 "RC:LBSMsg"="[Location]";
 "RC:VcMsg"="[Voice]";
@@ -17,12 +10,6 @@
 "conversation_group_collection_title"="My Groups";
 "conversation_discussion_collection_title"="Discussion Groups";
 "conversation_systemMessage_collection_title"="System Messages";
-"hold_to_talk_title"="Hold to talk";
-"release_to_send_title"="Release to send";
-"message_too_short"="Message too short";
-"slide_up_to_cancel_title"="Slide up to cancel";
-"release_to_cancel_title"="Release to cancel";
-"whiteSpaceMessage"="Can't send white space message";
 "OK"="Ok";
 "Cancel"="Cancel";
 "speakerAccessRight"="You don't have the access right of speaker, please set it in Settings";
@@ -38,11 +25,6 @@
 "Back"="Back";
 "IsDeleteHistoryMsg"="Do you want to delete history message?";
 "ConnectionIsNotReachable"="Network unavailable, check network";
-"Camera"="Camera";
-"Photos"="Photos";
-"Location"="Location";
-"File"="File";
-"SendFile"="Send File";
 "PreviewFile"="Preview File";
 "StartDownloadingFile"="Start downloading";
 "FileIsDownloading"="Downloding...";
@@ -50,7 +32,6 @@
 "FileDownloadCanceled"="Download has been canceled";
 "OpenFileInOtherApp"="Open the file in other app";
 "Audio"="Audio";
-"Albums"="Albums";
 "unknown_message_cell_tip"="The current version is not available for viewing this message";
 "unknown_message_notification_tip"="Receive an unkown message";
 "Copy"="Copy";
@@ -62,19 +43,13 @@
 "Save"="Save";
 "SavePhotoFailed"="Failed to save this photo";
 "SavePhotoSuccess"="Saved";
-"PickLocation"="Pick Location";
-"More"="More";
 "Done"="Done";
-"Longitude"="Longitude";
-"Latitude"="Latitude";
 "LocationInformation"="Location information";
 "LocalNotificationShow"="Show";
-"PhotoAccessRight"="You have no access right";
 "MaxNumSelectPhoto"="Max number is 9 for selection";
 "AllPhoto"="All Photo";
 "NoPhotoTitle"="No Photos or Videos";
 "NoPhotoDesc"="You can sync photos and videos onto your iPhone using iTunes.";
-"Send"="Send";
 "SetToTop"="Sticky to Top";
 "NewMsgNotification"="New Message Notification";
 "ClearRecord"="Clear Chat History";
@@ -117,7 +92,8 @@
 "JoinChatRoomFailed"="Failed to join chatroom";
 "Connecting..."="Connecting...";
 "FromFriendInvitation"="From %@ friend invitation";
-"AddFriendInvitation"="Add Friend Invitation";
+"AcceptFriendRequest"="Accept your friend request";
+"AddFriendRequest"="Add Friend Invitation";
 "ReadAll"="Read all";
 "OfficialAccounts"="Official Accounts";
 "Share"="Share Name Card";
@@ -144,7 +120,6 @@
 "DateFormat"="MM-dd";
 "MessageHasRead"="Read";
 "MessageHasSend"="Sent";
-"Full_Image"="Full Image";
 "typing"="typing...";
 "Speaking"="Speaking...";
 "Submit"="Submit";
@@ -152,13 +127,11 @@
 "Robot_Comment_Title"="Whether the robot solves your problem?";
 "Admin_Comment_Title"="Please comment on our services";
 "NOT_CUSTOM_SERVICE"="No custom service";
-"Preview"="Preview";
-"Location_Service"="Unable to get your location data,Please enable location service in “Settings”->“Privacy”->“Location Services” and allows the application to use location services.";
-"PhotoOniCloud"="The photo has not been downloaded from the iCloud, please download the system from the album to the local post to try again.";
 "VoIPAudioCall"="Voice Call";
 "VoIPVideoCall"="Video Call";
 "VoIPAudioCallExistedWarning"="Voice call is on. Try again later.";
 "VoIPVideoCallExistedWarning"="Video call is on. Try again later.";
+"AudioHoldingWarning"="Audio is holding by other function. Try again later.";
 "VoIPCallSelectMember"="Select Members";
 "VoIPAudioCallMaxNumSelectMember"="Up to %d members";
 "VoIPVideoCallMaxNumSelectMember"="Up to %d members";
@@ -172,14 +145,12 @@
 "VoIPCallMute"="Mute";
 "VoIPCallSpeaker"="Speaker";
 "VoIPCallWaitingForRemoteAccept"="Awaiting response...";
-"VoIPAudioCallIncoming"="Invites you to voice call";
-"VoIPVideoCallIncoming"="Invites you to video call";
-"VoIPAudioCallIncomingWithoutUserName"="Invites you to voice call";
-"VoIPVideoCallIncomingWithoutUserName"="Invites you to video call";
+"VoIPAudioCallIncoming"=" invites you to voice call";
+"VoIPVideoCallIncoming"=" invites you to video call";
+"VoIPAudioCallIncomingWithoutUserName"="You have a voice call";
+"VoIPVideoCallIncomingWithoutUserName"="You have a video call";
 "VoIPMultiCallUserCollectionTitle"="Members";
 "VoIPCallTotalTime"="Duration";
-"VoIPMultiCallRemoteConnecting"="Waiting";
-"VoIPMultiCallRemoteQuit"="Cancelled";
 "VoIPCallHasEnd"="Cancelled";
 "VoIPCallHasCancel"="Cancelled";
 "VoIPCallHasReject"="Declined";
@@ -205,9 +176,49 @@
 "ImageHasBeenDeleted"="The image has been deleted";
 "HaveMentioned"="You were mentioned";
 "HaveMentionedForNotification"="You were mentioned ";
-"SelectMentionedUser"="Select Contact";
-"ToSearch"="Search";
-"chatDate"="MMM d,yyyy";
+"chatDate"="MMM d, yyyy";
 "chatListDate"="M/d/yyyy";
 "locale"="en_US";
 "SameYearDate"="M/d/yy";
+"readNum"="%d read";
+"read"="read";
+"punctuation"=", ";
+"Dawn"="h:mm a";
+"Forenoon"="h:mm a";
+"Noon"="h:mm a";
+"Afternoon"="h:mm a";
+"Evening"="h:mm a";
+"CancelSendFile"="Cancelled";
+"hold_to_talk_title"="Hold to talk";
+"release_to_send_title"="Release to send";
+"message_too_short"="Message too short";
+"slide_up_to_cancel_title"="Slide up to cancel";
+"release_to_cancel_title"="Release to cancel";
+"whiteSpaceMessage"="Can't send white space message";
+"OK"="Ok";
+"Cancel"="Cancel";
+"speakerAccessRight"="You don't have the access right of speaker, please set it in Settings";
+"cameraAccessRight"="You don't have the access right of camera, please set it in Settings";
+"Back"="Back";
+"Camera"="Camera";
+"Photos"="Photos";
+"Location"="Location";
+"File"="File";
+"SendFile"="Send File";
+"Albums"="Albums";
+"PickLocation"="Pick Location";
+"More"="More";
+"Longitude"="Longitude";
+"Latitude"="Latitude";
+"PhotoAccessRight"="You have no access right";
+"Send"="Send";
+"AccessRightTitle"="no access right";
+"Full_Image"="Full Image";
+"Preview"="Preview";
+"Location_Service"="Unable to get your location data,Please enable location service in “Settings”->“Privacy”->“Location Services” and allows the application to use location services.";
+"PhotoOniCloud"="The photo has not been downloaded from the iCloud, please download the system from the album to the local post to try again.";
+"SelectMentionedUser"="Select Contact";
+"ToSearch"="Search";
+"VoiceInput"="Voice Input";
+"Clear"="Clear";
+"Send"="Send";

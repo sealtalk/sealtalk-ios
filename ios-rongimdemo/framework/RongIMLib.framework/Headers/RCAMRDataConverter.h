@@ -40,6 +40,8 @@
  */
 - (NSData *)decodeAMRToWAVE:(NSData *)data;
 
+- (NSData *)decodeAMRToWAVEWithoutHeader:(NSData *)data;
+
 /*!
  将WAV格式的音频数据转化为AMR格式的音频数据（8KHz采样）
 

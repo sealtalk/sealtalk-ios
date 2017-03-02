@@ -19,7 +19,7 @@ FOUNDATION_EXPORT const unsigned char RongIMKitVersionString[];
 /// 会话列表相关类
 #import <RongIMKit/RCConversationListViewController.h>
 #import <RongIMKit/RCPublicServiceListViewController.h>
-/// 聊天界面相关类
+/// 会话页面相关类
 #import <RongIMKit/RCConversationViewController.h>
 #import <RongIMKit/RCPublicServiceSearchViewController.h>
 #import <RongIMKit/RCPublicServiceChatViewController.h>
@@ -59,4 +59,6 @@ FOUNDATION_EXPORT const unsigned char RongIMKitVersionString[];
 #import <RongIMKit/RCSettingViewController.h>
 #import <RongIMKit/RCConversationSettingTableViewHeader.h>
 #import <RongIMKit/RCPublicServiceProfileViewController.h>
+#import <RongIMKit/RongIMKitExtensionModule.h>
+#import <RongIMKit/RCEmoticonTabSource.h>
 /// VoIPCall

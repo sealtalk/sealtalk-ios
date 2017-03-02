@@ -10,8 +10,11 @@
 
 @interface RCDPrivateSettingsUserInfoCell : UITableViewCell
 
-@property(weak, nonatomic) IBOutlet UIImageView *PortraitImageView;
+@property(strong, nonatomic) UIImageView *PortraitImageView;
 
-@property(weak, nonatomic) IBOutlet UILabel *NickNameLabel;
+@property(strong, nonatomic) UILabel *NickNameLabel;
 
+@property (strong, nonatomic) UILabel *displayNameLabel;
+
+- (id)initWithIsHaveDisplayName:(BOOL)isHaveDisplayName;
 @end

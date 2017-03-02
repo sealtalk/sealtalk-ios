@@ -14,10 +14,10 @@
 #import "RCDCommonDefine.h"
 #import "RCDGroupInfo.h"
 #import "RCDHttpTool.h"
-#import "RCDSquareChatRoomTableViewCell.h"
-#import "RCDSquareTableViewCell.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
+#import "RCDBaseSettingTableViewCell.h"
+#import "RCDSquareCell.h"
 
 @interface RCDSquareTableViewController ()
 
@@ -31,12 +31,11 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+  self.edgesForExtendedLayout = UIRectEdgeNone;
+  self.navigationController.navigationBar.translucent = NO;
   self.tableView.tableFooterView = [UIView new];
-  [self.tableView setSeparatorColor:HEXCOLOR(0xdfdfdf)];
-  if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
-  }
-
+  self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+  
   chatRoomNames = [NSMutableArray new];
   chatRoomIdList = [NSMutableArray new];
 
@@ -75,7 +74,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-
+  [super viewWillAppear:animated];
   self.tabBarController.navigationItem.title = @"发现";
   self.tabBarController.navigationItem.rightBarButtonItems = nil;
   
@@ -117,22 +116,21 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (chatRoomNames.count == 0 || chatRoomNames == nil) {
-    return nil;
+    if (chatRoomNames.count == 0 || chatRoomNames == nil) {
+        return nil;
+    }
+    NSArray *chatroomIcons = [[NSArray alloc]
+                              initWithObjects:@"icon_1-1", @"icon_2-1", @"icon_3-1", @"icon_4-1", nil];
+  
+  static NSString *reusableCellWithIdentifier = @"RCDSquareCell";
+  RCDSquareCell *cell = [self.tableView
+                                       dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
+  
+  if (cell == nil) {
+    cell = [[RCDSquareCell alloc]
+            initWithIconName:[NSString
+                              stringWithFormat:@"%@", chatroomIcons[indexPath.row]] TitleName:chatRoomNames[indexPath.row]];
   }
-  static NSString *CellIdentifier = @"RCDSquareTableViewCell";
-  RCDSquareTableViewCell *cell = (RCDSquareTableViewCell *)[tableView
-      dequeueReusableCellWithIdentifier:CellIdentifier];
-
-  NSArray *chatroomIcons = [[NSArray alloc]
-      initWithObjects:@"icon_1-1", @"icon_2-1", @"icon_3-1", @"icon_4-1", nil];
-
-  cell.ChatroomName.text = chatRoomNames[indexPath.row];
-  cell.ChatroomPortrait.image = [UIImage
-      imageNamed:[NSString
-                     stringWithFormat:@"%@", chatroomIcons[indexPath.row]]];
-  cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
-  cell.selectedBackgroundView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5" alpha:1.0];
   return cell;
 }
 

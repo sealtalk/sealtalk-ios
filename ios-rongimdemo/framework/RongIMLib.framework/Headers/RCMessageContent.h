@@ -56,6 +56,14 @@
  */
 + (NSString *)getObjectName;
 
+/*!
+ 返回可搜索的关键内容列表
+ 
+ @return 返回可搜索的关键内容列表
+ 
+ @discussion 这里返回的关键内容列表将用于消息搜索，自定义消息必须要实现此接口才能进行搜索。
+ */
+- (NSArray<NSString *> *)getSearchableWords;
 @end
 
 /*!
@@ -135,6 +143,7 @@
  @param dictionary @提醒信息的Dictionary
  */
 - (void)decodeMentionedInfo:(NSDictionary *)dictionary;
+
 
 /*!
  消息内容的原始json数据

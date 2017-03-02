@@ -12,6 +12,7 @@
 //#import "RCHandShakeMessage.h"
 #import "RCDChatViewController.h"
 #import "RCDCustomerServiceViewController.h"
+#import "RCDCommonDefine.h"
 
 @interface RCDServiceViewController () <UITextFieldDelegate>
 
@@ -27,7 +28,7 @@
 #define SERVICE_ID @"KEFU146001495753714"
   chatService.userName = @"客服";
   chatService.conversationType = ConversationType_CUSTOMERSERVICE;
-#ifdef DEBUG
+#if RCDDebugTestFunction
   NSString *kefuId = self.kefuIdField.text;
   [[NSUserDefaults standardUserDefaults] setObject:kefuId forKey:@"KefuId"];
   chatService.targetId = kefuId;
@@ -109,7 +110,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-#ifdef DEBUG
+#if RCDDebugTestFunction
   if (!self.kefuIdField) {
     self.kefuIdField =
         [[UITextField alloc] initWithFrame:CGRectMake(10, 50, 200, 30)];
