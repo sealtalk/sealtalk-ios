@@ -23,14 +23,12 @@
 #import "UITextFiled+Shake.h"
 #import <RongIMKit/RongIMKit.h>
 #import "UIColor+RCColor.h"
-#import "RedpacketConfig.h"
 #import "RCDNavigationViewController.h"
 #import "RCDMainTabBarViewController.h"
 #import "RCDSettingServerUrlViewController.h"
 #import "RCDSettingUserDefaults.h"
 
 @interface RCDLoginViewController () <UITextFieldDelegate, RCIMConnectionStatusDelegate,UIAlertViewDelegate>
-
 
 @property(retain, nonatomic) IBOutlet RCAnimatedImagesView *animatedImagesView;
 
@@ -612,7 +610,7 @@ arrayByAddingObjectsFromArray:
     [DEFAULTS setObject:result forKey:@"SquareInfoList"];
     [DEFAULTS synchronize];
   }];
-    
+
   [AFHttpTool getUserInfo:userId
       success:^(id response) {
         if ([response[@"code"] intValue] == 200) {

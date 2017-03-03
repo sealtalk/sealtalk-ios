@@ -1,0 +1,19 @@
+PODS:
+  - RedpacketAliAuthLib (1.1.1):
+    - RedPacketAlipay
+  - RedPacketAlipay (15.0.2)
+  - RedpacketLib (3.4.3):
+    - RedPacketAlipay
+
+DEPENDENCIES:
+  - RedpacketAliAuthLib
+  - RedpacketLib
+
+SPEC CHECKSUMS:
+  RedpacketAliAuthLib: c3ea90eea93943846e8b9990fc2c61a3b9061360
+  RedPacketAlipay: a5de6db2e2671fc9255d6d396be869e3ba2f0489
+  RedpacketLib: be90a5fd6b393f122345a916754d313408d512ef
+
+PODFILE CHECKSUM: a1bb820679473d79187cb94ec0444247eedf663b
+
+COCOAPODS: 1.1.1
