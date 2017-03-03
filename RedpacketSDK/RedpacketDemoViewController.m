@@ -26,10 +26,9 @@
 #import "RCDataBaseManager.h"
 #pragma mark - 红包相关的宏定义
 #define REDPACKET_BUNDLE(name) @"RedpacketCellResource.bundle/" name
-#define REDPACKET_TAG 2016
 #pragma mark -
 
-@interface RedpacketDemoViewController () <RCMessageCellDelegate,RedpacketViewControlDelegate>
+@interface RedpacketDemoViewController () <RCMessageCellDelegate>
 
 @property (nonatomic, strong, readwrite) RedpacketViewControl *redpacketControl;
 @property (atomic, strong)NSMutableArray * usersArray;
@@ -46,55 +45,7 @@
     [self registerClass:[RedpacketMessageCell class] forCellWithReuseIdentifier:YZHRedpacketMessageTypeIdentifier];
     [self registerClass:[RedpacketTakenMessageTipCell class] forCellWithReuseIdentifier:YZHRedpacketTakenMessageTypeIdentifier];
     [self registerClass:[RCTextMessageCell class] forCellWithReuseIdentifier:@"Message"];
-    
-    if (ConversationType_PRIVATE == self.conversationType
-        || ConversationType_DISCUSSION == self.conversationType
-        || ConversationType_GROUP == self.conversationType ) {
-        // 设置红包插件界面
-        UIImage *icon = [UIImage imageNamed:REDPACKET_BUNDLE(@"redpacktSendBtn")];
-        assert(icon);
-        [self.pluginBoardView insertItemWithImage:icon title:NSLocalizedString(@"红包", @"红包") tag:REDPACKET_TAG];
-        // 设置红包功能相关的参数
-        self.redpacketControl = [[RedpacketViewControl alloc] init];
-        self.redpacketControl.delegate = self;
-        self.redpacketControl.conversationController = self;
-        
-        // 由于不清楚的原因，RCIM 返回的 userNickname 时候是邮箱，但又不好判断是什么，所以每次都强制更新一下用户名       
-        RedpacketUserInfo *user = [[RedpacketUserInfo alloc] init];
-        user.userId = self.targetId;
-        // 虽然现在 userName 不被 viewController 保存，但是如果不设置 userNickname，会
-        // 导致新消息显示的时候显示 (null) 数据
-        user.userNickname = self.userName;
-        self.redpacketControl.converstationInfo = user;
-        if (ConversationType_PRIVATE == self.conversationType) {
-            // 异步获取更多用户消息, 这是 Demo app 的 DataSource 逻辑
-            [[RCDRCIMDataSource shareInstance] getUserInfoWithUserId:self.targetId
-                                                          completion:^(RCUserInfo *userInfo) {
-                                                              // 设置红包接收用户信息
-                                                              
-                                                              user.userNickname = userInfo.name;
-                                                              user.userAvatar = userInfo.portraitUri;
-                                                              user.userId = (userInfo.userId.length)?userInfo.userId:@"";
-                                                              // 更新用户信息
-                                                              self.redpacketControl.converstationInfo = user;
-                                                          }];
-        }
-        
-        
-        
-        __weak typeof(self) SELF = self;
-        // 设置红包 SDK 功能回调
-        [self.redpacketControl setRedpacketGrabBlock:^(RedpacketMessageModel *redpacket) {
-            // 用户发出的红包收到被抢的通知
-            [SELF onRedpacketTakenMessage:redpacket];
-        } andRedpacketBlock:^(RedpacketMessageModel *redpacket) {
-            // 用户发红包的通知
-            // SDK 默认的消息需要改变
-            redpacket.redpacket.redpacketOrgName = @"融云红包";
-            [SELF sendRedpacketMessage:redpacket];
-        }];
-        
-    }
+
 }
 
 
@@ -267,7 +218,7 @@
 
 #pragma mark - 红包插件点击事件
 - (void)didTapMessageCell:(RCMessageModel *)model {
-    
+    __weak typeof(self) weakself = self;
     if ([model.content isKindOfClass:[RedpacketMessage class]]) {
         if(RedpacketMessageTypeRedpacket == ((RedpacketMessage *)model.content).redpacket.messageType) {
             if ([self.chatSessionInputBarControl.inputTextView isFirstResponder]) {
@@ -284,29 +235,16 @@
                             redPacketModel.redpacketSender.userAvatar = info.portraitUri;
                         }
                     }
-                    [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
+                    [RedpacketViewControl redpacketTouchedWithMessageModel:redPacketModel fromViewController:self redpacketGrabBlock:^(RedpacketMessageModel *messageModel) {
+                        [weakself onRedpacketTakenMessage:messageModel];
+                    } advertisementAction:nil];
                     break;
                 }
                 case ConversationType_DISCUSSION:
                 case ConversationType_GROUP: {
-                    NSArray<RCUserInfo*> * members = [[RCDataBaseManager shareInstance] getGroupMember:self.targetId];
-                    [members enumerateObjectsUsingBlock:^(RCUserInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                        if ([obj isKindOfClass:[RCUserInfo class]]) {
-                            if ([redPacketModel.redpacketSender.userId isEqualToString:obj.userId]) {
-                                redPacketModel.redpacketSender.userNickname = obj.name?obj.name:redPacketModel.redpacketReceiver.userId;
-                                redPacketModel.redpacketSender.userAvatar = obj.portraitUri;
-                            }
-                            if ([redPacketModel.redpacketReceiver.userId isEqualToString:obj.userId]) {
-                                redPacketModel.redpacketReceiver.userNickname = obj.name?obj.name:redPacketModel.redpacketReceiver.userId;
-                                redPacketModel.redpacketReceiver.userAvatar = obj.portraitUri;
-                            }
-                            if ([redPacketModel.toRedpacketReceiver.userId isEqualToString:obj.userId]) {
-                                redPacketModel.toRedpacketReceiver.userNickname = obj.name?obj.name:redPacketModel.redpacketReceiver.userId;
-                                redPacketModel.toRedpacketReceiver.userAvatar = obj.portraitUri;
-                            }
-                        }
-                    }];
-                    [self.redpacketControl redpacketCellTouchedWithMessageModel:redPacketModel];
+                    [RedpacketViewControl redpacketTouchedWithMessageModel:redPacketModel fromViewController:self redpacketGrabBlock:^(RedpacketMessageModel *messageModel) {
+                        [weakself onRedpacketTakenMessage:messageModel];
+                    } advertisementAction:nil];
                     break;
                 }
                 default:
@@ -315,6 +253,7 @@
         }
     } else {
         [super didTapMessageCell:model];
+        
     }
 }
 
@@ -322,71 +261,82 @@
 
 - (void)pluginBoardView:(RCPluginBoardView *)pluginBoardView clickedItemWithTag:(NSInteger)tag
 {
-    switch (tag) {
-        // 云账户增加红包插件点击回调
-        case REDPACKET_TAG: {
-            switch (self.conversationType) {
-                case ConversationType_PRIVATE:
-                    [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerSingle memberCount:0];
-                    break;
-                case ConversationType_DISCUSSION:
-                {
-                    // 需要在界面显示讨论组员数量，需要先取得相应的数值
-                    [[RCIMClient sharedRCIMClient] getDiscussion:self.targetId
-                                                         success:^(RCDiscussion *discussion) {
-                                                             // 显示多人红包界面
-                                                             [self.usersArray removeAllObjects];
-                                                             for (NSString *targetId in discussion.memberIdList) {
-                                                                 [[RCDHttpTool shareInstance] getUserInfoByUserID:targetId
-                                                                                                       completion:^(RCUserInfo *user) {
-                                                                                                           RedpacketUserInfo * userInfo = [RedpacketUserInfo new];
-                                                                                                           userInfo.userId = user.userId;
-                                                                                                           userInfo.userAvatar = user.portraitUri;
-                                                                                                           userInfo.userNickname = user.name;
-                                                                                                           if ([discussion.creatorId isEqualToString: user.userId]) {
-                                                                                                               [self.usersArray insertObject:userInfo atIndex:0];
-                                                                                                           }else{
-                                                                                                               
-                                                                                                               [self.usersArray addObject:userInfo];
-                                                                                                           }
-                                                                                                       }];
-                                                                 
-                                                             }
-
-                                                             [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:discussion.memberIdList.count];
-                                                         } error:^(RCErrorCode status) {
-                                                             [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:0];
-                                                         }];
-                }
-                    break;
-                case ConversationType_GROUP:
-                {
-                    [self.usersArray removeAllObjects];
-                    [[[RCDataBaseManager shareInstance] getGroupMember:self.targetId] enumerateObjectsUsingBlock:^(RCUserInfo *user, NSUInteger idx, BOOL * _Nonnull stop) {
-                        if (![[RCIM sharedRCIM].currentUserInfo.userId isEqualToString:user.userId]) {
-                            RedpacketUserInfo * userInfo = [RedpacketUserInfo new];
-                            userInfo.userId = user.userId;
-                            userInfo.userAvatar = user.portraitUri;
-                            userInfo.userNickname = user.name;
-                            [self.usersArray addObject:userInfo];
-                        }
-                    
-                    }];
-                     [self.redpacketControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:self.usersArray.count];
-                }
-                    break;
-                default:
-                    break;
-            }
+    // 由于不清楚的原因，RCIM 返回的 userNickname 时候是邮箱，但又不好判断是什么，所以每次都强制更新一下用户名
+    RedpacketUserInfo *user = [[RedpacketUserInfo alloc] init];
+    user.userId = self.targetId;
+    user.userNickname = self.userName;
+    __weak typeof(self) weakself = self;
+    // 用户发红包的通知
+    if (tag != 1603) {
+        [super pluginBoardView:pluginBoardView clickedItemWithTag:tag];
+        return;
+    }
+    
+    switch (self.conversationType) {
+        case ConversationType_PRIVATE:{
+            [RedpacketViewControl presentRedpacketViewController:RPRedpacketControllerTypeSingle fromeController:self groupMemberCount:0 withRedpacketReceiver:user andSuccessBlock:^(RedpacketMessageModel *model) {
+                [weakself sendRedpacketMessage:model];
+            } withFetchGroupMemberListBlock:nil andGenerateRedpacketIDBlock:nil];
+            break;
         }
+        case ConversationType_DISCUSSION:
+        {
+            // 需要在界面显示讨论组员数量，需要先取得相应的数值
+            [[RCIMClient sharedRCIMClient] getDiscussion:self.targetId
+                                                 success:^(RCDiscussion *discussion) {
+                                                     // 显示多人红包界面
+                                                     [self.usersArray removeAllObjects];
+                                                     for (NSString *targetId in discussion.memberIdList) {
+                                                         [[RCDHttpTool shareInstance] getUserInfoByUserID:targetId
+                                                                                               completion:^(RCUserInfo *user) {
+                                                                                                   RedpacketUserInfo * userInfo = [RedpacketUserInfo new];
+                                                                                                   userInfo.userId = user.userId;
+                                                                                                   userInfo.userAvatar = user.portraitUri;
+                                                                                                   userInfo.userNickname = user.name;
+                                                                                                   if ([discussion.creatorId isEqualToString: user.userId]) {
+                                                                                                       [self.usersArray insertObject:userInfo atIndex:0];
+                                                                                                   }else{
+                                                                                                       
+                                                                                                       [self.usersArray addObject:userInfo];
+                                                                                                   }
+                                                                                               }];
+                                                         
+                                                     }
+
+                                                     [RedpacketViewControl presentRedpacketViewController:RPRedpacketControllerTypeRand fromeController:self groupMemberCount:discussion.memberIdList.count withRedpacketReceiver:user andSuccessBlock:^(RedpacketMessageModel *model) {
+                                                         [weakself sendRedpacketMessage:model];
+                                                     } withFetchGroupMemberListBlock:^(RedpacketMemberListFetchBlock completionHandle) {
+                                                         completionHandle(self.usersArray);
+                                                     } andGenerateRedpacketIDBlock:nil];
+                                                 } error:^(RCErrorCode status) {
+
+                                                 }];
+        }
+            break;
+        case ConversationType_GROUP:
+        {
+            [self.usersArray removeAllObjects];
+            [[[RCDataBaseManager shareInstance] getGroupMember:self.targetId] enumerateObjectsUsingBlock:^(RCUserInfo *user, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (![[RCIM sharedRCIM].currentUserInfo.userId isEqualToString:user.userId]) {
+                    RedpacketUserInfo * userInfo = [RedpacketUserInfo new];
+                    userInfo.userId = user.userId;
+                    userInfo.userAvatar = user.portraitUri;
+                    userInfo.userNickname = user.name;
+                    [self.usersArray addObject:userInfo];
+                }
+            
+            }];
+            [RedpacketViewControl presentRedpacketViewController:RPRedpacketControllerTypeRand fromeController:self groupMemberCount:self.usersArray.count withRedpacketReceiver:user andSuccessBlock:^(RedpacketMessageModel *model) {
+                [weakself sendRedpacketMessage:model];
+            } withFetchGroupMemberListBlock:^(RedpacketMemberListFetchBlock completionHandle) {
+                completionHandle(self.usersArray);
+            } andGenerateRedpacketIDBlock:nil];
+        }
+            break;
         default:
-            [super pluginBoardView:pluginBoardView clickedItemWithTag:tag];
             break;
     }
 }
-- (void)getGroupMemberListCompletionHandle:(void (^)(NSArray<RedpacketUserInfo *> * groupMemberList))completionHandle{
-    completionHandle(self.usersArray);
-    
-}
+
 
 @end
