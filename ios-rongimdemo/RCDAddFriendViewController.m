@@ -199,6 +199,9 @@
 }
 - (void)actionAddFriend:(id)sender {
   RCDUserInfo *user = [[RCDataBaseManager shareInstance] getFriendInfo:_targetUserInfo.userId];
+  if (user == nil) {
+    return;
+  }
   if ([user.status isEqualToString:@"10"]) {
     UIAlertView *alertView = [[UIAlertView alloc]
                               initWithTitle:nil
