@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "B14ECB352A80E5C551DBF11E15B5F715BBF57908",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "82CBDC087A6F613CAD4621A5793B220E3F46D112" : 9223372036854775807,
+    "B14ECB352A80E5C551DBF11E15B5F715BBF57908" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D5F773E5-F4EA-439F-A3D2-8DB996857C80",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "82CBDC087A6F613CAD4621A5793B220E3F46D112" : "yzh-redpacket\/",
+    "B14ECB352A80E5C551DBF11E15B5F715BBF57908" : "sealtalk-ios\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "RCloudMessage",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ios-rongimdemo\/RCloudMessage.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/github.com\/YunzhanghuOpen\/yzh-redpacket.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "82CBDC087A6F613CAD4621A5793B220E3F46D112"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/YunzhanghuOpen\/sealtalk-ios",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B14ECB352A80E5C551DBF11E15B5F715BBF57908"
+    }
+  ]
+}

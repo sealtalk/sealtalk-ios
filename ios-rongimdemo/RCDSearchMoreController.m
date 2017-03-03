@@ -15,6 +15,8 @@
 #import "RCDChatViewController.h"
 #import "RCDSearchDataManager.h"
 #import "RCDLabel.h"
+#import "RedpacketDemoViewController.h"
+
 @interface RCDSearchMoreController ()<UISearchBarDelegate>
 @property (nonatomic,strong)RCDSearchBar *searchBars;
 @property (nonatomic,strong)UIButton *cancelButton;
@@ -215,7 +217,7 @@
     return;
   }
   RCDChatViewController *_conversationVC =
-  [[RCDChatViewController alloc] init];
+  [[RedpacketDemoViewController alloc] init];
   _conversationVC.conversationType = model.conversationType;
   _conversationVC.targetId = model.targetId;
   _conversationVC.userName = model.name;

@@ -1,0 +1,26 @@
+dependencies: \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/RedpacketDetailController/RPAdvertisementDetailViewContrroller.m \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/RedpacketDetailController/RPAdvertisementDetailViewContrroller.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/Tools/YZHBaseViewController.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/Tools/Category/RedpacketColorStore.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/Tools/Category/UIView+YZHExtension.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/Tools/Category/UIView+YZHPrompting.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/ThirdPart/MBProgressHUD/YZHMBProgressHUD.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketRequestStaticLib/private/RedpacketDataRequester.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketRequestStaticLib/RedpacketMessageModel.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketRequestStaticLib/RedpacketOpenConst.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketRequestStaticLib/ApplyPaymentModel.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketRequestStaticLib/private/NSDictionary+YZHExtern.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/Tools/Category/UIView+YZHAnimation.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketRequestStaticLib/YZHRedpacketBridge.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketRequestStaticLib/YZHRedpacketBridgeProtocol.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/Tools/RPRedpacketTool.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/RPRedpacketVIews/RPRedpacketViews.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketRequestStaticLib/private/RPRedpacketSetting.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/RedpacketDetailController/Views/RPAdvertisementDetailView.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/RedpacketDetailController/Model/RPAdvertisementDetailModel.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketRequestStaticLib/RedpacketBaseModel.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/RPWebViewController/YZHWebViewController.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/RPWebViewController/HTWebViewController/HTWebViewController.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketLib/RedPacketLib/Tools/RPSoundPlayer.h \
+  /Users/doujipeng/Desktop/yun/yzh-redpacket/RedpacketRequestStaticLib/RedpacketErrorCode.h

@@ -24,6 +24,7 @@
 #import "RCDUIBarButtonItem.h"
 #import "RCDNoFriendView.h"
 #import "RCDCommonDefine.h"
+#import "RedpacketDemoViewController.h"
 #import "RCDContactSelectedCollectionViewCell.h"
 
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
@@ -273,7 +274,7 @@ MBProgressHUD *hud;
   
   if (self.isAllowsMultipleSelection == NO) {
     RCUserInfo *user = [[RCDataBaseManager shareInstance] getUserByUserId:self.selecteUserIdList[0]];
-    RCDChatViewController *chat = [[RCDChatViewController alloc] init];
+    RCDChatViewController *chat = [[RedpacketDemoViewController alloc] init];
     chat.targetId = user.userId;
     chat.userName = user.name;
     chat.conversationType = ConversationType_PRIVATE;
@@ -380,7 +381,7 @@ MBProgressHUD *hud;
                                                   NSLog(@"create discussion succeed!");
                                                   dispatch_async(dispatch_get_main_queue(), ^{
                                                     RCDChatViewController *chat =
-                                                    [[RCDChatViewController alloc] init];
+                                                    [[RedpacketDemoViewController alloc] init];
                                                     chat.targetId = discussion.discussionId;
                                                     chat.userName = discussion.discussionName;
                                                     chat.conversationType = ConversationType_DISCUSSION;
@@ -404,7 +405,7 @@ MBProgressHUD *hud;
     //    if (self.forCreatingDiscussionGroup) {
     if (seletedUsers.count == 1) {
       RCUserInfo *user = seletedUsers[0];
-      RCDChatViewController *chat = [[RCDChatViewController alloc] init];
+      RCDChatViewController *chat = [[RedpacketDemoViewController alloc] init];
       chat.targetId = user.userId;
       chat.userName = user.name;
       chat.conversationType = ConversationType_PRIVATE;
@@ -430,7 +431,7 @@ MBProgressHUD *hud;
       [[RCIMClient sharedRCIMClient] createDiscussion:discussionTitle userIdList:userIdList success:^(RCDiscussion *discussion) {
         NSLog(@"create discussion ssucceed!");
         dispatch_async(dispatch_get_main_queue(), ^{
-          RCDChatViewController *chat =[[RCDChatViewController alloc]init];
+          RCDChatViewController *chat =[[RedpacketDemoViewController alloc]init];
           chat.targetId                      = discussion.discussionId;
           chat.userName                    = discussion.discussionName;
           chat.conversationType              = ConversationType_DISCUSSION;

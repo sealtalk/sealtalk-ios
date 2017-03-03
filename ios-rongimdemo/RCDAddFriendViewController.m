@@ -13,6 +13,7 @@
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
 #import "UIColor+RCColor.h"
+#import "RedpacketDemoViewController.h"
 
 @interface RCDAddFriendViewController ()
 
@@ -233,7 +234,7 @@
 }
 
 - (void)actionStartChat:(id)sender {
-  RCDChatViewController *conversationVC = [[RCDChatViewController alloc] init];
+  RCDChatViewController *conversationVC = [[RedpacketDemoViewController alloc] init];
   conversationVC.conversationType = ConversationType_PRIVATE;
   conversationVC.targetId = self.targetUserInfo.userId;
   conversationVC.title = self.targetUserInfo.name;

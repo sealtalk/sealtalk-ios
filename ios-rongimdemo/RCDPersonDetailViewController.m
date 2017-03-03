@@ -19,6 +19,7 @@
 #import "UIColor+RCColor.h"
 #import "RCDFrienfRemarksViewController.h"
 #import "AFHttpTool.h"
+#import "RedpacketDemoViewController.h"
 
 @interface RCDPersonDetailViewController () <UIActionSheetDelegate>
 @property(nonatomic) BOOL inBlackList;
@@ -214,7 +215,7 @@
    object:@0];
   //创建会话
   RCDChatViewController *chatViewController =
-  [[RCDChatViewController alloc] init];
+  [[RedpacketDemoViewController alloc] init];
   chatViewController.conversationType = ConversationType_PRIVATE;
   
   chatViewController.targetId = self.userId;

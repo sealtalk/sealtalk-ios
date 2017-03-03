@@ -28,7 +28,7 @@
 #import "RCDMainTabBarViewController.h"
 #import "RCDSettingUserDefaults.h"
 #import "RCDSettingServerUrlViewController.h"
-
+#import "RedpacketConfig.h"
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" //offline key
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // online key
@@ -169,6 +169,7 @@
   //开启消息撤回功能
   [RCIM sharedRCIM].enableMessageRecall = YES;
   
+    [RedpacketConfig sharedConfig];
   
 //  设置头像为圆形
 //  [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;

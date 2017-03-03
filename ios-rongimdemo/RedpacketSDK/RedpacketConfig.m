@@ -56,20 +56,22 @@
         NSURL *url = [NSURL URLWithString:urlStr];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         
-        [[[AFHTTPRequestOperationManager manager] HTTPRequestOperationWithRequest:request
-                                                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                                              if ([responseObject isKindOfClass:[NSDictionary class]]) {
-                                                                                  NSString *partner = [responseObject valueForKey:@"partner"];
-                                                                                  NSString *appUserId = [responseObject valueForKey:@"user_id"];
-                                                                                  NSString *timeStamp = [responseObject valueForKey:@"timestamp"];
-                                                                                  NSString *sign = [responseObject valueForKey:@"sign"];
-                                                                                  RedpacketRegisitModel * regisitModel = [RedpacketRegisitModel signModelWithAppUserId:appUserId signString:sign partner:partner andTimeStamp:timeStamp];
-                                                                                  fetchBlock(regisitModel);
-                                                                              }
-                                                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                                              fetchBlock(nil);
-                                                                              NSLog(@"request redpacket sign failed:%@", error);
-                                                                          }] start];
+        [[[NSURLSession sharedSession]dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (!error) {
+                NSError * jsonError;
+                NSDictionary * jsonObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&jsonError];
+                
+                if (!jsonError && [jsonObject isKindOfClass:[NSDictionary class]]) {
+                    NSString *partner = [jsonObject valueForKey:@"partner"];
+                    NSString *appUserId = [jsonObject valueForKey:@"user_id"];
+                    NSString *timeStamp = [jsonObject valueForKey:@"timestamp"];
+                    NSString *sign = [jsonObject valueForKey:@"sign"];
+                    RedpacketRegisitModel * regisitModel = [RedpacketRegisitModel signModelWithAppUserId:appUserId signString:sign partner:partner andTimeStamp:timeStamp];
+                    fetchBlock(regisitModel);
+                }
+            }
+        }] resume];
+        
     }
 }
 

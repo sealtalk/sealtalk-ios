@@ -21,6 +21,7 @@
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
+#import "RedpacketDemoViewController.h"
 
 @interface RCDGroupViewController () <
 UITableViewDataSource, UITableViewDelegate>
@@ -110,7 +111,7 @@ UITableViewDataSource, UITableViewDelegate>
 - (void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCDGroupInfo *groupInfo = _groups[indexPath.row];
-    RCDChatViewController *temp = [[RCDChatViewController alloc] init];
+    RCDChatViewController *temp = [[RedpacketDemoViewController alloc] init];
     temp.targetId = groupInfo.groupId;
     temp.conversationType = ConversationType_GROUP;
     temp.userName = groupInfo.groupName;
