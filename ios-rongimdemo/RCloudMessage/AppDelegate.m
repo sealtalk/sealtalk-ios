@@ -694,6 +694,15 @@
   }
 }
 
+-(BOOL)onRCIMCustomLocalNotification:(RCMessage*)message
+                      withSenderName:(NSString *)senderName{
+    //群组通知不弹本地通知
+    if ([message.content isKindOfClass:[RCGroupNotificationMessage class]]) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)onRCIMReceiveMessage:(RCMessage *)message left:(int)left {
   if ([message.content
           isMemberOfClass:[RCInformationNotificationMessage class]]) {
