@@ -839,11 +839,10 @@ atIndexPath:(NSIndexPath *)indexPath
 }
 
 - (void)onSearchCancelClick{
-  dispatch_async(dispatch_get_main_queue(), ^{
     [self.searchNavigationController.view removeFromSuperview];
     [self.searchNavigationController removeFromParentViewController];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-  });
+    [self refreshConversationTableViewIfNeeded];
 }
 
 -(void)refreshCell:(NSNotification *)notify
