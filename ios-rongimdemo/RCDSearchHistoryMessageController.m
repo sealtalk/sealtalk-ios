@@ -16,6 +16,8 @@
 #import "RCDLabel.h"
 #import "RCDataBaseManager.h"
 #import "RCDChatViewController.h"
+#import "RedpacketDemoViewController.h"
+
 @interface RCDSearchHistoryMessageController ()<UISearchBarDelegate,UIScrollViewDelegate>
 @property (nonatomic,strong)NSArray *resultArray;
 @property (nonatomic,strong)RCDSearchBar *searchBars;
@@ -119,7 +121,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
   RCDSearchResultModel *model = self.resultArray[indexPath.row];
   RCDChatViewController *_conversationVC =
-  [[RCDChatViewController alloc] init];
+  [[RedpacketDemoViewController alloc] init];
   _conversationVC.conversationType = model.conversationType;
   _conversationVC.targetId = model.targetId;
   if (model.conversationType == ConversationType_GROUP) {

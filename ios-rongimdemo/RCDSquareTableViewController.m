@@ -8,6 +8,8 @@
 
 #import "RCDSquareTableViewController.h"
 #import "DefaultPortraitView.h"
+#import "MBProgressHUD.h"
+#import "RedpacketDemoViewController.h"
 #import "RCDChatViewController.h"
 #import "RCDCommonDefine.h"
 #import "RCDGroupInfo.h"
@@ -180,7 +182,7 @@
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   NSString *chatroomId;
   chatroomId = chatRoomIdList[indexPath.row];
-  RCDChatViewController *chatVC = [[RCDChatViewController alloc]
+  RedpacketDemoViewController *chatVC = [[RedpacketDemoViewController alloc]
       initWithConversationType:ConversationType_CHATROOM
                       targetId:chatroomId];
   chatVC.title = chatRoomNames[indexPath.row];
@@ -200,7 +202,7 @@
   NSString *chatroomId;
   NSInteger tag = recognizer.view.tag;
   chatroomId = chatRoomIdList[tag - 10];
-  RCDChatViewController *chatVC = [[RCDChatViewController alloc]
+  RedpacketDemoViewController *chatVC = [[RedpacketDemoViewController alloc]
       initWithConversationType:ConversationType_CHATROOM
                       targetId:chatroomId];
   chatVC.title = chatRoomNameArr[tag - 10];

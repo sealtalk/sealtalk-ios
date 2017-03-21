@@ -18,6 +18,7 @@
 #import "UIColor+RCColor.h"
 #import "RCDChatViewController.h"
 #import "RCDCommonDefine.h"
+#import "RedpacketDemoViewController.h"
 
 // 是否iPhone5
 #define isiPhone5                                                              \
@@ -369,7 +370,7 @@ preparation before navigation
 }
 
 - (void)gotoChatView:(NSString *)groupId groupName:(NSString *)groupName{
-  RCDChatViewController *chatVC = [[RCDChatViewController alloc] init];
+  RCDChatViewController *chatVC = [[RedpacketDemoViewController alloc] init];
   chatVC.needPopToRootView = YES;
   chatVC.targetId = groupId;
   chatVC.conversationType = ConversationType_GROUP;

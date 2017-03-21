@@ -9,7 +9,7 @@
 #import "RCDEditUserNameViewController.h"
 #import "AFHttpTool.h"
 #import "MBProgressHUD.h"
-#import "RCDChatViewController.h"
+#import "RedpacketDemoViewController.h"
 #import "RCDCommonDefine.h"
 #import "RCDHttpTool.h"
 #import "RCDRCIMDataSource.h"

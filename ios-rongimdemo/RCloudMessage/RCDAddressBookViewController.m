@@ -10,7 +10,7 @@
 #import "DefaultPortraitView.h"
 #import "MBProgressHUD.h"
 #import "RCDAddressBookTableViewCell.h"
-#import "RCDChatViewController.h"
+#import "RedpacketDemoViewController.h"
 #import "RCDHttpTool.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDRCIMDataSource.h"
@@ -174,8 +174,8 @@ MBProgressHUD *hud;
   userInfo.portraitUri = user.portraitUri;
   userInfo.name = user.name;
 
-  RCDChatViewController *chatViewController =
-      [[RCDChatViewController alloc] init];
+  RedpacketDemoViewController *chatViewController =
+      [[RedpacketDemoViewController alloc] init];
   chatViewController.conversationType = ConversationType_PRIVATE;
   chatViewController.targetId = userInfo.userId;
   chatViewController.title = userInfo.name;

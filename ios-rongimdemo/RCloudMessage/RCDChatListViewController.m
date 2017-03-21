@@ -12,7 +12,7 @@
 #import "RCDAddFriendViewController.h"
 #import "RCDAddressBookViewController.h"
 #import "RCDChatListCell.h"
-#import "RCDChatViewController.h"
+#import "RedpacketDemoViewController.h"
 #import "RCDContactSelectedTableViewController.h"
 #import "RCDHttpTool.h"
 #import "RCDPublicServiceListViewController.h"
@@ -239,8 +239,8 @@
     _isClick = NO;
     if (model.conversationModelType ==
         RC_CONVERSATION_MODEL_TYPE_PUBLIC_SERVICE) {
-      RCDChatViewController *_conversationVC =
-          [[RCDChatViewController alloc] init];
+      RedpacketDemoViewController *_conversationVC =
+          [[RedpacketDemoViewController alloc] init];
       _conversationVC.conversationType = model.conversationType;
       _conversationVC.targetId = model.targetId;
       _conversationVC.userName = model.conversationTitle;
@@ -251,8 +251,8 @@
     }
 
     if (conversationModelType == RC_CONVERSATION_MODEL_TYPE_NORMAL) {
-      RCDChatViewController *_conversationVC =
-          [[RCDChatViewController alloc] init];
+      RedpacketDemoViewController *_conversationVC =
+          [[RedpacketDemoViewController alloc] init];
       _conversationVC.conversationType = model.conversationType;
       _conversationVC.targetId = model.targetId;
       _conversationVC.userName = model.conversationTitle;
@@ -365,6 +365,7 @@
   contactSelectedVC.isAllowsMultipleSelection = NO;
   contactSelectedVC.titleStr = @"发起聊天";
   [self.navigationController pushViewController:contactSelectedVC animated:YES];
+
 }
 
 /**
@@ -659,8 +660,8 @@
 - (void)didTapCellPortrait:(RCConversationModel *)model {
   if (model.conversationModelType ==
       RC_CONVERSATION_MODEL_TYPE_PUBLIC_SERVICE) {
-    RCDChatViewController *_conversationVC =
-        [[RCDChatViewController alloc] init];
+    RedpacketDemoViewController *_conversationVC =
+        [[RedpacketDemoViewController alloc] init];
     _conversationVC.conversationType = model.conversationType;
     _conversationVC.targetId = model.targetId;
     _conversationVC.userName = model.conversationTitle;
@@ -671,8 +672,8 @@
   }
 
   if (model.conversationModelType == RC_CONVERSATION_MODEL_TYPE_NORMAL) {
-    RCDChatViewController *_conversationVC =
-        [[RCDChatViewController alloc] init];
+    RedpacketDemoViewController *_conversationVC =
+        [[RedpacketDemoViewController alloc] init];
     _conversationVC.conversationType = model.conversationType;
     _conversationVC.targetId = model.targetId;
     _conversationVC.userName = model.conversationTitle;
