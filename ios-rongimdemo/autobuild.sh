@@ -57,6 +57,9 @@ MANUAL_NAVI_SERVER_URL=$PPARAM
 elif [ $PFLAG == "-f" ]
 then
 MANUAL_FILE_SERVER_URL=$PPARAM
+elif [ $PFLAG == "-a" ]
+then
+MANUAL_STATS_SERVER_URL=$PPARAM
 elif [ $PFLAG == "-o" ]
 then
 VOIP_FLAG=$PPARAM
@@ -66,6 +69,8 @@ done
 if [ -n "${MANUAL_DEMO_APPKEY}" ]; then
     sed -i '' -e '/RONGCLOUD_IM_APPKEY/s/@"n19jmcy59f1q9"/@"'$MANUAL_DEMO_APPKEY'"/g' ./RCloudMessage/AppDelegate.m
 elif [ ${ENV_FLAG} == "dev" ]; then
+    sed -i '' -e '/RONGCLOUD_IM_APPKEY/s/@"n19jmcy59f1q9"/@"e0x9wycfx7flq"/g' ./RCloudMessage/AppDelegate.m
+elif [ ${ENV_FLAG} == "dev_backup" ]; then
     sed -i '' -e '/RONGCLOUD_IM_APPKEY/s/@"n19jmcy59f1q9"/@"e0x9wycfx7flq"/g' ./RCloudMessage/AppDelegate.m
 elif [ ${ENV_FLAG} == "pre" ]; then
     sed -i '' -e '/RONGCLOUD_IM_APPKEY/s/@"n19jmcy59f1q9"/@"c9kqb3rdkbb8j"/g' ./RCloudMessage/AppDelegate.m
@@ -88,6 +93,10 @@ if [ -n "${MANUAL_DEMO_SERVER_URL}" ]; then
         sed -i '' -e 's/api.sealtalk.im/'$MANUAL_DEMO_SERVER_URL'/g' ./RCloudMessage/Info.plist
     fi
 elif [ ${ENV_FLAG} == "dev" ]; then
+    sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./RCloudMessage/AFHttpTool.m
+    sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./SealTalkShareExtension/RCDShareChatListController.m
+    sed -i '' -e 's/api.sealtalk.im/api.hitalk.im/g' ./RCloudMessage/Info.plist
+elif [ ${ENV_FLAG} == "dev_backup" ]; then
     sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./RCloudMessage/AFHttpTool.m
     sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./SealTalkShareExtension/RCDShareChatListController.m
     sed -i '' -e 's/api.sealtalk.im/api.hitalk.im/g' ./RCloudMessage/Info.plist
@@ -122,9 +131,23 @@ if [ -n "${MANUAL_FILE_SERVER_URL}" ]; then
     fi
 fi
 
+if [ -n "${MANUAL_STATS_SERVER_URL}" ]; then
+    sed -i '' -e '/RONGCLOUD_STATS_SERVER/s?stats.cn.ronghub.com?'$MANUAL_STATS_SERVER_URL'?g' ./RCloudMessage/AppDelegate.m
+    if [[ $MANUAL_STATS_SERVER_URL =~ ^https ]]; then
+        sed -i '' -e 's/stats.cn.ronghub.com/'${MANUAL_STATS_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    elif [[ $MANUAL_STATS_SERVER_URL =~ ^http ]]; then
+        sed -i '' -e 's/stats.cn.ronghub.com/'${MANUAL_STATS_SERVER_URL/http\:\/\//""}'/g' ./RCloudMessage/Info.plist
+    else
+        sed -i '' -e 's/nstats.cn.ronghub.com/'$MANUAL_STATS_SERVER_URL'/g' ./RCloudMessage/Info.plist
+    fi
+fi
+
 if [ ${ENV_FLAG} == "dev" ]; then
     sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU145760441681012"/g' ./RCloudMessage/RCDMeTableViewController.m
     sed -i '' -e 's/nav.cn.ronghub.com/navxiaoqiao.cn.ronghub.com/g' ./RCloudMessage/Info.plist
+elif [ ${ENV_FLAG} == "dev_backup" ]; then
+    sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU145760441681012"/g' ./RCloudMessage/RCDMeTableViewController.m
+    sed -i '' -e 's/nav.cn.ronghub.com/navzhouyu.cn.rongcloud.net/g' ./RCloudMessage/Info.plist
 elif [ ${ENV_FLAG} == "pre" ]; then
     sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU147980517733135"/g' ./RCloudMessage/RCDMeTableViewController.m
     sed -i '' -e 's/nav.cn.ronghub.com/navqa.cn.ronghub.com/g' ./RCloudMessage/Info.plist
@@ -137,12 +160,14 @@ if [ ${ENV_FLAG} == "pri" ]; then
     sed -i '' -e 's/\/\/NSString \*RONGCLOUD_IM_NAVI/NSString \*RONGCLOUD_IM_NAVI/g' ./RCloudMessage/AppDelegate.m
     sed -i '' -e 's/\/\/NSString \*RONGCLOUD_FILE_SERVER/NSString \*RONGCLOUD_FILE_SERVER/g' ./RCloudMessage/AppDelegate.m
     sed -i '' -e 's/\/\/\[\[RCIMClient sharedRCIMClient\] setServerInfo/\[\[RCIMClient sharedRCIMClient\] setServerInfo/g' ./RCloudMessage/AppDelegate.m
+    sed -i '' -e 's/\/\/NSString \*RONGCLOUD_STATS_SERVER/NSString \*RONGCLOUD_STATS_SERVER/g' ./RCloudMessage/AppDelegate.m
+    sed -i '' -e 's/\/\/\[\[RCIMClient sharedRCIMClient\] setStatisticServer/\[\[RCIMClient sharedRCIMClient\] setStatisticServer/g' ./RCloudMessage/AppDelegate.m
     if [ -z "${MANUAL_DEMO_APPKEY}" ] && [ -z "${MANUAL_DEMO_SERVER_URL}" ] &&  [ -z "${MANUAL_NAVI_SERVER_URL}" ] && [ -z "${MANUAL_FILE_SERVER_URL}" ]; then
         sed -i '' -e 's/RCDPrivateCloudManualMode 0/\RCDPrivateCloudManualMode 1/g' ./RCloudMessage/Utilities/RCDCommonDefine.h
     fi
     cp -af RCloudMessage/private_test.plist RCloudMessage/info.plist
 else
-    sed -i '' -e '/for private cloud test/,/RONGCLOUD_FILE_SERVER\];/d' ./RCloudMessage/AppDelegate.m
+    sed -i '' -e '/for private cloud test/,/RONGCLOUD_STATS_SERVER\];/d' ./RCloudMessage/AppDelegate.m
     if [ ${ENV_FLAG} == "pro" ]; then
       # 删除用户状态接口
       sed -i '' -e '/For Private Cloud Only ++/,/For Private Cloud Only --/d' ./RCDPersonDetailViewController.m

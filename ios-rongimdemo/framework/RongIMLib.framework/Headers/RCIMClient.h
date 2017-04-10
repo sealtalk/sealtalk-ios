@@ -294,7 +294,7 @@
  @param fileServer     文件服务器地址，具体的格式参考下面的说明
  @return               是否设置成功
 
- @warning 仅限独立数据中心使用，使用前必须先联系商务开通。
+ @warning 仅限独立数据中心使用，使用前必须先联系商务开通。必须在SDK init之前进行设置。
  @discussion
  naviServer必须为有效的服务器地址，fileServer如果想使用默认的，可以传nil。
  naviServer和fileServer的格式说明：
@@ -302,6 +302,21 @@
  2、如果使用http，则设置为cn.xxx.com:port或cn.xxx.com格式，其中域名部分也可以是IP，如果不指定端口，将默认使用80端口。
  */
 - (BOOL)setServerInfo:(NSString *)naviServer fileServer:(NSString *)fileServer;
+
+/**
+ 设置统计服务器的信息
+
+ @param statisticServer 统计服务器地址，具体的格式参考下面的说明
+ @return 是否设置成功
+ 
+ @warning 仅限独立数据中心使用，使用前必须先联系商务开通。必须在SDK init和setDeviceToken之前进行设置。
+ @discussion
+ statisticServer必须为有效的服务器地址，否则会造成推送等业务不能正常使用。
+ 格式说明：
+ 1、如果使用https，则设置为https://cn.xxx.com:port或https://cn.xxx.com格式，其中域名部分也可以是IP，如果不指定端口，将默认使用443端口。
+ 2、如果使用http，则设置为cn.xxx.com:port或cn.xxx.com格式，其中域名部分也可以是IP，如果不指定端口，将默认使用80端口。
+ */
+- (BOOL)setStatisticServer:(NSString *)statisticServer;
 
 #pragma mark - 连接与断开服务器
 
@@ -2067,6 +2082,13 @@ getConversationNotificationStatus:(RCConversationType)conversationType
  @return 当前IMLib SDK的版本号，如: @"2.0.0"
  */
 - (NSString *)getSDKVersion;
+
+/*!
+ 获取当前手机与服务器的时间差
+ 
+ @return 时间差
+ */
+- (long long)getDeltaTime;
 
 /*!
  将AMR格式的音频数据转化为WAV格式的音频数据，数据开头携带WAVE文件头

@@ -165,7 +165,7 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
 @property(weak, nonatomic) id<RCChatSessionInputBarControlDelegate> delegate;
 
 /*!
- 输入工具栏的点击回调监听
+ 输入工具栏获取用户信息的回调
  */
 @property(weak, nonatomic) id<RCChatSessionInputBarControlDataSource> dataSource;
 

@@ -43,7 +43,7 @@
   self.bubbleBackgroundView = [[UIImageView alloc] initWithFrame:CGRectZero];
   [self.messageContentView addSubview:self.bubbleBackgroundView];
 
-  self.textLabel = [[RCAttributedLabel alloc] initWithFrame:CGRectZero];
+  self.textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
   [self.textLabel setFont:[UIFont systemFontOfSize:Test_Message_Font_Size]];
 
   self.textLabel.numberOfLines = 0;

@@ -64,6 +64,7 @@ NSMutableDictionary *userInputStatus;
     //self.defaultInputType = RCChatSessionInputBarInputExtention;
 
   [self refreshTitle];
+    [self.chatSessionInputBarControl updateStatus:self.chatSessionInputBarControl.currentBottomBarStatus animated:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

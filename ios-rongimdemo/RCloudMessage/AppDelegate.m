@@ -29,9 +29,9 @@
 #import "RCDSettingUserDefaults.h"
 #import "RCDSettingServerUrlViewController.h"
 
-#define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" //offline key
+#define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" //online key
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
-//#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // online key
+//#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // offline key
 
 #define UMENG_APPKEY @"563755cbe0f55a5cb300139c"
 
@@ -112,9 +112,9 @@
       }
     
   }else {
+    
     //非debug模式初始化sdk
     [[RCIM sharedRCIM]initWithAppKey:RONGCLOUD_IM_APPKEY];
-    
   }
 
   
