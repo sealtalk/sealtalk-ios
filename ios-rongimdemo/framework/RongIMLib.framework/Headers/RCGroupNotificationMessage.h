@@ -7,7 +7,7 @@
  *
  */
 
-//  RCGroupNotification.h
+//  RCGroupNotificationMessage.h
 //  Created by xugang on 14/11/24.
 
 #import "RCMessageContent.h"

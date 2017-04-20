@@ -63,7 +63,7 @@
  
  @param text 文字
  @param font 字体
- @param size 文字显示的容器大小
+ @param constrainedSize 文字显示的容器大小
  
  @return 文字显示的尺寸
  

@@ -147,4 +147,36 @@
 - (NSArray *)getAllFriends:(void (^)())completion {
   return [[RCDataBaseManager shareInstance] getAllFriends];
 }
+
+#pragma mark - 名片消息
+- (void)getAllContacts:(void (^)(NSArray<RCCCUserInfo *> *contactsInfoList))resultBlock{
+  NSMutableArray *contacts = [NSMutableArray new];
+  NSArray *allFriends = [[RCDataBaseManager shareInstance] getAllFriends];
+  for (RCDUserInfo *friend in allFriends) {
+    RCCCUserInfo *contact = [RCCCUserInfo new];
+    contact.userId = friend.userId;
+    contact.name = friend.name;
+    contact.portraitUri = friend.portraitUri;
+    if (contact.portraitUri.length < 1) {
+      contact.portraitUri = [RCDUtilities defaultUserPortrait:friend];
+    }
+    RCUserInfo *tempContact = [[RCDUserInfoManager shareInstance] getFriendInfoFromDB:friend.userId];
+    contact.displayName = tempContact.name;
+    [contacts addObject:contact];
+  }
+  resultBlock(contacts);
+}
+
+
+- (void)getGroupInfoByGroupId:(NSString *)groupId
+                       result:(void (^)(RCCCGroupInfo *groupInfo))resultBlock {
+  RCDGroupInfo *group = [[RCDataBaseManager shareInstance] getGroupByGroupId:groupId];
+  RCCCGroupInfo *groupInfo =[RCCCGroupInfo new];
+  groupInfo.groupId = groupId;
+  groupInfo.groupName = group.groupName;
+  groupInfo.portraitUri = group.portraitUri;
+  groupInfo.number = group.number;
+  resultBlock(groupInfo);
+}
+
 @end

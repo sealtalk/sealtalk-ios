@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <RongCallKit/RongCallKit.h>
 #import <RongIMKit/RongIMKit.h>
+#import <RongContactCard/RongContactCard.h>
 
 #define RCDDataSource [RCDRCIMDataSource shareInstance]
 
@@ -18,7 +19,7 @@
  */
 @interface RCDRCIMDataSource
     : NSObject <RCIMUserInfoDataSource, RCIMGroupInfoDataSource,
-                RCIMGroupUserInfoDataSource, RCCallGroupMemberDataSource, RCIMGroupMemberDataSource>
+                RCIMGroupUserInfoDataSource, RCCallGroupMemberDataSource, RCIMGroupMemberDataSource, RCCCContactsDataSource, RCCCGroupDataSource>
 
 + (RCDRCIMDataSource *)shareInstance;
 

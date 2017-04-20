@@ -28,6 +28,7 @@
 #import "RCDMainTabBarViewController.h"
 #import "RCDSettingUserDefaults.h"
 #import "RCDSettingServerUrlViewController.h"
+#import <RongContactCard/RongContactCard.h>
 
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" //online key
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
@@ -139,6 +140,9 @@
   //设置用户信息源和群组信息源
   [RCIM sharedRCIM].userInfoDataSource = RCDDataSource;
   [RCIM sharedRCIM].groupInfoDataSource = RCDDataSource;
+  //设置名片消息功能中联系人信息源和群组信息源
+  [RCContactCardKit shareInstance].contactsDataSource = RCDDataSource;
+  [RCContactCardKit shareInstance].groupDataSource = RCDDataSource;
 
   //设置群组内用户信息源。如果不使用群名片功能，可以不设置
   //  [RCIM sharedRCIM].groupUserInfoDataSource = RCDDataSource;

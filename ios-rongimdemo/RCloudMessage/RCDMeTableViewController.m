@@ -290,6 +290,7 @@
 - (void)chatWithCustomerService:(NSString *)kefuId {
   RCDCustomerServiceViewController *chatService =
       [[RCDCustomerServiceViewController alloc] init];
+
   // live800  KEFU146227005669524   live800的客服ID
   // zhichi   KEFU146001495753714   智齿的客服ID
   chatService.conversationType = ConversationType_CUSTOMERSERVICE;

@@ -189,6 +189,14 @@
 "Afternoon"="h:mm a";
 "Evening"="h:mm a";
 "CancelSendFile"="Cancelled";
+"ContactCard"="Contact Card";
+"Send"="Send";
+"SendTo"="Send to:";
+"LeaveAMessage"="Leave a message";
+"SharedContactCard"="You shared %@'s contact card.";
+"RecommendedToYou"="%@ recommended %@ to you.";
+"Person"="";
+"SelectContact"="Select Contact";
 "hold_to_talk_title"="Hold to talk";
 "release_to_send_title"="Release to send";
 "message_too_short"="Message too short";

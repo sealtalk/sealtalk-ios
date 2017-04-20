@@ -16,6 +16,7 @@
 #import "RCDPrivacyTableViewController.h"
 #import "RCDMessageNotifySettingTableViewController.h"
 #import "RCDBaseSettingTableViewCell.h"
+#import "RCDPushSettingViewController.h"
 
 @interface RCDSettingsTableViewController () <UIAlertViewDelegate>
 
@@ -61,7 +62,7 @@
   NSUInteger row;
   switch (section) {
     case 0:
-      row = 3;
+      row = 4;
       break;
       
     case 1:
@@ -103,6 +104,11 @@
           
         case 2: {
           cell.leftLabel.text = @"新消息通知";
+        }
+          break;
+          
+        case 3: {
+          cell.leftLabel.text = @"推送设置";
         }
           break;
           
@@ -154,6 +160,14 @@
                                                animated:YES];
         }
           break;
+          
+        case 3: {
+          RCDPushSettingViewController *vc = [[RCDPushSettingViewController alloc] init];
+          [self.navigationController pushViewController:vc
+                                               animated:YES];
+        }
+          break;
+          
         default:
           break;
       }

@@ -16,4 +16,10 @@
  */
 - (void)hideRecommendEmojiTab;
 
+
+/**
+ 禁用联想表情
+ */
+- (void)deactivateTipEmoji;
+
 @end

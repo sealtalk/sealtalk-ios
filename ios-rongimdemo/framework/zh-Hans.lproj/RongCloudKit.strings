@@ -189,6 +189,14 @@
 "Afternoon"="下午 h:mm";
 "Evening"="晚上 h:mm";
 "CancelSendFile"="已取消";
+"ContactCard"="个人名片";
+"Send"="发送";
+"SendTo"="发送给：";
+"LeaveAMessage"="给朋友留言";
+"SharedContactCard"="你推荐了%@";
+"RecommendedToYou"="%@向你推荐了%@";
+"Person"="人";
+"SelectContact"="选择联系人";
 "hold_to_talk_title"="按住 说话";
 "release_to_send_title"="松开 发送";
 "slide_up_to_cancel_title"="手指上滑，取消发送";

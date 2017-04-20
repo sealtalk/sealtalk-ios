@@ -22,7 +22,7 @@
 
 #import "RCDLoginViewController.h"
 
-@interface RCDSettingServerUrlViewController ()
+@interface RCDSettingServerUrlViewController ()<UITextFieldDelegate>
 @property(nonatomic, strong) UIView *headBackground;
 @property(nonatomic, strong) UIImageView *rongLogo;
 @property(nonatomic, strong) UIView *inputBackground;
@@ -604,7 +604,7 @@ arrayByAddingObjectsFromArray:
 - (IBAction)btnDoneClicked:(id)sender {
     if (![self checkContent])
         return;
-  
+    
     RCNetworkStatus status =
     [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
     

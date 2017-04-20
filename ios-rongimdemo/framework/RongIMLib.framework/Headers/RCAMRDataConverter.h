@@ -7,11 +7,11 @@
  *
  */
 
-//  RCAmrDataConverter.h
+//  RCAMRDataConverter.h
 //  Created by Heq.Shinoda on 14-6-17.
 
-#ifndef __RCAmrDataConverter
-#define __RCAmrDataConverter
+#ifndef __RCAMRDataConverter
+#define __RCAMRDataConverter
 
 #include "interf_dec.h"
 #include "interf_enc.h"

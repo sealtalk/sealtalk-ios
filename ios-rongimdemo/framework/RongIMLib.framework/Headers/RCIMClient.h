@@ -7,7 +7,7 @@
  *
  */
 
-//  RongIMClient.h
+//  RCIMClient.h
 //  Created by xugang on 14/12/23.
 
 #ifndef __RongIMClient
@@ -30,6 +30,7 @@
 #import "RCCustomerServiceGroupItem.h"
 #import "RCUserOnlineStatusInfo.h"
 #import "RCSearchConversationResult.h"
+#import "RCPushProfile.h"
 
 #pragma mark - 消息接收监听器
 
@@ -1498,7 +1499,7 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  @param errorBlock                  设置失败的回调 [status:设置失败的错误码]
 
  @discussion
- 如果您使用IMLib，此方法会屏蔽该会话的远程推送；如果您使用IMKit，此方法会屏蔽该会话的所有提醒（远程推送、本地通知、前台提示音）。
+ 如果您使用IMLib，此方法会屏蔽该会话的远程推送；如果您使用IMKit，此方法会屏蔽该会话的所有提醒（远程推送、本地通知、前台提示音）,该接口不支持聊天室。
  */
 - (void)
 setConversationNotificationStatus:(RCConversationType)conversationType
@@ -2334,6 +2335,8 @@ startCustomerService:(NSString *)kefuId
                  error:(void (^)(RCErrorCode nErrorCode))errorBlock;
 
 
+//远程推送相关设置
+@property(nonatomic,strong,readonly)RCPushProfile *pushProfile;
 @end
 
 #endif

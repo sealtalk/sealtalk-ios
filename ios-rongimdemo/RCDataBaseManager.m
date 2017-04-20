@@ -37,15 +37,43 @@ static NSString *const groupMemberTableName = @"GROUPMEMBERTABLE";
   return instance;
 }
 
+- (void)moveFile:(NSString*)fileName fromPath:(NSString*)fromPath toPath:(NSString*)toPath{
+  if (![[NSFileManager defaultManager] fileExistsAtPath:toPath]) {
+    [[NSFileManager defaultManager] createDirectoryAtPath:toPath withIntermediateDirectories:YES attributes:nil error:nil];
+  }
+  NSString* srcPath = [fromPath stringByAppendingPathComponent:fileName];
+  NSString* dstPath = [toPath stringByAppendingPathComponent:fileName];
+  [[NSFileManager defaultManager] moveItemAtPath:srcPath toPath:dstPath error:nil];
+}
+
+/**
+ 苹果审核时，要求打开itunes sharing功能的app在Document目录下不能放置用户处理不了的文件
+ 2.8.9之前的版本数据库保存在Document目录
+ 从2.8.9之前的版本升级的时候需要把数据库从Document目录移动到Library/Application Support目录
+ */
+- (void)moveDBFile {
+  NSString *const rongIMDemoDBString = @"RongIMDemoDB";
+  NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+  NSString *libraryPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"RongCloud"];
+  NSArray<NSString*> *subPaths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil];
+  [subPaths enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    if ([obj hasPrefix:rongIMDemoDBString]) {
+      [self moveFile:obj fromPath:documentPath toPath:libraryPath];
+    }
+  }];
+}
+
 - (FMDatabaseQueue *)dbQueue {
   if ([RCIMClient sharedRCIMClient].currentUserInfo.userId == nil) {
     return nil;
   }
   
   if (!_dbQueue) {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-    NSString *documentDirectory = [paths objectAtIndex:0];
-    NSString *dbPath = [documentDirectory
+    [self moveDBFile];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,NSUserDomainMask, YES);
+    NSString *const roungCloud = @"RongCloud";
+    NSString *library = [[paths objectAtIndex:0] stringByAppendingPathComponent:roungCloud];
+    NSString *dbPath = [library
                         stringByAppendingPathComponent:
                         [NSString stringWithFormat:@"RongIMDemoDB%@",
                          [RCIMClient sharedRCIMClient]

@@ -32,6 +32,7 @@
 #import <RongIMKit/RongIMKit.h>
 #import "RCDCustomerEmoticonTab.h"
 #import "RCDReceiptDetailsTableViewController.h"
+#import <RongContactCard/RongContactCard.h>
 
 @interface RCDChatViewController () <
     UIActionSheetDelegate, RCRealTimeLocationObserver,
@@ -41,6 +42,8 @@
 @property(nonatomic, strong)
     RealTimeLocationStatusView *realTimeLocationStatusView;
 @property(nonatomic, strong) RCDGroupInfo *groupInfo;
+
+@property(nonatomic, strong) RCUserInfo *cardInfo;
 
 -(UIView *)loadEmoticonView:(NSString *)identify index:(int)index;
 @end
@@ -60,9 +63,7 @@ NSMutableDictionary *userInputStatus;
             //      self.defaultInputType = RCChatSessionInputBarInputExtention;
         }
     }
-    //默认输入类型为语音
-    //self.defaultInputType = RCChatSessionInputBarInputExtention;
-
+  
   [self refreshTitle];
     [self.chatSessionInputBarControl updateStatus:self.chatSessionInputBarControl.currentBottomBarStatus animated:NO];
 }
@@ -140,16 +141,18 @@ NSMutableDictionary *userInputStatus;
 
   [self notifyUpdateUnreadMessageCount];
 
-  //加号区域增加发送文件功能，Kit中已经默认实现了该功能，但是为了SDK向后兼容性，目前SDK默认不开启该入口，可以参考以下代码在加号区域中增加发送文件功能。
-  UIImage *imageFile = [RCKitUtility imageNamed:@"actionbar_file_icon"
-                                       ofBundle:@"RongCloud.bundle"];
 
+    if (self.conversationType != ConversationType_APPSERVICE && self.conversationType != ConversationType_PUBLICSERVICE) {
+        //加号区域增加发送文件功能，Kit中已经默认实现了该功能，但是为了SDK向后兼容性，目前SDK默认不开启该入口，可以参考以下代码在加号区域中增加发送文件功能。
+        UIImage *imageFile = [RCKitUtility imageNamed:@"actionbar_file_icon"
+                                             ofBundle:@"RongCloud.bundle"];
+        [self.pluginBoardView insertItemWithImage:imageFile
+                                            title:NSLocalizedStringFromTable(
+                                                                             @"File", @"RongCloudKit", nil)
+                                          atIndex:3
+                                              tag:PLUGIN_BOARD_ITEM_FILE_TAG];
+    }
   
-  [self.pluginBoardView insertItemWithImage:imageFile
-                                      title:NSLocalizedStringFromTable(
-                                                @"File", @"RongCloudKit", nil)
-                                    atIndex:3
-                                        tag:PLUGIN_BOARD_ITEM_FILE_TAG];
 
   //    self.chatSessionInputBarControl.hidden = YES;
   //    CGRect intputTextRect = self.conversationMessageCollectionView.frame;
@@ -208,6 +211,8 @@ NSMutableDictionary *userInputStatus;
       [self appendAndDisplayMessage:savedMsg];
   */
   //    self.enableContinuousReadUnreadVoice = YES;//开启语音连读功能
+  if (self.conversationType == ConversationType_PRIVATE || self.conversationType == ConversationType_GROUP) {
+  }
 
   //刷新个人或群组的信息
   [self refreshUserInfoOrGroupInfo];
@@ -218,7 +223,6 @@ NSMutableDictionary *userInputStatus;
                                              selector:@selector(updateTitleForGroup:)
                                                  name:@"UpdeteGroupInfo"
                                                object:nil];
-
   }
 
   //清除历史消息
@@ -337,6 +341,7 @@ NSMutableDictionary *userInputStatus;
                  delegate:self
         cancelButtonTitle:@"取消"
         otherButtonTitles:@"确定", nil];
+    alertView.tag = 101;
     [alertView show];
   } else {
     [self popupChatViewController];
@@ -534,11 +539,13 @@ NSMutableDictionary *userInputStatus;
     }
 
   } break;
+
   default:
     [super pluginBoardView:pluginBoardView clickedItemWithTag:tag];
     break;
   }
 }
+
 - (RealTimeLocationStatusView *)realTimeLocationStatusView {
   if (!_realTimeLocationStatusView) {
     _realTimeLocationStatusView = [[RealTimeLocationStatusView alloc]
@@ -574,6 +581,11 @@ NSMutableDictionary *userInputStatus;
   if ([model.content isKindOfClass:[RCRealTimeLocationStartMessage class]]) {
     [self showRealTimeLocationViewController];
   }
+  
+  if ([model.content isKindOfClass:[RCContactCardMessage class]]) {
+    [self didTapCellPortrait:((RCContactCardMessage*)model.content).userId];
+  }
+  
 }
 
 - (NSArray<UIMenuItem *> *)getLongTouchMessageCellMenuList:
@@ -816,9 +828,18 @@ NSMutableDictionary *userInputStatus;
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView
     clickedButtonAtIndex:(NSInteger)buttonIndex {
-  if (buttonIndex == 1) {
-    [self.realTimeLocation quitRealTimeLocation];
-    [self popupChatViewController];
+  switch (alertView.tag) {
+    case 101: {
+      if (buttonIndex == 1) {
+        [self.realTimeLocation quitRealTimeLocation];
+        [self popupChatViewController];
+      }
+    }
+      break;
+
+      break;
+    default:
+      break;
   }
 }
 
