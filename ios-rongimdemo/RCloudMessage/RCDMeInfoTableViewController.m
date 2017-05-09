@@ -254,44 +254,55 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   [RCDHTTPTOOL uploadImageToQiNiu:[RCIM sharedRCIM].currentUserInfo.userId
       ImageData:data
       success:^(NSString *url) {
-        [RCDHTTPTOOL
-            setUserPortraitUri:url
-                      complete:^(BOOL result) {
-                        if (result == YES) {
-                          [RCIM sharedRCIM].currentUserInfo.portraitUri = url;
-                          RCUserInfo *userInfo =
-                              [RCIM sharedRCIM].currentUserInfo;
-                          userInfo.portraitUri = url;
-                          [DEFAULTS setObject:url forKey:@"userPortraitUri"];
-                          [DEFAULTS synchronize];
-                          [[RCIM sharedRCIM]
-                              refreshUserInfoCache:userInfo
-                                        withUserId:[RCIM sharedRCIM]
-                                                       .currentUserInfo.userId];
-                          [[RCDataBaseManager shareInstance]
-                              insertUserToDB:userInfo];
-                          [[NSNotificationCenter defaultCenter]
-                              postNotificationName:@"setCurrentUserPortrait"
-                                            object:image];
-                          dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.tableView reloadData];
-                            //关闭HUD
-                            [hud hide:YES];
-                          });
-                        }
-                        if (result == NO) {
-                          //关闭HUD
-                          [hud hide:YES];
-                          UIAlertView *alert = [[UIAlertView alloc]
-                                  initWithTitle:nil
-                                        message:@"上传头像失败"
-                                       delegate:self
-                              cancelButtonTitle:@"确定"
-                              otherButtonTitles:nil];
-                          [alert show];
-                        }
-                      }];
-
+          if (url) {
+              [RCDHTTPTOOL
+               setUserPortraitUri:url
+               complete:^(BOOL result) {
+                   if (result == YES) {
+                       [RCIM sharedRCIM].currentUserInfo.portraitUri = url;
+                       RCUserInfo *userInfo =
+                       [RCIM sharedRCIM].currentUserInfo;
+                       userInfo.portraitUri = url;
+                       [DEFAULTS setObject:url forKey:@"userPortraitUri"];
+                       [DEFAULTS synchronize];
+                       [[RCIM sharedRCIM]
+                        refreshUserInfoCache:userInfo
+                        withUserId:[RCIM sharedRCIM]
+                        .currentUserInfo.userId];
+                       [[RCDataBaseManager shareInstance]
+                        insertUserToDB:userInfo];
+                       [[NSNotificationCenter defaultCenter]
+                        postNotificationName:@"setCurrentUserPortrait"
+                        object:image];
+                       dispatch_async(dispatch_get_main_queue(), ^{
+                           [self.tableView reloadData];
+                           //关闭HUD
+                           [hud hide:YES];
+                       });
+                   }
+                   if (result == NO) {
+                       //关闭HUD
+                       [hud hide:YES];
+                       UIAlertView *alert = [[UIAlertView alloc]
+                                             initWithTitle:nil
+                                             message:@"上传头像失败"
+                                             delegate:self
+                                             cancelButtonTitle:@"确定"
+                                             otherButtonTitles:nil];
+                       [alert show];
+                   }
+               }];
+          }else{
+              //关闭HUD
+              [hud hide:YES];
+              UIAlertView *alert =
+              [[UIAlertView alloc] initWithTitle:nil
+                                         message:@"上传头像失败"
+                                        delegate:self
+                               cancelButtonTitle:@"确定"
+                               otherButtonTitles:nil];
+              [alert show];
+          }
       }
       failure:^(NSError *err) {
         //关闭HUD
@@ -315,6 +326,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextDrawImage(context, smallBounds, subImageRef);
   UIImage* smallImage = [UIImage imageWithCGImage:subImageRef scale:1.f orientation:imageOrientation];
+  CGImageRelease(subImageRef);
   UIGraphicsEndImageContext();
   return smallImage;
 }

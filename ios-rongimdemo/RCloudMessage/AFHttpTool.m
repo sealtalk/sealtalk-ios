@@ -353,6 +353,10 @@
     if ([response[@"code"] integerValue] == 200) {
       NSDictionary *result = response[@"result"];
       NSString *defaultDomain = result[@"domain"];
+      NSString *uploadUrl = result[@"upload_url"];
+      if (uploadUrl.length > 0 && ![uploadUrl hasPrefix:@"http"]) {
+        uploadUrl = [NSString stringWithFormat:@"http://%@",uploadUrl];
+      }
       [DEFAULTS setObject:defaultDomain forKey:@"QiNiuDomain"];
       [DEFAULTS synchronize];
 
@@ -382,12 +386,17 @@
       NSMutableDictionary *ret = [NSMutableDictionary dictionary];
       [params addEntriesFromDictionary:ret];
 
-      NSString *url = @"https://up.qbox.me";
+      NSString *url = uploadUrl.length > 0 ? uploadUrl : @"https://up.qbox.me";
 
       NSData *imageData = fileData;
 
       AFHTTPRequestOperationManager *manager =
           [AFHTTPRequestOperationManager manager];
+      if (uploadUrl.length > 0) {
+        NSMutableSet *contentTypes = [[NSMutableSet alloc] initWithSet:manager.responseSerializer.acceptableContentTypes];
+        [contentTypes addObject:@"text/html"];
+        manager.responseSerializer.acceptableContentTypes = [contentTypes copy];
+      }
       [manager POST:url
           parameters:params
           constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -397,7 +406,15 @@
                                     mimeType:@"application/octet-stream"];
           }
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            success(responseObject);
+            if (uploadUrl.length > 0) {
+              NSMutableDictionary* responseDic = [[NSMutableDictionary alloc] initWithDictionary:responseObject];
+              [responseDic setValue:defaultDomain forKey:@"domain"];
+               success([responseDic copy]);
+            }
+            else{
+              success(responseObject);
+            }
+           
           }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"请求失败");

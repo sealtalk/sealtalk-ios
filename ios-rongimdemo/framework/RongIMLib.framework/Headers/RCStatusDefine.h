@@ -357,7 +357,11 @@ typedef NS_ENUM(NSInteger, RCErrorCode) {
   /*!
   push设置参数无效。
   */
-  RC_PUSHSETTING_PARAMETER_INVALID  = 26001
+  RC_PUSHSETTING_PARAMETER_INVALID  = 26001,
+  /*!
+  操作被禁止。
+  */
+  RC_OPERATION_BLOCKED  = 20605
 };
 
 #pragma mark - 连接状态

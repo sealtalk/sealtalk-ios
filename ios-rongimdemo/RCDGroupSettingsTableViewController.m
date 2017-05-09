@@ -416,35 +416,47 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         weakSelf.Group.portraitUri = url;
         [[RCIM sharedRCIM] refreshGroupInfoCache:groupInfo
                                      withGroupId:groupInfo.groupId];
-        [RCDHTTPTOOL setGroupPortraitUri:url
-                                 groupId:weakSelf.Group.groupId
-                                complete:^(BOOL result) {
-                                  if (result == YES) {
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                      RCDBaseSettingTableViewCell *cell =
-                                          (RCDBaseSettingTableViewCell *)
-                                              [self.tableView viewWithTag:1000];
-                                        [cell.rightImageView sd_setImageWithURL:[NSURL URLWithString:self.Group.portraitUri]];
-                                      //在修改群组头像成功后，更新本地数据库。
-                                      [[RCDataBaseManager shareInstance] insertGroupToDB:self.Group];
-//                                      cell.PortraitImg.image = image;
-                                      //关闭HUD
-                                      [hud hide:YES];
-                                    });
-                                  }
-                                  if (result == NO) {
-                                    //关闭HUD
-                                    [hud hide:YES];
-                                    UIAlertView *alert = [[UIAlertView alloc]
-                                            initWithTitle:nil
-                                                  message:@"上传头像失败"
-                                                 delegate:self
-                                        cancelButtonTitle:@"确定"
-                                        otherButtonTitles:nil];
-                                    [alert show];
-                                  }
-                                }];
+          if (url) {
+              [RCDHTTPTOOL setGroupPortraitUri:url
+                                       groupId:weakSelf.Group.groupId
+                                      complete:^(BOOL result) {
+                                          if (result == YES) {
+                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                  RCDBaseSettingTableViewCell *cell =
+                                                  (RCDBaseSettingTableViewCell *)
+                                                  [self.tableView viewWithTag:1000];
+                                                  [cell.rightImageView sd_setImageWithURL:[NSURL URLWithString:self.Group.portraitUri]];
+                                                  //在修改群组头像成功后，更新本地数据库。
+                                                  [[RCDataBaseManager shareInstance] insertGroupToDB:self.Group];
+                                                  //                                      cell.PortraitImg.image = image;
+                                                  //关闭HUD
+                                                  [hud hide:YES];
+                                              });
+                                          }
+                                          if (result == NO) {
+                                              //关闭HUD
+                                              [hud hide:YES];
+                                              UIAlertView *alert = [[UIAlertView alloc]
+                                                                    initWithTitle:nil
+                                                                    message:@"上传头像失败"
+                                                                    delegate:self
+                                                                    cancelButtonTitle:@"确定"
+                                                                    otherButtonTitles:nil];
+                                              [alert show];
+                                          }
+                                      }];
 
+          }else{
+              //关闭HUD
+              [hud hide:YES];
+              UIAlertView *alert = [[UIAlertView alloc]
+                                    initWithTitle:nil
+                                    message:@"上传头像失败"
+                                    delegate:self
+                                    cancelButtonTitle:@"确定"
+                                    otherButtonTitles:nil];
+              [alert show];
+          }
       }
       failure:^(NSError *err) {
         //关闭HUD
@@ -474,6 +486,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextDrawImage(context, smallBounds, subImageRef);
   UIImage* smallImage = [UIImage imageWithCGImage:subImageRef scale:1.f orientation:imageOrientation];
+  CGImageRelease(subImageRef);
   UIGraphicsEndImageContext();
   return smallImage;
 }

@@ -701,6 +701,10 @@ __deprecated_msg("已废弃，请勿使用。");
 - (void)onEndRecordEvent;
 
 /*!
+ 取消录制语音消息的回调(不会再走 onEndRecordEvent)
+ */
+-(void)onCancelRecordEvent;
+/*!
  是否开启语音消息连续播放
  
  @discussion 如果设置为YES，在点击播放语音消息时，会将下面所有未播放过的语音消息依次播放。

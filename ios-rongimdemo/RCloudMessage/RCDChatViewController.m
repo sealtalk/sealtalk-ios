@@ -65,7 +65,7 @@ NSMutableDictionary *userInputStatus;
     }
   
   [self refreshTitle];
-    [self.chatSessionInputBarControl updateStatus:self.chatSessionInputBarControl.currentBottomBarStatus animated:NO];
+//    [self.chatSessionInputBarControl updateStatus:self.chatSessionInputBarControl.currentBottomBarStatus animated:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

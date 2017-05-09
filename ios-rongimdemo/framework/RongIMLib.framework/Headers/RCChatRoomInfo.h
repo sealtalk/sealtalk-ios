@@ -29,7 +29,7 @@
 
  @discussion
  如果成员类型为RC_ChatRoom_Member_Asc，则为最早加入的成员列表，按成员加入时间升序排列；
- 如果成员类型为RC_ChatRoom_Member_Desc，则为最晚加入的成员列表，按成员加入时间升序排列。
+ 如果成员类型为RC_ChatRoom_Member_Desc，则为最晚加入的成员列表，按成员加入时间降序排列。
  */
 @property(nonatomic, strong) NSArray *memberInfoArray;
 

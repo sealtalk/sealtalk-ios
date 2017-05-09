@@ -704,13 +704,32 @@
   [AFHttpTool uploadFile:image
       userId:userId
       success:^(id response) {
+        NSString* imageUrl = nil;
         if ([response[@"key"] length] > 0) {
           NSString *key = response[@"key"];
           NSString *QiNiuDomai = [DEFAULTS objectForKey:@"QiNiuDomain"];
-          NSString *imageUrl =
+          imageUrl =
               [NSString stringWithFormat:@"http://%@/%@", QiNiuDomai, key];
-          success(imageUrl);
         }
+        else{
+          NSDictionary *downloadInfo = response[@"rc_url"];
+          if (downloadInfo) {
+            NSString* fileInfo = downloadInfo[@"path"];
+            if ([downloadInfo[@"type"] intValue] == 0) {
+              NSString *url = response[@"domain"];
+              if ([url hasSuffix:@"/"]) {
+                url = [url substringToIndex:url.length - 1];
+              }
+              if ([fileInfo hasPrefix:@"/"]) {
+                imageUrl = [url stringByAppendingString:fileInfo];
+              }
+              else{
+                imageUrl = [url stringByAppendingPathComponent:fileInfo];
+              }
+            }
+          }
+        }
+        success(imageUrl);
       }
       failure:^(NSError *err) {
         failure(err);

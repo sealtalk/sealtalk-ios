@@ -300,40 +300,46 @@ preparation before navigation
             .currentUserInfo.userId
             ImageData:data
             success:^(NSString *url) {
-              RCGroup *groupInfo = [RCGroup new];
-              groupInfo.portraitUri = url;
-              groupInfo.groupId = groupId;
-              groupInfo.groupName = nameStr;
-              dispatch_async(dispatch_get_main_queue(), ^{
-                [RCDHTTPTOOL
-                 setGroupPortraitUri:url
-                 groupId:groupId
-                 complete:^(BOOL result) {
-                   [[RCIM sharedRCIM]
-                    refreshGroupInfoCache:
-                    groupInfo
-                    withGroupId:
-                    groupId];
-                   if (result == YES) {
-                     [self gotoChatView:groupInfo.groupId groupName:groupInfo.groupName];
-                     //关闭HUD
-                     [hud hide:YES];
-                     [RCDHTTPTOOL getGroupByID:groupInfo.groupId
-                             successCompletion:^(RCDGroupInfo *group) {
-                               [[RCDataBaseManager shareInstance] insertGroupToDB:group];
-                             }];
-                   }
-                   if (result == NO) {
-                     self.navigationItem
-                     .rightBarButtonItem
-                     .enabled =
-                     YES; //关闭HUD
-                     [hud hide:YES];
-                     [self Alert:@"创建群组失败，请检查你的网络设置。"];
-                   }
-                 }];
-              });
-              
+                if (url) {
+                    RCGroup *groupInfo = [RCGroup new];
+                    groupInfo.portraitUri = url;
+                    groupInfo.groupId = groupId;
+                    groupInfo.groupName = nameStr;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [RCDHTTPTOOL
+                         setGroupPortraitUri:url
+                         groupId:groupId
+                         complete:^(BOOL result) {
+                             [[RCIM sharedRCIM]
+                              refreshGroupInfoCache:
+                              groupInfo
+                              withGroupId:
+                              groupId];
+                             if (result == YES) {
+                                 [self gotoChatView:groupInfo.groupId groupName:groupInfo.groupName];
+                                 //关闭HUD
+                                 [hud hide:YES];
+                                 [RCDHTTPTOOL getGroupByID:groupInfo.groupId
+                                         successCompletion:^(RCDGroupInfo *group) {
+                                             [[RCDataBaseManager shareInstance] insertGroupToDB:group];
+                                         }];
+                             }
+                             if (result == NO) {
+                                 self.navigationItem
+                                 .rightBarButtonItem
+                                 .enabled =
+                                 YES; //关闭HUD
+                                 [hud hide:YES];
+                                 [self Alert:@"创建群组失败，请检查你的网络设置。"];
+                             }
+                         }];
+                    });
+                }else{
+                    [self gotoChatView:groupId groupName:nameStr];
+                    //关闭HUD
+                    [hud hide:YES];
+                }
+                
             }
             failure:^(NSError *err) {
               self.navigationItem.rightBarButtonItem
@@ -459,6 +465,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextDrawImage(context, smallBounds, subImageRef);
   UIImage* smallImage = [UIImage imageWithCGImage:subImageRef scale:1.f orientation:imageOrientation];
+  CGImageRelease(subImageRef);
   UIGraphicsEndImageContext();
   return smallImage;
 }

@@ -673,6 +673,23 @@ __deprecated_msg("已废弃，请勿使用。");
                             targetId:(NSString *)targetId
                           sentStatus:(RCSentStatus)sentStatus
                              content:(RCMessageContent *)content;
+/*!
+ 插入接收的消息
+ 
+ @param conversationType    会话类型
+ @param targetId            目标会话ID
+ @param senderUserId        发送者ID
+ @param receivedStatus      接收状态
+ @param content             消息的内容
+ @return                    插入的消息实体
+ 
+ @discussion 此方法不支持聊天室的会话类型。
+ */
+- (RCMessage *)insertIncomingMessage:(RCConversationType)conversationType
+                            targetId:(NSString *)targetId
+                        senderUserId:(NSString *)senderUserId
+                      receivedStatus:(RCReceivedStatus)receivedStatus
+                             content:(RCMessageContent *)content;
 
 /*!
  插入向外发送的、指定时间的消息

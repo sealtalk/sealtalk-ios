@@ -506,6 +506,11 @@ __deprecated_msg("已废弃，请勿使用。");
 - (void)recordDidBegin;
 
 /*!
+ 取消录制语音消息
+ */
+- (void)recordDidCancel;
+
+/*!
  结束录制语音消息
  */
 - (void)recordDidEnd:(NSData *)recordData duration:(long)duration error:(NSError *)error;
