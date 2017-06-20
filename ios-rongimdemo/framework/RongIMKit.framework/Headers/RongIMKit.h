@@ -26,6 +26,7 @@ FOUNDATION_EXPORT const unsigned char RongIMKitVersionString[];
 #import <RongIMKit/RCImagePreviewController.h>
 #import <RongIMKit/RCImageSlideController.h>
 #import <RongIMKit/RCLocationPickerViewController.h>
+#import <RongIMKit/RCLocationViewController.h>
 /// 会话列表Cell相关类
 #import <RongIMKit/RCConversationBaseCell.h>
 #import <RongIMKit/RCConversationCell.h>

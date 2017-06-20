@@ -315,22 +315,23 @@
     NSLog(@"该启动事件不包含来自融云的推送服务");
   }
 
-  //统一导航条样式
-  UIFont *font = [UIFont systemFontOfSize:19.f];
-  NSDictionary *textAttributes = @{
-    NSFontAttributeName : font,
-    NSForegroundColorAttributeName : [UIColor whiteColor]
-  };
-  [[UINavigationBar appearance] setTitleTextAttributes:textAttributes];
-  [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-  [[UINavigationBar appearance]
-      setBarTintColor:[UIColor colorWithHexString:@"0099ff" alpha:1.0f]];
-
-  [[NSNotificationCenter defaultCenter]
-      addObserver:self
-         selector:@selector(didReceiveMessageNotification:)
-             name:RCKitDispatchMessageNotification
-           object:nil];
+    //统一导航条样式
+    UIFont *font = [UIFont systemFontOfSize:19.f];
+    NSDictionary *textAttributes = @{
+                                     NSFontAttributeName : font,
+                                     NSForegroundColorAttributeName : [UIColor whiteColor]
+                                     };
+    [[UINavigationBar appearance] setTitleTextAttributes:textAttributes];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance]
+     setBarTintColor:[UIColor colorWithHexString:@"0099ff" alpha:1.0f]];
+    
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(didReceiveMessageNotification:)
+     name:RCKitDispatchMessageNotification
+     object:nil];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-1.5, 0)  forBarMetrics:UIBarMetricsDefault];
     UIImage *tmpImage = [UIImage imageNamed:@"back"];
     
@@ -695,6 +696,20 @@
                         failure:^(NSError *err) {
                          
                         }];
+  }else if (status == ConnectionStatus_DISCONN_EXCEPTION){
+      [[RCIMClient sharedRCIMClient] disconnect];
+      UIAlertView *alert = [[UIAlertView alloc]
+                            initWithTitle:@"提示"
+                            message:
+                            @"您的帐号被封禁"
+                            delegate:nil
+                            cancelButtonTitle:@"知道了"
+                            otherButtonTitles:nil, nil];
+      [alert show];
+      RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
+      RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc]
+                                            initWithRootViewController:loginVC];
+      self.window.rootViewController = _navi;
   }
 }
 

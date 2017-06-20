@@ -201,6 +201,16 @@
 - (void)willDisplayConversationTableCell:(RCConversationBaseCell *)cell
                              atIndexPath:(NSIndexPath *)indexPath;
 
+
+/**
+ Cell状态更新时的回调
+
+ @param indexPath 该Cell对应的会话Cell数据模型在数据源中的索引值
+ 
+ @discussion 当Cell的阅读状态等信息发生改变时的回调，您可以在此回调中更新Cell的显示。
+ */
+- (void)updateCellAtIndexPath:(NSIndexPath *)indexPath;
+
 #pragma mark - 自定义会话列表Cell
 
 /*!

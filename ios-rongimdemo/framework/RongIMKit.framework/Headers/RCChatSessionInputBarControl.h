@@ -522,6 +522,13 @@ __deprecated_msg("已废弃，请勿使用。");
  */
 - (void)imageDidCapture:(UIImage *)image;
 
+/**
+ 相机录制小视频
+ 
+ @param url 小视频url
+ */
+- (void)sightDidFinishRecord:(NSString*)url thumbnail:(UIImage*)image duration:(NSUInteger)duration;
+
 /*!
  地理位置选择完成之后的回调
  @param location       位置的二维坐标
@@ -546,7 +553,7 @@ __deprecated_msg("已废弃，请勿使用。");
 - (void)fileDidSelect:(NSArray *)filePathList;
 
 /*!
- 输入工具栏状态变化时的回调
+ 输入工具栏状态变化时的回调（暂未实现）
  
  @param bottomBarStatus 当前状态
  */

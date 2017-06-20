@@ -33,6 +33,11 @@
 @property(nonatomic, strong) NSString *imageUrl;
 
 /*!
+ 图片的本地路径
+ */
+@property(nonatomic, strong) NSString *localPath;
+
+/*!
  图片消息的缩略图
  */
 @property(nonatomic, strong) UIImage *thumbnailImage;

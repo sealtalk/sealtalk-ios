@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import <RongIMKit/RongIMKit.h>
+#import "RCCCGroupInfo.h"
+
+FOUNDATION_EXPORT NSString *const RCCC_CardMessageSend;
 
 @interface RCSendCardMessageView : UIView
 
 @property(nonatomic, strong)RCUserInfo *cardUserInfo;
+
+@property(nonatomic, strong)RCUserInfo *targetUserInfo;
+
+@property(nonatomic, strong)RCCCGroupInfo *targetgroupInfo;
 
 - (void)setConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId;
 

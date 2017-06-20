@@ -4,6 +4,7 @@
 "RC:ImgTextMsg"="[图文]";
 "RC:PSMultiImgTxtMsg"="[图文]";
 "RC:PSImgTxtMsg"="[图文]";
+"RC:SightMsg"="[小视频]";
 "Draft"="[草稿]";
 "conversation_private_collection_title"="聊天助手";
 "conversation_customer_collection_title"="客服助手";
@@ -37,6 +38,7 @@
 "Copy"="复制";
 "Delete"="删除";
 "Recall"="撤回";
+"Forward"="转发";
 "MessageRecalling"="消息撤回中...";
 "MessageRecalled"="撤回了一条消息";
 "MessageRecallFailed"="撤回不成功，请检查网络连接";
@@ -160,6 +162,7 @@
 "VoIPCallRemoteReject"="对方已拒绝";
 "VoIPCallRemoteHangup"="对方已挂断";
 "VoIPCallRemoteNoResponse"="对方未接听";
+"VoIPCallAcceptByOtherClient"="其他端已接听";
 "VoIPCallRemoteBusyLine"="对方忙";
 "VoIPCallRemoteBusyLineAndShowAdvice"="对方忙，请稍后再拨";
 "VoIPCallRemoteDidInvite"="%@加入群聊";
@@ -168,10 +171,13 @@
 "GroupCreated"="%@创建了群组";
 "GroupInvited"="%@邀请%@加入了群组";
 "GroupRemoved"="%@将%@移出了群组";
+"GroupByRemoved"="%@被%@移出了群组";
 "GroupDismiss"="%@解散了群组";
 "GroupQuit"="%@退出了群组";
 "GroupChanged"="%@修改群名为“%@”";
 "GroupJoin"="%@加入了群组";
+"GroupEtc"="等";
+"GroupAnnouncementUpdated"="%@更新了群公告";
 "ImageLoadFailed"="图片加载失败";
 "ImageHasBeenDeleted"="图片已被删除";
 "HaveMentioned"="[有人@我]";
@@ -194,7 +200,7 @@
 "SendTo"="发送给：";
 "LeaveAMessage"="给朋友留言";
 "SharedContactCard"="你推荐了%@";
-"RecommendedToYou"="%@向你推荐了%@";
+"RecommendedToYou"="向你推荐了%@";
 "Person"="人";
 "SelectContact"="选择联系人";
 "hold_to_talk_title"="按住 说话";
@@ -230,3 +236,5 @@
 "VoiceInput"="语音输入";
 "Clear"="清空";
 "Send"="发送";
+"TouchToTakeAPictureAndPressAndholdTheRecordingVideo"="轻触拍摄，按住摄像";
+"downloadFailedClickToDownload"="下载失败，点击重新下载";

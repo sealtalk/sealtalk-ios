@@ -361,7 +361,12 @@ typedef NS_ENUM(NSInteger, RCErrorCode) {
   /*!
   操作被禁止。
   */
-  RC_OPERATION_BLOCKED  = 20605
+  RC_OPERATION_BLOCKED  = 20605,
+    
+  /*!
+  操作不支持。
+  */
+  RC_OPERATION_NOT_SUPPORT  = 20606
 };
 
 #pragma mark - 连接状态
@@ -474,9 +479,7 @@ typedef NS_ENUM(NSInteger, RCConnectionStatus) {
   ConnectionStatus_TOKEN_INCORRECT = 31004,
 
   /*!
-   与服务器的连接已断开
-
-   @discussion 建立连接的临时状态，SDK会做好自动重连，开发者无须处理。
+   与服务器的连接已断开,用户被封禁
    */
   ConnectionStatus_DISCONN_EXCEPTION = 31011
 };

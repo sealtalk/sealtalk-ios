@@ -96,6 +96,17 @@
  @param isResolved 是否解决问题
  */
 - (void)didTapCustomerService:(RCMessageModel *)model RobotResoluved:(BOOL)isResolved;
+
+/*!
+ 点击需要消息回执View的回调
+ 
+ @param model 消息Cell的数据模型
+ 
+ @discussion 仅支持群组和讨论组
+ */
+- (void)didTapNeedReceiptView:(RCMessageModel *)model;
+
+
 @end
 
 /*!

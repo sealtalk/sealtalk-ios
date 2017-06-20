@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define BQMMRongExtVersion 1.5
+#define BQMMRongExtVersion 1.7.10
 
 #import "MMEmotionCentre+RongExt.h"
 #import "MMTheme.h"

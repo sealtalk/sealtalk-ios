@@ -4,6 +4,7 @@
 "RC:ImgTextMsg"="[RichContent]";
 "RC:PSMultiImgTxtMsg"="[RichContent]";
 "RC:PSImgTxtMsg"="[RichContent]";
+"RC:SightMsg"="[Small video]";
 "Draft"="[Draft]";
 "conversation_private_collection_title"="Private Groups";
 "conversation_customer_collection_title"="Customer Groups";
@@ -37,6 +38,7 @@
 "Copy"="Copy";
 "Delete"="Delete";
 "Recall"="Recall";
+"Forward"="Forward";
 "MessageRecalling"="Message is recalling";
 "MessageRecalled"=" recalled a message";
 "MessageRecallFailed"="Failed to recall the message.Check network.";
@@ -160,6 +162,7 @@
 "VoIPCallRemoteReject"="Declined";
 "VoIPCallRemoteHangup"="Cancelled";
 "VoIPCallRemoteNoResponse"="No answer";
+"VoIPCallAcceptByOtherClient"="Accept by other client";
 "VoIPCallRemoteBusyLine"="Busy line";
 "VoIPCallRemoteBusyLineAndShowAdvice"="Remote user my be busy. Try again later.";
 "VoIPCallRemoteDidInvite"="%@ to join the call";
@@ -168,10 +171,13 @@
 "GroupCreated"="%@ created the group";
 "GroupInvited"="%@ invited %@ to join the group";
 "GroupRemoved"="%@ removed %@ from the group chat";
+"GroupByRemoved"="%@ removed %@ from the group chat";
 "GroupDismiss"="%@ dismissed the group";
 "GroupQuit"="%@ quitted the group";
 "GroupChanged"="%@ changed the group name to \"%@\"";
 "GroupJoin"="%@ joined the group";
+"GroupEtc"=" etc.";
+"GroupAnnouncementUpdated"="%@更新了群公告";
 "ImageLoadFailed"="Unable to download image";
 "ImageHasBeenDeleted"="The image has been deleted";
 "HaveMentioned"="You were mentioned";
@@ -194,7 +200,7 @@
 "SendTo"="Send to:";
 "LeaveAMessage"="Leave a message";
 "SharedContactCard"="You shared %@'s contact card.";
-"RecommendedToYou"="%@ recommended %@ to you.";
+"RecommendedToYou"="recommended %@ to you.";
 "Person"="";
 "SelectContact"="Select Contact";
 "hold_to_talk_title"="Hold to talk";
@@ -230,3 +236,5 @@
 "VoiceInput"="Voice Input";
 "Clear"="Clear";
 "Send"="Send";
+"TouchToTakeAPictureAndPressAndholdTheRecordingVideo"="Tap to take photo and hold to record video";
+"downloadFailedClickToDownload"="Download failed, click to download";

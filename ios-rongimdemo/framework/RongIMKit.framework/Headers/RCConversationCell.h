@@ -9,6 +9,9 @@
 #import "RCConversationBaseCell.h"
 #import "RCMessageBubbleTipView.h"
 #import "RCThemeDefine.h"
+#import "RCConversationDetailContentView.h"
+#import "RCConversationStatusView.h"
+
 #import <UIKit/UIKit.h>
 
 #define CONVERSATION_ITEM_HEIGHT 65.0f
@@ -39,6 +42,11 @@
  会话的标题
  */
 @property(nonatomic, strong) UILabel *conversationTitle;
+
+/*!
+ 会话标题右侧的标签view
+ */
+@property(nonatomic, strong) UIView *conversationTagView;
 
 /*!
  显示最后一条内容的Label
@@ -101,6 +109,17 @@
  显示最后一台消息发送状态
  */
 @property(nonatomic, strong) UIImageView *lastSendMessageStatusView;
+
+/*!
+ 显示内容区的view
+ */
+@property(nonatomic, strong) RCConversationDetailContentView *detailContentView;
+
+/*!
+ 显示会话状态的view
+ */
+@property(nonatomic, strong) RCConversationStatusView *statusView;
+
 
 /*!
  设置Cell中显示的头像形状

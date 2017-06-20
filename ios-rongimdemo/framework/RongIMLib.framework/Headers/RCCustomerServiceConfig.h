@@ -52,7 +52,6 @@
 
 @property(nonatomic) int userTipTime;
 @property(nonatomic, strong) NSString *userTipWord;
-
 /*!
  * 评价时机
  */

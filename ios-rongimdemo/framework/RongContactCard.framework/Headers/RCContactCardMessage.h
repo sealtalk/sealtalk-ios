@@ -39,6 +39,16 @@
 @property (nonatomic,copy) NSString *extra;
 
 /**
+ *  个人名片消息发送者的id
+ */
+@property (nonatomic,copy) NSString *sendUserId;
+
+/**
+ *  个人名片消息发送者的id
+ */
+@property (nonatomic,copy) NSString *sendUserName;
+
+/**
  *  名片消息的初始化方法
  *
  *  @param userInfo 名片的用户信息

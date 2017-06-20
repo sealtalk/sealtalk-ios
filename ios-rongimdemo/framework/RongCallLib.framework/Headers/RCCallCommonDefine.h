@@ -149,6 +149,10 @@ typedef NS_ENUM(NSInteger, RCCallDisconnectReason) {
    对方网络错误
    */
   RCCallDisconnectReasonRemoteNetworkError = 17,
+  /*!
+   己方其他端已接听
+  */
+  RCCallDisconnectReasonAcceptByOtherClient = 18,
 };
 
 /*!

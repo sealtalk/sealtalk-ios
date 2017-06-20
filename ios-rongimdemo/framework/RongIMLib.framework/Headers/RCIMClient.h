@@ -674,6 +674,24 @@ __deprecated_msg("已废弃，请勿使用。");
                           sentStatus:(RCSentStatus)sentStatus
                              content:(RCMessageContent *)content;
 /*!
+ 插入向外发送的、指定时间的消息（此方法如果 sentTime 有问题会影响消息排序，慎用！！）
+ 
+ @param conversationType    会话类型
+ @param targetId            目标会话ID
+ @param sentStatus          发送状态
+ @param content             消息的内容
+ @param sentTime            消息发送的Unix时间戳，单位为毫秒（传 0 会按照本地时间插入）
+ @return                    插入的消息实体
+ 
+ @discussion 此方法不支持聊天室的会话类型。如果sentTime<=0，则被忽略，会以插入时的时间为准。
+ */
+- (RCMessage *)insertOutgoingMessage:(RCConversationType)conversationType
+                            targetId:(NSString *)targetId
+                          sentStatus:(RCSentStatus)sentStatus
+                             content:(RCMessageContent *)content
+                            sentTime:(long long)sentTime;
+
+/*!
  插入接收的消息
  
  @param conversationType    会话类型
@@ -692,22 +710,25 @@ __deprecated_msg("已废弃，请勿使用。");
                              content:(RCMessageContent *)content;
 
 /*!
- 插入向外发送的、指定时间的消息
+ 插入接收的消息（此方法如果 sentTime 有问题会影响消息排序，慎用！！）
  
  @param conversationType    会话类型
  @param targetId            目标会话ID
- @param sentStatus          发送状态
+ @param senderUserId        发送者ID
+ @param receivedStatus      接收状态
  @param content             消息的内容
- @param sentTime            消息发送的Unix时间戳，单位为毫秒
+ @param sentTime            消息发送的Unix时间戳，单位为毫秒 （传 0 会按照本地时间插入）
  @return                    插入的消息实体
  
- @discussion 此方法不支持聊天室的会话类型。如果sentTime<=0，则被忽略，会以插入时的时间为准。
+ @discussion 此方法不支持聊天室的会话类型。
  */
-//- (RCMessage *)insertOutgoingMessage:(RCConversationType)conversationType
-//                            targetId:(NSString *)targetId
-//                          sentStatus:(RCSentStatus)sentStatus
-//                             content:(RCMessageContent *)content
-//                            sentTime:(long long)sentTime;
+- (RCMessage *)insertIncomingMessage:(RCConversationType)conversationType
+                            targetId:(NSString *)targetId
+                        senderUserId:(NSString *)senderUserId
+                      receivedStatus:(RCReceivedStatus)receivedStatus
+                             content:(RCMessageContent *)content
+                            sentTime:(long long)sentTime;
+
 
 /*!
  下载消息内容中的媒体信息
@@ -1360,6 +1381,22 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 - (NSArray *)getConversationList:(NSArray *)conversationTypeList;
 
 /*!
+ 分页获取会话列表
+ 
+ @param conversationTypeList 会话类型的数组(需要将RCConversationType转为NSNumber构建Array)
+ @param count                获取的数量
+ @param startTime            会话的时间戳（获取这个时间戳之前的会话列表，0表示从最新开始获取）
+ @return                     会话RCConversation的列表
+ 
+ @discussion 此方法会从本地数据库中，读取会话列表。
+ 返回的会话列表按照时间从前往后排列，如果有置顶的会话，则置顶的会话会排列在前面。
+ */
+- (NSArray *)getConversationList:(NSArray *)conversationTypeList
+                           count:(int)count
+                       startTime:(long long)startTime;
+
+
+/*!
  获取单个会话数据
 
  @param conversationType    会话类型
@@ -1464,6 +1501,14 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  */
 - (int)getUnreadCount:(RCConversationType)conversationType
              targetId:(NSString *)targetId;
+
+/*!
+ 获取某些会话的总未读消息数
+ 
+ @param conversations       会话列表 （RCConversation 对象只需要 conversationType 和 targetId ）
+ @return                    传入会话列表的未读消息数
+ */
+- (int)getTotalUnreadCount:(NSArray<RCConversation *> *)conversations;
 
 /*!
  获取某个类型的会话中所有的未读消息数

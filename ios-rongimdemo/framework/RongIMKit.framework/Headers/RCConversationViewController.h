@@ -75,6 +75,12 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 @property(nonatomic, strong) __deprecated_msg("已废弃，请勿使用。") NSString *userName;
 
 #pragma mark - 会话页面属性
+/**
+ 进入页面时定位的消息的发送时间
+ 
+ @discussion 用于消息搜索之后点击进入页面等场景
+ */
+@property(nonatomic, assign) long long locatedMessageSentTime;
 
 /*!
  聊天内容的消息Cell数据模型的数据源
@@ -162,7 +168,7 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 /*!
  输入框的默认输入模式
  
- @discussion 默认值为RCChatSessionInputBarInputText，即文本输入模式。
+ @discussion 默认值为RCChatSessionInputBarInputText，即文本输入模式。 请在[super viewWillAppear:animated]之后调用
  */
 @property(nonatomic) RCChatSessionInputBarInputType defaultInputType;
 
@@ -541,8 +547,8 @@ __deprecated_msg("已废弃，请勿使用。");
 /*!
  注册自定义消息的Cell
  
- @param cellClass     自定义消息的类，该自定义消息需要继承于RCMessageContent
- @param messageClass  自定义消息Cell对应的自定义消息
+ @param cellClass     自定义消息cell的类
+ @param messageClass  自定义消息Cell对应的自定义消息的类，该自定义消息需要继承于RCMessageContent
  
  @discussion 你需要在cell中重写RCMessageBaseCell基类的sizeForMessageModel:withCollectionViewWidth:referenceExtraHeight:来计算cell的高度。
  */
@@ -551,7 +557,7 @@ __deprecated_msg("已废弃，请勿使用。");
 /*!
  注册自定义消息的Cell
  
- @param cellClass   自定义消息的类，该自定义消息需要继承于RCMessageContent
+ @param cellClass   自定义消息cell的类
  @param identifier  自定义消息Cell的唯一标示符
  
  @discussion 会话页面在显示时需要通过identifier唯一标示来进行Cell重用，以提高性能。

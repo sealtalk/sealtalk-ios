@@ -1716,7 +1716,6 @@
 		E4D40F2A1A031F460045097C /* RCloudMessage */ = {
 			isa = PBXGroup;
 			children = (
-				A6BD04101B1E941D00ACAF17 /* RCloudMessage.entitlements */,
 				A6447A381B1DC12500EA2CEE /* RCWatchKit */,
 				E4E938CB1AD65A95001E0AC6 /* Utilities */,
 				E4BFAC051A11CC60007165B1 /* Store */,
@@ -1724,7 +1723,6 @@
 				E4C4E7C81A09F87C00140067 /* ViewControllers */,
 				E4BFAE1F1A1217C0007165B1 /* AppDelegate.h */,
 				E4BFAE201A1217C0007165B1 /* AppDelegate.m */,
-				E4BFAE2A1A12184E007165B1 /* Main.storyboard */,
 				E4D40F2B1A031F460045097C /* Supporting Files */,
 			);
 			name = RCloudMessage;
@@ -1734,6 +1732,8 @@
 		E4D40F2B1A031F460045097C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E4BFAE2A1A12184E007165B1 /* Main.storyboard */,
+				A6BD04101B1E941D00ACAF17 /* RCloudMessage.entitlements */,
 				E4E939C21AD65D58001E0AC6 /* Info.plist */,
 				510624831AD63A9E00348452 /* RongCloudKit.strings */,
 				E4BFAE221A121839007165B1 /* Images.xcassets */,
@@ -3130,6 +3130,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;

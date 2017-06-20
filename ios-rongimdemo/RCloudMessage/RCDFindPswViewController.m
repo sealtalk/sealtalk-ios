@@ -33,8 +33,8 @@
 @end
 
 @implementation RCDFindPswViewController {
-  NSTimer *_CountDownTimer;
-  int _Seconds;
+  NSTimer *_countDownTimer;
+  int _seconds;
   MBProgressHUD *hud;
 }
 #define UserTextFieldTag 1000
@@ -649,7 +649,7 @@
                           .hidden = NO;
                       ((UIButton *)[self.view viewWithTag:SendCodeButtonTag])
                           .hidden = YES;
-                      [self CountDown:60];
+                      [self countDown:60];
                     }
                   }
                   failure:^(NSError *err) {
@@ -792,9 +792,9 @@
   return [UIImage imageNamed:@"login_background.png"];
 }
 
-- (void)CountDown:(int)seconds {
-  _Seconds = seconds;
-  _CountDownTimer =
+- (void)countDown:(int)seconds {
+  _seconds = seconds;
+  _countDownTimer =
       [NSTimer scheduledTimerWithTimeInterval:1.0
                                        target:self
                                      selector:@selector(timeFireMethod)
@@ -802,11 +802,11 @@
                                       repeats:YES];
 }
 - (void)timeFireMethod {
-  _Seconds--;
+  _seconds--;
   ((UILabel *)[self.view viewWithTag:vCodeTimerLabelTag]).text =
-      [NSString stringWithFormat:@"%d秒后发送", _Seconds];
-  if (_Seconds == 0) {
-    [_CountDownTimer invalidate];
+      [NSString stringWithFormat:@"%d秒后发送", _seconds];
+  if (_seconds == 0) {
+    [_countDownTimer invalidate];
     ((UILabel *)[self.view viewWithTag:vCodeTimerLabelTag]).hidden = YES;
     ((UIButton *)[self.view viewWithTag:SendCodeButtonTag]).hidden = NO;
     ((UILabel *)[self.view viewWithTag:vCodeTimerLabelTag]).text =
