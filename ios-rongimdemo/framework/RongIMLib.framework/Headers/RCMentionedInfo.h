@@ -24,7 +24,7 @@
 
  @discussion 如果type是@所有人，则可以传nil
  */
-@property(nonatomic, strong) NSArray *userIdList;
+@property(nonatomic, strong) NSArray<NSString *> *userIdList;
 
 /*!
  包含@提醒的消息，本地通知和远程推送显示的内容

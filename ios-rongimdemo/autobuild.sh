@@ -194,17 +194,14 @@ sed -i '' -e '/UMENG_APPKEY/s/@"563755cbe0f55a5cb300139c"/@"5637263b67e58e772200
 
 if [ ${PROFILE_FLAG} == "dev" ]
 then
+sed -i "" -e '/ProvisioningStyle/s/Automatic/Manual/g' ./RCloudMessage.xcodeproj/project.pbxproj
 configuration="AutoDebug"
-BUILD_APP_PROFILE="34ef6289-ff30-423e-ae84-de957621ae8f"
-BUILD_WATCHKIT_EXTENSION_PROFILE="c361fc31-181d-43c5-9d2d-17466939e93f"
-BUILD_WATCHKIT_APP_PROFILE="3219a56b-1f02-4e39-8ada-02180b2326a3"
-BUILD_SHARE_PROFILE="1f6f4a71-aa6c-4ba5-9748-76a7c8efb6d9"
+BUILD_APP_PROFILE="34880c54-3eea-4060-9fe4-4e01e661e54c"
+BUILD_SHARE_PROFILE="6194192c-e7ad-4ea0-8927-a6e477cc994c"
 else
-configuration="AutoRelease"
+configuration="Release"
 # Release可以使用Automatic
 BUILD_APP_PROFILE=""
-BUILD_WATCHKIT_EXTENSION_PROFILE=""
-BUILD_WATCHKIT_APP_PROFILE=""
 BUILD_SHARE_PROFILE=""
 fi
 
@@ -242,11 +239,11 @@ xcodebuild clean -alltargets
 
 echo "***开始build iphoneos文件***"
 if [ ${PROFILE_FLAG} == "dev" ]; then
-  xcodebuild -project ${PROJECT_NAME} -target $targetName -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}"
+  xcodebuild -project ${PROJECT_NAME} -target $targetName -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}"  SHARE_PROFILE="${BUILD_SHARE_PROFILE}"
   xcrun -sdk $TARGET_DECIVE PackageApplication -v ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app -o ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.ipa
   cp -af ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.app.dSYM
 else
-  xcodebuild -scheme "${targetName}" archive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" WATCHKIT_EXTENSION_PROFILE="${BUILD_WATCHKIT_EXTENSION_PROFILE}" WATCHKIT_APP_PROFILE="${BUILD_WATCHKIT_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}"
+  xcodebuild -scheme "${targetName}" archive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}"
   xcodebuild -exportArchive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -exportOptionsPlist "archive.plist" -exportPath "./${BIN_DIR}"
   mv ./${BIN_DIR}/${targetName}.ipa ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.ipa
   cp -af ./${BUILD_DIR}/${targetName}.xcarchive/dSYMs/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${CUR_TIME}_${DEV_FLAG}.app.dSYM

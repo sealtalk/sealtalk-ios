@@ -239,8 +239,8 @@
 
 //force crash for test
 - (void)forceCrash {
-  int x = 0;
-  x = x/x;
+  NSMutableDictionary *crashArray = [[NSMutableDictionary alloc] initWithCapacity:0];
+  [crashArray setObject:nil forKey:@"forCrash"];
 }
 
 -(void)setIsDisplayId

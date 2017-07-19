@@ -583,7 +583,9 @@ NSMutableDictionary *userInputStatus;
   }
   
   if ([model.content isKindOfClass:[RCContactCardMessage class]]) {
-    [self didTapCellPortrait:((RCContactCardMessage*)model.content).userId];
+      RCContactCardMessage *cardMSg = (RCContactCardMessage *)model.content;
+      RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:cardMSg.userId name:cardMSg.name portrait:cardMSg.portraitUri];
+      [self gotoNextPage:user];
   }
   
 }
