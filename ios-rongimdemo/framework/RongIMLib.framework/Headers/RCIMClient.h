@@ -28,7 +28,6 @@
 #import "RCUserInfo.h"
 #import "RCWatchKitStatusDelegate.h"
 #import "RCCustomerServiceGroupItem.h"
-#import "RCUserOnlineStatusInfo.h"
 #import "RCSearchConversationResult.h"
 #import "RCPushProfile.h"
 
@@ -2395,7 +2394,6 @@ startCustomerService:(NSString *)kefuId
  */
 - (void)getVendorToken:(void (^)(NSString *vendorToken))successBlock
                  error:(void (^)(RCErrorCode nErrorCode))errorBlock;
-
 
 //远程推送相关设置
 @property(nonatomic,strong,readonly)RCPushProfile *pushProfile;

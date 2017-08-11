@@ -10,6 +10,20 @@
 #define RCCallCommonDefine_h
 
 /*!
+ 引擎类型
+ */
+typedef NS_ENUM(NSInteger, RCCallEngineType) {
+  RCCallEngineNone = 0,
+  /*!
+   声网
+   */
+  RCCallEngineAgora = 1,
+  /*!
+   融云
+   */
+  RCCallEngineRong = 2,
+};
+/*!
  媒体类型
  */
 typedef NS_ENUM(NSInteger, RCCallMediaType) {
@@ -153,6 +167,10 @@ typedef NS_ENUM(NSInteger, RCCallDisconnectReason) {
    己方其他端已接听
   */
   RCCallDisconnectReasonAcceptByOtherClient = 18,
+  /*!
+   己方被加入黑名单
+   */
+  RCCallDisconnectReasonAddToBlackList = 19,
 };
 
 /*!
