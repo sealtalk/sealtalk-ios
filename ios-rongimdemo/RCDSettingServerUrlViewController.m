@@ -604,7 +604,7 @@ arrayByAddingObjectsFromArray:
 - (IBAction)btnDoneClicked:(id)sender {
     if (![self checkContent])
         return;
-    
+  
     RCNetworkStatus status =
     [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
     

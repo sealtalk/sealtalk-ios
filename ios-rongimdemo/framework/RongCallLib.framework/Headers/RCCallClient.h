@@ -117,14 +117,6 @@
  */
 - (void)setVideoProfile:(RCVideoProfile)profile;
 
-/**
- 设置本地视频属性，可用此接口设置本地视频分辨率，设置宽和高替换
- 
- @param profile profile
- @param swapWidthAndHeight 是否交换宽和高  (默认不交换)
- */
-- (void)setVideoProfile:(RCVideoProfile)profile swapWidthAndHeight:(BOOL)swapWidthAndHeight;
-
 /*!
  当前的通话会话实体
  */

@@ -76,7 +76,6 @@
  列表中会话数据模型的数据源
 
  @discussion 数据源中存放的元素为会话Cell的数据模型，即RCConversationModel对象。
- @warning 非线程安全，请在主线程操作此属性
  */
 @property(nonatomic, strong) NSMutableArray *conversationListDataSource;
 

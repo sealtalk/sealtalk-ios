@@ -70,7 +70,6 @@
 		5111B07D1AE6A11A00317E71 /* RongCloud.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5111B07A1AE6A11A00317E71 /* RongCloud.bundle */; };
 		5C0253F41B53D6F8003F48D9 /* RCDBlackListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0253F31B53D6F8003F48D9 /* RCDBlackListViewController.m */; };
 		5C7629831B54F7E60027DA82 /* RCDBlackListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7629821B54F7E60027DA82 /* RCDBlackListCell.m */; };
-		6E1C98201F39C90C008F96D8 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1C981F1F39C90C008F96D8 /* libresolv.tbd */; };
 		8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C55EB501B2A8CE5004285F4 /* Emoji.plist */; };
 		8CCBC9871AEDDF8600BA1135 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */; };
 		980235881D227F8100BCB1DD /* RCDPrivacyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */; };
@@ -430,7 +429,6 @@
 		5C0253F31B53D6F8003F48D9 /* RCDBlackListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RCDBlackListViewController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5C7629811B54F7E60027DA82 /* RCDBlackListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RCDBlackListCell.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5C7629821B54F7E60027DA82 /* RCDBlackListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RCDBlackListCell.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		6E1C981F1F39C90C008F96D8 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		8C55EB501B2A8CE5004285F4 /* Emoji.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Emoji.plist; path = framework/Emoji.plist; sourceTree = SOURCE_ROOT; };
 		8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		980235861D227F8100BCB1DD /* RCDPrivacyTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPrivacyTableViewController.h; sourceTree = SOURCE_ROOT; };
@@ -866,7 +864,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E1C98201F39C90C008F96D8 /* libresolv.tbd in Frameworks */,
 				E4C4E7E41A0A2F2800140067 /* CoreGraphics.framework in Frameworks */,
 				27AADC281DDC4DD800E1AE31 /* Foundation.framework in Frameworks */,
 				2E7A36E31E03A876005231BE /* JrmfPacketKit.framework in Frameworks */,
@@ -1635,7 +1632,6 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6E1C981F1F39C90C008F96D8 /* libresolv.tbd */,
 				27BCC76D1EA45EA000198BD8 /* RongContactCard.framework */,
 				27579B631E10D28700A30A62 /* PTT */,
 				F894EC361DF7E3A200EFD084 /* BQMM */,
@@ -3137,7 +3133,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
-				RUN_CLANG_STATIC_ANALYZER = NO;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;

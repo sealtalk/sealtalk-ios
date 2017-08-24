@@ -59,21 +59,21 @@
          loadItemForTypeIdentifier:@"public.url"
          options:nil
          completionHandler:^(NSURL *url, NSError *error) {
-//           __strong typeof(weakSelf) weakSelf = weakSelf;
-           weakSelf.url = url.absoluteString;
+           __strong typeof(weakSelf) strongSelf = weakSelf;
+           strongSelf.url = url.absoluteString;
            NSData *data = [NSData dataWithContentsOfURL:url];
            TFHpple *xpathParser =
            [[TFHpple alloc] initWithHTMLData:data];
            
-           if (weakSelf.contentText.length > 0) {
-             weakSelf.titleString = weakSelf.contentText;
+           if (strongSelf.contentText.length > 0) {
+             strongSelf.titleString = strongSelf.contentText;
            } else {
              NSArray *titleElements =
              [xpathParser searchWithXPathQuery:@"//title"];
              if (titleElements.count > 0) {
                TFHppleElement *element =
                [titleElements objectAtIndex:0];
-               weakSelf.titleString = element.content;
+               strongSelf.titleString = element.content;
              }
            }
            
@@ -83,15 +83,15 @@
              for (TFHppleElement *element in contentElements) {
                if ([[element objectForKey:@"name"]
                     isEqualToString:@"description"]) {
-                 weakSelf.contentString =
+                 strongSelf.contentString =
                  [element objectForKey:@"content"];
                  break;
                } else {
-                 weakSelf.contentString = url.absoluteString;
+                 strongSelf.contentString = url.absoluteString;
                }
              }
            } else {
-             weakSelf.contentString = url.absoluteString;
+             strongSelf.contentString = url.absoluteString;
            }
            
            NSArray *imageElements =
@@ -99,20 +99,20 @@
            if (imageElements && contentElements.count > 0) {
              for (TFHppleElement *element in imageElements) {
                NSString *string = [element objectForKey:@"src"];
-               if ([string hasPrefix:@"http"]) {
-                 weakSelf.imageString = string;
+               if ([string containsString:@"http"]) {
+                 strongSelf.imageString = string;
                  break;
                }
              }
            }
            
-           if (!weakSelf.imageString) {
-             weakSelf.imageString = @"";
+           if (!strongSelf.imageString) {
+             strongSelf.imageString = @"";
            }
-           tableView.titleString = weakSelf.titleString;
-           tableView.contentString = weakSelf.contentString;
-           tableView.url = weakSelf.url;
-           tableView.imageString = weakSelf.imageString;
+           tableView.titleString = strongSelf.titleString;
+           tableView.contentString = strongSelf.contentString;
+           tableView.url = strongSelf.url;
+           tableView.imageString = strongSelf.imageString;
            [tableView enableSendMessage:YES];
            
          }];

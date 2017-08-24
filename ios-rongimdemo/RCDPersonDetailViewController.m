@@ -736,35 +736,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 - (void)displayOnlineStatus {
   NSString *isDisplayOnlineStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"];
   if ([isDisplayOnlineStatus isEqualToString:@"YES"]) {
-//For Private Cloud Only ++
-//    [[RCIMClient sharedRCIMClient]
-//     getUserOnlineStatus:self.userId
-//     success:^(NSArray<RCUserOnlineStatusInfo *> *onlineStatusList) {
-//       NSMutableArray *statusList = [NSMutableArray new];
-//       NSString *status;
-//       if (onlineStatusList.count > 0) {
-//         for (RCUserOnlineStatusInfo *statusInfo in onlineStatusList) {
-//           [statusList addObject:@(statusInfo.platform)];
-//         }
-//         for (int i = 0; i < statusList.count; i++) {
-//           if ([statusList[i] intValue] == RCPlatform_PC || [statusList[i] intValue] == RCPlatform_Web) {
-//             status = @"电脑在线";
-//             break;
-//           }  else if ([statusList[i] intValue] == RCPlatform_iOS || [statusList[i] intValue] == RCPlatform_Android) {
-//             status = @"手机在线";
-//           }
-//         }
-//       } else {
-//         status = @"离线";
-//       }
-//       dispatch_async(dispatch_get_main_queue(), ^{
-//         self.onlineStatusLabel.text = status;
-//         self.onlineStatusLabel.hidden = NO;
-//       });
-//     } error:^(RCErrorCode nErrorCode) {
-//       
-//     }];
-//For Private Cloud Only --
   }
 }
 

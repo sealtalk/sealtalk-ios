@@ -29,23 +29,9 @@
 @property(nonatomic, strong) void (^updateBlock)(int progress);
 
 /*!
- 上传成功需要调用的block。
- content:上传成功之后，需要发送的消息内容。
- 您可以使用currentMessage，把其中content属性对应的url字段设置成您上传成功的网络URL。
- 请参考下面代码。
- 
- 升级说明：如果您之前使用了此接口，请参考下面代码把参数从 url 替换成 message。
- if ([currentMessage.content isKindOfClass:[RCImageMessage class]]) {
-    RCImageMessage *content = (RCImageMessage *)currentMessage.content;
-    content.imageUrl = remoteUrl;
-    successBlock(content);
- } else if ([currentMessage.content isKindOfClass:[RCFileMessage class]]) {
-    RCFileMessage *content = (RCFilemessage *)currentMessage.content;
-    content.fileUrl = remoteUrl;
-    successBlock(content);
- }
+ 上传成功需要调用的block [remoteUrl:媒体文件的网络URL]
  */
-@property(nonatomic, strong) void (^successBlock)(RCMessageContent *content);
+@property(nonatomic, strong) void (^successBlock)(NSString *remoteUrl);
 
 /*!
  上传成功需要调用的block [errorCode:上传失败的错误码，非0整数]
@@ -70,7 +56,7 @@
  */
 - (instancetype)initWithMessage:(RCMessage *)message
                  uploadProgress:(void (^)(int progress))progressBlock
-                  uploadSuccess:(void (^)(RCMessageContent *content))successBlock
+                  uploadSuccess:(void (^)(NSString *remoteUrl))successBlock
                     uploadError:(void (^)(RCErrorCode errorCode))errorBlock
                    uploadCancel:(void (^)())cancelBlock;
 
