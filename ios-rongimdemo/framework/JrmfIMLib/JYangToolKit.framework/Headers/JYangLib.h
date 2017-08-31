@@ -66,6 +66,15 @@ typedef void (^JYResponseFail)(NSURLSessionDataTask * task, NSError * error);
  */
 + (void)JYangLibShowWait:(NSString *)hint InViewController:(UIViewController *)viewController;
 
+/**
+ 提示框
+ 
+ @param hint 提示文字
+ @param viewController 显示视图
+ @param completion 提示消失之后的回调
+ */
++ (void)JYangLibShowWait:(NSString *)hint InViewController:(UIViewController *)viewController completion:(void(^)(BOOL dismissed))completion;
+
 #pragma mark - 网络请求
 /**
  普通post方法请求网络数据

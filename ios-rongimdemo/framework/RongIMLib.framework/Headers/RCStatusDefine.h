@@ -366,7 +366,17 @@ typedef NS_ENUM(NSInteger, RCErrorCode) {
   /*!
   操作不支持。
   */
-  RC_OPERATION_NOT_SUPPORT  = 20606
+  RC_OPERATION_NOT_SUPPORT  = 20606,
+  
+  /*!
+   发送的消息中包含敏感词 （发送方发送失败，接收方不会收到消息）
+   */
+  RC_MSG_BLOCKED_SENSITIVE_WORD = 21501,
+  
+  /*!
+   消息中敏感词已经被替换 （接收方可以收到被替换之后的消息）
+   */
+  RC_MSG_REPLACED_SENSITIVE_WORD = 21502
 };
 
 #pragma mark - 连接状态
@@ -897,6 +907,11 @@ typedef NS_ENUM(NSUInteger, RCCSEvaEntryPoint) {
    无评价入口
    */
   RCCSEvaNone = 2,
+  
+  /*!
+   坐席结束会话评价
+   */
+  RCCSEvaCSEnd = 3,
 };
 
 /*!

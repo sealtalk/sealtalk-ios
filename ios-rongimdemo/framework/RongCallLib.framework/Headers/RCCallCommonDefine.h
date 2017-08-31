@@ -10,6 +10,20 @@
 #define RCCallCommonDefine_h
 
 /*!
+ 引擎类型
+ */
+typedef NS_ENUM(NSInteger, RCCallEngineType) {
+  RCCallEngineNone = 0,
+  /*!
+   声网
+   */
+  RCCallEngineAgora = 1,
+  /*!
+   融云
+   */
+  RCCallEngineRong = 2,
+};
+/*!
  媒体类型
  */
 typedef NS_ENUM(NSInteger, RCCallMediaType) {
@@ -34,6 +48,27 @@ typedef NS_ENUM(NSUInteger, RCCallQuality) {
   RCCall_Quality_Bad = 4,
   RCCall_Quality_VBad = 5,
   RCCall_Quality_Down = 6,
+};
+
+/**
+ 视频显示模式
+ */
+typedef NS_ENUM(NSInteger, RCCallRenderModel) {
+    
+    /*!
+     默认: 如果视频尺寸与显示视窗尺寸不一致，则视频流会按照显示视窗的比例进行周边裁剪或图像拉伸后填满视窗。
+     */
+    RCCallRenderModelHidden = 1,
+    
+    /*!
+     RenderFit: 如果视频尺寸与显示视窗尺寸不一致，在保持长宽比的前提下，将视频进行缩放后填满视窗。
+     */
+    RCCallRenderModelFit = 2,
+    
+    /*!
+     RenderAdaptive: 如果自己和对方都是竖屏，或者如果自己和对方都是横屏，使用 RCCallRenderModelHidden；如果对方和自己一个竖屏一个横屏，则使用RCCallRenderModelFit。
+     */
+    RCCallRenderModelAdaptive = 3,
 };
 
 #pragma mark - Call
@@ -153,6 +188,10 @@ typedef NS_ENUM(NSInteger, RCCallDisconnectReason) {
    己方其他端已接听
   */
   RCCallDisconnectReasonAcceptByOtherClient = 18,
+  /*!
+   己方被加入黑名单
+   */
+  RCCallDisconnectReasonAddToBlackList = 19,
 };
 
 /*!

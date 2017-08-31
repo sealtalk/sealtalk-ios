@@ -136,6 +136,11 @@
 @property(nonatomic, strong, readonly) NSString *targetId;
 
 /*!
+ 是否是多方通话
+ */
+@property(nonatomic, assign, readonly, getter=isMultiCall) BOOL multiCall;
+
+/*!
  通话的扩展信息
  */
 @property(nonatomic, strong, readonly) NSString *extra;
@@ -222,6 +227,15 @@
  @param view   视频的View
  */
 - (void)setVideoView:(UIView *)view userId:(NSString *)userId;
+
+/**
+ 设置用户所在的视频View 
+
+ @param view userId 用户ID（自己或他人)
+ @param userId 视频的View
+ @param renderMode 视频显示模式 (默认为RCCallRenderModelHidden)
+ */
+- (void)setVideoView:(UIView *)view userId:(NSString *)userId renderMode:(RCCallRenderModel)renderMode;
 
 /*!
  更换自己使用的媒体类型

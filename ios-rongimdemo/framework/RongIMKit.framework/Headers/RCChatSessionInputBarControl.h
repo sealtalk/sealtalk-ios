@@ -540,10 +540,21 @@ __deprecated_msg("已废弃，请勿使用。");
 /*!
  相册选择图片列表
  
+ @warning  **已废弃，请勿使用。**
  @param selectedImages   选中的图片
  @param full             用户是否要求原图
  */
-- (void)imageDidSelect:(NSArray *)selectedImages fullImageRequired:(BOOL)full;
+- (void)imageDidSelect:(NSArray *)selectedImages fullImageRequired:(BOOL)full
+__deprecated_msg("已废弃，请勿使用。");
+
+/*!
+ 相册选择图片列表,返回图片的 NSData(请不要同时实现 imageDidSelect:fullImageRequired:)
+ 
+ @warning  **已废弃，请勿使用。**
+ @param selectedImages   选中的图片
+ @param full             用户是否要求原图
+ */
+- (void)imageDataDidSelect:(NSArray *)selectedImages fullImageRequired:(BOOL)full;
 
 /*!
  选择文件列表

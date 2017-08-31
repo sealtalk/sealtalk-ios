@@ -171,7 +171,7 @@
 "GroupCreated"="%@ created the group";
 "GroupInvited"="%@ invited %@ to join the group";
 "GroupRemoved"="%@ removed %@ from the group chat";
-"GroupByRemoved"="%@ removed %@ from the group chat";
+"GroupByRemoved"="%@ were removed from the group chat by %@";
 "GroupDismiss"="%@ dismissed the group";
 "GroupQuit"="%@ quitted the group";
 "GroupChanged"="%@ changed the group name to \"%@\"";
@@ -229,6 +229,8 @@
 "AccessRightTitle"="no access right";
 "Full_Image"="Full Image";
 "Preview"="Preview";
+"Max_Selected_Photos"="You can only select 9 photos at most";
+"Confirm"="Confirm";
 "Location_Service"="Unable to get your location data,Please enable location service in “Settings”->“Privacy”->“Location Services” and allows the application to use location services.";
 "PhotoOniCloud"="The photo has not been downloaded from the iCloud, please download the system from the album to the local post to try again.";
 "SelectMentionedUser"="Select Contact";

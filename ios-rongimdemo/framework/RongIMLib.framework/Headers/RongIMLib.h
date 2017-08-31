@@ -80,3 +80,4 @@ FOUNDATION_EXPORT const unsigned char RongIMLibVersionString[];
 #import <RongIMLib/RCFileUtility.h>
 #import <RongIMLib/RCReadReceiptInfo.h>
 #import <RongIMLib/RCUserOnlineStatusInfo.h>
+

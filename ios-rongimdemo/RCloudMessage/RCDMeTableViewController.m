@@ -30,8 +30,8 @@
 #import <JrmfWalletKit/JrmfWalletKit.h>
 
 #define SERVICE_ID @"KEFU146001495753714"
-#define SERVICE_ID_XIAONENG1 @"kf_4029_1483495902343"
-#define SERVICE_ID_XIAONENG2 @"op_1000_1483495280515"
+#define SERVICE_ID_XIAONENG @"kf_4029_1483495902343"
+#define SERVICE_ID_JIAXIN @"xgs"
 
 @interface RCDMeTableViewController ()
 @property(nonatomic) BOOL hasNewVersion;
@@ -179,12 +179,12 @@
           break;
 #if RCDDebugTestFunction
         case 2:{
-          [cell setCellWithImageName:@"sevre_inactive" labelName:@"小能客服1"];
+          [cell setCellWithImageName:@"sevre_inactive" labelName:@"小能客服"];
           return cell;
         }
           break;
         case 3:{
-          [cell setCellWithImageName:@"sevre_inactive" labelName:@"小能客服2"];
+          [cell setCellWithImageName:@"sevre_inactive" labelName:@"佳信"];
           return cell;
         }
           break;
@@ -260,11 +260,11 @@
           break;
 #if RCDDebugTestFunction
         case 2: {
-          [self chatWithCustomerService:SERVICE_ID_XIAONENG1];
+          [self chatWithCustomerService:SERVICE_ID_XIAONENG];
         }
           break;
         case 3: {
-          [self chatWithCustomerService:SERVICE_ID_XIAONENG2];
+          [self chatWithCustomerService:SERVICE_ID_JIAXIN];
         }
           break;
 #endif
@@ -290,6 +290,7 @@
 - (void)chatWithCustomerService:(NSString *)kefuId {
   RCDCustomerServiceViewController *chatService =
       [[RCDCustomerServiceViewController alloc] init];
+
   // live800  KEFU146227005669524   live800的客服ID
   // zhichi   KEFU146001495753714   智齿的客服ID
   chatService.conversationType = ConversationType_CUSTOMERSERVICE;
@@ -301,7 +302,7 @@
   csInfo.userId = [RCIMClient sharedRCIMClient].currentUserInfo.userId;
   csInfo.nickName = @"昵称";
   csInfo.loginName = @"登录名称";
-  csInfo.name = @"用户名称";
+  csInfo.name = [RCIMClient sharedRCIMClient].currentUserInfo.name;
   csInfo.grade = @"11级";
   csInfo.gender = @"男";
   csInfo.birthday = @"2016.5.1";
@@ -321,7 +322,7 @@
   csInfo.weixin = @"myweixin";
 
   csInfo.page = @"卖化妆品的页面来的";
-  csInfo.referrer = @"客户端";
+  csInfo.referrer = @"10001";
   csInfo.enterUrl = @"testurl";
   csInfo.skillId = @"技能组";
   csInfo.listUrl = @[@"用户浏览的第一个商品Url",

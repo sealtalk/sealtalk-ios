@@ -161,13 +161,13 @@
 /*!
  重新Layout布局
 
- @param conversationType 会话类型
+ @param isMultiCall      是否多方通话
  @param mediaType        通话媒体类型
  @param callStatus       通话状态
 
  @discussion 如果您需要重写并调整UI的布局，应该先调用super。
  */
-- (void)resetLayout:(RCConversationType)conversationType
+- (void)resetLayout:(BOOL)isMultiCall
           mediaType:(RCCallMediaType)mediaType
          callStatus:(RCCallStatus)callStatus;
 

@@ -232,6 +232,8 @@
 "Location_Service"="无法获取你的位置信息，请到手机系统的[设置]->[隐私]->[定位服务]中打开定位服务，并允许应用使用定位服务。";
 "PhotoOniCloud"="该照片尚未从 iCloud 下载，请从系统相册中下载到本地后重新尝试。";
 "SelectMentionedUser"="选择提醒的人";
+"Max_Selected_Photos"="最多只能选择9张照片";
+"Confirm"="确定";
 "ToSearch"="搜索";
 "VoiceInput"="语音输入";
 "Clear"="清空";

@@ -46,6 +46,8 @@
 @property(nonatomic, strong) RCUserInfo *cardInfo;
 
 -(UIView *)loadEmoticonView:(NSString *)identify index:(int)index;
+
+@property(nonatomic)BOOL isLoading;
 @end
 
 NSMutableDictionary *userInputStatus;
@@ -255,6 +257,7 @@ NSMutableDictionary *userInputStatus;
 //  emoticonTab2.chartView = self;
 //
 //  [self.emojiBoardView addEmojiTab:emoticonTab2];
+  _isLoading = NO;
 }
 
 /**
@@ -1052,6 +1055,98 @@ NSMutableDictionary *userInputStatus;
 - (void)alertErrorAndLeft:(NSString *)errorInfo {
   if (![self stayAfterJoinChatRoomFailed]) {
     [super alertErrorAndLeft:errorInfo];
+  }
+}
+
+#pragma Load More Chatroom History Message From Server
+//需要开通聊天室消息云端存储功能，调用getRemoteChatroomHistoryMessages接口才可以从服务器获取到聊天室消息的数据
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView
+                  willDecelerate:(BOOL)decelerate{
+  //当会话类型是聊天室时，下拉加载消息会调用getRemoteChatroomHistoryMessages接口从服务器拉取聊天室消息
+  if (self.conversationType == ConversationType_CHATROOM) {
+    if (scrollView.contentOffset.y < -15.0f && !_isLoading) {
+      _isLoading = YES;
+      [self performSelector:@selector(loadMoreChatroomHistoryMessageFromServer) withObject:nil afterDelay:0.4f];
+    }
+  } else {
+    [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+  }
+}
+
+//从服务器拉取聊天室消息的方法
+- (void)loadMoreChatroomHistoryMessageFromServer{
+  long long recordTime = 0;
+  RCMessageModel *model;
+  if (self.conversationDataRepository.count > 0) {
+    model = [self.conversationDataRepository objectAtIndex:0];
+    recordTime = model.sentTime;
+  }
+  __weak typeof(self)weakSelf = self;
+  [[RCIMClient sharedRCIMClient] getRemoteChatroomHistoryMessages:self.targetId recordTime:recordTime count:20 order:RC_Timestamp_Desc success:^(NSArray *messages, long long syncTime) {
+    _isLoading = NO;
+    [weakSelf handleMessages:messages];
+  } error:^(RCErrorCode status) {
+    NSLog(@"load remote history message failed(%zd)", status);
+  }];
+}
+
+//对于从服务器拉取到的聊天室消息的处理
+- (void)handleMessages:(NSArray *)messages{
+  NSMutableArray *tempMessags = [[NSMutableArray alloc] initWithCapacity:0];
+  for (RCMessage *message in messages) {
+    RCMessageModel *model = [RCMessageModel modelWithMessage:message];
+    [tempMessags addObject:model];
+  }
+  //对去拉取到的消息进行逆序排列
+  NSArray *reversedArray = [[tempMessags reverseObjectEnumerator] allObjects];
+  tempMessags = [reversedArray mutableCopy];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      //将逆序排列的消息加入到数据源
+      [tempMessags addObjectsFromArray:self.conversationDataRepository];
+      self.conversationDataRepository = tempMessags;
+      //显示消息发送时间的方法
+      [self figureOutAllConversationDataRepository];
+      [self.conversationMessageCollectionView reloadData];
+      if (self.conversationDataRepository != nil &&
+          self.conversationDataRepository.count > 0 &&
+          [self.conversationMessageCollectionView numberOfItemsInSection:0] >=
+          messages.count - 1) {
+        NSIndexPath *indexPath =
+        [NSIndexPath indexPathForRow:messages.count - 1 inSection:0];
+        [self.conversationMessageCollectionView
+         scrollToItemAtIndexPath:indexPath
+         atScrollPosition:UICollectionViewScrollPositionTop
+         animated:NO];
+      }
+  });
+}
+
+//显示消息发送时间的方法
+- (void)figureOutAllConversationDataRepository {
+  for (int i = 0; i < self.conversationDataRepository.count; i++) {
+    RCMessageModel *model = [self.conversationDataRepository objectAtIndex:i];
+    if (0 == i) {
+      model.isDisplayMessageTime = YES;
+    } else if (i > 0) {
+      RCMessageModel *pre_model =
+      [self.conversationDataRepository objectAtIndex:i - 1];
+      
+      long long previous_time = pre_model.sentTime;
+      
+      long long current_time = model.sentTime;
+      
+      long long interval = current_time - previous_time > 0
+      ? current_time - previous_time
+      : previous_time - current_time;
+      if (interval / 1000 <= 3*60) {
+        if (model.isDisplayMessageTime && model.cellSize.height > 0) {
+          CGSize size = model.cellSize;
+          size.height = model.cellSize.height-45;
+          model.cellSize = size;
+        }
+        model.isDisplayMessageTime = NO;
+      }
+    }
   }
 }
 

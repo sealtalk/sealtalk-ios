@@ -86,6 +86,7 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  聊天内容的消息Cell数据模型的数据源
  
  @discussion 数据源中存放的元素为消息Cell的数据模型，即RCMessageModel对象。
+ @warning 非线程安全，请在主线程操作该属性
  */
 @property(nonatomic, strong) NSMutableArray *conversationDataRepository;
 
