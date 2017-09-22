@@ -2419,6 +2419,24 @@ startCustomerService:(NSString *)kefuId
 //远程推送相关设置
 @property(nonatomic,strong,readonly)RCPushProfile *pushProfile;
 
+#pragma mark - 历史消息
+/**
+ 设置离线消息补偿时间（以天为单位）
+ 
+ @param duration 离线消息补偿时间，范围【1~7天】
+ @param  successBlock 成功回调
+ @param  errorBlock   失败回调
+ */
+-(void)setOfflineMessageDuration:(int)duration
+                         success:(void (^)())successBlock
+                         failure:(void (^)(RCErrorCode nErrorCode))errorBlock;
+
+/**
+ 获取离线消息补偿时间 （以天为单位）
+ 
+ @return 离线消息补偿时间
+ */
+-(int)getOfflineMessageDuration;
 @end
 
 #endif

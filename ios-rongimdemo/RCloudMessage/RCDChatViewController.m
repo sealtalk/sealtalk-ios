@@ -1145,7 +1145,17 @@ NSMutableDictionary *userInputStatus;
           model.cellSize = size;
         }
         model.isDisplayMessageTime = NO;
+      } else if(![[[model.content class] getObjectName] isEqualToString:@"RC:OldMsgNtf"]) {
+        if (!model.isDisplayMessageTime && model.cellSize.height > 0) {
+          CGSize size = model.cellSize;
+          size.height = model.cellSize.height + 45;
+          model.cellSize = size;
+        }
+        model.isDisplayMessageTime = YES;
       }
+    }
+    if ([[[model.content class] getObjectName] isEqualToString:@"RC:OldMsgNtf"]) {
+      model.isDisplayMessageTime = NO;
     }
   }
 }

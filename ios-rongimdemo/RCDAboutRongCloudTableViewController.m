@@ -13,6 +13,7 @@
 #import "RCDBaseSettingTableViewCell.h"
 #import "RCDLogoTableViewCell.h"
 #import "RCDVersionCell.h"
+#import "RCDDebugViewController.h"
 
 @interface RCDAboutRongCloudTableViewController ()
 @property(nonatomic, strong) NSArray *urls;
@@ -232,7 +233,7 @@
                         message:@"Debug模式"
                         delegate:self
                         cancelButtonTitle:@"确定"
-                        otherButtonTitles:@"强制Crash",isDisplayID,isDisplayOnlineStatus,stayAfterJoinChatRoomFailed, nil];
+                        otherButtonTitles:@"强制Crash",isDisplayID,isDisplayOnlineStatus,stayAfterJoinChatRoomFailed,@"设置离线消息补偿时间", nil];
   alert.delegate = self;
   [alert show];
 }
@@ -298,6 +299,10 @@
       
     case 4:
       [self setStayAfterJoinChatRoomFailed];
+      break;
+          
+    case 5:
+      [self pushToDebugVC];
       break;
       
     default:
@@ -375,5 +380,11 @@
                                              multiplier:1
                                                constant:0]];
   
+}
+
+-(void)pushToDebugVC {
+    RCDDebugViewController *vc = [[RCDDebugViewController alloc]init];
+    vc.title = @"设置离线消息补偿时间";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 @end

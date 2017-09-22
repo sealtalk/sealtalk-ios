@@ -4,7 +4,7 @@
 "RC:ImgTextMsg"="[RichContent]";
 "RC:PSMultiImgTxtMsg"="[RichContent]";
 "RC:PSImgTxtMsg"="[RichContent]";
-"RC:SightMsg"="[Small video]";
+"RC:SightMsg"="[Video]";
 "Draft"="[Draft]";
 "conversation_private_collection_title"="Private Groups";
 "conversation_customer_collection_title"="Customer Groups";

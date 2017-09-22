@@ -25,6 +25,11 @@
 @property(nonatomic, strong) UILabel *remoteNameLabel;
 
 /*!
+ 用户状态的view
+ */
+@property(nonatomic, strong) UIImageView *statusView;
+
+/*!
  全屏的视频View
  */
 @property(nonatomic, strong) UIView *mainVideoView;

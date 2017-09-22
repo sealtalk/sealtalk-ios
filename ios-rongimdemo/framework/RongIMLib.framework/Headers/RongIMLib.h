@@ -52,7 +52,6 @@ FOUNDATION_EXPORT const unsigned char RongIMLibVersionString[];
 #import <RongIMLib/RCRecallNotificationMessage.h>
 #import <RongIMLib/RCCSPullLeaveMessage.h>
 #import <RongIMLib/RCCSLeaveMessage.h>
-#import <RongIMLib/RCSightMessage.h>
 /// 工具类
 #import <RongIMLib/RCAMRDataConverter.h>
 #import <RongIMLib/RCUtilities.h>

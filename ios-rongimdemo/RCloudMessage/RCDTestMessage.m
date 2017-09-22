@@ -56,7 +56,7 @@
     }
     if (self.senderUserInfo.portraitUri) {
       [userInfoDic setObject:self.senderUserInfo.portraitUri
-           forKeyedSubscript:@"icon"];
+           forKeyedSubscript:@"portrait"];
     }
     if (self.senderUserInfo.userId) {
       [userInfoDic setObject:self.senderUserInfo.userId

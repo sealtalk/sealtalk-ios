@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		17244C181B56553B000EFF79 /* RCDMessageNoDisturbSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17244C171B56553B000EFF79 /* RCDMessageNoDisturbSettingController.m */; };
 		174151F51CBE516A00A4B23B /* RCDPublicServiceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 174151F41CBE516A00A4B23B /* RCDPublicServiceListViewController.m */; };
+		178998221F6244FA00FC44D3 /* sms-received.caf in Resources */ = {isa = PBXBuildFile; fileRef = 178998211F6244FA00FC44D3 /* sms-received.caf */; };
 		17B181851D587A1C0061E02B /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */; };
 		17BE51CF1D5828EC0001418D /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = 17BE51CE1D5828EC0001418D /* check.png */; };
 		17D7D1DC1D534F56000AEC54 /* RCDShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D7D1DB1D534F56000AEC54 /* RCDShareViewController.m */; };
@@ -111,6 +112,7 @@
 		9B447DF51CF82926005D3ED5 /* RCDPrivateSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DDC1CF82926005D3ED5 /* RCDPrivateSettingsTableViewController.m */; };
 		9B447DF61CF82926005D3ED5 /* RCDPrivateSettingsUserInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DDE1CF82926005D3ED5 /* RCDPrivateSettingsUserInfoCell.m */; };
 		9B447DF91CF82926005D3ED5 /* RCDSquareTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B447DE41CF82926005D3ED5 /* RCDSquareTableViewController.m */; };
+		9C2763371F6BF2AF006C9680 /* RCDDebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2763361F6BF2AF006C9680 /* RCDDebugViewController.m */; };
 		A61647881BE9BF7C00E90813 /* RCDMeInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A61647871BE9BF7C00E90813 /* RCDMeInfoTableViewController.m */; };
 		A616478B1BE9D97D00E90813 /* RCDEditUserNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A616478A1BE9D97D00E90813 /* RCDEditUserNameViewController.m */; };
 		A6447A0C1B1DBE6500EA2CEE /* InterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6447A0B1B1DBE6500EA2CEE /* InterfaceController.m */; };
@@ -335,6 +337,7 @@
 		17244C171B56553B000EFF79 /* RCDMessageNoDisturbSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RCDMessageNoDisturbSettingController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		174151F31CBE516A00A4B23B /* RCDPublicServiceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPublicServiceListViewController.h; sourceTree = SOURCE_ROOT; };
 		174151F41CBE516A00A4B23B /* RCDPublicServiceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPublicServiceListViewController.m; sourceTree = SOURCE_ROOT; };
+		178998211F6244FA00FC44D3 /* sms-received.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sms-received.caf"; sourceTree = SOURCE_ROOT; };
 		17B181861D587B0F0061E02B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		17BE51CE1D5828EC0001418D /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		17D7D1D81D534F56000AEC54 /* SealTalkShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SealTalkShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -508,6 +511,8 @@
 		9B447DDE1CF82926005D3ED5 /* RCDPrivateSettingsUserInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPrivateSettingsUserInfoCell.m; sourceTree = SOURCE_ROOT; };
 		9B447DE31CF82926005D3ED5 /* RCDSquareTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSquareTableViewController.h; sourceTree = SOURCE_ROOT; };
 		9B447DE41CF82926005D3ED5 /* RCDSquareTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSquareTableViewController.m; sourceTree = SOURCE_ROOT; };
+		9C2763351F6BF2AF006C9680 /* RCDDebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDDebugViewController.h; sourceTree = SOURCE_ROOT; };
+		9C2763361F6BF2AF006C9680 /* RCDDebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDDebugViewController.m; sourceTree = SOURCE_ROOT; };
 		A61647861BE9BF7C00E90813 /* RCDMeInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDMeInfoTableViewController.h; path = RCloudMessage/RCDMeInfoTableViewController.h; sourceTree = SOURCE_ROOT; };
 		A61647871BE9BF7C00E90813 /* RCDMeInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDMeInfoTableViewController.m; path = RCloudMessage/RCDMeInfoTableViewController.m; sourceTree = SOURCE_ROOT; };
 		A61647891BE9D97D00E90813 /* RCDEditUserNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDEditUserNameViewController.h; path = RCloudMessage/RCDEditUserNameViewController.h; sourceTree = SOURCE_ROOT; };
@@ -1214,6 +1219,8 @@
 			isa = PBXGroup;
 			children = (
 				9891E8E71D82B0FE00E874AB /* Cell */,
+				9C2763351F6BF2AF006C9680 /* RCDDebugViewController.h */,
+				9C2763361F6BF2AF006C9680 /* RCDDebugViewController.m */,
 				A662A0DF1AEE50D400847EEB /* RCDAboutRongCloudTableViewController.h */,
 				A662A0E01AEE50D400847EEB /* RCDAboutRongCloudTableViewController.m */,
 			);
@@ -1736,6 +1743,7 @@
 		E4D40F2B1A031F460045097C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				178998211F6244FA00FC44D3 /* sms-received.caf */,
 				E4BFAE2A1A12184E007165B1 /* Main.storyboard */,
 				A6BD04101B1E941D00ACAF17 /* RCloudMessage.entitlements */,
 				E4E939C21AD65D58001E0AC6 /* Info.plist */,
@@ -2172,6 +2180,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				178998221F6244FA00FC44D3 /* sms-received.caf in Resources */,
 				F894EC391DF7E47600EFD084 /* BQMM.bundle in Resources */,
 				2E29FF3C1DC1BE8400AF2DF0 /* AlipaySDK.bundle in Resources */,
 				27C42EED1DE30637003E2306 /* RongCloudiFly.bundle in Resources */,
@@ -2324,6 +2333,7 @@
 				A677D69A1B81EBB9007D5D90 /* RCAnnotation.m in Sources */,
 				E4E939791AD65AEB001E0AC6 /* RCDChatRoomInfo.m in Sources */,
 				E4E939421AD65A95001E0AC6 /* AFHTTPRequestOperation.m in Sources */,
+				9C2763371F6BF2AF006C9680 /* RCDDebugViewController.m in Sources */,
 				E4E9394B1AD65A95001E0AC6 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				E4BFAE681A1219FC007165B1 /* RCDChatListViewController.m in Sources */,
 				E4E939691AD65A95001E0AC6 /* SDWebImageDownloaderOperation.m in Sources */,
