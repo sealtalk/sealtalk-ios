@@ -189,8 +189,9 @@ enum ERROR_CODE_TYPE
     ERR_ADM_RUNTIME_PLAYOUT_ERROR = 1015,
     ERR_ADM_RUNTIME_RECORDING_ERROR = 1017,
     ERR_ADM_RECORD_AUDIO_FAILED = 1018,
-    ERR_ADM_INIT_LOOPBACK  = 1022,
-    ERR_ADM_START_LOOPBACK  = 1023,
+    ERR_ADM_INIT_LOOPBACK = 1022,
+    ERR_ADM_START_LOOPBACK = 1023,
+    ERR_ADM_NO_PERMISSION = 1027,
     // 1025, as warning for interruption of adm on ios
     // 1026, as warning for route change of adm on ios
   
@@ -1001,6 +1002,12 @@ public:
     */
     virtual void onActiveSpeaker(uid_t uid) {
         (void)uid;
+    }
+
+    /**
+    * when client role is successfully changed, the function will be called
+    */
+    virtual void onClientRoleChanged(CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newRole) {
     }
 };
 
@@ -1869,6 +1876,20 @@ public:
     int stopScreenCapture() {
         return m_parameter ? m_parameter->setBool("che.video.stop_screen_capture", true) : -ERR_NOT_INITIALIZED;
     }
+
+    /**
+    * update screen capture region
+    *
+    *  @param rect     valid when windowId is 0; whole screen if rect is NULL.
+    *
+    *  @return return 0 if success or an error code
+    */
+    int updateScreenCaptureRegion(const Rect *rect) {
+      if (!rect)
+        return setObject("che.video.update_screen_capture_region", "{}");
+      else
+        return setObject("che.video.update_screen_capture_region", "{\"top\":%d,\"left\":%d,\"bottom\":%d,\"right\":%d}", rect->top, rect->left, rect->bottom, rect->right);
+    }
 #elif defined(_WIN32)
     /**
      * start screen/windows capture
@@ -1891,6 +1912,20 @@ public:
      */
     int stopScreenCapture() {
         return m_parameter ? m_parameter->setBool("che.video.stop_screen_capture", true) : -ERR_NOT_INITIALIZED;
+    }
+
+    /**
+    * update screen capture region
+    *
+    *  @param rect     valid when windowId is 0; whole screen if rect is NULL.
+    *
+    *  @return return 0 if success or an error code
+    */
+    int updateScreenCaptureRegion(const Rect *rect) {
+      if (!rect)
+        return setObject("che.video.update_screen_capture_region", "{}");
+      else
+        return setObject("che.video.update_screen_capture_region", "{\"top\":%d,\"left\":%d,\"bottom\":%d,\"right\":%d}", rect->top, rect->left, rect->bottom, rect->right);
     }
 #endif
 

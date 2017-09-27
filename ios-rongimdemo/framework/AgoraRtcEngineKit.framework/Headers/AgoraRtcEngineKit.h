@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreMedia/CoreMedia.h>
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
@@ -302,9 +303,10 @@ __attribute__((visibility("default"))) @interface AgoraVideoFrame : NSObject
                                                  7: ARGB
                                                  8: NV12
                                                  */
-@property (assign, nonatomic) long long timeStamp; // time stamp for this frame. in milli-second
-@property (assign, nonatomic) int stride; // how many pixels between 2 consecutive rows. Note: in pixel, not byte.
-                                          // in case of ios texture, it is not used
+@property (assign, nonatomic) CMTime time; // time for this frame.
+@property (assign, nonatomic) int stride DEPRECATED_MSG_ATTRIBUTE("use strideInPixels instead");
+@property (assign, nonatomic) int strideInPixels; // how many pixels between 2 consecutive rows. Note: in pixel, not byte.
+                                                  // in case of ios texture, it is not used
 @property (assign, nonatomic) int height; // how many rows of pixels, in case of ios texture, it is not used
 
 @property (assign, nonatomic) CVPixelBufferRef textureBuf;
@@ -315,6 +317,46 @@ __attribute__((visibility("default"))) @interface AgoraVideoFrame : NSObject
 @property (assign, nonatomic) int cropRight;  // how many pixels to crop on the right boundary
 @property (assign, nonatomic) int cropBottom; // how many pixels to crop on the bottom boundary
 @property (assign, nonatomic) int rotation;   // 0, 90, 180, 270. See document for rotation calculation
+/* Note
+ * 1. strideInPixels
+ *    Stride is in unit of pixel, not byte
+ * 2. About frame width and height
+ *    No field defined for width. However, it can be deduced by:
+ *       croppedWidth = (strideInPixels - cropLeft - cropRight)
+ *    And
+ *       croppedHeight = (height - cropTop - cropBottom)
+ * 3. About crop
+ *    _________________________________________________________________.....
+ *    |                        ^                                      |  ^
+ *    |                        |                                      |  |
+ *    |                     cropTop                                   |  |
+ *    |                        |                                      |  |
+ *    |                        v                                      |  |
+ *    |                ________________________________               |  |
+ *    |                |                              |               |  |
+ *    |                |                              |               |  |
+ *    |<-- cropLeft -->|          valid region        |<- cropRight ->|
+ *    |                |                              |               | height
+ *    |                |                              |               |
+ *    |                |_____________________________ |               |  |
+ *    |                        ^                                      |  |
+ *    |                        |                                      |  |
+ *    |                     cropBottom                                |  |
+ *    |                        |                                      |  |
+ *    |                        v                                      |  v
+ *    _________________________________________________________________......
+ *    |                                                               |
+ *    |<---------------- strideInPixels ----------------------------->|
+ *
+ *    If your buffer contains garbage data, you can crop them. E.g. frame size is
+ *    360 x 640, often the buffer stride is 368, i.e. there extra 8 pixels on the
+ *    right are for padding, and should be removed. In this case, you can set:
+ *    strideInPixels = 368;
+ *    height = 640;
+ *    cropRight = 8;
+ *    // cropLeft, cropTop, cropBottom are default to 0
+ */
+
 @end
 
 __attribute__((visibility("default"))) @interface AgoraRtcStats : NSObject
@@ -747,6 +789,15 @@ __attribute__((visibility("default"))) @interface AgoraPublisherConfigurationBui
  *  @param speakerUid  The speaker who is talking
  */
 - (void)rtcEngine:(AgoraRtcEngineKit *)engine activeSpeaker:(NSUInteger)speakerUid;
+
+/**
+ *  Event of cient role change. only take effect under broadcasting mode
+ *
+ *  @param engine The engine kit
+ *  @param oldRole the previous role
+ *  @param newRole the new role
+ */
+- (void)rtcEngine:(AgoraRtcEngineKit *)engine didClientRoleChanged:(AgoraRtcClientRole)oldRole newRole:(AgoraRtcClientRole)newRole;
 @end
 
 
@@ -1348,6 +1399,13 @@ __attribute__((visibility("default"))) @interface AgoraRtcEngineKit : NSObject
  *  @return 0 when executed successfully. return negative value if failed.
  */
 - (int)stopScreenCapture;
+
+/**
+ *  Update screen capture Region
+ *
+ *  @return 0 when executed successfully. return negative value if failed.
+ */
+- (int)updateScreenCaptureRegion:(CGRect)rect;
 
 - (void) monitorDeviceChange: (BOOL)enabled;
 - (NSArray*) enumerateDevices:(AgoraRtcDeviceType)type;  // return array of AgoraRtcDeviceInfo
