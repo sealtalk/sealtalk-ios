@@ -10,9 +10,10 @@
 #import <RongIMKit/RongIMKit.h>
 #import <UIKit/UIKit.h>
 #import "RCDBaseSettingTableViewCell.h"
+#import "RCDTableViewController.h"
 
 @interface RCDGroupSettingsTableViewController
-    : UITableViewController <UICollectionViewDataSource,
+    : RCDTableViewController <UICollectionViewDataSource,
                              UICollectionViewDelegate, UIActionSheetDelegate,
                              UINavigationControllerDelegate,
                              UIImagePickerControllerDelegate,RCDBaseSettingTableViewCellDelegate>

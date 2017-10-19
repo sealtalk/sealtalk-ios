@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <RongIMLib/RongIMLib.h>
+#import "RCDTableView.h"
 
 @interface RCDContactViewController
     : UIViewController <UITableViewDataSource, UITableViewDelegate,
                         UISearchBarDelegate, UISearchControllerDelegate>
 
 @property(nonatomic, strong) UISearchBar *searchFriendsBar;
-@property(nonatomic, strong) UITableView *friendsTabelView;
+@property(nonatomic, strong) RCDTableView *friendsTabelView;
 
 @property(nonatomic, strong) NSDictionary *allFriendSectionDic;
 

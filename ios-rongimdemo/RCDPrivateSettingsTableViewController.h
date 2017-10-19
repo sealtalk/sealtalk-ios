@@ -8,9 +8,10 @@
 
 #import <RongIMKit/RongIMKit.h>
 #import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 
 @interface RCDPrivateSettingsTableViewController
-    : UITableViewController <UIActionSheetDelegate>
+    : RCDTableViewController <UIActionSheetDelegate>
 
 @property(nonatomic, strong) NSString *userId;
 

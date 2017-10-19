@@ -40,6 +40,8 @@
 		27C42ED51DE2FD7B003E2306 /* RongiFlyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C42ED41DE2FD7B003E2306 /* RongiFlyKit.framework */; };
 		27C42EEC1DE30637003E2306 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C42EEA1DE30637003E2306 /* iflyMSC.framework */; };
 		27C42EED1DE30637003E2306 /* RongCloudiFly.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27C42EEB1DE30637003E2306 /* RongCloudiFly.bundle */; };
+		27C7A26D1F7A063300B59418 /* RCDTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7A26C1F7A063300B59418 /* RCDTableView.m */; };
+		27C7A2701F7A066500B59418 /* RCDTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7A26F1F7A066500B59418 /* RCDTableViewController.m */; };
 		27D6FF9C1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D6FF9B1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m */; };
 		27D6FF9F1DFE4D2C00053F69 /* RCDSettingUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D6FF9E1DFE4D2C00053F69 /* RCDSettingUserDefaults.m */; };
 		2E29FF3C1DC1BE8400AF2DF0 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E29FF3A1DC1BE8400AF2DF0 /* AlipaySDK.bundle */; };
@@ -382,6 +384,10 @@
 		27C42ED41DE2FD7B003E2306 /* RongiFlyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongiFlyKit.framework; path = framework/RongiFlyKit.framework; sourceTree = SOURCE_ROOT; };
 		27C42EEA1DE30637003E2306 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = "<group>"; };
 		27C42EEB1DE30637003E2306 /* RongCloudiFly.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RongCloudiFly.bundle; sourceTree = "<group>"; };
+		27C7A26B1F7A063300B59418 /* RCDTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDTableView.h; sourceTree = "<group>"; };
+		27C7A26C1F7A063300B59418 /* RCDTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDTableView.m; sourceTree = "<group>"; };
+		27C7A26E1F7A066500B59418 /* RCDTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDTableViewController.h; sourceTree = "<group>"; };
+		27C7A26F1F7A066500B59418 /* RCDTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDTableViewController.m; sourceTree = "<group>"; };
 		27D6FF9A1DFE4D2100053F69 /* RCDSettingServerUrlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSettingServerUrlViewController.h; sourceTree = SOURCE_ROOT; };
 		27D6FF9B1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSettingServerUrlViewController.m; sourceTree = SOURCE_ROOT; };
 		27D6FF9D1DFE4D2C00053F69 /* RCDSettingUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSettingUserDefaults.h; sourceTree = SOURCE_ROOT; };
@@ -1818,6 +1824,10 @@
 				98F973D41D66B8ED007F1483 /* RCDUserInfoManager.m */,
 				98A670731DDD5478007D426D /* RCDNoFriendView.h */,
 				98A670741DDD5478007D426D /* RCDNoFriendView.m */,
+				27C7A26B1F7A063300B59418 /* RCDTableView.h */,
+				27C7A26C1F7A063300B59418 /* RCDTableView.m */,
+				27C7A26E1F7A066500B59418 /* RCDTableViewController.h */,
+				27C7A26F1F7A066500B59418 /* RCDTableViewController.m */,
 			);
 			name = Utilities;
 			path = RCloudMessage/Utilities;
@@ -2316,6 +2326,7 @@
 				E4E939D21AD6805E001E0AC6 /* RCDPersonDetailViewController.m in Sources */,
 				A677D69B1B81EBB9007D5D90 /* RCAnnotationView.m in Sources */,
 				E4E939671AD65A95001E0AC6 /* SDWebImageDecoder.m in Sources */,
+				27C7A26D1F7A063300B59418 /* RCDTableView.m in Sources */,
 				E4E939C11AD65D41001E0AC6 /* RCDMeTableViewController.m in Sources */,
 				E4BFAE211A1217C0007165B1 /* AppDelegate.m in Sources */,
 				A6827BE11B15E94A000B9862 /* SelectAppKeyViewController.m in Sources */,
@@ -2417,6 +2428,7 @@
 				98D3C9D11D4C464D006FDF67 /* RCDMainTabBarViewController.m in Sources */,
 				E412BD271ADFA2A0000DCA7A /* RCDAddFriendViewController.m in Sources */,
 				E4E939701AD65A95001E0AC6 /* UIImageView+HighlightedWebCache.m in Sources */,
+				27C7A2701F7A066500B59418 /* RCDTableViewController.m in Sources */,
 				E4BFAE6E1A121A22007165B1 /* RCDChatRoomViewController.m in Sources */,
 				E4E939621AD65A95001E0AC6 /* RCUnderlineTextField.m in Sources */,
 				E4E939681AD65A95001E0AC6 /* SDWebImageDownloader.m in Sources */,

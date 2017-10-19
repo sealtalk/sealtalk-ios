@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 
-@interface RCDMeTableViewController : UITableViewController
+@interface RCDMeTableViewController : RCDTableViewController
 
 @property (weak, nonatomic) IBOutlet UIImageView *needUpdateImage;
 

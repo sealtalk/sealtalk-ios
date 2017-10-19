@@ -62,9 +62,11 @@
     return _searchFriendsBar;
 }
 
-- (UITableView *)friendsTabelView {
+- (RCDTableView *)friendsTabelView {
     if (!_friendsTabelView) {
-        _friendsTabelView=[[UITableView alloc]initWithFrame:CGRectMake(0.0, 43.5, RCDscreenWidth, RCDscreenHeight-43.5-114) style:UITableViewStyleGrouped];
+        CGRect searchBarFrame = self.searchFriendsBar.frame;
+        CGFloat originY = CGRectGetMaxY(searchBarFrame);
+        _friendsTabelView=[[RCDTableView alloc]initWithFrame:CGRectMake(0.0, originY, RCDscreenWidth, RCDscreenHeight-originY-114) style:UITableViewStyleGrouped];
         [_friendsTabelView setDelegate:self];
         [_friendsTabelView setDataSource:self];
         [_friendsTabelView setSectionIndexBackgroundColor:[UIColor clearColor]];

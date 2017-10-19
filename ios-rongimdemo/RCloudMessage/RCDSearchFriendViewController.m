@@ -86,6 +86,11 @@ UISearchControllerDelegate>
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section {
     if (tableView == self.searchDisplayController.searchResultsTableView)
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
+        if (@available(iOS 11.0,*))  {
+            tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        }
+#endif
         return _searchResult.count;
     return 0;
 }

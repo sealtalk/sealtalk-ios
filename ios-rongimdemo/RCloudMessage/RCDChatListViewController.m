@@ -346,6 +346,9 @@
   UIBarButtonItem *rightBarButton = self.tabBarController.navigationItem.rightBarButtonItems[1];
   CGRect targetFrame = rightBarButton.customView.frame;
   targetFrame.origin.y = targetFrame.origin.y + 15;
+  if(IOS_FSystenVersion >= 11.0) {
+    targetFrame.origin.x = self.view.bounds.size.width - targetFrame.size.width - 25;
+  }
   [KxMenu setTintColor:HEXCOLOR(0x000000)];
   [KxMenu setTitleFont:[UIFont systemFontOfSize:17]];
   [KxMenu showMenuInView:self.tabBarController.navigationController
