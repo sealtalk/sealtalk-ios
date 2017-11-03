@@ -36,7 +36,6 @@
  @param model      用户通话信息的Model
  @param callStatus 用户通话状态
  */
-- (void)setModel:(RCCallUserCallInfoModel *)model
-          status:(RCCallStatus)callStatus;
+- (void)setModel:(RCCallUserCallInfoModel *)model status:(RCCallStatus)callStatus;
 
 @end

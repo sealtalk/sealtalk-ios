@@ -24,7 +24,7 @@
 //验证后提示信息
 @property(nonatomic, strong) NSArray *message;
 //最大字数限制
-@property(nonatomic, assign)int max;
+@property(nonatomic, assign) int max;
 
 + (instancetype)modelWithDic:(NSDictionary *)dic;
 - (instancetype)initWithDic:(NSDictionary *)dic;

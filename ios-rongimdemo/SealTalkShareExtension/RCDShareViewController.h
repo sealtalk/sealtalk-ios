@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <Social/Social.h>
+#import <UIKit/UIKit.h>
 
 @interface RCDShareViewController : SLComposeServiceViewController
 

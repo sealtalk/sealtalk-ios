@@ -11,11 +11,9 @@
 
 #pragma mark - WK App shared user default
 
-#define WK_APP_SHARED_DEFAULT_MSG_LAST_UPDATE_TIME                             \
-  @"rc:demo:msg last update date"
+#define WK_APP_SHARED_DEFAULT_MSG_LAST_UPDATE_TIME @"rc:demo:msg last update date"
 #define WK_APP_SHARED_DEFAULT_CONNECTION_STATUS @"rc:demo:connection status"
-#define WK_APP_SHARED_DEFAULT_CONTACT_UPDATE_TIME                              \
-  @"rc:demo:contact last update date"
+#define WK_APP_SHARED_DEFAULT_CONTACT_UPDATE_TIME @"rc:demo:contact last update date"
 #define WK_APP_SHARED_DEFAULT_LAST_LOADED_IMAGE @"rc:demo:last update image"
 
 #pragma mark - WK notifition center

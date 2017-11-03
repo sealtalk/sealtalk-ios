@@ -35,7 +35,6 @@
 
  @return 用户输入状态对象
  */
-- (instancetype)initWithUserId:(NSString *)userId
-                   contentType:(NSString *)objectName;
+- (instancetype)initWithUserId:(NSString *)userId contentType:(NSString *)objectName;
 
 @end

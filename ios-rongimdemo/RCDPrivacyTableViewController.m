@@ -8,8 +8,8 @@
 
 #import "RCDPrivacyTableViewController.h"
 #import "RCDBaseSettingTableViewCell.h"
-#import "UIColor+RCColor.h"
 #import "RCDBlackListViewController.h"
+#import "UIColor+RCColor.h"
 
 @interface RCDPrivacyTableViewController ()
 
@@ -18,88 +18,78 @@
 @implementation RCDPrivacyTableViewController
 
 - (void)viewDidLoad {
-  [super viewDidLoad];
-  
-  self.navigationItem.title = @"隐私";
-  
-  self.tableView.tableFooterView = [UIView new];
-  
-  self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-  self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [super viewDidLoad];
+
+    self.navigationItem.title = @"隐私";
+
+    self.tableView.tableFooterView = [UIView new];
+
+    self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 
-- (CGFloat)tableView:(UITableView *)tableView
-    heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 15.f;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-  return 1;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-  return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView
-cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  static NSString *reusableCellWithIdentifier = @"RCDBaseSettingTableViewCell";
-  RCDBaseSettingTableViewCell *cell = [self.tableView
-                                   dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
-  if (cell == nil) {
-    cell = [[RCDBaseSettingTableViewCell alloc] init];
-  }
-  switch (indexPath.section) {
-    case 0: {
-      switch (indexPath.row) {
-        case 0: {
-          [cell setCellStyle:DefaultStyle];
-          cell.leftLabel.text = @"黑名单";
-        }
-          break;
-          
-        default:
-          break;
-      }
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *reusableCellWithIdentifier = @"RCDBaseSettingTableViewCell";
+    RCDBaseSettingTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
+    if (cell == nil) {
+        cell = [[RCDBaseSettingTableViewCell alloc] init];
     }
-      break;
-      
+    switch (indexPath.section) {
+    case 0: {
+        switch (indexPath.row) {
+        case 0: {
+            [cell setCellStyle:DefaultStyle];
+            cell.leftLabel.text = @"黑名单";
+        } break;
+
+        default:
+            break;
+        }
+    } break;
+
     default:
-      break;
-  }
+        break;
+    }
 
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  switch (indexPath.section) {
+    switch (indexPath.section) {
     case 0: {
-      switch (indexPath.row) {
+        switch (indexPath.row) {
         case 0: {
-          RCDBlackListViewController *vc = [[RCDBlackListViewController alloc] init];
-          [self.navigationController pushViewController:vc
-                                               animated:YES];
-        }
-          break;
-          
+            RCDBlackListViewController *vc = [[RCDBlackListViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        } break;
+
         default:
-          break;
-      }
-    }
-      break;
-      
+            break;
+        }
+    } break;
+
     default:
-      break;
-  }
+        break;
+    }
 }
 
 @end

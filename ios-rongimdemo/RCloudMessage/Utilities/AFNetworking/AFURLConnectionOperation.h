@@ -133,8 +133,7 @@
  */
 
 @interface AFURLConnectionOperation
-    : NSOperation <NSURLConnectionDelegate, NSURLConnectionDataDelegate,
-                   NSSecureCoding, NSCopying>
+    : NSOperation <NSURLConnectionDelegate, NSURLConnectionDataDelegate, NSSecureCoding, NSCopying>
 
 ///-------------------------------
 /// @name Accessing Run Loop Modes
@@ -287,8 +286,7 @@
 
  @param urlRequest The request object to be used by the operation connection.
  */
-- (instancetype)initWithRequest:(NSURLRequest *)urlRequest
-    NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRequest:(NSURLRequest *)urlRequest NS_DESIGNATED_INITIALIZER;
 
 ///----------------------------------
 /// @name Pausing / Resuming Requests
@@ -341,8 +339,7 @@
  notified.
   */
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && !defined(AF_APP_EXTENSIONS)
-- (void)setShouldExecuteAsBackgroundTaskWithExpirationHandler:
-    (void (^)(void))handler;
+- (void)setShouldExecuteAsBackgroundTaskWithExpirationHandler:(void (^)(void))handler;
 #endif
 
 ///---------------------------------
@@ -361,9 +358,8 @@
  length of the HTTP body. This block may be called multiple times, and will
  execute on the main thread.
  */
-- (void)setUploadProgressBlock:
-    (void (^)(NSUInteger bytesWritten, long long totalBytesWritten,
-              long long totalBytesExpectedToWrite))block;
+- (void)setUploadProgressBlock:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten,
+                                         long long totalBytesExpectedToWrite))block;
 
 /**
  Sets a callback to be called when an undetermined number of bytes have been
@@ -377,9 +373,8 @@
  size of the `NSHTTPURLResponse` object. This block may be called multiple
  times, and will execute on the main thread.
  */
-- (void)setDownloadProgressBlock:
-    (void (^)(NSUInteger bytesRead, long long totalBytesRead,
-              long long totalBytesExpectedToRead))block;
+- (void)setDownloadProgressBlock:(void (^)(NSUInteger bytesRead, long long totalBytesRead,
+                                           long long totalBytesExpectedToRead))block;
 
 ///-------------------------------------------------
 /// @name Setting NSURLConnection Delegate Callbacks
@@ -400,9 +395,8 @@
  `connection:willSendRequestForAuthenticationChallenge:` will attempt to have
  the challenge sender use credentials with invalid SSL certificates.
  */
-- (void)setWillSendRequestForAuthenticationChallengeBlock:
-    (void (^)(NSURLConnection *connection,
-              NSURLAuthenticationChallenge *challenge))block;
+- (void)setWillSendRequestForAuthenticationChallengeBlock:(void (^)(NSURLConnection *connection,
+                                                                    NSURLAuthenticationChallenge *challenge))block;
 
 /**
  Sets a block to be executed when the server redirects the request from one URL
@@ -416,9 +410,8 @@
  takes three arguments: the URL connection object, the the proposed redirected
  request, and the URL response that caused the redirect.
  */
-- (void)setRedirectResponseBlock:
-    (NSURLRequest * (^)(NSURLConnection *connection, NSURLRequest *request,
-                        NSURLResponse *redirectResponse))block;
+- (void)setRedirectResponseBlock:(NSURLRequest * (^)(NSURLConnection *connection, NSURLRequest *request,
+                                                     NSURLResponse *redirectResponse))block;
 
 /**
  Sets a block to be executed to modify the response a connection will cache, if
@@ -431,21 +424,18 @@
  from being cached, and takes two arguments: the URL connection object, and the
  cached response provided for the request.
  */
-- (void)setCacheResponseBlock:
-    (NSCachedURLResponse * (^)(NSURLConnection *connection,
-                               NSCachedURLResponse *cachedResponse))block;
+- (void)setCacheResponseBlock:(NSCachedURLResponse * (^)(NSURLConnection *connection,
+                                                         NSCachedURLResponse *cachedResponse))block;
 
 ///
 
 /**
 
  */
-+ (NSArray *)
-batchOfRequestOperations:(NSArray *)operations
-           progressBlock:
-               (void (^)(NSUInteger numberOfFinishedOperations,
-                         NSUInteger totalNumberOfOperations))progressBlock
-         completionBlock:(void (^)(NSArray *operations))completionBlock;
++ (NSArray *)batchOfRequestOperations:(NSArray *)operations
+                        progressBlock:(void (^)(NSUInteger numberOfFinishedOperations,
+                                                NSUInteger totalNumberOfOperations))progressBlock
+                      completionBlock:(void (^)(NSArray *operations))completionBlock;
 
 @end
 

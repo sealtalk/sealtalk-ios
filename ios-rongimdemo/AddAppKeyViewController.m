@@ -16,43 +16,40 @@
 
 @implementation AddAppKeyViewController
 - (void)viewDidLoad {
-  [super viewDidLoad];
-  self.navigationItem.rightBarButtonItem =
-      [[UIBarButtonItem alloc] initWithTitle:@"Save"
-                                       style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(onSave:)];
+    [super viewDidLoad];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(onSave:)];
 
-  self.keyField =
-      [[UITextField alloc] initWithFrame:CGRectMake(5, 80, 220, 40)];
-  self.devField =
-      [[UITextField alloc] initWithFrame:CGRectMake(5, 140, 220, 40)];
+    self.keyField = [[UITextField alloc] initWithFrame:CGRectMake(5, 80, 220, 40)];
+    self.devField = [[UITextField alloc] initWithFrame:CGRectMake(5, 140, 220, 40)];
 
-  [self.keyField setBorderStyle:UITextBorderStyleRoundedRect];
-  [self.devField setBorderStyle:UITextBorderStyleRoundedRect];
+    [self.keyField setBorderStyle:UITextBorderStyleRoundedRect];
+    [self.devField setBorderStyle:UITextBorderStyleRoundedRect];
 
-  self.keyField.placeholder = @"appkey";
-  self.devField.placeholder = @"dev";
+    self.keyField.placeholder = @"appkey";
+    self.devField.placeholder = @"dev";
 
-  [self.view addSubview:self.keyField];
-  [self.view addSubview:self.devField];
-  [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:self.keyField];
+    [self.view addSubview:self.devField];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
 }
 - (void)onSave:(id)sender {
-  NSString *appKey = self.keyField.text;
-  int env = [self.devField.text intValue];
-  if (env != 1 && env != 2) {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
-                                                    message:@"dev值必须是1或者2"
-                                                   delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:nil, nil];
-    [alert show];
-    return;
-  }
-  AppkeyModel *model = [[AppkeyModel alloc] initWithKey:appKey env:env];
-  self.result(model);
-  [self.navigationController popViewControllerAnimated:YES];
+    NSString *appKey = self.keyField.text;
+    int env = [self.devField.text intValue];
+    if (env != 1 && env != 2) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+                                                        message:@"dev值必须是1或者2"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+    AppkeyModel *model = [[AppkeyModel alloc] initWithKey:appKey env:env];
+    self.result(model);
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

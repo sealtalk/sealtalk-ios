@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 typedef void (^setDisplayText)(NSString *text);
 
-@interface RCDUpdateNameViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource>
-
+@interface RCDUpdateNameViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
 
 /**
  *  初始化方法
@@ -22,7 +21,7 @@ typedef void (^setDisplayText)(NSString *text);
 /**
  *  更改讨论组名称的textField
  */
-@property (nonatomic, strong) UITextField *nameTextField;
+@property(nonatomic, strong) UITextField *nameTextField;
 
 /**
  *  讨论组id

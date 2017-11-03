@@ -43,7 +43,7 @@
 
  @discussion 群组通知消息类，此消息会进行存储，但不计入未读消息数。
  */
-@interface RCGroupNotificationMessage : RCMessageContent<NSCoding>
+@interface RCGroupNotificationMessage : RCMessageContent <NSCoding>
 
 /*!
  群组通知的当前操作名

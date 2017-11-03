@@ -21,24 +21,21 @@
 }
 */
 
--(id)init {
-  self = [super init];
-  if (self) {
-    NSString *portraitUrl = [DEFAULTS stringForKey:@"userPortraitUri"];
-    if ([portraitUrl isEqualToString:@""]) {
-      portraitUrl = [RCDUtilities defaultUserPortrait:[RCIM sharedRCIM].currentUserInfo];
+- (id)init {
+    self = [super init];
+    if (self) {
+        NSString *portraitUrl = [DEFAULTS stringForKey:@"userPortraitUri"];
+        if ([portraitUrl isEqualToString:@""]) {
+            portraitUrl = [RCDUtilities defaultUserPortrait:[RCIM sharedRCIM].currentUserInfo];
+        }
+        self = [[RCDMeDetailsCell alloc] initWithLeftImageStr:portraitUrl
+                                                leftImageSize:CGSizeMake(65, 65)
+                                                 rightImaeStr:nil
+                                               rightImageSize:CGSizeZero];
+        self.leftImageCornerRadius = 5.f;
+        self.leftLabel.text = [DEFAULTS stringForKey:@"userNickName"];
     }
-    self = [[RCDMeDetailsCell alloc]
-            initWithLeftImageStr:portraitUrl
-            leftImageSize:CGSizeMake(65, 65)
-            rightImaeStr:nil
-            rightImageSize:CGSizeZero];
-    self.leftImageCornerRadius = 5.f;
-    self.leftLabel.text = [DEFAULTS stringForKey:@"userNickName"];
-  }
-  return self;
+    return self;
 }
-
-
 
 @end

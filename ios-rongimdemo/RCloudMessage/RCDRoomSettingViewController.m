@@ -10,9 +10,8 @@
 
 @implementation RCDRoomSettingViewController
 
-- (NSInteger)tableView:(UITableView *)tableView
- numberOfRowsInSection:(NSInteger)section {
-  return self.defaultCells.count - 2;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.defaultCells.count - 2;
 }
 
 @end

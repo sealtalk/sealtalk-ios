@@ -22,7 +22,7 @@
 
  @discussion 公众服务账号信息变更消息类，此消息会进行存储，但不计入未读消息数。
  */
-@interface RCProfileNotificationMessage : RCMessageContent<NSCoding>
+@interface RCProfileNotificationMessage : RCMessageContent <NSCoding>
 
 /*!
 公众服务账号信息变更的操作名
@@ -47,8 +47,6 @@
  @param extra       信息变更的附加信息
  @return            公众服务账号信息变更消息的对象
  */
-+ (instancetype)notificationWithOperation:(NSString *)operation
-                                     data:(NSString *)data
-                                    extra:(NSString *)extra;
++ (instancetype)notificationWithOperation:(NSString *)operation data:(NSString *)data extra:(NSString *)extra;
 
 @end

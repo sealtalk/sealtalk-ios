@@ -48,14 +48,13 @@
 
 @property(nonatomic, strong) NSArray *leftLabelConstraints;
 
-@property(weak, nonatomic) id<RCDBaseSettingTableViewCellDelegate>
-baseSettingTableViewDelegate;
+@property(weak, nonatomic) id<RCDBaseSettingTableViewCellDelegate> baseSettingTableViewDelegate;
 
 //两边如果有图片，使用该方法初始化Cell。
--(id)initWithLeftImageStr:(NSString *)leftImageStr
-         leftImageSize:(CGSize)leftImageSize
-             rightImaeStr:(NSString *)rightImageStr
-        rightImageSize:(CGSize)rightImageSize;
+- (id)initWithLeftImageStr:(NSString *)leftImageStr
+             leftImageSize:(CGSize)leftImageSize
+              rightImaeStr:(NSString *)rightImageStr
+            rightImageSize:(CGSize)rightImageSize;
 
 /*!
  设置imageView方法
@@ -66,36 +65,39 @@ baseSettingTableViewDelegate;
                     0:表示设置左边的imageView。
                     1:表示设置右边的imageView。
  */
-- (void)setImageView:(UIImageView *)imageView ImageStr:(NSString *)imageStr imageSize:(CGSize)imageSize LeftOrRight:(NSInteger)LeftOrRight;
+- (void)setImageView:(UIImageView *)imageView
+            ImageStr:(NSString *)imageStr
+           imageSize:(CGSize)imageSize
+         LeftOrRight:(NSInteger)LeftOrRight;
 
-  /*!
-   cell的style
-   */
+/*!
+ cell的style
+ */
 typedef NS_ENUM(NSUInteger, RCDBaseSettingCellStyle) {
-  /*!
-   Display：leftLabel,rightArrow
-   */
-  DefaultStyle = 0,
-  
-  /*!
-   Display：leftLabel,rightLabel
-   */
-  DefaultStyle_RightLabel_WithoutRightArrow = 1,
-  
-  /*!
-   Display：leftLabel,rightLabel,rightArrow
-   */
-  DefaultStyle_RightLabel = 2,
-  
-  /*!
-   Display：leftLabel,switchButton
-   */
-  SwitchStyle = 3,
-  
-  /*!
-   Display：leftLabel
-   */
-  OnlyDisplayLeftLabelStyle = 4
+    /*!
+     Display：leftLabel,rightArrow
+     */
+    DefaultStyle = 0,
+
+    /*!
+     Display：leftLabel,rightLabel
+     */
+    DefaultStyle_RightLabel_WithoutRightArrow = 1,
+
+    /*!
+     Display：leftLabel,rightLabel,rightArrow
+     */
+    DefaultStyle_RightLabel = 2,
+
+    /*!
+     Display：leftLabel,switchButton
+     */
+    SwitchStyle = 3,
+
+    /*!
+     Display：leftLabel
+     */
+    OnlyDisplayLeftLabelStyle = 4
 };
 
 //设置cell的style

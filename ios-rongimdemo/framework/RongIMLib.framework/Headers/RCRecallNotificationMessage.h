@@ -16,7 +16,7 @@
 /*!
  撤回通知消息类
  */
-@interface RCRecallNotificationMessage : RCMessageContent<NSCoding>
+@interface RCRecallNotificationMessage : RCMessageContent <NSCoding>
 
 /*!
  发起撤回操作的用户ID

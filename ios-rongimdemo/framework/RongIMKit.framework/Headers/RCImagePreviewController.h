@@ -6,9 +6,9 @@
 //  Copyright (c) 2014年 Heq.Shinoda. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "RCBaseViewController.h"
 #import "RCImageMessageProgressView.h"
+#import <UIKit/UIKit.h>
 
 @class RCMessageModel;
 
@@ -34,9 +34,9 @@
 
 /*!
  取消按钮的点击事件
- 
+
  @param sender 取消按钮
- 
+
  @discussion SDK在此方法中，会针对默认的NavigationBar退出当前界面；
  如果您使用自定义导航按钮或者自定义按钮，可以重写此方法退出当前界面。
  */
@@ -44,9 +44,9 @@
 
 /*!
  保存按钮的点击事件
- 
+
  @param sender 保存按钮
- 
+
  @discussion SDK在此方法中，默认会进行图片的保存。
  */
 - (void)rightBarButtonItemPressed:(id)sender;

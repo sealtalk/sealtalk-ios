@@ -6,12 +6,12 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "RCConversationSettingTableViewController.h"
+#import <UIKit/UIKit.h>
 
 /*!
  清空会话中所有消息的回调
- 
+
  @param isSuccess 是否删除会话中的所有消息
  */
 typedef void (^clearHistory)(BOOL isSuccess);
@@ -33,7 +33,7 @@ typedef void (^clearHistory)(BOOL isSuccess);
 
 /*!
  清空会话中所有消息的回调
- 
+
  @discussion 在清空消息的的回调中,您需要调用会话页面的reloadData进行刷新。
  */
 @property(nonatomic, copy) clearHistory clearHistoryCompletion;
@@ -50,7 +50,7 @@ typedef void (^clearHistory)(BOOL isSuccess);
 
 /*!
  点击Item（用户头像或加减号）的回调
- 
+
  @param settingTableViewHeader  当前会话设置界面
  @param indexPathOfSelectedItem 点击的Item索引值
  @param users                   当前的用户信息RCUserInfo列表
@@ -61,9 +61,9 @@ typedef void (^clearHistory)(BOOL isSuccess);
 
 /*!
  点击删除用户的回调
- 
+
  @param indexPath 当前删除的用户的头像索引值
- 
+
  @discussion 点击头像左上角的删除按钮时的回调。
  */
 - (void)deleteTipButtonClicked:(NSIndexPath *)indexPath;

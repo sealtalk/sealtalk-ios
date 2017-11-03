@@ -13,8 +13,8 @@
 #ifndef __RCUtilities
 #define __RCUtilities
 
-#import <UIKit/UIKit.h>
 #import "RCMessage.h"
+#import <UIKit/UIKit.h>
 
 /*!
  工具类
@@ -59,19 +59,17 @@
 
  @return                image
  */
-+ (UIImage *)imageByScalingAndCropSize:(UIImage *)image
-                            targetSize:(CGSize)targetSize;
++ (UIImage *)imageByScalingAndCropSize:(UIImage *)image targetSize:(CGSize)targetSize;
 
 /*!
  generate thumbnail from image
- 
+
  @param image           image
  @param targetSize      targetSize
- 
+
  @return                image
  */
-+ (UIImage *)generateThumbnail:(UIImage *)image
-                    targetSize:(CGSize)targetSize;
++ (UIImage *)generateThumbnail:(UIImage *)image targetSize:(CGSize)targetSize;
 /*!
  compressedImageWithMaxDataLength
 
@@ -80,8 +78,7 @@
 
  @return                    nsdate
  */
-+ (NSData *)compressedImageWithMaxDataLength:(UIImage *)image
-                               maxDataLength:(CGFloat)maxDataLength;
++ (NSData *)compressedImageWithMaxDataLength:(UIImage *)image maxDataLength:(CGFloat)maxDataLength;
 
 /*!
  compressedImageAndScalingSize
@@ -92,9 +89,7 @@
 
  @return                image nsdata
  */
-+ (NSData *)compressedImageAndScalingSize:(UIImage *)image
-                               targetSize:(CGSize)targetSize
-                               maxDataLen:(CGFloat)maxDataLen;
++ (NSData *)compressedImageAndScalingSize:(UIImage *)image targetSize:(CGSize)targetSize maxDataLen:(CGFloat)maxDataLen;
 
 /*!
  compressedImageAndScalingSize
@@ -105,9 +100,7 @@
 
  @return                image nsdata
  */
-+ (NSData *)compressedImageAndScalingSize:(UIImage *)image
-                               targetSize:(CGSize)targetSize
-                                  percent:(CGFloat)percent;
++ (NSData *)compressedImageAndScalingSize:(UIImage *)image targetSize:(CGSize)targetSize percent:(CGFloat)percent;
 /*!
  compressedImage
 
@@ -120,40 +113,40 @@
 
 /*!
  获取文字显示的尺寸
- 
+
  @param text 文字
  @param font 字体
  @param constrainedSize 文字显示的容器大小
- 
+
  @return 文字显示的尺寸
- 
+
  @discussion 该方法在计算iOS 7以下系统显示的时候默认使用NSLineBreakByTruncatingTail模式。
  */
 + (CGSize)getTextDrawingSize:(NSString *)text font:(UIFont *)font constrainedSize:(CGSize)constrainedSize;
 
 /*!
  判断是否是本地路径
- 
+
  @param path 路径
- 
+
  @return 是否是本地路径
  */
 + (BOOL)isLocalPath:(NSString *)path;
 
 /*!
  判断是否是网络地址
- 
+
  @param url 地址
- 
+
  @return 是否是网络地址
  */
 + (BOOL)isRemoteUrl:(NSString *)url;
 
 /*!
  获取沙盒修正后的文件路径
- 
+
  @param localPath 本地路径
- 
+
  @return 修正后的文件路径
  */
 + (NSString *)getCorrectedFilePath:(NSString *)localPath;
@@ -216,7 +209,7 @@
 
 /*!
  获取当前网络类型
- 
+
  @return    当前网络类型
  */
 + (NSString *)currentNetworkType;
@@ -237,11 +230,11 @@
 
 /*!
  获取非换行的字符串
- 
+
  @param originalString 原始的字符串
- 
+
  @return 非换行的字符串
- 
+
  @discussion 所有换行符将被替换成单个空格
  */
 + (NSString *)getNowrapString:(NSString *)originalString;

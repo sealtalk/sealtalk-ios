@@ -57,9 +57,7 @@
  如果您想和SDK自带的语音消息保持一致和互通，考虑到跨平台和传输的原因，SDK对于WAV音频有所限制.
  具体可以参考RCVoiceMessage中的音频参数说明(nChannels为1，nBitsPerSample为16)。
  */
-- (NSData *)encodeWAVEToAMR:(NSData *)data
-                    channel:(int)nChannels
-             nBitsPerSample:(int)nBitsPerSample;
+- (NSData *)encodeWAVEToAMR:(NSData *)data channel:(int)nChannels nBitsPerSample:(int)nBitsPerSample;
 @end
 
 #endif

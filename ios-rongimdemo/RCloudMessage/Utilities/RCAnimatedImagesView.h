@@ -26,8 +26,6 @@
 @end
 
 @protocol RCAnimatedImagesViewDelegate
-- (NSUInteger)animatedImagesNumberOfImages:
-    (RCAnimatedImagesView *)animatedImagesView;
-- (UIImage *)animatedImagesView:(RCAnimatedImagesView *)animatedImagesView
-                   imageAtIndex:(NSUInteger)index;
+- (NSUInteger)animatedImagesNumberOfImages:(RCAnimatedImagesView *)animatedImagesView;
+- (UIImage *)animatedImagesView:(RCAnimatedImagesView *)animatedImagesView imageAtIndex:(NSUInteger)index;
 @end

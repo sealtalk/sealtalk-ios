@@ -17,22 +17,22 @@
  讨论组通知的类型
  */
 typedef NS_ENUM(NSInteger, RCDGroupNotificationType) {
-  /*!
-   有成员加入群组的通知
-   */
-  RCDInviteGroupNotification = 1,
-  /*!
-   有成员退出群组的通知
-   */
-  RCDQuitGroupNotification,
-  /*!
-   群组名称发生变更的通知
-   */
-  RCDRenameGroupTitleNotification,
-  /*!
-   有成员被踢出群组的通知
-   */
-  RCDRemoveGroupMemberNotification,
+    /*!
+     有成员加入群组的通知
+     */
+    RCDInviteGroupNotification = 1,
+    /*!
+     有成员退出群组的通知
+     */
+    RCDQuitGroupNotification,
+    /*!
+     群组名称发生变更的通知
+     */
+    RCDRenameGroupTitleNotification,
+    /*!
+     有成员被踢出群组的通知
+     */
+    RCDRemoveGroupMemberNotification,
 };
 
 @interface RCDGroupNotificationMessage : RCMessageContent

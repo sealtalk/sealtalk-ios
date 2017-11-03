@@ -45,7 +45,7 @@
 //存储群组信息
 - (void)insertGroupToDB:(RCGroup *)group;
 
-- (void)insertGroupsToDB:(NSMutableArray *)groupList  complete:(void (^)(BOOL))result;
+- (void)insertGroupsToDB:(NSMutableArray *)groupList complete:(void (^)(BOOL))result;
 
 //从表中获取群组信息
 - (RCDGroupInfo *)getGroupByGroupId:(NSString *)groupId;
@@ -67,7 +67,7 @@
 //存储好友信息
 - (void)insertFriendToDB:(RCDUserInfo *)friendInfo;
 
-- (void)insertFriendListToDB:(NSMutableArray *)FriendList  complete:(void (^)(BOOL))result;
+- (void)insertFriendListToDB:(NSMutableArray *)FriendList complete:(void (^)(BOOL))result;
 
 //清空表中的所有的群组信息
 - (BOOL)clearGroupfromDB;

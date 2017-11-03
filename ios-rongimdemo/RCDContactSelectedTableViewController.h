@@ -6,10 +6,11 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <RongIMLib/RongIMLib.h>
+#import <UIKit/UIKit.h>
 
-@interface RCDContactSelectedTableViewController : UIViewController<UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>
+@interface RCDContactSelectedTableViewController
+    : UIViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property(nonatomic, strong) NSArray *keys;
 
@@ -25,9 +26,9 @@
 
 @property(nonatomic, strong) NSString *groupId;
 
-@property (nonatomic, assign) BOOL forCreatingGroup;
+@property(nonatomic, assign) BOOL forCreatingGroup;
 
-@property (nonatomic, assign) BOOL forCreatingDiscussionGroup;
+@property(nonatomic, assign) BOOL forCreatingDiscussionGroup;
 
 @property(nonatomic, strong) NSMutableArray *addDiscussionGroupMembers;
 

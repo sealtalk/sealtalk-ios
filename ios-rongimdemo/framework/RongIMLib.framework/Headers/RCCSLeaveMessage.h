@@ -9,5 +9,5 @@
 #import <RongIMLib/RongIMLib.h>
 #define RCCSLeaveMessageTypeIdentifier @"RC:CsLM"
 @interface RCCSLeaveMessage : RCMessageContent
-@property (nonatomic, strong)NSDictionary *leaveMessageDic;
+@property(nonatomic, strong) NSDictionary *leaveMessageDic;
 @end

@@ -9,5 +9,5 @@
 #import <RongIMLib/RongIMLib.h>
 #define RCCSPullLeaveMessageTypeIdentifier @"RC:CsPLM"
 @interface RCCSPullLeaveMessage : RCMessageContent
-@property (nonatomic,copy)NSString *content;
+@property(nonatomic, copy) NSString *content;
 @end

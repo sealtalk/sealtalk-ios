@@ -19,21 +19,21 @@
  *  @return 修改后的图片
  */
 + (UIImage *)image:(UIImage *)image byScalingToSize:(CGSize)targetSize {
-  UIImage *sourceImage = image;
-  UIImage *newImage = nil;
+    UIImage *sourceImage = image;
+    UIImage *newImage = nil;
 
-  UIGraphicsBeginImageContext(targetSize);
+    UIGraphicsBeginImageContext(targetSize);
 
-  CGRect thumbnailRect = CGRectZero;
-  thumbnailRect.origin = CGPointZero;
-  thumbnailRect.size.width = targetSize.width;
-  thumbnailRect.size.height = targetSize.height;
+    CGRect thumbnailRect = CGRectZero;
+    thumbnailRect.origin = CGPointZero;
+    thumbnailRect.size.width = targetSize.width;
+    thumbnailRect.size.height = targetSize.height;
 
-  [sourceImage drawInRect:thumbnailRect];
+    [sourceImage drawInRect:thumbnailRect];
 
-  newImage = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
 
-  return newImage;
+    return newImage;
 }
 @end

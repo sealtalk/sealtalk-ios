@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		17034A2A1FA3105600E04042 /* RCDDebugNoDisturbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17034A291FA3105600E04042 /* RCDDebugNoDisturbViewController.m */; };
 		17244C181B56553B000EFF79 /* RCDMessageNoDisturbSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17244C171B56553B000EFF79 /* RCDMessageNoDisturbSettingController.m */; };
 		174151F51CBE516A00A4B23B /* RCDPublicServiceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 174151F41CBE516A00A4B23B /* RCDPublicServiceListViewController.m */; };
 		178998221F6244FA00FC44D3 /* sms-received.caf in Resources */ = {isa = PBXBuildFile; fileRef = 178998211F6244FA00FC44D3 /* sms-received.caf */; };
@@ -335,6 +336,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		17034A281FA3105600E04042 /* RCDDebugNoDisturbViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugNoDisturbViewController.h; sourceTree = SOURCE_ROOT; };
+		17034A291FA3105600E04042 /* RCDDebugNoDisturbViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugNoDisturbViewController.m; sourceTree = SOURCE_ROOT; };
 		17244C161B56553B000EFF79 /* RCDMessageNoDisturbSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RCDMessageNoDisturbSettingController.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		17244C171B56553B000EFF79 /* RCDMessageNoDisturbSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RCDMessageNoDisturbSettingController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		174151F31CBE516A00A4B23B /* RCDPublicServiceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPublicServiceListViewController.h; sourceTree = SOURCE_ROOT; };
@@ -1227,6 +1230,8 @@
 				9891E8E71D82B0FE00E874AB /* Cell */,
 				9C2763351F6BF2AF006C9680 /* RCDDebugViewController.h */,
 				9C2763361F6BF2AF006C9680 /* RCDDebugViewController.m */,
+				17034A281FA3105600E04042 /* RCDDebugNoDisturbViewController.h */,
+				17034A291FA3105600E04042 /* RCDDebugNoDisturbViewController.m */,
 				A662A0DF1AEE50D400847EEB /* RCDAboutRongCloudTableViewController.h */,
 				A662A0E01AEE50D400847EEB /* RCDAboutRongCloudTableViewController.m */,
 			);
@@ -2372,6 +2377,7 @@
 				98AB3C091D38940600C3B87C /* SortForTime.m in Sources */,
 				466684331B5DEC7C000B7504 /* RCDConversationSettingTableViewHeaderItem.m in Sources */,
 				17F7A8481DAE187200E27D25 /* RCDSearchDataManager.m in Sources */,
+				17034A2A1FA3105600E04042 /* RCDDebugNoDisturbViewController.m in Sources */,
 				E4BFAE271A121839007165B1 /* main.m in Sources */,
 				17F7A84B1DAE187200E27D25 /* RCDSearchResultModel.m in Sources */,
 				27D6FF9C1DFE4D2100053F69 /* RCDSettingServerUrlViewController.m in Sources */,

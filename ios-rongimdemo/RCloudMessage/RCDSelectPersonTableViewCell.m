@@ -11,18 +11,18 @@
 @implementation RCDSelectPersonTableViewCell
 
 - (void)awakeFromNib {
-  [super awakeFromNib];
-  self.ivAva.clipsToBounds = YES;
-  self.ivAva.layer.cornerRadius = 5.f;
+    [super awakeFromNib];
+    self.ivAva.clipsToBounds = YES;
+    self.ivAva.layer.cornerRadius = 5.f;
 }
 
 - (void)setSelected:(BOOL)selected {
-  [super setSelected:selected];
-  if (selected) {
-    _ivSelected.image = [UIImage imageNamed:@"select"];
-  } else {
-    _ivSelected.image = [UIImage imageNamed:@"unselect"];
-  }
+    [super setSelected:selected];
+    if (selected) {
+        _ivSelected.image = [UIImage imageNamed:@"select"];
+    } else {
+        _ivSelected.image = [UIImage imageNamed:@"unselect"];
+    }
 }
 
 @end

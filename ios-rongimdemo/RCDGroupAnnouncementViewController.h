@@ -6,13 +6,13 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "UITextViewAndPlaceholder.h"
+#import <UIKit/UIKit.h>
 
-@interface RCDGroupAnnouncementViewController : UIViewController<UITextViewDelegate,UIAlertViewDelegate>
+@interface RCDGroupAnnouncementViewController : UIViewController <UITextViewDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, strong) UITextViewAndPlaceholder *AnnouncementContent;
+@property(nonatomic, strong) UITextViewAndPlaceholder *AnnouncementContent;
 
-@property (nonatomic, strong) NSString *GroupId;
+@property(nonatomic, strong) NSString *GroupId;
 
 @end

@@ -24,7 +24,7 @@
 
 /*!
  是否关闭菜单
- 
+
  @discussion 默认值为NO。
  */
 @property(nonatomic, assign) BOOL disableActionMenu;

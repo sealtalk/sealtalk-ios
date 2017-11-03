@@ -39,8 +39,7 @@
 #define instancetype id
 #endif
 
-typedef int (^FMDBExecuteStatementsCallbackBlock)(
-    NSDictionary *resultsDictionary);
+typedef int (^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary);
 
 /** A SQLite ([http://sqlite.org/](http://sqlite.org/)) Objective-C wrapper.
 
@@ -77,23 +76,23 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(
 
 @interface FMDatabase : NSObject {
 
-  sqlite3 *_db;
-  NSString *_databasePath;
-  BOOL _logsErrors;
-  BOOL _crashOnErrors;
-  BOOL _traceExecution;
-  BOOL _checkedOut;
-  BOOL _shouldCacheStatements;
-  BOOL _isExecutingStatement;
-  BOOL _inTransaction;
-  NSTimeInterval _maxBusyRetryTimeInterval;
-  NSTimeInterval _startBusyRetryTime;
+    sqlite3 *_db;
+    NSString *_databasePath;
+    BOOL _logsErrors;
+    BOOL _crashOnErrors;
+    BOOL _traceExecution;
+    BOOL _checkedOut;
+    BOOL _shouldCacheStatements;
+    BOOL _isExecutingStatement;
+    BOOL _inTransaction;
+    NSTimeInterval _maxBusyRetryTimeInterval;
+    NSTimeInterval _startBusyRetryTime;
 
-  NSMutableDictionary *_cachedStatements;
-  NSMutableSet *_openResultSets;
-  NSMutableSet *_openFunctions;
+    NSMutableDictionary *_cachedStatements;
+    NSMutableSet *_openResultSets;
+    NSMutableSet *_openFunctions;
 
-  NSDateFormatter *_dateFormat;
+    NSDateFormatter *_dateFormat;
 }
 
 ///-----------------
@@ -309,8 +308,7 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(
  @see [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html)
  */
 
-- (BOOL)executeUpdate:(NSString *)sql
- withErrorAndBindings:(NSError **)outErr, ...;
+- (BOOL)executeUpdate:(NSString *)sql withErrorAndBindings:(NSError **)outErr, ...;
 
 /** Execute single update statement
 
@@ -320,8 +318,7 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(
  instead.
  */
 
-- (BOOL)update:(NSString *)sql
-    withErrorAndBindings:(NSError **)outErr, ... __attribute__((deprecated));
+- (BOOL)update:(NSString *)sql withErrorAndBindings:(NSError **)outErr, ... __attribute__((deprecated));
 
 /** Execute single update statement
 
@@ -413,8 +410,7 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(
  using `NSString` method `stringWithFormat`), but rather simply `VALUES (%@)`.
  */
 
-- (BOOL)executeUpdateWithFormat:(NSString *)format,
-                                ... NS_FORMAT_FUNCTION(1, 2);
+- (BOOL)executeUpdateWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1, 2);
 
 /** Execute single update statement
 
@@ -475,8 +471,7 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(
  @see lastErrorMessage
 */
 
-- (BOOL)executeUpdate:(NSString *)sql
-    withParameterDictionary:(NSDictionary *)arguments;
+- (BOOL)executeUpdate:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments;
 
 /** Execute single update statement
 
@@ -557,8 +552,7 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(
 
  */
 
-- (BOOL)executeStatements:(NSString *)sql
-          withResultBlock:(FMDBExecuteStatementsCallbackBlock)block;
+- (BOOL)executeStatements:(NSString *)sql withResultBlock:(FMDBExecuteStatementsCallbackBlock)block;
 
 /** Last insert rowid
 
@@ -691,8 +685,7 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(
 
  */
 
-- (FMResultSet *)executeQueryWithFormat:(NSString *)format,
-                                        ... NS_FORMAT_FUNCTION(1, 2);
+- (FMResultSet *)executeQueryWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1, 2);
 
 /** Execute select statement
 
@@ -719,8 +712,7 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(
  @see [`FMResultSet next`](<[FMResultSet next]>)
  */
 
-- (FMResultSet *)executeQuery:(NSString *)sql
-         withArgumentsInArray:(NSArray *)arguments;
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
 
 /** Execute select statement
 
@@ -747,8 +739,7 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(
  @see [`FMResultSet next`](<[FMResultSet next]>)
  */
 
-- (FMResultSet *)executeQuery:(NSString *)sql
-      withParameterDictionary:(NSDictionary *)arguments;
+- (FMResultSet *)executeQuery:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments;
 
 // Documentation forthcoming.
 - (FMResultSet *)executeQuery:(NSString *)sql withVAList:(va_list)args;
@@ -1161,8 +1152,7 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(
 
 - (void)makeFunctionNamed:(NSString *)name
          maximumArguments:(int)count
-                withBlock:(void (^)(sqlite3_context *context, int argc,
-                                    sqlite3_value **argv))block;
+                withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block;
 
 ///---------------------
 /// @name Date formatter
@@ -1277,10 +1267,10 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(
  */
 
 @interface FMStatement : NSObject {
-  sqlite3_stmt *_statement;
-  NSString *_query;
-  long _useCount;
-  BOOL _inUse;
+    sqlite3_stmt *_statement;
+    NSString *_query;
+    long _useCount;
+    BOOL _inUse;
 }
 
 ///-----------------

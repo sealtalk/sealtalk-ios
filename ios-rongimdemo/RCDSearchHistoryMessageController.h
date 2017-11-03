@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <RongIMKit/RongIMKit.h>
+#import <UIKit/UIKit.h>
 @interface RCDSearchHistoryMessageController : UITableViewController
 /*!
  当前会话的会话类型

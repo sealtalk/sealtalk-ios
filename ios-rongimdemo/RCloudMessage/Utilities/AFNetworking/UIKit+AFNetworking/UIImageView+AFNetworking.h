@@ -70,8 +70,7 @@
  post-processing, such as color correction, face detection, or other effects.
  See https://github.com/AFNetworking/AFCoreImageSerializer
  */
-@property(nonatomic, strong) id<AFURLResponseSerialization>
-    imageResponseSerializer;
+@property(nonatomic, strong) id<AFURLResponseSerialization> imageResponseSerializer;
 
 ///--------------------
 /// @name Setting Image
@@ -114,8 +113,7 @@
  finishes. If `nil`, the image view will not change its image until the image
  request finishes.
  */
-- (void)setImageWithURL:(NSURL *)url
-       placeholderImage:(UIImage *)placeholderImage;
+- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage;
 
 /**
  Asynchronously downloads an image from the specified URL request, and sets it
@@ -147,12 +145,8 @@
  */
 - (void)setImageWithURLRequest:(NSURLRequest *)urlRequest
               placeholderImage:(UIImage *)placeholderImage
-                       success:(void (^)(NSURLRequest *request,
-                                         NSHTTPURLResponse *response,
-                                         UIImage *image))success
-                       failure:(void (^)(NSURLRequest *request,
-                                         NSHTTPURLResponse *response,
-                                         NSError *error))failure;
+                       success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image))success
+                       failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure;
 
 /**
  Cancels any executing image operation for the receiver, if one exists.

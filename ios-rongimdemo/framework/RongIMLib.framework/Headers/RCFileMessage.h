@@ -13,7 +13,7 @@
  */
 #define RCFileMessageTypeIdentifier @"RC:FileMsg"
 
-@interface RCFileMessage : RCMessageContent<NSCoding>
+@interface RCFileMessage : RCMessageContent <NSCoding>
 
 /*!
  文件名

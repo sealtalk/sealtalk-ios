@@ -40,8 +40,6 @@
  @param portrait    用户头像的URL
  @return            用户信息对象
  */
-- (instancetype)initWithUserId:(NSString *)userId
-                          name:(NSString *)username
-                      portrait:(NSString *)portrait;
+- (instancetype)initWithUserId:(NSString *)userId name:(NSString *)username portrait:(NSString *)portrait;
 
 @end

@@ -71,8 +71,7 @@
  post-processing, such as color correction, face detection, or other effects.
  See https://github.com/AFNetworking/AFCoreImageSerializer
  */
-@property(nonatomic, strong) id<AFURLResponseSerialization>
-    imageResponseSerializer;
+@property(nonatomic, strong) id<AFURLResponseSerialization> imageResponseSerializer;
 
 ///--------------------
 /// @name Setting Image
@@ -107,9 +106,7 @@
  finishes. If `nil`, the button will not change its image until the image
  request finishes.
  */
-- (void)setImageForState:(UIControlState)state
-                 withURL:(NSURL *)url
-        placeholderImage:(UIImage *)placeholderImage;
+- (void)setImageForState:(UIControlState)state withURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage;
 
 /**
  Asynchronously downloads an image from the specified URL request, and sets it
@@ -140,9 +137,7 @@
 - (void)setImageForState:(UIControlState)state
           withURLRequest:(NSURLRequest *)urlRequest
         placeholderImage:(UIImage *)placeholderImage
-                 success:(void (^)(NSURLRequest *request,
-                                   NSHTTPURLResponse *response,
-                                   UIImage *image))success
+                 success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image))success
                  failure:(void (^)(NSError *error))failure;
 
 ///-------------------------------
@@ -206,9 +201,7 @@
 - (void)setBackgroundImageForState:(UIControlState)state
                     withURLRequest:(NSURLRequest *)urlRequest
                   placeholderImage:(UIImage *)placeholderImage
-                           success:(void (^)(NSURLRequest *request,
-                                             NSHTTPURLResponse *response,
-                                             UIImage *image))success
+                           success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image))success
                            failure:(void (^)(NSError *error))failure;
 
 ///------------------------------

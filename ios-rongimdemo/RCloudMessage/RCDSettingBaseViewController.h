@@ -15,13 +15,12 @@
  *
  *  @param isSuccess isSuccess description
  */
-typedef void(^rcdClearHistory)(BOOL isSuccess);
+typedef void (^rcdClearHistory)(BOOL isSuccess);
 
 /**
  *  RCSettingViewController
  */
-@interface RCDSettingBaseViewController
-    : RCDConversationSettingBaseViewController
+@interface RCDSettingBaseViewController : RCDConversationSettingBaseViewController
 
 /**
  *  targetId
@@ -41,8 +40,7 @@ typedef void(^rcdClearHistory)(BOOL isSuccess);
 /**
  *  UIActionSheet
  */
-@property(nonatomic, readonly, strong)
-    UIActionSheet *clearMsgHistoryActionSheet;
+@property(nonatomic, readonly, strong) UIActionSheet *clearMsgHistoryActionSheet;
 
 /**
  *  clearHistoryMessage
@@ -56,8 +54,7 @@ typedef void(^rcdClearHistory)(BOOL isSuccess);
  *  @param indexPathOfSelectedItem indexPathOfSelectedItem description
  *  @param users                   所有在headerView中的user
  */
-- (void)settingTableViewHeader:
-            (RCDConversationSettingTableViewHeader *)settingTableViewHeader
+- (void)settingTableViewHeader:(RCDConversationSettingTableViewHeader *)settingTableViewHeader
        indexPathOfSelectedItem:(NSIndexPath *)indexPathOfSelectedItem
             allTheSeletedUsers:(NSArray *)users;
 

@@ -13,10 +13,10 @@
 #ifndef __RCMessageContent
 #define __RCMessageContent
 
+#import "RCMentionedInfo.h"
 #import "RCStatusDefine.h"
 #import "RCUserInfo.h"
 #import <Foundation/Foundation.h>
-#import "RCMentionedInfo.h"
 
 /*!
  消息内容的编解码协议
@@ -58,9 +58,9 @@
 
 /*!
  返回可搜索的关键内容列表
- 
+
  @return 返回可搜索的关键内容列表
- 
+
  @discussion 这里返回的关键内容列表将用于消息搜索，自定义消息必须要实现此接口才能进行搜索。
  */
 - (NSArray<NSString *> *)getSearchableWords;
@@ -113,9 +113,7 @@
  所有的消息内容均为此类的子类，包括SDK自带的消息（如RCTextMessage、RCImageMessage等）和用户自定义的消息。
  所有的自定义消息必须继承此类，并实现RCMessageCoding和RCMessagePersistentCompatible、RCMessageContentView协议。
  */
-@interface RCMessageContent
-    : NSObject <RCMessageCoding, RCMessagePersistentCompatible,
-                RCMessageContentView>
+@interface RCMessageContent : NSObject <RCMessageCoding, RCMessagePersistentCompatible, RCMessageContentView>
 
 /*!
  消息内容中携带的发送者的用户信息
@@ -139,11 +137,10 @@
 
 /*!
  将消息内容中携带的@提醒信息解码
- 
+
  @param dictionary @提醒信息的Dictionary
  */
 - (void)decodeMentionedInfo:(NSDictionary *)dictionary;
-
 
 /*!
  消息内容的原始json数据

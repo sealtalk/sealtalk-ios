@@ -8,7 +8,7 @@
 
 #import "RCDSettingUserDefaults.h"
 
-#define RCUserDefaultsSet(value,key) [[NSUserDefaults standardUserDefaults] setValue:value forKey:key]
+#define RCUserDefaultsSet(value, key) [[NSUserDefaults standardUserDefaults] setValue:value forKey:key]
 #define RCUserDefaultsGet(key) [[NSUserDefaults standardUserDefaults] valueForKey:key]
 
 static NSString *rcAppKeySettingKey = @"rcAppKeySettingKey";

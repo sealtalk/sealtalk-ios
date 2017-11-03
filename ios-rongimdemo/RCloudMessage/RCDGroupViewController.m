@@ -22,8 +22,7 @@
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
 
-@interface RCDGroupViewController () <
-UITableViewDataSource, UITableViewDelegate>
+@interface RCDGroupViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property(nonatomic, strong) NSMutableArray *groups;
 //@property(nonatomic, strong) UILabel *noGroup;
@@ -32,41 +31,37 @@ UITableViewDataSource, UITableViewDelegate>
 
 @implementation RCDGroupViewController
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         //设置为不用默认渲染方式
-        self.tabBarItem.image = [[UIImage imageNamed:@"icon_group"]
-                                 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.tabBarItem.selectedImage = [[UIImage imageNamed:@"icon_group_hover"]
-                                         imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.tabBarItem.image =
+            [[UIImage imageNamed:@"icon_group"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.tabBarItem.selectedImage =
+            [[UIImage imageNamed:@"icon_group_hover"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         //设置tableView样式
-        self.tableView.separatorColor =
-        [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
+        self.tableView.separatorColor = [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
         self.tableView.tableFooterView = [UIView new];
-        
+
         __weak RCDGroupViewController *weakSelf = self;
-        
-        _groups = [NSMutableArray
-                   arrayWithArray:[[RCDataBaseManager shareInstance] getAllGroup]];
+
+        _groups = [NSMutableArray arrayWithArray:[[RCDataBaseManager shareInstance] getAllGroup]];
         if ([_groups count] > 0) {
             [weakSelf.tableView reloadData];
         }
-        
+
         [RCDHTTPTOOL getMyGroupsWithBlock:^(NSMutableArray *result) {
-            
-            dispatch_async(
-                           dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                               NSMutableArray *tempGroups = [NSMutableArray
-                                                             arrayWithArray:[[RCDataBaseManager shareInstance] getAllGroup]];
-                               dispatch_async(dispatch_get_main_queue(), ^{
-                                   _groups = tempGroups;
-                                   [weakSelf.tableView reloadData];
-                               });
-                           });
+
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                NSMutableArray *tempGroups =
+                    [NSMutableArray arrayWithArray:[[RCDataBaseManager shareInstance] getAllGroup]];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    _groups = tempGroups;
+                    [weakSelf.tableView reloadData];
+                });
+            });
         }];
     }
     return self;
@@ -76,10 +71,10 @@ UITableViewDataSource, UITableViewDelegate>
     self = [super initWithCoder:aDecoder];
     if (self) {
         //设置为不用默认渲染方式
-        self.tabBarItem.image = [[UIImage imageNamed:@"icon_group"]
-                                 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.tabBarItem.selectedImage = [[UIImage imageNamed:@"icon_group_hover"]
-                                         imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.tabBarItem.image =
+            [[UIImage imageNamed:@"icon_group"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.tabBarItem.selectedImage =
+            [[UIImage imageNamed:@"icon_group_hover"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }
     return self;
 }
@@ -91,7 +86,7 @@ UITableViewDataSource, UITableViewDelegate>
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-  
+
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
 }
 
@@ -101,14 +96,12 @@ UITableViewDataSource, UITableViewDelegate>
 }
 
 #pragma mark - UITableViewDataSource
-- (NSInteger)tableView:(UITableView *)tableView
- numberOfRowsInSection:(NSInteger)section {
-    
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
     return _groups.count;
 }
 
-- (void)tableView:(UITableView *)tableView
-didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCDGroupInfo *groupInfo = _groups[indexPath.row];
     RCDChatViewController *temp = [[RCDChatViewController alloc] init];
     temp.targetId = groupInfo.groupId;
@@ -118,23 +111,21 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.navigationController pushViewController:temp animated:YES];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView
-         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
     static NSString *CellIdentifier = @"RCDGroupCell";
     RCDGroupTableViewCell *cell = (RCDGroupTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if(!cell){
-        cell = [[RCDGroupTableViewCell alloc]init];
+    if (!cell) {
+        cell = [[RCDGroupTableViewCell alloc] init];
     }
-    
+
     RCDGroupInfo *group = _groups[indexPath.row];
     if ([isDisplayID isEqualToString:@"YES"]) {
         cell.lblGroupId.text = group.groupId;
     }
-    
+
     [cell setModel:group];
-    
-    
+
     return cell;
 }
 

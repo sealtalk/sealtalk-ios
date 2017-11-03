@@ -25,9 +25,7 @@
 @property(nonatomic, weak) id<HeadCollectionTouchDelegate> touchDelegate;
 
 #pragma mark init
-- (instancetype)initWithFrame:(CGRect)frame
-                 participants:(NSArray *)userIds
-                touchDelegate:touchDelegate;
+- (instancetype)initWithFrame:(CGRect)frame participants:(NSArray *)userIds touchDelegate:touchDelegate;
 
 - (instancetype)initWithFrame:(CGRect)frame
                  participants:(NSArray *)userIds

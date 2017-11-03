@@ -11,11 +11,11 @@
 
 @implementation AppkeyModel
 - (instancetype)initWithKey:(NSString *)appKey env:(int)env {
-  self = [super init];
-  if (self) {
-    self.appKey = appKey;
-    self.env = env;
-  }
-  return self;
+    self = [super init];
+    if (self) {
+        self.appKey = appKey;
+        self.env = env;
+    }
+    return self;
 }
 @end

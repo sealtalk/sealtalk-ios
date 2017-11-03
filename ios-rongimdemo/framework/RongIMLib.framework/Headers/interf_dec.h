@@ -25,8 +25,7 @@ extern "C" {
 
 void *Decoder_Interface_init(void);
 void Decoder_Interface_exit(void *state);
-void Decoder_Interface_Decode(void *state, const unsigned char *in, short *out,
-                              int bfi);
+void Decoder_Interface_Decode(void *state, const unsigned char *in, short *out, int bfi);
 
 #ifdef __cplusplus
 }

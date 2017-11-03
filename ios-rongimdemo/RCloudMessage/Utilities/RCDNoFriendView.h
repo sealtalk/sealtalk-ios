@@ -10,6 +10,6 @@
 
 @interface RCDNoFriendView : UIView
 
-@property (nonatomic, strong)UILabel *displayLabel;
+@property(nonatomic, strong) UILabel *displayLabel;
 
 @end

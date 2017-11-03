@@ -13,29 +13,25 @@
 @end
 
 @implementation RCDAboutRongCloudTableViewController
-- (void)tableView:(UITableView *)tableView
-    didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  NSLog(@"select row %ld", indexPath.row);
-  [[UIApplication sharedApplication] openURL:[self getUrlAt:indexPath]];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"select row %ld", indexPath.row);
+    [[UIApplication sharedApplication] openURL:[self getUrlAt:indexPath]];
 }
 
 - (NSArray *)urls {
-  if (!_urls) {
-    NSArray *section0 = [NSArray
-        arrayWithObjects:@"http://rongcloud.cn/downloads/history/ios",
-                         @"http://rongcloud.cn/features",
-                         @"http://docs.rongcloud.cn/api/ios/imkit/index.html",
-                         nil];
-    NSArray *section1 = [NSArray
-        arrayWithObjects:@"http://rongcloud.cn/", @"http://rongcloud.cn/", nil];
-    _urls = [NSArray arrayWithObjects:section0, section1, nil];
-  }
-  return _urls;
+    if (!_urls) {
+        NSArray *section0 =
+            [NSArray arrayWithObjects:@"http://rongcloud.cn/downloads/history/ios", @"http://rongcloud.cn/features",
+                                      @"http://docs.rongcloud.cn/api/ios/imkit/index.html", nil];
+        NSArray *section1 = [NSArray arrayWithObjects:@"http://rongcloud.cn/", @"http://rongcloud.cn/", nil];
+        _urls = [NSArray arrayWithObjects:section0, section1, nil];
+    }
+    return _urls;
 }
 
 - (NSURL *)getUrlAt:(NSIndexPath *)indexPath {
-  NSArray *section = self.urls[indexPath.section];
-  NSString *urlString = section[indexPath.row];
-  return [NSURL URLWithString:urlString];
+    NSArray *section = self.urls[indexPath.section];
+    NSString *urlString = section[indexPath.row];
+    return [NSURL URLWithString:urlString];
 }
 @end

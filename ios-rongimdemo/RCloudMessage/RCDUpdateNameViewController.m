@@ -11,7 +11,6 @@
 #import "UIColor+RCColor.h"
 #import <RongIMKit/RongIMKit.h>
 
-
 NSString *const RCDUpdateNameTableViewCellIdentifier = @"RCDUpdateNameTableViewCellIdentifier";
 
 #define ScreenSize [UIScreen mainScreen].bounds.size
@@ -24,35 +23,35 @@ NSString *const RCDUpdateNameTableViewCellIdentifier = @"RCDUpdateNameTableViewC
 
 - (instancetype)init {
     self = [super init];
-    if(self){
+    if (self) {
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
-        self.tableView.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1];
-        [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:RCDUpdateNameTableViewCellIdentifier];
+        self.tableView.backgroundColor = [UIColor colorWithRed:239 / 255.0 green:239 / 255.0 blue:244 / 255.0 alpha:1];
+        [self.tableView registerClass:[UITableViewCell class]
+               forCellReuseIdentifier:RCDUpdateNameTableViewCellIdentifier];
     }
     return self;
 }
 
 - (void)viewDidLoad {
-  [super viewDidLoad];
+    [super viewDidLoad];
 
-  [self.navigationController.navigationBar
-      setBarTintColor:[UIColor colorWithHexString:@"0195ff" alpha:1.0f]];
-  [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithHexString:@"0195ff" alpha:1.0f]];
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
 
-  self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
-      initWithTitle:@"取消"
-              style:UIBarButtonItemStylePlain
-             target:self
-             action:@selector(backBarButtonItemClicked:)];
+    self.navigationItem.leftBarButtonItem =
+        [[UIBarButtonItem alloc] initWithTitle:@"取消"
+                                         style:UIBarButtonItemStylePlain
+                                        target:self
+                                        action:@selector(backBarButtonItemClicked:)];
 
-  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-      initWithTitle:@"保存"
-              style:UIBarButtonItemStylePlain
-             target:self
-             action:@selector(rightBarButtonItemClicked:)];
+    self.navigationItem.rightBarButtonItem =
+        [[UIBarButtonItem alloc] initWithTitle:@"保存"
+                                         style:UIBarButtonItemStylePlain
+                                        target:self
+                                        action:@selector(rightBarButtonItemClicked:)];
 
-  self.nameTextField.text = self.displayText;
+    self.nameTextField.text = self.displayText;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -61,62 +60,59 @@ NSString *const RCDUpdateNameTableViewCellIdentifier = @"RCDUpdateNameTableViewC
 }
 
 - (void)backBarButtonItemClicked:(id)sender {
-  [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)rightBarButtonItemClicked:(id)sender {
-  //保存讨论组名称
-  if (self.nameTextField.text.length == 0) {
-    UIAlertView *alertView =
-        [[UIAlertView alloc] initWithTitle:nil
-                                   message:@"请输入讨论组名称!"
-                                  delegate:nil
-                         cancelButtonTitle:@"确定"
-                         otherButtonTitles:nil, nil];
-    [alertView show];
-    return;
-  }
-  //讨论组名称不能包含空格
-  NSRange range = [self.nameTextField.text rangeOfString:@" "];
-  if (range.location != NSNotFound) {
-    UIAlertView *alertView =
-        [[UIAlertView alloc] initWithTitle:nil
-                                   message:@"讨论组名称不能包含空格!"
-                                  delegate:nil
-                         cancelButtonTitle:@"确定"
-                         otherButtonTitles:nil, nil];
-    [alertView show];
-    return;
-  }
+    //保存讨论组名称
+    if (self.nameTextField.text.length == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"请输入讨论组名称!"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil, nil];
+        [alertView show];
+        return;
+    }
+    //讨论组名称不能包含空格
+    NSRange range = [self.nameTextField.text rangeOfString:@" "];
+    if (range.location != NSNotFound) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"讨论组名称不能包含空格!"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil, nil];
+        [alertView show];
+        return;
+    }
 
-  //回传值
-  if (self.setDisplayTextCompletion) {
-    self.setDisplayTextCompletion(self.nameTextField.text);
-  }
+    //回传值
+    if (self.setDisplayTextCompletion) {
+        self.setDisplayTextCompletion(self.nameTextField.text);
+    }
 
-  //保存设置
-  [[RCIM sharedRCIM] setDiscussionName:self.targetId
-      name:self.nameTextField.text
-      success:^{
+    //保存设置
+    [[RCIM sharedRCIM] setDiscussionName:self.targetId
+                                    name:self.nameTextField.text
+                                 success:^{
 
-      }
-      error:^(RCErrorCode status){
+                                 }
+                                   error:^(RCErrorCode status){
 
-      }];
-  [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                   }];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-  [super viewWillDisappear:animated];
+    [super viewWillDisappear:animated];
 
-  //收起键盘
-  [self.nameTextField resignFirstResponder];
+    //收起键盘
+    [self.nameTextField resignFirstResponder];
 }
 
 #pragma mark - UITableViewDelegate
-- (CGFloat)tableView:(UITableView *)tableView
-    heightForHeaderInSection:(NSInteger)section {
-  return 12.0f;
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 12.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -129,17 +125,19 @@ NSString *const RCDUpdateNameTableViewCellIdentifier = @"RCDUpdateNameTableViewC
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:RCDUpdateNameTableViewCellIdentifier forIndexPath:indexPath];
-    if(!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RCDUpdateNameTableViewCellIdentifier];
+    UITableViewCell *cell =
+        [tableView dequeueReusableCellWithIdentifier:RCDUpdateNameTableViewCellIdentifier forIndexPath:indexPath];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:RCDUpdateNameTableViewCellIdentifier];
     }
     [cell.contentView addSubview:self.nameTextField];
     return cell;
 }
 
 - (UITextField *)nameTextField {
-    if(!_nameTextField){
-        _nameTextField = [[UITextField alloc]initWithFrame:CGRectMake(8, 0, ScreenSize.width-8-8, 44.0f)];
+    if (!_nameTextField) {
+        _nameTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, ScreenSize.width - 8 - 8, 44.0f)];
         _nameTextField.font = [UIFont systemFontOfSize:14];
         _nameTextField.clearButtonMode = UITextFieldViewModeAlways;
     }

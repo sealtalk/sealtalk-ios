@@ -21,8 +21,7 @@
  *  @param indexPathForSelectedItem indexPathForSelectedItem description
  *  @param users users description
  */
-- (void)settingTableViewHeader:
-            (RCDConversationSettingTableViewHeader *)settingTableViewHeader
+- (void)settingTableViewHeader:(RCDConversationSettingTableViewHeader *)settingTableViewHeader
        indexPathOfSelectedItem:(NSIndexPath *)indexPathOfSelectedItem
             allTheSeletedUsers:(NSArray *)users;
 
@@ -46,8 +45,7 @@
  *  RCConversationSettingTableViewHeader
  */
 @interface RCDConversationSettingTableViewHeader
-    : UICollectionView <UICollectionViewDataSource, UICollectionViewDelegate,
-                        UICollectionViewDelegateFlowLayout>
+    : UICollectionView <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 /**
  *  showDeleteTip
@@ -67,8 +65,7 @@
 /**
  *  call back
  */
-@property(weak, nonatomic) id<RCDConversationSettingTableViewHeaderDelegate>
-    settingTableViewHeaderDelegate;
+@property(weak, nonatomic) id<RCDConversationSettingTableViewHeaderDelegate> settingTableViewHeaderDelegate;
 /**
  *  contains the RCUserInfo
  */

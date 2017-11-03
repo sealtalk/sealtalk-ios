@@ -49,8 +49,7 @@
  should happen immediately.
  */
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
-- (void)setProgressWithUploadProgressOfTask:(NSURLSessionUploadTask *)task
-                                   animated:(BOOL)animated;
+- (void)setProgressWithUploadProgressOfTask:(NSURLSessionUploadTask *)task animated:(BOOL)animated;
 #endif
 
 /**
@@ -61,8 +60,7 @@
  should happen immediately.
  */
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
-- (void)setProgressWithDownloadProgressOfTask:(NSURLSessionDownloadTask *)task
-                                     animated:(BOOL)animated;
+- (void)setProgressWithDownloadProgressOfTask:(NSURLSessionDownloadTask *)task animated:(BOOL)animated;
 #endif
 
 ///------------------------------------
@@ -76,9 +74,7 @@
  @param animated `YES` if the change should be animated, `NO` if the change
  should happen immediately.
  */
-- (void)setProgressWithUploadProgressOfOperation:
-            (AFURLConnectionOperation *)operation
-                                        animated:(BOOL)animated;
+- (void)setProgressWithUploadProgressOfOperation:(AFURLConnectionOperation *)operation animated:(BOOL)animated;
 
 /**
  Binds the progress to the download progress of the specified request operation.
@@ -87,9 +83,7 @@
  @param animated `YES` if the change should be animated, `NO` if the change
  should happen immediately.
  */
-- (void)setProgressWithDownloadProgressOfOperation:
-            (AFURLConnectionOperation *)operation
-                                          animated:(BOOL)animated;
+- (void)setProgressWithDownloadProgressOfOperation:(AFURLConnectionOperation *)operation animated:(BOOL)animated;
 
 @end
 

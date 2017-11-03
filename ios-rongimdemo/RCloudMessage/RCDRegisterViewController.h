@@ -8,7 +8,6 @@
 
 #import "RCAnimatedImagesView.h"
 #import <UIKit/UIKit.h>
-@interface RCDRegisterViewController
-    : UIViewController <RCAnimatedImagesViewDelegate>
+@interface RCDRegisterViewController : UIViewController <RCAnimatedImagesViewDelegate>
 
 @end

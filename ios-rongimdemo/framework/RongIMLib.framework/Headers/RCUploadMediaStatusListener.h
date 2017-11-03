@@ -33,7 +33,7 @@
  content:上传成功之后，需要发送的消息内容。
  您可以使用currentMessage，把其中content属性对应的url字段设置成您上传成功的网络URL。
  请参考下面代码。
- 
+
  升级说明：如果您之前使用了此接口，请参考下面代码把参数从 url 替换成 message。
  if ([currentMessage.content isKindOfClass:[RCImageMessage class]]) {
     RCImageMessage *content = (RCImageMessage *)currentMessage.content;
@@ -55,7 +55,7 @@
 /*!
  上传取消需要调用的block
  */
-@property(nonatomic, strong) void (^cancelBlock)();
+@property(nonatomic, strong) void (^cancelBlock)(void);
 
 /*!
  初始化媒体文件上传进度更新的IMKit监听
@@ -72,11 +72,11 @@
                  uploadProgress:(void (^)(int progress))progressBlock
                   uploadSuccess:(void (^)(RCMessageContent *content))successBlock
                     uploadError:(void (^)(RCErrorCode errorCode))errorBlock
-                   uploadCancel:(void (^)())cancelBlock;
+                   uploadCancel:(void (^)(void))cancelBlock;
 
 /*!
  取消当前上传
- 
+
  @discussion 如果您实现取消正在上传的媒体消息功能，则必须实现此回调。
  您需要在取消成功之后，调用cancelBlock通知SDK，SDK会自动更新UI。
  */

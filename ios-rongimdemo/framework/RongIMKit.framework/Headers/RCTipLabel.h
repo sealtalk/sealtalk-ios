@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "RCAttributedLabel.h"
+#import <UIKit/UIKit.h>
 
 /*!
  灰条提示Label
@@ -21,7 +21,7 @@
 
 /*!
  初始化灰条提示Label对象
- 
+
  @return 灰条提示Label对象
  */
 + (instancetype)greyTipLabel;

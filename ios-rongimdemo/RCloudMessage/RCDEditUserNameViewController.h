@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCDEditUserNameViewController : UIViewController<UITextFieldDelegate>
+@interface RCDEditUserNameViewController : UIViewController <UITextFieldDelegate>
 @property(nonatomic, strong) UITextField *userName;
 @property(nonatomic, strong) UIView *BGView;
 

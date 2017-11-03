@@ -62,7 +62,7 @@
 /*!
  图片消息的原始图片信息
  */
-@property(nonatomic, strong,readonly) NSData *originalImageData;
+@property(nonatomic, strong, readonly) NSData *originalImageData;
 
 /*!
  初始化图片消息
@@ -82,7 +82,7 @@
 
 /*!
  初始化图片消息
- 
+
  @param imageData    图片的原始数据
  @return            图片消息对象
  */

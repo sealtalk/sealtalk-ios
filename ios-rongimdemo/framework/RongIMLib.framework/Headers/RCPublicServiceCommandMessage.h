@@ -20,7 +20,7 @@
  @discussion 公众服务请求消息类，此消息不存储，也不计入未读消息数。
  此消息仅用于客户端公共服务账号中的菜单，向服务器发送请求。
  */
-@interface RCPublicServiceCommandMessage : RCMessageContent<NSCoding>
+@interface RCPublicServiceCommandMessage : RCMessageContent <NSCoding>
 
 /*!
  请求的名称

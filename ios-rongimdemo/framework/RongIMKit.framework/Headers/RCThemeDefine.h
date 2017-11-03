@@ -19,4 +19,3 @@ typedef NS_ENUM(NSInteger, RCUserAvatarStyle) {
      */
     RC_USER_AVATAR_CYCLE
 };
-

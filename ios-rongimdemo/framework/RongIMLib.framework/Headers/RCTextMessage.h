@@ -34,7 +34,6 @@
  */
 @property(nonatomic, strong) NSString *extra;
 
-
 /*!
  初始化文本消息
 

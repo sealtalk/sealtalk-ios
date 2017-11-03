@@ -31,7 +31,7 @@
 @property(nonatomic, assign) int pageCount;
 /*!
  表情tab的index页的表情View
- 
+
  @return 表情tab的index页的表情View
  @discussion 返回的 view 大小必须等于 contentViewSize （宽度 = 屏幕宽度，高度 =
  186）
@@ -40,4 +40,3 @@
 
 //@property(nonatomic, weak) RCDChatViewController *chartView;
 @end
-

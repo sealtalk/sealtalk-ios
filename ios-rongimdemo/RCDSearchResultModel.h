@@ -6,9 +6,9 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
+#import "RCDSearchDataManager.h"
 #import <Foundation/Foundation.h>
 #import <RongIMKit/RongIMKit.h>
-#import "RCDSearchDataManager.h"
 @interface RCDSearchResultModel : NSObject
 
 @property(nonatomic, assign) RCConversationType conversationType;
@@ -27,5 +27,5 @@
 
 @property(nonatomic, copy) NSString *objectName;
 
-@property(nonatomic, assign)long long time;
+@property(nonatomic, assign) long long time;
 @end

@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <RongCallKit/RongCallKit.h>
-#import <RongIMKit/RongIMKit.h>
 #import <RongContactCard/RongContactCard.h>
+#import <RongIMKit/RongIMKit.h>
 
 #define RCDDataSource [RCDRCIMDataSource shareInstance]
 
@@ -18,8 +18,8 @@
  *  用户信息和群组信息都要通过回传id请求服务器获取，参考具体实现代码。
  */
 @interface RCDRCIMDataSource
-    : NSObject <RCIMUserInfoDataSource, RCIMGroupInfoDataSource,
-                RCIMGroupUserInfoDataSource, RCCallGroupMemberDataSource, RCIMGroupMemberDataSource, RCCCContactsDataSource, RCCCGroupDataSource>
+    : NSObject <RCIMUserInfoDataSource, RCIMGroupInfoDataSource, RCIMGroupUserInfoDataSource,
+                RCCallGroupMemberDataSource, RCIMGroupMemberDataSource, RCCCContactsDataSource, RCCCGroupDataSource>
 
 + (RCDRCIMDataSource *)shareInstance;
 
@@ -31,25 +31,23 @@
 /**
  *  获取群中的成员列表
  */
-- (void)getAllMembersOfGroup:(NSString *)groupId
-                      result:(void (^)(NSArray *userIdList))resultBlock;
+- (void)getAllMembersOfGroup:(NSString *)groupId result:(void (^)(NSArray *userIdList))resultBlock;
 
 /**
  *  从服务器同步好友列表
  */
-- (void)syncFriendList:(NSString *)userId
-              complete:(void (^)(NSMutableArray *friends))completion;
+- (void)syncFriendList:(NSString *)userId complete:(void (^)(NSMutableArray *friends))completion;
 /*
  * 获取所有用户信息
  */
-- (NSArray *)getAllUserInfo:(void (^)())completion;
+- (NSArray *)getAllUserInfo:(void (^)(void))completion;
 /*
  * 获取所有群组信息
  */
-- (NSArray *)getAllGroupInfo:(void (^)())completion;
+- (NSArray *)getAllGroupInfo:(void (^)(void))completion;
 /*
  * 获取所有好友信息
  */
-- (NSArray *)getAllFriends:(void (^)())completion;
+- (NSArray *)getAllFriends:(void (^)(void))completion;
 
 @end

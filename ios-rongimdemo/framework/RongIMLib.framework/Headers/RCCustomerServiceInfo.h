@@ -26,17 +26,17 @@
 @property(nonatomic, strong) NSString *mobileNo; //电话号码
 @property(nonatomic, strong) NSString *email;    //邮箱
 @property(nonatomic, strong) NSString *address;  //地址
-@property(nonatomic, strong) NSString *QQ; // QQ号
-@property(nonatomic, strong) NSString *weibo;  //微博
-@property(nonatomic, strong) NSString *weixin; //微信
+@property(nonatomic, strong) NSString *QQ;       // QQ号
+@property(nonatomic, strong) NSString *weibo;    //微博
+@property(nonatomic, strong) NSString *weixin;   //微信
 
 @property(nonatomic, strong) NSString *page;     //页面信息
 @property(nonatomic, strong) NSString *referrer; //来源
 @property(nonatomic, strong) NSString *enterUrl; //
 @property(nonatomic, strong) NSString *skillId;
 @property(nonatomic, strong) NSArray *listUrl;
-@property(nonatomic, strong) NSString *define; //自定义信息
-@property(nonatomic, strong) NSString *productId;//商品id
+@property(nonatomic, strong) NSString *define;    //自定义信息
+@property(nonatomic, strong) NSString *productId; //商品id
 
 - (NSData *)encode;
 @end

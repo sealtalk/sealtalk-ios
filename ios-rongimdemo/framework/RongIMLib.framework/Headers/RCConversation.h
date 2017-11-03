@@ -88,8 +88,7 @@
 
  @warning **已废弃，请勿使用。**
  */
-@property(nonatomic, strong) NSString *senderUserName
-__deprecated_msg("已废弃，请勿使用。");
+@property(nonatomic, strong) NSString *senderUserName __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  会话中最后一条消息的消息ID
@@ -108,7 +107,7 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  会话中最后一条消息的json Dictionary
- 
+
  @discussion 此字段存放最后一条消息内容中未编码的json数据。
  SDK内置的消息，如果消息解码失败，默认会将消息的内容存放到此字段；如果编码和解码正常，此字段会置为nil。
  */
@@ -123,7 +122,7 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  会话中是否存在被@的消息
- 
+
  @discussion 在清除会话未读数（clearMessagesUnreadStatus:targetId:）的时候，会将此状态置成 NO。
  */
 @property(nonatomic, assign) BOOL hasUnreadMentioned;
@@ -136,7 +135,6 @@ __deprecated_msg("已废弃，请勿使用。");
 
  @warning **已废弃，请勿使用。**
  */
-+ (instancetype)conversationWithProperties:(NSDictionary *)json
-    __deprecated_msg("已废弃，请勿使用。");
++ (instancetype)conversationWithProperties:(NSDictionary *)json __deprecated_msg("已废弃，请勿使用。");
 
 @end

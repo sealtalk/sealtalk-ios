@@ -108,15 +108,11 @@
  singleton instance.
  */
 
-#if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) &&                               \
-     __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000) ||                              \
-    (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) &&                                \
-     __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
+#if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000) ||                          \
+    (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
 
-@interface AFURLSessionManager
-    : NSObject <NSURLSessionDelegate, NSURLSessionTaskDelegate,
-                NSURLSessionDataDelegate, NSURLSessionDownloadDelegate,
-                NSSecureCoding, NSCopying>
+@interface AFURLSessionManager : NSObject <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate,
+                                           NSURLSessionDownloadDelegate, NSSecureCoding, NSCopying>
 
 /**
  The managed session.
@@ -158,8 +154,7 @@
  The network reachability manager. `AFURLSessionManager` uses the
  `sharedManager` by default.
  */
-@property(readwrite, nonatomic, strong)
-    AFNetworkReachabilityManager *reachabilityManager;
+@property(readwrite, nonatomic, strong) AFNetworkReachabilityManager *reachabilityManager;
 
 ///----------------------------
 /// @name Getting Session Tasks
@@ -223,8 +218,7 @@
 
  @see https://github.com/AFNetworking/AFNetworking/issues/1675
  */
-@property(nonatomic, assign)
-    BOOL attemptsToRecreateUploadTasksForBackgroundSessions;
+@property(nonatomic, assign) BOOL attemptsToRecreateUploadTasksForBackgroundSessions;
 
 ///---------------------
 /// @name Initialization
@@ -238,8 +232,7 @@
 
  @return A manager for a newly-created session.
  */
-- (instancetype)initWithSessionConfiguration:
-    (NSURLSessionConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
 /**
  Invalidates the managed session, optionally canceling pending tasks.
@@ -261,10 +254,9 @@
  the response object created by that serializer, and the error that occurred, if
  any.
  */
-- (NSURLSessionDataTask *)
-dataTaskWithRequest:(NSURLRequest *)request
-  completionHandler:(void (^)(NSURLResponse *response, id responseObject,
-                              NSError *error))completionHandler;
+- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request
+                            completionHandler:
+                                (void (^)(NSURLResponse *response, id responseObject, NSError *error))completionHandler;
 
 ///---------------------------
 /// @name Running Upload Tasks
@@ -284,12 +276,11 @@ dataTaskWithRequest:(NSURLRequest *)request
 
  @see `attemptsToRecreateUploadTasksForBackgroundSessions`
  */
-- (NSURLSessionUploadTask *)
-uploadTaskWithRequest:(NSURLRequest *)request
-             fromFile:(NSURL *)fileURL
-             progress:(NSProgress *__autoreleasing *)progress
-    completionHandler:(void (^)(NSURLResponse *response, id responseObject,
-                                NSError *error))completionHandler;
+- (NSURLSessionUploadTask *)uploadTaskWithRequest:(NSURLRequest *)request
+                                         fromFile:(NSURL *)fileURL
+                                         progress:(NSProgress *__autoreleasing *)progress
+                                completionHandler:(void (^)(NSURLResponse *response, id responseObject,
+                                                            NSError *error))completionHandler;
 
 /**
  Creates an `NSURLSessionUploadTask` with the specified request for an HTTP
@@ -303,12 +294,11 @@ uploadTaskWithRequest:(NSURLRequest *)request
  the response object created by that serializer, and the error that occurred, if
  any.
  */
-- (NSURLSessionUploadTask *)
-uploadTaskWithRequest:(NSURLRequest *)request
-             fromData:(NSData *)bodyData
-             progress:(NSProgress *__autoreleasing *)progress
-    completionHandler:(void (^)(NSURLResponse *response, id responseObject,
-                                NSError *error))completionHandler;
+- (NSURLSessionUploadTask *)uploadTaskWithRequest:(NSURLRequest *)request
+                                         fromData:(NSData *)bodyData
+                                         progress:(NSProgress *__autoreleasing *)progress
+                                completionHandler:(void (^)(NSURLResponse *response, id responseObject,
+                                                            NSError *error))completionHandler;
 
 /**
  Creates an `NSURLSessionUploadTask` with the specified streaming request.
@@ -320,12 +310,10 @@ uploadTaskWithRequest:(NSURLRequest *)request
  the response object created by that serializer, and the error that occurred, if
  any.
  */
-- (NSURLSessionUploadTask *)
-uploadTaskWithStreamedRequest:(NSURLRequest *)request
-                     progress:(NSProgress *__autoreleasing *)progress
-            completionHandler:(void (^)(NSURLResponse *response,
-                                        id responseObject,
-                                        NSError *error))completionHandler;
+- (NSURLSessionUploadTask *)uploadTaskWithStreamedRequest:(NSURLRequest *)request
+                                                 progress:(NSProgress *__autoreleasing *)progress
+                                        completionHandler:(void (^)(NSURLResponse *response, id responseObject,
+                                                                    NSError *error))completionHandler;
 
 ///-----------------------------
 /// @name Running Download Tasks
@@ -354,10 +342,8 @@ uploadTaskWithStreamedRequest:(NSURLRequest *)request
 - (NSURLSessionDownloadTask *)
 downloadTaskWithRequest:(NSURLRequest *)request
                progress:(NSProgress *__autoreleasing *)progress
-            destination:(NSURL * (^)(NSURL *targetPath,
-                                     NSURLResponse *response))destination
-      completionHandler:(void (^)(NSURLResponse *response, NSURL *filePath,
-                                  NSError *error))completionHandler;
+            destination:(NSURL * (^)(NSURL *targetPath, NSURLResponse *response))destination
+      completionHandler:(void (^)(NSURLResponse *response, NSURL *filePath, NSError *error))completionHandler;
 
 /**
  Creates an `NSURLSessionDownloadTask` with the specified resume data.
@@ -377,10 +363,8 @@ downloadTaskWithRequest:(NSURLRequest *)request
 - (NSURLSessionDownloadTask *)
 downloadTaskWithResumeData:(NSData *)resumeData
                   progress:(NSProgress *__autoreleasing *)progress
-               destination:(NSURL * (^)(NSURL *targetPath,
-                                        NSURLResponse *response))destination
-         completionHandler:(void (^)(NSURLResponse *response, NSURL *filePath,
-                                     NSError *error))completionHandler;
+               destination:(NSURL * (^)(NSURL *targetPath, NSURLResponse *response))destination
+         completionHandler:(void (^)(NSURLResponse *response, NSURL *filePath, NSError *error))completionHandler;
 
 ///---------------------------------
 /// @name Getting Progress for Tasks
@@ -404,8 +388,7 @@ downloadTaskWithResumeData:(NSData *)resumeData
  @return An `NSProgress` object reporting the download progress of a task, or
  `nil` if the progress is unavailable.
  */
-- (NSProgress *)downloadProgressForTask:
-    (NSURLSessionDownloadTask *)downloadTask;
+- (NSProgress *)downloadProgressForTask:(NSURLSessionDownloadTask *)downloadTask;
 
 ///-----------------------------------------
 /// @name Setting Session Delegate Callbacks
@@ -420,8 +403,7 @@ downloadTaskWithResumeData:(NSData *)resumeData
  invalid. The block has no return value, and takes two arguments: the session,
  and the error related to the cause of invalidation.
  */
-- (void)setSessionDidBecomeInvalidBlock:(void (^)(NSURLSession *session,
-                                                  NSError *error))block;
+- (void)setSessionDidBecomeInvalidBlock:(void (^)(NSURLSession *session, NSError *error))block;
 
 /**
  Sets a block to be executed when a connection level authentication challenge
@@ -435,9 +417,8 @@ downloadTaskWithResumeData:(NSData *)resumeData
  to resolve the challenge.
  */
 - (void)setSessionDidReceiveAuthenticationChallengeBlock:
-    (NSURLSessionAuthChallengeDisposition (^)(
-        NSURLSession *session, NSURLAuthenticationChallenge *challenge,
-        NSURLCredential *__autoreleasing *credential))block;
+    (NSURLSessionAuthChallengeDisposition (^)(NSURLSession *session, NSURLAuthenticationChallenge *challenge,
+                                              NSURLCredential *__autoreleasing *credential))block;
 
 ///--------------------------------------
 /// @name Setting Task Delegate Callbacks
@@ -451,8 +432,7 @@ downloadTaskWithResumeData:(NSData *)resumeData
  @param block A block object to be executed when a task requires a new request
  body stream.
  */
-- (void)setTaskNeedNewBodyStreamBlock:
-    (NSInputStream * (^)(NSURLSession *session, NSURLSessionTask *task))block;
+- (void)setTaskNeedNewBodyStreamBlock:(NSInputStream * (^)(NSURLSession *session, NSURLSessionTask *task))block;
 
 /**
  Sets a block to be executed when an HTTP request is attempting to perform a
@@ -465,9 +445,9 @@ downloadTaskWithResumeData:(NSData *)resumeData
  the redirection response, and the request corresponding to the redirection
  response.
  */
-- (void)setTaskWillPerformHTTPRedirectionBlock:
-    (NSURLRequest * (^)(NSURLSession *session, NSURLSessionTask *task,
-                        NSURLResponse *response, NSURLRequest *request))block;
+- (void)setTaskWillPerformHTTPRedirectionBlock:(NSURLRequest * (^)(NSURLSession *session, NSURLSessionTask *task,
+                                                                   NSURLResponse *response,
+                                                                   NSURLRequest *request))block;
 
 /**
  Sets a block to be executed when a session task has received a request specific
@@ -481,10 +461,9 @@ downloadTaskWithResumeData:(NSData *)resumeData
  used to resolve the challenge.
  */
 - (void)setTaskDidReceiveAuthenticationChallengeBlock:
-    (NSURLSessionAuthChallengeDisposition (^)(
-        NSURLSession *session, NSURLSessionTask *task,
-        NSURLAuthenticationChallenge *challenge,
-        NSURLCredential *__autoreleasing *credential))block;
+    (NSURLSessionAuthChallengeDisposition (^)(NSURLSession *session, NSURLSessionTask *task,
+                                              NSURLAuthenticationChallenge *challenge,
+                                              NSURLCredential *__autoreleasing *credential))block;
 
 /**
  Sets a block to be executed periodically to track upload progress, as handled
@@ -499,9 +478,8 @@ downloadTaskWithResumeData:(NSData *)resumeData
  by the length of the HTTP body. This block may be called multiple times, and
  will execute on the main thread.
  */
-- (void)setTaskDidSendBodyDataBlock:
-    (void (^)(NSURLSession *session, NSURLSessionTask *task, int64_t bytesSent,
-              int64_t totalBytesSent, int64_t totalBytesExpectedToSend))block;
+- (void)setTaskDidSendBodyDataBlock:(void (^)(NSURLSession *session, NSURLSessionTask *task, int64_t bytesSent,
+                                              int64_t totalBytesSent, int64_t totalBytesExpectedToSend))block;
 
 /**
  Sets a block to be executed as the last message related to a specific task, as
@@ -512,9 +490,7 @@ downloadTaskWithResumeData:(NSData *)resumeData
  The block has no return value, and takes three arguments: the session, the
  task, and any error that occurred in the process of executing the task.
  */
-- (void)setTaskDidCompleteBlock:(void (^)(NSURLSession *session,
-                                          NSURLSessionTask *task,
-                                          NSError *error))block;
+- (void)setTaskDidCompleteBlock:(void (^)(NSURLSession *session, NSURLSessionTask *task, NSError *error))block;
 
 ///-------------------------------------------
 /// @name Setting Data Task Delegate Callbacks
@@ -529,10 +505,9 @@ downloadTaskWithResumeData:(NSData *)resumeData
  response. The block returns the disposition of the session response, and takes
  three arguments: the session, the data task, and the received response.
  */
-- (void)setDataTaskDidReceiveResponseBlock:
-    (NSURLSessionResponseDisposition (^)(NSURLSession *session,
-                                         NSURLSessionDataTask *dataTask,
-                                         NSURLResponse *response))block;
+- (void)setDataTaskDidReceiveResponseBlock:(NSURLSessionResponseDisposition (^)(NSURLSession *session,
+                                                                                NSURLSessionDataTask *dataTask,
+                                                                                NSURLResponse *response))block;
 
 /**
  Sets a block to be executed when a data task has become a download task, as
@@ -543,9 +518,8 @@ downloadTaskWithResumeData:(NSData *)resumeData
  download task. The block has no return value, and takes three arguments: the
  session, the data task, and the download task it has become.
  */
-- (void)setDataTaskDidBecomeDownloadTaskBlock:
-    (void (^)(NSURLSession *session, NSURLSessionDataTask *dataTask,
-              NSURLSessionDownloadTask *downloadTask))block;
+- (void)setDataTaskDidBecomeDownloadTaskBlock:(void (^)(NSURLSession *session, NSURLSessionDataTask *dataTask,
+                                                        NSURLSessionDownloadTask *downloadTask))block;
 
 /**
  Sets a block to be executed when a data task receives data, as handled by the
@@ -557,8 +531,7 @@ downloadTaskWithResumeData:(NSData *)resumeData
  may be called multiple times, and will execute on the session manager operation
  queue.
  */
-- (void)setDataTaskDidReceiveDataBlock:(void (^)(NSURLSession *session,
-                                                 NSURLSessionDataTask *dataTask,
+- (void)setDataTaskDidReceiveDataBlock:(void (^)(NSURLSession *session, NSURLSessionDataTask *dataTask,
                                                  NSData *data))block;
 
 /**
@@ -570,10 +543,9 @@ downloadTaskWithResumeData:(NSData *)resumeData
  a data task. The block returns the response to cache, and takes three
  arguments: the session, the data task, and the proposed cached URL response.
  */
-- (void)setDataTaskWillCacheResponseBlock:
-    (NSCachedURLResponse * (^)(NSURLSession *session,
-                               NSURLSessionDataTask *dataTask,
-                               NSCachedURLResponse *proposedResponse))block;
+- (void)setDataTaskWillCacheResponseBlock:(NSCachedURLResponse * (^)(NSURLSession *session,
+                                                                     NSURLSessionDataTask *dataTask,
+                                                                     NSCachedURLResponse *proposedResponse))block;
 
 /**
  Sets a block to be executed once all messages enqueued for a session have been
@@ -584,8 +556,7 @@ downloadTaskWithResumeData:(NSData *)resumeData
  session have been delivered. The block has no return value and takes a single
  argument: the session.
  */
-- (void)setDidFinishEventsForBackgroundURLSessionBlock:
-    (void (^)(NSURLSession *session))block;
+- (void)setDidFinishEventsForBackgroundURLSessionBlock:(void (^)(NSURLSession *session))block;
 
 ///-----------------------------------------------
 /// @name Setting Download Task Delegate Callbacks
@@ -605,8 +576,7 @@ downloadTaskWithResumeData:(NSData *)resumeData
  the download task as its object, and the user info of the error.
  */
 - (void)setDownloadTaskDidFinishDownloadingBlock:
-    (NSURL * (^)(NSURLSession *session, NSURLSessionDownloadTask *downloadTask,
-                 NSURL *location))block;
+    (NSURL * (^)(NSURLSession *session, NSURLSessionDownloadTask *downloadTask, NSURL *location))block;
 
 /**
  Sets a block to be executed periodically to track download progress, as handled
@@ -622,10 +592,9 @@ downloadTaskWithResumeData:(NSData *)resumeData
  be called multiple times, and will execute on the session manager operation
  queue.
  */
-- (void)setDownloadTaskDidWriteDataBlock:
-    (void (^)(NSURLSession *session, NSURLSessionDownloadTask *downloadTask,
-              int64_t bytesWritten, int64_t totalBytesWritten,
-              int64_t totalBytesExpectedToWrite))block;
+- (void)setDownloadTaskDidWriteDataBlock:(void (^)(NSURLSession *session, NSURLSessionDownloadTask *downloadTask,
+                                                   int64_t bytesWritten, int64_t totalBytesWritten,
+                                                   int64_t totalBytesExpectedToWrite))block;
 
 /**
  Sets a block to be executed when a download task has been resumed, as handled
@@ -637,9 +606,8 @@ downloadTaskWithResumeData:(NSData *)resumeData
  the download task, the file offset of the resumed download, and the total
  number of bytes expected to be downloaded.
  */
-- (void)setDownloadTaskDidResumeBlock:
-    (void (^)(NSURLSession *session, NSURLSessionDownloadTask *downloadTask,
-              int64_t fileOffset, int64_t expectedTotalBytes))block;
+- (void)setDownloadTaskDidResumeBlock:(void (^)(NSURLSession *session, NSURLSessionDownloadTask *downloadTask,
+                                                int64_t fileOffset, int64_t expectedTotalBytes))block;
 
 @end
 
@@ -654,8 +622,7 @@ downloadTaskWithResumeData:(NSData *)resumeData
 
  @deprecated Use `AFNetworkingTaskDidResumeNotification` instead.
  */
-extern NSString *const AFNetworkingTaskDidStartNotification
-    DEPRECATED_ATTRIBUTE;
+extern NSString *const AFNetworkingTaskDidStartNotification DEPRECATED_ATTRIBUTE;
 
 /**
  Posted when a task resumes.
@@ -668,8 +635,7 @@ extern NSString *const AFNetworkingTaskDidResumeNotification;
 
  @deprecated Use `AFNetworkingTaskDidCompleteNotification` instead.
  */
-extern NSString *const AFNetworkingTaskDidFinishNotification
-    DEPRECATED_ATTRIBUTE;
+extern NSString *const AFNetworkingTaskDidFinishNotification DEPRECATED_ATTRIBUTE;
 
 /**
  Posted when a task finishes executing. Includes a userInfo dictionary with
@@ -699,8 +665,7 @@ extern NSString *const AFURLSessionDownloadTaskDidFailToMoveFileNotification;
 
  @deprecated Use `AFNetworkingTaskDidCompleteResponseDataKey` instead.
  */
-extern NSString *const AFNetworkingTaskDidFinishResponseDataKey
-    DEPRECATED_ATTRIBUTE;
+extern NSString *const AFNetworkingTaskDidFinishResponseDataKey DEPRECATED_ATTRIBUTE;
 
 /**
  The raw response data of the task. Included in the userInfo dictionary of the
@@ -714,8 +679,7 @@ extern NSString *const AFNetworkingTaskDidCompleteResponseDataKey;
 
  @deprecated Use `AFNetworkingTaskDidCompleteSerializedResponseKey` instead.
  */
-extern NSString *const AFNetworkingTaskDidFinishSerializedResponseKey
-    DEPRECATED_ATTRIBUTE;
+extern NSString *const AFNetworkingTaskDidFinishSerializedResponseKey DEPRECATED_ATTRIBUTE;
 
 /**
  The serialized response object of the task. Included in the userInfo dictionary
@@ -730,8 +694,7 @@ extern NSString *const AFNetworkingTaskDidCompleteSerializedResponseKey;
 
  @deprecated Use `AFNetworkingTaskDidCompleteResponseSerializerKey` instead.
  */
-extern NSString *const AFNetworkingTaskDidFinishResponseSerializerKey
-    DEPRECATED_ATTRIBUTE;
+extern NSString *const AFNetworkingTaskDidFinishResponseSerializerKey DEPRECATED_ATTRIBUTE;
 
 /**
  The response serializer used to serialize the response. Included in the
@@ -747,8 +710,7 @@ extern NSString *const AFNetworkingTaskDidCompleteResponseSerializerKey;
 
  @deprecated Use `AFNetworkingTaskDidCompleteAssetPathKey` instead.
  */
-extern NSString *const AFNetworkingTaskDidFinishAssetPathKey
-    DEPRECATED_ATTRIBUTE;
+extern NSString *const AFNetworkingTaskDidFinishAssetPathKey DEPRECATED_ATTRIBUTE;
 
 /**
  The file path associated with the download task. Included in the userInfo

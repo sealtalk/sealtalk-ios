@@ -38,11 +38,11 @@
 
 /*!
  初始化@提醒信息
- 
+
  @param type       @提醒的类型
  @param userIdList @的用户ID列表
  @param mentionedContent @ Push 内容
- 
+
  @return @提醒信息的对象
  */
 - (instancetype)initWithMentionedType:(RCMentionedType)type

@@ -6,17 +6,16 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
+#import "RCDBaseSettingTableViewCell.h"
 #import "RCDGroupInfo.h"
+#import "RCDTableViewController.h"
 #import <RongIMKit/RongIMKit.h>
 #import <UIKit/UIKit.h>
-#import "RCDBaseSettingTableViewCell.h"
-#import "RCDTableViewController.h"
 
 @interface RCDGroupSettingsTableViewController
-    : RCDTableViewController <UICollectionViewDataSource,
-                             UICollectionViewDelegate, UIActionSheetDelegate,
-                             UINavigationControllerDelegate,
-                             UIImagePickerControllerDelegate,RCDBaseSettingTableViewCellDelegate>
+    : RCDTableViewController <UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate,
+                              UINavigationControllerDelegate, UIImagePickerControllerDelegate,
+                              RCDBaseSettingTableViewCellDelegate>
 
 + (instancetype)groupSettingsTableViewController;
 

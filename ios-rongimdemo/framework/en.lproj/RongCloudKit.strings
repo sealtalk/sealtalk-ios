@@ -116,7 +116,7 @@
 "Wait"="Please wait a moment...";
 "Searching"="Searching...";
 "Search"="Search:";
-"Right_unReadMessage"="%ld new message";
+"Right_unReadMessage"="%@ new message";
 "HistoryMessageTip"="Above is the historical messages";
 "DISCUSSION"="discussion";
 "DateFormat"="MM-dd";

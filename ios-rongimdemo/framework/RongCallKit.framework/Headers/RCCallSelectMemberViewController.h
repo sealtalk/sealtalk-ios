@@ -55,7 +55,6 @@
                                 targetId:(NSString *)targetId
                                mediaType:(RCCallMediaType)mediaType
                                    exist:(NSArray *)existUserIdList
-                                 success:(void (^)(NSArray *addUserIdList))
-                                             successBlock;
+                                 success:(void (^)(NSArray *addUserIdList))successBlock;
 
 @end

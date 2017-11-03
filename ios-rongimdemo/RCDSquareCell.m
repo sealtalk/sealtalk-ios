@@ -9,8 +9,8 @@
 #import "RCDSquareCell.h"
 #import "RCDCommonDefine.h"
 #import "RCDUtilities.h"
-#import <RongIMKit/RongIMKit.h>
 #import "UIColor+RCColor.h"
+#import <RongIMKit/RongIMKit.h>
 
 @implementation RCDSquareCell
 
@@ -22,21 +22,20 @@
 }
 */
 
--(id)initWithIconName:(NSString *)iconName TitleName:(NSString *)titleName {
-  self = [super init];
-  if (self) {
-    self = [[RCDSquareCell alloc]
-            initWithLeftImageStr:iconName
-            leftImageSize:CGSizeMake(50, 50)
-            rightImaeStr:nil
-            rightImageSize:CGSizeZero];
-    self.rightArrow.hidden = YES;
-    self.leftImageCornerRadius = 5.f;
-    self.leftLabel.text = titleName;
-    self.selectedBackgroundView = [[UIView alloc] initWithFrame:self.frame];
-    self.selectedBackgroundView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5" alpha:1.0];
-  }
-  return self;
+- (id)initWithIconName:(NSString *)iconName TitleName:(NSString *)titleName {
+    self = [super init];
+    if (self) {
+        self = [[RCDSquareCell alloc] initWithLeftImageStr:iconName
+                                             leftImageSize:CGSizeMake(50, 50)
+                                              rightImaeStr:nil
+                                            rightImageSize:CGSizeZero];
+        self.rightArrow.hidden = YES;
+        self.leftImageCornerRadius = 5.f;
+        self.leftLabel.text = titleName;
+        self.selectedBackgroundView = [[UIView alloc] initWithFrame:self.frame];
+        self.selectedBackgroundView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5" alpha:1.0];
+    }
+    return self;
 }
 
 @end

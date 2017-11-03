@@ -6,9 +6,9 @@
 //  Copyright (c) 2014年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <RongIMLib/RongIMLib.h>
 #import "RCEmoticonTabSource.h"
+#import <RongIMLib/RongIMLib.h>
+#import <UIKit/UIKit.h>
 
 @class RCEmojiPageControl;
 @class RCEmojiBoardView;
@@ -21,7 +21,7 @@
 
 /*!
  点击表情的回调
- 
+
  @param emojiView 表情输入的View
  @param string    点击的表情对应的字符串编码
  */
@@ -29,7 +29,7 @@
 
 /*!
  点击发送按钮的回调
- 
+
  @param emojiView  表情输入的View
  @param sendButton 发送按钮
  */
@@ -40,7 +40,7 @@
 /*!
  表情输入的View
  */
-@interface RCEmojiBoardView : UIView <UIScrollViewDelegate> 
+@interface RCEmojiBoardView : UIView <UIScrollViewDelegate>
 
 /*!
  当前的会话类型
@@ -59,7 +59,7 @@
 
 /*!
  表情的Label(已废弃，请勿使用)
- 
+
  @warning **已废弃，请勿使用。**
  */
 @property(nonatomic, strong) __deprecated_msg("已废弃，请勿使用。") UILabel *emojiLabel;
@@ -72,7 +72,7 @@
 /*!
  表情区域的大小
  */
-@property(nonatomic, assign,readonly)CGSize contentViewSize;
+@property(nonatomic, assign, readonly) CGSize contentViewSize;
 
 /**
  *  init
@@ -88,7 +88,7 @@
 
 /*!
 发送按钮是否可点击
- 
+
  @param sender 发送者
  */
 - (void)enableSendButton:(BOOL)sender;
@@ -110,9 +110,9 @@
 - (void)setCurrentIndex:(int)index withTotalPages:(int)totalPageNum;
 
 /**
- *  重新加载通过扩展方式加载的表情包，（调用这个方法会回调RCExtensionModule 协议实现的扩展通过 addEmojiTab 加入的表情包不会重写加载）
+ *  重新加载通过扩展方式加载的表情包，（调用这个方法会回调RCExtensionModule 协议实现的扩展通过 addEmojiTab
+ * 加入的表情包不会重写加载）
  */
 - (void)reloadExtensionEmoticonTabSource;
-
 
 @end

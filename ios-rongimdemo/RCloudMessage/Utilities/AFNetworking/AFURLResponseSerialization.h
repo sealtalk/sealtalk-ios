@@ -45,9 +45,7 @@
 
  @return The object decoded from the specified response data.
  */
-- (id)responseObjectForResponse:(NSURLResponse *)response
-                           data:(NSData *)data
-                          error:(NSError *__autoreleasing *)error;
+- (id)responseObjectForResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error;
 
 @end
 
@@ -110,9 +108,7 @@
 
  @return `YES` if the response is valid, otherwise `NO`.
  */
-- (BOOL)validateResponse:(NSHTTPURLResponse *)response
-                    data:(NSData *)data
-                   error:(NSError *__autoreleasing *)error;
+- (BOOL)validateResponse:(NSHTTPURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error;
 
 @end
 
@@ -153,8 +149,7 @@
 
  @param readingOptions The specified JSON reading options.
  */
-+ (instancetype)serializerWithReadingOptions:
-    (NSJSONReadingOptions)readingOptions;
++ (instancetype)serializerWithReadingOptions:(NSJSONReadingOptions)readingOptions;
 
 @end
 
@@ -246,8 +241,7 @@
  @param format The property list format.
  @param readOptions The property list reading options.
  */
-+ (instancetype)serializerWithFormat:(NSPropertyListFormat)format
-                         readOptions:(NSPropertyListReadOptions)readOptions;
++ (instancetype)serializerWithFormat:(NSPropertyListFormat)format readOptions:(NSPropertyListReadOptions)readOptions;
 
 @end
 
@@ -320,8 +314,7 @@
  @warning Each response serializer specified must be a subclass of
  `AFHTTPResponseSerializer`, and response to `-validateResponse:data:error:`.
  */
-+ (instancetype)compoundSerializerWithResponseSerializers:
-    (NSArray *)responseSerializers;
++ (instancetype)compoundSerializerWithResponseSerializers:(NSArray *)responseSerializers;
 
 @end
 

@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCDMainTabBarViewController : UITabBarController<UITabBarControllerDelegate>
+@interface RCDMainTabBarViewController : UITabBarController <UITabBarControllerDelegate>
 
 + (RCDMainTabBarViewController *)shareInstance;
 
-@property (nonatomic, assign) NSUInteger selectedTabBarIndex;
+@property(nonatomic, assign) NSUInteger selectedTabBarIndex;
 
 @end

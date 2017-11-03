@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCDNavigationViewController : UINavigationController<UIGestureRecognizerDelegate,UINavigationControllerDelegate>
+@interface RCDNavigationViewController
+    : UINavigationController <UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 
 @end

@@ -46,49 +46,49 @@
 
 /*!
  禁止删除用户
- 
+
  @param disable 是否禁止删除用户
  */
 - (void)disableDeleteMemberEvent:(BOOL)disable;
 
 /*!
  设置添加用户
- 
+
  @param disable 是否禁止删除用户
  */
 - (void)disableInviteMemberEvent:(BOOL)disable;
 
 /*!
  开闭置顶聊天的回调
- 
+
  @param sender 点击的Switch开关
  */
 - (void)onClickIsTopSwitch:(id)sender;
 
 /*!
  开闭新通知提醒的回调
- 
+
  @param sender 点击的Switch开关
  */
 - (void)onClickNewMessageNotificationSwitch:(id)sender;
 
 /*!
  点击清除聊天记录的回调
- 
+
  @param sender 清除聊天记录的按钮
  */
 - (void)onClickClearMessageHistory:(id)sender;
 
 /*!
  添加用户到顶部视图
- 
+
  @param users 用户信息RCUserInfo列表
  */
 - (void)inviteRemoteUsers:(NSArray *)users;
 
 /*!
  点击Item（用户头像或加减号）的回调
- 
+
  @param settingTableViewHeader  当前会话设置界面
  @param indexPathOfSelectedItem 点击的Item索引值
  @param users                   当前的用户信息RCUserInfo列表
@@ -99,18 +99,18 @@
 
 /*!
  点击删除用户的回调
- 
+
  @param indexPath 当前删除的用户的头像索引值
- 
+
  @discussion 点击头像左上角的删除按钮时的回调。
  */
 - (void)deleteTipButtonClicked:(NSIndexPath *)indexPath;
 
 /*!
  点击头像的回调
- 
+
  @param userId 头像对应的用户ID
  */
-- (void)didTipHeaderClicked:(NSString*)userId;
+- (void)didTipHeaderClicked:(NSString *)userId;
 
 @end

@@ -50,8 +50,7 @@
  @param delegate The alert view delegate.
  */
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
-+ (void)showAlertViewForTaskWithErrorOnCompletion:(NSURLSessionTask *)task
-                                         delegate:(id)delegate;
++ (void)showAlertViewForTaskWithErrorOnCompletion:(NSURLSessionTask *)task delegate:(id)delegate;
 #endif
 
 /**
@@ -74,9 +73,7 @@
 + (void)showAlertViewForTaskWithErrorOnCompletion:(NSURLSessionTask *)task
                                          delegate:(id)delegate
                                 cancelButtonTitle:(NSString *)cancelButtonTitle
-                                otherButtonTitles:
-                                    (NSString *)otherButtonTitles,
-                                    ... NS_REQUIRES_NIL_TERMINATION;
+                                otherButtonTitles:(NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
 #endif
 
 ///------------------------------------------
@@ -89,8 +86,7 @@
  @param operation The request operation.
  @param delegate The alert view delegate.
  */
-+ (void)showAlertViewForRequestOperationWithErrorOnCompletion:
-            (AFURLConnectionOperation *)operation
++ (void)showAlertViewForRequestOperationWithErrorOnCompletion:(AFURLConnectionOperation *)operation
                                                      delegate:(id)delegate;
 
 /**
@@ -109,14 +105,11 @@
  ways to use an alert in an app, see "Temporary Views". Titles of additional
  buttons to add to the receiver, terminated with `nil`.
  */
-+ (void)showAlertViewForRequestOperationWithErrorOnCompletion:
-            (AFURLConnectionOperation *)operation
++ (void)showAlertViewForRequestOperationWithErrorOnCompletion:(AFURLConnectionOperation *)operation
                                                      delegate:(id)delegate
-                                            cancelButtonTitle:
-                                                (NSString *)cancelButtonTitle
-                                            otherButtonTitles:
-                                                (NSString *)otherButtonTitles,
-                                                ... NS_REQUIRES_NIL_TERMINATION;
+                                            cancelButtonTitle:(NSString *)cancelButtonTitle
+                                            otherButtonTitles:(NSString *)otherButtonTitles,
+                                                              ... NS_REQUIRES_NIL_TERMINATION;
 
 @end
 

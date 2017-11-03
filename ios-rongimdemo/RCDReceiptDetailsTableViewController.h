@@ -10,11 +10,11 @@
 
 @interface RCDReceiptDetailsTableViewController : UITableViewController
 
-@property(nonatomic, strong)NSString *targetId;
+@property(nonatomic, strong) NSString *targetId;
 
-@property(nonatomic, strong)NSString *messageContent;
+@property(nonatomic, strong) NSString *messageContent;
 
-@property(nonatomic, strong)NSString *messageSendTime;
+@property(nonatomic, strong) NSString *messageSendTime;
 
-@property(nonatomic, strong)NSArray *hasReadUserList;
+@property(nonatomic, strong) NSArray *hasReadUserList;
 @end

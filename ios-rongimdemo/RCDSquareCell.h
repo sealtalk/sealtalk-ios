@@ -10,6 +10,6 @@
 
 @interface RCDSquareCell : RCDBaseSettingTableViewCell
 
--(id)initWithIconName:(NSString *)iconName TitleName:(NSString *)titleName;
+- (id)initWithIconName:(NSString *)iconName TitleName:(NSString *)titleName;
 
 @end

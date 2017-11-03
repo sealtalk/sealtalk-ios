@@ -189,8 +189,7 @@
  @return `YES` if column exists in table in question; `NO` otherwise.
  */
 
-- (BOOL)columnExists:(NSString *)columnName
-     inTableWithName:(NSString *)tableName;
+- (BOOL)columnExists:(NSString *)columnName inTableWithName:(NSString *)tableName;
 
 /** Test to see if particular column exists for particular table in database
 
@@ -205,8 +204,7 @@
  @warning Deprecated - use `<columnExists:inTableWithName:>` instead.
  */
 
-- (BOOL)columnExists:(NSString *)tableName
-          columnName:(NSString *)columnName __attribute__((deprecated));
+- (BOOL)columnExists:(NSString *)tableName columnName:(NSString *)columnName __attribute__((deprecated));
 
 /** Validate SQL statement
 

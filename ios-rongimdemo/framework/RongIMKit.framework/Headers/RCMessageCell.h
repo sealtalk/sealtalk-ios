@@ -6,11 +6,11 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import "RCMessageBaseCell.h"
-#import "RCThemeDefine.h"
-#import "RCMessageCellNotificationModel.h"
-#import "RCMessageCellDelegate.h"
 #import "RCContentView.h"
+#import "RCMessageBaseCell.h"
+#import "RCMessageCellDelegate.h"
+#import "RCMessageCellNotificationModel.h"
+#import "RCThemeDefine.h"
 
 //#define PORTRAIT_WIDTH 45
 //#define PORTRAIT_HEIGHT 45
@@ -20,7 +20,7 @@
 
 /*!
  展示的消息Cell类
- 
+
  @discussion 需要展示用户信息和内容的消息Cell可以继承此类，
  如：RCTextMessageCell、RCImageMessageCell、RCLocationMessageCell、RCVoiceMessageCell、RCRichContentMessageCell等。
  如果您需要显示自定义消息，可以继承此类。
@@ -44,7 +44,7 @@
 
 /*!
  显示发送状态的View
- 
+
  @discussion 其中包含messageFailedStatusView子View。
  */
 @property(nonatomic, strong) UIView *statusContentView;
@@ -81,28 +81,28 @@
 
 /*!
  显示是否消息回执的Button
- 
+
  @discussion 仅在群组和讨论组中显示
  */
 @property(nonatomic, strong) UIButton *receiptView;
 
 /*!
  消息阅读人数的Label
- 
+
  @discussion 仅在群组和讨论组中显示
  */
 @property(nonatomic, strong) UILabel *receiptCountLabel;
 
 /*!
  显示群是否消息回执的Button
- 
+
  @warning 如果您使用了该属性，可以迁移到receiptView，完全一致。
  */
 @property(nonatomic, strong) UIButton *groupAndDiscussionReceiptView __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  消息阅读人数的Label
- 
+
  @warning 如果您使用了该属性，可以迁移到receiptCountLabel，完全一致。
  */
 @property(nonatomic, strong) UILabel *groupAndDiscussionReceiptCountView __deprecated_msg("已废弃，请勿使用。");
@@ -114,14 +114,14 @@
 
 /*!
  设置当前消息Cell的数据模型
- 
+
  @param model 消息Cell的数据模型
  */
 - (void)setDataModel:(RCMessageModel *)model;
 
 /*!
  更新消息发送状态
- 
+
  @param model 消息Cell的数据模型
  */
 - (void)updateStatusContentView:(RCMessageModel *)model;

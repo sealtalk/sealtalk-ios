@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "RCConversation.h"
+#import <Foundation/Foundation.h>
 
 /*!
  搜索的会话结果

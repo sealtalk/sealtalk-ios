@@ -18,7 +18,7 @@
 
 /*!
  点击Item（用户头像或加减号）的回调
- 
+
  @param settingTableViewHeader  当前会话设置界面
  @param indexPathOfSelectedItem 点击的Item索引值
  @param users                   当前的用户信息RCUserInfo列表
@@ -29,14 +29,14 @@
 
 /*!
  点击删除的回调
- 
+
  @param indexPath 点击的索引
  */
 - (void)deleteTipButtonClicked:(NSIndexPath *)indexPath;
 
 /*!
  点击头像的回调
- 
+
  @param userId 头像对应的用户ID
  */
 - (void)didTipHeaderClicked:(NSString *)userId;

@@ -21,35 +21,30 @@
     // Configure the view for the selected state
 }
 
--(id)init {
-  self = [super init];
-  if (self) {
-    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"about_rong"]];
-    logoImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.contentView addSubview:logoImageView];
-    NSDictionary *views = NSDictionaryOfVariableBindings(logoImageView);
-    [self.contentView
-     addConstraints:[NSLayoutConstraint
-                     constraintsWithVisualFormat:@"V:|-25-[logoImageView(86)]"
-                     options:0
-                     metrics:nil
-                     views:views]];
-    [self.contentView
-     addConstraints:[NSLayoutConstraint
-                     constraintsWithVisualFormat:@"H:[logoImageView(86)]"
-                     options:0
-                     metrics:nil
-                     views:views]];
-    [self.contentView
-     addConstraint:[NSLayoutConstraint constraintWithItem:logoImageView
-                                                attribute:NSLayoutAttributeCenterX
-                                                relatedBy:NSLayoutRelationEqual
-                                                   toItem:self.contentView
-                                                attribute:NSLayoutAttributeCenterX
-                                               multiplier:1
-                                                 constant:0]];
-  }
-  return self;
+- (id)init {
+    self = [super init];
+    if (self) {
+        UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"about_rong"]];
+        logoImageView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.contentView addSubview:logoImageView];
+        NSDictionary *views = NSDictionaryOfVariableBindings(logoImageView);
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-25-[logoImageView(86)]"
+                                                                                 options:0
+                                                                                 metrics:nil
+                                                                                   views:views]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[logoImageView(86)]"
+                                                                                 options:0
+                                                                                 metrics:nil
+                                                                                   views:views]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:logoImageView
+                                                                     attribute:NSLayoutAttributeCenterX
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.contentView
+                                                                     attribute:NSLayoutAttributeCenterX
+                                                                    multiplier:1
+                                                                      constant:0]];
+    }
+    return self;
 }
 
 @end

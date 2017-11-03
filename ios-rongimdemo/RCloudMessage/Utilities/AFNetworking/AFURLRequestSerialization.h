@@ -60,7 +60,7 @@
 
  */
 typedef NS_ENUM(NSUInteger, AFHTTPRequestQueryStringSerializationStyle) {
-  AFHTTPRequestQueryStringDefaultStyle = 0,
+    AFHTTPRequestQueryStringDefaultStyle = 0,
 };
 
 @protocol AFMultipartFormData;
@@ -178,15 +178,13 @@ typedef NS_ENUM(NSUInteger, AFHTTPRequestQueryStringSerializationStyle) {
  @param username The HTTP basic auth username
  @param password The HTTP basic auth password
  */
-- (void)setAuthorizationHeaderFieldWithUsername:(NSString *)username
-                                       password:(NSString *)password;
+- (void)setAuthorizationHeaderFieldWithUsername:(NSString *)username password:(NSString *)password;
 
 /**
  @deprecated This method has been deprecated. Use -setValue:forHTTPHeaderField:
  instead.
  */
-- (void)setAuthorizationHeaderFieldWithToken:(NSString *)token
-    DEPRECATED_ATTRIBUTE;
+- (void)setAuthorizationHeaderFieldWithToken:(NSString *)token DEPRECATED_ATTRIBUTE;
 
 /**
  Clears any existing value for the "Authorization" HTTP header.
@@ -211,8 +209,7 @@ typedef NS_ENUM(NSUInteger, AFHTTPRequestQueryStringSerializationStyle) {
 
  @see AFHTTPRequestQueryStringSerializationStyle
  */
-- (void)setQueryStringSerializationWithStyle:
-    (AFHTTPRequestQueryStringSerializationStyle)style;
+- (void)setQueryStringSerializationWithStyle:(AFHTTPRequestQueryStringSerializationStyle)style;
 
 /**
  Set the a custom method of query string serialization according to the
@@ -223,9 +220,8 @@ typedef NS_ENUM(NSUInteger, AFHTTPRequestQueryStringSerializationStyle) {
  request, the parameters to encode, and the error that occurred when attempting
  to encode parameters for the given request.
  */
-- (void)setQueryStringSerializationWithBlock:
-    (NSString * (^)(NSURLRequest *request, id parameters,
-                    NSError *__autoreleasing *error))block;
+- (void)setQueryStringSerializationWithBlock:(NSString * (^)(NSURLRequest *request, id parameters,
+                                                             NSError *__autoreleasing *error))block;
 
 ///-------------------------------
 /// @name Creating Request Objects
@@ -267,11 +263,10 @@ typedef NS_ENUM(NSUInteger, AFHTTPRequestQueryStringSerializationStyle) {
  -multipartFormRequestWithMethod:URLString:parameters:constructingBodyWithBlock:error:
  instead.
  */
-- (NSMutableURLRequest *)
-multipartFormRequestWithMethod:(NSString *)method
-                     URLString:(NSString *)URLString
-                    parameters:(NSDictionary *)parameters
-     constructingBodyWithBlock:(void (^)(id<AFMultipartFormData> formData))block
+- (NSMutableURLRequest *)multipartFormRequestWithMethod:(NSString *)method
+                                              URLString:(NSString *)URLString
+                                             parameters:(NSDictionary *)parameters
+                              constructingBodyWithBlock:(void (^)(id<AFMultipartFormData> formData))block
     DEPRECATED_ATTRIBUTE;
 
 /**
@@ -298,12 +293,11 @@ multipartFormRequestWithMethod:(NSString *)method
 
  @return An `NSMutableURLRequest` object
  */
-- (NSMutableURLRequest *)
-multipartFormRequestWithMethod:(NSString *)method
-                     URLString:(NSString *)URLString
-                    parameters:(NSDictionary *)parameters
-     constructingBodyWithBlock:(void (^)(id<AFMultipartFormData> formData))block
-                         error:(NSError *__autoreleasing *)error;
+- (NSMutableURLRequest *)multipartFormRequestWithMethod:(NSString *)method
+                                              URLString:(NSString *)URLString
+                                             parameters:(NSDictionary *)parameters
+                              constructingBodyWithBlock:(void (^)(id<AFMultipartFormData> formData))block
+                                                  error:(NSError *__autoreleasing *)error;
 
 /**
  Creates an `NSMutableURLRequest` by removing the `HTTPBodyStream` from a
@@ -332,8 +326,7 @@ multipartFormRequestWithMethod:(NSString *)method
  */
 - (NSMutableURLRequest *)requestWithMultipartFormRequest:(NSURLRequest *)request
                              writingStreamContentsToFile:(NSURL *)fileURL
-                                       completionHandler:
-                                           (void (^)(NSError *error))handler;
+                                       completionHandler:(void (^)(NSError *error))handler;
 
 @end
 
@@ -364,9 +357,7 @@ multipartFormRequestWithMethod:(NSString *)method
 
  @return `YES` if the file data was successfully appended, otherwise `NO`.
  */
-- (BOOL)appendPartWithFileURL:(NSURL *)fileURL
-                         name:(NSString *)name
-                        error:(NSError *__autoreleasing *)error;
+- (BOOL)appendPartWithFileURL:(NSURL *)fileURL name:(NSString *)name error:(NSError *__autoreleasing *)error;
 
 /**
  Appends the HTTP header `Content-Disposition: file; filename=#{filename};
@@ -473,8 +464,7 @@ multipartFormRequestWithMethod:(NSString *)method
  @param delay Duration of delay each time a packet is read. By default, no delay
  is set.
  */
-- (void)throttleBandwidthWithPacketSize:(NSUInteger)numberOfBytes
-                                  delay:(NSTimeInterval)delay;
+- (void)throttleBandwidthWithPacketSize:(NSUInteger)numberOfBytes delay:(NSTimeInterval)delay;
 
 @end
 
@@ -500,8 +490,7 @@ multipartFormRequestWithMethod:(NSString *)method
 
  @param writingOptions The specified JSON writing options.
  */
-+ (instancetype)serializerWithWritingOptions:
-    (NSJSONWritingOptions)writingOptions;
++ (instancetype)serializerWithWritingOptions:(NSJSONWritingOptions)writingOptions;
 
 @end
 
@@ -534,8 +523,7 @@ multipartFormRequestWithMethod:(NSString *)method
 
  @warning The `writeOptions` property is currently unused.
  */
-+ (instancetype)serializerWithFormat:(NSPropertyListFormat)format
-                        writeOptions:(NSPropertyListWriteOptions)writeOptions;
++ (instancetype)serializerWithFormat:(NSPropertyListFormat)format writeOptions:(NSPropertyListWriteOptions)writeOptions;
 
 @end
 

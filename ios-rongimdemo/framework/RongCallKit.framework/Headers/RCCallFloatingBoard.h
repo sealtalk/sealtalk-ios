@@ -42,8 +42,7 @@
  @param touchedBlock 悬浮窗点击的Block
  */
 + (void)startCallFloatingBoard:(RCCallSession *)callSession
-              withTouchedBlock:
-                  (void (^)(RCCallSession *callSession))touchedBlock;
+              withTouchedBlock:(void (^)(RCCallSession *callSession))touchedBlock;
 
 /*!
  关闭当前悬浮窗

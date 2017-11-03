@@ -10,25 +10,25 @@
 
 typedef NSString *MobClickSocialTypeString;
 
-extern MobClickSocialTypeString const MobClickSocialTypeSina;    //新浪微博
-extern MobClickSocialTypeString const MobClickSocialTypeTencent; //腾讯微博
-extern MobClickSocialTypeString const MobClickSocialTypeRenren;  //人人网
-extern MobClickSocialTypeString const MobClickSocialTypeQzone; // Qzone
-extern MobClickSocialTypeString const MobClickSocialTypeRenren; //人人网
-extern MobClickSocialTypeString const MobClickSocialTypeDouban; // douban
-extern MobClickSocialTypeString const MobClickSocialTypeWxsesion; //微信好友分享
+extern MobClickSocialTypeString const MobClickSocialTypeSina;       //新浪微博
+extern MobClickSocialTypeString const MobClickSocialTypeTencent;    //腾讯微博
+extern MobClickSocialTypeString const MobClickSocialTypeRenren;     //人人网
+extern MobClickSocialTypeString const MobClickSocialTypeQzone;      // Qzone
+extern MobClickSocialTypeString const MobClickSocialTypeRenren;     //人人网
+extern MobClickSocialTypeString const MobClickSocialTypeDouban;     // douban
+extern MobClickSocialTypeString const MobClickSocialTypeWxsesion;   //微信好友分享
 extern MobClickSocialTypeString const MobClickSocialTypeWxtimeline; //微信朋友圈
-extern MobClickSocialTypeString const MobClickSocialTypeHuaban; //花瓣
-extern MobClickSocialTypeString const MobClickSocialTypeKaixin; //开心
-extern MobClickSocialTypeString const MobClickSocialTypeFacebook; // facebook
-extern MobClickSocialTypeString const MobClickSocialTypeTwitter; // twitter
-extern MobClickSocialTypeString const MobClickSocialTypeInstagram; // instagram
-extern MobClickSocialTypeString const MobClickSocialTypeFlickr; // flickr
-extern MobClickSocialTypeString const MobClickSocialTypeQQ; // qq
+extern MobClickSocialTypeString const MobClickSocialTypeHuaban;     //花瓣
+extern MobClickSocialTypeString const MobClickSocialTypeKaixin;     //开心
+extern MobClickSocialTypeString const MobClickSocialTypeFacebook;   // facebook
+extern MobClickSocialTypeString const MobClickSocialTypeTwitter;    // twitter
+extern MobClickSocialTypeString const MobClickSocialTypeInstagram;  // instagram
+extern MobClickSocialTypeString const MobClickSocialTypeFlickr;     // flickr
+extern MobClickSocialTypeString const MobClickSocialTypeQQ;         // qq
 extern MobClickSocialTypeString const MobClickSocialTypeWxfavorite; //微信收藏
-extern MobClickSocialTypeString const MobClickSocialTypeLwsession; //来往
+extern MobClickSocialTypeString const MobClickSocialTypeLwsession;  //来往
 extern MobClickSocialTypeString const MobClickSocialTypeLwtimeline; //来往动态
-extern MobClickSocialTypeString const MobClickSocialTypeYxsession; //易信
+extern MobClickSocialTypeString const MobClickSocialTypeYxsession;  //易信
 extern MobClickSocialTypeString const MobClickSocialTypeYxtimeline; //易信朋友圈
 
 /**
@@ -77,8 +77,7 @@ extern MobClickSocialTypeString const MobClickSocialTypeYxtimeline; //易信朋�
 /**
  发送统计完成的block对象
  */
-typedef void (^MobClickSocialAnalyticsCompletion)(NSDictionary *response,
-                                                  NSError *error);
+typedef void (^MobClickSocialAnalyticsCompletion)(NSDictionary *response, NSError *error);
 
 /**
 负责统计微博类。

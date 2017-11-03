@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "RCAnimatedImagesView.h"
+#import <UIKit/UIKit.h>
 
 @interface RCDSettingServerUrlViewController : UIViewController <RCAnimatedImagesViewDelegate>
 

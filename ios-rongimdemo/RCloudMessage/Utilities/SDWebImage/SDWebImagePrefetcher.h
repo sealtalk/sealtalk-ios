@@ -37,15 +37,13 @@
  * @param skippedCount    The total number of images that were skipped
  */
 - (void)imagePrefetcher:(SDWebImagePrefetcher *)imagePrefetcher
-didFinishWithTotalCount:(NSUInteger)totalCount
-           skippedCount:(NSUInteger)skippedCount;
+    didFinishWithTotalCount:(NSUInteger)totalCount
+               skippedCount:(NSUInteger)skippedCount;
 
 @end
 
-typedef void (^SDWebImagePrefetcherProgressBlock)(NSUInteger noOfFinishedUrls,
-                                                  NSUInteger noOfTotalUrls);
-typedef void (^SDWebImagePrefetcherCompletionBlock)(NSUInteger noOfFinishedUrls,
-                                                    NSUInteger noOfSkippedUrls);
+typedef void (^SDWebImagePrefetcherProgressBlock)(NSUInteger noOfFinishedUrls, NSUInteger noOfTotalUrls);
+typedef void (^SDWebImagePrefetcherCompletionBlock)(NSUInteger noOfFinishedUrls, NSUInteger noOfSkippedUrls);
 
 /**
  * Prefetch some URLs in the cache for future use. Images are downloaded in low

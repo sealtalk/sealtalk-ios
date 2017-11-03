@@ -9,10 +9,7 @@
 #import "AFHTTPSessionManager.h"
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, RequestMethodType) {
-  RequestMethodTypePost = 1,
-  RequestMethodTypeGet = 2
-};
+typedef NS_ENUM(NSInteger, RequestMethodType) { RequestMethodTypePost = 1, RequestMethodTypeGet = 2 };
 
 @interface AFHttpTool : NSObject
 
@@ -83,9 +80,7 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
               failure:(void (^)(NSError *err))failure;
 
 // get user info
-+ (void)getUserInfo:(NSString *)userId
-            success:(void (^)(id response))success
-            failure:(void (^)(NSError *err))failure;
++ (void)getUserInfo:(NSString *)userId success:(void (^)(id response))success failure:(void (^)(NSError *err))failure;
 
 // set user portraitUri
 + (void)setUserPortraitUri:(NSString *)portraitUrl
@@ -93,9 +88,7 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
                    failure:(void (^)(NSError *err))failure;
 
 // invite user
-+ (void)inviteUser:(NSString *)userId
-           success:(void (^)(id response))success
-           failure:(void (^)(NSError *err))failure;
++ (void)inviteUser:(NSString *)userId success:(void (^)(id response))success failure:(void (^)(NSError *err))failure;
 
 // find user by phone
 + (void)findUserByPhone:(NSString *)Phone
@@ -103,16 +96,13 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
                 failure:(void (^)(NSError *err))failure;
 
 // get token
-+ (void)getTokenSuccess:(void (^)(id response))success
-                failure:(void (^)(NSError *err))failure;
++ (void)getTokenSuccess:(void (^)(id response))success failure:(void (^)(NSError *err))failure;
 
 // get friends
-+ (void)getFriendsSuccess:(void (^)(id response))success
-                  failure:(void (^)(NSError *err))failure;
++ (void)getFriendsSuccess:(void (^)(id response))success failure:(void (^)(NSError *err))failure;
 
 // get upload image token
-+ (void)getUploadImageTokensuccess:(void (^)(id response))success
-                           failure:(void (^)(NSError *err))failure;
++ (void)getUploadImageTokensuccess:(void (^)(id response))success failure:(void (^)(NSError *err))failure;
 
 // upload file
 + (void)uploadFile:(NSData *)fileData
@@ -121,8 +111,7 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
            failure:(void (^)(NSError *err))failure;
 
 // get square info
-+ (void)getSquareInfoSuccess:(void (^)(id response))success
-                     Failure:(void (^)(NSError *err))failure;
++ (void)getSquareInfoSuccess:(void (^)(id response))success Failure:(void (^)(NSError *err))failure;
 // create group
 + (void)createGroupWithGroupName:(NSString *)groupName
                  groupMemberList:(NSArray *)groupMemberList
@@ -130,13 +119,10 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
                          failure:(void (^)(NSError *err))failure;
 
 // get groups
-+ (void)getMyGroupsSuccess:(void (^)(id response))success
-                   failure:(void (^)(NSError *err))failure;
++ (void)getMyGroupsSuccess:(void (^)(id response))success failure:(void (^)(NSError *err))failure;
 
 // get group by id
-+ (void)getGroupByID:(NSString *)groupID
-             success:(void (^)(id response))success
-             failure:(void (^)(NSError *err))failure;
++ (void)getGroupByID:(NSString *)groupID success:(void (^)(id response))success failure:(void (^)(NSError *err))failure;
 
 // set group portraitUri
 + (void)setGroupPortraitUri:(NSString *)portraitUrl
@@ -183,8 +169,7 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
                        failure:(void (^)(NSError *err))failure;
 
 //获取好友列表
-+ (void)getFriendListFromServerSuccess:(void (^)(id))success
-                               failure:(void (^)(NSError *))failure;
++ (void)getFriendListFromServerSuccess:(void (^)(id))success failure:(void (^)(NSError *))failure;
 
 //处理请求加好友
 + (void)processInviteFriendRequest:(NSString *)friendUserId
@@ -208,17 +193,13 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
                   failure:(void (^)(NSError *err))failure;
 
 //获取黑名单列表
-+ (void)getBlacklistsuccess:(void (^)(id response))success
-                    failure:(void (^)(NSError *err))failure;
++ (void)getBlacklistsuccess:(void (^)(id response))success failure:(void (^)(NSError *err))failure;
 
 //更新当前用户名称
-+ (void)updateName:(NSString *)userName
-           success:(void (^)(id response))success
-           failure:(void (^)(NSError *err))failure;
++ (void)updateName:(NSString *)userName success:(void (^)(id response))success failure:(void (^)(NSError *err))failure;
 
 //获取版本信息
-+ (void)getVersionsuccess:(void (^)(id response))success
-                  failure:(void (^)(NSError *err))failure;
++ (void)getVersionsuccess:(void (^)(id response))success failure:(void (^)(NSError *err))failure;
 
 //设置好友备注
 + (void)setFriendDisplayName:(NSString *)friendId

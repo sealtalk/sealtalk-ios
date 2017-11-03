@@ -24,11 +24,11 @@
  */
 
 @interface FMResultSet : NSObject {
-  FMDatabase *_parentDB;
-  FMStatement *_statement;
+    FMDatabase *_parentDB;
+    FMStatement *_statement;
 
-  NSString *_query;
-  NSMutableDictionary *_columnNameToIndexMap;
+    NSString *_query;
+    NSMutableDictionary *_columnNameToIndexMap;
 }
 
 ///-----------------
@@ -60,8 +60,7 @@
  @return A `FMResultSet` on success; `nil` on failure
  */
 
-+ (instancetype)resultSetWithStatement:(FMStatement *)statement
-                   usingParentDatabase:(FMDatabase *)aDB;
++ (instancetype)resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase *)aDB;
 
 /** Close result set */
 

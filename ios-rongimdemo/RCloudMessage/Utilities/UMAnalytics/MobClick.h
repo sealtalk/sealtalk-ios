@@ -7,25 +7,21 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#define UMOnlineConfigDidFinishedNotification                                  \
-  @"OnlineConfigDidFinishedNotification"
-#define XcodeAppVersion                                                        \
-  [[[NSBundle mainBundle] infoDictionary]                                      \
-      objectForKey:@"CFBundleShortVersionString"]
+#define UMOnlineConfigDidFinishedNotification @"OnlineConfigDidFinishedNotification"
+#define XcodeAppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 
 /**
  REALTIME只在“集成测试”设备的DEBUG模式下有效，其它情况下的REALTIME会改为使用BATCH策略。
  */
 typedef enum {
-  REALTIME = 0,      //实时发送              (只在“集成测试”设备的DEBUG模式下有效)
-  BATCH = 1,         //启动发送
-  SEND_INTERVAL = 6, //最小间隔发送           ([90-86400]s, default 90s)
+    REALTIME = 0,      //实时发送              (只在“集成测试”设备的DEBUG模式下有效)
+    BATCH = 1,         //启动发送
+    SEND_INTERVAL = 6, //最小间隔发送           ([90-86400]s, default 90s)
 
-  // deprecated strategy:
-  SENDDAILY = 4,    //每日发送              (not available)
-  SENDWIFIONLY = 5, //仅在WIFI下时启动发送   (not available)
-  SEND_ON_EXIT =
-      7 //进入后台时发送         (not avilable, will be support later)
+    // deprecated strategy:
+    SENDDAILY = 4,    //每日发送              (not available)
+    SENDWIFIONLY = 5, //仅在WIFI下时启动发送   (not available)
+    SEND_ON_EXIT = 7  //进入后台时发送         (not avilable, will be support later)
 } ReportPolicy;
 
 @class CLLocation;
@@ -88,9 +84,7 @@ typedef enum {
  @param channelId 渠道名称,为nil或@""时, 默认为@"App Store"渠道
  @return void
  */
-+ (void)startWithAppkey:(NSString *)appKey
-           reportPolicy:(ReportPolicy)rp
-              channelId:(NSString *)cid;
++ (void)startWithAppkey:(NSString *)appKey reportPolicy:(ReportPolicy)rp channelId:(NSString *)cid;
 
 /** 当reportPolicy == SEND_INTERVAL 时设定log发送间隔
  @param second 单位为秒,最小90秒,最大86400秒(24hour).
@@ -148,15 +142,12 @@ typedef enum {
 累加值。为减少网络交互，可以自行对某一事件ID的某一分类标签进行累加，再传入次数作为参数。
  @return void.
  */
-+ (void)event:(NSString *)eventId; //等同于 event:eventId label:eventId;
-                                   /** 自定义事件,数量统计.
-                                    使用前，请先到友盟App管理后台的设置->编辑自定义事件
-                                    中添加相应的事件ID，然后在工程中传入相应的事件ID
-                                    */
-+ (void)event:(NSString *)eventId
-        label:
-            (NSString *)
-                label; // label为nil或@""时，等同于 event:eventId label:eventId;
++ (void)event:(NSString *)eventId;                         //等同于 event:eventId label:eventId;
+                                                           /** 自定义事件,数量统计.
+                                                            使用前，请先到友盟App管理后台的设置->编辑自定义事件
+                                                            中添加相应的事件ID，然后在工程中传入相应的事件ID
+                                                            */
++ (void)event:(NSString *)eventId label:(NSString *)label; // label为nil或@""时，等同于 event:eventId label:eventId;
 
 /** 自定义事件,数量统计.
  使用前，请先到友盟App管理后台的设置->编辑自定义事件
@@ -164,9 +155,7 @@ typedef enum {
  */
 + (void)event:(NSString *)eventId attributes:(NSDictionary *)attributes;
 
-+ (void)event:(NSString *)eventId
-   attributes:(NSDictionary *)attributes
-      counter:(int)number;
++ (void)event:(NSString *)eventId attributes:(NSDictionary *)attributes counter:(int)number;
 
 /** 自定义事件,时长统计.
     使用前，请先到友盟App管理后台的设置->编辑自定义事件
@@ -211,9 +200,7 @@ typedef enum {
  中添加相应的事件ID，然后在工程中传入相应的事件ID.
  */
 
-+ (void)beginEvent:(NSString *)eventId
-        primarykey:(NSString *)keyName
-        attributes:(NSDictionary *)attributes;
++ (void)beginEvent:(NSString *)eventId primarykey:(NSString *)keyName attributes:(NSDictionary *)attributes;
 /** 自定义事件,时长统计.
  使用前，请先到友盟App管理后台的设置->编辑自定义事件
  中添加相应的事件ID，然后在工程中传入相应的事件ID.
@@ -231,16 +218,12 @@ typedef enum {
  中添加相应的事件ID，然后在工程中传入相应的事件ID.
  */
 
-+ (void)event:(NSString *)eventId
-        label:(NSString *)label
-    durations:(int)millisecond;
++ (void)event:(NSString *)eventId label:(NSString *)label durations:(int)millisecond;
 /** 自定义事件,时长统计.
  使用前，请先到友盟App管理后台的设置->编辑自定义事件
  中添加相应的事件ID，然后在工程中传入相应的事件ID.
  */
-+ (void)event:(NSString *)eventId
-   attributes:(NSDictionary *)attributes
-    durations:(int)millisecond;
++ (void)event:(NSString *)eventId attributes:(NSDictionary *)attributes durations:(int)millisecond;
 
 #pragma mark - user methods
 /** active user sign-in.
@@ -318,9 +301,7 @@ typedef enum {
  使用前，请先到友盟App管理后台的设置->编辑自定义事件
  中添加相应的事件ID，然后在工程中传入相应的事件ID
  */
-+ (void)event:(NSString *)eventId
-        label:(NSString *)label
-          acc:(NSInteger)accumulation;
++ (void)event:(NSString *)eventId label:(NSString *)label acc:(NSInteger)accumulation;
 /** 自定义事件,数量统计.
  使用前，请先到友盟App管理后台的设置->编辑自定义事件
  中添加相应的事件ID，然后在工程中传入相应的事件ID

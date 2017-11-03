@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCDAboutRongCloudTableViewController : UITableViewController<UIAlertViewDelegate>
+@interface RCDAboutRongCloudTableViewController : UITableViewController <UIAlertViewDelegate>
 
 @end

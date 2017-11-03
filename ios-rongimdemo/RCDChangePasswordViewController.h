@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCDChangePasswordViewController : UIViewController<UITextFieldDelegate>
+@interface RCDChangePasswordViewController : UIViewController <UITextFieldDelegate>
 
 @end

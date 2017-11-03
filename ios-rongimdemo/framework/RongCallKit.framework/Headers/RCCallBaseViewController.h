@@ -167,9 +167,7 @@
 
  @discussion 如果您需要重写并调整UI的布局，应该先调用super。
  */
-- (void)resetLayout:(BOOL)isMultiCall
-          mediaType:(RCCallMediaType)mediaType
-         callStatus:(RCCallStatus)callStatus;
+- (void)resetLayout:(BOOL)isMultiCall mediaType:(RCCallMediaType)mediaType callStatus:(RCCallStatus)callStatus;
 
 #pragma mark - 初始化
 /*!

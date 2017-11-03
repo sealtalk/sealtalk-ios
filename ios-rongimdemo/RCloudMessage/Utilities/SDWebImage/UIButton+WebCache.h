@@ -51,9 +51,7 @@
  * finishes.
  * @see sd_setImageWithURL:placeholderImage:options:
  */
-- (void)sd_setImageWithURL:(NSURL *)url
-                  forState:(UIControlState)state
-          placeholderImage:(UIImage *)placeholder;
+- (void)sd_setImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder;
 
 /**
  * Set the imageView `image` with an `url`, placeholder and custom options.
@@ -157,8 +155,7 @@
  * @param state The state that uses the specified title. The values are
  * described in UIControlState.
  */
-- (void)sd_setBackgroundImageWithURL:(NSURL *)url
-                            forState:(UIControlState)state;
+- (void)sd_setBackgroundImageWithURL:(NSURL *)url forState:(UIControlState)state;
 
 /**
  * Set the backgroundImageView `image` with an `url` and a placeholder.
@@ -284,17 +281,14 @@
 @interface UIButton (WebCacheDeprecated)
 
 - (NSURL *)currentImageURL __deprecated_msg("Use `sd_currentImageURL`");
-- (NSURL *)imageURLForState:(UIControlState)state
-    __deprecated_msg("Use `sd_imageURLForState:`");
+- (NSURL *)imageURLForState:(UIControlState)state __deprecated_msg("Use `sd_imageURLForState:`");
 
 - (void)setImageWithURL:(NSURL *)url
-               forState:(UIControlState)state
-    __deprecated_msg("Method deprecated. Use `sd_setImageWithURL:forState:`");
+               forState:(UIControlState)state __deprecated_msg("Method deprecated. Use `sd_setImageWithURL:forState:`");
 - (void)setImageWithURL:(NSURL *)url
                forState:(UIControlState)state
-       placeholderImage:(UIImage *)placeholder
-    __deprecated_msg("Method deprecated. Use "
-                     "`sd_setImageWithURL:forState:placeholderImage:`");
+       placeholderImage:(UIImage *)placeholder __deprecated_msg("Method deprecated. Use "
+                                                                "`sd_setImageWithURL:forState:placeholderImage:`");
 - (void)setImageWithURL:(NSURL *)url
                forState:(UIControlState)state
        placeholderImage:(UIImage *)placeholder
@@ -305,8 +299,7 @@
 - (void)setImageWithURL:(NSURL *)url
                forState:(UIControlState)state
               completed:(SDWebImageCompletedBlock)completedBlock
-    __deprecated_msg(
-        "Method deprecated. Use `sd_setImageWithURL:forState:completed:`");
+    __deprecated_msg("Method deprecated. Use `sd_setImageWithURL:forState:completed:`");
 - (void)setImageWithURL:(NSURL *)url
                forState:(UIControlState)state
        placeholderImage:(UIImage *)placeholder
@@ -325,8 +318,7 @@
 
 - (void)setBackgroundImageWithURL:(NSURL *)url
                          forState:(UIControlState)state
-    __deprecated_msg(
-        "Method deprecated. Use `sd_setBackgroundImageWithURL:forState:`");
+    __deprecated_msg("Method deprecated. Use `sd_setBackgroundImageWithURL:forState:`");
 - (void)setBackgroundImageWithURL:(NSURL *)url
                          forState:(UIControlState)state
                  placeholderImage:(UIImage *)placeholder
@@ -362,8 +354,7 @@
                      "`sd_setBackgroundImageWithURL:forState:placeholderImage:"
                      "options:completed:`");
 
-- (void)cancelCurrentImageLoad
-    __deprecated_msg("Use `sd_cancelImageLoadForState:`");
+- (void)cancelCurrentImageLoad __deprecated_msg("Use `sd_cancelImageLoadForState:`");
 - (void)cancelBackgroundImageLoadForState:(UIControlState)state
     __deprecated_msg("Use `sd_cancelBackgroundImageLoadForState:`");
 

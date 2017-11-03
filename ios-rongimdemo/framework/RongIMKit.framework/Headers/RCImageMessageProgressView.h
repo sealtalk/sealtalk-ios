@@ -25,7 +25,7 @@
 
 /*!
  更新进度
- 
+
  @param progress 进度值，0 <= progress <= 100
  */
 - (void)updateProgress:(NSInteger)progress;

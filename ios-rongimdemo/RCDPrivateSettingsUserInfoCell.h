@@ -14,7 +14,7 @@
 
 @property(strong, nonatomic) UILabel *NickNameLabel;
 
-@property (strong, nonatomic) UILabel *displayNameLabel;
+@property(strong, nonatomic) UILabel *displayNameLabel;
 
 - (id)initWithIsHaveDisplayName:(BOOL)isHaveDisplayName;
 @end

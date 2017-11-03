@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDSearchMoreController : UITableViewController
-@property (nonatomic,copy)NSString *searchString;
-@property (nonatomic,copy)NSString *type;
-@property (nonatomic,strong)NSArray *resultArray;
-@property (nonatomic,copy) void (^cancelBlock)();
-@property (nonatomic,assign) BOOL isShowSeachBar;
-@property (nonatomic,assign)int messageCount;
+@property(nonatomic, copy) NSString *searchString;
+@property(nonatomic, copy) NSString *type;
+@property(nonatomic, strong) NSArray *resultArray;
+@property(nonatomic, copy) void (^cancelBlock)(void);
+@property(nonatomic, assign) BOOL isShowSeachBar;
+@property(nonatomic, assign) int messageCount;
 @end

@@ -33,28 +33,28 @@
 @protocol MBProgressHUDDelegate;
 
 typedef enum {
-  /** Progress is shown using an UIActivityIndicatorView. This is the default.
+    /** Progress is shown using an UIActivityIndicatorView. This is the default.
      */
-  MBProgressHUDModeIndeterminate,
-  /** Progress is shown using a round, pie-chart like, progress view. */
-  MBProgressHUDModeDeterminate,
-  /** Progress is shown using a horizontal progress bar */
-  MBProgressHUDModeDeterminateHorizontalBar,
-  /** Progress is shown using a ring-shaped progress view. */
-  MBProgressHUDModeAnnularDeterminate,
-  /** Shows a custom view */
-  MBProgressHUDModeCustomView,
-  /** Shows only labels */
-  MBProgressHUDModeText
+    MBProgressHUDModeIndeterminate,
+    /** Progress is shown using a round, pie-chart like, progress view. */
+    MBProgressHUDModeDeterminate,
+    /** Progress is shown using a horizontal progress bar */
+    MBProgressHUDModeDeterminateHorizontalBar,
+    /** Progress is shown using a ring-shaped progress view. */
+    MBProgressHUDModeAnnularDeterminate,
+    /** Shows a custom view */
+    MBProgressHUDModeCustomView,
+    /** Shows only labels */
+    MBProgressHUDModeText
 } MBProgressHUDMode;
 
 typedef enum {
-  /** Opacity animation */
-  MBProgressHUDAnimationFade,
-  /** Opacity + scale animation */
-  MBProgressHUDAnimationZoom,
-  MBProgressHUDAnimationZoomOut = MBProgressHUDAnimationZoom,
-  MBProgressHUDAnimationZoomIn
+    /** Opacity animation */
+    MBProgressHUDAnimationFade,
+    /** Opacity + scale animation */
+    MBProgressHUDAnimationZoom,
+    MBProgressHUDAnimationZoomOut = MBProgressHUDAnimationZoom,
+    MBProgressHUDAnimationZoomIn
 } MBProgressHUDAnimation;
 
 #ifndef MB_INSTANCETYPE
@@ -84,7 +84,7 @@ typedef enum {
 #endif
 
 #if NS_BLOCKS_AVAILABLE
-typedef void (^MBProgressHUDCompletionBlock)();
+typedef void (^MBProgressHUDCompletionBlock)(void);
 #endif
 
 /**
@@ -258,10 +258,7 @@ typedef void (^MBProgressHUDCompletionBlock)();
  * animationType. If set to NO the HUD will not use
  * animations while (dis)appearing.
  */
-- (void)showWhileExecuting:(SEL)method
-                  onTarget:(id)target
-                withObject:(id)object
-                  animated:(BOOL)animated;
+- (void)showWhileExecuting:(SEL)method onTarget:(id)target withObject:(id)object animated:(BOOL)animated;
 
 #if NS_BLOCKS_AVAILABLE
 
@@ -280,8 +277,8 @@ typedef void (^MBProgressHUDCompletionBlock)();
  * @see showAnimated:whileExecutingBlock:onQueue:completionBlock:
  */
 - (void)showAnimated:(BOOL)animated
- whileExecutingBlock:(dispatch_block_t)block
-     completionBlock:(MBProgressHUDCompletionBlock)completion;
+    whileExecutingBlock:(dispatch_block_t)block
+        completionBlock:(MBProgressHUDCompletionBlock)completion;
 
 /**
  * Shows the HUD while a block is executing on the specified dispatch queue,
@@ -289,9 +286,7 @@ typedef void (^MBProgressHUDCompletionBlock)();
  *
  * @see showAnimated:whileExecutingBlock:onQueue:completionBlock:
  */
-- (void)showAnimated:(BOOL)animated
- whileExecutingBlock:(dispatch_block_t)block
-             onQueue:(dispatch_queue_t)queue;
+- (void)showAnimated:(BOOL)animated whileExecutingBlock:(dispatch_block_t)block onQueue:(dispatch_queue_t)queue;
 
 /**
  * Shows the HUD while a block is executing on the specified dispatch queue,
@@ -307,9 +302,9 @@ typedef void (^MBProgressHUDCompletionBlock)();
  * @see completionBlock
  */
 - (void)showAnimated:(BOOL)animated
- whileExecutingBlock:(dispatch_block_t)block
-             onQueue:(dispatch_queue_t)queue
-     completionBlock:(MBProgressHUDCompletionBlock)completion;
+    whileExecutingBlock:(dispatch_block_t)block
+                onQueue:(dispatch_queue_t)queue
+        completionBlock:(MBProgressHUDCompletionBlock)completion;
 
 /**
  * A block that gets called after the HUD was completely hidden.

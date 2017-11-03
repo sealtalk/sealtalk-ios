@@ -6,26 +6,26 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <RongIMLib/RongIMLib.h>
-#import "RCTextView.h"
 #import "RCEmojiBoardView.h"
 #import "RCPluginBoardView.h"
+#import "RCTextView.h"
+#import <RongIMLib/RongIMLib.h>
+#import <UIKit/UIKit.h>
 
 #define RC_ChatSessionInputBar_Height 50.f
 ///输入栏扩展输入的唯一标示
-#define INPUT_MENTIONED_SELECT_TAG        1000
-#define PLUGIN_BOARD_ITEM_ALBUM_TAG       1001
-#define PLUGIN_BOARD_ITEM_CAMERA_TAG      1002
-#define PLUGIN_BOARD_ITEM_LOCATION_TAG    1003
-#define PLUGIN_BOARD_ITEM_FILE_TAG        1006
-#define PLUGIN_BOARD_ITEM_VOIP_TAG        1101
-#define PLUGIN_BOARD_ITEM_VIDEO_VOIP_TAG  1102
-#define PLUGIN_BOARD_ITEM_EVA_TAG         1103
-#define PLUGIN_BOARD_ITEM_RED_PACKET_TAG  1104
+#define INPUT_MENTIONED_SELECT_TAG 1000
+#define PLUGIN_BOARD_ITEM_ALBUM_TAG 1001
+#define PLUGIN_BOARD_ITEM_CAMERA_TAG 1002
+#define PLUGIN_BOARD_ITEM_LOCATION_TAG 1003
+#define PLUGIN_BOARD_ITEM_FILE_TAG 1006
+#define PLUGIN_BOARD_ITEM_VOIP_TAG 1101
+#define PLUGIN_BOARD_ITEM_VIDEO_VOIP_TAG 1102
+#define PLUGIN_BOARD_ITEM_EVA_TAG 1103
+#define PLUGIN_BOARD_ITEM_RED_PACKET_TAG 1104
 #define PLUGIN_BOARD_ITEM_VOICE_INPUT_TAG 1105
-#define PLUGIN_BOARD_ITEM_PTT_TAG         1106
-#define PLUGIN_BOARD_ITEM_CARD_TAG        1107
+#define PLUGIN_BOARD_ITEM_PTT_TAG 1106
+#define PLUGIN_BOARD_ITEM_CARD_TAG 1107
 
 /*!
  输入工具栏的显示布局
@@ -81,12 +81,12 @@ typedef NS_ENUM(NSInteger, RCChatSessionInputBarControlType) {
      公众服务
      */
     RCChatSessionInputBarControlPubType = 1,
-    
+
     /*!
      客服机器人
      */
     RCChatSessionInputBarControlCSRobotType = 2,
-    
+
     /*!
      客服机器人
      */
@@ -174,7 +174,7 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
 
 /*!
  公众服务菜单的容器View
- 
+
  @warning  **已废弃，请勿使用。**
  升级说明：如果您之前使用了此属性，可以直接替换为containerView属性，行为和实现完全一致。
  */
@@ -236,30 +236,26 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
 @property(nonatomic) KBottomBarStatus currentBottomBarStatus;
 /*!
  所处的会话页面View
- 
+
  @warning  **已废弃，请勿使用。**
  升级说明：如果您之前使用了此属性，可以直接替换为contextView属性，行为和实现完全一致。
  */
-@property(assign, nonatomic, readonly) UIView *contextView
-__deprecated_msg("已废弃，请勿使用。");
+@property(assign, nonatomic, readonly) UIView *contextView __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  Frame现在的Y坐标
  */
-@property(assign, nonatomic) float currentPositionY
-__deprecated_msg("已废弃，请勿使用。");
+@property(assign, nonatomic) float currentPositionY __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  Frame之前的Y坐标
  */
-@property(assign, nonatomic) float originalPositionY
-__deprecated_msg("已废弃，请勿使用。");
+@property(assign, nonatomic) float originalPositionY __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  文本输入框的高度
  */
-@property(assign, nonatomic) float inputTextview_height
-__deprecated_msg("已废弃，请勿使用。");
+@property(assign, nonatomic) float inputTextview_height __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  公众服务账号菜单
@@ -293,13 +289,13 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  初始化输入工具栏
- 
+
  @param frame            显示的Frame
  @param containerView    所处的会话页面View
  @param controlType      菜单类型
  @param controlStyle     显示布局
  @param defaultInputType 默认的输入模式
- 
+
  @return 输入工具栏对象
  */
 - (instancetype)initWithFrame:(CGRect)frame
@@ -310,14 +306,13 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  设置输入工具栏的样式
- 
+
  @param type  菜单类型
  @param style 显示布局
- 
+
  @discussion 您可以在会话页面RCConversationViewController的viewDidLoad之后设置，改变输入工具栏的样式。
  */
-- (void)setInputBarType:(RCChatSessionInputBarControlType)type
-                  style:(RCChatSessionInputBarControlStyle)style;
+- (void)setInputBarType:(RCChatSessionInputBarControlType)type style:(RCChatSessionInputBarControlStyle)style;
 
 /*!
  销毁公众账号弹出的菜单
@@ -350,13 +345,13 @@ __deprecated_msg("已废弃，请勿使用。");
 - (void)containerViewWillDisappear;
 /*!
  设置输入框的输入状态
- 
+
  @param status          输入框状态
  @param animated        是否使用动画效果
- 
+
  @discussion 如果需要设置，请在输入框执行containerViewWillAppear之后（即会话页面viewWillAppear之后）。
  */
--(void)updateStatus:(KBottomBarStatus)status animated:(BOOL)animated;
+- (void)updateStatus:(KBottomBarStatus)status animated:(BOOL)animated;
 
 /*!
  重置到默认状态
@@ -365,49 +360,49 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  内容区域大小发生变化。
- 
+
  @discussion 当本view所在的view frame发生变化，需要重新计算本view的frame时，调用此方法
  */
 - (void)containerViewSizeChanged;
 
 /*!
  设置默认的输入框类型
- 
+
  @param defaultInputType  默认输入框类型
  */
 - (void)setDefaultInputType:(RCChatSessionInputBarInputType)defaultInputType;
 
 /*!
  添加被@的用户
- 
+
  @param userInfo    被@的用户信息
  */
 - (void)addMentionedUser:(RCUserInfo *)userInfo;
 
 /*!
  打开系统相册，选择图片
- 
+
  @discussion 选择结果通过delegate返回
  */
 - (void)openSystemAlbum;
 
 /*!
  打开系统相机，拍摄图片
- 
+
  @discussion 拍摄结果通过delegate返回
  */
 - (void)openSystemCamera;
 
 /*!
  打开地图picker，选择位置
- 
+
  @discussion 选择结果通过delegate返回
  */
 - (void)openLocationPicker;
 
 /*!
  打开文件选择器，选择文件
- 
+
  @discussion 选择结果通过delegate返回
  */
 - (void)openFileSelector;
@@ -416,11 +411,10 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  更新输入框的Frame
- 
+
  @warning  **已废弃，请勿使用。**
  */
-- (void)refreshInputViewFrame
-__deprecated_msg("已废弃，请勿使用。");
+- (void)refreshInputViewFrame __deprecated_msg("已废弃，请勿使用。");
 
 @end
 
@@ -431,18 +425,17 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  显示ViewController
- 
+
  @param viewController 需要显示的ViewController
  @param functionTag    功能标识
  */
-- (void)presentViewController:(UIViewController *)viewController
-                  functionTag:(NSInteger)functionTag;
+- (void)presentViewController:(UIViewController *)viewController functionTag:(NSInteger)functionTag;
 
 @optional
 
 /*!
  输入工具栏尺寸（高度）发生变化的回调
- 
+
  @param chatInputBar 输入工具栏
  @param frame        输入工具栏最终需要显示的Frame
  */
@@ -450,7 +443,7 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  点击键盘Return按钮的回调
- 
+
  @param inputTextView 文本输入框
  */
 - (void)inputTextViewDidTouchSendKey:(UITextView *)inputTextView;
@@ -462,31 +455,33 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  输入框中内容发生变化的回调
- 
+
  @param inputTextView 文本输入框
  @param range         当前操作的范围
  @param text          插入的文本
  */
-- (void)inputTextView:(UITextView *)inputTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;
+- (void)inputTextView:(UITextView *)inputTextView
+    shouldChangeTextInRange:(NSRange)range
+            replacementText:(NSString *)text;
 
 /*!
  公众服务菜单的点击回调
- 
+
  @param selectedMenuItem 点击的公众服务菜单项
  */
 - (void)onPublicServiceMenuItemSelected:(RCPublicServiceMenuItem *)selectedMenuItem;
 
 /*!
  点击扩展功能板中的扩展项的回调
- 
+
  @param pluginBoardView 当前扩展功能板
  @param tag             点击的扩展项的唯一标示符
  */
--(void)pluginBoardView:(RCPluginBoardView*)pluginBoardView clickedItemWithTag:(NSInteger)tag;
+- (void)pluginBoardView:(RCPluginBoardView *)pluginBoardView clickedItemWithTag:(NSInteger)tag;
 
 /*!
  点击表情的回调
- 
+
  @param emojiView    表情输入的View
  @param touchedEmoji 点击的表情对应的字符串编码
  */
@@ -494,7 +489,7 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  点击发送按钮的回调
- 
+
  @param emojiView  表情输入的View
  @param sendButton 发送按钮
  */
@@ -517,17 +512,17 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
   相机拍照图片
- 
+
  @param image   相机拍摄，选择发送的图片
  */
 - (void)imageDidCapture:(UIImage *)image;
 
 /**
  相机录制小视频
- 
+
  @param url 小视频url
  */
-- (void)sightDidFinishRecord:(NSString*)url thumbnail:(UIImage*)image duration:(NSUInteger)duration;
+- (void)sightDidFinishRecord:(NSString *)url thumbnail:(UIImage *)image duration:(NSUInteger)duration;
 
 /*!
  地理位置选择完成之后的回调
@@ -535,21 +530,22 @@ __deprecated_msg("已废弃，请勿使用。");
  @param locationName   位置的名称
  @param mapScreenShot  位置在地图中的缩略图
  */
-- (void)locationDidSelect:(CLLocationCoordinate2D)location locationName:(NSString *)locationName mapScreenShot:(UIImage *)mapScreenShot;
+- (void)locationDidSelect:(CLLocationCoordinate2D)location
+             locationName:(NSString *)locationName
+            mapScreenShot:(UIImage *)mapScreenShot;
 
 /*!
  相册选择图片列表
- 
+
  @warning  **已废弃，请勿使用。**
  @param selectedImages   选中的图片
  @param full             用户是否要求原图
  */
-- (void)imageDidSelect:(NSArray *)selectedImages fullImageRequired:(BOOL)full
-__deprecated_msg("已废弃，请勿使用。");
+- (void)imageDidSelect:(NSArray *)selectedImages fullImageRequired:(BOOL)full __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  相册选择图片列表,返回图片的 NSData(请不要同时实现 imageDidSelect:fullImageRequired:)
- 
+
  @warning  **已废弃，请勿使用。**
  @param selectedImages   选中的图片
  @param full             用户是否要求原图
@@ -558,25 +554,24 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  选择文件列表
- 
+
  @param filePathList   被选中的文件路径list
  */
 - (void)fileDidSelect:(NSArray *)filePathList;
 
 /*!
  输入工具栏状态变化时的回调（暂未实现）
- 
+
  @param bottomBarStatus 当前状态
  */
--(void)chatSessionInputBarStatusChanged:(KBottomBarStatus)bottomBarStatus;
+- (void)chatSessionInputBarStatusChanged:(KBottomBarStatus)bottomBarStatus;
 @end
 
-
-@protocol RCChatSessionInputBarControlDataSource<NSObject>
+@protocol RCChatSessionInputBarControlDataSource <NSObject>
 
 /*!
  获取待选择的用户ID列表
- 
+
  @param completion  获取完成的回调
  @param functionTag 功能标识
  */
@@ -584,7 +579,7 @@ __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  获取待选择的UserId的用户信息
- 
+
  @param userId           用户ID
  @return 用户信息
  */

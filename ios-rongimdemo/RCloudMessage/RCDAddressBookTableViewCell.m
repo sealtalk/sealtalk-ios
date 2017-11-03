@@ -7,18 +7,17 @@
 //
 
 #import "RCDAddressBookTableViewCell.h"
-#import "RCDUserInfo.h"
 #import "DefaultPortraitView.h"
+#import "RCDCommonDefine.h"
+#import "RCDUserInfo.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
-#import "RCDCommonDefine.h"
 
 #define CellHeight 65.0f
 
 @implementation RCDAddressBookTableViewCell
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         [self initSubviews];
@@ -30,55 +29,54 @@
     CGFloat cellWidth = self.frame.size.width;
     CGFloat cellHeight = CellHeight;
     CGFloat screenWidth = RCDscreenWidth;
-    if(cellWidth<screenWidth){
+    if (cellWidth < screenWidth) {
         cellWidth = screenWidth;
     }
     //头像 portraitImageView
-    CGFloat portraitImageViewX = 6+16;
-    CGFloat portraitImageViewY = cellHeight/2.0-36/2.0;
-    self.portraitImageView = [[UIImageView alloc]initWithFrame:CGRectMake(portraitImageViewX, portraitImageViewY, 36, 36)];
-    
+    CGFloat portraitImageViewX = 6 + 16;
+    CGFloat portraitImageViewY = cellHeight / 2.0 - 36 / 2.0;
+    self.portraitImageView =
+        [[UIImageView alloc] initWithFrame:CGRectMake(portraitImageViewX, portraitImageViewY, 36, 36)];
+
     //昵称
     CGFloat nameLabelWidth = 100;
     CGFloat nameLabelHeight = 21;
-    CGFloat nameLabelX = CGRectGetMaxX(self.portraitImageView.frame)+8;
-    CGFloat nameLabelY = cellHeight/2.0-nameLabelHeight/2.0;
-    self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(nameLabelX, nameLabelY, nameLabelWidth, nameLabelHeight)];
+    CGFloat nameLabelX = CGRectGetMaxX(self.portraitImageView.frame) + 8;
+    CGFloat nameLabelY = cellHeight / 2.0 - nameLabelHeight / 2.0;
+    self.nameLabel =
+        [[UILabel alloc] initWithFrame:CGRectMake(nameLabelX, nameLabelY, nameLabelWidth, nameLabelHeight)];
     self.nameLabel.font = [UIFont systemFontOfSize:17];
-    
-    
+
     //右侧箭头
     CGFloat arrowWidth = 15;
-    CGFloat arrowHeight = cellHeight-19.5-19 -8 -8;
+    CGFloat arrowHeight = cellHeight - 19.5 - 19 - 8 - 8;
     CGFloat arrowX = cellWidth - arrowWidth - 8;
-    CGFloat arrowY = cellHeight/2.0-arrowHeight/2.0;
-    self.arrow = [[UIImageView alloc]initWithFrame:CGRectMake(arrowX, arrowY, arrowWidth, arrowHeight)];
+    CGFloat arrowY = cellHeight / 2.0 - arrowHeight / 2.0;
+    self.arrow = [[UIImageView alloc] initWithFrame:CGRectMake(arrowX, arrowY, arrowWidth, arrowHeight)];
     self.arrow.image = [UIImage imageNamed:@"grayarrow"];
-    
+
     //右侧label
     CGFloat rightLabelWidth = 53;
-    CGFloat rightLabelHeight = cellHeight -16.5-16;
-    CGFloat rightLabelX = CGRectGetMaxX(self.arrow.frame)-20-rightLabelWidth;
+    CGFloat rightLabelHeight = cellHeight - 16.5 - 16;
+    CGFloat rightLabelX = CGRectGetMaxX(self.arrow.frame) - 20 - rightLabelWidth;
     CGFloat rightLabelY = 16.5;
-    self.rightLabel = [[UILabel alloc]initWithFrame:CGRectMake(rightLabelX, rightLabelY, rightLabelWidth, rightLabelHeight)];
+    self.rightLabel =
+        [[UILabel alloc] initWithFrame:CGRectMake(rightLabelX, rightLabelY, rightLabelWidth, rightLabelHeight)];
     self.rightLabel.font = [UIFont systemFontOfSize:14];
-    
+
     //“接受”按钮
-    CGFloat acceptBtnWidth = rightLabelWidth-15;
-    CGFloat acceptBtnHeight = rightLabelHeight-8;
+    CGFloat acceptBtnWidth = rightLabelWidth - 15;
+    CGFloat acceptBtnHeight = rightLabelHeight - 8;
     CGFloat acceptBtnX = rightLabelX;
-    CGFloat acceptBtnY = rightLabelY+5;
+    CGFloat acceptBtnY = rightLabelY + 5;
     _acceptBtn = [[UIButton alloc] initWithFrame:CGRectMake(acceptBtnX, acceptBtnY, acceptBtnWidth, acceptBtnHeight)];
     _acceptBtn.tag = self.tag;
     [_acceptBtn setTitle:@"接受" forState:UIControlStateNormal];
     [_acceptBtn setTintColor:[UIColor whiteColor]];
-    [_acceptBtn setBackgroundColor:[[UIColor alloc] initWithRed:23 / 255.f
-                                                          green:136 / 255.f
-                                                           blue:213 / 255.f
-                                                          alpha:1]];
+    [_acceptBtn setBackgroundColor:[[UIColor alloc] initWithRed:23 / 255.f green:136 / 255.f blue:213 / 255.f alpha:1]];
     _acceptBtn.translatesAutoresizingMaskIntoConstraints = NO;
     [_acceptBtn.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
-    
+
     [self.contentView addSubview:self.portraitImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.rightLabel];
@@ -90,14 +88,14 @@
     if (user) {
         self.nameLabel.text = user.name;
         if ([user.portraitUri isEqualToString:@""]) {
-            DefaultPortraitView *defaultPortrait = [[DefaultPortraitView alloc]
-                                                    initWithFrame:CGRectMake(0, 0, 100, 100)];
+            DefaultPortraitView *defaultPortrait =
+                [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
             [defaultPortrait setColorAndLabel:user.userId Nickname:user.name];
             UIImage *portrait = [defaultPortrait imageFromView];
             self.portraitImageView.image = portrait;
         } else {
             [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
-                            placeholderImage:[UIImage imageNamed:@"contact"]];
+                                      placeholderImage:[UIImage imageNamed:@"contact"]];
         }
     }
     if ([user.status intValue] == 20) {
@@ -111,7 +109,7 @@
         self.arrow.hidden = YES;
         self.acceptBtn.hidden = YES;
     }
-    
+
     if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
         [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
         self.portraitImageView.layer.masksToBounds = YES;
@@ -126,13 +124,13 @@
 }
 
 - (void)awakeFromNib {
-  [super awakeFromNib];
+    [super awakeFromNib];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-  [super setSelected:selected animated:animated];
+    [super setSelected:selected animated:animated];
 
-  // Configure the view for the selected state
+    // Configure the view for the selected state
 }
 
 + (CGFloat)cellHeight {

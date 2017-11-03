@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
-typedef void (^TapActionBlock)();
+typedef void (^TapActionBlock)(void);
 
 @interface RCLocationView : NSObject
 

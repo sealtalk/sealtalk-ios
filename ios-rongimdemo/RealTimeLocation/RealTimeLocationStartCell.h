@@ -8,8 +8,7 @@
 
 #import <RongIMKit/RongIMKit.h>
 
-#define RealTimeLocationStartCellIndentifier                                   \
-  @"realTimeLocationStartCellIndentifier"
+#define RealTimeLocationStartCellIndentifier @"realTimeLocationStartCellIndentifier"
 @interface RealTimeLocationStartCell : RCMessageCell
 
 @end

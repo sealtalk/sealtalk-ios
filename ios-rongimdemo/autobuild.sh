@@ -99,6 +99,7 @@ elif [ ${ENV_FLAG} == "dev" ]; then
 elif [ ${ENV_FLAG} == "dev_backup" ]; then
     sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./RCloudMessage/AFHttpTool.m
     sed -i '' -e 's?http://api.sealtalk.im?http://api.hitalk.im?g' ./SealTalkShareExtension/RCDShareChatListController.m
+
     sed -i '' -e 's/api.sealtalk.im/api.hitalk.im/g' ./RCloudMessage/Info.plist
 elif [ ${ENV_FLAG} == "pre" ]; then
     sed -i '' -e 's?http://api.sealtalk.im?http://apiqa.rongcloud.net?g' ./RCloudMessage/AFHttpTool.m
@@ -144,7 +145,7 @@ fi
 
 if [ ${ENV_FLAG} == "dev" ]; then
     sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU145760441681012"/g' ./RCloudMessage/RCDMeTableViewController.m
-    sed -i '' -e 's/nav.cn.ronghub.com/navxiaoqiao.cn.ronghub.com/g' ./RCloudMessage/Info.plist
+    sed -i '' -e 's/nav.cn.ronghub.com/navxq.rongcloud.net/g' ./RCloudMessage/Info.plist
 elif [ ${ENV_FLAG} == "dev_backup" ]; then
     sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU145760441681012"/g' ./RCloudMessage/RCDMeTableViewController.m
     sed -i '' -e 's/nav.cn.ronghub.com/navzhouyu.cn.rongcloud.net/g' ./RCloudMessage/Info.plist
@@ -188,18 +189,8 @@ fi
 # 替换友盟 Key
 sed -i '' -e '/UMENG_APPKEY/s/@"563755cbe0f55a5cb300139c"/@"5637263b67e58e772200248f"/g' ./RCloudMessage/AppDelegate.m
 
-if [ ${PROFILE_FLAG} == "dev" ]
-then
-sed -i "" -e '/ProvisioningStyle/s/Automatic/Manual/g' ./RCloudMessage.xcodeproj/project.pbxproj
-configuration="AutoDebug"
-BUILD_APP_PROFILE="34880c54-3eea-4060-9fe4-4e01e661e54c"
-BUILD_SHARE_PROFILE="6194192c-e7ad-4ea0-8927-a6e477cc994c"
-else
-configuration="Release"
-# Release可以使用Automatic
 BUILD_APP_PROFILE=""
 BUILD_SHARE_PROFILE=""
-fi
 
 BUILD_CODE_SIGN_IDENTITY="iPhone Distribution: Beijing Rong Cloud Network Technology CO., LTD"
 
@@ -234,16 +225,10 @@ mkdir -p "$BUILD_DIR"
 xcodebuild clean -alltargets
 
 echo "***开始build iphoneos文件***"
-if [ ${PROFILE_FLAG} == "dev" ]; then
-  xcodebuild -project ${PROJECT_NAME} -target $targetName -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}"  SHARE_PROFILE="${BUILD_SHARE_PROFILE}"
-  xcrun -sdk $TARGET_DECIVE PackageApplication -v ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app -o ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${DEV_FLAG}_${CUR_TIME}.ipa
-  cp -af ./build/${configuration}-${TARGET_DECIVE}/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${DEV_FLAG}_${CUR_TIME}.app.dSYM
-else
   xcodebuild -scheme "${targetName}" archive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}"
   xcodebuild -exportArchive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -exportOptionsPlist "archive.plist" -exportPath "./${BIN_DIR}"
   mv ./${BIN_DIR}/${targetName}.ipa ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${DEV_FLAG}_${CUR_TIME}.ipa
   cp -af ./${BUILD_DIR}/${targetName}.xcarchive/dSYMs/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${targetName}_v${VER_FLAG}_${DEV_FLAG}_${CUR_TIME}.app.dSYM
-fi
 
 echo "***编译结束***"
 

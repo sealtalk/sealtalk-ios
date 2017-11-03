@@ -6,9 +6,9 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "RCStatusDefine.h"
 #import "RCCSLeaveMessageItem.h"
+#import "RCStatusDefine.h"
+#import <Foundation/Foundation.h>
 // onResult:(void(^)(int isSuccess, NSString *errMsg))resultBlock
 // onBlocked:(void(^)(void))blockedBlock
 // onCompanyInfo:(void(^)(NSString *companyName, NSString
@@ -59,10 +59,9 @@
 
 /*!
  * 评价类型
- 如果 evaType 为 RCCSEvaSeparately，发送机器人评价消息调用RCIMClient中evaluateCustomerService: knownledgeId: robotValue: suggest:
- 发送人工评价消息调用RCIMClient中
- evaluateCustomerService: dialogId: humanValue: suggest:
- 
+ 如果 evaType 为 RCCSEvaSeparately，发送机器人评价消息调用RCIMClient中evaluateCustomerService: knownledgeId: robotValue:
+ suggest: 发送人工评价消息调用RCIMClient中 evaluateCustomerService: dialogId: humanValue: suggest:
+
  如果 evaType 为 EVA_UNIFIED，发送评价消息调用RCIMClient中
  evaluateCustomerService: dialogId: starValue: suggest: resolveStatus:
  */
@@ -76,7 +75,7 @@
 /*!
  * 留言样式:0.默认跳转留言界面；1.跳转url留言
  */
-@property(nonatomic, assign) RCCSLMType  leaveMessageType;
+@property(nonatomic, assign) RCCSLMType leaveMessageType;
 
 /*!
  * 是否支持地图发送：0.支持；1.不支持

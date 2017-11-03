@@ -56,14 +56,14 @@
 /**
  *  text
  */
-@property (nonatomic, copy) id text;
+@property(nonatomic, copy) id text;
 
 @end
 
 /**
  *  RCAttributedLabel
  */
-@interface RCAttributedLabel : UILabel <RCAttributedDataSource,UIGestureRecognizerDelegate>
+@interface RCAttributedLabel : UILabel <RCAttributedDataSource, UIGestureRecognizerDelegate>
 /**
  * 可以通过设置attributeDataSource或者attributeDictionary、highlightedAttributeDictionary来自定义不同文本的字体颜色
  */
@@ -75,9 +75,9 @@
  *   if ([cell isKindOfClass:[RCTextMessageCell class]]) {
  *      RCTextMessageCell *newCell = (RCTextMessageCell *)cell;
  *      if (newCell.textLabel.text.length>3) {
- *          NSTextCheckingResult *textCheckingResult = [NSTextCheckingResult linkCheckingResultWithRange:(NSMakeRange(0, 3)) URL:[NSURL URLWithString:@"http://www.baidu.com"]];
- *          [newCell.textLabel.attributedStrings addObject:textCheckingResult];
- *          [newCell.textLabel setTextHighlighted:YES atPoint:CGPointMake(0, 3)];
+ *          NSTextCheckingResult *textCheckingResult = [NSTextCheckingResult linkCheckingResultWithRange:(NSMakeRange(0,
+ *3)) URL:[NSURL URLWithString:@"http://www.baidu.com"]]; [newCell.textLabel.attributedStrings
+ *addObject:textCheckingResult]; [newCell.textLabel setTextHighlighted:YES atPoint:CGPointMake(0, 3)];
  *       }
  *    }
  *}
@@ -87,7 +87,7 @@
 /*!
  点击回调
  */
-@property (nonatomic, weak) id <RCAttributedLabelDelegate> delegate;
+@property(nonatomic, weak) id<RCAttributedLabelDelegate> delegate;
 /**
  *  attributeDictionary
  */
@@ -137,7 +137,7 @@
 
 /*!
  点击URL的回调
- 
+
  @param label 当前Label
  @param url   点击的URL
  */
@@ -145,7 +145,7 @@
 
 /*!
  点击电话号码的回调
- 
+
  @param label       当前Label
  @param phoneNumber 点击的URL
  */
@@ -153,11 +153,10 @@
 
 /*!
  点击Label的回调
- 
+
  @param label   当前Label
  @param content 点击的内容
  */
 - (void)attributedLabel:(RCAttributedLabel *)label didTapLabel:(NSString *)content;
 
 @end
-

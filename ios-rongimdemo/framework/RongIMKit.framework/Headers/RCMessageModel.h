@@ -84,7 +84,6 @@
  */
 @property(nonatomic, strong) RCMessageContent *content;
 
-
 /*!
  阅读回执状态
  */
@@ -97,32 +96,32 @@
 
 /*!
  消息展示时的Cell高度
- 
+
  @discussion 用于大量消息的显示优化
  */
 @property(nonatomic) CGSize cellSize;
 /*!
  全局唯一ID
- 
+
  @discussion 服务器消息唯一ID（在同一个Appkey下全局唯一）
  */
 @property(nonatomic, strong) NSString *messageUId;
 
 /*!
  消息是否可以发送请求回执
- 
+
  */
-@property(nonatomic,assign)BOOL isCanSendReadReceipt;
+@property(nonatomic, assign) BOOL isCanSendReadReceipt;
 
 /*!
  已读人数
- 
+
  */
-@property(nonatomic,assign)NSInteger readReceiptCount;
+@property(nonatomic, assign) NSInteger readReceiptCount;
 
 /*!
  初始化消息Cell的数据模型
- 
+
  @param rcMessage   消息实体
  @return            消息Cell的数据模型对象
  */
@@ -130,7 +129,7 @@
 
 /*!
  初始化消息Cell的数据模型
- 
+
  @param rcMessage   消息实体
  @return            消息Cell的数据模型对象
  */

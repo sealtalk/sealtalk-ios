@@ -6,9 +6,9 @@
 //  Copyright (c) 2014年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "RCDBaseSettingTableViewCell.h"
+#import <UIKit/UIKit.h>
 
-@interface RCDMessageNotifySettingTableViewController : UITableViewController<RCDBaseSettingTableViewCellDelegate>
+@interface RCDMessageNotifySettingTableViewController : UITableViewController <RCDBaseSettingTableViewCellDelegate>
 
 @end

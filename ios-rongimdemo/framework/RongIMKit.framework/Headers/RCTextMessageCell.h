@@ -6,15 +6,15 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import "RCMessageCell.h"
 #import "RCAttributedLabel.h"
+#import "RCMessageCell.h"
 
 #define Text_Message_Font_Size 16
 
 /*!
  文本消息Cell
  */
-@interface RCTextMessageCell : RCMessageCell<RCAttributedLabelDelegate>
+@interface RCTextMessageCell : RCMessageCell <RCAttributedLabelDelegate>
 
 /*!
  显示消息内容的Label
@@ -28,7 +28,7 @@
 
 /*!
  设置当前消息Cell的数据模型
- 
+
  @param model 消息Cell的数据模型
  */
 - (void)setDataModel:(RCMessageModel *)model;

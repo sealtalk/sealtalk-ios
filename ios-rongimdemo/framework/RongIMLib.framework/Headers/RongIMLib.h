@@ -28,6 +28,8 @@ FOUNDATION_EXPORT const unsigned char RongIMLibVersionString[];
 #import <RongIMLib/RCGroup.h>
 #import <RongIMLib/RCUserTypingStatus.h>
 /// 消息相关类
+#import <RongIMLib/RCCSLeaveMessage.h>
+#import <RongIMLib/RCCSPullLeaveMessage.h>
 #import <RongIMLib/RCCommandMessage.h>
 #import <RongIMLib/RCCommandNotificationMessage.h>
 #import <RongIMLib/RCContactNotificationMessage.h>
@@ -45,26 +47,25 @@ FOUNDATION_EXPORT const unsigned char RongIMLibVersionString[];
 #import <RongIMLib/RCPublicServiceRichContentMessage.h>
 #import <RongIMLib/RCRealTimeLocationEndMessage.h>
 #import <RongIMLib/RCRealTimeLocationStartMessage.h>
+#import <RongIMLib/RCRecallNotificationMessage.h>
 #import <RongIMLib/RCRichContentMessage.h>
 #import <RongIMLib/RCTextMessage.h>
 #import <RongIMLib/RCUnknownMessage.h>
 #import <RongIMLib/RCVoiceMessage.h>
-#import <RongIMLib/RCRecallNotificationMessage.h>
-#import <RongIMLib/RCCSPullLeaveMessage.h>
-#import <RongIMLib/RCCSLeaveMessage.h>
 /// 工具类
 #import <RongIMLib/RCAMRDataConverter.h>
+#import <RongIMLib/RCTSMutableDictionary.h>
 #import <RongIMLib/RCUtilities.h>
 #import <RongIMLib/interf_dec.h>
 #import <RongIMLib/interf_enc.h>
-#import <RongIMLib/RCTSMutableDictionary.h>
 ///客服
+#import <RongIMLib/RCCSLeaveMessageItem.h>
 #import <RongIMLib/RCCustomerServiceInfo.h>
 #import <RongIMLib/RCEvaluateItem.h>
-#import <RongIMLib/RCCSLeaveMessageItem.h>
 
 /// 其他
 #import <RongIMLib/RCChatRoomMemberInfo.h>
+#import <RongIMLib/RCCustomerServiceGroupItem.h>
 #import <RongIMLib/RCPublicServiceMenu.h>
 #import <RongIMLib/RCPublicServiceProfile.h>
 #import <RongIMLib/RCRealTimeLocationManager.h>
@@ -73,10 +74,8 @@ FOUNDATION_EXPORT const unsigned char RongIMLibVersionString[];
 #import <RongIMLib/RCUploadMediaStatusListener.h>
 #import <RongIMLib/RCUserInfo.h>
 #import <RongIMLib/RCWatchKitStatusDelegate.h>
-#import <RongIMLib/RCCustomerServiceGroupItem.h>
 
 #import <RongIMLib/RCFileMessage.h>
 #import <RongIMLib/RCFileUtility.h>
 #import <RongIMLib/RCReadReceiptInfo.h>
 #import <RongIMLib/RCUserOnlineStatusInfo.h>
-

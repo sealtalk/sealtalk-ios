@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDShareChatListCell : UITableViewCell
-@property (nonatomic,strong)UIImageView *headerImageView;
-@property (nonatomic,strong)UILabel *nameLabel;
+@property(nonatomic, strong) UIImageView *headerImageView;
+@property(nonatomic, strong) UILabel *nameLabel;
 
 - (void)setDataDic:(NSDictionary *)dataDic;
 @end

@@ -9,17 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDCreateGroupViewController
-    : UIViewController <UITextFieldDelegate, UIActionSheetDelegate,
-                        UIImagePickerControllerDelegate,
+    : UIViewController <UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate,
                         UINavigationControllerDelegate>
 
 + (instancetype)createGroupViewController;
 
-@property (nonatomic, strong) UIImageView *GroupPortrait;
-@property (nonatomic, strong) UITextField *GroupName;
-@property (nonatomic, strong) UIButton *DoneBtn;
-@property (nonatomic, strong) NSMutableArray *GroupMemberIdList;
+@property(nonatomic, strong) UIImageView *GroupPortrait;
+@property(nonatomic, strong) UITextField *GroupName;
+@property(nonatomic, strong) UIButton *DoneBtn;
+@property(nonatomic, strong) NSMutableArray *GroupMemberIdList;
 - (void)ClickDoneBtn:(id)sender;
-
 
 @end

@@ -8,28 +8,27 @@
 
 #import "XPathQuery.h"
 
-#import <libxml/tree.h>
-#import <libxml/parser.h>
 #import <libxml/HTMLparser.h>
+#import <libxml/parser.h>
+#import <libxml/tree.h>
 #import <libxml/xpath.h>
 #import <libxml/xpathInternals.h>
 
-NSDictionary *DictionaryForNode(xmlNodePtr currentNode, NSMutableDictionary *parentResult,BOOL parentContent);
+NSDictionary *DictionaryForNode(xmlNodePtr currentNode, NSMutableDictionary *parentResult, BOOL parentContent);
 NSArray *PerformXPathQuery(xmlDocPtr doc, NSString *query);
 
-NSDictionary *DictionaryForNode(xmlNodePtr currentNode, NSMutableDictionary *parentResult,BOOL parentContent)
-{
+NSDictionary *DictionaryForNode(xmlNodePtr currentNode, NSMutableDictionary *parentResult, BOOL parentContent) {
     NSMutableDictionary *resultForNode = [NSMutableDictionary dictionary];
     if (currentNode->name) {
-        NSString *currentNodeContent = [NSString stringWithCString:(const char *)currentNode->name
-                                                          encoding:NSUTF8StringEncoding];
+        NSString *currentNodeContent =
+            [NSString stringWithCString:(const char *)currentNode->name encoding:NSUTF8StringEncoding];
         resultForNode[@"nodeName"] = currentNodeContent;
     }
 
     xmlChar *nodeContent = xmlNodeGetContent(currentNode);
     if (nodeContent != NULL) {
-        NSString *currentNodeContent = [NSString stringWithCString:(const char *)nodeContent
-                                                          encoding:NSUTF8StringEncoding];
+        NSString *currentNodeContent =
+            [NSString stringWithCString:(const char *)nodeContent encoding:NSUTF8StringEncoding];
         if ([resultForNode[@"nodeName"] isEqual:@"text"] && parentResult) {
             if (parentContent) {
                 NSCharacterSet *charactersToTrim = [NSCharacterSet whitespaceAndNewlineCharacterSet];
@@ -51,12 +50,12 @@ NSDictionary *DictionaryForNode(xmlNodePtr currentNode, NSMutableDictionary *par
         NSMutableArray *attributeArray = [NSMutableArray array];
         while (attribute) {
             NSMutableDictionary *attributeDictionary = [NSMutableDictionary dictionary];
-            NSString *attributeName = [NSString stringWithCString:(const char *)attribute->name
-                                                       encoding:NSUTF8StringEncoding];
+            NSString *attributeName =
+                [NSString stringWithCString:(const char *)attribute->name encoding:NSUTF8StringEncoding];
             if (attributeName) {
                 attributeDictionary[@"attributeName"] = attributeName;
             }
-          
+
             if (attribute->children) {
                 NSDictionary *childDictionary = DictionaryForNode(attribute->children, attributeDictionary, true);
                 if (childDictionary) {
@@ -79,7 +78,7 @@ NSDictionary *DictionaryForNode(xmlNodePtr currentNode, NSMutableDictionary *par
     if (childNode) {
         NSMutableArray *childContentArray = [NSMutableArray array];
         while (childNode) {
-            NSDictionary *childDictionary = DictionaryForNode(childNode, resultForNode,false);
+            NSDictionary *childDictionary = DictionaryForNode(childNode, resultForNode, false);
             if (childDictionary) {
                 [childContentArray addObject:childDictionary];
             }
@@ -100,8 +99,7 @@ NSDictionary *DictionaryForNode(xmlNodePtr currentNode, NSMutableDictionary *par
     return resultForNode;
 }
 
-NSArray *PerformXPathQuery(xmlDocPtr doc, NSString *query)
-{
+NSArray *PerformXPathQuery(xmlDocPtr doc, NSString *query) {
     xmlXPathContextPtr xpathCtx;
     xmlXPathObjectPtr xpathObj;
 
@@ -109,17 +107,17 @@ NSArray *PerformXPathQuery(xmlDocPtr doc, NSString *query)
     if (query == nil || ![query isKindOfClass:[NSString class]]) {
         return nil;
     }
-  
+
     /* Create xpath evaluation context */
     xpathCtx = xmlXPathNewContext(doc);
-    if(xpathCtx == NULL) {
+    if (xpathCtx == NULL) {
         NSLog(@"Unable to create XPath context.");
         return nil;
     }
 
     /* Evaluate xpath expression */
     xpathObj = xmlXPathEvalExpression((xmlChar *)[query cStringUsingEncoding:NSUTF8StringEncoding], xpathCtx);
-    if(xpathObj == NULL) {
+    if (xpathObj == NULL) {
         NSLog(@"Unable to evaluate XPath.");
         xmlXPathFreeContext(xpathCtx);
         return nil;
@@ -135,7 +133,7 @@ NSArray *PerformXPathQuery(xmlDocPtr doc, NSString *query)
 
     NSMutableArray *resultNodes = [NSMutableArray array];
     for (NSInteger i = 0; i < nodes->nodeNr; i++) {
-        NSDictionary *nodeDictionary = DictionaryForNode(nodes->nodeTab[i], nil,false);
+        NSDictionary *nodeDictionary = DictionaryForNode(nodes->nodeTab[i], nil, false);
         if (nodeDictionary) {
             [resultNodes addObject:nodeDictionary];
         }
@@ -152,22 +150,22 @@ NSArray *PerformHTMLXPathQuery(NSData *document, NSString *query) {
     return PerformHTMLXPathQueryWithEncoding(document, query, nil);
 }
 
-NSArray *PerformHTMLXPathQueryWithEncoding(NSData *document, NSString *query,NSString *encoding)
-{
+NSArray *PerformHTMLXPathQueryWithEncoding(NSData *document, NSString *query, NSString *encoding) {
     xmlDocPtr doc;
 
     /* Load XML document */
     const char *encoded = encoding ? [encoding cStringUsingEncoding:NSUTF8StringEncoding] : NULL;
 
-    doc = htmlReadMemory([document bytes], (int)[document length], "", encoded, HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR);
+    doc = htmlReadMemory([document bytes], (int)[document length], "", encoded,
+                         HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR);
     if (doc == NULL) {
         NSLog(@"Unable to parse.");
         return nil;
     }
-    
+
     NSArray *result = PerformXPathQuery(doc, query);
     xmlFreeDoc(doc);
-    
+
     return result;
 }
 
@@ -175,22 +173,21 @@ NSArray *PerformXMLXPathQuery(NSData *document, NSString *query) {
     return PerformXMLXPathQueryWithEncoding(document, query, nil);
 }
 
-NSArray *PerformXMLXPathQueryWithEncoding(NSData *document, NSString *query,NSString *encoding)
-{
+NSArray *PerformXMLXPathQueryWithEncoding(NSData *document, NSString *query, NSString *encoding) {
     xmlDocPtr doc;
-    
+
     /* Load XML document */
     const char *encoded = encoding ? [encoding cStringUsingEncoding:NSUTF8StringEncoding] : NULL;
 
     doc = xmlReadMemory([document bytes], (int)[document length], "", encoded, XML_PARSE_RECOVER);
-    
+
     if (doc == NULL) {
         NSLog(@"Unable to parse.");
         return nil;
     }
-    
+
     NSArray *result = PerformXPathQuery(doc, query);
     xmlFreeDoc(doc);
-    
+
     return result;
 }

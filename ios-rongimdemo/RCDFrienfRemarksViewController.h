@@ -6,11 +6,11 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "RCDUserInfo.h"
+#import <UIKit/UIKit.h>
 
-@interface RCDFrienfRemarksViewController : UIViewController<UITextFieldDelegate>
+@interface RCDFrienfRemarksViewController : UIViewController <UITextFieldDelegate>
 
-@property (nonatomic, strong) RCDUserInfo *friendInfo;
+@property(nonatomic, strong) RCDUserInfo *friendInfo;
 
 @end

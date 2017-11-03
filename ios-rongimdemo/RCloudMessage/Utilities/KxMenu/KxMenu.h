@@ -43,18 +43,13 @@
 @property(readwrite, nonatomic, strong) UIColor *foreColor;
 @property(readwrite, nonatomic) NSTextAlignment alignment;
 
-+ (instancetype)menuItem:(NSString *)title
-                   image:(UIImage *)image
-                  target:(id)target
-                  action:(SEL)action;
++ (instancetype)menuItem:(NSString *)title image:(UIImage *)image target:(id)target action:(SEL)action;
 
 @end
 
 @interface KxMenu : NSObject
 
-+ (void)showMenuInView:(UIView *)view
-              fromRect:(CGRect)rect
-             menuItems:(NSArray *)menuItems;
++ (void)showMenuInView:(UIView *)view fromRect:(CGRect)rect menuItems:(NSArray *)menuItems;
 
 + (void)dismissMenu;
 

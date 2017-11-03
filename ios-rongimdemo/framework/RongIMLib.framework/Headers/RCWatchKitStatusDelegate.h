@@ -49,8 +49,7 @@
  @param messageId    消息ID
  @param status       完成的状态吗。0表示成功，非0表示失败
  */
-- (void)notifyWatchKitSendMessageCompletion:(long)messageId
-                                     status:(RCErrorCode)status;
+- (void)notifyWatchKitSendMessageCompletion:(long)messageId status:(RCErrorCode)status;
 
 /*!
  上传图片进度更新的回调
@@ -58,8 +57,7 @@
  @param progress    进度
  @param messageId   消息ID
  */
-- (void)notifyWatchKitUploadFileProgress:(int)progress
-                               messageId:(long)messageId;
+- (void)notifyWatchKitUploadFileProgress:(int)progress messageId:(long)messageId;
 
 #pragma mark 消息与会话操作
 /*!
@@ -75,8 +73,7 @@
  @param conversationType    会话类型
  @param targetId            目标会话ID
  */
-- (void)notifyWatchKitClearMessages:(RCConversationType)conversationType
-                           targetId:(NSString *)targetId;
+- (void)notifyWatchKitClearMessages:(RCConversationType)conversationType targetId:(NSString *)targetId;
 
 /*!
  删除消息的回调
@@ -91,8 +88,7 @@
  @param conversationType    会话类型
  @param targetId            目标会话ID
  */
-- (void)notifyWatchKitClearUnReadStatus:(RCConversationType)conversationType
-                               targetId:(NSString *)targetId;
+- (void)notifyWatchKitClearUnReadStatus:(RCConversationType)conversationType targetId:(NSString *)targetId;
 
 #pragma mark 讨论组
 
@@ -102,8 +98,7 @@
  @param name         讨论组名称
  @param userIdList   成员的用户ID列表
  */
-- (void)notifyWatchKitCreateDiscussion:(NSString *)name
-                            userIdList:(NSArray *)userIdList;
+- (void)notifyWatchKitCreateDiscussion:(NSString *)name userIdList:(NSArray *)userIdList;
 
 /*!
  创建讨论组成功的回调
@@ -127,8 +122,7 @@
 
  @discussion 加人的结果可以通过notifyWatchKitDiscussionOperationCompletion获得。
  */
-- (void)notifyWatchKitAddMemberToDiscussion:(NSString *)discussionId
-                                 userIdList:(NSArray *)userIdList;
+- (void)notifyWatchKitAddMemberToDiscussion:(NSString *)discussionId userIdList:(NSArray *)userIdList;
 
 /*!
  讨论组踢人的回调
@@ -138,8 +132,7 @@
 
  @discussion 踢人的结果可以通过notifyWatchKitDiscussionOperationCompletion获得。
  */
-- (void)notifyWatchKitRemoveMemberFromDiscussion:(NSString *)discussionId
-                                          userId:(NSString *)userId;
+- (void)notifyWatchKitRemoveMemberFromDiscussion:(NSString *)discussionId userId:(NSString *)userId;
 
 /*!
  退出讨论组的回调
@@ -156,8 +149,7 @@
  @param tag       讨论组的操作类型。100为加人，101为踢人，102为退出
  @param status    操作的结果。0表示成功，非0表示失败
  */
-- (void)notifyWatchKitDiscussionOperationCompletion:(int)tag
-                                             status:(RCErrorCode)status;
+- (void)notifyWatchKitDiscussionOperationCompletion:(int)tag status:(RCErrorCode)status;
 
 @end
 #endif

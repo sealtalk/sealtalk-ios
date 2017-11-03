@@ -6,12 +6,12 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <RongIMLib/RongIMLib.h>
+#import <UIKit/UIKit.h>
 
 @protocol RCDFriendListViewControllerDelegate <NSObject>
 
-- (void)getFriendList:(void(^)(NSArray <NSString *> *friendList))complete;
+- (void)getFriendList:(void (^)(NSArray<NSString *> *friendList))complete;
 
 @end
 

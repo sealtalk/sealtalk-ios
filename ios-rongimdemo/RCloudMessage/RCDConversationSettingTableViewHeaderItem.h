@@ -17,15 +17,13 @@
 @property(nonatomic, strong) UILabel *titleLabel;
 @property(nonatomic, strong) UIButton *btnImg;
 @property(nonatomic, copy) NSString *userId;
-@property(nonatomic, weak) id<RCDConversationSettingTableViewHeaderItemDelegate>
-    delegate;
+@property(nonatomic, weak) id<RCDConversationSettingTableViewHeaderItemDelegate> delegate;
 
 - (void)setUserModel:(RCUserInfo *)userModel;
 @end
 
 @protocol RCDConversationSettingTableViewHeaderItemDelegate <NSObject>
 
-- (void)deleteTipButtonClicked:
-    (RCDConversationSettingTableViewHeaderItem *)item;
+- (void)deleteTipButtonClicked:(RCDConversationSettingTableViewHeaderItem *)item;
 
 @end

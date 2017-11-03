@@ -19,39 +19,36 @@
 }
 */
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
-  self = [super initWithFrame:frame];
-  if (self) {
-    self.backgroundColor = [UIColor whiteColor];
-    [self layoutView];
-  }
-  return self;
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = [UIColor whiteColor];
+        [self layoutView];
+    }
+    return self;
 }
 
 - (void)layoutView {
-  self.displayLabel = [UILabel new];
-  self.displayLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
-  self.displayLabel.font = [UIFont systemFontOfSize:14.f];
-  self.displayLabel.translatesAutoresizingMaskIntoConstraints = NO;
-  [self addSubview:self.displayLabel];
-  
-  [self
-   addConstraint:[NSLayoutConstraint constraintWithItem:self.displayLabel
-                                              attribute:NSLayoutAttributeCenterY
-                                              relatedBy:NSLayoutRelationEqual
-                                                 toItem:self
-                                              attribute:NSLayoutAttributeCenterY
-                                             multiplier:1
-                                               constant:0]];
-  
-  [self
-   addConstraint:[NSLayoutConstraint constraintWithItem:self.displayLabel
-                                              attribute:NSLayoutAttributeCenterX
-                                              relatedBy:NSLayoutRelationEqual
-                                                 toItem:self
-                                              attribute:NSLayoutAttributeCenterX
-                                             multiplier:1
-                                               constant:0]];
+    self.displayLabel = [UILabel new];
+    self.displayLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
+    self.displayLabel.font = [UIFont systemFontOfSize:14.f];
+    self.displayLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.displayLabel];
+
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.displayLabel
+                                                     attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterY
+                                                    multiplier:1
+                                                      constant:0]];
+
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.displayLabel
+                                                     attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterX
+                                                    multiplier:1
+                                                      constant:0]];
 }
 @end

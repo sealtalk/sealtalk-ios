@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 litao. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <RongIMLib/RongIMLib.h>
 #import "RCThemeDefine.h"
+#import <RongIMLib/RongIMLib.h>
+#import <UIKit/UIKit.h>
 
 /*!
  公众服务账号信息中的URL点击回调
@@ -17,7 +17,7 @@
 
 /*!
  点击公众服务账号信息的URL回调
- 
+
  @param url 点击的URL
  */
 - (void)gotoUrl:(NSString *)url;

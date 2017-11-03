@@ -40,8 +40,6 @@
  @param portraitUri     群组头像的URL
  @return                群组信息对象
  */
-- (instancetype)initWithGroupId:(NSString *)groupId
-                      groupName:(NSString *)groupName
-                    portraitUri:(NSString *)portraitUri;
+- (instancetype)initWithGroupId:(NSString *)groupId groupName:(NSString *)groupName portraitUri:(NSString *)portraitUri;
 
 @end

@@ -7,10 +7,10 @@
 //
 
 #import "RCConversationBaseCell.h"
-#import "RCMessageBubbleTipView.h"
-#import "RCThemeDefine.h"
 #import "RCConversationDetailContentView.h"
 #import "RCConversationStatusView.h"
+#import "RCMessageBubbleTipView.h"
+#import "RCThemeDefine.h"
 
 #import <UIKit/UIKit.h>
 
@@ -91,7 +91,7 @@
 @property(nonatomic, assign) BOOL isShowNotificationNumber;
 
 /*!
- 是否在群组和讨论组会话Cell中隐藏发送者的名称 
+ 是否在群组和讨论组会话Cell中隐藏发送者的名称
  */
 @property(nonatomic, assign) BOOL hideSenderName;
 
@@ -119,7 +119,6 @@
  显示会话状态的view
  */
 @property(nonatomic, strong) RCConversationStatusView *statusView;
-
 
 /*!
  设置Cell中显示的头像形状

@@ -91,9 +91,7 @@ URLWithString:@"http://example.com/image.jpg"]
  * @param options     The options to use when downloading the image. @see
  * SDWebImageOptions for the possible values.
  */
-- (void)sd_setImageWithURL:(NSURL *)url
-          placeholderImage:(UIImage *)placeholder
-                   options:(SDWebImageOptions)options;
+- (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options;
 
 /**
  * Set the imageView `image` with an `url`.
@@ -111,8 +109,7 @@ URLWithString:@"http://example.com/image.jpg"]
  * cache or from the network.
  *                       The fourth parameter is the original image url.
  */
-- (void)sd_setImageWithURL:(NSURL *)url
-                 completed:(SDWebImageCompletionBlock)completedBlock;
+- (void)sd_setImageWithURL:(NSURL *)url completed:(SDWebImageCompletionBlock)completedBlock;
 
 /**
  * Set the imageView `image` with an `url`, placeholder.
@@ -212,11 +209,8 @@ URLWithString:@"http://example.com/image.jpg"]
 - (void)sd_setImageWithPreviousCachedImageWithURL:(NSURL *)url
                               andPlaceholderImage:(UIImage *)placeholder
                                           options:(SDWebImageOptions)options
-                                         progress:
-                                             (SDWebImageDownloaderProgressBlock)
-                                                 progressBlock
-                                        completed:(SDWebImageCompletionBlock)
-                                                      completedBlock;
+                                         progress:(SDWebImageDownloaderProgressBlock)progressBlock
+                                        completed:(SDWebImageCompletionBlock)completedBlock;
 
 /**
  * Download an array of images and starts them in an animation loop
@@ -238,17 +232,14 @@ URLWithString:@"http://example.com/image.jpg"]
 
 - (NSURL *)imageURL __deprecated_msg("Use `sd_imageURL`");
 
-- (void)setImageWithURL:(NSURL *)url
-    __deprecated_msg("Method deprecated. Use `sd_setImageWithURL:`");
+- (void)setImageWithURL:(NSURL *)url __deprecated_msg("Method deprecated. Use `sd_setImageWithURL:`");
 - (void)setImageWithURL:(NSURL *)url
        placeholderImage:(UIImage *)placeholder
-    __deprecated_msg(
-        "Method deprecated. Use `sd_setImageWithURL:placeholderImage:`");
+    __deprecated_msg("Method deprecated. Use `sd_setImageWithURL:placeholderImage:`");
 - (void)setImageWithURL:(NSURL *)url
        placeholderImage:(UIImage *)placeholder
                 options:(SDWebImageOptions)options
-    __deprecated_msg(
-        "Method deprecated. Use `sd_setImageWithURL:placeholderImage:options`");
+    __deprecated_msg("Method deprecated. Use `sd_setImageWithURL:placeholderImage:options`");
 
 - (void)setImageWithURL:(NSURL *)url
               completed:(SDWebImageCompletedBlock)completedBlock
@@ -274,13 +265,10 @@ URLWithString:@"http://example.com/image.jpg"]
                      "`sd_setImageWithURL:placeholderImage:options:progress:"
                      "completed:`");
 
-- (void)setAnimationImagesWithURLs:(NSArray *)arrayOfURLs
-    __deprecated_msg("Use `sd_setAnimationImagesWithURLs:`");
+- (void)setAnimationImagesWithURLs:(NSArray *)arrayOfURLs __deprecated_msg("Use `sd_setAnimationImagesWithURLs:`");
 
-- (void)cancelCurrentArrayLoad
-    __deprecated_msg("Use `sd_cancelCurrentAnimationImagesLoad`");
+- (void)cancelCurrentArrayLoad __deprecated_msg("Use `sd_cancelCurrentAnimationImagesLoad`");
 
-- (void)cancelCurrentImageLoad
-    __deprecated_msg("Use `sd_cancelCurrentImageLoad`");
+- (void)cancelCurrentImageLoad __deprecated_msg("Use `sd_cancelCurrentImageLoad`");
 
 @end

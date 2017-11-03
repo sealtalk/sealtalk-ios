@@ -13,7 +13,7 @@
  */
 @interface RCExtensionMessageCellInfo : NSObject
 
-@property (nonatomic, strong)Class messageContentClass;
-@property (nonatomic, strong)Class messageCellClass;
+@property(nonatomic, strong) Class messageContentClass;
+@property(nonatomic, strong) Class messageCellClass;
 
 @end

@@ -18,7 +18,7 @@
 /**
  *  是否已经发送回执
  */
-@property(nonatomic,assign) BOOL hasRespond;
+@property(nonatomic, assign) BOOL hasRespond;
 
 /*!
  发送回执的用户ID列表

@@ -32,10 +32,10 @@
 #endif
 
 typedef NS_ENUM(NSInteger, AFNetworkReachabilityStatus) {
-  AFNetworkReachabilityStatusUnknown = -1,
-  AFNetworkReachabilityStatusNotReachable = 0,
-  AFNetworkReachabilityStatusReachableViaWWAN = 1,
-  AFNetworkReachabilityStatusReachableViaWiFi = 2,
+    AFNetworkReachabilityStatusUnknown = -1,
+    AFNetworkReachabilityStatusNotReachable = 0,
+    AFNetworkReachabilityStatusReachableViaWWAN = 1,
+    AFNetworkReachabilityStatusReachableViaWiFi = 2,
 };
 
 /**
@@ -59,8 +59,7 @@ typedef NS_ENUM(NSInteger, AFNetworkReachabilityStatus) {
 /**
  The current network reachability status.
  */
-@property(readonly, nonatomic, assign)
-    AFNetworkReachabilityStatus networkReachabilityStatus;
+@property(readonly, nonatomic, assign) AFNetworkReachabilityStatus networkReachabilityStatus;
 
 /**
  Whether or not the network is currently reachable.
@@ -70,14 +69,12 @@ typedef NS_ENUM(NSInteger, AFNetworkReachabilityStatus) {
 /**
  Whether or not the network is currently reachable via WWAN.
  */
-@property(readonly, nonatomic, assign, getter=isReachableViaWWAN)
-    BOOL reachableViaWWAN;
+@property(readonly, nonatomic, assign, getter=isReachableViaWWAN) BOOL reachableViaWWAN;
 
 /**
  Whether or not the network is currently reachable via WiFi.
  */
-@property(readonly, nonatomic, assign, getter=isReachableViaWiFi)
-    BOOL reachableViaWiFi;
+@property(readonly, nonatomic, assign, getter=isReachableViaWiFi) BOOL reachableViaWiFi;
 
 ///---------------------
 /// @name Initialization
@@ -118,8 +115,7 @@ typedef NS_ENUM(NSInteger, AFNetworkReachabilityStatus) {
  @return An initialized network reachability manager, actively monitoring the
  specified reachability.
  */
-- (instancetype)initWithReachability:(SCNetworkReachabilityRef)reachability
-    NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithReachability:(SCNetworkReachabilityRef)reachability NS_DESIGNATED_INITIALIZER;
 
 ///--------------------------------------------------
 /// @name Starting & Stopping Reachability Monitoring
@@ -158,8 +154,7 @@ typedef NS_ENUM(NSInteger, AFNetworkReachabilityStatus) {
  argument which represents the various reachability states from the device to
  the `baseURL`.
  */
-- (void)setReachabilityStatusChangeBlock:
-    (void (^)(AFNetworkReachabilityStatus status))block;
+- (void)setReachabilityStatusChangeBlock:(void (^)(AFNetworkReachabilityStatus status))block;
 
 @end
 
@@ -233,5 +228,4 @@ extern NSString *const AFNetworkingReachabilityNotificationStatusItem;
  Returns a localized string representation of an `AFNetworkReachabilityStatus`
  value.
  */
-extern NSString *
-AFStringFromNetworkReachabilityStatus(AFNetworkReachabilityStatus status);
+extern NSString *AFStringFromNetworkReachabilityStatus(AFNetworkReachabilityStatus status);

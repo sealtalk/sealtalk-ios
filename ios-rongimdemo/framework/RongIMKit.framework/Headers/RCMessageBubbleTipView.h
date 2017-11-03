@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, RCMessageBubbleTipViewAlignment) {
 
 /*!
  角标的位置
- 
+
  @discussion 默认值为RC_MESSAGE_BUBBLE_TIP_VIEW_ALIGNMENT_TOP_RIGHT，即右上。
  */
 @property(nonatomic, assign) RCMessageBubbleTipViewAlignment bubbleTipAlignment;
@@ -94,7 +94,7 @@ typedef NS_ENUM(NSInteger, RCMessageBubbleTipViewAlignment) {
 
 /*!
  角标的覆盖颜色（已废弃，请勿使用）
- 
+
  @warning **已废弃，请勿使用。**
  */
 @property(nonatomic, strong) __deprecated_msg("已废弃，请勿使用。") UIColor *bubbleTipOverlayColor;
@@ -111,14 +111,14 @@ typedef NS_ENUM(NSInteger, RCMessageBubbleTipViewAlignment) {
 
 /*!
  角标是否显示数字
- 
+
  @discussion 如果为NO，会显示红点，不显示具体数字。
  */
 @property(nonatomic) BOOL isShowNotificationNumber;
 
 /*!
  初始化角标View
- 
+
  @param parentView  角标依附于的View
  @param alignment   角标的位置
  @return            角标View对象
@@ -127,7 +127,7 @@ typedef NS_ENUM(NSInteger, RCMessageBubbleTipViewAlignment) {
 
 /*!
  设置角标的值
- 
+
  @param msgCount 角标值
  */
 - (void)setBubbleTipNumber:(int)msgCount;

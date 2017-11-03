@@ -41,8 +41,7 @@
  @param userId    被邀请的用户ID
  @param mediaType 希望被邀请者使用的媒体类型
  */
-- (void)remoteUserDidInvite:(NSString *)userId
-                  mediaType:(RCCallMediaType)mediaType;
+- (void)remoteUserDidInvite:(NSString *)userId mediaType:(RCCallMediaType)mediaType;
 
 /*!
  对端用户加入了通话
@@ -50,8 +49,7 @@
  @param userId    用户ID
  @param mediaType 用户的媒体类型
  */
-- (void)remoteUserDidJoin:(NSString *)userId
-                mediaType:(RCCallMediaType)mediaType;
+- (void)remoteUserDidJoin:(NSString *)userId mediaType:(RCCallMediaType)mediaType;
 
 /*!
  对端用户切换了媒体类型
@@ -59,8 +57,7 @@
  @param userId    用户ID
  @param mediaType 切换至的媒体类型
  */
-- (void)remoteUserDidChangeMediaType:(NSString *)userId
-                           mediaType:(RCCallMediaType)mediaType;
+- (void)remoteUserDidChangeMediaType:(NSString *)userId mediaType:(RCCallMediaType)mediaType;
 
 /*!
  对端用户开启或关闭了摄像头的状态
@@ -76,8 +73,7 @@
  @param userId 用户ID
  @param reason 挂断的原因
  */
-- (void)remoteUserDidLeft:(NSString *)userId
-                   reason:(RCCallDisconnectReason)reason;
+- (void)remoteUserDidLeft:(NSString *)userId reason:(RCCallDisconnectReason)reason;
 
 /*!
  彩铃
@@ -106,12 +102,11 @@
 
 /*!
  当前通话网络状态的回调，该回调方法每两秒触发一次
- 
+
  @param txQuality   上行网络质量
  @param rxQuality   下行网络质量
  */
-- (void)networkTxQuality:(RCCallQuality)txQuality
-               rxQuality:(RCCallQuality)rxQuality;
+- (void)networkTxQuality:(RCCallQuality)txQuality rxQuality:(RCCallQuality)rxQuality;
 
 @end
 
@@ -229,7 +224,7 @@
 - (void)setVideoView:(UIView *)view userId:(NSString *)userId;
 
 /**
- 设置用户所在的视频View 
+ 设置用户所在的视频View
 
  @param view userId 用户ID（自己或他人)
  @param userId 视频的View

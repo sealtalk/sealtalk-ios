@@ -50,16 +50,14 @@
  `-loadRequest:...` category methods. By default, this is an instance of
  `AFHTTPRequestSerializer`.
  */
-@property(nonatomic, strong)
-    AFHTTPRequestSerializer<AFURLRequestSerialization> *requestSerializer;
+@property(nonatomic, strong) AFHTTPRequestSerializer<AFURLRequestSerialization> *requestSerializer;
 
 /**
  The response serializer used to serialize responses made with the
  `-loadRequest:...` category methods. By default, this is an instance of
  `AFHTTPResponseSerializer`.
  */
-@property(nonatomic, strong)
-    AFHTTPResponseSerializer<AFURLResponseSerialization> *responseSerializer;
+@property(nonatomic, strong) AFHTTPResponseSerializer<AFURLResponseSerialization> *responseSerializer;
 
 /**
  Asynchronously loads the specified request.
@@ -81,12 +79,11 @@
  error while parsing the response data. This block has no return value and takes
  a single argument: the error that occurred.
  */
-- (void)
-loadRequest:(NSURLRequest *)request
-   progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten,
-                      long long totalBytesExpectedToWrite))progress
-    success:(NSString * (^)(NSHTTPURLResponse *response, NSString *HTML))success
-    failure:(void (^)(NSError *error))failure;
+- (void)loadRequest:(NSURLRequest *)request
+           progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten,
+                              long long totalBytesExpectedToWrite))progress
+            success:(NSString * (^)(NSHTTPURLResponse *response, NSString *HTML))success
+            failure:(void (^)(NSError *error))failure;
 
 /**
  Asynchronously loads the data associated with a particular request with a
@@ -114,14 +111,12 @@ loadRequest:(NSURLRequest *)request
  a single argument: the error that occurred.
  */
 - (void)loadRequest:(NSURLRequest *)request
-           MIMEType:(NSString *)MIMEType
-   textEncodingName:(NSString *)textEncodingName
-           progress:(void (^)(NSUInteger bytesWritten,
-                              long long totalBytesWritten,
-                              long long totalBytesExpectedToWrite))progress
-            success:(NSData * (^)(NSHTTPURLResponse *response,
-                                  NSData *data))success
-            failure:(void (^)(NSError *error))failure;
+            MIMEType:(NSString *)MIMEType
+    textEncodingName:(NSString *)textEncodingName
+            progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten,
+                               long long totalBytesExpectedToWrite))progress
+             success:(NSData * (^)(NSHTTPURLResponse *response, NSData *data))success
+             failure:(void (^)(NSError *error))failure;
 
 @end
 

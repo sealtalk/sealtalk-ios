@@ -13,8 +13,8 @@
 #ifndef __RCMessage
 #define __RCMessage
 #import "RCMessageContent.h"
-#import "RCStatusDefine.h"
 #import "RCReadReceiptInfo.h"
+#import "RCStatusDefine.h"
 #import <Foundation/Foundation.h>
 
 /*!
@@ -98,7 +98,6 @@
  */
 @property(nonatomic, strong) RCReadReceiptInfo *readReceiptInfo;
 
-
 /*!
  RCMessage初始化方法
 
@@ -122,8 +121,7 @@
 
  @warning **已废弃，请勿使用。**
  */
-+ (instancetype)messageWithJSON:(NSDictionary *)jsonData
-    __deprecated_msg("已废弃，请勿使用。");
++ (instancetype)messageWithJSON:(NSDictionary *)jsonData __deprecated_msg("已废弃，请勿使用。");
 
 @end
 #endif

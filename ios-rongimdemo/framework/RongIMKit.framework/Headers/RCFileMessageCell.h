@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "RCMessageCell.h"
+#import <UIKit/UIKit.h>
 
 /*!
  文件消息Cell
@@ -50,4 +50,3 @@
 @property(nonatomic, strong) UILabel *cancelLabel;
 
 @end
-

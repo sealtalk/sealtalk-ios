@@ -55,8 +55,7 @@
  @warning `responseSerializer` must not be `nil`. Setting a response serializer
  will clear out any cached value
  */
-@property(nonatomic, strong)
-    AFHTTPResponseSerializer<AFURLResponseSerialization> *responseSerializer;
+@property(nonatomic, strong) AFHTTPResponseSerializer<AFURLResponseSerialization> *responseSerializer;
 
 /**
  An object constructed by the `responseSerializer` from the response and
@@ -88,10 +87,7 @@
  request. This block has no return value and takes two arguments: the receiver
  operation and the error that occurred during the request.
  */
-- (void)
-setCompletionBlockWithSuccess:(void (^)(AFHTTPRequestOperation *operation,
-                                        id responseObject))success
-                      failure:(void (^)(AFHTTPRequestOperation *operation,
-                                        NSError *error))failure;
+- (void)setCompletionBlockWithSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                              failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
 @end

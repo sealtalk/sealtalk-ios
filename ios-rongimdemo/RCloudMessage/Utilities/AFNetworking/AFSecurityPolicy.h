@@ -24,9 +24,9 @@
 #import <Security/Security.h>
 
 typedef NS_ENUM(NSUInteger, AFSSLPinningMode) {
-  AFSSLPinningModeNone,
-  AFSSLPinningModePublicKey,
-  AFSSLPinningModeCertificate,
+    AFSSLPinningModeNone,
+    AFSSLPinningModePublicKey,
+    AFSSLPinningModeCertificate,
 };
 
 /**
@@ -130,8 +130,7 @@ typedef NS_ENUM(NSUInteger, AFSSLPinningMode) {
 
  @return Whether or not to trust the server.
  */
-- (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust
-                  forDomain:(NSString *)domain;
+- (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust forDomain:(NSString *)domain;
 
 @end
 

@@ -21,26 +21,26 @@
  讨论组通知的类型
  */
 typedef NS_ENUM(NSInteger, RCDiscussionNotificationType) {
-  /*!
-   有成员加入讨论组的通知
-   */
-  RCInviteDiscussionNotification = 1,
-  /*!
-   有成员退出讨论组的通知
-   */
-  RCQuitDiscussionNotification,
-  /*!
-   讨论组名称发生变更的通知
-   */
-  RCRenameDiscussionTitleNotification,
-  /*!
-   有成员被踢出讨论组的通知
-   */
-  RCRemoveDiscussionMemberNotification,
-  /*!
-   讨论组加入权限的变更
-   */
-  RCSwichInvitationAccessNotification
+    /*!
+     有成员加入讨论组的通知
+     */
+    RCInviteDiscussionNotification = 1,
+    /*!
+     有成员退出讨论组的通知
+     */
+    RCQuitDiscussionNotification,
+    /*!
+     讨论组名称发生变更的通知
+     */
+    RCRenameDiscussionTitleNotification,
+    /*!
+     有成员被踢出讨论组的通知
+     */
+    RCRemoveDiscussionMemberNotification,
+    /*!
+     讨论组加入权限的变更
+     */
+    RCSwichInvitationAccessNotification
 };
 
 /*!

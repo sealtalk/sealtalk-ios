@@ -8,15 +8,17 @@
 
 #import <Foundation/Foundation.h>
 typedef NS_ENUM(NSInteger, RCDSearchType) {
-  RCDSearchFriend = 0,
-  RCDSearchGroup,
-  RCDSearchChatHistory,
-  RCDSearchAll,
+    RCDSearchFriend = 0,
+    RCDSearchGroup,
+    RCDSearchChatHistory,
+    RCDSearchAll,
 };
 
 @interface RCDSearchDataManager : NSObject
 + (instancetype)shareInstance;
 
-- (void)searchDataWithSearchText:(NSString *)searchText bySearchType:(NSInteger)searchType complete:(void (^)(NSDictionary *dic,NSArray *array))result;
+- (void)searchDataWithSearchText:(NSString *)searchText
+                    bySearchType:(NSInteger)searchType
+                        complete:(void (^)(NSDictionary *dic, NSArray *array))result;
 
 @end

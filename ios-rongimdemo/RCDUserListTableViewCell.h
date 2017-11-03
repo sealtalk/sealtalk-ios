@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDUserListTableViewCell : UITableViewCell
-@property (nonatomic,strong) UIImageView *headImageView;//头像
-@property (nonatomic,strong) UILabel *nameLabel;//姓名
+@property(nonatomic, strong) UIImageView *headImageView; //头像
+@property(nonatomic, strong) UILabel *nameLabel;         //姓名
 @end

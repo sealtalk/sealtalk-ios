@@ -57,9 +57,7 @@
  * SDWebImageOptions for the possible values.
  */
 
-- (void)sd_setImageWithURL:(NSURL *)url
-          placeholderImage:(UIImage *)placeholder
-                   options:(SDWebImageOptions)options;
+- (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options;
 
 /**
  * Set the imageView `image` with an `url`.
@@ -77,8 +75,7 @@
  * cache or from the network.
  *                       The fourth parameter is the original image url.
  */
-- (void)sd_setImageWithURL:(NSURL *)url
-                 completed:(SDWebImageCompletionBlock)completedBlock;
+- (void)sd_setImageWithURL:(NSURL *)url completed:(SDWebImageCompletionBlock)completedBlock;
 
 /**
  * Set the imageView `image` with an `url`, placeholder.
@@ -138,17 +135,14 @@
 
 - (NSURL *)imageURL __deprecated_msg("Use `sd_imageURL`");
 
-- (void)setImageWithURL:(NSURL *)url
-    __deprecated_msg("Method deprecated. Use `sd_setImageWithURL:`");
-- (void)setImageWithURL:(NSURL *)url
-       placeholderImage:(UIImage *)placeholder
-    __deprecated_msg(
-        "Method deprecated. Use `sd_setImageWithURL:placeholderImage:`");
+- (void)setImageWithURL:(NSURL *)url __deprecated_msg("Method deprecated. Use `sd_setImageWithURL:`");
 - (void)setImageWithURL:(NSURL *)url
        placeholderImage:(UIImage *)placeholder
-                options:(SDWebImageOptions)options
-    __deprecated_msg("Method deprecated. Use "
-                     "`sd_setImageWithURL:placeholderImage:options:`");
+    __deprecated_msg("Method deprecated. Use `sd_setImageWithURL:placeholderImage:`");
+- (void)setImageWithURL:(NSURL *)url
+       placeholderImage:(UIImage *)placeholder
+                options:(SDWebImageOptions)options __deprecated_msg("Method deprecated. Use "
+                                                                    "`sd_setImageWithURL:placeholderImage:options:`");
 
 - (void)setImageWithURL:(NSURL *)url
               completed:(SDWebImageCompletedBlock)completedBlock
@@ -166,7 +160,6 @@
                      "`sd_setImageWithURL:placeholderImage:options:completed:"
                      "`");
 
-- (void)cancelCurrentImageLoad
-    __deprecated_msg("Use `sd_cancelCurrentImageLoad`");
+- (void)cancelCurrentImageLoad __deprecated_msg("Use `sd_cancelCurrentImageLoad`");
 
 @end

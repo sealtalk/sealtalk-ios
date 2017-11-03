@@ -31,17 +31,17 @@
  */
 
 @interface FMDatabasePool : NSObject {
-  NSString *_path;
+    NSString *_path;
 
-  dispatch_queue_t _lockQueue;
+    dispatch_queue_t _lockQueue;
 
-  NSMutableArray *_databaseInPool;
-  NSMutableArray *_databaseOutPool;
+    NSMutableArray *_databaseInPool;
+    NSMutableArray *_databaseOutPool;
 
-  __unsafe_unretained id _delegate;
+    __unsafe_unretained id _delegate;
 
-  NSUInteger _maximumNumberOfDatabasesToCreate;
-  int _openFlags;
+    NSUInteger _maximumNumberOfDatabasesToCreate;
+    int _openFlags;
 }
 
 /** Database path */
@@ -191,8 +191,7 @@
 
  */
 
-- (BOOL)databasePool:(FMDatabasePool *)pool
-    shouldAddDatabaseToPool:(FMDatabase *)database;
+- (BOOL)databasePool:(FMDatabasePool *)pool shouldAddDatabaseToPool:(FMDatabase *)database;
 
 /** Tells the delegate that database was added to the pool.
 
@@ -201,7 +200,6 @@
 
  */
 
-- (void)databasePool:(FMDatabasePool *)pool
-      didAddDatabase:(FMDatabase *)database;
+- (void)databasePool:(FMDatabasePool *)pool didAddDatabase:(FMDatabase *)database;
 
 @end

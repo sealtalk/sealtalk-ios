@@ -13,48 +13,41 @@
 #endif
 
 inline UIImage *SDScaledImageForKey(NSString *key, UIImage *image) {
-  if (!image) {
-    return nil;
-  }
-
-  if ([image.images count] > 0) {
-    NSMutableArray *scaledImages = [NSMutableArray array];
-
-    for (UIImage *tempImage in image.images) {
-      [scaledImages addObject:SDScaledImageForKey(key, tempImage)];
+    if (!image) {
+        return nil;
     }
 
-    return
-        [UIImage animatedImageWithImages:scaledImages duration:image.duration];
-  } else {
-    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-      CGFloat scale = 1.0;
-      if (key.length >= 8) {
-        // Search @2x. or @3x. at the end of the string, before a 3 to 4
-        // extension length (only if key len is 8 or more @2x./@3x. + 4 len ext)
-        NSRange range = [key rangeOfString:@"@2x."
-                                   options:0
-                                     range:NSMakeRange(key.length - 8, 5)];
-        if (range.location != NSNotFound) {
-          scale = 2.0;
+    if ([image.images count] > 0) {
+        NSMutableArray *scaledImages = [NSMutableArray array];
+
+        for (UIImage *tempImage in image.images) {
+            [scaledImages addObject:SDScaledImageForKey(key, tempImage)];
         }
 
-        range = [key rangeOfString:@"@3x."
-                           options:0
-                             range:NSMakeRange(key.length - 8, 5)];
-        if (range.location != NSNotFound) {
-          scale = 3.0;
-        }
-      }
+        return [UIImage animatedImageWithImages:scaledImages duration:image.duration];
+    } else {
+        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+            CGFloat scale = 1.0;
+            if (key.length >= 8) {
+                // Search @2x. or @3x. at the end of the string, before a 3 to 4
+                // extension length (only if key len is 8 or more @2x./@3x. + 4 len ext)
+                NSRange range = [key rangeOfString:@"@2x." options:0 range:NSMakeRange(key.length - 8, 5)];
+                if (range.location != NSNotFound) {
+                    scale = 2.0;
+                }
 
-      UIImage *scaledImage =
-          [[UIImage alloc] initWithCGImage:image.CGImage
-                                     scale:scale
-                               orientation:image.imageOrientation];
-      image = scaledImage;
+                range = [key rangeOfString:@"@3x." options:0 range:NSMakeRange(key.length - 8, 5)];
+                if (range.location != NSNotFound) {
+                    scale = 3.0;
+                }
+            }
+
+            UIImage *scaledImage =
+                [[UIImage alloc] initWithCGImage:image.CGImage scale:scale orientation:image.imageOrientation];
+            image = scaledImage;
+        }
+        return image;
     }
-    return image;
-  }
 }
 
 NSString *const SDWebImageErrorDomain = @"SDWebImageErrorDomain";

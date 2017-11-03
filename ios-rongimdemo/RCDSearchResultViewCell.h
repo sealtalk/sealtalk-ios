@@ -10,10 +10,10 @@
 @class RCDSearchResultModel;
 @class RCDLabel;
 @interface RCDSearchResultViewCell : UITableViewCell
-@property (nonatomic,strong)UIImageView *headerView;
-@property (nonatomic,strong)RCDLabel *nameLabel;
-@property (nonatomic,strong)RCDLabel *additionalLabel;
-@property (nonatomic,strong)NSString *searchString;
+@property(nonatomic, strong) UIImageView *headerView;
+@property(nonatomic, strong) RCDLabel *nameLabel;
+@property(nonatomic, strong) RCDLabel *additionalLabel;
+@property(nonatomic, strong) NSString *searchString;
 
 - (void)setDataModel:(RCDSearchResultModel *)model;
 @end

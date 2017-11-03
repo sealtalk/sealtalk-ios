@@ -24,13 +24,11 @@
 /*!
  同意添加好友的请求
  */
-#define ContactNotificationMessage_ContactOperationAcceptResponse              \
-  @"AcceptResponse"
+#define ContactNotificationMessage_ContactOperationAcceptResponse @"AcceptResponse"
 /*!
  拒绝添加好友的请求
  */
-#define ContactNotificationMessage_ContactOperationRejectResponse              \
-  @"RejectResponse"
+#define ContactNotificationMessage_ContactOperationRejectResponse @"RejectResponse"
 
 /*!
  好友请求消息类

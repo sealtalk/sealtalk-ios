@@ -24,14 +24,13 @@
 @implementation AFAppDotNetAPIClient
 
 + (instancetype)sharedClient {
-  static AFAppDotNetAPIClient *_sharedClient = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    _sharedClient = [[AFAppDotNetAPIClient alloc]
-        initWithBaseURL:[NSURL URLWithString:@""]];
-  });
+    static AFAppDotNetAPIClient *_sharedClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedClient = [[AFAppDotNetAPIClient alloc] initWithBaseURL:[NSURL URLWithString:@""]];
+    });
 
-  return _sharedClient;
+    return _sharedClient;
 }
 
 @end

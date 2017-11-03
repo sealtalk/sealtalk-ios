@@ -17,8 +17,7 @@
 /*!
  会话列表界面类
  */
-@interface RCConversationListViewController
-    : RCBaseViewController <UITableViewDataSource, UITableViewDelegate>
+@interface RCConversationListViewController : RCBaseViewController <UITableViewDataSource, UITableViewDelegate>
 
 #pragma mark - 初始化
 
@@ -26,10 +25,12 @@
  初始化会话列表
 
  @param displayConversationTypeArray    列表中需要显示的会话类型数组(需要将RCConversationType转为NSNumber构建Array)
- @param collectionConversationTypeArray 列表中需要聚合为一条显示的会话类型数组(需要将RCConversationType转为NSNumber构建Array)
+ @param collectionConversationTypeArray
+ 列表中需要聚合为一条显示的会话类型数组(需要将RCConversationType转为NSNumber构建Array)
  @return                                    会话列表对象
 
- @discussion  聚合为一条显示指的是，将指定会话类型的所有会话在会话列表中聚合显示成一条，点击进入会显示该会话类型的所有会话列表。
+ @discussion
+ 聚合为一条显示指的是，将指定会话类型的所有会话在会话列表中聚合显示成一条，点击进入会显示该会话类型的所有会话列表。
  */
 - (instancetype)initWithDisplayConversationTypes:(NSArray *)displayConversationTypeArray
                       collectionConversationType:(NSArray *)collectionConversationTypeArray;
@@ -199,15 +200,13 @@
 
  @discussion 您可以在此回调中修改Cell的一些显示属性。
  */
-- (void)willDisplayConversationTableCell:(RCConversationBaseCell *)cell
-                             atIndexPath:(NSIndexPath *)indexPath;
-
+- (void)willDisplayConversationTableCell:(RCConversationBaseCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 
 /**
  Cell状态更新时的回调
 
  @param indexPath 该Cell对应的会话Cell数据模型在数据源中的索引值
- 
+
  @discussion 当Cell的阅读状态等信息发生改变时的回调，您可以在此回调中更新Cell的显示。
  */
 - (void)updateCellAtIndexPath:(NSIndexPath *)indexPath;
@@ -231,8 +230,7 @@
  @param indexPath       该Cell对应的会话Cell数据模型在数据源中的索引值
  @return                自定义会话需要显示的Cell的高度
  */
-- (CGFloat)rcConversationListTableView:(UITableView *)tableView
-               heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)rcConversationListTableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 /*!
  左滑删除自定义会话时的回调
@@ -268,10 +266,9 @@
  */
 - (void)refreshConversationTableViewWithConversationModel:(RCConversationModel *)conversationModel;
 
-
 /*!
  当用户退出登陆时，是否还能继续显示会话列表
- 
+
  @discussion 默认值为YES。
  */
 @property(nonatomic, assign) BOOL showConversationListWhileLogOut;

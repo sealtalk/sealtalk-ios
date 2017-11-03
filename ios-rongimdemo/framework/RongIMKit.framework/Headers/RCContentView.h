@@ -20,7 +20,7 @@
 
 /*!
  注册Frame发生变化的回调
- 
+
  @param eventBlock Frame发生变化的回调
  */
 - (void)registerFrameChangedEvent:(void (^)(CGRect frame))eventBlock;

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import "RCMessageCell.h"
 #import "RCAttributedLabel.h"
+#import "RCMessageCell.h"
 
 #define RichContent_Title_Font_Size 15
 #define RichContent_Message_Font_Size 12

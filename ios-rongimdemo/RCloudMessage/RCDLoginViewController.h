@@ -8,8 +8,7 @@
 
 #import "RCAnimatedImagesView.h"
 #import <UIKit/UIKit.h>
-@interface RCDLoginViewController
-    : UIViewController <RCAnimatedImagesViewDelegate>
+@interface RCDLoginViewController : UIViewController <RCAnimatedImagesViewDelegate>
 
 //-(void) defaultLogin;
 - (void)login:(NSString *)userName password:(NSString *)password;
