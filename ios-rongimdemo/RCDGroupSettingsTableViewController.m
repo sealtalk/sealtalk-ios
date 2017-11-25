@@ -517,27 +517,40 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                 [activityIndicatorView startAnimating];
                 [cell addSubview:loadingView];
             });
-            
-            [[RCIMClient sharedRCIMClient] deleteMessages:ConversationType_GROUP
-                targetId:groupId
-                success:^{
-                    [self performSelectorOnMainThread:@selector(clearCacheAlertMessage:)
-                                           withObject:@"清除聊天记录成功！"
-                                        waitUntilDone:YES];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearHistoryMsg" object:nil];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [loadingView removeFromSuperview];
-                    });
 
-                }
-                error:^(RCErrorCode status) {
-                    [self performSelectorOnMainThread:@selector(clearCacheAlertMessage:)
-                                           withObject:@"清除聊天记录失败！"
-                                        waitUntilDone:YES];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [loadingView removeFromSuperview];
-                    });
-                }];
+            __weak typeof(self) weakSelf = self;
+            
+            NSArray *latestMessages = [[RCIMClient sharedRCIMClient] getLatestMessages:ConversationType_GROUP targetId:currentConversation.targetId count:1];
+            if (latestMessages.count > 0) {
+                RCMessage *message = (RCMessage *)[latestMessages firstObject];
+                [[RCIMClient sharedRCIMClient]clearRemoteHistoryMessages:ConversationType_GROUP
+                                                                targetId:currentConversation.targetId
+                                                              recordTime:message.sentTime
+                                                                 success:^{
+                                                                     [[RCIMClient sharedRCIMClient] deleteMessages:ConversationType_GROUP
+                                                                                                          targetId:currentConversation.targetId
+                                                                                                           success:^{
+                                                                                                               [weakSelf performSelectorOnMainThread:@selector(clearCacheAlertMessage:)
+                                                                                                                                          withObject:@"清除聊天记录成功！"
+                                                                                                                                       waitUntilDone:YES];
+                                                                                                               [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearHistoryMsg" object:nil];
+                                                                                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                                                   [loadingView removeFromSuperview];
+                                                                                                               });
+                                                                                                           }
+                                                                                                             error:^(RCErrorCode status) {
+                                                                                                                 
+                                                                                                             }];
+                                                                 }
+                                                                   error:^(RCErrorCode status) {
+                                                                       [weakSelf performSelectorOnMainThread:@selector(clearCacheAlertMessage:)
+                                                                                                  withObject:@"清除聊天记录失败！"
+                                                                                               waitUntilDone:YES];
+                                                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                                                           [loadingView removeFromSuperview];
+                                                                       });
+                                                                   }];
+            }
         }
     }
     if (actionSheet.tag == 101) {

@@ -1222,6 +1222,26 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
                      afterCount:(int)afterCount;
 
 /*!
+ 从服务器端清除历史消息
+ 
+ @param conversationType    会话类型
+ @param targetId            目标会话ID
+ @param recordTime          清除消息截止时间戳，【0 ~ 当前时间的 Unix 时间戳】
+ @param successBlock        获取成功的回调
+ @param errorBlock          获取失败的回调 [status:清除失败的错误码]
+ 
+ @discussion
+ 此方法从服务器端清除历史消息，但是必须先开通历史消息云存储功能。
+ 例如，您不想从服务器上获取更多的历史消息，通过指定 recordTime 清除成功后只能获取该时间戳之后的历史消息。
+ */
+- (void)clearRemoteHistoryMessages:(RCConversationType)conversationType
+                          targetId:(NSString *)targetId
+                        recordTime:(long long)recordTime
+                           success:(void (^)(void))successBlock
+                             error:(void (^)(RCErrorCode status))errorBlock;
+
+
+/*!
  从服务器端获取之前的历史消息
 
  @param conversationType    会话类型
