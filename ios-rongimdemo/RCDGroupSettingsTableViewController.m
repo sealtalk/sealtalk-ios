@@ -26,6 +26,7 @@
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMLib/RongIMLib.h>
+#import "RCDUIBarButtonItem.h"
 static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 @interface RCDGroupSettingsTableViewController ()
@@ -98,19 +99,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     // bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     numberOfSections = 0;
-
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 6, 87, 23);
-    UIImageView *backImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
-    backImg.frame = CGRectMake(-6, 4, 10, 17);
-    [backBtn addSubview:backImg];
-    UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(9, 4, 85, 17)];
-    backText.text = @"返回";
-    [backText setBackgroundColor:[UIColor clearColor]];
-    [backText setTextColor:[UIColor whiteColor]];
-    [backBtn addSubview:backText];
-    [backBtn addTarget:self action:@selector(backBarButtonItemClicked:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self action:@selector(backBarButtonItemClicked:)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -517,18 +506,17 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                 [activityIndicatorView startAnimating];
                 [cell addSubview:loadingView];
             });
-
             __weak typeof(self) weakSelf = self;
             
-            NSArray *latestMessages = [[RCIMClient sharedRCIMClient] getLatestMessages:ConversationType_GROUP targetId:currentConversation.targetId count:1];
+            NSArray *latestMessages = [[RCIMClient sharedRCIMClient] getLatestMessages:ConversationType_GROUP targetId:groupId count:1];
             if (latestMessages.count > 0) {
                 RCMessage *message = (RCMessage *)[latestMessages firstObject];
                 [[RCIMClient sharedRCIMClient]clearRemoteHistoryMessages:ConversationType_GROUP
-                                                                targetId:currentConversation.targetId
+                                                                targetId:groupId
                                                               recordTime:message.sentTime
                                                                  success:^{
                                                                      [[RCIMClient sharedRCIMClient] deleteMessages:ConversationType_GROUP
-                                                                                                          targetId:currentConversation.targetId
+                                                                                                          targetId:groupId
                                                                                                            success:^{
                                                                                                                [weakSelf performSelectorOnMainThread:@selector(clearCacheAlertMessage:)
                                                                                                                                           withObject:@"清除聊天记录成功！"
@@ -557,8 +545,18 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         if (buttonIndex == 0) {
             //判断如果当前群组已经解散，直接删除消息和会话，并跳转到会话列表页面。
             if ([_Group.isDismiss isEqualToString:@"YES"]) {
-                [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP targetId:groupId];
-
+                NSArray *latestMessages = [[RCIMClient sharedRCIMClient] getLatestMessages:ConversationType_GROUP targetId:groupId count:1];
+                if (latestMessages.count > 0) {
+                    RCMessage *message = (RCMessage *)[latestMessages firstObject];
+                    [[RCIMClient sharedRCIMClient]clearRemoteHistoryMessages:ConversationType_GROUP
+                                                                    targetId:groupId
+                                                                  recordTime:message.sentTime
+                                                                     success:^{
+                                                                         [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP targetId:groupId];
+                                                                     }
+                                                                       error:nil
+                     ];
+                }
                 [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_GROUP targetId:groupId];
 
                 [[RCDataBaseManager shareInstance] deleteGroupToDB:groupId];
@@ -572,9 +570,18 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     if (isOk) {
-                                        [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP
-                                                                            targetId:groupId];
-
+                                        NSArray *latestMessages = [[RCIMClient sharedRCIMClient] getLatestMessages:ConversationType_GROUP targetId:groupId count:1];
+                                        if (latestMessages.count > 0) {
+                                            RCMessage *message = (RCMessage *)[latestMessages firstObject];
+                                            [[RCIMClient sharedRCIMClient]clearRemoteHistoryMessages:ConversationType_GROUP
+                                                                                            targetId:groupId
+                                                                                          recordTime:message.sentTime
+                                                                                             success:^{
+                                                                                                 [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP targetId:groupId];
+                                                                                             }
+                                                                                               error:nil
+                                             ];
+                                        }
                                         [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_GROUP
                                                                                  targetId:groupId];
 
@@ -601,9 +608,18 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
                                    dispatch_async(dispatch_get_main_queue(), ^{
                                        if (isOk) {
-                                           [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP
-                                                                               targetId:groupId];
-
+                                           NSArray *latestMessages = [[RCIMClient sharedRCIMClient] getLatestMessages:ConversationType_GROUP targetId:groupId count:1];
+                                           if (latestMessages.count > 0) {
+                                               RCMessage *message = (RCMessage *)[latestMessages firstObject];
+                                               [[RCIMClient sharedRCIMClient]clearRemoteHistoryMessages:ConversationType_GROUP
+                                                                                               targetId:groupId
+                                                                                             recordTime:message.sentTime
+                                                                                                success:^{
+                                                                                                    [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP targetId:groupId];
+                                                                                                }
+                                                                                                  error:nil
+                                                ];
+                                           }
                                            [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_GROUP
                                                                                     targetId:groupId];
                                            [[RCDataBaseManager shareInstance] deleteGroupToDB:groupId];

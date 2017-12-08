@@ -531,12 +531,12 @@ typedef NS_ENUM(NSUInteger, RCNetworkStatus) {
  */
 typedef NS_ENUM(NSUInteger, RCSDKRunningMode) {
     /*!
-     前台运行状态
+     后台运行状态
      */
     RCSDKRunningMode_Background = 0,
 
     /*!
-     后台运行状态
+     前台运行状态
      */
     RCSDKRunningMode_Foreground = 1
 };

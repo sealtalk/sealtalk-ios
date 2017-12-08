@@ -1,6 +1,6 @@
 //
 //  RCSendCardMessageView.h
-//  RCloudMessage
+//  RongContactCard
 //
 //  Created by Jue on 2016/12/19.
 //  Copyright © 2016年 RongCloud. All rights reserved.

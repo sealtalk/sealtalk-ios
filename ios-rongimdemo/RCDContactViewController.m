@@ -67,8 +67,16 @@
         CGRect searchBarFrame = self.searchFriendsBar.frame;
         CGFloat originY = CGRectGetMaxY(searchBarFrame);
         _friendsTabelView = [[RCDTableView alloc]
-            initWithFrame:CGRectMake(0.0, originY, RCDscreenWidth, RCDscreenHeight - originY - 114)
+                             initWithFrame:CGRectMake(0, originY, self.view.bounds.size.width, self.view.bounds.size.height - searchBarFrame.size.height)
                     style:UITableViewStyleGrouped];
+        
+        _friendsTabelView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        if ([_friendsTabelView respondsToSelector:@selector(setSeparatorInset:)]) {
+            _friendsTabelView.separatorInset = UIEdgeInsetsMake(0, 10, 0, 0);
+        }
+        if ([_friendsTabelView respondsToSelector:@selector(setLayoutMargins:)]) {
+            _friendsTabelView.layoutMargins = UIEdgeInsetsMake(0, 10, 0, 0);
+        }
         [_friendsTabelView setDelegate:self];
         [_friendsTabelView setDataSource:self];
         [_friendsTabelView setSectionIndexBackgroundColor:[UIColor clearColor]];

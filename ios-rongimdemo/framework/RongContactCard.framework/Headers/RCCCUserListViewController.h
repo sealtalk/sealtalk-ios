@@ -1,6 +1,6 @@
 //
 //  RCCCUserListViewController.h
-//  RCloudMessage
+//  RongContactCard
 //
 //  Created by liulin on 16/11/17.
 //  Copyright © 2016年 RongCloud. All rights reserved.

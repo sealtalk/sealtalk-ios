@@ -15,6 +15,7 @@
 #import "RCDSearchResultModel.h"
 #import "RCDSearchResultViewCell.h"
 #import "UIColor+RCColor.h"
+#import "RCDUIBarButtonItem.h"
 @interface RCDSearchMoreController () <UISearchBarDelegate>
 @property(nonatomic, strong) RCDSearchBar *searchBars;
 @property(nonatomic, strong) UIButton *cancelButton;
@@ -73,13 +74,12 @@
     } else {
         imageStr = @"navigator_btn_back";
     }
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 6, 30, 23);
-    UIImageView *backImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageStr]];
-    backImg.frame = CGRectMake(-6, 4, 10, 17);
-    [backBtn addSubview:backImg];
-    [backBtn addTarget:self action:@selector(leftBarButtonBackAction) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:imageStr] imageViewFrame:CGRectMake(0, 4, 10, 17) buttonTitle:nil
+                                                        titleColor:nil
+                                                                       titleFrame:CGRectZero
+                                                                      buttonFrame:CGRectMake(-6, 0, 30, 23)
+                                                                           target:self
+                                                                           action:@selector(leftBarButtonBackAction)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
 
     self.tableView.tableFooterView = [UIView new];
@@ -97,7 +97,7 @@
     _searchBars.delegate = self;
     _searchBars.placeholder = nil;
     _searchBars.tintColor = [UIColor blueColor];
-    _searchBars.frame = CGRectMake(-20, 0, self.searchView.frame.size.width - 55, 44);
+    _searchBars.frame = CGRectMake(-17, 0, self.searchView.frame.size.width - 55, 44);
     [self.searchView addSubview:self.searchBars];
 
     _cancelButton = [[UIButton alloc]

@@ -378,7 +378,9 @@
             [_userList removeObject:user];
             [self.users removeObject:user];
             [self.members removeObjectForKey:user.userId];
-            [self addUsers:self.users];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self addUsers:self.users];
+            });
         }
         error:^(RCErrorCode status) {
             NSLog(@"踢人失败");

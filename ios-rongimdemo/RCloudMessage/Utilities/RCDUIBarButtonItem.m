@@ -7,7 +7,7 @@
 //
 
 #import "RCDUIBarButtonItem.h"
-
+#import <RongIMKit/RongIMKit.h>
 @interface RCDUIBarButtonItem ()
 
 @property(nonatomic, strong) UILabel *titleText;
@@ -15,6 +15,15 @@
 @end
 
 @implementation RCDUIBarButtonItem
+- (RCDUIBarButtonItem *)initWithLeftBarButton:(NSString *)title target:(id)target action:(SEL)method{
+    CGRect titleFrame = CGRectMake(15, 4, 85, 17);
+    if (title.length == 0) {
+        titleFrame = CGRectZero;
+    }
+    return [self initContainImage:[UIImage imageNamed:@"navigator_btn_back"] imageViewFrame:CGRectMake(0, 4, 10, 17) buttonTitle:title titleColor:[RCIM sharedRCIM].globalNavigationBarTintColor titleFrame:CGRectMake(15, 4, 85, 17) buttonFrame:CGRectMake(-4, 0, 87, 23) target:target action:method];
+}
+
+
 
 //初始化包含图片的UIBarButtonItem
 - (RCDUIBarButtonItem *)initContainImage:(UIImage *)buttonImage
@@ -26,6 +35,7 @@
                                   target:(id)target
                                   action:(SEL)method {
     self = [[RCDUIBarButtonItem alloc] init];
+    UIView *view = [[UIView alloc] initWithFrame:buttonFrame];
     self.button = [UIButton buttonWithType:UIButtonTypeCustom];
     self.button.frame = buttonFrame;
     UIImageView *image = [[UIImageView alloc] initWithImage:buttonImage];
@@ -39,7 +49,10 @@
         [self.button addSubview:self.titleText];
     }
     [self.button addTarget:target action:method forControlEvents:UIControlEventTouchUpInside];
-    self.customView = self.button;
+    [view addSubview:self.button];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:target action:method];
+    [view addGestureRecognizer:tap];
+    self.customView = view;
     return self;
 }
 

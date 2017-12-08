@@ -1,6 +1,6 @@
 //
 //  RCContactCardMessageCell.h
-//  RCloudMessage
+//  RongContactCard
 //
 //  Created by Sin on 16/8/19.
 //  Copyright © 2016年 RongCloud. All rights reserved.

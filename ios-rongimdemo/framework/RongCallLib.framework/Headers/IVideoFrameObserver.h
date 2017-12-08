@@ -1,7 +1,8 @@
+//For Agora Only Begin
 #ifndef _ivideoframeobserve_h
 #define _ivideoframeobserve_h
 
-#import <AgoraRtcEngineKit/IAgoraMediaEngine.h>
+#import "IAgoraMediaEngine.h"
 #import <Foundation/Foundation.h>
 
 /*
@@ -27,3 +28,4 @@ NSString *rcGetUserIdFromAgoraUID(int uid);
 }
 #endif
 #endif
+//For Agora Only End

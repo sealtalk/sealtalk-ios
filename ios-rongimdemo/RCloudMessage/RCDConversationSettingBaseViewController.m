@@ -159,7 +159,9 @@
 }
 
 - (void)setSwitch_newMessageNotify:(BOOL)switch_newMessageNotify {
-    _cell_newMessageNotify.swich.on = switch_newMessageNotify;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _cell_newMessageNotify.swich.on = switch_newMessageNotify;
+    });
     _switch_newMessageNotify = switch_newMessageNotify;
 }
 

@@ -11,7 +11,7 @@
 #import "RCDHttpTool.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
-
+#import "RCDUIBarButtonItem.h"
 #define MAX_STARWORDS_LENGTH 16
 
 @interface RCDFrienfRemarksViewController ()
@@ -64,18 +64,7 @@
     self.rightBtn.userInteractionEnabled = NO;
     self.navigationItem.rightBarButtonItem = rightButton;
 
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 6, 87, 23);
-    UIImageView *backImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
-    backImg.frame = CGRectMake(-6, 4, 10, 17);
-    [backBtn addSubview:backImg];
-    UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(9, 4, 85, 17)];
-    backText.text = @"返回";
-    [backText setBackgroundColor:[UIColor clearColor]];
-    [backText setTextColor:[UIColor whiteColor]];
-    [backBtn addSubview:backText];
-    [backBtn addTarget:self action:@selector(clickBackBtn:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self action:@selector(clickBackBtn:)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 

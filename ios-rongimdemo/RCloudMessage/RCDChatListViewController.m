@@ -164,8 +164,7 @@
                                                                     buttonFrame:CGRectMake(0, 0, 17, 17)
                                                                          target:self
                                                                          action:@selector(showMenu:)];
-    self.tabBarController.navigationItem.rightBarButtonItems = [rightBtn setTranslation:rightBtn translation:-6];
-
+    self.tabBarController.navigationItem.rightBarButtonItems = @[rightBtn];
     self.tabBarController.navigationItem.title = @"会话";
 
     //  [self notifyUpdateUnreadMessageCount];
@@ -274,10 +273,6 @@
             }
         }
     }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)),
-                   dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                       [self refreshConversationTableViewIfNeeded];
-                   });
 }
 
 /**
@@ -310,11 +305,12 @@
 #endif
     ];
 
-    UIBarButtonItem *rightBarButton = self.tabBarController.navigationItem.rightBarButtonItems[1];
+    UIBarButtonItem *rightBarButton = self.tabBarController.navigationItem.rightBarButtonItems[0];
     CGRect targetFrame = rightBarButton.customView.frame;
-    targetFrame.origin.y = targetFrame.origin.y + 15;
+    CGFloat offset = [UIApplication sharedApplication].statusBarFrame.size.height > 20 ?  54 : 15;
+    targetFrame.origin.y = targetFrame.origin.y + offset;
     if (IOS_FSystenVersion >= 11.0) {
-        targetFrame.origin.x = self.view.bounds.size.width - targetFrame.size.width - 25;
+        targetFrame.origin.x = self.view.bounds.size.width - targetFrame.size.width - 17;
     }
     [KxMenu setTintColor:HEXCOLOR(0x000000)];
     [KxMenu setTitleFont:[UIFont systemFontOfSize:17]];

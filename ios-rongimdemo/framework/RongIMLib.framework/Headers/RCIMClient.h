@@ -1162,7 +1162,7 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 
  @param conversationType    会话类型
  @param targetId            目标会话ID
- @param objectName          消息内容的类型名
+ @param objectName          消息内容的类型名，如果想取全部类型的消息请传 nil
  @param oldestMessageId     截止的消息ID
  @param count               需要获取的消息数量
  @return                    消息实体RCMessage对象列表
@@ -1184,7 +1184,7 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 
  @param conversationType    会话类型
  @param targetId            目标会话ID
- @param objectName          消息内容的类型名
+ @param objectName          消息内容的类型名，如果想取全部类型的消息请传 nil
  @param baseMessageId       当前的消息ID
  @param isForward           查询方向 true为向前，false为向后
  @param count               需要获取的消息数量

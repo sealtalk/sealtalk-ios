@@ -50,14 +50,7 @@
     self.navigationItem.title = @"个人信息";
 
     RCDUIBarButtonItem *leftBtn =
-        [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
-                                      imageViewFrame:CGRectMake(-6, 4, 10, 17)
-                                         buttonTitle:@"我"
-                                          titleColor:[UIColor whiteColor]
-                                          titleFrame:CGRectMake(9, 4, 85, 17)
-                                         buttonFrame:CGRectMake(0, 6, 87, 23)
-                                              target:self
-                                              action:@selector(cilckBackBtn:)];
+    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"我" target:self action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
@@ -310,7 +303,7 @@
     return scaledImage;
 }
 
-- (void)cilckBackBtn:(id)sender {
+- (void)clickBackBtn:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 

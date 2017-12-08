@@ -22,6 +22,10 @@ typedef NS_ENUM(NSInteger, RCCallEngineType) {
      融云
      */
     RCCallEngineRong = 2,
+    /*!
+     Blink
+     */
+    RCCallEngineBlink = 3,
 };
 /*!
  媒体类型

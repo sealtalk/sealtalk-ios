@@ -17,6 +17,7 @@
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
+#import "RCDUIBarButtonItem.h"
 static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 @interface RCDPrivateSettingsTableViewController ()
@@ -52,21 +53,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 6, 87, 23);
-    UIImageView *backImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
-    backImg.frame = CGRectMake(-6, 4, 10, 17);
-    [backBtn addSubview:backImg];
-    UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(9, 4, 85, 17)];
-    backText.text = @"返回"; // NSLocalizedStringFromTable(@"Back",
-    // @"RongCloudKit", nil);
-    //   backText.font = [UIFont systemFontOfSize:17];
-    [backText setBackgroundColor:[UIColor clearColor]];
-    [backText setTextColor:[UIColor whiteColor]];
-    [backBtn addSubview:backText];
-    [backBtn addTarget:self action:@selector(leftBarButtonItemPressed:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self                action:@selector(leftBarButtonItemPressed:)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
     self.title = @"聊天详情";
 
@@ -368,7 +355,6 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                 [activityIndicatorView startAnimating];
                 [cell addSubview:loadingView];
             });
-
             __weak typeof(self) weakSelf = self;
             
             NSArray *latestMessages = [[RCIMClient sharedRCIMClient] getLatestMessages:ConversationType_PRIVATE targetId:_userId count:1];

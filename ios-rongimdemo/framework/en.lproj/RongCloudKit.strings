@@ -182,7 +182,7 @@
 "ImageHasBeenDeleted"="The image has been deleted";
 "HaveMentioned"="You were mentioned";
 "HaveMentionedForNotification"="You were mentioned ";
-"chatDate"="MMM d, yyyy";
+"chatDate"="d MMM yyyy";
 "chatListDate"="M/d/yyyy";
 "locale"="en_US";
 "SameYearDate"="M/d/yy";
@@ -206,6 +206,7 @@
 "hold_to_talk_title"="Hold to talk";
 "release_to_send_title"="Release to send";
 "message_too_short"="Message too short";
+"message_too_long"="Message too long";
 "slide_up_to_cancel_title"="Slide up to cancel";
 "release_to_cancel_title"="Release to cancel";
 "whiteSpaceMessage"="Can't send white space message";

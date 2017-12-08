@@ -1,5 +1,5 @@
 //
-//  RCUserStatus.h
+//  RCUserOnlineStatusInfo.h
 //  RongIMLib
 //
 //  Created by 杜立召 on 16/9/26.

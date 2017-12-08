@@ -207,7 +207,8 @@
 "release_to_send_title"="松开 发送";
 "slide_up_to_cancel_title"="手指上滑，取消发送";
 "release_to_cancel_title"="松开手指，取消发送";
-"message_too_short"="录音时间短";
+"message_too_short"="录音时间太短";
+"message_too_long"="录音时间超长";
 "whiteSpaceMessage"="不能发送空白消息";
 "OK"="确定";
 "Cancel"="取消";

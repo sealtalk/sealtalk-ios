@@ -70,6 +70,12 @@ NSMutableDictionary *userInputStatus;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    NSArray *viewControllers = self.navigationController.viewControllers;//获取当前的视图控制其
+    if ([viewControllers indexOfObject:self] == NSNotFound) {
+        //当前视图控制器不在栈中，故为pop操作
+        [self.realTimeLocation removeRealTimeLocationObserver:self];
+        self.realTimeLocation = nil;
+    }
     KBottomBarStatus inputType = self.chatSessionInputBarControl.currentBottomBarStatus;
     if (!userInputStatus) {
         userInputStatus = [NSMutableDictionary new];
@@ -92,7 +98,7 @@ NSMutableDictionary *userInputStatus;
                               if ([discussion.memberIdList
                                       containsObject:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
                                   [self setRightNavigationItem:[UIImage imageNamed:@"Private_Setting"]
-                                                     withFrame:CGRectMake(15, 3.5, 16, 18.5)];
+                                                     withFrame:CGRectMake(0 , 0, 16, 18.5)];
                               } else {
                                   self.navigationItem.rightBarButtonItem = nil;
                               }
@@ -102,10 +108,10 @@ NSMutableDictionary *userInputStatus;
 
                         }];
         } else if (self.conversationType == ConversationType_GROUP) {
-            [self setRightNavigationItem:[UIImage imageNamed:@"Group_Setting"] withFrame:CGRectMake(10, 3.5, 21, 19.5)];
+            [self setRightNavigationItem:[UIImage imageNamed:@"Group_Setting"] withFrame:CGRectMake(0,0, 21, 19.5)];
         } else {
             [self setRightNavigationItem:[UIImage imageNamed:@"Private_Setting"]
-                               withFrame:CGRectMake(15, 3.5, 16, 18.5)];
+                               withFrame:CGRectMake(0, 0, 16, 18.5)];
         }
 
     } else {
@@ -299,12 +305,10 @@ NSMutableDictionary *userInputStatus;
 }
 
 - (void)setRightNavigationItem:(UIImage *)image withFrame:(CGRect)frame {
-    RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:image
-                                                                 imageViewFrame:frame
-                                                                    buttonTitle:nil
+    RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:image imageViewFrame:frame buttonTitle:nil
                                                                      titleColor:nil
                                                                      titleFrame:CGRectZero
-                                                                    buttonFrame:CGRectMake(0, 0, 25, 25)
+                                                                    buttonFrame:frame
                                                                          target:self
                                                                          action:@selector(rightBarButtonItemClicked:)];
     self.navigationItem.rightBarButtonItem = rightBtn;
@@ -452,30 +456,16 @@ NSMutableDictionary *userInputStatus;
     NSLog(@"%s", __FUNCTION__);
 }
 
+- (void)setLeftNavigationItem
+{
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self                        action:@selector(leftBarButtonItemPressed:)];
+    [self.navigationItem setLeftBarButtonItem:leftButton];
+}
+
 /**
  *  更新左上角未读消息数
  */
-- (void)setLeftNavigationItem
-{
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 6, 87, 23);
-    UIImageView *backImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigator_btn_back"]];
-    backImg.frame = CGRectMake(-6, 4, 10, 17);
-    [backBtn addSubview:backImg];
-    UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(9, 4, 85, 17)];
-    backText.text = @"返回";
-    [backText setBackgroundColor:[UIColor clearColor]];
-    [backText setTextColor:[UIColor whiteColor]];
-    backText.tag = 1000;
-    [backBtn addSubview:backText];
-    [backBtn addTarget:self
-                action:@selector(leftBarButtonItemPressed:)
-      forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-    [self.navigationItem setLeftBarButtonItem:leftButton];
-}
 - (void)notifyUpdateUnreadMessageCount {
-    __weak typeof(&*self) __weakself = self;
     int count = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
         @(ConversationType_PRIVATE), @(ConversationType_DISCUSSION), @(ConversationType_APPSERVICE),
         @(ConversationType_PUBLICSERVICE), @(ConversationType_GROUP)
@@ -489,9 +479,8 @@ NSMutableDictionary *userInputStatus;
         } else {
             backString = @"返回";
         }
-        UIButton *backBtn = (UIButton *)self.navigationItem.leftBarButtonItem.customView;
-        UILabel *label = [backBtn viewWithTag: 1000];
-        label.text = backString;
+        RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:backString target:self                        action:@selector(leftBarButtonItemPressed:)];
+        [self.navigationItem setLeftBarButtonItem:leftButton];
     });
 }
 

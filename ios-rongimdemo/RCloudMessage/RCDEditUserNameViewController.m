@@ -102,14 +102,7 @@
 }
 
 - (void)setNavigationButton {
-    self.leftBtn = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
-                                                 imageViewFrame:CGRectMake(-6, 4, 10, 17)
-                                                    buttonTitle:@"返回"
-                                                     titleColor:[UIColor whiteColor]
-                                                     titleFrame:CGRectMake(9, 4, 85, 17)
-                                                    buttonFrame:CGRectMake(0, 6, 87, 23)
-                                                         target:self
-                                                         action:@selector(clickBackBtn)];
+    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = self.leftBtn;
 
     self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:@"保存"

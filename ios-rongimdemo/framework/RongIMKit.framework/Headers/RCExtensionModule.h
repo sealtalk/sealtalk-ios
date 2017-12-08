@@ -141,6 +141,20 @@
            inInputBar:(RCChatSessionInputBarControl *)inputBarControl;
 
 /*!
+ 点击表情面板中的表情包 Icon 按钮的回调
+ 
+ @param emojiView       表情面板
+ @param index           表情包 Icon 的索引
+ @param inputBarControl 表情面板所在的输入工具栏
+ @param block           是否阻止 SDK 默认的点击处理逻辑
+ */
+
+- (void)emoticonTab:(RCEmojiBoardView *)emojiView
+didTouchEmotionIconIndex:(int)index
+         inInputBar:(RCChatSessionInputBarControl *)inputBarControl
+isBlockDefaultEvent:(void (^)(BOOL isBlockDefaultEvent))block;
+
+/*!
  点击表情面板中的设置按钮的回调
 
  @param emojiView       表情面板

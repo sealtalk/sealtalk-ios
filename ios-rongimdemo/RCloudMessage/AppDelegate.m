@@ -707,7 +707,14 @@
         RCGroupNotificationMessage *msg = (RCGroupNotificationMessage *)message.content;
         if ([msg.operation isEqualToString:@"Dismiss"] &&
             [msg.operatorUserId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-            [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP targetId:message.targetId];
+            [[RCIMClient sharedRCIMClient]clearRemoteHistoryMessages:ConversationType_GROUP
+                                                            targetId:message.targetId
+                                                          recordTime:message.sentTime
+                                                             success:^{
+                                                                 [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP targetId:message.targetId];
+                                                             }
+                                                               error:nil
+             ];
             [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_GROUP targetId:message.targetId];
         } else if ([msg.operation isEqualToString:@"Quit"] || [msg.operation isEqualToString:@"Add"] ||
                    [msg.operation isEqualToString:@"Kicked"] || [msg.operation isEqualToString:@"Rename"]) {

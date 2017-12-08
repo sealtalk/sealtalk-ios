@@ -127,6 +127,7 @@
     _conversationVC.unReadMessage = unreadCount;
     _conversationVC.enableNewComingMessageIcon = YES; //开启消息提醒
     _conversationVC.enableUnreadMessageIcon = YES;
+    _conversationVC.locatedMessageSentTime = model.time;
     //如果是单聊，不显示发送方昵称
     if (model.conversationType == ConversationType_PRIVATE) {
         _conversationVC.displayUserNameInCell = NO;
