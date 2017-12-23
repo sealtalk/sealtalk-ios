@@ -86,6 +86,7 @@ NSMutableDictionary *userInputStatus;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.enableSaveNewPhotoToLocalSystem = YES;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 

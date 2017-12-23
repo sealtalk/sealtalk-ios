@@ -1226,7 +1226,7 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  
  @param conversationType    会话类型
  @param targetId            目标会话ID
- @param recordTime          清除消息截止时间戳，【0 ~ 当前时间的 Unix 时间戳】
+ @param recordTime          清除消息时间戳，【0 <= recordTime <= 当前会话最后一条消息的 sentTime,0 清除所有消息，其他值清除小于等于 recordTime 的消息】
  @param successBlock        获取成功的回调
  @param errorBlock          获取失败的回调 [status:清除失败的错误码]
  
@@ -2219,6 +2219,16 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
                       onQuit:(void (^)(NSString *quitMsg))quitBlock;
 
 /*!
+ 客服后台关于评价相关的客服参数配置
+ 
+ @param evaConfigBlock       客服配置回调
+ 
+ @discussion 此方法依赖startCustomerService方法，只有调用成功以后才有效。
+ @warning 如果你使用的lib，或者使用kit但想要自定义评价弹窗，可以参考相关配置绘制评价UI
+ */
+- (void)getHumanEvaluateCustomerServiceConfig:(void (^)(NSDictionary *evaConfig))evaConfigBlock;
+
+/*!
  结束客服聊天
 
  @param kefuId       客服ID
@@ -2287,11 +2297,42 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 
  @warning
  如果你使用IMKit，请不要使用此方法。RCConversationViewController默认已经做了处理。
+ 
+ @warning **已废弃，请勿使用。**
+ 升级说明：如果您之前使用了此接口，可以直接替换为evaluateCustomerService:dialogId:starValue:suggest:resolveStatus:tagText:extra: 接口，行为和实现完全一致。
  */
 - (void)evaluateCustomerService:(NSString *)kefuId
                        dialogId:(NSString *)dialogId
                      humanValue:(int)value
-                        suggest:(NSString *)suggest;
+                        suggest:(NSString *)suggest
+         __deprecated_msg("已废弃，请勿使用。");
+
+/*!
+ 评价人工客服。
+ 
+ @param kefuId                客服ID
+ @param dialogId              对话ID，客服请求评价的对话ID
+ @param value                 分数，取值范围1-5
+ @param suggest               客户建议
+ @param resolveStatus         解决状态，如果没有解决状态，这里可以随意赋值，SDK不会处理
+ @param tagText               客户评价的标签
+ @param extra                 扩展内容
+ 
+ @discussion 此方法依赖startCustomerService方法。可在客服结束之前或之后调用。
+ @discussion
+ 有些客服服务商会主动邀请评价，pullEvaluationBlock会被调用到，当评价完成后调用本函数同步到服务器，dialogId填pullEvaluationBlock返回的dialogId。若是离开会话触发的评价或者在加号扩展中主动触发的评价，dialogID为nil
+ 
+ @warning
+ 如果你使用IMKit，请不要使用此方法。RCConversationViewController默认已经做了处理。
+ */
+- (void)evaluateCustomerService:(NSString *)kefuId
+                       dialogId:(NSString *)dialogId
+                      starValue:(int)value
+                        suggest:(NSString *)suggest
+                  resolveStatus:(RCCSResolveStatus)resolveStatus
+                        tagText:(NSString *)tagText
+                          extra:(NSDictionary *)extra;
+
 
 /*!
  通用客服评价，不区分机器人人工

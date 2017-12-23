@@ -110,6 +110,10 @@
     if (cell == nil) {
         cell = [[RCDReceiptDetailsTableViewCell alloc] init];
     }
+    if (self.cellHeight == 0 && self.headerViewHeight > 0) {
+        //屏幕的高度 - sectionHeader的高度 - 导航栏的高度 = cell的高度
+        self.cellHeight = RCDscreenHeight - self.headerViewHeight - 15 - 64;
+    }
     cell.cellHeight = self.cellHeight;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;

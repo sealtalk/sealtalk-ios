@@ -77,7 +77,19 @@
     self.line = [self createLine:[UIColor colorWithHexString:@"dfdfdf" alpha:1.f]];
     [self.contentView addSubview:self.line];
 
-    self.CellSubviews = NSDictionaryOfVariableBindings(_verticalLine, _hasReadButton, _unReadButton, _line);
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    self.userListView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+    self.userListView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.userListView.delegate = self;
+    self.userListView.dataSource = self;
+    self.userListView.scrollEnabled = YES;
+    self.userListView.backgroundColor = [UIColor whiteColor];
+    [self.contentView addSubview:self.userListView];
+    [self.userListView registerClass:[RCDConversationSettingTableViewHeaderItem class]
+          forCellWithReuseIdentifier:@"RCDConversationSettingTableViewHeaderItem"];
+    
+    self.CellSubviews = NSDictionaryOfVariableBindings(_verticalLine, _hasReadButton, _unReadButton, _line, _userListView);
     [self setAutoLayout];
 }
 
@@ -109,10 +121,16 @@
                                                                }
                                                                  views:self.CellSubviews]];
     [self.contentView
-        addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_hasReadButton(44)][_line(0.5)]"
+        addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_hasReadButton(44)][_line(0.5)][_userListView]"
                                                                options:0
                                                                metrics:nil
                                                                  views:self.CellSubviews]];
+    
+    [self.contentView
+     addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_userListView]|"
+                                                            options:0
+                                                            metrics:nil
+                                                              views:self.CellSubviews]];
 
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_verticalLine
                                                                  attribute:NSLayoutAttributeCenterY
@@ -204,17 +222,13 @@
     }
     if (self.collectionViewResource.count == userList.count) {
         // cell的高度 - button的高度 - 蓝色线的高度 = collectionView的高度
-        CGRect tempRect = CGRectMake(0, 44.5, RCDscreenWidth, self.cellHeight - 44 - 1);
-        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-        self.userListView = [[UICollectionView alloc] initWithFrame:tempRect collectionViewLayout:flowLayout];
-        self.userListView.delegate = self;
-        self.userListView.dataSource = self;
-        self.userListView.scrollEnabled = YES;
-        self.userListView.backgroundColor = [UIColor whiteColor];
-        [self.contentView addSubview:self.userListView];
-        [self.userListView registerClass:[RCDConversationSettingTableViewHeaderItem class]
-              forCellWithReuseIdentifier:@"RCDConversationSettingTableViewHeaderItem"];
+        [self.contentView
+         addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_userListView(height)]"
+                                                                options:0
+                                                                metrics:@{
+                                                                          @"height" : @(self.cellHeight - 44 - 1)
+                                                                          }
+                                                                  views:self.CellSubviews]];
         [self.userListView reloadData];
     }
 }

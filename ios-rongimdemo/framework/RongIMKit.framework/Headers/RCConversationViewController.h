@@ -814,6 +814,16 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 - (void)onCustomerServiceModeChanged:(RCCSModeType)newMode;
 
 /*!
+ 客服通告
+ 
+ @param announceMsg  客服通告内容
+ @param announceClickUrl  客服通告链接url
+ 
+ @discussion 此方法带回通告栏的展示内容及点击链接，须 App 自己实现
+ */
+- (void)announceViewWillShow:(NSString *)announceMsg announceClickUrl:(NSString *)announceClickUrl;
+
+/*!
  输入框内输入了@符号，即将显示选人界面的回调
 
  @param selectedBlock 选人后的回调
