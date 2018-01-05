@@ -28,11 +28,12 @@
 #import "IFlySpeechRecognizerDelegate.h"
 #import "IFlySpeechSynthesizer.h"
 #import "IFlySpeechSynthesizerDelegate.h"
-#import "IFlySpeechUnderstander.h"
 #import "IFlySpeechUtility.h"
-#import "IFlyTextUnderstander.h"
 #import "IFlyUserWords.h"
 #import "IFlyPcmRecorder.h"
+#import "IFlyVoiceWakeuper.h"
+#import "IFlyVoiceWakeuperDelegate.h"
+
 
 
 #endif

@@ -180,7 +180,7 @@
 "GroupAnnouncementUpdated"="%@更新了群公告";
 "ImageLoadFailed"="Unable to download image";
 "ImageHasBeenDeleted"="The image has been deleted";
-"HaveMentioned"="You were mentioned";
+"HaveMentioned"="[You were mentioned]";
 "HaveMentionedForNotification"="You were mentioned ";
 "chatDate"="d MMM yyyy";
 "chatListDate"="M/d/yyyy";

@@ -112,7 +112,7 @@
 /*!
  初始化公众服务账号信息
 
- @param jsonContent    公众藏獒信息的json数据
+ @param jsonContent    公众账号信息的json数据
  */
 - (void)initContent:(NSString *)jsonContent;
 

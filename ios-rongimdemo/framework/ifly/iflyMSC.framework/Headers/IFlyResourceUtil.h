@@ -62,6 +62,13 @@
  */
 +(NSString*) GRAMMARTYPE;
 
+/*!
+ *  语记SDK专用参数，用于设置本地默认资源路径
+ *
+ *  @return 本地默认资源路径key字符串
+ */
++(NSString*) PLUS_LOCAL_DEFAULT_RES_PATH;
+
 #pragma mark -
 /*!
  *  资源存放路径

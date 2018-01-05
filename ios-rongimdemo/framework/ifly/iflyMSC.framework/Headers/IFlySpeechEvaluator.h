@@ -10,6 +10,9 @@
 #import <Foundation/Foundation.h>
 #import "IFlySpeechEvaluatorDelegate.h"
 
+#define IFLY_AUDIO_SOURCE_MIC    @"1"
+#define IFLY_AUDIO_SOURCE_STREAM @"-1"
+
 /*!
  *  语音评测类
  */
@@ -55,17 +58,18 @@
 - (NSString*)parameterForKey:(NSString *)key;
 
 /*!
- *  开始评测
- *     同时只能进行一路会话,这次会话没有结束不能进行下一路会话，否则会报错
+ *  开始评测<br>
+ *  同时只能进行一路会话,这次会话没有结束不能进行下一路会话，否则会报错
  *
  *  @param data   评测的试题
  *  @param params 评测的参数
+ *  @return 成功返回YES，失败返回NO
  */
-- (void)startListening:(NSData *)data params:(NSString *)params;
+- (BOOL)startListening:(NSData *)data params:(NSString *)params;
 
 /*!
- *  停止录音
- *   调用此函数会停止录音，并开始进行语音识别
+ *  停止录音<br>
+ *  调用此函数会停止录音，并开始进行语音识别
  */
 - (void)stopListening;
 
@@ -75,4 +79,23 @@
 - (void)cancel;
 
 @end
+
+/*!
+ *  音频流评测<br>
+ *  音频流评测可以将文件分段写入
+ */
+@interface IFlySpeechEvaluator(IFlyStreamISERecognizer)
+
+/*!
+ *  写入音频流
+ *
+ *  @param audioData 音频数据
+ *
+ *  @return 写入成功返回YES，写入失败返回NO
+ */
+- (BOOL) writeAudio:(NSData *) audioData;
+
+@end
+
+
 

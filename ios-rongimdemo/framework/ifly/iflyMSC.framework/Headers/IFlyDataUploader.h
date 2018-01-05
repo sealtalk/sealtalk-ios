@@ -12,7 +12,7 @@
 @class IFlySpeechError;
 
 /*!
- *  数据上传类
+ *  数据上传类，主要用于上传语法文件或上传联系人、词表等个性化数据。
  */
 @interface IFlyDataUploader : NSObject
 
