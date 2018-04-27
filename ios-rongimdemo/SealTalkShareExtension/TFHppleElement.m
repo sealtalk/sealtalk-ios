@@ -42,10 +42,10 @@ static NSString *const TFHppleTextNodeName = @"text";
     NSDictionary *node;
     BOOL isXML;
     NSString *encoding;
-    __unsafe_unretained TFHppleElement *parent;
+    __weak TFHppleElement *parent;
 }
 
-@property(nonatomic, unsafe_unretained, readwrite) TFHppleElement *parent;
+@property(nonatomic, weak, readwrite) TFHppleElement *parent;
 
 @end
 

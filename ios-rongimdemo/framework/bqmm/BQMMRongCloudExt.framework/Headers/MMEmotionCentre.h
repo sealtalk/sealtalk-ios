@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MMTheme.h"
 #import "MMEmoji.h"
+#import "MMGif.h"
 /**
  sdk region
  */
@@ -47,6 +48,12 @@ typedef enum
 } MMSDKMode;
 
 @protocol MMEmotionCentreDelegate <NSObject>
+
+@required
+/**
+ *  the delegate method handles the tap of gif
+ */
+- (void)didClickGifTab;
 
 @optional
 
@@ -185,7 +192,8 @@ typedef enum
  *  @param input       input control
  */
 - (void)shouldShowShotcutPopoverAboveView:(nonnull UIView *)attchedView
-                                withInput:(nonnull UIResponder<UITextInput> *)input;
+                                withInput:(nonnull UIResponder<UITextInput> *)input
+                                __attribute__((deprecated("no longer support")));
 
 
 /**
@@ -231,5 +239,17 @@ typedef enum
  *  clear cache
  */
 - (void)clearCache;
+
+
+//trending gif data
+- (void)trendingGifsAt:(int)page
+          withPageSize:(int)pageSize
+     completionHandler:(void (^ __nonnull)(NSArray<MMGif *> * __nullable gifs, NSError * __nullable error))completionHandler;
+
+//search gif data
+- (void)searchGifsWithKey:(NSString * _Nullable)key
+                       At:(int)page
+             withPageSize:(int)pageSize
+        completionHandler:(void (^ __nonnull)(NSString * __nonnull searchKey, NSArray<MMGif *> * __nullable gifs, NSError * __nullable error))completionHandler;
 
 @end

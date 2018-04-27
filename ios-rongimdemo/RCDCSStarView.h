@@ -13,7 +13,7 @@
 
 @interface RCDCSStarView : UIView
 
-@property (nonatomic, assign) id<RCDCSStarViewDelegate> starDelegate;
+@property (nonatomic, weak) id<RCDCSStarViewDelegate> starDelegate;
 
 - (void)setSubviews;
 

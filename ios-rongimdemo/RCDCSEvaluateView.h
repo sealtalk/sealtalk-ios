@@ -20,7 +20,7 @@
 
 @interface RCDCSEvaluateView : UIView
 
-@property (nonatomic, assign) id<RCDCSEvaluateViewDelegate> delegate;
+@property (nonatomic, weak) id<RCDCSEvaluateViewDelegate> delegate;
 
 
 - (instancetype)initWithEvaStarDic:(NSDictionary *)evaStarDic;

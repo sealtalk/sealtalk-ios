@@ -14,7 +14,7 @@
 
 @interface RCAnimatedImagesView : UIView
 
-@property(nonatomic, assign) id<RCAnimatedImagesViewDelegate> delegate;
+@property(nonatomic, weak) id<RCAnimatedImagesViewDelegate> delegate;
 
 @property(nonatomic, assign) NSTimeInterval timePerImage;
 

@@ -102,7 +102,7 @@ What you need to know
   - (id)initWithURLRequest:(NSURLRequest *)request;
 
   // Set this before opening
-  @property (nonatomic, assign) id <SRWebSocketDelegate> delegate;
+  @property (nonatomic, weak) id <SRWebSocketDelegate> delegate;
 
   - (void)open;
   

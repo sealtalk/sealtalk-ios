@@ -38,7 +38,7 @@
     NSMutableArray *_databaseInPool;
     NSMutableArray *_databaseOutPool;
 
-    __unsafe_unretained id _delegate;
+    __weak id _delegate;
 
     NSUInteger _maximumNumberOfDatabasesToCreate;
     int _openFlags;
@@ -50,7 +50,7 @@
 
 /** Delegate object */
 
-@property(atomic, assign) id delegate;
+@property(atomic, weak) id delegate;
 
 /** Maximum number of databases to create */
 

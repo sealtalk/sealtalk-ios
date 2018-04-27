@@ -214,20 +214,20 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                                   weakSelf.title = [NSString
                                                       stringWithFormat:@"群组信息(%lu)", (unsigned long)result.count];
                                                   RCDGroupSettingsTableViewCell *cell =
-                                                      (RCDGroupSettingsTableViewCell *)[self.tableView
+                                                      (RCDGroupSettingsTableViewCell *)[weakSelf.tableView
                                                           viewWithTag:RCDGroupSettingsTableViewCellGroupNameTag];
                                                   cell.leftLabel.text = [NSString
                                                       stringWithFormat:@"全部群成员(%lu)", (unsigned long)result.count];
                                               });
                                               collectionViewResource = [NSMutableArray new];
                                               NSMutableArray *tempArray = result;
-                                              tempArray = [self moveCreator:tempArray];
+                                              tempArray = [weakSelf moveCreator:tempArray];
                                               NSArray *resultList =
                                                   [[RCDUserInfoManager shareInstance] getFriendInfoList:tempArray];
                                               NSMutableArray *groupMemberList =
                                                   [[NSMutableArray alloc] initWithArray:resultList];
                                               collectionViewResource = [groupMemberList mutableCopy];
-                                              [self setHeaderView];
+                                              [weakSelf setHeaderView];
                                               [[RCDataBaseManager shareInstance] insertGroupMemberToDB:result
                                                                                                groupId:groupId
                                                                                               complete:^(BOOL results){
@@ -371,11 +371,11 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                    if (result == YES) {
                                        dispatch_async(dispatch_get_main_queue(), ^{
                                            RCDBaseSettingTableViewCell *cell =
-                                               (RCDBaseSettingTableViewCell *)[self.tableView viewWithTag:1000];
+                                               (RCDBaseSettingTableViewCell *)[weakSelf.tableView viewWithTag:1000];
                                            [cell.rightImageView
-                                               sd_setImageWithURL:[NSURL URLWithString:self.Group.portraitUri]];
+                                               sd_setImageWithURL:[NSURL URLWithString:weakSelf.Group.portraitUri]];
                                            //在修改群组头像成功后，更新本地数据库。
-                                           [[RCDataBaseManager shareInstance] insertGroupToDB:self.Group];
+                                           [[RCDataBaseManager shareInstance] insertGroupToDB:weakSelf.Group];
                                            //                                      cell.PortraitImg.image = image;
                                            //关闭HUD
                                            [hud hide:YES];
@@ -386,7 +386,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                        [hud hide:YES];
                                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                                                        message:@"上传头像失败"
-                                                                                      delegate:self
+                                                                                      delegate:weakSelf
                                                                              cancelButtonTitle:@"确定"
                                                                              otherButtonTitles:nil];
                                        [alert show];
@@ -398,7 +398,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                 [hud hide:YES];
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                                 message:@"上传头像失败"
-                                                               delegate:self
+                                                               delegate:weakSelf
                                                       cancelButtonTitle:@"确定"
                                                       otherButtonTitles:nil];
                 [alert show];
@@ -409,7 +409,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             [hud hide:YES];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                             message:@"上传头像失败"
-                                                           delegate:self
+                                                           delegate:weakSelf
                                                   cancelButtonTitle:@"确定"
                                                   otherButtonTitles:nil];
             [alert show];

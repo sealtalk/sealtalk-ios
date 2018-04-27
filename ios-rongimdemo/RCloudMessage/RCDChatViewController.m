@@ -128,7 +128,7 @@ NSMutableDictionary *userInputStatus;
         targetId:self.targetId
         success:^(id<RCRealTimeLocationProxy> realTimeLocation) {
             weakSelf.realTimeLocation = realTimeLocation;
-            [weakSelf.realTimeLocation addRealTimeLocationObserver:self];
+            [weakSelf.realTimeLocation addRealTimeLocationObserver:weakSelf];
             [weakSelf updateRealTimeLocationStatus];
         }
         error:^(RCRealTimeLocationErrorCode status) {
@@ -145,10 +145,11 @@ NSMutableDictionary *userInputStatus;
         self.conversationType != ConversationType_PUBLICSERVICE) {
         //加号区域增加发送文件功能，Kit中已经默认实现了该功能，但是为了SDK向后兼容性，目前SDK默认不开启该入口，可以参考以下代码在加号区域中增加发送文件功能。
         UIImage *imageFile = [RCKitUtility imageNamed:@"actionbar_file_icon" ofBundle:@"RongCloud.bundle"];
-        [self.pluginBoardView insertItemWithImage:imageFile
-                                            title:NSLocalizedStringFromTable(@"File", @"RongCloudKit", nil)
-                                          atIndex:3
-                                              tag:PLUGIN_BOARD_ITEM_FILE_TAG];
+        RCPluginBoardView *pluginBoardView = self.chatSessionInputBarControl.pluginBoardView;
+        [pluginBoardView insertItemWithImage:imageFile
+                                       title:NSLocalizedStringFromTable(@"File", @"RongCloudKit", nil)
+                                     atIndex:3
+                                         tag:PLUGIN_BOARD_ITEM_FILE_TAG];
     }
 
     //    self.chatSessionInputBarControl.hidden = YES;
@@ -157,27 +158,23 @@ NSMutableDictionary *userInputStatus;
     //    [self.conversationMessageCollectionView setFrame:intputTextRect];
     //    [self scrollToBottomAnimated:YES];
     /***********如何自定义面板功能***********************
-     自定义面板功能首先要继承RCConversationViewController，如现在所在的这个文件。
-     然后在viewDidLoad函数的super函数之后去编辑按钮：
-     插入到指定位置的方法如下：
-     [self.pluginBoardView insertItemWithImage:imagePic
-                                         title:title
-                                       atIndex:0
-                                           tag:101];
-     或添加到最后的：
-     [self.pluginBoardView insertItemWithImage:imagePic
-                                         title:title
-                                           tag:101];
+//     自定义面板功能首先要继承RCConversationViewController，如现在所在的这个文件。
+//     然后在viewDidLoad函数的super函数之后去编辑按钮：
+//     插入到指定位置的方法如下：
+     [self.chatSessionInputBarControl.pluginBoardView insertItemWithImage:imagePic
+                                                                    title:title
+                                                                  atIndex:0
+                                                                      tag:101];
      删除指定位置的方法：
-     [self.pluginBoardView removeItemAtIndex:0];
+     [self.chatSessionInputBarControl.pluginBoardView removeItemAtIndex:0];
      删除指定标签的方法：
-     [self.pluginBoardView removeItemWithTag:101];
+     [self.chatSessionInputBarControl.pluginBoardView removeItemWithTag:101];
      删除所有：
-     [self.pluginBoardView removeAllItems];
+     [self.chatSessionInputBarControl.pluginBoardView removeAllItems];
      更换现有扩展项的图标和标题:
-     [self.pluginBoardView updateItemAtIndex:0 image:newImage title:newTitle];
+     [self.chatSessionInputBarControl.pluginBoardView updateItemAtIndex:0 image:newImage title:newTitle];
      或者根据tag来更换
-     [self.pluginBoardView updateItemWithTag:101 image:newImage title:newTitle];
+     [self.chatSessionInputBarControl.pluginBoardView updateItemWithTag:101 image:newImage title:newTitle];
      以上所有的接口都在RCPluginBoardView.h可以查到。
 
      当编辑完扩展功能后，下一步就是要实现对扩展功能事件的处理，放开被注掉的函数
@@ -350,12 +347,11 @@ NSMutableDictionary *userInputStatus;
 }
 
 - (void)popupChatViewController {
-    [super leftBarButtonItemPressed:nil];
     [self.realTimeLocation removeRealTimeLocationObserver:self];
     if (_needPopToRootView == YES) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
-        [self.navigationController popViewControllerAnimated:YES];
+        [super leftBarButtonItemPressed:nil];
     }
 }
 
@@ -657,7 +653,7 @@ NSMutableDictionary *userInputStatus;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
     case 0: {
-        [super pluginBoardView:self.pluginBoardView clickedItemWithTag:PLUGIN_BOARD_ITEM_LOCATION_TAG];
+        [super pluginBoardView:self.chatSessionInputBarControl.pluginBoardView clickedItemWithTag:PLUGIN_BOARD_ITEM_LOCATION_TAG];
     } break;
     case 1: {
         [self showRealTimeLocationViewController];
@@ -691,7 +687,7 @@ NSMutableDictionary *userInputStatus;
     });
 }
 
-- (void)onReceiveLocation:(CLLocation *)location fromUserId:(NSString *)userId {
+- (void)onReceiveLocation:(CLLocation *)location type:(RCRealTimeLocationType)type fromUserId:(NSString *)userId {
     __weak typeof(&*self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf updateRealTimeLocationStatus];

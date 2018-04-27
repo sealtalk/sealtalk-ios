@@ -353,6 +353,9 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 #pragma mark Key routines
 
 - (BOOL)rekey:(NSString *)key {
+    if (!key) {
+        return NO;
+    }
     NSData *keyData = [NSData dataWithBytes:(void *)[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
 
     return [self rekeyWithData:keyData];
@@ -378,6 +381,9 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 }
 
 - (BOOL)setKey:(NSString *)key {
+    if (!key) {
+        return NO;
+    }
     NSData *keyData = [NSData dataWithBytes:[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
 
     return [self setKeyWithData:keyData];

@@ -20,6 +20,6 @@
 /**
  禁用联想表情
  */
-- (void)deactivateTipEmoji;
+- (void)deactivateTipEmoji __attribute__((deprecated("no longer support")));
 
 @end

@@ -251,6 +251,10 @@
     self.view.window.rootViewController = navi;
     [[RCIMClient sharedRCIMClient] logout];
     //[[RCIMClient sharedRCIMClient]disconnect:NO];
+    
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.cn.rongcloud.im.share"];
+    [userDefaults removeObjectForKey:@"Cookie"];
+    [userDefaults synchronize];
 }
 
 - (void)clickBackBtn:(id)sender {

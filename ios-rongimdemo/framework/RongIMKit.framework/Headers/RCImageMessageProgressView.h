@@ -16,7 +16,7 @@
 /*!
  显示进度的Label
  */
-@property(nonatomic, assign) UILabel *label;
+@property(nonatomic, weak) UILabel *label;
 
 /*!
  进度指示的View

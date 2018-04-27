@@ -25,8 +25,7 @@
  初始化会话列表
 
  @param displayConversationTypeArray    列表中需要显示的会话类型数组(需要将RCConversationType转为NSNumber构建Array)
- @param collectionConversationTypeArray
- 列表中需要聚合为一条显示的会话类型数组(需要将RCConversationType转为NSNumber构建Array)
+ @param collectionConversationTypeArray 列表中需要聚合为一条显示的会话类型数组(需要将RCConversationType转为NSNumber构建Array)
  @return                                    会话列表对象
 
  @discussion
@@ -287,7 +286,7 @@
 - (void)didReceiveMessageNotification:(NSNotification *)notification;
 
 /*!
- 即将更新未读消息数的回调
+ 即将更新未读消息数的回调，该方法在非主线程回调，如果想在本方法中操作 UI，请手动切换到主线程。
 
  @discussion 当收到消息或删除会话时，会调用此回调，您可以在此回调中执行未读消息数相关的操作。
  */

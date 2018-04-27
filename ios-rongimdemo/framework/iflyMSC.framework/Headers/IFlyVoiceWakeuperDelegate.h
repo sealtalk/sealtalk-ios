@@ -55,7 +55,7 @@
 /*!
  * 会话错误
  *
- * @param errorCode 错误描述类，
+ * @param error 错误描述类，
  */
 - (void) onError:(IFlySpeechError *) error;
 

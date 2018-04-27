@@ -64,7 +64,7 @@
  *  Used to query or delete the voiceprint model in server
  *
  *  @param cmd  "del": delete model;<br>"que": query model;
- *  @param authid: user id ,can be @"tianxia" or other;
+ *  @param auth_id user id ,can be @"tianxia" or other;
  *  @param pwdt voiceprint type<br>
  *  1: fixed txt voiceprint code ,like @"我的地盘我做主";<br>
  *  2: free voiceprint code , user can speek anything,but 5 times trainning the speech shall be same;<br>

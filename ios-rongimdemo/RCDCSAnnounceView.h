@@ -15,5 +15,5 @@
 @interface RCDCSAnnounceView : UIView
 @property (nonatomic,strong) UILabel *content;
 @property (nonatomic,assign) BOOL hiddenArrowIcon;
-@property (nonatomic,assign) id <RCDCSAnnounceViewDelegate> delegate;
+@property (nonatomic,weak) id <RCDCSAnnounceViewDelegate> delegate;
 @end

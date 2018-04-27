@@ -40,6 +40,12 @@
  */
 - (NSData *)decodeAMRToWAVE:(NSData *)data;
 
+/*!
+ 将AMR格式的音频数据转化为WAV格式的音频数据
+ 
+ @param data    AMR格式的音频数据，必须是AMR-NB的格式
+ @return        WAV格式的音频数据
+ */
 - (NSData *)decodeAMRToWAVEWithoutHeader:(NSData *)data;
 
 /*!

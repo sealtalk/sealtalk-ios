@@ -1180,7 +1180,7 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
                           count:(int)count;
 
 /*!
- 获取会话中，从指定消息之前、指定数量的、指定消息类型、可以向前或向后查找的最新消息实体
+ 获取会话中，指定消息、指定数量、指定消息类型、向前或向后查找的消息实体列表
 
  @param conversationType    会话类型
  @param targetId            目标会话ID
@@ -1198,6 +1198,28 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
                        targetId:(NSString *)targetId
                      objectName:(NSString *)objectName
                   baseMessageId:(long)baseMessageId
+                      isForward:(BOOL)isForward
+                          count:(int)count;
+
+/*!
+ 获取会话中，指定时间、指定数量、指定消息类型（多个）、向前或向后查找的消息实体列表
+ 
+ @param conversationType    会话类型
+ @param targetId            目标会话ID
+ @param objectNames         消息内容的类型名称列表
+ @param sentTime            当前的消息时间戳
+ @param isForward           查询方向 true为向前，false为向后
+ @param count               需要获取的消息数量
+ @return                    消息实体RCMessage对象列表
+ 
+ @discussion
+ 此方法会获取该会话中，sentTime之前或之后的、指定数量、指定消息类型（多个）的消息实体列表，返回的消息实体按照时间从新到旧排列。
+ 返回的消息中不包含sentTime对应的那条消息，如果会话中的消息数量小于参数count的值，会将该会话中的所有消息返回。
+ */
+- (NSArray *)getHistoryMessages:(RCConversationType)conversationType
+                       targetId:(NSString *)targetId
+                    objectNames:(NSArray *)objectNames
+                       sentTime:(long long)sentTime
                       isForward:(BOOL)isForward
                           count:(int)count;
 
@@ -2359,6 +2381,8 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 
  @param kefuId                客服ID
  @param leaveMessageDic       客服留言信息字典，根据RCCSLeaveMessageItem中关于留言的配置存储对应的key-value
+ @param successBlock          成功回调
+ @param failureBlock          失败回调
  @discussion 此方法依赖startCustomerService方法。可在客服结束之前或之后调用。
  @discussion 如果一些值没有，可以传nil
  @warning
@@ -2437,7 +2461,9 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  */
 - (void)getVendorToken:(void (^)(NSString *vendorToken))successBlock error:(void (^)(RCErrorCode nErrorCode))errorBlock;
 
-//远程推送相关设置
+/**
+ 远程推送相关设置
+ */
 @property(nonatomic, strong, readonly) RCPushProfile *pushProfile;
 
 #pragma mark - 历史消息
@@ -2458,6 +2484,14 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  @return 离线消息补偿时间
  */
 - (int)getOfflineMessageDuration;
+
+/**
+ 设置集成 sdk 的用户 App 版本信息。便于融云排查问题时，作为分析依据，属于自愿行为。
+ 
+ @param  appVer   用户 APP 的版本信息。
+ */
+- (void)setAppVer:(NSString *)appVer;
+
 @end
 
 #endif

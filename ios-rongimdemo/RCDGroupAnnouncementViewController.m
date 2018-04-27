@@ -260,13 +260,15 @@
                                    });
                 }
                 error:^(RCErrorCode nErrorCode, long messageId) {
-                    [self.hud hide:YES];
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                    message:@"群公告发送失败"
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"确定"
-                                                          otherButtonTitles:nil];
-                    [alert show];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.hud hide:YES];
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                        message:@"群公告发送失败"
+                                                                       delegate:nil
+                                                              cancelButtonTitle:@"确定"
+                                                              otherButtonTitles:nil];
+                        [alert show];
+                    });
                 }];
 
         } break;

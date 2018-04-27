@@ -8,6 +8,7 @@
 
 #import "RCCallCommonDefine.h"
 #import "RCCallSession.h"
+#import "RCCallClientSignalServer.h"
 #import <Foundation/Foundation.h>
 
 /*!
@@ -124,6 +125,17 @@
  @param swapWidthAndHeight 是否交换宽和高  (默认不交换)
  */
 - (void)setVideoProfile:(RCVideoProfile)profile swapWidthAndHeight:(BOOL)swapWidthAndHeight;
+
+/*!
+ 设置外部信令服务器代理
+ 
+ @param signalServerDelegate 外部信令服务器代理
+ 
+ @discussion
+ 默认情况下 app 使用融云消息作为信令即可，不需要设置此代理，此时有个限制就是所有的通话必须在某一个会话中进行，比如群组。如果您需要摆脱会话的限制，请使用 server api 服务实现本代理，然后 startCall 时 conversationType 传 0，targetId 传 nil，calllib 会调用您设置的代理来发送消息。
+ 请务必使用一个全局代理，确保在拨打和接听 VoIP 的时候代理对象都存活，这样才能确保正常通话。
+ */
+- (void)setSignalServerDelegate:(id<RCCallSignalServerDelegate>)signalServerDelegate;
 
 /*!
  当前的通话会话实体

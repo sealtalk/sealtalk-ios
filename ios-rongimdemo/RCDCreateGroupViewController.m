@@ -352,6 +352,7 @@ preparation before navigation
                                                 successCompletion:^(RCDGroupInfo *group) {
                                                     [[RCDataBaseManager shareInstance] insertGroupToDB:group];
                                                 }];
+                                        [hud hide:YES];
                                         [self gotoChatView:groupInfo.groupId groupName:groupInfo.groupName];
                                     }
                                 } else {

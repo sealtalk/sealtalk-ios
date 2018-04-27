@@ -56,7 +56,7 @@
 @property(nonatomic, strong, readonly) TFHppleElement *firstChild;
 
 // the parent of a node
-@property(nonatomic, unsafe_unretained, readonly) TFHppleElement *parent;
+@property(nonatomic, weak, readonly) TFHppleElement *parent;
 
 // Returns YES if the node has any child
 // This is more efficient than using the children property since no NSArray is constructed

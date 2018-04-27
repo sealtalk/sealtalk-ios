@@ -108,6 +108,37 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
 
 @end
 
+
+/**
+ 公众号信息提供者
+ 
+ @discussion SDK 需要通过您实现的公众号信息提供者，获取公众号信息并显示。
+ */
+@protocol RCIMPublicServiceProfileDataSource <NSObject>
+
+
+/**
+ 获取公众号信息
+
+ @param accountId 公众号 ID
+ @param completion  获取公众号信息完成之后需要执行的 Block[profile: 该公众号 ID 对应的公众号信息]
+ 
+ @discussion SDK 通过此方法获取公众号信息并显示，请在 completion 中返回该公众号 ID 对应的公众号信息。
+ 在您设置了公众号信息提供者之后，SDK 在需要显示公众号信息的时候，会调用此方法，向您请求公众号信息用于显示。
+ */
+- (void)getPublicServiceProfile:(NSString*)accountId completion:(void(^)(RCPublicServiceProfile* profile))completion;
+
+
+/**
+ 同步返回公众号信息
+
+ @param accountId 公众号 ID
+ @return 公众号信息
+ */
+- (RCPublicServiceProfile*)publicServiceProfile:(NSString*)accountId;
+
+@end
+
 /*!
  群组信息提供者
 
@@ -238,6 +269,21 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
  @discussion 被撤回的消息会变更为RCRecallNotificationMessage，App需要在UI上刷新这条消息。
  */
 - (void)onRCIMMessageRecalled:(long)messageId;
+
+/*!
+ 当 Kit 收到消息回调的方法
+ 
+ @param message 接收到的消息
+ @return       YES 拦截, 不显示  NO: 不拦截, 显示此消息。
+  此处只处理实时收到消息时，在界面上是否显示此消息。
+  在重新加载会话页面时，不受此处逻辑控制。
+  若要永久不显示此消息，需要从数据库删除该消息，在回调处理中调用 deleteMessages,
+  否则在重新加载会话时会将此消息重新加载出来
+ 
+ @discussion 收到消息，会执行此方法。
+ 
+ */
+- (BOOL)interceptMessage:(RCMessage *)message;
 
 @end
 
@@ -939,6 +985,11 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
  @discussion 如果您使用了@功能，SDK需要通过您实现的群用户成员提供者，获取群组中的用户列表。
  */
 @property(nonatomic, weak) id<RCIMGroupMemberDataSource> groupMemberDataSource;
+
+
+#pragma mark - 公众号信息提供者
+
+@property (nonatomic,weak) id <RCIMPublicServiceProfileDataSource> publicServiceInfoDataSource;
 
 #pragma mark 头像显示
 

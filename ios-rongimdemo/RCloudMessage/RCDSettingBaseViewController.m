@@ -116,7 +116,7 @@
                                                         targetId:weakSelf.targetId
                                                       recordTime:message.sentTime
                                                          success:^{
-                                                             isClear = [[RCIMClient sharedRCIMClient] clearMessages:self.conversationType targetId:weakSelf.targetId];
+                                                             isClear = [[RCIMClient sharedRCIMClient] clearMessages:weakSelf.conversationType targetId:weakSelf.targetId];
                                                          }
                                                            error:nil
          ];

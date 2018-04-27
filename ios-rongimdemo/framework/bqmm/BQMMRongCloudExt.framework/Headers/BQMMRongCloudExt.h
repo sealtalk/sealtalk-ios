@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#define BQMMRongExtVersion 1.7.16
+#define BQMMRongExtVersion 2.0
 
 #import "MMEmotionCentre+RongExt.h"
 #import "MMTheme.h"
 #import "MMEmoji.h"
+#import "MMGif.h"
 #import "UITextView+BQMM.h"
 

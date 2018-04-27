@@ -71,6 +71,7 @@ MBProgressHUD *hud;
         __weak RealTimeLocationViewController *weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf onReceiveLocation:currentLocation
+                                   type:RCRealTimeLocationTypeWGS84
                              fromUserId:[RCIMClient sharedRCIMClient].currentUserInfo.userId];
         });
     }
@@ -141,7 +142,7 @@ MBProgressHUD *hud;
                                  }];
     }
 }
-- (void)onReceiveLocation:(CLLocation *)location fromUserId:(NSString *)userId {
+- (void)onReceiveLocation:(CLLocation *)location type:(RCRealTimeLocationType)type fromUserId:(NSString *)userId {
     __weak typeof(&*self) __weakself = self;
     if (self.isFristTimeToLoad) {
         if (-90.0f <= location.coordinate.latitude && location.coordinate.latitude <= 90.0f &&
@@ -171,36 +172,40 @@ MBProgressHUD *hud;
         RCLocationView *annotatonView = [[RCLocationView alloc] init];
         // annotatonView.imageUrl = [UIImage imageNamed:@"apple.jpg"];
         annotatonView.userId = userId;
-        annotatonView.coordinate = [RCLocationConvert wgs84ToGcj02:cll.coordinate];
+        if (type == RCRealTimeLocationTypeWGS84) {
+            annotatonView.coordinate = [RCLocationConvert wgs84ToGcj02:cll.coordinate];
+        } else {
+            annotatonView.coordinate = cll.coordinate;
+        }
         RCAnnotation *ann = [[RCAnnotation alloc] initWithThumbnail:annotatonView];
         [self.mapView addAnnotation:ann];
         [self.userAnnotationDic setObject:ann forKey:userId];
-
+        
         if ([RCIM sharedRCIM].userInfoDataSource &&
             [[RCIM sharedRCIM].userInfoDataSource respondsToSelector:@selector(getUserInfoWithUserId:completion:)]) {
             [[RCIM sharedRCIM].userInfoDataSource
-                getUserInfoWithUserId:userId
-                           completion:^(RCUserInfo *userInfo) {
-                               if (!userInfo) {
-                                   userInfo = [[RCUserInfo alloc]
-                                       initWithUserId:userId
-                                                 name:[NSString stringWithFormat:@"user<%@>", userId]
-                                             portrait:nil];
-                               }
-
-                               dispatch_async(dispatch_get_main_queue(), ^{
-                                   RCAnnotation *annotaton =
-                                       [__weakself.userAnnotationDic objectForKey:userInfo.userId];
-                                   annotatonView.isMyLocation = NO;
-                                   if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-                                       annotatonView.isMyLocation = YES;
-                                   }
-                                   annotaton.thumbnail.imageurl = userInfo.portraitUri;
-                                   [annotaton updateThumbnail:annotaton.thumbnail animated:YES];
-                               });
-                           }];
+             getUserInfoWithUserId:userId
+             completion:^(RCUserInfo *userInfo) {
+                 if (!userInfo) {
+                     userInfo = [[RCUserInfo alloc]
+                                 initWithUserId:userId
+                                 name:[NSString stringWithFormat:@"user<%@>", userId]
+                                 portrait:nil];
+                 }
+                 
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     RCAnnotation *annotaton =
+                     [__weakself.userAnnotationDic objectForKey:userInfo.userId];
+                     annotatonView.isMyLocation = NO;
+                     if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+                         annotatonView.isMyLocation = YES;
+                     }
+                     annotaton.thumbnail.imageurl = userInfo.portraitUri;
+                     [annotaton updateThumbnail:annotaton.thumbnail animated:YES];
+                 });
+             }];
         }
-
+        
     } else {
         //            if ([RCIM sharedRCIM].userInfoDataSource && [[RCIM
         //            sharedRCIM].userInfoDataSource
@@ -216,8 +221,13 @@ MBProgressHUD *hud;
         //                        portrait:nil];
         //                    }
         dispatch_async(dispatch_get_main_queue(), ^{
-            annotaton.coordinate = [RCLocationConvert wgs84ToGcj02:cll.coordinate];
-            annotaton.thumbnail.coordinate = [RCLocationConvert wgs84ToGcj02:cll.coordinate];
+            if (type == RCRealTimeLocationTypeWGS84) {
+                annotaton.coordinate = [RCLocationConvert wgs84ToGcj02:cll.coordinate];
+                annotaton.thumbnail.coordinate = [RCLocationConvert wgs84ToGcj02:cll.coordinate];
+            } else {
+                annotaton.coordinate = cll.coordinate;
+                annotaton.thumbnail.coordinate = cll.coordinate;
+            }
             annotaton.thumbnail.isMyLocation = NO;
             if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
                 annotaton.thumbnail.isMyLocation = YES;

@@ -32,6 +32,11 @@
  */
 @property(nonatomic, assign) int maxMultiVideoCallUserNumber;
 
+/**
+ 系统来电显示的 app 名字
+ */
+@property(nonatomic, copy) NSString *appLocalizedName;
+
 /*!
  群组成员列表提供者
 

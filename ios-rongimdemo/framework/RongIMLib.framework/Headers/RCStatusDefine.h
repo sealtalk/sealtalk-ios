@@ -790,7 +790,12 @@ typedef NS_ENUM(NSUInteger, RCMediaType) {
     /*!
      其他文件
      */
-    MediaType_FILE = 4
+    MediaType_FILE = 4,
+    
+    /*!
+     小视频
+     */
+    MediaType_SIGHT = 5
 };
 
 #pragma mark RCMediaType - 消息中@提醒的类型
@@ -1032,10 +1037,19 @@ typedef NS_ENUM(NSUInteger, RCPlatform) {
     RCPlatform_PC = 4
 };
 
-#pragma mark RCPushLauguageType - push 语音设置
+#pragma mark RCPushLauguageType - push 语言设置
+/*!
+ push 语言设置
+ */
 typedef NS_ENUM(NSUInteger, RCPushLauguage) {
-    RCPushLauguage_EN_US = 1, //英文
-    RCPushLauguage_ZH_CN,     //中文
+    /*!
+     英文
+     */
+    RCPushLauguage_EN_US = 1,
+    /*!
+     中文
+     */
+    RCPushLauguage_ZH_CN
 };
 
 #endif

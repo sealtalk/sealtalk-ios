@@ -779,8 +779,7 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  评价客服服务,然后离开当前VC的。此方法有可能在离开客服会话页面触发，也可能是客服在后台推送评价触发，也可能用户点击机器人知识库评价触发。应用可以重写此方法来自定义客服评价界面。应用不要直接调用此方法。
 
  @param serviceStatus  当前的服务类型。
- @param commentId
- 评论ID。当是用户主动离开客服会话时，这个id是null；当客服在后台推送评价请求时，这个id是对话id；当用户点击机器人应答评价时，这个是机器人知识库id。
+ @param commentId 评论ID。当是用户主动离开客服会话时，这个id是null；当客服在后台推送评价请求时，这个id是对话id；当用户点击机器人应答评价时，这个是机器人知识库id。
  @param isQuit         评价完成后是否离开
 
  @discussion

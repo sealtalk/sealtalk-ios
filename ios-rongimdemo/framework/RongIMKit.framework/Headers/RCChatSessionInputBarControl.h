@@ -228,7 +228,7 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
 /*!
  所处的会话页面View
  */
-@property(assign, nonatomic, readonly) UIView *containerView;
+@property(weak, nonatomic, readonly) UIView *containerView;
 
 /*!
  当前的输入状态
@@ -240,7 +240,7 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
  @warning  **已废弃，请勿使用。**
  升级说明：如果您之前使用了此属性，可以直接替换为contextView属性，行为和实现完全一致。
  */
-@property(assign, nonatomic, readonly) UIView *contextView __deprecated_msg("已废弃，请勿使用。");
+@property(weak, nonatomic, readonly) UIView *contextView __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  Frame现在的Y坐标

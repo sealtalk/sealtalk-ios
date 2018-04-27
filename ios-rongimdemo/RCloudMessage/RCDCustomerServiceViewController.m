@@ -122,6 +122,10 @@
 -
 (void)commentCustomerServiceWithStatus:(RCCustomerServiceStatus)serviceStatus
 commentId:(NSString *)commentId quitAfterComment:(BOOL)isQuit {
+    if (self.evaStarDic.count == 0) {
+        [super commentCustomerServiceWithStatus:serviceStatus commentId:commentId quitAfterComment:isQuit];
+        return;
+    }
     self.serviceStatus = serviceStatus;
     self.commentId = commentId;
     self.quitAfterComment = isQuit;

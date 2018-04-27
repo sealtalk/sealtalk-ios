@@ -228,21 +228,29 @@
                                                                 attribute:NSLayoutAttributeCenterY
                                                                multiplier:1
                                                                  constant:0]];
+    [self.headerView setNeedsUpdateConstraints];
+    [self.headerView updateConstraintsIfNeeded];
+    [self.headerView layoutIfNeeded];
 }
 
 - (void)openAndCloseMessageContentLabel:(id)sender {
     UIButton *button = (UIButton *)sender;
     [button setSelected:!button.selected];
+    [self.headerView removeConstraints:self.headerView.constraints];
+    [self setHeaderViewAutolayout];
     if (button.selected == YES) {
         self.messageContentLabel.numberOfLines = 0;
-        self.headerView.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 69.5 + self.labelHeight);
+        self.headerViewHeight =
+        70 + [self.messageContentLabel sizeThatFits:CGSizeMake(self.messageContentLabel.frame.size.width, MAXFLOAT)]
+        .height;
+        self.headerView.frame = CGRectMake(0, 0, self.tableView.frame.size.width,self.headerViewHeight);
         self.tableView.tableHeaderView = self.headerView;
         self.tableView.scrollEnabled = YES;
     } else {
         self.messageContentLabel.numberOfLines = 4;
         self.headerView.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 145);
         self.tableView.tableHeaderView = self.headerView;
-        [self.tableView reloadData];
+//        [self.tableView reloadData];
         self.tableView.scrollEnabled = NO;
     }
 }

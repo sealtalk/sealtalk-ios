@@ -162,7 +162,7 @@
 "VoIPCallRemoteReject"="对方已拒绝";
 "VoIPCallRemoteHangup"="对方已挂断";
 "VoIPCallRemoteNoResponse"="对方未接听";
-"VoIPCallAcceptByOtherClient"="其他端已接听";
+"VoIPCallAcceptByOtherClient"="其他设备已处理";
 "VoIPCallRemoteBusyLine"="对方忙";
 "VoIPCallRemoteBusyLineAndShowAdvice"="对方忙，请稍后再拨";
 "VoIPCallRemoteDidInvite"="%@加入群聊";

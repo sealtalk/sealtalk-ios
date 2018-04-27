@@ -263,9 +263,9 @@
 
 //根据groupId获取群组成员信息
 - (void)getGroupMembersWithGroupId:(NSString *)groupId Block:(void (^)(NSMutableArray *result))block {
+    __block NSMutableArray *tempArr = [NSMutableArray new];
     [AFHttpTool getGroupMembersByID:groupId
         success:^(id response) {
-            NSMutableArray *tempArr = [NSMutableArray new];
             if ([response[@"code"] integerValue] == 200) {
                 NSArray *members = response[@"result"];
                 for (NSDictionary *memberInfo in members) {
@@ -283,21 +283,24 @@
                 }
             }
             //按加成员入群组时间的升序排列
-            SortForTime *sort = [[SortForTime alloc] init];
-            tempArr = [sort sortForUpdateAt:tempArr order:NSOrderedDescending];
-            [[RCDataBaseManager shareInstance] insertGroupMemberToDB:tempArr
-                                                             groupId:groupId
-                                                            complete:^(BOOL result) {
-                                                                if (result == YES) {
-                                                                    if (block) {
-                                                                        block(tempArr);
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                SortForTime *sort = [[SortForTime alloc] init];
+                tempArr = [sort sortForUpdateAt:tempArr order:NSOrderedDescending];
+                [[RCDataBaseManager shareInstance] insertGroupMemberToDB:tempArr
+                                                                 groupId:groupId
+                                                                complete:^(BOOL result) {
+                                                                    if (result == YES) {
+                                                                        if (block) {
+                                                                            block(tempArr);
+                                                                        }
                                                                     }
-                                                                }
-                                                            }];
+                                                                }];
+            });
+            
         }
-        failure:^(NSError *err) {
-            block(nil);
-        }];
+                            failure:^(NSError *err) {
+                                block(nil);
+                            }];
 }
 
 //加入群组(暂时没有用到这个接口)

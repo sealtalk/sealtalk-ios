@@ -39,14 +39,14 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
                 NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
-                UITableViewCell *startCell = [self.tableView cellForRowAtIndexPath:startIndexPath];
-                UITableViewCell *endCell = [self.tableView cellForRowAtIndexPath:endIndexPath];
+                UITableViewCell *startCell = [weakSelf.tableView cellForRowAtIndexPath:startIndexPath];
+                UITableViewCell *endCell = [weakSelf.tableView cellForRowAtIndexPath:endIndexPath];
                 weakSelf.swch.on = YES;
                 startCell.detailTextLabel.text = startTime;
                 endCell.detailTextLabel.text = endTime;
-                self.displaySetting = YES;
-                [self.tableView reloadData];
-                [self.tableView selectRowAtIndexPath:self.startIndexPath
+                weakSelf.displaySetting = YES;
+                [weakSelf.tableView reloadData];
+                [weakSelf.tableView selectRowAtIndexPath:weakSelf.startIndexPath
                                             animated:YES
                                       scrollPosition:UITableViewScrollPositionMiddle];
             });
@@ -58,8 +58,8 @@
                     objectForKey:[NSString stringWithFormat:@"endTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
                 NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
                 NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
-                UITableViewCell *startCell = [self.tableView cellForRowAtIndexPath:startIndexPath];
-                UITableViewCell *endCell = [self.tableView cellForRowAtIndexPath:endIndexPath];
+                UITableViewCell *startCell = [weakSelf.tableView cellForRowAtIndexPath:startIndexPath];
+                UITableViewCell *endCell = [weakSelf.tableView cellForRowAtIndexPath:endIndexPath];
                 if (startT && endT) {
                     startCell.detailTextLabel.text = startT;
                     endCell.detailTextLabel.text = endT;
@@ -79,8 +79,8 @@
                     objectForKey:[NSString stringWithFormat:@"endTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
                 NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
                 NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
-                UITableViewCell *startCell = [self.tableView cellForRowAtIndexPath:startIndexPath];
-                UITableViewCell *endCell = [self.tableView cellForRowAtIndexPath:endIndexPath];
+                UITableViewCell *startCell = [weakSelf.tableView cellForRowAtIndexPath:startIndexPath];
+                UITableViewCell *endCell = [weakSelf.tableView cellForRowAtIndexPath:endIndexPath];
                 if (startT && endT) {
                     startCell.detailTextLabel.text = startT;
                     endCell.detailTextLabel.text = endT;

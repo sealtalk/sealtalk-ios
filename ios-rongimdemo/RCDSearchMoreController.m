@@ -243,7 +243,7 @@
     [[RCDSearchDataManager shareInstance] searchDataWithSearchText:searchText
                                                       bySearchType:type
                                                           complete:^(NSDictionary *dic, NSArray *array) {
-                                                              weakSelf.resultArray = [dic objectForKey:self.type];
+                                                              weakSelf.resultArray = [dic objectForKey:weakSelf.type];
                                                               dispatch_async(dispatch_get_main_queue(), ^{
                                                                   [weakSelf refreshSearchView:searchText];
                                                               });

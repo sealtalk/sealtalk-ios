@@ -17,7 +17,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
 
 @property(strong, nonatomic) NSOperationQueue *downloadQueue;
 @property(weak, nonatomic) NSOperation *lastAddedOperation;
-@property(assign, nonatomic) Class operationClass;
+@property(weak, nonatomic) Class operationClass;
 @property(strong, nonatomic) NSMutableDictionary *URLCallbacks;
 @property(strong, nonatomic) NSMutableDictionary *HTTPHeaders;
 // This queue is used to serialize the handling of the network responses of all

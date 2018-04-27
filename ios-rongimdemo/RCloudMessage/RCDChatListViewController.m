@@ -187,7 +187,7 @@
 - (void)updateBadgeValueForTabBarItem {
     __weak typeof(self) __weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        int count = [[RCIMClient sharedRCIMClient] getUnreadCount:self.displayConversationTypeArray];
+        int count = [[RCIMClient sharedRCIMClient] getUnreadCount:__weakSelf.displayConversationTypeArray];
         if (count > 0) {
             //      __weakSelf.tabBarItem.badgeValue =
             //          [[NSString alloc] initWithFormat:@"%d", count];
@@ -565,7 +565,7 @@
                                   dispatch_async(dispatch_get_main_queue(), ^{
                                       //调用父类刷新未读消息数
                                       [blockSelf_ refreshConversationTableViewWithConversationModel:customModel];
-                                      [self notifyUpdateUnreadMessageCount];
+                                      [blockSelf_ notifyUpdateUnreadMessageCount];
 
                                       //当消息为RCContactNotificationMessage时，没有调用super，如果是最后一条消息，可能需要刷新一下整个列表。
                                       //原因请查看super didReceiveMessageNotification的注释。
@@ -661,7 +661,7 @@ atIndexPath:(NSIndexPath *)indexPath
     __weak typeof(&*self) __blockSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         if (__blockSelf.displayConversationTypeArray.count == 1 &&
-            [self.displayConversationTypeArray[0] integerValue] == ConversationType_DISCUSSION) {
+            [__blockSelf.displayConversationTypeArray[0] integerValue] == ConversationType_DISCUSSION) {
             [__blockSelf refreshConversationTableViewIfNeeded];
         }
 

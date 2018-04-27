@@ -223,7 +223,7 @@ __attribute__((visibility("default"))) @interface RongRtcVideoCanvas : NSObject
  */
 @property (strong, nonatomic) VIEW_CLASS* view;
 @property (assign, nonatomic) RongRtcRenderMode renderMode; // the render mode of view: hidden, fit and adaptive
-@property (assign, nonatomic) NSString *userId; // the user id of view
+@property (copy, nonatomic) NSString *userId; // the user id of view
 @end
 
 
@@ -240,7 +240,7 @@ __attribute__((visibility("default"))) @interface RongRtcLocalVideoStats : NSObj
 @end
 
 __attribute__((visibility("default"))) @interface RongRtcRemoteVideoStats : NSObject
-@property (assign, nonatomic) NSString *userId;
+@property (copy, nonatomic) NSString *userId;
 @property (assign, nonatomic) NSUInteger delay;
 @property (assign, nonatomic) NSUInteger width;
 @property (assign, nonatomic) NSUInteger height;
@@ -249,7 +249,7 @@ __attribute__((visibility("default"))) @interface RongRtcRemoteVideoStats : NSOb
 @end
 
 __attribute__((visibility("default"))) @interface RongRtcAudioVolumeInfo : NSObject
-@property (assign, nonatomic) NSString *userId;
+@property (copy, nonatomic) NSString *userId;
 @property (assign, nonatomic) NSUInteger volume;
 @end
 

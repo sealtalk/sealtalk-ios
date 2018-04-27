@@ -442,8 +442,10 @@
     //  ]];
     //  application.applicationIconBadgeNumber = unreadMsgCount;
 
-    // 为消息分享保存会话信息
-    [self saveConversationInfoForMessageShare];
+    // 登陆状态下为消息分享保存会话信息
+    if([RCIMClient sharedRCIMClient].getConnectionStatus == ConnectionStatus_Connected){
+       [self saveConversationInfoForMessageShare];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -605,18 +607,7 @@
 - (void)setNewMessageNotificationSound:(BOOL)on {
     [RCIM sharedRCIM].disableMessageAlertSound = !on;
 }
-- (void)logout {
-    [DEFAULTS removeObjectForKey:@"userName"];
-    [DEFAULTS removeObjectForKey:@"userPwd"];
-    [DEFAULTS removeObjectForKey:@"userToken"];
-    [DEFAULTS removeObjectForKey:@"userCookie"];
-    if (self.window.rootViewController != nil) {
-        RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
-        RCDNavigationViewController *navi = [[RCDNavigationViewController alloc] initWithRootViewController:loginVC];
-        self.window.rootViewController = navi;
-    }
-    [[RCIMClient sharedRCIMClient] disconnect:NO];
-}
+
 - (BOOL)getLoginStatus {
     NSString *token = [DEFAULTS stringForKey:@"userToken"];
     if (token.length) {
