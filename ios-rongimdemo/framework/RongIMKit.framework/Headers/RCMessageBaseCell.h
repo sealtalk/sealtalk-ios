@@ -85,6 +85,11 @@ UIKIT_EXTERN NSString *const KNotificationMessageBaseCellUpdateSendingStatus;
 @property(nonatomic) BOOL isDisplayReadStatus;
 
 /*!
+ 是否允许选择
+ */
+@property(nonatomic) BOOL allowsSelection;
+
+/*!
  初始化消息Cell
 
  @param frame 显示的Frame

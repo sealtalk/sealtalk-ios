@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileSelect</key>
+	<dict>
+		<key>confirm_text</key>
+		<string>0x9fcdfd</string>
+	</dict>
+	<key>photoPreview</key>
+	<dict>
+		<key>original_selected_text</key>
+		<string>0xffffff</string>
+		<key>original_normal_text</key>
+		<string>0x999999</string>
+		<key>send_normal</key>
+		<string>0x0099ff</string>
+		<key>send_disable</key>
+		<string>0x959595</string>
+	</dict>
+	<key>photoPicker</key>
+	<dict>
+		<key>send_normal</key>
+		<string>0x0099ff</string>
+		<key>send_disable</key>
+		<string>0x9fcdfd</string>
+		<key>preview_normal</key>
+		<string>0x000000</string>
+		<key>preview_disable</key>
+		<string>0x959595</string>
+		<key>cancel</key>
+		<string>0x5D9AEC</string>
+	</dict>
+</dict>
+</plist>

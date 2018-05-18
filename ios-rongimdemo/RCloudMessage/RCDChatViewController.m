@@ -32,7 +32,8 @@
 #import "RealTimeLocationViewController.h"
 #import <RongContactCard/RongContactCard.h>
 #import <RongIMKit/RongIMKit.h>
-
+#import "RCDContactViewController.h"
+#import "RCDForwardAlertView.h"
 @interface RCDChatViewController () <UIActionSheetDelegate, RCRealTimeLocationObserver,
                                      RealTimeLocationStatusViewDelegate, UIAlertViewDelegate, RCMessageCellDelegate>
 @property(nonatomic, weak) id<RCRealTimeLocationProxy> realTimeLocation;
@@ -86,7 +87,6 @@ NSMutableDictionary *userInputStatus;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.enableSaveNewPhotoToLocalSystem = YES;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 
@@ -235,6 +235,12 @@ NSMutableDictionary *userInputStatus;
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onEndForwardMessage:)
+                                                 name:@"RCDForwardMessageEnd"
+                                               object:nil];
+    
+    
     //  //表情面板添加自定义表情包
     //  UIImage *icon = [RCKitUtility imageNamed:@"emoji_btn_normal"
     //                                  ofBundle:@"RongCloud.bundle"];
@@ -254,6 +260,7 @@ NSMutableDictionary *userInputStatus;
     //
     //  [self.emojiBoardView addEmojiTab:emoticonTab2];
     _isLoading = NO;
+    [self addToolbarItems];
 }
 
 /*点击系统键盘的语音按钮，导致输入工具栏被遮挡*/
@@ -347,11 +354,10 @@ NSMutableDictionary *userInputStatus;
 }
 
 - (void)popupChatViewController {
+    [super leftBarButtonItemPressed:nil];
     [self.realTimeLocation removeRealTimeLocationObserver:self];
     if (_needPopToRootView == YES) {
         [self.navigationController popToRootViewControllerAnimated:YES];
-    } else {
-        [super leftBarButtonItemPressed:nil];
     }
 }
 
@@ -463,6 +469,10 @@ NSMutableDictionary *userInputStatus;
  *  更新左上角未读消息数
  */
 - (void)notifyUpdateUnreadMessageCount {
+    if (self.allowsMessageCellSelection) {
+        [super notifyUpdateUnreadMessageCount];
+        return;
+    }
     int count = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
         @(ConversationType_PRIVATE), @(ConversationType_DISCUSSION), @(ConversationType_APPSERVICE),
         @(ConversationType_PUBLICSERVICE), @(ConversationType_GROUP)
@@ -1068,4 +1078,54 @@ NSMutableDictionary *userInputStatus;
     }
 }
 
+/******************消息多选功能:转发、删除**********************/
+- (void)addToolbarItems{
+    //转发按钮
+    UIButton *forwardBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 40)];
+    [forwardBtn setImage:[UIImage imageNamed:@"forward_message"] forState:UIControlStateNormal];
+    [forwardBtn addTarget:self action:@selector(forwardMessage) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *forwardBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:forwardBtn];
+    //删除按钮
+    UIButton *deleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 40)];
+    [deleteBtn setImage:[RCKitUtility imageNamed:@"delete_message" ofBundle:@"RongCloud.bundle"] forState:UIControlStateNormal];
+    [deleteBtn addTarget:self action:@selector(deleteMessages) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *deleteBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:deleteBtn];
+    //按钮间 space
+    UIBarButtonItem *spaceItem =
+    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [self.messageSelectionToolbar setItems:@[spaceItem,forwardBarButtonItem,spaceItem,deleteBarButtonItem,spaceItem] animated:YES];
+}
+
+- (void)forwardMessage{
+    if ([[RCDForwardMananer shareInstance] allSelectedMessagesAreLegal]) {
+        [RCDForwardMananer shareInstance].isForward = YES;
+        [RCDForwardMananer shareInstance].selectedMessages = self.selectedMessages;
+        RCDContactViewController *contactViewController = [[RCDContactViewController alloc] init];
+        contactViewController.title = @"选择一个聊天";
+        UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:contactViewController];
+        [self.navigationController presentViewController:navi animated:YES completion:nil];
+        return;
+    }
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"语音、表情、红包、发送失败的消息和其它特殊消息类型不支持转发。"
+                                                       delegate:nil
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"确定", nil];
+    [alertView show];
+    
+}
+
+- (void)onEndForwardMessage:(NSNotification *)notification{
+    //置为 NO,将消息 cell 重置为初始状态
+    self.allowsMessageCellSelection = NO;
+}
+
+- (void)deleteMessages{
+    for (int i = 0; i < self.selectedMessages.count; i++) {
+        [self deleteMessage:self.selectedMessages[i]];
+    }
+    //置为 NO,将消息 cell 重置为初始状态
+    self.allowsMessageCellSelection = NO;
+}
+/******************消息多选功能:转发、删除**********************/
 @end

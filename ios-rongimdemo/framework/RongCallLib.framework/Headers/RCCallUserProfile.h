@@ -63,6 +63,16 @@
 @property(nonatomic, strong) UIView *videoView;
 
 /*!
+ Blink音视频用户类型
+ */
+@property(nonatomic, assign) NSInteger blinkUserType;
+
+/*!
+ Blink音频主叫接通前声音输出 Yes:外放 NO:听筒
+ */
+@property(nonatomic, assign) BOOL isSpeakerInAudioMode;
+
+/*!
  初始化用户的通话状态
 
  @param userId     用户ID

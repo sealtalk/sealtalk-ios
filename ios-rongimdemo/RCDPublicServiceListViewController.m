@@ -8,7 +8,7 @@
 
 #import "RCDPublicServiceListViewController.h"
 #import "RCDChatViewController.h"
-
+#import "RCDForwardAlertView.h"
 @interface RCDPublicServiceListViewController ()
 
 @end
@@ -34,9 +34,18 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSString *key = [self.allKeys objectAtIndex:indexPath.section];
     NSArray *arrayForKey = [self.allFriends objectForKey:key];
     RCPublicServiceProfile *PublicServiceProfile = arrayForKey[indexPath.row];
+    if ([RCDForwardMananer shareInstance].isForward) {
+        RCConversation *conver = [[RCConversation alloc] init];
+        conver.targetId = PublicServiceProfile.publicServiceId;
+        conver.conversationType = (RCConversationType)PublicServiceProfile.publicServiceType;
+        [RCDForwardMananer shareInstance].toConversation = conver;
+        [[RCDForwardMananer shareInstance] showForwardAlertViewInViewController:self];
+        return;
+    }
     RCDChatViewController *_conversationVC = [[RCDChatViewController alloc] init];
     _conversationVC.conversationType = (RCConversationType)PublicServiceProfile.publicServiceType;
     _conversationVC.targetId = PublicServiceProfile.publicServiceId;

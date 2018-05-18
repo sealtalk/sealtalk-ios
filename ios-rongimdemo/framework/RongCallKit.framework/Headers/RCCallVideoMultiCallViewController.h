@@ -7,6 +7,8 @@
 //
 
 #import "RCCallBaseViewController.h"
+#import "RCCallVideoMultiCallViewController.h"
+
 @class RCloudImageView;
 
 /*!
@@ -38,6 +40,8 @@
  用户视频列表的CollectionView
  */
 @property(nonatomic, strong) UICollectionView *userCollectionView;
+
+@property(nonatomic, strong) NSMutableArray *subUserModelList;
 
 /*!
  用户视频列表CollectionView所使用的Layout

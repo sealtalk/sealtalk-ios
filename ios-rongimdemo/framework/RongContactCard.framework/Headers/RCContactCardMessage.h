@@ -9,7 +9,7 @@
 #import <RongIMLib/RongIMLib.h>
 
 /*!
- 文件消息的类型名
+ 名片消息的类型名
  */
 #define RCContactCardMessageTypeIdentifier @"RC:CardMsg"
 

@@ -98,6 +98,26 @@
  */
 @property(nonatomic, strong) UIButton *cameraSwitchButton;
 
+/*!
+ + Button
+ */
+@property (nonatomic, strong) UIButton *addButton;
+
+/*!
+ 举手Button
+ */
+@property (nonatomic, strong) UIButton *handUpButton;
+
+/*!
+ 白板Button
+ */
+@property (nonatomic, strong) UIButton *whiteBoardButton;
+
+/*!
+ 信号强度ImageView
+ */
+@property (nonatomic, strong) UIImageView *signalImageView;
+
 #pragma mark - 回调
 /*!
  通话即将接通
@@ -168,6 +188,12 @@
  @discussion 如果您需要重写并调整UI的布局，应该先调用super。
  */
 - (void)resetLayout:(BOOL)isMultiCall mediaType:(RCCallMediaType)mediaType callStatus:(RCCallStatus)callStatus;
+
+- (void)inviteUserButtonClicked;
+
+- (void)whiteBoardButtonClicked;
+
+- (void)hangupButtonClicked;
 
 #pragma mark - 初始化
 /*!

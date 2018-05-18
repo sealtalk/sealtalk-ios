@@ -41,6 +41,11 @@
 @property(nonatomic, strong) NSArray *existUserIdList;
 
 /*!
+ 通话实体
+ */
+@property(nonatomic, strong) RCCallSession *callSession;
+
+/*!
  初始化选择通话成员的ViewController
 
  @param conversationType 会话类型

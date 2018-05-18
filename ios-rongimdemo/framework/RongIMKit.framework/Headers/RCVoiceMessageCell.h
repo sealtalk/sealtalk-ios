@@ -51,4 +51,9 @@ UIKIT_EXTERN NSString *const kNotificationStopVoicePlayer;
  */
 - (void)playVoice;
 
+/*!
+ 停止播放语音
+ */
+- (void)stopPlayingVoice;
+
 @end

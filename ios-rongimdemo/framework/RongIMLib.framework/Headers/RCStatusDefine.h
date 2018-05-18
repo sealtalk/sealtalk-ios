@@ -595,7 +595,12 @@ typedef NS_ENUM(NSUInteger, RCConversationType) {
     /*!
      推送服务会话
      */
-    ConversationType_PUSHSERVICE = 9
+    ConversationType_PUSHSERVICE = 9,
+    
+    /*!
+     无效类型
+     */
+    CoversationType_INVALID
 };
 
 #pragma mark RCConversationNotificationStatus - 会话提醒状态
@@ -725,7 +730,12 @@ typedef NS_ENUM(NSUInteger, RCSentStatus) {
     /*!
      发送已取消
      */
-    SentStatus_CANCELED = 70
+    SentStatus_CANCELED = 70,
+    
+    /*!
+     无效类型
+     */
+    SentStatus_INVALID
 };
 
 #pragma mark RCReceivedStatus - 消息的接收状态
@@ -867,6 +877,10 @@ typedef NS_ENUM(NSUInteger, RCSearchType) {
      模糊匹配
      */
     RC_SEARCH_TYPE_FUZZY = 1,
+    /*!
+     无效类型
+     */
+    RCSearchType_INVALID
 };
 
 /*!

@@ -12,7 +12,6 @@
 
 @interface RCDContactViewController
     : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate>
-
 @property(nonatomic, strong) UISearchBar *searchFriendsBar;
 @property(nonatomic, strong) RCDTableView *friendsTabelView;
 

@@ -100,6 +100,9 @@
 
     static NSString *reusableCellWithIdentifier = @"RCDSearchResultTableViewCell";
     RCDSearchResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
+    if (cell == nil) {
+        cell = [[RCDSearchResultTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reusableCellWithIdentifier];
+    }
     if (tableView == self.searchDisplayController.searchResultsTableView) {
 
         cell = [[RCDSearchResultTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault

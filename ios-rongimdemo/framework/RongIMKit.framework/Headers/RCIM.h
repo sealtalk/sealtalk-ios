@@ -153,7 +153,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
  @param completion  获取群组信息完成之后需要执行的Block [groupInfo:该群组ID对应的群组信息]
 
  @discussion SDK通过此方法获取用户信息并显示，请在completion的block中返回该用户ID对应的用户信息。
- 在您设置了用户信息提供者之后，SDK在需要显示用户信息的时候，会调用此方法，向您请求用户信息用于显示。
+ 在您设置了群组信息提供者之后，SDK在需要显示群组信息的时候，会调用此方法，向您请求群组信息用于显示。
  */
 - (void)getGroupInfoWithGroupId:(NSString *)groupId completion:(void (^)(RCGroup *groupInfo))completion;
 
@@ -188,10 +188,13 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
 @optional
 
 /*!
- 获取当前群组成员列表的回调（需要实现用户信息提供者 RCIMUserInfoDataSource）
+ 获取当前群组成员列表（需要实现用户信息提供者 RCIMUserInfoDataSource）
 
  @param groupId     群ID
- @param resultBlock 获取成功 [userIdList:群成员ID列表]
+ @param resultBlock 获取成功之后需要执行的Block [userIdList:群成员ID列表]
+ 
+ @discussion SDK通过此方法群组中的成员列表，请在resultBlock中返回该群组ID对应的群成员ID列表。
+ 在您设置了群组成员列表提供者之后，SDK在需要获取群组成员列表的时候，会调用此方法，向您请求群组成员用于显示。
  */
 - (void)getAllMembersOfGroup:(NSString *)groupId result:(void (^)(NSArray<NSString *> *userIdList))resultBlock;
 @end
@@ -251,7 +254,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
  @param message 接收到的消息
  @return        当返回值为NO时，SDK会播放默认的提示音；当返回值为YES时，SDK针对此消息不再播放提示音
 
- @discussion 到消息时播放提示音之前，会执行此方法。
+ @discussion 收到消息时播放提示音之前，会执行此方法。
  如果App没有实现此方法，SDK会播放默认的提示音。
  流程：
  SDK接收到消息 -> App处于前台状态 -> 回调此方法准备播放提示音 -> App实现并返回YES        -> SDK针对此消息不再播放提示音

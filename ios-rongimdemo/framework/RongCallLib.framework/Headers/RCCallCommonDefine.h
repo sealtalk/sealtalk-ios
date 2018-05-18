@@ -221,6 +221,10 @@ typedef NS_ENUM(NSInteger, RCCallDisconnectReason) {
      己方被加入黑名单
      */
     RCCallDisconnectReasonAddToBlackList = 19,
+    /*!
+     己方被降级为观察者
+     */
+    RCCallDisconnectReasonDegrade = 20
 };
 
 /*!

@@ -21,7 +21,7 @@
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
-
+#import "RCDForwardAlertView.h"
 @interface RCDGroupViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property(nonatomic, strong) NSMutableArray *groups;
@@ -102,7 +102,17 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     RCDGroupInfo *groupInfo = _groups[indexPath.row];
+    
+    if ([RCDForwardMananer shareInstance].isForward) {
+        RCConversation *conver = [[RCConversation alloc] init];
+        conver.targetId = groupInfo.groupId;
+        conver.conversationType = ConversationType_GROUP;
+        [RCDForwardMananer shareInstance].toConversation = conver;
+        [[RCDForwardMananer shareInstance] showForwardAlertViewInViewController:self];
+        return;
+    }
     RCDChatViewController *temp = [[RCDChatViewController alloc] init];
     temp.targetId = groupInfo.groupId;
     temp.conversationType = ConversationType_GROUP;

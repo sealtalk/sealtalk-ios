@@ -203,6 +203,7 @@
 "RecommendedToYou"="recommended %@ to you.";
 "Person"="";
 "SelectContact"="Select Contact";
+"MessageTapMore"="More...";
 "hold_to_talk_title"="Hold to talk";
 "release_to_send_title"="Release to send";
 "message_too_short"="Message too short";
@@ -233,7 +234,8 @@
 "Max_Selected_Photos"="You can only select 9 photos at most";
 "Confirm"="Confirm";
 "Location_Service"="Unable to get your location data,Please enable location service in “Settings”->“Privacy”->“Location Services” and allows the application to use location services.";
-"PhotoOniCloud"="The photo has not been downloaded from the iCloud, please download the system from the album to the local post to try again.";
+"iCloudDownloading"="iCloud Downloading...";
+"iCloudDownloadFail"="iCloud Download failed";
 "SelectMentionedUser"="Select Contact";
 "ToSearch"="Search";
 "VoiceInput"="Voice Input";
@@ -241,3 +243,4 @@
 "Send"="Send";
 "TouchToTakeAPictureAndPressAndholdTheRecordingVideo"="Tap to take photo and hold to record video";
 "downloadFailedClickToDownload"="Download failed, click to download";
+"OvermMaximum"="the maximum size of file is limited to 100MB";

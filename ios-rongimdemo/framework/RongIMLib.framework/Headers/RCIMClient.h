@@ -1341,6 +1341,16 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  */
 - (RCMessage *)getMessageByUId:(NSString *)messageUId;
 
+/**
+ * 获取会话里第一条未读消息。
+ *
+ * @param conversationType 会话类型
+ * @param targetId   会话 Id
+ * @return 第一条未读消息的实体。
+ */
+- (RCMessage *)getFirstUnreadMessage:(RCConversationType)conversationType
+                            targetId:(NSString *)targetId;
+
 /*!
  删除消息
 
@@ -1450,6 +1460,8 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 
  @param conversationTypeList 会话类型的数组(需要将RCConversationType转为NSNumber构建Array)
  @return                        是否删除成功
+ 
+ @discussion 此方法会从本地存储中删除该会话，同时删除会话中的消息。
  */
 - (BOOL)clearConversations:(NSArray *)conversationTypeList;
 

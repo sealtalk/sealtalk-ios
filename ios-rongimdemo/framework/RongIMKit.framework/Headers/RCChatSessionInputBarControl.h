@@ -238,7 +238,7 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
  所处的会话页面View
 
  @warning  **已废弃，请勿使用。**
- 升级说明：如果您之前使用了此属性，可以直接替换为contextView属性，行为和实现完全一致。
+ 升级说明：如果您之前使用了此属性，可以直接替换为containerView属性，行为和实现完全一致。
  */
 @property(weak, nonatomic, readonly) UIView *contextView __deprecated_msg("已废弃，请勿使用。");
 
@@ -558,6 +558,15 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
  @param filePathList   被选中的文件路径list
  */
 - (void)fileDidSelect:(NSArray *)filePathList;
+
+
+/**
+ 选择某个文件时，是否允许被选中,默认返回 YES
+
+ @param path 文件路径
+ @return 返回 YES 允许选中，否则不允许选中
+ */
+- (BOOL)canBeSelectedAtFilePath:(NSString *)path;
 
 /*!
  输入工具栏状态变化时的回调（暂未实现）

@@ -26,7 +26,7 @@
 #import "RCDUIBarButtonItem.h"
 #import "RCDUserInfoManager.h"
 #import "RCDUtilities.h"
-
+#import "RCDForwardAlertView.h"
 @interface RCDContactViewController ()
 @property(strong, nonatomic) NSMutableArray *matchFriendList;
 @property(strong, nonatomic) NSArray *defaultCellsTitle;
@@ -138,6 +138,11 @@
     self.defaultCellsPortrait = [NSArray arrayWithObjects:@"newFriend", @"defaultGroup", @"publicNumber", nil];
 
     self.isBeginSearch = NO;
+    
+    if ([RCDForwardMananer shareInstance].isForward) {
+        UIBarButtonItem *left = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:(UIBarButtonItemStylePlain) target:self action:@selector(onCancelAction)];
+        self.navigationItem.leftBarButtonItem = left;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -242,10 +247,14 @@
     }
 
     if (indexPath.section == 0 && indexPath.row < 3) {
-        cell.nicknameLabel.text = [_defaultCellsTitle objectAtIndex:indexPath.row];
-        [cell.portraitView
-            setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@", [_defaultCellsPortrait
-                                                                               objectAtIndex:indexPath.row]]]];
+        if ([RCDForwardMananer shareInstance].isForward && indexPath.section == 0 && indexPath.row == 0) {
+            
+        }else{
+            cell.nicknameLabel.text = [_defaultCellsTitle objectAtIndex:indexPath.row];
+            [cell.portraitView
+             setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@", [_defaultCellsPortrait
+                                                                             objectAtIndex:indexPath.row]]]];
+        }
     }
     if (indexPath.section == 0 && indexPath.row == 3) {
         if ([isDisplayID isEqualToString:@"YES"]) {
@@ -292,6 +301,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([RCDForwardMananer shareInstance].isForward && indexPath.section == 0 && indexPath.row == 0) {
+        return 0.01;
+    }
     return 55.5;
 }
 
@@ -300,6 +312,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.friendsTabelView deselectRowAtIndexPath:indexPath animated:YES];
     RCDUserInfo *user = nil;
     if (indexPath.section == 0) {
         switch (indexPath.row) {
@@ -324,6 +337,15 @@
         } break;
 
         case 3: {
+            if ([RCDForwardMananer shareInstance].isForward) {
+                RCConversation *conver = [[RCConversation alloc] init];
+                conver.targetId = [RCIM sharedRCIM].currentUserInfo.userId;
+                conver.conversationType = ConversationType_PRIVATE;
+                [RCDForwardMananer shareInstance].toConversation = conver;
+                [[RCDForwardMananer shareInstance] showForwardAlertViewInViewController:self];
+                return;
+            }
+            
             RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
             [self.navigationController pushViewController:detailViewController animated:YES];
             detailViewController.userId = [RCIM sharedRCIM].currentUserInfo.userId;
@@ -340,6 +362,15 @@
     if (user == nil) {
         return;
     }
+    if ([RCDForwardMananer shareInstance].isForward) {
+        RCConversation *conver = [[RCConversation alloc] init];
+        conver.targetId = user.userId;
+        conver.conversationType = ConversationType_PRIVATE;
+        [RCDForwardMananer shareInstance].toConversation = conver;
+        [[RCDForwardMananer shareInstance] showForwardAlertViewInViewController:self];
+        return;
+    }
+    
     RCUserInfo *userInfo = [RCUserInfo new];
     userInfo.userId = user.userId;
     userInfo.portraitUri = user.portraitUri;
@@ -459,4 +490,8 @@
     return img;
 }
 
+- (void)onCancelAction{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [[RCDForwardMananer shareInstance] clear];
+}
 @end

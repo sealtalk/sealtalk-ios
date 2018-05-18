@@ -58,7 +58,7 @@
                             AVLinearPCMBitDepthKey: @16,
                             AVLinearPCMIsNonInterleaved: @NO,
                             AVLinearPCMIsFloatKey: @NO,
-                            AVLinearPC'MIsBigEndianKey: @NO};
+                            AVLinearPCMIsBigEndianKey: @NO};
  */
 + (instancetype)messageWithAudio:(NSData *)audioData duration:(long)duration;
 

@@ -108,6 +108,16 @@
  */
 - (void)networkTxQuality:(RCCallQuality)txQuality rxQuality:(RCCallQuality)rxQuality;
 
+
+#pragma mark - Meeting
+- (void)onWhiteBoard:(NSString *)url;
+
+- (void)onNotifyHostControlUserDevice:(NSString *)userId host:(NSString *)hostId deviceType:(NSInteger)dType open:(BOOL)isOpen;
+
+- (void)onNotifyUpgradeObserverToNormalUser:(NSString *)userId;
+
+- (void)onNotifyAnswerObserverRequestBecomeNormalUser:(NSString *)userId;
+
 @end
 
 /*!
@@ -189,6 +199,11 @@
 @property(nonatomic, assign) RCCallDisconnectReason disconnectReason;
 
 /*!
+ Blink用户类型
+ */
+@property (nonatomic, assign) NSInteger blinkUserType;
+
+/*!
  设置通话状态变化的监听器
 
  @param delegate 通话状态变化的监听器
@@ -206,6 +221,14 @@
  挂断通话
  */
 - (void)hangup;
+
+- (void)handup;
+
+- (void)whiteBoard;
+
+- (void)answerHostControlUserDevice:(NSString *)userID withDeviceType:(NSInteger)dType open:(BOOL)isOpen status:(BOOL)isAccept;
+
+- (void)answerUpgradeObserverToNormalUser:(NSString *)userID status:(BOOL)isAccept;
 
 /*!
  邀请用户加入通话

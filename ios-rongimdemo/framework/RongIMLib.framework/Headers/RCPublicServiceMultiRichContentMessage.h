@@ -34,4 +34,10 @@
  */
 @property(nonatomic, strong) NSString *extra;
 
+
+/**
+ 消息转发时，要转发的item的索引, -1 表示选中全部
+ */
+@property (nonatomic,assign,readonly) NSInteger forwardItemIndex;
+
 @end
