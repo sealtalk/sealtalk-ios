@@ -1024,8 +1024,6 @@
  NSString *fromUserId = [notification.userInfo objectForKey:@"fId"];
 
  收到这个消息之后可以更新这个会话中messageTime以前的消息UI为已读（底层数据库消息状态已经改为已读）。
-
- @warning 目前仅支持单聊。
  */
 FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 

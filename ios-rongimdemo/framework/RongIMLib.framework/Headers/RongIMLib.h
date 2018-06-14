@@ -82,3 +82,7 @@ FOUNDATION_EXPORT const unsigned char RongIMLibVersionString[];
 
 // log
 #import <RongIMLib/RCFwLog.h>
+
+//Downlad
+#import <RongIMLib/RCDownloadItem.h>
+#import <RongIMLib/RCResumeableDownloader.h>

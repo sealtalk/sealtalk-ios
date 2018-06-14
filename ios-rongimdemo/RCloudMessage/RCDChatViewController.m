@@ -45,6 +45,8 @@
 - (UIView *)loadEmoticonView:(NSString *)identify index:(int)index;
 
 @property(nonatomic) BOOL isLoading;
+
+@property(nonatomic, strong) RCDUIBarButtonItem *rightBtn;
 @end
 
 NSMutableDictionary *userInputStatus;
@@ -310,13 +312,13 @@ NSMutableDictionary *userInputStatus;
 }
 
 - (void)setRightNavigationItem:(UIImage *)image withFrame:(CGRect)frame {
-    RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:image imageViewFrame:frame buttonTitle:nil
+    self.rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:image imageViewFrame:frame buttonTitle:nil
                                                                      titleColor:nil
                                                                      titleFrame:CGRectZero
                                                                     buttonFrame:frame
                                                                          target:self
                                                                          action:@selector(rightBarButtonItemClicked:)];
-    self.navigationItem.rightBarButtonItem = rightBtn;
+    self.navigationItem.rightBarButtonItem = self.rightBtn;
 }
 
 - (void)updateTitleForGroup:(NSNotification *)notification {
@@ -488,6 +490,7 @@ NSMutableDictionary *userInputStatus;
         }
         RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:backString target:self                        action:@selector(leftBarButtonItemPressed:)];
         [self.navigationItem setLeftBarButtonItem:leftButton];
+        self.navigationItem.rightBarButtonItem = self.rightBtn;
     });
 }
 

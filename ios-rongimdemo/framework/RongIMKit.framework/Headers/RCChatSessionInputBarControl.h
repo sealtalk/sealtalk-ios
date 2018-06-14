@@ -26,6 +26,7 @@
 #define PLUGIN_BOARD_ITEM_VOICE_INPUT_TAG 1105
 #define PLUGIN_BOARD_ITEM_PTT_TAG 1106
 #define PLUGIN_BOARD_ITEM_CARD_TAG 1107
+#define PLUGIN_BOARD_ITEM_REMOTE_CONTROL_TAG 1108
 
 /*!
  输入工具栏的显示布局
@@ -518,9 +519,11 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
 - (void)imageDidCapture:(UIImage *)image;
 
 /**
- 相机录制小视频
+ 相机录制小视频完成后调用
 
  @param url 小视频url
+ @param image 小视频首帧图片
+ @param duration 小视频时长 单位秒
  */
 - (void)sightDidFinishRecord:(NSString *)url thumbnail:(UIImage *)image duration:(NSUInteger)duration;
 
@@ -561,10 +564,11 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
 
 
 /**
- 选择某个文件时，是否允许被选中,默认返回 YES
+ 会话页面发送文件消息，在文件选择页面选择某个文件时调用该方法方法
 
  @param path 文件路径
- @return 返回 YES 允许选中，否则不允许选中
+ @return 返回 YES 允许文件被选中，否则不允许选中
+ @discussion 该方法默认返回YES，这个方法可以控制某些文件是否可以被选中。
  */
 - (BOOL)canBeSelectedAtFilePath:(NSString *)path;
 

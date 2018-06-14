@@ -27,7 +27,7 @@
 /*!
  多图文消息的内容RCRichContentItem数组
  */
-@property(nonatomic, strong) NSArray *richConents;
+@property(nonatomic, strong) NSArray *richContents;
 
 /*!
  多图文消息的附加信息
@@ -36,8 +36,8 @@
 
 
 /**
- 消息转发时，要转发的item的索引, -1 表示选中全部
+ 多图文消息被选中的项的索引, -1 表示选中全部
  */
-@property (nonatomic,assign,readonly) NSInteger forwardItemIndex;
+@property (nonatomic,assign,readonly) NSInteger selectedItemIndex;
 
 @end

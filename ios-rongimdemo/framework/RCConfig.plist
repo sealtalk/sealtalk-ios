@@ -6,6 +6,8 @@
 	<dict>
 		<key>RelativePath</key>
 		<string>Documents/MyFile</string>
+		<key>MaxRangeUnit</key>
+		<real>1048576</real>
 	</dict>
 	<key>Voice</key>
 	<dict>
