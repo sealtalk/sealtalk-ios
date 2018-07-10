@@ -279,6 +279,19 @@
 - (BOOL)setMuted:(BOOL)muted;
 
 /*!
+ 是否有最小化窗口
+ */
+@property(nonatomic, readonly) BOOL minimized;
+
+/*!
+ 设置是否有最小化窗口状态
+ 
+ @param minimized 是否最小化
+ 
+ */
+- (void)setMinimized:(BOOL)minimized;
+
+/*!
  扬声器状态，是否开启扬声器
 
  @discussion 音频通话的默认值为NO，视频通话的默认值为YES。
@@ -314,5 +327,19 @@
  @return 是否切换成功
  */
 - (BOOL)switchCameraMode;
+
+#pragma mark - 声音录制
+/*!
+ @method 目前只支持录制wav格式音频文件, 请给出完整沙盒路径+文件名, 例如: /private/var/mobile/Containers/Data/Application/E5F57501-21AA-4F54-A1FB-9695A2753331/tmp/Rong/temp.wav
+ @abstract 开始声音录制
+ @param filePath 录制文件保存路径
+ */
+- (NSInteger)startAudioRecording:(NSString *)filePath;
+
+/*!
+ @method
+ @abstract 停止声音录制
+ */
+- (NSInteger)stopAudioRecording;
 
 @end

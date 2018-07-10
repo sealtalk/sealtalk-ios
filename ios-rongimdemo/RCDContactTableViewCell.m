@@ -71,9 +71,9 @@
                                                                              metrics:nil
                                                                                views:views]];
 
-    NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
+    BOOL isDisplayID = [[NSUserDefaults standardUserDefaults] boolForKey:@"isDisplayID"];
 
-    if ([isDisplayID isEqualToString:@"YES"]) {
+    if (isDisplayID == YES) {
         [self.contentView addConstraints:[NSLayoutConstraint
                                              constraintsWithVisualFormat:
                                                  @"H:|-14-[_portraitView(36)]-9-[_nicknameLabel][_userIdLabel(90)]-40-|"

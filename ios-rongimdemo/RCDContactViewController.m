@@ -238,7 +238,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
+    BOOL isDisplayID = [[NSUserDefaults standardUserDefaults] boolForKey:@"isDisplayID"];
     static NSString *reusableCellWithIdentifier = @"RCDContactTableViewCell";
     RCDContactTableViewCell *cell =
         [self.friendsTabelView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
@@ -257,7 +257,7 @@
         }
     }
     if (indexPath.section == 0 && indexPath.row == 3) {
-        if ([isDisplayID isEqualToString:@"YES"]) {
+        if (isDisplayID == YES) {
             cell.userIdLabel.text = [RCIM sharedRCIM].currentUserInfo.userId;
         }
         cell.nicknameLabel.text = [RCIM sharedRCIM].currentUserInfo.name;
@@ -270,7 +270,7 @@
         NSArray *sectionUserInfoList = self.allFriendSectionDic[letter];
         RCDUserInfo *userInfo = sectionUserInfoList[indexPath.row];
         if (userInfo) {
-            if ([isDisplayID isEqualToString:@"YES"]) {
+            if (isDisplayID == YES) {
                 cell.userIdLabel.text = userInfo.userId;
             }
             cell.nicknameLabel.text = userInfo.name;

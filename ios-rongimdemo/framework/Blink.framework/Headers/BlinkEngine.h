@@ -1,20 +1,25 @@
 /*!
  @header BlinkEngine.h
- @author BridgeMind
- @version 2.0.0_20180511172108_mas_rce_meeting_quic_3220f3c
- @Copyright © 2017年 BridgeMind. All rights reserved.
+ @author BailingCloud
+ @version 2.0.1_20180615102230_dev_meeting_dev_rce_cc21375
+ @Copyright © 2018年 BailingCloud. All rights reserved.
  */
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <CoreMedia/CoreMedia.h>
 
+#define SDKCompileInfo @"2.0.1_20180615102153_dev_meeting_dev_rce_cc21375"
+
 //宏定义说明, 设置视频聊天参数时的Key值, 详见SetVideoParameters:方法
 #define kAudioOnly      @"AudioOnly"
 #define kVideoProfile   @"VideoProfile"
+#define kAdaptVideoProfile   @"AdaptVideoProfile"
 #define kMaxBandWidth   @"MaxBandWidth"
 #define kUserType       @"UserType"
 #define kCloseCamera    @"CloseCamera"
+#define kGPUFilter      @"GPUFilter"
+
 
 /**
  *定义分辨率与帧率
@@ -24,43 +29,104 @@ typedef NS_ENUM(NSInteger, BlinkVideoProfile)
     /**
      *无效
      */
-    Blink_VideoProfile_Invalid = -1,
+    Blink_VideoProfile_Invalid   = -1,
     /**
-     *分辨率:288x352,  帧率:15
+     *分辨率:256x144,  帧率:15
      */
-    Blink_VideoProfile_288P    = 0,
+    Blink_VideoProfile_256_144P      = 0,
     /**
-     *分辨率:288x352,  帧率:24
+     *分辨率:256x144,  帧率:24
      */
-    Blink_VideoProfile_288P_1  = 1,
+    Blink_VideoProfile_256_144P_1    = 1,
     /**
-     *分辨率:288x352,  帧率:30
+     *分辨率:256x144,  帧率:30
      */
-    Blink_VideoProfile_288P_2  = 2,
+    Blink_VideoProfile_256_144P_2    = 2,
     /**
-     *分辨率:480x640,  帧率:15
+     *分辨率:320x240,  帧率:15
      */
-    Blink_VideoProfile_480P    = 10,
+    Blink_VideoProfile_320_240P      = 10,
     /**
-     *分辨率:480x640,  帧率:24
+     *分辨率:320x240,  帧率:24
      */
-    Blink_VideoProfile_480P_1  = 11,
+    Blink_VideoProfile_320_240P_1    = 11,
     /**
-     *分辨率:480x640,  帧率:30
+     *分辨率:320x240,  帧率:30
      */
-    Blink_VideoProfile_480P_2  = 12,
+    Blink_VideoProfile_320_240P_2    = 12,
     /**
-     *分辨率:720x1280, 帧率:15
+     *分辨率:480x360,  帧率:15
      */
-    Blink_VideoProfile_720P    = 20,
+    Blink_VideoProfile_480_360P      = 20,
     /**
-     *分辨率:720x1280, 帧率:24
+     *分辨率:480x360,  帧率:24
      */
-    Blink_VideoProfile_720P_1  = 21,
+    Blink_VideoProfile_480_360P_1    = 21,
     /**
-     *分辨率:720x1280, 帧率:30
+     *分辨率:480x360,  帧率:30
      */
-    Blink_VideoProfile_720P_2  = 22
+    Blink_VideoProfile_480_360P_2    = 22,
+    
+    /**
+     *分辨率:640x360,  帧率:15
+     */
+    Blink_VideoProfile_640_360P      = 30,
+    /**
+     *分辨率:640x360,  帧率:24
+     */
+    Blink_VideoProfile_640_360P_1    = 31,
+    /**
+     *分辨率:640x360,  帧率:30
+     */
+    Blink_VideoProfile_640_360P_2    = 32,
+    /**
+     *分辨率:640x480,  帧率:15
+     */
+    Blink_VideoProfile_640_480P      = 40,
+    /**
+     *分辨率:640x480,  帧率:24
+     */
+    Blink_VideoProfile_640_480P_1    = 41,
+    /**
+     *分辨率:640x480,  帧率:30
+     */
+    Blink_VideoProfile_640_480P_2    = 42,
+    /**
+     *分辨率:720x480,  帧率:15
+     */
+    Blink_VideoProfile_720_480P      = 50,
+    /**
+     *分辨率:720x480,  帧率:24
+     */
+    Blink_VideoProfile_720_480P_1    = 51,
+    /**
+     *分辨率:720x480,  帧率:30
+     */
+    Blink_VideoProfile_720_480P_2    = 52,
+    /**
+     *分辨率:1280x720,  帧率:15
+     */
+    Blink_VideoProfile_1280_720P      = 60,
+    /**
+     *分辨率:1280x720,  帧率:24
+     */
+    Blink_VideoProfile_1280_720P_1    = 61,
+    /**
+     *分辨率:1280x720,  帧率:30
+     */
+    Blink_VideoProfile_1280_720P_2    = 62,
+    /**
+     *分辨率:1920x1080,  帧率:15
+     */
+    Blink_VideoProfile_1920_1080P      = 70,
+    /**
+     *分辨率:1920x1080,  帧率:24
+     */
+    Blink_VideoProfile_1920_1080P_1    = 71,
+    /**
+     *分辨率:1920x1080,  帧率:30
+     */
+    Blink_VideoProfile_1920_1080P_2    = 72
 };
 
 /**
@@ -262,13 +328,21 @@ typedef NS_ENUM(NSInteger, Blink_Accept_Type)
 
 /*!
  @method
- @abstract 自己已在聊天室中, 其他用户加入聊天室时
+ @abstract 自己已在聊天室中, 其他用户加入聊天室时, 有用户A进入
  @param userId 新加入用户ID
+ @param userName 用户名
  @param type 用户类型
  @param avType 0关闭视频仅有音频 1视频和音频
  */
-- (void)blinkEngine:(BlinkEngine *)engine onUserJoined:(NSString *)userId userType:(BlinkUserType)type audioVideoType:(BlinkAudioVideoType)avType screenSharingStatus:(BlinkScreenSharingState)screenSharingStatus;
- 
+- (void)blinkEngine:(BlinkEngine *)engine onUserJoined:(NSString *)userId userName:(NSString *)userName  userType:(BlinkUserType)type audioVideoType:(BlinkAudioVideoType)avType screenSharingStatus:(BlinkScreenSharingState)screenSharingStatus;
+
+/*!
+ @method
+ @abstract 自己已在聊天室中, 其他用户加入聊天室时, 用户A的视频流已添加的回调, 在此之后可调用createRemoteVideoViewFrame:forUser:withDisplayType:
+ @param userId 新加入用户ID
+ */
+- (void)blinkEngine:(BlinkEngine *)engine OnNotifyUserVideoCreated:(NSString *)userId;
+
 /*!
  @method
  @abstract 自己已在聊天室中, 其他用户离开时, 通过userId可知是哪个用户已离开, 据此移除该用户视频
@@ -297,6 +371,19 @@ typedef NS_ENUM(NSInteger, Blink_Accept_Type)
  @param isExist YES:存在 NO:不存在
  */
 - (void)blinkEngine:(BlinkEngine *)engine onWhiteBoardExist:(BOOL)isExist;
+
+/*!
+ @method
+ @abstract 自己已在聊天室中, 其他人创建白板后收到的回调
+ @param userId 创建白板的用户ID
+ */
+- (void)blinkEngine:(BlinkEngine *)engine onNotifyWhiteBoardCreateBy:(NSString *)userId;
+
+/*!
+ @method
+ @abstract 自己本地调用 controlAudioVideoDevice:open: 后, 自己收到的信令发送成功与否的回调, 以反馈信令是否发送成功
+ */
+- (void)blinkEngine:(BlinkEngine *)engine onControlAudioVideoDevice:(NSInteger)code;
 
 /*!
  @method
@@ -363,19 +450,6 @@ typedef NS_ENUM(NSInteger, Blink_Accept_Type)
  @abstract 主持人调用 - (void)removeUser:(NSString *)userID 后, 主持人收到的信令发送成功与否的回调, 以反馈信令是否发送成功
  */
 - (void)blinkEngine:(BlinkEngine *)engine onRemoveUser:(NSInteger)code;
-
-/*!
- @method
- @abstract 自己已在聊天室中, 其他人创建白板后收到的回调
- @param userId 创建白板的用户ID
- */
-- (void)blinkEngine:(BlinkEngine *)engine onNotifyWhiteBoardCreateBy:(NSString *)userId;
-
-/*!
- @method
- @abstract 自己本地调用 controlAudioVideoDevice:open: 后, 自己收到的信令发送成功与否的回调, 以反馈信令是否发送成功
- */
-- (void)blinkEngine:(BlinkEngine *)engine onControlAudioVideoDevice:(NSInteger)code;
 
 /*!
  @method
@@ -450,7 +524,6 @@ typedef NS_ENUM(NSInteger, Blink_Accept_Type)
  */
 - (void)blinkEngine:(BlinkEngine *)engine onNotifyAnswerDegradeNormalUserToObserver:(NSString *)userId status:(BOOL)isAccept;
 
-
 #pragma mark - AudioVideo
 /*!
  @method
@@ -484,6 +557,15 @@ typedef NS_ENUM(NSInteger, Blink_Accept_Type)
 
 /*!
  @method
+ @abstract 自定义GPU滤镜,将参数中的buffer进行处理后return. 
+           需要自定义滤镜时, 需要在setVideoParameters方法中将kGPUFilter设置为YES, 并且实现此delegate方法.
+           如果仅将kGPUFilter设置为YES而不实现此方法,则使用默认滤镜.
+ @param buffer GPU滤镜buffer
+ */
+- (CMSampleBufferRef)blinkEngine:(BlinkEngine *)engine onGPUFilterSource:(CMSampleBufferRef)buffer;
+
+/*!
+ @method
  @abstract 当丢包率大于等于所设置的值时,通过此方法回调,并返回此次丢包率
  @param lost 取值范围0~100, 代表丢包率0%~100%
  */
@@ -495,6 +577,13 @@ typedef NS_ENUM(NSInteger, Blink_Accept_Type)
  @param lost 取值范围0~100, 代表丢包率0%~100%
  */
 - (void)blinkEngine:(BlinkEngine *)engine onNetworkReceiveLost:(NSInteger)lost;
+
+/*!
+ @method
+ @abstract 传递本地和远端的声音大小, 取值: 0-9
+ @param levelArray 保存NSDictionary, 包括自己的音量
+ */
+- (void)blinkEngine:(BlinkEngine *)engine onNotifyUserAudioLevel:(NSArray *)levelArray;
 
 @end
 
@@ -558,6 +647,7 @@ __attribute__((visibility("default"))) @interface BlinkEngine : NSObject
                     kMaxBandWidth: 最大码率, 默认值为600
                     kUserType:     用户类型, 默认值为Blink_User_Normal
                     kCloseCamera:  是否关闭视频显示, 默认值为1,不关闭视频
+                    kGPUFilter:    是否打开滤镜, 默认为NO,不使用滤镜
  */
 - (void)setVideoParameters:(NSDictionary *)parameters;
 
@@ -575,7 +665,7 @@ __attribute__((visibility("default"))) @interface BlinkEngine : NSObject
  @param token 通过HTTP的POST方式查询回来的字符串
  @param userID 用户ID
  */
-- (void)joinChannel:(NSString*)channel withKeyToken:(NSString *)token withUserID:(NSString *)userID;
+- (void)joinChannel:(NSString*)channel withKeyToken:(NSString *)token withUserID:(NSString *)userID withUserName:(NSString *)userName;
 
 /*!
  @method
@@ -597,6 +687,20 @@ __attribute__((visibility("default"))) @interface BlinkEngine : NSObject
  @abstract 离开当前聊天室
  */
 - (void)leaveChannel;
+
+/*!
+ @method
+ @abstract joinChannel之后修改本地发送视频的分辨率
+ @param videoProfile 视频分辨率
+ */
+- (void)changeVideoSize:(BlinkVideoProfile)videoProfile;
+
+/*!
+ @method
+ @abstract 加入房间前或加入房间后, 设置是否打开默认美颜
+ @param isFilter YES:打开 NO:关闭
+ */
+- (void)setUseDefaultGPUFilter:(BOOL)isFilter;
 
 /*!
  @method
@@ -643,7 +747,6 @@ __attribute__((visibility("default"))) @interface BlinkEngine : NSObject
  @param type 远端视频显示类型
  */
 - (UIView *)changeRemoteVideoViewFrame:(CGRect)frame withUserID:(NSString *)userId withDisplayType:(BlinkVideoViewDisplayType)type;
-
 
 #pragma mark - Meeting
 /*!
@@ -693,13 +796,13 @@ __attribute__((visibility("default"))) @interface BlinkEngine : NSObject
 
 /*!
  @method
- @abstract 主持人调用, 操作与会人员麦克风/摄像头的打开/关闭(当打开设备时, 需要被操作人应答; 关闭设备时不需要应答直接关闭)
+ @abstract 主持人调用, 操作与会人员麦克风/摄像头的打开/关闭, 需要被操作人通过 - (NSInteger)answerHostControlUserDevice:(NSString *)userID withDeviceType:(Blink_Device_Type)dType open:(BOOL)isOpen status:(BOOL)isAccept; 给出应答
  @param userID 用户标识唯一ID
  @param type 设备类型
  @param isOpen 是否打开
  @return 0:成功 1:参数错误 2:状态错误
  */
-- (NSInteger)hostControlUserDevice:(NSString *)userID withDeviceType:(Blink_Device_Type)type status:(BOOL)isOpen;
+- (NSInteger)hostControlUserDevice:(NSString *)userID withDeviceType:(Blink_Device_Type)type open:(BOOL)isOpen;
 
 /*!
  @method
@@ -752,6 +855,10 @@ __attribute__((visibility("default"))) @interface BlinkEngine : NSObject
  */
 - (void)closeLocalVideo:(BOOL)enable;
 
+- (void)subscribeStreamForTiny:(NSArray *)tinyStreamUserIDs forOrigin:(NSString *)originStreamUserID;
+
+- (void)setVideoSizeForTinyStream:(CGFloat)width height:(CGFloat) height;
+
 /*!
  @method
  @abstract 打开/关闭本地视频,通过信令通知服务端.
@@ -769,8 +876,8 @@ __attribute__((visibility("default"))) @interface BlinkEngine : NSObject
 
 /*!
  @method
- @abstract 打开/关闭扬声器
- @param enable Yes:开启扬声器,听筒不发声  NO:关闭扬声器,听筒发声
+ @abstract 打开/关闭外放声音
+ @param enable Yes:开启声音  NO:关闭声音
  */
 - (void)switchSpeaker:(BOOL)enable;
 
@@ -799,7 +906,6 @@ __attribute__((visibility("default"))) @interface BlinkEngine : NSObject
 /*!
  @method
  @abstract 设置Blink日志文件位置, 不需要指定文件名, 只能在[BlinkEngine alloc]之前设置才能生效
- @discussion
  @param path 沙盒路径
  */
 + (void)setBlinkLogPath:(NSString *)path;

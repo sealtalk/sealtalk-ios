@@ -41,6 +41,11 @@
 @property(nonatomic, assign) BOOL cameraDisabled;
 
 /*!
+ 用户的麦克风是否已经关闭
+ */
+@property(nonatomic, assign) BOOL micDisabled;
+
+/*!
  收到通话呼入的时间
 
  @discussion 只有当前登录用户的呼入时间是准确的，其他用户的并不准确

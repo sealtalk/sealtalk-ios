@@ -126,6 +126,13 @@
  */
 - (void)setVideoProfile:(RCVideoProfile)profile swapWidthAndHeight:(BOOL)swapWidthAndHeight;
 
+/**
+ 设置本地视频属性，是否使用美颜
+ 
+ @param enable YES:使用  NO:不使用(默认)
+ */
+- (void)setEnableBeauty:(BOOL)enable;
+
 /*!
  设置外部信令服务器代理
  

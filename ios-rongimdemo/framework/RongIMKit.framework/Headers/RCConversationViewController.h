@@ -95,10 +95,7 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
  */
 @property(nonatomic, strong) UICollectionView *conversationMessageCollectionView;
 
-/*!
- 会话页面的CollectionView Layout
- */
-@property(nonatomic, strong) UICollectionViewFlowLayout *customFlowLayout;
+
 
 #pragma mark 导航栏返回按钮中的未读消息数提示
 /*!

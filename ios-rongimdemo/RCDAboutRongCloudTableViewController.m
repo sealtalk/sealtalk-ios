@@ -9,12 +9,11 @@
 #import "RCDAboutRongCloudTableViewController.h"
 #import "RCDBaseSettingTableViewCell.h"
 #import "RCDCommonDefine.h"
-#import "RCDDebugViewController.h"
 #import "RCDLogoTableViewCell.h"
 #import "RCDUIBarButtonItem.h"
 #import "RCDVersionCell.h"
 #import "UIColor+RCColor.h"
-#import "RCDDebugNoDisturbViewController.h"
+#import "RCDDebugTableViewController.h"
 
 @interface RCDAboutRongCloudTableViewController ()
 @property(nonatomic, strong) NSArray *urls;
@@ -134,7 +133,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat height;
+    CGFloat height = 0;
     switch (indexPath.section) {
     case 0: {
         switch (indexPath.row) {
@@ -189,97 +188,8 @@
 }
 
 - (void)gotoDebugModel {
-    NSString *isDisplayID = @"显示ID";
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"] isEqualToString:@"YES"]) {
-        isDisplayID = @"关闭显示ID";
-    }
-    NSString *isDisplayOnlineStatus = @"显示在线状态";
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"] isEqualToString:@"YES"]) {
-        isDisplayOnlineStatus = @"关闭显示在线状态";
-    }
-
-    NSString *stayAfterJoinChatRoomFailed = @"加入聊天室失败仍停留在会话界面";
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"stayAfterJoinChatRoomFailed"] isEqualToString:@"YES"]) {
-        stayAfterJoinChatRoomFailed = @"加入聊天室失败自动退出会话界面";
-    }
-
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:@"Debug模式"
-                                                   delegate:self
-                                          cancelButtonTitle:@"确定"
-                                          otherButtonTitles:@"强制Crash", isDisplayID, isDisplayOnlineStatus,
-                                                            stayAfterJoinChatRoomFailed, @"设置离线消息补偿时间", @"设置全局免打扰时间", nil];
-    alert.delegate = self;
-    [alert show];
-}
-
-// force crash for test
-- (void)forceCrash {
-    NSMutableDictionary *crashArray = [[NSMutableDictionary alloc] initWithCapacity:0];
-    [crashArray setObject:nil forKey:@"forCrash"];
-}
-
-- (void)setIsDisplayId {
-    NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
-    if ([isDisplayID isEqualToString:@"YES"]) {
-        [DEFAULTS setObject:nil forKey:@"isDisplayID"];
-        [DEFAULTS synchronize];
-    } else {
-        [DEFAULTS setObject:@"YES" forKey:@"isDisplayID"];
-        [DEFAULTS synchronize];
-    }
-}
-
-- (void)setIsDisplayOnlineStatus {
-    NSString *isDisplayOnlineStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"];
-    if ([isDisplayOnlineStatus isEqualToString:@"YES"]) {
-        [DEFAULTS setObject:nil forKey:@"isDisplayOnlineStatus"];
-        [DEFAULTS synchronize];
-    } else {
-        [DEFAULTS setObject:@"YES" forKey:@"isDisplayOnlineStatus"];
-        [DEFAULTS synchronize];
-    }
-}
-
-- (void)setStayAfterJoinChatRoomFailed {
-    NSString *stayAfterJoinChatRoomFailed =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"stayAfterJoinChatRoomFailed"];
-    if ([stayAfterJoinChatRoomFailed isEqualToString:@"YES"]) {
-        [DEFAULTS setObject:nil forKey:@"stayAfterJoinChatRoomFailed"];
-        [DEFAULTS synchronize];
-    } else {
-        [DEFAULTS setObject:@"YES" forKey:@"stayAfterJoinChatRoomFailed"];
-        [DEFAULTS synchronize];
-    }
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-    case 1:
-        [self forceCrash];
-        break;
-
-    case 2:
-        [self setIsDisplayId];
-        break;
-
-    case 3:
-        [self setIsDisplayOnlineStatus];
-        break;
-
-    case 4:
-        [self setStayAfterJoinChatRoomFailed];
-        break;
-
-    case 5:
-        [self pushToDebugVC];
-        break;
-    case 6:
-        [self pushToNoDisturbVC];
-        break;
-    default:
-        break;
-    }
+    RCDDebugTableViewController *debugVC = [RCDDebugTableViewController new];
+    [self.navigationController pushViewController:debugVC animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -344,18 +254,6 @@
                                                                  attribute:NSLayoutAttributeCenterY
                                                                 multiplier:1
                                                                   constant:0]];
-}
-
-- (void)pushToDebugVC {
-    RCDDebugViewController *vc = [[RCDDebugViewController alloc] init];
-    vc.title = @"设置离线消息补偿时间";
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)pushToNoDisturbVC {
-    RCDDebugNoDisturbViewController *vc = [[RCDDebugNoDisturbViewController alloc] init];
-    vc.title = @"设置全局免打扰";
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

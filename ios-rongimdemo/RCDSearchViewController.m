@@ -252,20 +252,31 @@
             }];
             [self.navigationController pushViewController:viewController animated:YES];
             return;
+        } else {
+
+            RCDChatViewController *_conversationVC = [[RCDChatViewController alloc] init];
+            _conversationVC.conversationType = model.conversationType;
+            _conversationVC.targetId = model.targetId;
+            _conversationVC.userName = model.name;
+            NSArray *array = [[RCIMClient sharedRCIMClient] searchMessages:model.conversationType
+                                                                  targetId:model.targetId
+                                                                   keyword:self.searchBars.text
+                                                                     count:model.count
+                                                                 startTime:0];
+            if (array.count != 0) {
+                RCMessage *message = [array firstObject];
+                _conversationVC.locatedMessageSentTime = message.sentTime;
+            }
+            int unreadCount = [[RCIMClient sharedRCIMClient] getUnreadCount:model.conversationType targetId:model.targetId];
+            _conversationVC.unReadMessage = unreadCount;
+            _conversationVC.enableNewComingMessageIcon = YES; //开启消息提醒
+            _conversationVC.enableUnreadMessageIcon = YES;
+            //如果是单聊，不显示发送方昵称
+            if (model.conversationType == ConversationType_PRIVATE) {
+                _conversationVC.displayUserNameInCell = NO;
+            }
+            [self.navigationController pushViewController:_conversationVC animated:YES];
         }
-        RCDChatViewController *_conversationVC = [[RCDChatViewController alloc] init];
-        _conversationVC.conversationType = model.conversationType;
-        _conversationVC.targetId = model.targetId;
-        _conversationVC.userName = model.name;
-        int unreadCount = [[RCIMClient sharedRCIMClient] getUnreadCount:model.conversationType targetId:model.targetId];
-        _conversationVC.unReadMessage = unreadCount;
-        _conversationVC.enableNewComingMessageIcon = YES; //开启消息提醒
-        _conversationVC.enableUnreadMessageIcon = YES;
-        //如果是单聊，不显示发送方昵称
-        if (model.conversationType == ConversationType_PRIVATE) {
-            _conversationVC.displayUserNameInCell = NO;
-        }
-        [self.navigationController pushViewController:_conversationVC animated:YES];
     }
 }
 

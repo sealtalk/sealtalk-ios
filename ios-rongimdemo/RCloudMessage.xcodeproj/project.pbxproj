@@ -86,12 +86,32 @@
 		5C7629831B54F7E60027DA82 /* RCDBlackListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7629821B54F7E60027DA82 /* RCDBlackListCell.m */; };
 		6E1C98201F39C90C008F96D8 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1C981F1F39C90C008F96D8 /* libresolv.tbd */; };
 		77F56BF620874DEE00D080F7 /* RCColor.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77F56BF520874DEE00D080F7 /* RCColor.plist */; };
+		7FF9DE5820EA203200FF5E2B /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF9DE5720EA203200FF5E2B /* GPUImage.framework */; };
 		8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C55EB501B2A8CE5004285F4 /* Emoji.plist */; };
 		8CCBC9871AEDDF8600BA1135 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */; };
 		980235881D227F8100BCB1DD /* RCDPrivacyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */; };
 		980EF4561D373BE0000C26FC /* RCDGroupAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980EF4551D373BE0000C26FC /* RCDGroupAnnouncementViewController.m */; };
 		980EF4591D376BC9000C26FC /* UITextViewAndPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 980EF4581D376BC9000C26FC /* UITextViewAndPlaceholder.m */; };
 		9826D6CD1E1117BA00443501 /* RCDPushSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9826D6CC1E1117BA00443501 /* RCDPushSettingViewController.m */; };
+		983B736B20A5362F0059B047 /* RCDDebugTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 983B736A20A5362F0059B047 /* RCDDebugTableViewController.m */; };
+		983B739620A598180059B047 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 983B736D20A598170059B047 /* Info.plist */; };
+		983B739720A598180059B047 /* aes_ni.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B737120A598170059B047 /* aes_ni.c */; };
+		983B739820A598180059B047 /* aescrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B737320A598170059B047 /* aescrypt.c */; };
+		983B739920A598180059B047 /* aeskey.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B737420A598170059B047 /* aeskey.c */; };
+		983B739A20A598180059B047 /* aestab.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B737620A598170059B047 /* aestab.c */; };
+		983B739B20A598180059B047 /* fileenc.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B737A20A598170059B047 /* fileenc.c */; };
+		983B739C20A598180059B047 /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B737C20A598170059B047 /* hmac.c */; };
+		983B739D20A598180059B047 /* prng.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B737E20A598170059B047 /* prng.c */; };
+		983B739E20A598180059B047 /* pwd2key.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B738020A598170059B047 /* pwd2key.c */; };
+		983B739F20A598180059B047 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B738220A598170059B047 /* sha1.c */; };
+		983B73A020A598180059B047 /* crypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B738420A598170059B047 /* crypt.c */; };
+		983B73A120A598180059B047 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B738620A598170059B047 /* ioapi.c */; };
+		983B73A220A598180059B047 /* ioapi_buf.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B738820A598170059B047 /* ioapi_buf.c */; };
+		983B73A320A598180059B047 /* ioapi_mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B738A20A598170059B047 /* ioapi_mem.c */; };
+		983B73A420A598180059B047 /* minishared.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B738C20A598170059B047 /* minishared.c */; };
+		983B73A520A598180059B047 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B738E20A598170059B047 /* unzip.c */; };
+		983B73A620A598180059B047 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B739020A598170059B047 /* zip.c */; };
+		983B73A720A598180059B047 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 983B739320A598170059B047 /* SSZipArchive.m */; };
 		986A192A1D751FFC00FFEA2F /* RCDBaseSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 986A19291D751FFC00FFEA2F /* RCDBaseSettingTableViewCell.m */; };
 		9870724D20A17967008EE653 /* Blink.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9870724C20A17967008EE653 /* Blink.framework */; };
 		9870724E20A17AB9008EE653 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C331091A0C728D00E31B9A /* OpenGLES.framework */; };
@@ -477,6 +497,7 @@
 		5C7629821B54F7E60027DA82 /* RCDBlackListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RCDBlackListCell.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6E1C981F1F39C90C008F96D8 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		77F56BF520874DEE00D080F7 /* RCColor.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = RCColor.plist; path = framework/RCColor.plist; sourceTree = SOURCE_ROOT; };
+		7FF9DE5720EA203200FF5E2B /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GPUImage.framework; path = framework/GPUImage.framework; sourceTree = SOURCE_ROOT; };
 		8C55EB501B2A8CE5004285F4 /* Emoji.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Emoji.plist; path = framework/Emoji.plist; sourceTree = SOURCE_ROOT; };
 		8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		980235861D227F8100BCB1DD /* RCDPrivacyTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPrivacyTableViewController.h; sourceTree = SOURCE_ROOT; };
@@ -487,6 +508,47 @@
 		980EF4581D376BC9000C26FC /* UITextViewAndPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITextViewAndPlaceholder.m; sourceTree = SOURCE_ROOT; };
 		9826D6CB1E1117BA00443501 /* RCDPushSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPushSettingViewController.h; sourceTree = SOURCE_ROOT; };
 		9826D6CC1E1117BA00443501 /* RCDPushSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPushSettingViewController.m; sourceTree = SOURCE_ROOT; };
+		983B736920A5362F0059B047 /* RCDDebugTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RCDDebugTableViewController.h; path = Debug/RCDDebugTableViewController.h; sourceTree = SOURCE_ROOT; };
+		983B736A20A5362F0059B047 /* RCDDebugTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RCDDebugTableViewController.m; path = Debug/RCDDebugTableViewController.m; sourceTree = SOURCE_ROOT; };
+		983B736D20A598170059B047 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		983B737020A598170059B047 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
+		983B737120A598170059B047 /* aes_ni.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aes_ni.c; sourceTree = "<group>"; };
+		983B737220A598170059B047 /* aes_ni.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes_ni.h; sourceTree = "<group>"; };
+		983B737320A598170059B047 /* aescrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aescrypt.c; sourceTree = "<group>"; };
+		983B737420A598170059B047 /* aeskey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aeskey.c; sourceTree = "<group>"; };
+		983B737520A598170059B047 /* aesopt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aesopt.h; sourceTree = "<group>"; };
+		983B737620A598170059B047 /* aestab.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aestab.c; sourceTree = "<group>"; };
+		983B737720A598170059B047 /* aestab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aestab.h; sourceTree = "<group>"; };
+		983B737820A598170059B047 /* brg_endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brg_endian.h; sourceTree = "<group>"; };
+		983B737920A598170059B047 /* brg_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brg_types.h; sourceTree = "<group>"; };
+		983B737A20A598170059B047 /* fileenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fileenc.c; sourceTree = "<group>"; };
+		983B737B20A598170059B047 /* fileenc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fileenc.h; sourceTree = "<group>"; };
+		983B737C20A598170059B047 /* hmac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hmac.c; sourceTree = "<group>"; };
+		983B737D20A598170059B047 /* hmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hmac.h; sourceTree = "<group>"; };
+		983B737E20A598170059B047 /* prng.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = prng.c; sourceTree = "<group>"; };
+		983B737F20A598170059B047 /* prng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prng.h; sourceTree = "<group>"; };
+		983B738020A598170059B047 /* pwd2key.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pwd2key.c; sourceTree = "<group>"; };
+		983B738120A598170059B047 /* pwd2key.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwd2key.h; sourceTree = "<group>"; };
+		983B738220A598170059B047 /* sha1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sha1.c; sourceTree = "<group>"; };
+		983B738320A598170059B047 /* sha1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sha1.h; sourceTree = "<group>"; };
+		983B738420A598170059B047 /* crypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = crypt.c; sourceTree = "<group>"; };
+		983B738520A598170059B047 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		983B738620A598170059B047 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		983B738720A598170059B047 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		983B738820A598170059B047 /* ioapi_buf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi_buf.c; sourceTree = "<group>"; };
+		983B738920A598170059B047 /* ioapi_buf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi_buf.h; sourceTree = "<group>"; };
+		983B738A20A598170059B047 /* ioapi_mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi_mem.c; sourceTree = "<group>"; };
+		983B738B20A598170059B047 /* ioapi_mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi_mem.h; sourceTree = "<group>"; };
+		983B738C20A598170059B047 /* minishared.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = minishared.c; sourceTree = "<group>"; };
+		983B738D20A598170059B047 /* minishared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = minishared.h; sourceTree = "<group>"; };
+		983B738E20A598170059B047 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		983B738F20A598170059B047 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		983B739020A598170059B047 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		983B739120A598170059B047 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		983B739220A598170059B047 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
+		983B739320A598170059B047 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
+		983B739420A598170059B047 /* SSZipCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipCommon.h; sourceTree = "<group>"; };
+		983B739520A598170059B047 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
 		986A19281D751FFC00FFEA2F /* RCDBaseSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDBaseSettingTableViewCell.h; sourceTree = SOURCE_ROOT; };
 		986A19291D751FFC00FFEA2F /* RCDBaseSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDBaseSettingTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		9870724C20A17967008EE653 /* Blink.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Blink.framework; path = framework/Blink.framework; sourceTree = SOURCE_ROOT; };
@@ -917,6 +979,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FF9DE5820EA203200FF5E2B /* GPUImage.framework in Frameworks */,
 				A6BD6E2220A5AD880063F51D /* Bailingquic.framework in Frameworks */,
 				9870725020A17AC3008EE653 /* GLKit.framework in Frameworks */,
 				9870724E20A17AB9008EE653 /* OpenGLES.framework in Frameworks */,
@@ -1200,6 +1263,77 @@
 			name = Discovery;
 			sourceTree = "<group>";
 		};
+		983B736820A530060059B047 /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				983B736920A5362F0059B047 /* RCDDebugTableViewController.h */,
+				983B736A20A5362F0059B047 /* RCDDebugTableViewController.m */,
+			);
+			name = Debug;
+			sourceTree = "<group>";
+		};
+		983B736C20A598170059B047 /* SSZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				983B736D20A598170059B047 /* Info.plist */,
+				983B736E20A598170059B047 /* minizip */,
+				983B739220A598170059B047 /* SSZipArchive.h */,
+				983B739320A598170059B047 /* SSZipArchive.m */,
+				983B739420A598170059B047 /* SSZipCommon.h */,
+				983B739520A598170059B047 /* ZipArchive.h */,
+			);
+			path = SSZipArchive;
+			sourceTree = "<group>";
+		};
+		983B736E20A598170059B047 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				983B736F20A598170059B047 /* aes */,
+				983B738420A598170059B047 /* crypt.c */,
+				983B738520A598170059B047 /* crypt.h */,
+				983B738620A598170059B047 /* ioapi.c */,
+				983B738720A598170059B047 /* ioapi.h */,
+				983B738820A598170059B047 /* ioapi_buf.c */,
+				983B738920A598170059B047 /* ioapi_buf.h */,
+				983B738A20A598170059B047 /* ioapi_mem.c */,
+				983B738B20A598170059B047 /* ioapi_mem.h */,
+				983B738C20A598170059B047 /* minishared.c */,
+				983B738D20A598170059B047 /* minishared.h */,
+				983B738E20A598170059B047 /* unzip.c */,
+				983B738F20A598170059B047 /* unzip.h */,
+				983B739020A598170059B047 /* zip.c */,
+				983B739120A598170059B047 /* zip.h */,
+			);
+			path = minizip;
+			sourceTree = "<group>";
+		};
+		983B736F20A598170059B047 /* aes */ = {
+			isa = PBXGroup;
+			children = (
+				983B737020A598170059B047 /* aes.h */,
+				983B737120A598170059B047 /* aes_ni.c */,
+				983B737220A598170059B047 /* aes_ni.h */,
+				983B737320A598170059B047 /* aescrypt.c */,
+				983B737420A598170059B047 /* aeskey.c */,
+				983B737520A598170059B047 /* aesopt.h */,
+				983B737620A598170059B047 /* aestab.c */,
+				983B737720A598170059B047 /* aestab.h */,
+				983B737820A598170059B047 /* brg_endian.h */,
+				983B737920A598170059B047 /* brg_types.h */,
+				983B737A20A598170059B047 /* fileenc.c */,
+				983B737B20A598170059B047 /* fileenc.h */,
+				983B737C20A598170059B047 /* hmac.c */,
+				983B737D20A598170059B047 /* hmac.h */,
+				983B737E20A598170059B047 /* prng.c */,
+				983B737F20A598170059B047 /* prng.h */,
+				983B738020A598170059B047 /* pwd2key.c */,
+				983B738120A598170059B047 /* pwd2key.h */,
+				983B738220A598170059B047 /* sha1.c */,
+				983B738320A598170059B047 /* sha1.h */,
+			);
+			path = aes;
+			sourceTree = "<group>";
+		};
 		9891E8D91D82638400E874AB /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1298,6 +1432,7 @@
 		98F7B0A31D825F89005B2E42 /* AboutSealTalk */ = {
 			isa = PBXGroup;
 			children = (
+				983B736820A530060059B047 /* Debug */,
 				9891E8E71D82B0FE00E874AB /* Cell */,
 				9C2763351F6BF2AF006C9680 /* RCDDebugViewController.h */,
 				9C2763361F6BF2AF006C9680 /* RCDDebugViewController.m */,
@@ -1726,6 +1861,7 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7FF9DE5720EA203200FF5E2B /* GPUImage.framework */,
 				988E5B9520A5A2D5009115C1 /* Bailingquic.framework */,
 				9870724F20A17AC2008EE653 /* GLKit.framework */,
 				9870724C20A17967008EE653 /* Blink.framework */,
@@ -1866,6 +2002,7 @@
 		E4E938CB1AD65A95001E0AC6 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				983B736C20A598170059B047 /* SSZipArchive */,
 				172B89F020747C56005481D7 /* RCDForwardAlertView.h */,
 				172B89F120747C57005481D7 /* RCDForwardAlertView.m */,
 				98AB3C071D38940600C3B87C /* SortForTime.h */,
@@ -2284,6 +2421,7 @@
 				2E7A36E11E03A876005231BE /* JResource.bundle in Resources */,
 				77F56BF620874DEE00D080F7 /* RCColor.plist in Resources */,
 				8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */,
+				983B739620A598180059B047 /* Info.plist in Resources */,
 				E42A2E5A1AAEE76800F4C3AB /* Main.storyboard in Resources */,
 				5111B07D1AE6A11A00317E71 /* RongCloud.bundle in Resources */,
 				2E7A36E21E03A876005231BE /* jrmf.cer in Resources */,
@@ -2393,6 +2531,7 @@
 				17F7A84C1DAE187200E27D25 /* RCDSearchResultViewCell.m in Sources */,
 				E4E939601AD65A95001E0AC6 /* RCDNavigationBar.m in Sources */,
 				4666842D1B5DEC25000B7504 /* RCDConversationSettingTableViewCell.m in Sources */,
+				983B73A320A598180059B047 /* ioapi_mem.c in Sources */,
 				E4E939461AD65A95001E0AC6 /* AFSecurityPolicy.m in Sources */,
 				17F7A8741DAFBFF100E27D25 /* RCDSearchHistoryMessageController.m in Sources */,
 				E412BD241ADE6BFB000DCA7A /* RCDHttpTool.m in Sources */,
@@ -2405,6 +2544,7 @@
 				9B447DF41CF82926005D3ED5 /* RCDPrivateSettingsCell.m in Sources */,
 				9B447DEB1CF82926005D3ED5 /* RCDCreateGroupViewController.m in Sources */,
 				E4E939661AD65A95001E0AC6 /* SDWebImageCompat.m in Sources */,
+				983B739C20A598180059B047 /* hmac.c in Sources */,
 				98BD8A761D6D3E1600FE717D /* RCDUIBarButtonItem.m in Sources */,
 				9B447DF61CF82926005D3ED5 /* RCDPrivateSettingsUserInfoCell.m in Sources */,
 				27D6FF9F1DFE4D2C00053F69 /* RCDSettingUserDefaults.m in Sources */,
@@ -2418,17 +2558,20 @@
 				E4BFAE211A1217C0007165B1 /* AppDelegate.m in Sources */,
 				A6827BE11B15E94A000B9862 /* SelectAppKeyViewController.m in Sources */,
 				E4E939761AD65AC7001E0AC6 /* RCDAddressBookTableViewCell.m in Sources */,
+				983B739E20A598180059B047 /* pwd2key.c in Sources */,
 				46E17CC81B0EC32A001AC57A /* FMDatabaseAdditions.m in Sources */,
 				E4E939CC1AD65E1E001E0AC6 /* UITextFiled+Shake.m in Sources */,
 				98C8B2911DB85E9C00D42297 /* RCDContactSelectedCollectionViewCell.m in Sources */,
 				175F178C1F5FA0C4004572D7 /* RCDCSStarView.m in Sources */,
 				9891E8DD1D8263F700E874AB /* RCDMeCell.m in Sources */,
+				983B739920A598180059B047 /* aeskey.c in Sources */,
 				9B447DE61CF82926005D3ED5 /* RCDChangePasswordViewController.m in Sources */,
 				E4E9399A1AD65C3B001E0AC6 /* RCDFindPswViewController.m in Sources */,
 				98FFECB71D267140001DBB0D /* UITabBar+badge.m in Sources */,
 				E4E9394F1AD65A95001E0AC6 /* UIImageView+AFNetworking.m in Sources */,
 				175F17981F5FF30A004572D7 /* RCDCSButton.m in Sources */,
 				A65C1C8F1C7C13F400EBB601 /* RCDCustomerServiceViewController.m in Sources */,
+				983B739820A598180059B047 /* aescrypt.c in Sources */,
 				A6827BE41B16AC39000B9862 /* AddAppKeyViewController.m in Sources */,
 				A677D69A1B81EBB9007D5D90 /* RCAnnotation.m in Sources */,
 				E4E939791AD65AEB001E0AC6 /* RCDChatRoomInfo.m in Sources */,
@@ -2451,6 +2594,7 @@
 				E4E9395E1AD65A95001E0AC6 /* MBProgressHUD.m in Sources */,
 				9B447DE71CF82926005D3ED5 /* RCDContactSelectedTableViewCell.m in Sources */,
 				A677D6A11B81EBB9007D5D90 /* RealTimeLocationViewController.m in Sources */,
+				983B73A620A598180059B047 /* zip.c in Sources */,
 				9B447DED1CF82926005D3ED5 /* RCDGroupMemberCollectionViewCell.m in Sources */,
 				980EF4561D373BE0000C26FC /* RCDGroupAnnouncementViewController.m in Sources */,
 				E4BFAE6B1A121A13007165B1 /* RCDGroupViewController.m in Sources */,
@@ -2473,6 +2617,8 @@
 				E4E939BE1AD65D30001E0AC6 /* RCDMessageNotifySettingTableViewController.m in Sources */,
 				E4E939611AD65A95001E0AC6 /* RCDTextFieldValidate.m in Sources */,
 				E4E9395F1AD65A95001E0AC6 /* RCAnimatedImagesView.m in Sources */,
+				983B739F20A598180059B047 /* sha1.c in Sources */,
+				983B739720A598180059B047 /* aes_ni.c in Sources */,
 				E4BFAE651A1219EA007165B1 /* RCDAddressBookViewController.m in Sources */,
 				E4E939451AD65A95001E0AC6 /* AFNetworkReachabilityManager.m in Sources */,
 				E4E939481AD65A95001E0AC6 /* AFURLRequestSerialization.m in Sources */,
@@ -2480,11 +2626,13 @@
 				E4E939821AD65B27001E0AC6 /* RCDDiscussSettingSwitchCell.m in Sources */,
 				46E0D44F1B1EA7E300E04B8A /* RCDataBaseManager.m in Sources */,
 				A662A0E11AEE50D400847EEB /* RCDAboutRongCloudTableViewController.m in Sources */,
+				983B739D20A598180059B047 /* prng.c in Sources */,
 				5C0253F41B53D6F8003F48D9 /* RCDBlackListViewController.m in Sources */,
 				A6B1D8EB1B1FFCB700AD32EC /* RCWKNotifier.m in Sources */,
 				A677D6991B81EBB9007D5D90 /* HeadCollectionView.m in Sources */,
 				466684241B5DEA10000B7504 /* RCDSettingBaseViewController.m in Sources */,
 				9891E8E31D82AB3100E874AB /* RCDLogoTableViewCell.m in Sources */,
+				983B739A20A598180059B047 /* aestab.c in Sources */,
 				9B447DE91CF82926005D3ED5 /* RCDContactTableViewCell.m in Sources */,
 				178998271F629A2E00FC44D3 /* RCDCSEvaluateModel.m in Sources */,
 				17244C181B56553B000EFF79 /* RCDMessageNoDisturbSettingController.m in Sources */,
@@ -2494,6 +2642,7 @@
 				9826D6CD1E1117BA00443501 /* RCDPushSettingViewController.m in Sources */,
 				E4E939911AD65BD4001E0AC6 /* RCDUpdateNameViewController.m in Sources */,
 				5C7629831B54F7E60027DA82 /* RCDBlackListCell.m in Sources */,
+				983B739B20A598180059B047 /* fileenc.c in Sources */,
 				46E17CC71B0EC32A001AC57A /* FMDatabase.m in Sources */,
 				E4E939B11AD65CD6001E0AC6 /* RCDSelectPersonTableViewCell.m in Sources */,
 				E4E939491AD65A95001E0AC6 /* AFURLResponseSerialization.m in Sources */,
@@ -2504,17 +2653,21 @@
 				466684301B5DEC57000B7504 /* RCDConversationSettingTableViewHeader.m in Sources */,
 				172B89F220747C58005481D7 /* RCDForwardAlertView.m in Sources */,
 				980235881D227F8100BCB1DD /* RCDPrivacyTableViewController.m in Sources */,
+				983B73A220A598180059B047 /* ioapi_buf.c in Sources */,
 				1763AB171F57E63D00BC96D9 /* RCDCSAnnounceView.m in Sources */,
 				E4E939521AD65A95001E0AC6 /* UIWebView+AFNetworking.m in Sources */,
 				E4E939641AD65A95001E0AC6 /* NSData+ImageContentType.m in Sources */,
 				E4E9394C1AD65A95001E0AC6 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				E4E939811AD65B27001E0AC6 /* RCDDiscussSettingCell.m in Sources */,
+				983B73A420A598180059B047 /* minishared.c in Sources */,
+				983B73A720A598180059B047 /* SSZipArchive.m in Sources */,
 				E4E939BB1AD65D18001E0AC6 /* RCDChatRoomTableViewCell.m in Sources */,
 				F836AB0E1C2262C400A1A5D2 /* RCDTestMessage.m in Sources */,
 				E4E939471AD65A95001E0AC6 /* AFURLConnectionOperation.m in Sources */,
 				E4E9396C1AD65A95001E0AC6 /* UIButton+WebCache.m in Sources */,
 				E4BFAE621A1219D8007165B1 /* RCDLoginViewController.m in Sources */,
 				A677D69E1B81EBB9007D5D90 /* RealTimeLocationEndCell.m in Sources */,
+				983B73A120A598180059B047 /* ioapi.c in Sources */,
 				E4E9396D1AD65A95001E0AC6 /* UIImage+GIF.m in Sources */,
 				E4BFAE711A121A5E007165B1 /* RCDRCIMDataSource.m in Sources */,
 				E4E939631AD65A95001E0AC6 /* MKAnnotationView+WebCache.m in Sources */,
@@ -2540,6 +2693,7 @@
 				9B447DF91CF82926005D3ED5 /* RCDSquareTableViewController.m in Sources */,
 				A6827BDE1B15E52C000B9862 /* AppkeyModel.m in Sources */,
 				E4E9395D1AD65A95001E0AC6 /* KxMenu.m in Sources */,
+				983B73A020A598180059B047 /* crypt.c in Sources */,
 				E4E9399D1AD65C61001E0AC6 /* RCDRoomSettingViewController.m in Sources */,
 				46E17CCC1B0EC32A001AC57A /* FMResultSet.m in Sources */,
 				A61647881BE9BF7C00E90813 /* RCDMeInfoTableViewController.m in Sources */,
@@ -2547,9 +2701,11 @@
 				9B447DE81CF82926005D3ED5 /* RCDContactSelectedTableViewController.m in Sources */,
 				174151F51CBE516A00A4B23B /* RCDPublicServiceListViewController.m in Sources */,
 				A6447A3F1B1DC12500EA2CEE /* RCWKSharedUserDefault.m in Sources */,
+				983B73A520A598180059B047 /* unzip.c in Sources */,
 				E4E939971AD65C15001E0AC6 /* RCDGroupInfo.m in Sources */,
 				A677D69F1B81EBB9007D5D90 /* RealTimeLocationStartCell.m in Sources */,
 				A616478B1BE9D97D00E90813 /* RCDEditUserNameViewController.m in Sources */,
+				983B736B20A5362F0059B047 /* RCDDebugTableViewController.m in Sources */,
 				98F973D51D66B8ED007F1483 /* RCDUserInfoManager.m in Sources */,
 				E4E939431AD65A95001E0AC6 /* AFHTTPRequestOperationManager.m in Sources */,
 				E4BFAE5F1A121996007165B1 /* AFHttpTool.m in Sources */,

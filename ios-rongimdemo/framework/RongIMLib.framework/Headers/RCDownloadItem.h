@@ -90,6 +90,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic,assign,readonly) BOOL resumable;
 
+
+/**
+ 下载任务的标识符
+ */
+@property (nonatomic,copy,readonly) NSString* identify;
+
 /**
  下载任务的代理对象
  */

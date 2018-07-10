@@ -122,7 +122,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *isDisplayID = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayID"];
+    BOOL isDisplayID = [[NSUserDefaults standardUserDefaults] boolForKey:@"isDisplayID"];
     static NSString *CellIdentifier = @"RCDGroupCell";
     RCDGroupTableViewCell *cell = (RCDGroupTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
@@ -130,7 +130,7 @@
     }
 
     RCDGroupInfo *group = _groups[indexPath.row];
-    if ([isDisplayID isEqualToString:@"YES"]) {
+    if (isDisplayID == YES) {
         cell.lblGroupId.text = group.groupId;
     }
 

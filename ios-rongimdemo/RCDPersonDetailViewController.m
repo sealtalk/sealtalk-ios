@@ -645,8 +645,8 @@
 }
 
 - (void)displayOnlineStatus {
-    NSString *isDisplayOnlineStatus = [[NSUserDefaults standardUserDefaults] objectForKey:@"isDisplayOnlineStatus"];
-    if ([isDisplayOnlineStatus isEqualToString:@"YES"]) {
+    BOOL isDisplayOnlineStatus = [[NSUserDefaults standardUserDefaults] boolForKey:@"isDisplayOnlineStatus"];
+    if (isDisplayOnlineStatus == YES) {
         // For Private Cloud Only ++
         //    [[RCIMClient sharedRCIMClient]
         //     getUserOnlineStatus:self.userId

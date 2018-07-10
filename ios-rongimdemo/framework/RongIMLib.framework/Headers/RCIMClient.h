@@ -1268,7 +1268,7 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  @param targetId            目标会话ID
  @param recordTime          截止的消息发送时间戳，毫秒
  @param count               需要获取的消息数量， 0 < count <= 20
- @param successBlock        获取成功的回调 [messages:获取到的历史消息数组]
+ @param successBlock        获取成功的回调 [messages:获取到的历史消息数组, isRemaining 是否还有剩余消息 YES 表示还有剩余，NO 表示无剩余]
  @param errorBlock          获取失败的回调 [status:获取失败的错误码]
 
  @discussion
@@ -1279,7 +1279,7 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
                         targetId:(NSString *)targetId
                       recordTime:(long long)recordTime
                            count:(int)count
-                         success:(void (^)(NSArray *messages))successBlock
+                         success:(void (^)(NSArray *messages,BOOL isRemaining))successBlock
                            error:(void (^)(RCErrorCode status))errorBlock;
 
 /*!

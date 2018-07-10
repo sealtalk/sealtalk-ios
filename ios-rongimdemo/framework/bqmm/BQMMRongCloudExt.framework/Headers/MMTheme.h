@@ -353,4 +353,20 @@
     }
  */
 @property (nonatomic, assign) CGFloat  keyboardHeight;
+
+/**
+ *  the background color of emoji title view
+ */
+@property (nonatomic, strong, nullable) UIColor *emojiTitleBgColor;
+
+/**
+ *  the background color of the first emoji label
+ */
+@property (nonatomic, strong, nullable) UIColor *emojiTitle1Color;
+
+/**
+ *  the background color of the second emoji label
+ */
+@property (nonatomic, strong, nullable) UIColor *emojiTitle2Color;
+
 @end

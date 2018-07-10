@@ -113,6 +113,7 @@
 
         //非debug模式初始化sdk
         [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY];
+        [RCDSettingUserDefaults setRCAppKey:RONGCLOUD_IM_APPKEY];
     }
 
     /* RedPacket_FTR  */

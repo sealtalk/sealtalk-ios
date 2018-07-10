@@ -34,6 +34,7 @@
 #import <RongIMKit/RongIMKit.h>
 #import "RCDContactViewController.h"
 #import "RCDForwardAlertView.h"
+
 @interface RCDChatViewController () <UIActionSheetDelegate, RCRealTimeLocationObserver,
                                      RealTimeLocationStatusViewDelegate, UIAlertViewDelegate, RCMessageCellDelegate>
 @property(nonatomic, weak) id<RCRealTimeLocationProxy> realTimeLocation;

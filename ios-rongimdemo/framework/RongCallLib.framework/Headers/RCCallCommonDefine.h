@@ -236,7 +236,7 @@ typedef NS_ENUM(NSInteger, RCVideoProfile) {
      */
     RC_VIDEO_PROFILE_240P = 20,
     /*!
-     640x360, 15fps, 400kbps
+     480x360, 15fps, 350kbps
      */
     RC_VIDEO_PROFILE_360P = 30,
     /*!
@@ -250,7 +250,7 @@ typedef NS_ENUM(NSInteger, RCVideoProfile) {
     /*!
      默认的视频参数
      */
-    RC_VIDEO_PROFILE_DEFAULT = RC_VIDEO_PROFILE_360P,
+    RC_VIDEO_PROFILE_DEFAULT = RC_VIDEO_PROFILE_480P,
 };
 
 /*!
