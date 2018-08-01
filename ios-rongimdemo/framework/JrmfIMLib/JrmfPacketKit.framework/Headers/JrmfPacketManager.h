@@ -20,4 +20,17 @@
  */
 + (NSString *)getCurrentVersion;
 
+
+/**
+ 配置微信
+
+ @param wxKey weixin key
+ */
++ (void)setWeixinKey:(NSString *)wxKey;
+
+/**
+ 销毁扩展模块
+ */
++ (void)destroyPacketModule;
+
 @end
