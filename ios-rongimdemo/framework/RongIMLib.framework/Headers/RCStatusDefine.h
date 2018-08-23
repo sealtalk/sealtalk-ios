@@ -189,6 +189,11 @@ typedef NS_ENUM(NSInteger, RCConnectErrorCode) {
     RC_DISCONN_KICK = 31010,
 
     /*!
+     重连过程中当前用户在其它设备上登录
+     */
+    RC_CONN_OTHER_DEVICE_LOGIN = 31023,
+    
+    /*!
      连接被拒绝
 
      @discussion 建立连接的临时错误码，SDK会做好自动重连，开发者无须处理。

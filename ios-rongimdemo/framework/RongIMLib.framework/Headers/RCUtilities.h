@@ -255,5 +255,13 @@
  */
 + (RCMediaType)getMediaType:(RCMessageContent *)content;
 
+/**
+ 判断一张照片是否是含透明像素的照片
+
+ @param image 原始照片
+ @return 是否包含透明像素，YES 包含， NO 不包含
+ */
++ (BOOL)isOpaque:(UIImage *)image;
+
 @end
 #endif

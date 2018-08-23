@@ -60,6 +60,20 @@
 - (void)onReceived:(RCMessage *)message left:(int)nLeft object:(id)object;
 
 @optional
+
+/**
+ 接收消息的回调方法
+ 
+ @param message 当前接收到的消息
+ @param nLeft 还剩余的未接收的消息数，left>=0
+ @param object 消息监听设置的key值
+ @param offline 是否是离线消息
+ @param hasPackage SDK 拉取服务器的消息以包(package)的形式批量拉取，有 package 存在就意味着远端服务器还有消息尚未被 SDK 拉取
+ @discussion 和上面的 - (void)onReceived:(RCMessage *)message left:(int)nLeft object:(id)object 功能完全一致，额外把 offline 和 hasPackage 参数暴露，开发者可以根据 nLeft、offline、hasPackage 来决定何时的时机刷新 UI ；建议当 hasPackage=0 并且 nLeft=0 时刷新 UI
+ @warning 如果使用此方法，那么就不能再使用 RCIM 中 - (void)onReceived:(RCMessage *)message left:(int)nLeft object:(id)object 的使用，否则会出现重复操作的情形
+ */
+- (void)onReceived:(RCMessage *)message left:(int)nLeft object:(id)object offline:(BOOL)offline hasPackage:(BOOL)hasPackage;
+
 /*!
  消息被撤回的回调方法
 
@@ -426,6 +440,22 @@
  您只需要按照您的需求，使用disconnect:与disconnect以及logout三个接口其中一个即可。
  */
 - (void)logout;
+
+/**
+ 设置断线重连时是否踢出重连设备
+ 
+ @discussion
+ 用户没有开通多设备登录功能的前提下，同一个账号在一台新设备上登录的时候，会把这个账号在之前登录的设备上踢出。
+ 由于 SDK 有断线重连功能，存在下面情况。
+ 用户在 A 设备登录，A 设备网络不稳定，没有连接成功，SDK 启动重连机制。
+ 用户此时又在 B 设备登录，B 设备连接成功。
+ A 设备网络稳定之后，用户在 A 设备连接成功，B 设备被踢出。
+ 这个接口就是为这种情况加的。
+ 设置 enable 为 YES 时，SDK 重连的时候发现此时已有别的设备连接成功，不再强行踢出已有设备，而是踢出重连设备。
+
+ @param enable 是否踢出重连设备
+ */
+- (void)setReconnectKickEnable:(BOOL)enable;
 
 #pragma mark - 连接状态监听
 

@@ -1,7 +1,7 @@
 /*!
  @header BlinkEngine.h
  @author BailingCloud
- @version 2.0.1_20180727163342_dev_meeting_dev_rce_562b2f5
+ @version 2.0.2_20180814141313_dev_meeting_dev_rce_e7e1539
  @Copyright © 2018年 BailingCloud. All rights reserved.
  */
 
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreMedia/CoreMedia.h>
 
-#define SDKCompileInfo @"2.0.1_20180727163342_dev_meeting_dev_rce_562b2f5"
+#define SDKCompileInfo @"2.0.2_20180814141244_dev_meeting_dev_rce_e7e1539"
 
 //宏定义说明, 设置视频聊天参数时的Key值, 详见SetVideoParameters:方法
 #define kAudioOnly      @"AudioOnly"
@@ -509,7 +509,7 @@ typedef NS_ENUM(NSInteger, Blink_Accept_Type)
 
 /*!
  @method
- @abstract 主持人打开/关闭与会某正常用户的麦克风/摄像头, 某正常用户做出接受/拒绝之后之后, 给主持人的回调
+ @abstract 主持人打开与会某正常用户的麦克风/摄像头, 某正常用户做出接受/拒绝之后之后, 给主持人的回调
  @param userId 用户ID
  @param dType 设备类型
  @param isAccept 是否接受
