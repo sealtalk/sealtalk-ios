@@ -1,0 +1,17 @@
+/* 
+  RongSticker.strings
+  RongSticker
+
+  Created by Zhaoqianyu on 2018/8/21.
+  Copyright © 2018年 RongCloud. All rights reserved.
+*/
+
+"back"="Back";
+"my_stickers"="My Stickers";
+"delete_title"="Remove";
+"download_package"="Added Stickers";
+"begin_download"="Get";
+"package_list_empty"="No Get Stickers";
+"loadingfailed" = "Fail To Load";
+"download_failed_alert"="Unable to download \"%@\". Try again.";
+"confirm"="Confirm";

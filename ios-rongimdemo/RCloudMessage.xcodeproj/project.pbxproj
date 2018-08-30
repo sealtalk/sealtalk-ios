@@ -43,6 +43,9 @@
 		17F7A84C1DAE187200E27D25 /* RCDSearchResultViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F7A8431DAE187200E27D25 /* RCDSearchResultViewCell.m */; };
 		17F7A84D1DAE187200E27D25 /* RCDSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F7A8451DAE187200E27D25 /* RCDSearchViewController.m */; };
 		17F7A8741DAFBFF100E27D25 /* RCDSearchHistoryMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F7A8731DAFBFF100E27D25 /* RCDSearchHistoryMessageController.m */; };
+		1DA88D962135119700F4F1F9 /* RongSticker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1DA88D912135119700F4F1F9 /* RongSticker.strings */; };
+		1DA88D972135119700F4F1F9 /* RongSticker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1DA88D942135119700F4F1F9 /* RongSticker.bundle */; };
+		1DA88D982135119700F4F1F9 /* RongSticker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA88D952135119700F4F1F9 /* RongSticker.framework */; };
 		2724CCD71FF34411006FFC86 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724CCD61FF34411006FFC86 /* Contacts.framework */; };
 		27AADC261DDC4DB800E1AE31 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AADC251DDC4DB800E1AE31 /* AddressBook.framework */; };
 		27AADC271DDC4DCE00E1AE31 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C3310B1A0C729600E31B9A /* QuartzCore.framework */; };
@@ -434,6 +437,10 @@
 		17F7A8451DAE187200E27D25 /* RCDSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSearchViewController.m; sourceTree = SOURCE_ROOT; };
 		17F7A8721DAFBFF100E27D25 /* RCDSearchHistoryMessageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSearchHistoryMessageController.h; sourceTree = SOURCE_ROOT; };
 		17F7A8731DAFBFF100E27D25 /* RCDSearchHistoryMessageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSearchHistoryMessageController.m; sourceTree = SOURCE_ROOT; };
+		1DA88D922135119700F4F1F9 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/RongSticker.strings"; sourceTree = "<group>"; };
+		1DA88D932135119700F4F1F9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RongSticker.strings; sourceTree = "<group>"; };
+		1DA88D942135119700F4F1F9 /* RongSticker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RongSticker.bundle; sourceTree = "<group>"; };
+		1DA88D952135119700F4F1F9 /* RongSticker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongSticker.framework; sourceTree = "<group>"; };
 		2724CCD61FF34411006FFC86 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		27AADC251DDC4DB800E1AE31 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		27BCC76D1EA45EA000198BD8 /* RongContactCard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongContactCard.framework; path = framework/RongContactCard.framework; sourceTree = SOURCE_ROOT; };
@@ -1021,6 +1028,7 @@
 				7755B4BC2106CE9F000C2DA8 /* JrmfPacketKit.framework in Frameworks */,
 				F8B7DBD21BAC189700E9F9BD /* libopencore-amrnb.a in Frameworks */,
 				E4C330FE1A0C725200E31B9A /* CoreVideo.framework in Frameworks */,
+				1DA88D982135119700F4F1F9 /* RongSticker.framework in Frameworks */,
 				2E7A36E41E03A876005231BE /* JrmfWalletKit.framework in Frameworks */,
 				27C42EEC1DE30637003E2306 /* iflyMSC.framework in Frameworks */,
 				E4C330F81A0C723A00E31B9A /* CoreAudio.framework in Frameworks */,
@@ -1102,6 +1110,17 @@
 			);
 			name = SearchView;
 			sourceTree = "<group>";
+		};
+		1DA88D902135119700F4F1F9 /* RCSticker */ = {
+			isa = PBXGroup;
+			children = (
+				1DA88D912135119700F4F1F9 /* RongSticker.strings */,
+				1DA88D942135119700F4F1F9 /* RongSticker.bundle */,
+				1DA88D952135119700F4F1F9 /* RongSticker.framework */,
+			);
+			name = RCSticker;
+			path = framework/RCSticker;
+			sourceTree = SOURCE_ROOT;
 		};
 		27579B631E10D28700A30A62 /* PTT */ = {
 			isa = PBXGroup;
@@ -1861,6 +1880,7 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1DA88D902135119700F4F1F9 /* RCSticker */,
 				7FF9DE5720EA203200FF5E2B /* GPUImage.framework */,
 				988E5B9520A5A2D5009115C1 /* Bailingquic.framework */,
 				9870724F20A17AC2008EE653 /* GLKit.framework */,
@@ -2429,6 +2449,8 @@
 				E4BFAE251A121839007165B1 /* Images.xcassets in Resources */,
 				510624851AD63A9E00348452 /* RongCloudKit.strings in Resources */,
 				2E7A36E61E03A876005231BE /* WalletResource.bundle in Resources */,
+				1DA88D972135119700F4F1F9 /* RongSticker.bundle in Resources */,
+				1DA88D962135119700F4F1F9 /* RongSticker.strings in Resources */,
 				987653631D796C5B008A6BF0 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2737,6 +2759,15 @@
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
+		1DA88D912135119700F4F1F9 /* RongSticker.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1DA88D922135119700F4F1F9 /* zh-Hans */,
+				1DA88D932135119700F4F1F9 /* en */,
+			);
+			name = RongSticker.strings;
+			sourceTree = "<group>";
+		};
 		2E6B9A181E127BF7006EA6B4 /* JrmfInfo.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2939,6 +2970,7 @@
 					"$(PROJECT_DIR)/framework/ifly",
 					"$(PROJECT_DIR)/framework/bqmm",
 					"$(PROJECT_DIR)/framework/PTT",
+					"$(PROJECT_DIR)/framework/RCSticker",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -3086,6 +3118,7 @@
 					"$(PROJECT_DIR)/framework/ifly",
 					"$(PROJECT_DIR)/framework/bqmm",
 					"$(PROJECT_DIR)/framework/PTT",
+					"$(PROJECT_DIR)/framework/RCSticker",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -3392,6 +3425,7 @@
 					"$(PROJECT_DIR)/framework/ifly",
 					"$(PROJECT_DIR)/framework/bqmm",
 					"$(PROJECT_DIR)/framework/PTT",
+					"$(PROJECT_DIR)/framework/RCSticker",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -3435,6 +3469,7 @@
 					"$(PROJECT_DIR)/framework/ifly",
 					"$(PROJECT_DIR)/framework/bqmm",
 					"$(PROJECT_DIR)/framework/PTT",
+					"$(PROJECT_DIR)/framework/RCSticker",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;

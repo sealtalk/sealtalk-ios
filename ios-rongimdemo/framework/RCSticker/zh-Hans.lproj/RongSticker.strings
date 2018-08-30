@@ -1,0 +1,17 @@
+/* 
+  RongSticker.strings
+  RongSticker
+
+  Created by Zhaoqianyu on 2018/8/21.
+  Copyright © 2018年 RongCloud. All rights reserved.
+*/
+
+"back"="返回";
+"my_stickers"="我的表情";
+"delete_title"="移除";
+"download_package"="已下载的表情";
+"begin_download"="下载";
+"package_list_empty"="可在表情推荐面板中，获取动态表情";
+"loadingfailed"="加载失败";
+"download_failed_alert"="\"%@\" 未下载成功，请重试。";
+"confirm"="确认";
