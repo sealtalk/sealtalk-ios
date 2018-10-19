@@ -1,7 +1,7 @@
 /*!
  @header BlinkEngine.h
  @author BailingCloud
- @version 2.0.2_20180814141313_dev_meeting_dev_rce_e7e1539
+ @version 2.0.3_20180915160615_dev_meeting_dev_seal_074007e
  @Copyright © 2018年 BailingCloud. All rights reserved.
  */
 
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreMedia/CoreMedia.h>
 
-#define SDKCompileInfo @"2.0.2_20180814141244_dev_meeting_dev_rce_e7e1539"
+#define SDKCompileInfo @"2.0.3_20180915160541_dev_meeting_dev_seal_074007e"
 
 //宏定义说明, 设置视频聊天参数时的Key值, 详见SetVideoParameters:方法
 #define kAudioOnly      @"AudioOnly"
@@ -18,6 +18,7 @@
 #define kUserType       @"UserType"
 #define kCloseCamera    @"CloseCamera"
 #define kGPUFilter      @"GPUFilter"
+
 
 
 /**
@@ -126,6 +127,21 @@ typedef NS_ENUM(NSInteger, BlinkVideoProfile)
      *分辨率:1920x1080,  帧率:30
      */
     Blink_VideoProfile_1920_1080P_2    = 72
+};
+
+/**
+ *视频观看模式
+ */
+typedef NS_ENUM(NSInteger, BlinkVideoMode)
+{
+    /**
+     *高清视频模式
+     */
+    Blink_VideoMode_Highresolution,
+    /**
+     *流畅视频模式
+     */
+    Blink_VideoMode_Smooth
 };
 
 /**
@@ -621,8 +637,8 @@ __attribute__((visibility("default"))) @interface BlinkEngine : NSObject
 
 /*!
  @method
- @abstract 初始化方法, serverURL: cmp.blinkcloud.cn:80 私有云可自定义. 此初始化方法不会进行探测流程
- @param serverURL 导航配置服务器URL
+ @abstract 初始化方法
+ @param serverURL CMP的serverURL
  */
 - (instancetype)initEngine:(NSString *)serverURL;
 
@@ -642,13 +658,20 @@ __attribute__((visibility("default"))) @interface BlinkEngine : NSObject
  @method
  @abstract 必须在调用joinChannel:前设置本地视频参数才能生效, 不设置则使用默认值
  @param parameters  kAudioOnly:    是否为纯音频, 默认值为NO
-                    kVideoProfile: 本地视频分辨率, 默认值为Blink_VideoProfile_480P
-                    kMaxBandWidth: 最大码率, 默认值为600
+                    kVideoProfile: 本地视频分辨率, 默认值为Blink_VideoProfile_640_480P
+                    kMaxBandWidth: 最大码率, 默认值为500
                     kUserType:     用户类型, 默认值为Blink_User_Normal
                     kCloseCamera:  是否关闭视频显示, 默认值为1,不关闭视频
                     kGPUFilter:    是否打开滤镜, 默认为NO,不使用滤镜
  */
 - (void)setVideoParameters:(NSDictionary *)parameters;
+
+/*!
+ @method
+ @abstract 不设置则使用默认值
+ @param parameters  videoMode:    视频观看模式, 默认值为Blink_VideoMode_Smooth
+ */
+- (void)setVideoMode:(BlinkVideoMode)videoMode;
 
 /*!
  @method

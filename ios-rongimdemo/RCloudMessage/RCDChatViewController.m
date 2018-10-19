@@ -266,6 +266,13 @@ NSMutableDictionary *userInputStatus;
     [self addToolbarItems];
 }
 
+- (void)willMoveToParentViewController:(UIViewController*)parent{
+    [super willMoveToParentViewController:parent];
+    if (!parent) {
+        [self.realTimeLocation quitRealTimeLocation];
+    }
+}
+
 /*点击系统键盘的语音按钮，导致输入工具栏被遮挡*/
 - (void)keyboardWillShowNotification:(NSNotification *)notification {
     if(!self.chatSessionInputBarControl.inputTextView.isFirstResponder)
@@ -335,8 +342,8 @@ NSMutableDictionary *userInputStatus;
 }
 
 - (void)clearHistoryMSG:(NSNotification *)notification {
-    [self.conversationDataRepository removeAllObjects];
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self.conversationDataRepository removeAllObjects];
         [self.conversationMessageCollectionView reloadData];
     });
 }

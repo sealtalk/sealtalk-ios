@@ -10,6 +10,7 @@
 #import "RCCallUserProfile.h"
 #import <Foundation/Foundation.h>
 #import <RongIMLib/RongIMLib.h>
+#import <CoreMedia/CoreMedia.h>
 
 /*!
  通话状态变化的监听器
@@ -108,6 +109,12 @@
  */
 - (void)networkTxQuality:(RCCallQuality)txQuality rxQuality:(RCCallQuality)rxQuality;
 
+/*!
+ 当前通话本地视频数据, 用于GPU滤镜处理, 同步返回处理后的同一sampleBuffer对象, 需要本地视频数据时首先调用 RCCallClient.h 中 - (void)setEnableBeauty:(BOOL)enable方法, 该方法默认为NO.
+ 若设置setEnableBeauty为Yes, 但未实现processVideoFrame:则使用默认美颜.
+ @param sampleBuffer   本地视频数据
+ */
+- (CMSampleBufferRef)processVideoFrame:(CMSampleBufferRef)sampleBuffer;
 
 #pragma mark - Meeting
 - (void)onWhiteBoard:(NSString *)url;
