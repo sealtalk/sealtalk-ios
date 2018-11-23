@@ -12,7 +12,7 @@
 #import <RongIMLib/RongIMLib.h>
 #import <UIKit/UIKit.h>
 
-#define RC_ChatSessionInputBar_Height 50.f
+#define RC_ChatSessionInputBar_Height 49.5f
 ///输入栏扩展输入的唯一标示
 #define INPUT_MENTIONED_SELECT_TAG 1000
 #define PLUGIN_BOARD_ITEM_ALBUM_TAG 1001
@@ -149,6 +149,11 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
  */
 @protocol RCChatSessionInputBarControlDataSource;
 
+/**
+ 图片编辑的协议
+ */
+@protocol RCPictureEditDelegate;
+
 /*!
  输入工具栏
  */
@@ -173,6 +178,11 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
  输入工具栏获取用户信息的回调
  */
 @property(weak, nonatomic) id<RCChatSessionInputBarControlDataSource> dataSource;
+
+/**
+ 点击编辑按钮会调用该代理的onClickEditPicture方法
+ */
+@property(weak, nonatomic) id<RCPictureEditDelegate> photoEditorDelegate;
 
 /*!
  公众服务菜单的容器View
@@ -258,6 +268,13 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
  文本输入框的高度
  */
 @property(assign, nonatomic) float inputTextview_height __deprecated_msg("已废弃，请勿使用。");
+
+/**
+ 输入框最大输入行数
+ 
+ @discussion 该变量设置范围为: 1~6, 超过该范围会自动调整为边界值
+ */
+@property(nonatomic, assign) NSInteger maxInputLines;
 
 /*!
  公众服务账号菜单
@@ -366,6 +383,13 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
  @discussion 当本view所在的view frame发生变化，需要重新计算本view的frame时，调用此方法
  */
 - (void)containerViewSizeChanged;
+
+/**
+ 内容区域大小发生变化。
+ 
+ @discussion 当本view所在的view frame发生变化，需要重新计算本view的frame时，调用此方法，无动画
+ */
+- (void)containerViewSizeChangedNoAnnimation;
 
 /*!
  设置默认的输入框类型
@@ -600,3 +624,21 @@ typedef NS_ENUM(NSInteger, KBottomBarStatus) {
 - (RCUserInfo *)getSelectingUserInfo:(NSString *)userId;
 
 @end
+
+/**
+ 图片编辑的代理
+ */
+@protocol RCPictureEditDelegate <NSObject>
+
+/**
+ 点击编辑按钮时的回调，可以通过rootCtrl控制器进行页面的跳转，在源码中默认跳转到RCPictureEditViewController
+
+ @param rootCtrl 图片编辑根控制器，用于页面跳转
+ @param originalImage 原图片
+ @param editCompletion 编辑过的图片通过Block回传给SDK
+ */
+- (void)onClickEditPicture: (UIViewController *)rootCtrl originalImage: (UIImage *)originalImage editCompletion:(void (^)(UIImage *editedImage))editCompletion;
+
+@end
+
+

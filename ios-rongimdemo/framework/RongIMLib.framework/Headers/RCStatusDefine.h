@@ -381,7 +381,13 @@ typedef NS_ENUM(NSInteger, RCErrorCode) {
     /*!
      消息中敏感词已经被替换 （接收方可以收到被替换之后的消息）
      */
-    RC_MSG_REPLACED_SENSITIVE_WORD = 21502
+    RC_MSG_REPLACED_SENSITIVE_WORD = 21502,
+    
+    /*!
+     小视频消息超限
+     */
+    RC_SIGHT_MSG_DURATION_LIMIT_EXCEED = 34002,
+
 };
 
 #pragma mark - 连接状态
@@ -603,9 +609,15 @@ typedef NS_ENUM(NSUInteger, RCConversationType) {
     ConversationType_PUSHSERVICE = 9,
     
     /*!
+     加密会话（仅对部分私有云用户开放，公有云用户不适用）
+     */
+    ConversationType_Encrypted = 11,
+    
+    /*!
      无效类型
      */
-    CoversationType_INVALID
+    ConversationType_INVALID
+    
 };
 
 #pragma mark RCConversationNotificationStatus - 会话提醒状态

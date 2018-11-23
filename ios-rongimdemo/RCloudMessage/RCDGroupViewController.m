@@ -7,20 +7,12 @@
 //
 
 #import "RCDGroupViewController.h"
-#import "AFHttpTool.h"
-#import "DefaultPortraitView.h"
-#import "MBProgressHUD.h"
 #import "RCDChatViewController.h"
-#import "RCDCommonDefine.h"
 #import "RCDGroupInfo.h"
-#import "RCDGroupSettingsTableViewController.h"
 #import "RCDGroupTableViewCell.h"
 #import "RCDHttpTool.h"
-#import "RCDRCIMDataSource.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
-#import "UIImageView+WebCache.h"
-#import <RongIMKit/RongIMKit.h>
 #import "RCDForwardAlertView.h"
 @interface RCDGroupViewController () <UITableViewDataSource, UITableViewDelegate>
 

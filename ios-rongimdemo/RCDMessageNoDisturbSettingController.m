@@ -312,7 +312,7 @@
 
         int timeDif = timeDiff / 60;
 
-        __weak typeof(&*self) blockSelf = self;
+        __weak typeof(self) blockSelf = self;
         [[RCIMClient sharedRCIMClient] setNotificationQuietHours:startTimeStr
             spanMins:timeDif
             success:^{
@@ -329,7 +329,7 @@
                 });
             }];
     } else {
-        __weak typeof(&*self) blockSelf = self;
+        __weak typeof(self) blockSelf = self;
         [[RCIMClient sharedRCIMClient] removeNotificationQuietHours:^{
         }
             error:^(RCErrorCode status) {

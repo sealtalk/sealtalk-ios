@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param error 错误信息对象，成功时为nil
  @param path 下载完成后文件的路径，此路径为相对路径，相对于沙盒根目录 NSHomeDirectory
  */
-- (void)downloadItem:(RCDownloadItem*)item didCompleteWithError:(NSError*)error filePath:(NSString*)path;
+- (void)downloadItem:(RCDownloadItem*)item didCompleteWithError:(NSError*)error filePath:(nullable NSString*)path;
 @end
 
 

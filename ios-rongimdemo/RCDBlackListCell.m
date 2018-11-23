@@ -9,7 +9,6 @@
 #import "RCDBlackListCell.h"
 #import "RCDHttpTool.h"
 #import "UIImageView+WebCache.h"
-#import <RongIMKit/RongIMKit.h>
 
 @interface RCDBlackListCell ()
 @property(nonatomic, strong) UIImageView *iPhoto;

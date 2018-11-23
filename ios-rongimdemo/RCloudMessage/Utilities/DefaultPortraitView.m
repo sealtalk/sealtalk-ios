@@ -7,7 +7,6 @@
 //
 
 #import "DefaultPortraitView.h"
-#import "pinyin.h"
 
 @implementation DefaultPortraitView
 

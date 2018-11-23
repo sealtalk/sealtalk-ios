@@ -33,4 +33,8 @@
  */
 @property(nonatomic, strong) NSString *originalObjectName;
 
+/*!
+ 是否是管理员操作
+ */
+@property(nonatomic, assign) BOOL isAdmin;
 @end

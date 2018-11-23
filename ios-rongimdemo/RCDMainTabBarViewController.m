@@ -11,7 +11,6 @@
 #import "RCDContactViewController.h"
 #import "RCDMeTableViewController.h"
 #import "RCDSquareTableViewController.h"
-#import <RongIMKit/RongIMKit.h>
 
 @interface RCDMainTabBarViewController ()
 

@@ -213,7 +213,7 @@
 }
 
 - (void)saveNewPassword:(id)sender {
-    __weak __typeof(&*self) weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     NSString *userPwd = [DEFAULTS objectForKey:@"userPwd"];
     if ([userPwd isEqualToString:self.oldPwdTextField.text]) {
         NSInteger newPwdLength = self.newsPwdTextField.text.length;

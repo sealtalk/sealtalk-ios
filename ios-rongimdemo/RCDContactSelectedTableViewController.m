@@ -7,7 +7,6 @@
 //
 
 #import "RCDContactSelectedTableViewController.h"
-#import "DefaultPortraitView.h"
 #import "MBProgressHUD.h"
 #import "RCDChatViewController.h"
 #import "RCDCommonDefine.h"
@@ -18,13 +17,10 @@
 #import "RCDNoFriendView.h"
 #import "RCDRCIMDataSource.h"
 #import "RCDUIBarButtonItem.h"
-#import "RCDUserInfo.h"
 #import "RCDUserInfoManager.h"
 #import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
-#import "UIImageView+WebCache.h"
-#import "pinyin.h"
 
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 

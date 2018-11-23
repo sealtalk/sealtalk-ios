@@ -8,10 +8,7 @@
 
 #import "RCDHttpTool.h"
 #import "AFHttpTool.h"
-#import "RCDGroupInfo.h"
 #import "RCDRCIMDataSource.h"
-#import "RCDUserInfo.h"
-#import "RCDUserInfoManager.h"
 #import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
 #import "SortForTime.h"

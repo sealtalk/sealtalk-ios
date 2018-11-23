@@ -7,9 +7,7 @@
 //
 
 #import "RCDChatListViewController.h"
-#import "AFHttpTool.h"
 #import "KxMenu.h"
-#import "RCDAddFriendViewController.h"
 #import "RCDAddressBookViewController.h"
 #import "RCDChatListCell.h"
 #import "RCDChatViewController.h"
@@ -17,17 +15,13 @@
 #import "RCDContactSelectedTableViewController.h"
 #import "RCDHttpTool.h"
 #import "RCDPublicServiceListViewController.h"
-#import "RCDRCIMDataSource.h"
 #import "RCDSearchBar.h"
 #import "RCDSearchFriendViewController.h"
-#import "RCDSearchResultModel.h"
 #import "RCDSearchViewController.h"
 #import "RCDUIBarButtonItem.h"
-#import "RCDUserInfo.h"
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import "UITabBar+badge.h"
-#import <RongIMKit/RongIMKit.h>
 
 @interface RCDChatListViewController () <UISearchBarDelegate, RCDSearchViewDelegate>
 @property(nonatomic, strong) UINavigationController *searchNavigationController;
@@ -520,7 +514,7 @@
 
 #pragma mark - 收到消息监听
 - (void)didReceiveMessageNotification:(NSNotification *)notification {
-    __weak typeof(&*self) blockSelf_ = self;
+    __weak typeof(self) blockSelf_ = self;
     //处理好友请求
     RCMessage *message = notification.object;
     if ([message.content isMemberOfClass:[RCContactNotificationMessage class]]) {
@@ -658,7 +652,7 @@ atIndexPath:(NSIndexPath *)indexPath
 }
 
 - (void)receiveNeedRefreshNotification:(NSNotification *)status {
-    __weak typeof(&*self) __blockSelf = self;
+    __weak typeof(self) __blockSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         if (__blockSelf.displayConversationTypeArray.count == 1 &&
             [__blockSelf.displayConversationTypeArray[0] integerValue] == ConversationType_DISCUSSION) {

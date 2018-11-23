@@ -9,7 +9,6 @@
 #import "NSData+ImageContentType.h"
 #import "UIImage+GIF.h"
 #import "UIImage+MultiFormat.h"
-#import <ImageIO/ImageIO.h>
 
 #ifdef SD_WEBP
 #import "UIImage+WebP.h"

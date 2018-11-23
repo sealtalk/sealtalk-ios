@@ -7,7 +7,6 @@
 //
 
 #import "RCDGroupSettingsTableViewController.h"
-#import "DefaultPortraitView.h"
 #import "MBProgressHUD.h"
 #import "RCDAddFriendViewController.h"
 #import "RCDCommonDefine.h"
@@ -21,11 +20,9 @@
 #import "RCDPersonDetailViewController.h"
 #import "RCDSearchHistoryMessageController.h"
 #import "RCDUserInfoManager.h"
-#import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
-#import <RongIMLib/RongIMLib.h>
 #import "RCDUIBarButtonItem.h"
 static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 

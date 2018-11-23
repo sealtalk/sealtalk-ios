@@ -558,7 +558,6 @@ static id AFJSONObjectByRemovingKeysWithNullValues(id JSONObject, NSJSONReadingO
 #pragma mark -
 
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
-#import <CoreGraphics/CoreGraphics.h>
 
 static UIImage *AFImageWithDataAtScale(NSData *data, CGFloat scale) {
     UIImage *image = [[UIImage alloc] initWithData:data];

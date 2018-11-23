@@ -7,20 +7,13 @@
 //
 
 #import "RCDSettingServerUrlViewController.h"
-#import "AFHttpTool.h"
 #import "MBProgressHUD.h"
-#import "RCAnimatedImagesView.h"
-#import "RCDCommonDefine.h"
 #import "RCDFindPswViewController.h"
 #import "RCDLoginViewController.h"
 #import "RCDSettingUserDefaults.h"
-#import "RCDTextFieldValidate.h"
 #import "RCUnderlineTextField.h"
 #import "UIColor+RCColor.h"
 #import <RongIMKit/RongIMKit.h>
-#import <RongIMLib/RongIMLib.h>
-
-#import "RCDLoginViewController.h"
 
 @interface RCDSettingServerUrlViewController () <UITextFieldDelegate>
 @property(nonatomic, strong) UIView *headBackground;

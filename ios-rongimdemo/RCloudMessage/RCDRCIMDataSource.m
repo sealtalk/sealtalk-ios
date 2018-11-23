@@ -7,16 +7,11 @@
 //
 
 #import "RCDRCIMDataSource.h"
-#import "AFHttpTool.h"
-#import "DefaultPortraitView.h"
-#import "RCDCommonDefine.h"
 #import "RCDGroupInfo.h"
 #import "RCDHttpTool.h"
-#import "RCDUserInfo.h"
 #import "RCDUserInfoManager.h"
 #import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
-#import <RongIMLib/RongIMLib.h>
 
 @interface RCDRCIMDataSource ()
 

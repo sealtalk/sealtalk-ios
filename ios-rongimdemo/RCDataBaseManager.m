@@ -9,8 +9,6 @@
 #import "RCDataBaseManager.h"
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
-#import "RCDHttpTool.h"
-#import "RCDUserInfo.h"
 #import "RCDUtilities.h"
 
 @interface RCDataBaseManager ()

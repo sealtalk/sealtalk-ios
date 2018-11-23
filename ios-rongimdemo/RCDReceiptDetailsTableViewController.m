@@ -14,7 +14,6 @@
 #import "RCDUIBarButtonItem.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
-#import <RongIMKit/RongIMKit.h>
 
 @interface RCDReceiptDetailsTableViewController () <RCDReceiptDetailsCellDelegate>
 

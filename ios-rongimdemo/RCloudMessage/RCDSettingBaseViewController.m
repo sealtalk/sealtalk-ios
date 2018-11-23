@@ -7,7 +7,6 @@
 //
 
 #import "RCDSettingBaseViewController.h"
-#import <RongIMLib/RongIMLib.h>
 #import "RCDUIBarButtonItem.h"
 @interface RCDSettingBaseViewController () <UIActionSheetDelegate>
 @end

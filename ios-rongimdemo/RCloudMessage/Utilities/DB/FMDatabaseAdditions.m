@@ -7,8 +7,6 @@
 //
 
 #import "FMDatabaseAdditions.h"
-#import "FMDatabase.h"
-#import "TargetConditionals.h"
 
 @interface FMDatabase (PrivateStuff)
 - (FMResultSet *)executeQuery:(NSString *)sql

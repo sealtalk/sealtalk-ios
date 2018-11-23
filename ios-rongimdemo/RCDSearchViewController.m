@@ -16,8 +16,6 @@
 #import "RCDSearchMoreViewCell.h"
 #import "RCDSearchResultModel.h"
 #import "RCDSearchResultViewCell.h"
-#import "RCDUtilities.h"
-#import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
 @interface RCDSearchViewController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource,
                                        UIGestureRecognizerDelegate>

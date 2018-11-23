@@ -7,10 +7,8 @@
 //
 
 #import "RCDSquareCell.h"
-#import "RCDCommonDefine.h"
 #import "RCDUtilities.h"
 #import "UIColor+RCColor.h"
-#import <RongIMKit/RongIMKit.h>
 
 @implementation RCDSquareCell
 

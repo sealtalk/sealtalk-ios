@@ -16,7 +16,6 @@
 #import "RCDUIBarButtonItem.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
-#import <RongIMLib/RongIMLib.h>
 
 @interface RCDSettingsTableViewController () <UIAlertViewDelegate>
 

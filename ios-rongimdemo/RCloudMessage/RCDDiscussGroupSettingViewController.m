@@ -131,7 +131,7 @@
         [self clearHistoryMessage];
     } else {
         if (0 == buttonIndex) {
-            __weak typeof(&*self) weakSelf = self;
+            __weak typeof(self) weakSelf = self;
             [[RCIM sharedRCIM] quitDiscussion:self.targetId
                 success:^(RCDiscussion *discussion) {
                     NSLog(@"退出讨论组成功");
@@ -284,7 +284,7 @@
                 [discussionTitle deleteCharactersInRange:NSMakeRange(discussionTitle.length - 1, 1)];
                 self.conversationTitle = discussionTitle;
 
-                __weak typeof(&*self) weakSelf = self;
+                __weak typeof(self) weakSelf = self;
                 [[RCIM sharedRCIM]
                     createDiscussion:discussionTitle
                           userIdList:userIdList

@@ -9,10 +9,7 @@
 #import "XPathQuery.h"
 
 #import <libxml/HTMLparser.h>
-#import <libxml/parser.h>
-#import <libxml/tree.h>
 #import <libxml/xpath.h>
-#import <libxml/xpathInternals.h>
 
 NSDictionary *DictionaryForNode(xmlNodePtr currentNode, NSMutableDictionary *parentResult, BOOL parentContent);
 NSArray *PerformXPathQuery(xmlDocPtr doc, NSString *query);

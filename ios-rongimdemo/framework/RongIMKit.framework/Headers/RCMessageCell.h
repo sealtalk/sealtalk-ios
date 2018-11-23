@@ -126,4 +126,5 @@
  */
 - (void)updateStatusContentView:(RCMessageModel *)model;
 
+
 @end

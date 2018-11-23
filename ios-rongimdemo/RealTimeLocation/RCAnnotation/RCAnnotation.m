@@ -7,7 +7,6 @@
 //
 
 #import "RCAnnotation.h"
-#import "RCDUtilities.h"
 
 @implementation RCAnnotation
 

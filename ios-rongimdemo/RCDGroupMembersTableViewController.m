@@ -10,12 +10,10 @@
 #import "DefaultPortraitView.h"
 #import "RCDAddFriendViewController.h"
 #import "RCDContactTableViewCell.h"
-#import "RCDMeInfoTableViewController.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDUIBarButtonItem.h"
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
-#import <RongIMKit/RongIMKit.h>
 
 @interface RCDGroupMembersTableViewController ()
 

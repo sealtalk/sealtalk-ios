@@ -9,7 +9,7 @@
 #import "RCDLabel.h"
 #import "RCDCommonDefine.h"
 #import "RCDUtilities.h"
-#import <RongIMKit/RongIMKit.h>
+
 @implementation RCDLabel
 - (void)attributedText:(NSString *)textString byHighlightedText:(NSString *)highlightedText {
     NSRange range = [self getRange:highlightedText inText:textString];

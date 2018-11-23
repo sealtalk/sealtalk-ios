@@ -10,7 +10,6 @@
 #import "DefaultPortraitView.h"
 #import "RCDCommonDefine.h"
 #import "RCDGroupInfo.h"
-#import "RCDHttpTool.h"
 #import "UIImageView+WebCache.h"
 #import <RongIMKit/RongIMKit.h>
 

@@ -10,7 +10,6 @@
 //#import "RCChatViewController.h"
 #import <RongIMKit/RongIMKit.h>
 //#import "RCHandShakeMessage.h"
-#import "RCDChatViewController.h"
 #import "RCDCommonDefine.h"
 #import "RCDCustomerServiceViewController.h"
 
@@ -133,7 +132,7 @@
     self.tabBarItem.badgeValue = nil;
 }
 - (void)didReceiveMessageNotification:(NSNotification *)notification {
-    __weak typeof(&*self) __weakSelf = self;
+    __weak typeof(self) __weakSelf = self;
     RCMessage *message = notification.object;
     if (message.conversationType == ConversationType_CUSTOMERSERVICE) {
         dispatch_async(dispatch_get_main_queue(), ^{

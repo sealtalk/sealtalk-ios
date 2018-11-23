@@ -93,7 +93,6 @@
  */
 @property(nonatomic, weak) id<RCCCContactViewControllerDelegate> contactVCDelegate;
 
-
 /**
  选中通讯录中的某个人，点击确定将名片发送到单聊会话的回调方法
 

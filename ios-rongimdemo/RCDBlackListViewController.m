@@ -11,8 +11,6 @@
 #import "RCDUserInfoManager.h"
 #import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
-#import "pinyin.h"
-#import <RongIMKit/RongIMKit.h>
 
 @interface RCDBlackListViewController ()
 
@@ -179,7 +177,7 @@
         NSString *key = [self.keys objectAtIndex:indexPath.section];
         RCUserInfo *info = [[self.mDictData objectForKey:key] objectAtIndex:indexPath.row];
 
-        __weak typeof(&*self) weakSelf = self;
+        __weak typeof(self) weakSelf = self;
 
         [[RCIMClient sharedRCIMClient] removeFromBlacklist:info.userId
             success:^{

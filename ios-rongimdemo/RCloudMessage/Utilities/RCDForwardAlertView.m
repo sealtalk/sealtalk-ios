@@ -8,7 +8,6 @@
 
 #import "RCDForwardAlertView.h"
 #import "RCDCommonDefine.h"
-#import <RongIMKit/RongIMKit.h>
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
 #define itemHight 40

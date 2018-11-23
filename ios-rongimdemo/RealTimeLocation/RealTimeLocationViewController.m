@@ -11,12 +11,8 @@
 #import "HeadCollectionView.h"
 #import "MBProgressHUD.h"
 #import "RCAnnotation.h"
-#import "RCDUtilities.h"
 #import "RCLocationConvert.h"
-#import "RCLocationView.h"
 #import "UIColor+RCColor.h"
-#import <MapKit/MapKit.h>
-#import <RongIMKit/RongIMKit.h>
 
 @interface RealTimeLocationViewController () <RCRealTimeLocationObserver, MKMapViewDelegate,
                                               HeadCollectionTouchDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
@@ -143,7 +139,7 @@ MBProgressHUD *hud;
     }
 }
 - (void)onReceiveLocation:(CLLocation *)location type:(RCRealTimeLocationType)type fromUserId:(NSString *)userId {
-    __weak typeof(&*self) __weakself = self;
+    __weak typeof(self) __weakself = self;
     if (self.isFristTimeToLoad) {
         if (-90.0f <= location.coordinate.latitude && location.coordinate.latitude <= 90.0f &&
             -180.0f <= location.coordinate.longitude && location.coordinate.longitude <= 180.0f) {
@@ -244,7 +240,7 @@ MBProgressHUD *hud;
 
 - (void)onParticipantsJoin:(NSString *)userId {
     RCAnnotation *annotaton = [self.userAnnotationDic objectForKey:userId];
-    __weak typeof(&*self) __weakself = self;
+    __weak typeof(self) __weakself = self;
     if (annotaton == nil) {
         RCLocationView *annotatonView = [[RCLocationView alloc] init];
         annotatonView.userId = userId;
@@ -286,7 +282,7 @@ MBProgressHUD *hud;
 }
 
 - (void)onParticipantsQuit:(NSString *)userId {
-    __weak typeof(&*self) __weakself = self;
+    __weak typeof(self) __weakself = self;
     if (self.headCollectionView) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [__weakself.headCollectionView participantQuit:userId];
@@ -319,7 +315,7 @@ MBProgressHUD *hud;
 
 //选择用户时以用户坐标为中心
 - (void)onSelectUserLocationWithUserId:(NSString *)userId {
-    __weak typeof(&*self) __weakself = self;
+    __weak typeof(self) __weakself = self;
     RCAnnotation *annotaton = [self.userAnnotationDic objectForKey:userId];
     if (annotaton) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -360,7 +356,7 @@ MBProgressHUD *hud;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
     case 0: {
-        __weak typeof(&*self) __weakself = self;
+        __weak typeof(self) __weakself = self;
         [self dismissViewControllerAnimated:YES
                                  completion:^{
                                      [__weakself.realTimeLocationProxy quitRealTimeLocation];

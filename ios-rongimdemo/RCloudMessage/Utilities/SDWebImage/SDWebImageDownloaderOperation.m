@@ -10,7 +10,6 @@
 #import "SDWebImageDecoder.h"
 #import "SDWebImageManager.h"
 #import "UIImage+MultiFormat.h"
-#import <ImageIO/ImageIO.h>
 
 NSString *const SDWebImageDownloadStartNotification = @"SDWebImageDownloadStartNotification";
 NSString *const SDWebImageDownloadReceiveResponseNotification = @"SDWebImageDownloadReceiveResponseNotification";

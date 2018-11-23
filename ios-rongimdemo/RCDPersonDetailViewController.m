@@ -17,8 +17,6 @@
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import <RongCallKit/RongCallKit.h>
-#import <RongIMKit/RongIMKit.h>
-#import <RongIMLib/RCUserInfo.h>
 #import "RCDUIBarButtonItem.h"
 @interface RCDPersonDetailViewController () <UIActionSheetDelegate>
 @property(nonatomic) BOOL inBlackList;
@@ -681,10 +679,17 @@
 }
 
 - (void)doCall:(id)sender {
+    self.phoneNumberLabel.userInteractionEnabled = NO;
+    [self performSelector:@selector(changePhoneNumberLabelInteractionEnabled) withObject:sender afterDelay:1];
+
     NSMutableString *str = [[NSMutableString alloc] initWithFormat:@"tel:%@", self.phonenumber];
     UIWebView *callWebview = [[UIWebView alloc] init];
     [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
     [self.view addSubview:callWebview];
+}
+
+- (void)changePhoneNumberLabelInteractionEnabled{
+    self.phoneNumberLabel.userInteractionEnabled = YES;
 }
 
 @end

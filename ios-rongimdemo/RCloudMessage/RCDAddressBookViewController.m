@@ -7,21 +7,15 @@
 //
 
 #import "RCDAddressBookViewController.h"
-#import "DefaultPortraitView.h"
 #import "MBProgressHUD.h"
 #import "RCDAddressBookTableViewCell.h"
 #import "RCDChatViewController.h"
 #import "RCDCommonDefine.h"
 #import "RCDHttpTool.h"
 #import "RCDNoFriendView.h"
-#import "RCDPersonDetailViewController.h"
 #import "RCDRCIMDataSource.h"
-#import "RCDUserInfo.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
-#import "UIImageView+WebCache.h"
-#import <RongIMLib/RongIMLib.h>
-#include <ctype.h>
 
 @interface RCDAddressBookViewController ()
 

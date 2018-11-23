@@ -8,18 +8,13 @@
 
 #import "RCDChatViewController.h"
 #import "RCDAddFriendViewController.h"
-#import "RCDChatViewController.h"
-#import "RCDContactSelectedTableViewController.h"
-#import "RCDCustomerEmoticonTab.h"
 #import "RCDDiscussGroupSettingViewController.h"
 #import "RCDGroupSettingsTableViewController.h"
 #import "RCDHttpTool.h"
 #import "RCDPersonDetailViewController.h"
-#import "RCDPrivateSettingViewController.h"
 #import "RCDPrivateSettingsTableViewController.h"
 #import "RCDRCIMDataSource.h"
 #import "RCDReceiptDetailsTableViewController.h"
-#import "RCDRoomSettingViewController.h"
 #import "RCDTestMessage.h"
 #import "RCDTestMessageCell.h"
 #import "RCDUIBarButtonItem.h"
@@ -30,8 +25,6 @@
 #import "RealTimeLocationStartCell.h"
 #import "RealTimeLocationStatusView.h"
 #import "RealTimeLocationViewController.h"
-#import <RongContactCard/RongContactCard.h>
-#import <RongIMKit/RongIMKit.h>
 #import "RCDContactViewController.h"
 #import "RCDForwardAlertView.h"
 
@@ -45,7 +38,7 @@
 
 - (UIView *)loadEmoticonView:(NSString *)identify index:(int)index;
 
-@property(nonatomic) BOOL isLoading;
+@property(nonatomic, assign) BOOL loading;
 
 @property(nonatomic, strong) RCDUIBarButtonItem *rightBtn;
 @end
@@ -126,7 +119,7 @@ NSMutableDictionary *userInputStatus;
     [self registerClass:[RealTimeLocationStartCell class] forMessageClass:[RCRealTimeLocationStartMessage class]];
     [self registerClass:[RealTimeLocationEndCell class] forMessageClass:[RCRealTimeLocationEndMessage class]];
 
-    __weak typeof(&*self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     [[RCRealTimeLocationManager sharedManager] getRealTimeLocationProxy:self.conversationType
         targetId:self.targetId
         success:^(id<RCRealTimeLocationProxy> realTimeLocation) {
@@ -239,6 +232,11 @@ NSMutableDictionary *userInputStatus;
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHideNotification:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onEndForwardMessage:)
                                                  name:@"RCDForwardMessageEnd"
                                                object:nil];
@@ -262,7 +260,7 @@ NSMutableDictionary *userInputStatus;
     //  emoticonTab2.chartView = self;
     //
     //  [self.emojiBoardView addEmojiTab:emoticonTab2];
-    _isLoading = NO;
+    self.loading = NO;
     [self addToolbarItems];
 }
 
@@ -278,6 +276,14 @@ NSMutableDictionary *userInputStatus;
     if(!self.chatSessionInputBarControl.inputTextView.isFirstResponder)
     {
         [self.chatSessionInputBarControl.inputTextView becomeFirstResponder];
+    }
+}
+
+//和上面的方法相对应，在别的页面弹出键盘导致聊天页面输入状态改变需要及时改变回来
+- (void)keyboardWillHideNotification:(NSNotification *)notification {
+    if(!self.chatSessionInputBarControl.inputTextView.isFirstResponder)
+    {
+        [self.chatSessionInputBarControl.inputTextView resignFirstResponder];
     }
 }
 
@@ -351,6 +357,7 @@ NSMutableDictionary *userInputStatus;
 - (void)leftBarButtonItemPressed:(id)sender {
     if ([self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_OUTGOING ||
         [self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_CONNECTED) {
+        [self.chatSessionInputBarControl resetToDefaultStatus];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                             message:@"离开聊天，位置共享也会结束，确认离开"
                                                            delegate:self
@@ -702,21 +709,21 @@ NSMutableDictionary *userInputStatus;
 
 #pragma mark - RCRealTimeLocationObserver
 - (void)onRealTimeLocationStatusChange:(RCRealTimeLocationStatus)status {
-    __weak typeof(&*self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf updateRealTimeLocationStatus];
     });
 }
 
 - (void)onReceiveLocation:(CLLocation *)location type:(RCRealTimeLocationType)type fromUserId:(NSString *)userId {
-    __weak typeof(&*self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf updateRealTimeLocationStatus];
     });
 }
 
 - (void)onParticipantsJoin:(NSString *)userId {
-    __weak typeof(&*self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     if ([userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
         [self notifyParticipantChange:@"你加入了地理位置共享"];
     } else {
@@ -735,7 +742,7 @@ NSMutableDictionary *userInputStatus;
 }
 
 - (void)onParticipantsQuit:(NSString *)userId {
-    __weak typeof(&*self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     if ([userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
         [self notifyParticipantChange:@"你退出地理位置共享"];
     } else {
@@ -773,7 +780,7 @@ NSMutableDictionary *userInputStatus;
 }
 
 - (void)notifyParticipantChange:(NSString *)text {
-    __weak typeof(&*self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf.realTimeLocationStatusView updateText:text];
         [weakSelf performSelector:@selector(updateRealTimeLocationStatus) withObject:nil afterDelay:0.5];
@@ -821,7 +828,7 @@ NSMutableDictionary *userInputStatus;
 - (void)updateRealTimeLocationStatus {
     if (self.realTimeLocation) {
         [self.realTimeLocationStatusView updateRealTimeLocationStatus];
-        __weak typeof(&*self) weakSelf = self;
+        __weak typeof(self) weakSelf = self;
         NSArray *participants = nil;
         switch ([self.realTimeLocation getStatus]) {
         case RC_REAL_TIME_LOCATION_STATUS_OUTGOING:
@@ -994,8 +1001,8 @@ NSMutableDictionary *userInputStatus;
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     //当会话类型是聊天室时，下拉加载消息会调用getRemoteChatroomHistoryMessages接口从服务器拉取聊天室消息
     if (self.conversationType == ConversationType_CHATROOM) {
-        if (scrollView.contentOffset.y < -15.0f && !_isLoading) {
-            _isLoading = YES;
+        if (scrollView.contentOffset.y < -15.0f && !self.loading) {
+            self.loading = YES;
             [self performSelector:@selector(loadMoreChatroomHistoryMessageFromServer) withObject:nil afterDelay:0.4f];
         }
     } else {
@@ -1017,7 +1024,7 @@ NSMutableDictionary *userInputStatus;
         count:20
         order:RC_Timestamp_Desc
         success:^(NSArray *messages, long long syncTime) {
-            _isLoading = NO;
+            self.loading = NO;
             [weakSelf handleMessages:messages];
         }
         error:^(RCErrorCode status) {
@@ -1129,6 +1136,7 @@ NSMutableDictionary *userInputStatus;
 - (void)onEndForwardMessage:(NSNotification *)notification{
     //置为 NO,将消息 cell 重置为初始状态
     self.allowsMessageCellSelection = NO;
+    [self.conversationMessageCollectionView reloadItemsAtIndexPaths:[self.conversationMessageCollectionView indexPathsForVisibleItems]];
 }
 
 - (void)deleteMessages{

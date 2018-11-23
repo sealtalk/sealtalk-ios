@@ -7,7 +7,6 @@
 //
 
 #import "RCDCustomerEmoticonTab.h"
-#import "RCDChatViewController.h"
 
 @interface RCDCustomerEmoticonTab ()
 @end

@@ -7,21 +7,16 @@
 //
 
 #import "RCDMeInfoTableViewController.h"
-#import "DefaultPortraitView.h"
 #import "MBProgressHUD.h"
 #import "RCDBaseSettingTableViewCell.h"
-#import "RCDChangePasswordViewController.h"
 #import "RCDChatViewController.h"
 #import "RCDCommonDefine.h"
 #import "RCDEditUserNameViewController.h"
 #import "RCDHttpTool.h"
-#import "RCDRCIMDataSource.h"
 #import "RCDUIBarButtonItem.h"
 #import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
-#import "UIImageView+WebCache.h"
-#import <RongIMLib/RongIMLib.h>
 
 @interface RCDMeInfoTableViewController ()
 

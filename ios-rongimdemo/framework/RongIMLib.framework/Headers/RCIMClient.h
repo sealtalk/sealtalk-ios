@@ -183,10 +183,10 @@
 /*!
  IMLib输入状态的的监听器
 
- @discussion 设置IMLib的输入状态监听器，请参考RCIMClient的setRCTypingStatusDelegate:方法。
+ @discussion 设置IMLib的输入状态监听器，请参考RCIMClient的 setRCTypingStatusDelegate:方法。
 
  @warning
- 如果您使用IMLib，可以设置并实现此Delegate监听消息接收；如果您使用IMKit，请直接设置RCIM中的enableSendComposingStatus，而不要使用此监听器，否则会导致IMKit中无法自动更新UI！
+ 如果您使用IMLib，可以设置并实现此Delegate监听消息输入状态；如果您使用IMKit，请直接设置RCIM中的 enableTypingStatus，而不要使用此监听器，否则会导致IMKit中无法自动更新UI！
  */
 @protocol RCTypingStatusDelegate <NSObject>
 

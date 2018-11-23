@@ -8,7 +8,6 @@
 
 #import "MainInterfaceController.h"
 #import "RCAppQueryHelper.h"
-#import "RCAppSharedUserDefault.h"
 #import "RCAppInfoModel.h"
 #import "RCWKNotificationCenter.h"
 

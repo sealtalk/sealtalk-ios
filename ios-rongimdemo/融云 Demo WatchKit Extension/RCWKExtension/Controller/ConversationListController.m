@@ -13,7 +13,6 @@
 #import "RCAppInfoModel.h"
 #import "RCWKNotificationCenter.h"
 #import "RCWKUtility.h"
-#import <RongIMLib/RongIMLib.h>
 
 @interface ConversationListController () <RCWKNotificationObserver>
 @property (weak, nonatomic) IBOutlet WKInterfaceTable *tableView;

@@ -13,9 +13,7 @@
 #import "RCDPrivateSettingsCell.h"
 #import "RCDPrivateSettingsUserInfoCell.h"
 #import "RCDSearchHistoryMessageController.h"
-#import "RCDSettingBaseViewController.h"
 #import "RCDataBaseManager.h"
-#import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import "RCDUIBarButtonItem.h"
 static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";

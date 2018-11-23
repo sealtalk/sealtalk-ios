@@ -11,7 +11,6 @@
 #import "RCDConversationSettingTableViewHeaderItem.h"
 #import "RCDUtilities.h"
 #import "UIImageView+WebCache.h"
-#import <RongIMLib/RongIMLib.h>
 
 @interface RCDConversationSettingTableViewHeader () <RCDConversationSettingTableViewHeaderItemDelegate>
 

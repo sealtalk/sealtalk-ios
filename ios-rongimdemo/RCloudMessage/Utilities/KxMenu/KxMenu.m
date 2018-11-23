@@ -37,7 +37,7 @@
 */
 
 #import "KxMenu.h"
-#import <QuartzCore/QuartzCore.h>
+
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
 #import "UIColor+RCColor.h"
 #import "UIImage+RCImage.h"

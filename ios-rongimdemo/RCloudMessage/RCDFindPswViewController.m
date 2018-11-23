@@ -9,11 +9,8 @@
 #import "RCDFindPswViewController.h"
 #import "AFHttpTool.h"
 #import "MBProgressHUD.h"
-#import "RCAnimatedImagesView.h"
-#import "RCDCommonDefine.h"
 #import "RCDLoginViewController.h"
 #import "RCDRegisterViewController.h"
-#import "RCDTextFieldValidate.h"
 #import "RCUnderlineTextField.h"
 #import "UIColor+RCColor.h"
 

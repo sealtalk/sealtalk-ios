@@ -11,13 +11,9 @@
 #import "MBProgressHUD.h"
 #import "RCDChatViewController.h"
 #import "RCDCommonDefine.h"
-#import "RCDGroupMemberCollectionViewCell.h"
 #import "RCDHttpTool.h"
-#import "RCDUserInfo.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
-#import "UIImageView+WebCache.h"
-#import <RongIMKit/RongIMKit.h>
 
 // 是否iPhone5
 #define isiPhone5                                                                                                      \

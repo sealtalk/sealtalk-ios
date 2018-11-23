@@ -9,7 +9,6 @@
 #import "AFHttpTool.h"
 #import "AppkeyModel.h"
 #import "MBProgressHUD.h"
-#import "RCAnimatedImagesView.h"
 #import "RCDCommonDefine.h"
 #import "RCDFindPswViewController.h"
 #import "RCDHttpTool.h"
@@ -18,15 +17,12 @@
 #import "RCDRCIMDataSource.h"
 #import "RCDRegisterViewController.h"
 #import "RCDSettingServerUrlViewController.h"
-#import "RCDSettingUserDefaults.h"
 #import "RCDTextFieldValidate.h"
 #import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
 #import "RCUnderlineTextField.h"
-#import "SelectAppKeyViewController.h"
 #import "UIColor+RCColor.h"
 #import "UITextFiled+Shake.h"
-#import <RongIMKit/RongIMKit.h>
 
 @interface RCDLoginViewController () <UITextFieldDelegate, RCIMConnectionStatusDelegate, UIAlertViewDelegate>
 

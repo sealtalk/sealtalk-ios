@@ -11,7 +11,6 @@
 #import "RCDChatRoomTableViewCell.h"
 #import "RCDChatViewController.h"
 #import "UIColor+RCColor.h"
-#import <RongIMKit/RongIMKit.h>
 
 @interface RCDChatRoomViewController ()
 @property(nonatomic, strong) NSMutableArray *chatRoomList;

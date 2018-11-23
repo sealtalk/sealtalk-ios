@@ -108,6 +108,7 @@ elif [ ${ENV_FLAG} == "pre" ]; then
 fi
 
 if [ -n "${MANUAL_NAVI_SERVER_URL}" ]; then
+    sed -i '' -e 's/\/\/ NSString \*RONGCLOUD_IM_NAVI/NSString \*RONGCLOUD_IM_NAVI/g' ./RCloudMessage/AppDelegate.m
     sed -i '' -e '/RONGCLOUD_IM_NAVI/s?nav.cn.ronghub.com?'$MANUAL_NAVI_SERVER_URL'?g' ./RCloudMessage/AppDelegate.m
     if [[ $MANUAL_NAVI_SERVER_URL =~ ^https ]]; then
         sed -i '' -e 's/nav.cn.ronghub.com/'${MANUAL_NAVI_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
@@ -119,7 +120,11 @@ if [ -n "${MANUAL_NAVI_SERVER_URL}" ]; then
 fi
 
 if [ -n "${MANUAL_FILE_SERVER_URL}" ]; then
-    sed -i '' -e '/RONGCLOUD_FILE_SERVER/s/@"img.cn.ronghub.com"/@"'$MANUAL_FILE_SERVER_URL'"/g' ./RCloudMessage/AppDelegate.m
+    sed -i '' -e 's/\/\/ NSString \*RONGCLOUD_FILE_SERVER/NSString \*RONGCLOUD_FILE_SERVER/g' ./RCloudMessage/AppDelegate.m
+    sed -i '' -e 's/\/\/\[\[RCIMClient sharedRCIMClient\] setServerInfo/\[\[RCIMClient sharedRCIMClient\] setServerInfo/g' ./RCloudMessage/AppDelegate.m
+    sed -i '' -e 's/\/\/ NSString \*RONGCLOUD_STATS_SERVER/NSString \*RONGCLOUD_STATS_SERVER/g' ./RCloudMessage/AppDelegate.m
+    sed -i '' -e 's/\/\/\[\[RCIMClient sharedRCIMClient\] setStatisticServer/\[\[RCIMClient sharedRCIMClient\] setStatisticServer/g' ./RCloudMessage/AppDelegate.m
+    sed -i '' -e '/RONGCLOUD_FILE_SERVER/s?@"img.cn.ronghub.com"?@"'$MANUAL_FILE_SERVER_URL'"?g' ./RCloudMessage/AppDelegate.m
     if [[ $MANUAL_FILE_SERVER_URL =~ ^https ]]; then
         sed -i '' -e 's/rongcloud-image.ronghub.com/'${MANUAL_FILE_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist
         sed -i '' -e 's/rongcloud-file.cn.ronghub.com/'${MANUAL_FILE_SERVER_URL/https\:\/\//""}'/g' ./RCloudMessage/Info.plist

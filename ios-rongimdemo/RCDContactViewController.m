@@ -8,7 +8,6 @@
 
 #import "RCDContactViewController.h"
 #import "DefaultPortraitView.h"
-#import "RCDAddressBookTableViewCell.h"
 #import "RCDAddressBookViewController.h"
 #import "RCDCommonDefine.h"
 #import "RCDContactTableViewCell.h"
@@ -18,10 +17,8 @@
 #import "RCDPublicServiceListViewController.h"
 #import "RCDRCIMDataSource.h"
 #import "RCDSearchFriendViewController.h"
-#import "RCDUserInfo.h"
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
-#import "pinyin.h"
 
 #import "RCDUIBarButtonItem.h"
 #import "RCDUserInfoManager.h"
@@ -34,6 +31,7 @@
 @property(nonatomic, assign) BOOL hasSyncFriendList;
 @property(nonatomic, assign) BOOL isBeginSearch;
 @property(nonatomic, strong) NSMutableDictionary *resultDic;
+@property(nonatomic, strong) dispatch_queue_t queue;
 
 @end
 
@@ -143,6 +141,7 @@
         UIBarButtonItem *left = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:(UIBarButtonItemStylePlain) target:self action:@selector(onCancelAction)];
         self.navigationItem.leftBarButtonItem = left;
     }
+    self.queue = dispatch_queue_create("sealtalksearch", DISPATCH_QUEUE_SERIAL);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -457,9 +456,9 @@
 }
 
 - (void)sortAndRefreshWithList:(NSArray *)friendList {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    dispatch_async(self.queue, ^{
         self.resultDic = [RCDUtilities sortedArrayWithPinYinDic:friendList];
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_sync(dispatch_get_main_queue(), ^{
             self.allFriendSectionDic = self.resultDic[@"infoDic"];
             [self.friendsTabelView reloadData];
         });

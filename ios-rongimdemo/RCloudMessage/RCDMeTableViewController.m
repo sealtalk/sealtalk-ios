@@ -7,24 +7,16 @@
 //
 
 #import "RCDMeTableViewController.h"
-#import "AFHttpTool.h"
-#import "DefaultPortraitView.h"
 #import "RCDAboutRongCloudTableViewController.h"
 #import "RCDBaseSettingTableViewCell.h"
 #import "RCDChatViewController.h"
 #import "RCDCommonDefine.h"
 #import "RCDCustomerServiceViewController.h"
-#import "RCDHttpTool.h"
 #import "RCDMeCell.h"
 #import "RCDMeDetailsCell.h"
 #import "RCDMeInfoTableViewController.h"
-#import "RCDRCIMDataSource.h"
 #import "RCDSettingsTableViewController.h"
-#import "RCDUtilities.h"
-#import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
-#import "UIImageView+WebCache.h"
-#import <RongIMLib/RongIMLib.h>
 
 /* RedPacket_FTR */
 #import <JrmfWalletKit/JrmfWalletKit.h>
@@ -216,7 +208,10 @@
         } break;
         /* RedPacket_FTR */ // open my wallet
         case 1: {
-            [JrmfWalletSDK openWallet];
+            Class walletSDKClass = NSClassFromString(@"JrmfWalletSDK");
+            if (walletSDKClass) {
+                [walletSDKClass performSelector:@selector(openWallet)];
+            }
         } break;
 
         default:

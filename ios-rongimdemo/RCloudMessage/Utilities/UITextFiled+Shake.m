@@ -7,7 +7,7 @@
 //
 
 #import "UITextFiled+Shake.h"
-#import <QuartzCore/QuartzCore.h>
+
 @implementation UITextField (Shake)
 // self.superView
 - (void)shake {

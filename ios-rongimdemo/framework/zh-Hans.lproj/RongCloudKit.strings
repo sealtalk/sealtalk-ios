@@ -6,6 +6,7 @@
 "RC:PSImgTxtMsg"="[图文]";
 "RC:SightMsg"="[小视频]";
 "Draft"="[草稿]";
+"Message"="消息";
 "conversation_private_collection_title"="聊天助手";
 "conversation_customer_collection_title"="客服助手";
 "conversation_group_collection_title"="群助手";
@@ -15,6 +16,7 @@
 "Cancel"="取消";
 "speakerAccessRight"="您没有麦克风访问权限，请前往“设置-隐私-麦克风”选项中，允许访问您的手机麦克风!";
 "cameraAccessRight"="您没有相机访问权限，请前往“设置-隐私-相机”选项中，允许访问您的手机相机!";
+"photoAccessRight"="您没有照片访问权限，请前往“设置-隐私-照片”选项中，允许访问您的手机照片!";
 "VoIP_Mute"="静音";
 "VoIP_Speaker"="免提";
 "VoIP_End"="结束";
@@ -40,7 +42,9 @@
 "Recall"="撤回";
 "Forward"="转发";
 "MessageRecalling"="消息撤回中...";
-"MessageRecalled"="撤回了一条消息";
+"AdminWithMessageRecalled"="管理员";
+"OtherHasRecalled"="%@ 撤回了一条消息";
+"SelfHaveRecalled"="你撤回了一条消息";
 "MessageRecallFailed"="撤回不成功，请检查网络连接";
 "Save"="保存";
 "SavePhotoFailed"="图片保存失败";
@@ -204,6 +208,11 @@
 "Person"="人";
 "SelectContact"="选择联系人";
 "MessageTapMore"="更多...";
+
+"bottom_result_view_choosed_person_prefix"="已选择";
+"bottom_result_view_choosed_person_subfix"="人";
+"message_destructed"="该消息已自动销毁，无法继续查看";
+"receive_new_message"="你收到一条新消息";
 "hold_to_talk_title"="按住 说话";
 "release_to_send_title"="松开 发送";
 "slide_up_to_cancel_title"="手指上滑，取消发送";
@@ -237,6 +246,8 @@
 "iCloudDownloadFail"="iCloud 下载失败";
 "SelectMentionedUser"="选择提醒的人";
 "Max_Selected_Photos"="最多只能选择9张照片";
+"Selected_Video_Warning_fmt"="不能分享超过 %@ 分钟的视频";
+"Selected_Damaged_Video"="不能分享损坏的视频";
 "Confirm"="确定";
 "ToSearch"="搜索";
 "VoiceInput"="语音输入";
@@ -245,3 +256,4 @@
 "TouchToTakeAPictureAndPressAndholdTheRecordingVideo"="轻触拍摄，按住摄像";
 "downloadFailedClickToDownload"="下载失败，点击重新下载";
 "OvermMaximum"="文件大小最大为 100 MB";
+"Edit"="编辑";

@@ -10,7 +10,7 @@
 #import "RCDSearchResultModel.h"
 #import "RCDUtilities.h"
 #import "RCDataBaseManager.h"
-#import <RongIMKit/RongIMKit.h>
+
 @implementation RCDSearchDataManager
 + (instancetype)shareInstance {
     static RCDSearchDataManager *searchDataManager;

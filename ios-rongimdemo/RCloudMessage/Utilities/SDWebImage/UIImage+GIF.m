@@ -7,7 +7,6 @@
 //
 
 #import "UIImage+GIF.h"
-#import <ImageIO/ImageIO.h>
 
 @implementation UIImage (GIF)
 

@@ -12,7 +12,6 @@
 #import "RCDLabel.h"
 #import "RCDSearchResultModel.h"
 #import "RCDUtilities.h"
-#import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
 
 @interface RCDSearchResultViewCell ()

@@ -29,7 +29,6 @@
 #import "AFURLConnectionOperation.h"
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
-#import "AFURLSessionManager.h"
 #endif
 
 static void *AFTaskCountOfBytesSentContext = &AFTaskCountOfBytesSentContext;

@@ -6,6 +6,7 @@
 "RC:PSImgTxtMsg"="[RichContent]";
 "RC:SightMsg"="[Video]";
 "Draft"="[Draft]";
+"Message"="Message";
 "conversation_private_collection_title"="Private Groups";
 "conversation_customer_collection_title"="Customer Groups";
 "conversation_group_collection_title"="My Groups";
@@ -15,6 +16,7 @@
 "Cancel"="Cancel";
 "speakerAccessRight"="You don't have the access right of speaker, please set it in Settings";
 "cameraAccessRight"="You don't have the access right of camera, please set it in Settings";
+"photoAccessRight"="You don't have the access right of photo, please set it in Settings";
 "VoIP_Mute"="Mute";
 "VoIP_Speaker"="Speaker";
 "VoIP_End"="End";
@@ -40,7 +42,9 @@
 "Recall"="Recall";
 "Forward"="Forward";
 "MessageRecalling"="Message is recalling";
-"MessageRecalled"=" recalled a message";
+"AdminWithMessageRecalled"="Admin";
+"OtherHasRecalled"="%@ has recalled a message";
+"SelfHaveRecalled"="You have recalled a message";
 "MessageRecallFailed"="Failed to recall the message.Check network.";
 "Save"="Save";
 "SavePhotoFailed"="Failed to save this photo";
@@ -204,6 +208,11 @@
 "Person"="";
 "SelectContact"="Select Contact";
 "MessageTapMore"="More...";
+
+"bottom_result_view_choosed_person_prefix"="Selected";
+"bottom_result_view_choosed_person_subfix"="member(s)";
+"message_destructed"="The message has auto-destructed,can't continue to view";
+"receive_new_message"="You got a new message";
 "hold_to_talk_title"="Hold to talk";
 "release_to_send_title"="Release to send";
 "message_too_short"="Message too short";
@@ -232,6 +241,8 @@
 "Full_Image"="Full Image";
 "Preview"="Preview";
 "Max_Selected_Photos"="You can only select 9 photos at most";
+"Selected_Video_Warning_fmt"="Unable to share video with a duration longer than %@ minutes";
+"Selected_Damaged_Video"="Unable to share damaged video";
 "Confirm"="Confirm";
 "Location_Service"="Unable to get your location data,Please enable location service in “Settings”->“Privacy”->“Location Services” and allows the application to use location services.";
 "iCloudDownloading"="iCloud Downloading...";
@@ -244,3 +255,4 @@
 "TouchToTakeAPictureAndPressAndholdTheRecordingVideo"="Tap to take photo and hold to record video";
 "downloadFailedClickToDownload"="Download failed, click to download";
 "OvermMaximum"="the maximum size of file is limited to 100MB";
+"Edit"="Edit";

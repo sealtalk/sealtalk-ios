@@ -8,8 +8,6 @@
 #import "RCWKRequestHandler.h"
 #import "RCWKAPPCommonDefine.h"
 #import "RCWKNotifier.h"
-#import "RCWKSharedUserDefault.h"
-#import <RongIMLib/RongIMLib.h>
 
 @interface RCWKRequestHandler ()
 @property(strong, nonatomic) NSDictionary *userInfo;

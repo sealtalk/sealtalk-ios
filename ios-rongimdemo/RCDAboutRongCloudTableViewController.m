@@ -8,7 +8,6 @@
 
 #import "RCDAboutRongCloudTableViewController.h"
 #import "RCDBaseSettingTableViewCell.h"
-#import "RCDCommonDefine.h"
 #import "RCDLogoTableViewCell.h"
 #import "RCDUIBarButtonItem.h"
 #import "RCDVersionCell.h"

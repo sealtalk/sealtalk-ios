@@ -152,7 +152,7 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
  @param groupId     群组ID
  @param completion  获取群组信息完成之后需要执行的Block [groupInfo:该群组ID对应的群组信息]
 
- @discussion SDK通过此方法获取用户信息并显示，请在completion的block中返回该用户ID对应的用户信息。
+ @discussion SDK通过此方法获取群组信息并显示，请在completion的block中返回该群组ID对应的群组信息。
  在您设置了群组信息提供者之后，SDK在需要显示群组信息的时候，会调用此方法，向您请求群组信息用于显示。
  */
 - (void)getGroupInfoWithGroupId:(NSString *)groupId completion:(void (^)(RCGroup *groupInfo))completion;
@@ -732,6 +732,13 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
  (如果当前APP 正在播放音频，这时候如果调用SDK 的录音，可以设置这里为YES)
  */
 @property(nonatomic, assign) BOOL isExclusiveSoundPlayer;
+
+/*!
+ 选择媒体资源时，是否包含视频文件，默认值是NO
+ 
+ @discussion 默认是不包含
+ */
+@property(nonatomic, assign) BOOL isMediaSelectorContainVideo;
 
 #pragma mark - 讨论组相关操作
 

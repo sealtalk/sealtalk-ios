@@ -7,12 +7,10 @@
 //
 
 #import "RCDConversationSettingBaseViewController.h"
-#import "DefaultPortraitView.h"
 #import "RCDCommonDefine.h"
 #import "RCDConversationSettingClearMessageCell.h"
 #import "RCDConversationSettingTableViewCell.h"
 #import "RCDConversationSettingTableViewHeader.h"
-#import <RongIMLib/RongIMLib.h>
 
 #define CellReuseIdentifierCellIsTop @"CellIsTop"
 #define CellReuseIdentifierCellNewMessageNotify @"CellNewMessageNotify"

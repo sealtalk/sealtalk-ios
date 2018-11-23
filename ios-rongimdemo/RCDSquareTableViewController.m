@@ -7,15 +7,11 @@
 //
 
 #import "RCDSquareTableViewController.h"
-#import "DefaultPortraitView.h"
 #import "RCDBaseSettingTableViewCell.h"
 #import "RCDChatViewController.h"
 #import "RCDCommonDefine.h"
-#import "RCDGroupInfo.h"
 #import "RCDHttpTool.h"
 #import "RCDSquareCell.h"
-#import "RCDataBaseManager.h"
-#import "UIColor+RCColor.h"
 
 @interface RCDSquareTableViewController ()
 

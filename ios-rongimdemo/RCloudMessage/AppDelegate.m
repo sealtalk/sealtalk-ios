@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "AFHttpTool.h"
-#import "MBProgressHUD.h"
 #import "MobClick.h"
 #import "RCDCommonDefine.h"
 #import "RCDHttpTool.h"
@@ -24,11 +23,6 @@
 #import "RCWKNotifier.h"
 #import "RCWKRequestHandler.h"
 #import "UIColor+RCColor.h"
-#import "UIImageView+WebCache.h"
-#import <AudioToolbox/AudioToolbox.h>
-#import <RongCallKit/RongCallKit.h>
-#import <RongContactCard/RongContactCard.h>
-#import <RongIMKit/RongIMKit.h>
 
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
 
@@ -168,7 +162,8 @@
 
     //开启消息撤回功能
     [RCIM sharedRCIM].enableMessageRecall = YES;
-
+    //选择媒体资源时，包含视频文件
+    [RCIM sharedRCIM].isMediaSelectorContainVideo = YES;
     //  设置头像为圆形
     //  [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
     //  [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
@@ -180,6 +175,8 @@
 
     //设置Log级别，开发阶段打印详细log
     [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;
+    
+    [[RCIMClient sharedRCIMClient] setReconnectKickEnable:YES];
 
     //登录
     NSString *token = [DEFAULTS objectForKey:@"userToken"];
@@ -268,7 +265,6 @@
     } else {
         RCDLoginViewController *vc = [[RCDLoginViewController alloc] init];
         RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc] initWithRootViewController:vc];
-
         self.window.rootViewController = _navi;
     }
 

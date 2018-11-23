@@ -8,7 +8,6 @@
 
 #import "RCDShareChatListController.h"
 #import "RCDShareChatListCell.h"
-#import <UIKit/UIKit.h>
 
 @interface RCDShareChatListController ()
 @property(nonatomic, strong) NSArray *dataArray;

@@ -9,11 +9,8 @@
 #import "RCDReceiptDetailsTableViewCell.h"
 #import "RCDCommonDefine.h"
 #import "RCDConversationSettingTableViewHeaderItem.h"
-#import "RCDHttpTool.h"
-#import "RCDUserInfoManager.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
-#import <RongIMKit/RongIMKit.h>
 
 @interface RCDReceiptDetailsTableViewCell () <UICollectionViewDataSource, UICollectionViewDelegate>
 

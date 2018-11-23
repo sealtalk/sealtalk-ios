@@ -11,12 +11,10 @@
 #import "MBProgressHUD.h"
 #import "RCDChatViewController.h"
 #import "RCDCommonDefine.h"
-#import "RCDHttpTool.h"
 #import "RCDRCIMDataSource.h"
 #import "RCDUIBarButtonItem.h"
 #import "RCDataBaseManager.h"
 #import "UIColor+RCColor.h"
-#import <RongIMLib/RongIMLib.h>
 
 @interface RCDEditUserNameViewController ()
 
@@ -55,7 +53,7 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"修改中...";
     [hud show:YES];
-    __weak __typeof(&*self) weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     NSString *errorMsg = @"";
     if (self.userName.text.length == 0) {
         errorMsg = @"用户名不能为空!";

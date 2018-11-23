@@ -43,9 +43,9 @@
 		17F7A84C1DAE187200E27D25 /* RCDSearchResultViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F7A8431DAE187200E27D25 /* RCDSearchResultViewCell.m */; };
 		17F7A84D1DAE187200E27D25 /* RCDSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F7A8451DAE187200E27D25 /* RCDSearchViewController.m */; };
 		17F7A8741DAFBFF100E27D25 /* RCDSearchHistoryMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F7A8731DAFBFF100E27D25 /* RCDSearchHistoryMessageController.m */; };
-		1DA88D962135119700F4F1F9 /* RongSticker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1DA88D912135119700F4F1F9 /* RongSticker.strings */; };
-		1DA88D972135119700F4F1F9 /* RongSticker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1DA88D942135119700F4F1F9 /* RongSticker.bundle */; };
-		1DA88D982135119700F4F1F9 /* RongSticker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA88D952135119700F4F1F9 /* RongSticker.framework */; };
+		1D3A232C212D540A009514F1 /* RongSticker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1D3A2327212D5409009514F1 /* RongSticker.strings */; };
+		1D3A232D212D540A009514F1 /* RongSticker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1D3A232A212D5409009514F1 /* RongSticker.bundle */; };
+		1D3A232E212D540A009514F1 /* RongSticker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3A232B212D5409009514F1 /* RongSticker.framework */; };
 		2724CCD71FF34411006FFC86 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724CCD61FF34411006FFC86 /* Contacts.framework */; };
 		27AADC261DDC4DB800E1AE31 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AADC251DDC4DB800E1AE31 /* AddressBook.framework */; };
 		27AADC271DDC4DCE00E1AE31 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C3310B1A0C729600E31B9A /* QuartzCore.framework */; };
@@ -89,7 +89,6 @@
 		6E1C98201F39C90C008F96D8 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1C981F1F39C90C008F96D8 /* libresolv.tbd */; };
 		7755B4BC2106CE9F000C2DA8 /* JrmfPacketKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7755B4BB2106CE9F000C2DA8 /* JrmfPacketKit.framework */; };
 		77F56BF620874DEE00D080F7 /* RCColor.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77F56BF520874DEE00D080F7 /* RCColor.plist */; };
-		7FF9DE5820EA203200FF5E2B /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF9DE5720EA203200FF5E2B /* GPUImage.framework */; };
 		8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C55EB501B2A8CE5004285F4 /* Emoji.plist */; };
 		8CCBC9871AEDDF8600BA1135 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */; };
 		980235881D227F8100BCB1DD /* RCDPrivacyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980235871D227F8100BCB1DD /* RCDPrivacyTableViewController.m */; };
@@ -97,7 +96,6 @@
 		980EF4591D376BC9000C26FC /* UITextViewAndPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 980EF4581D376BC9000C26FC /* UITextViewAndPlaceholder.m */; };
 		9826D6CD1E1117BA00443501 /* RCDPushSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9826D6CC1E1117BA00443501 /* RCDPushSettingViewController.m */; };
 		983B736B20A5362F0059B047 /* RCDDebugTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 983B736A20A5362F0059B047 /* RCDDebugTableViewController.m */; };
-		983B739620A598180059B047 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 983B736D20A598170059B047 /* Info.plist */; };
 		983B739720A598180059B047 /* aes_ni.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B737120A598170059B047 /* aes_ni.c */; };
 		983B739820A598180059B047 /* aescrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B737320A598170059B047 /* aescrypt.c */; };
 		983B739920A598180059B047 /* aeskey.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B737420A598170059B047 /* aeskey.c */; };
@@ -225,6 +223,7 @@
 		A6EFABA11BB0EDAC007E9D67 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */; };
 		A6EFABA51BB0EDE1007E9D67 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA41BB0EDE1007E9D67 /* libsqlite3.tbd */; };
 		A6EFABA71BB0EDFB007E9D67 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA61BB0EDFB007E9D67 /* libc++.tbd */; };
+		B2A68D7A212FDBA9006FADEC /* RongSight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2A68D79212FDBA9006FADEC /* RongSight.framework */; };
 		E412BD1E1ADE19A4000DCA7A /* RCDChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E412BD1D1ADE19A4000DCA7A /* RCDChatListCell.m */; };
 		E412BD241ADE6BFB000DCA7A /* RCDHttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E412BD231ADE6BFB000DCA7A /* RCDHttpTool.m */; };
 		E412BD271ADFA2A0000DCA7A /* RCDAddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E412BD261ADFA2A0000DCA7A /* RCDAddFriendViewController.m */; };
@@ -317,6 +316,8 @@
 		E4E939CC1AD65E1E001E0AC6 /* UITextFiled+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939C91AD65E1E001E0AC6 /* UITextFiled+Shake.m */; };
 		E4E939D21AD6805E001E0AC6 /* RCDPersonDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939D11AD6805E001E0AC6 /* RCDPersonDetailViewController.m */; };
 		E4FCD7C41AD69DFB00915650 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FCD7C31AD69DFB00915650 /* ImageIO.framework */; };
+		E84C4F9A215A5BBE004A469D /* Bailingquic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E84C4F98215A5BBE004A469D /* Bailingquic.framework */; };
+		E84C4F9B215A5BBE004A469D /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E84C4F99215A5BBE004A469D /* GPUImage.framework */; };
 		F821B7F51BE75BFD00F0D14C /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F821B7F41BE75BFD00F0D14C /* libMobClickLibrary.a */; };
 		F82B55401DE03E40007392BD /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F82B553F1DE03E40007392BD /* SafariServices.framework */; };
 		F836AB0E1C2262C400A1A5D2 /* RCDTestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = F836AB0D1C2262C400A1A5D2 /* RCDTestMessage.m */; };
@@ -437,10 +438,10 @@
 		17F7A8451DAE187200E27D25 /* RCDSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSearchViewController.m; sourceTree = SOURCE_ROOT; };
 		17F7A8721DAFBFF100E27D25 /* RCDSearchHistoryMessageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSearchHistoryMessageController.h; sourceTree = SOURCE_ROOT; };
 		17F7A8731DAFBFF100E27D25 /* RCDSearchHistoryMessageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSearchHistoryMessageController.m; sourceTree = SOURCE_ROOT; };
-		1DA88D922135119700F4F1F9 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/RongSticker.strings"; sourceTree = "<group>"; };
-		1DA88D932135119700F4F1F9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RongSticker.strings; sourceTree = "<group>"; };
-		1DA88D942135119700F4F1F9 /* RongSticker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RongSticker.bundle; sourceTree = "<group>"; };
-		1DA88D952135119700F4F1F9 /* RongSticker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongSticker.framework; sourceTree = "<group>"; };
+		1D3A2328212D5409009514F1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/RongSticker.strings"; sourceTree = "<group>"; };
+		1D3A2329212D5409009514F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RongSticker.strings; sourceTree = "<group>"; };
+		1D3A232A212D5409009514F1 /* RongSticker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RongSticker.bundle; sourceTree = "<group>"; };
+		1D3A232B212D5409009514F1 /* RongSticker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongSticker.framework; sourceTree = "<group>"; };
 		2724CCD61FF34411006FFC86 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		27AADC251DDC4DB800E1AE31 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		27BCC76D1EA45EA000198BD8 /* RongContactCard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongContactCard.framework; path = framework/RongContactCard.framework; sourceTree = SOURCE_ROOT; };
@@ -504,7 +505,6 @@
 		6E1C981F1F39C90C008F96D8 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		7755B4BB2106CE9F000C2DA8 /* JrmfPacketKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JrmfPacketKit.framework; sourceTree = "<group>"; };
 		77F56BF520874DEE00D080F7 /* RCColor.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = RCColor.plist; path = framework/RCColor.plist; sourceTree = SOURCE_ROOT; };
-		7FF9DE5720EA203200FF5E2B /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GPUImage.framework; path = framework/GPUImage.framework; sourceTree = SOURCE_ROOT; };
 		8C55EB501B2A8CE5004285F4 /* Emoji.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Emoji.plist; path = framework/Emoji.plist; sourceTree = SOURCE_ROOT; };
 		8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		980235861D227F8100BCB1DD /* RCDPrivacyTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPrivacyTableViewController.h; sourceTree = SOURCE_ROOT; };
@@ -517,7 +517,6 @@
 		9826D6CC1E1117BA00443501 /* RCDPushSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPushSettingViewController.m; sourceTree = SOURCE_ROOT; };
 		983B736920A5362F0059B047 /* RCDDebugTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RCDDebugTableViewController.h; path = Debug/RCDDebugTableViewController.h; sourceTree = SOURCE_ROOT; };
 		983B736A20A5362F0059B047 /* RCDDebugTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RCDDebugTableViewController.m; path = Debug/RCDDebugTableViewController.m; sourceTree = SOURCE_ROOT; };
-		983B736D20A598170059B047 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		983B737020A598170059B047 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
 		983B737120A598170059B047 /* aes_ni.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aes_ni.c; sourceTree = "<group>"; };
 		983B737220A598170059B047 /* aes_ni.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes_ni.h; sourceTree = "<group>"; };
@@ -561,7 +560,6 @@
 		9870724C20A17967008EE653 /* Blink.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Blink.framework; path = framework/Blink.framework; sourceTree = SOURCE_ROOT; };
 		9870724F20A17AC2008EE653 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		987653621D796C5B008A6BF0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = SOURCE_ROOT; };
-		988E5B9520A5A2D5009115C1 /* Bailingquic.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bailingquic.framework; path = framework/Bailingquic.framework; sourceTree = SOURCE_ROOT; };
 		9891E8DB1D8263F700E874AB /* RCDMeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDMeCell.h; sourceTree = SOURCE_ROOT; };
 		9891E8DC1D8263F700E874AB /* RCDMeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDMeCell.m; sourceTree = SOURCE_ROOT; };
 		9891E8E11D82AB3100E874AB /* RCDLogoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDLogoTableViewCell.h; sourceTree = SOURCE_ROOT; };
@@ -759,6 +757,7 @@
 		A6EFABA21BB0EDD7007E9D67 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		A6EFABA41BB0EDE1007E9D67 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		A6EFABA61BB0EDFB007E9D67 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		B2A68D79212FDBA9006FADEC /* RongSight.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RongSight.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E412BD1C1ADE19A4000DCA7A /* RCDChatListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDChatListCell.h; sourceTree = SOURCE_ROOT; };
 		E412BD1D1ADE19A4000DCA7A /* RCDChatListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDChatListCell.m; sourceTree = SOURCE_ROOT; };
 		E412BD221ADE6BFB000DCA7A /* RCDHttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDHttpTool.h; sourceTree = SOURCE_ROOT; };
@@ -941,6 +940,8 @@
 		E4E939D01AD6805E001E0AC6 /* RCDPersonDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPersonDetailViewController.h; sourceTree = SOURCE_ROOT; };
 		E4E939D11AD6805E001E0AC6 /* RCDPersonDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPersonDetailViewController.m; sourceTree = SOURCE_ROOT; };
 		E4FCD7C31AD69DFB00915650 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		E84C4F98215A5BBE004A469D /* Bailingquic.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bailingquic.framework; path = Blink/Bailingquic.framework; sourceTree = SOURCE_ROOT; };
+		E84C4F99215A5BBE004A469D /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GPUImage.framework; path = Blink/GPUImage.framework; sourceTree = SOURCE_ROOT; };
 		F821B7F21BE75BF500F0D14C /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClick.h; path = UMAnalytics/MobClick.h; sourceTree = "<group>"; };
 		F821B7F31BE75BF500F0D14C /* MobClickSocialAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClickSocialAnalytics.h; path = UMAnalytics/MobClickSocialAnalytics.h; sourceTree = "<group>"; };
 		F821B7F41BE75BFD00F0D14C /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = ../RCloudMessage/Utilities/UMAnalytics/libMobClickLibrary.a; sourceTree = "<group>"; };
@@ -986,7 +987,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7FF9DE5820EA203200FF5E2B /* GPUImage.framework in Frameworks */,
+				B2A68D7A212FDBA9006FADEC /* RongSight.framework in Frameworks */,
+				1D3A232E212D540A009514F1 /* RongSticker.framework in Frameworks */,
 				A6BD6E2220A5AD880063F51D /* Bailingquic.framework in Frameworks */,
 				9870725020A17AC3008EE653 /* GLKit.framework in Frameworks */,
 				9870724E20A17AB9008EE653 /* OpenGLES.framework in Frameworks */,
@@ -996,6 +998,7 @@
 				E4C4E7E41A0A2F2800140067 /* CoreGraphics.framework in Frameworks */,
 				27AADC281DDC4DD800E1AE31 /* Foundation.framework in Frameworks */,
 				E4C4E7E61A0A2F2E00140067 /* UIKit.framework in Frameworks */,
+				E84C4F9B215A5BBE004A469D /* GPUImage.framework in Frameworks */,
 				27AADC271DDC4DCE00E1AE31 /* QuartzCore.framework in Frameworks */,
 				E4C3310E1A0C72A000E31B9A /* SystemConfiguration.framework in Frameworks */,
 				E4C330F41A0C722300E31B9A /* AudioToolbox.framework in Frameworks */,
@@ -1020,6 +1023,7 @@
 				A6EFABA11BB0EDAC007E9D67 /* libxml2.tbd in Frameworks */,
 				2E29FF3D1DC1BE8400AF2DF0 /* AlipaySDK.framework in Frameworks */,
 				F821B7F51BE75BFD00F0D14C /* libMobClickLibrary.a in Frameworks */,
+				E84C4F9A215A5BBE004A469D /* Bailingquic.framework in Frameworks */,
 				8CCBC9871AEDDF8600BA1135 /* AssetsLibrary.framework in Frameworks */,
 				E4FCD7C41AD69DFB00915650 /* ImageIO.framework in Frameworks */,
 				27BCC76E1EA45EA000198BD8 /* RongContactCard.framework in Frameworks */,
@@ -1028,7 +1032,6 @@
 				7755B4BC2106CE9F000C2DA8 /* JrmfPacketKit.framework in Frameworks */,
 				F8B7DBD21BAC189700E9F9BD /* libopencore-amrnb.a in Frameworks */,
 				E4C330FE1A0C725200E31B9A /* CoreVideo.framework in Frameworks */,
-				1DA88D982135119700F4F1F9 /* RongSticker.framework in Frameworks */,
 				2E7A36E41E03A876005231BE /* JrmfWalletKit.framework in Frameworks */,
 				27C42EEC1DE30637003E2306 /* iflyMSC.framework in Frameworks */,
 				E4C330F81A0C723A00E31B9A /* CoreAudio.framework in Frameworks */,
@@ -1111,12 +1114,12 @@
 			name = SearchView;
 			sourceTree = "<group>";
 		};
-		1DA88D902135119700F4F1F9 /* RCSticker */ = {
+		1D3A2326212D5409009514F1 /* RCSticker */ = {
 			isa = PBXGroup;
 			children = (
-				1DA88D912135119700F4F1F9 /* RongSticker.strings */,
-				1DA88D942135119700F4F1F9 /* RongSticker.bundle */,
-				1DA88D952135119700F4F1F9 /* RongSticker.framework */,
+				1D3A2327212D5409009514F1 /* RongSticker.strings */,
+				1D3A232A212D5409009514F1 /* RongSticker.bundle */,
+				1D3A232B212D5409009514F1 /* RongSticker.framework */,
 			);
 			name = RCSticker;
 			path = framework/RCSticker;
@@ -1294,7 +1297,6 @@
 		983B736C20A598170059B047 /* SSZipArchive */ = {
 			isa = PBXGroup;
 			children = (
-				983B736D20A598170059B047 /* Info.plist */,
 				983B736E20A598170059B047 /* minizip */,
 				983B739220A598170059B047 /* SSZipArchive.h */,
 				983B739320A598170059B047 /* SSZipArchive.m */,
@@ -1880,9 +1882,10 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1DA88D902135119700F4F1F9 /* RCSticker */,
-				7FF9DE5720EA203200FF5E2B /* GPUImage.framework */,
-				988E5B9520A5A2D5009115C1 /* Bailingquic.framework */,
+				E84C4F98215A5BBE004A469D /* Bailingquic.framework */,
+				E84C4F99215A5BBE004A469D /* GPUImage.framework */,
+				B2A68D79212FDBA9006FADEC /* RongSight.framework */,
+				1D3A2326212D5409009514F1 /* RCSticker */,
 				9870724F20A17AC2008EE653 /* GLKit.framework */,
 				9870724C20A17967008EE653 /* Blink.framework */,
 				2724CCD61FF34411006FFC86 /* Contacts.framework */,
@@ -2441,7 +2444,6 @@
 				2E7A36E11E03A876005231BE /* JResource.bundle in Resources */,
 				77F56BF620874DEE00D080F7 /* RCColor.plist in Resources */,
 				8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */,
-				983B739620A598180059B047 /* Info.plist in Resources */,
 				E42A2E5A1AAEE76800F4C3AB /* Main.storyboard in Resources */,
 				5111B07D1AE6A11A00317E71 /* RongCloud.bundle in Resources */,
 				2E7A36E21E03A876005231BE /* jrmf.cer in Resources */,
@@ -2449,8 +2451,8 @@
 				E4BFAE251A121839007165B1 /* Images.xcassets in Resources */,
 				510624851AD63A9E00348452 /* RongCloudKit.strings in Resources */,
 				2E7A36E61E03A876005231BE /* WalletResource.bundle in Resources */,
-				1DA88D972135119700F4F1F9 /* RongSticker.bundle in Resources */,
-				1DA88D962135119700F4F1F9 /* RongSticker.strings in Resources */,
+				1D3A232D212D540A009514F1 /* RongSticker.bundle in Resources */,
+				1D3A232C212D540A009514F1 /* RongSticker.strings in Resources */,
 				987653631D796C5B008A6BF0 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2759,11 +2761,11 @@
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
-		1DA88D912135119700F4F1F9 /* RongSticker.strings */ = {
+		1D3A2327212D5409009514F1 /* RongSticker.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1DA88D922135119700F4F1F9 /* zh-Hans */,
-				1DA88D932135119700F4F1F9 /* en */,
+				1D3A2328212D5409009514F1 /* zh-Hans */,
+				1D3A2329212D5409009514F1 /* en */,
 			);
 			name = RongSticker.strings;
 			sourceTree = "<group>";
@@ -2971,6 +2973,8 @@
 					"$(PROJECT_DIR)/framework/bqmm",
 					"$(PROJECT_DIR)/framework/PTT",
 					"$(PROJECT_DIR)/framework/RCSticker",
+					"$(inherited)",
+					"$(PROJECT_DIR)/Blink",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -2986,7 +2990,10 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-fembed-bitcode";
 				OTHER_CODE_SIGN_FLAGS = "";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
@@ -3119,6 +3126,8 @@
 					"$(PROJECT_DIR)/framework/bqmm",
 					"$(PROJECT_DIR)/framework/PTT",
 					"$(PROJECT_DIR)/framework/RCSticker",
+					"$(inherited)",
+					"$(PROJECT_DIR)/Blink",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -3134,7 +3143,10 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-fembed-bitcode";
 				OTHER_CODE_SIGN_FLAGS = "";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
@@ -3426,6 +3438,8 @@
 					"$(PROJECT_DIR)/framework/bqmm",
 					"$(PROJECT_DIR)/framework/PTT",
 					"$(PROJECT_DIR)/framework/RCSticker",
+					"$(inherited)",
+					"$(PROJECT_DIR)/Blink",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -3440,7 +3454,10 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-fembed-bitcode";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
@@ -3470,6 +3487,8 @@
 					"$(PROJECT_DIR)/framework/bqmm",
 					"$(PROJECT_DIR)/framework/PTT",
 					"$(PROJECT_DIR)/framework/RCSticker",
+					"$(inherited)",
+					"$(PROJECT_DIR)/Blink",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -3484,7 +3503,10 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-fembed-bitcode";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;

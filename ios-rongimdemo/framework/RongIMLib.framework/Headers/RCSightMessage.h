@@ -13,7 +13,7 @@
  小视频消息的类型名
  */
 #define RCSightMessageTypeIdentifier @"RC:SightMsg"
-
+@class AVAsset;
 /**
  小视频消息类
 
@@ -51,11 +51,11 @@
  */
 @property(nonatomic, strong, readonly) UIImage *thumbnailImage;
 
-
 /**
  开发者使用的扩展字段
  */
 @property(nonatomic, copy) NSString *extra;
+
 
 /**
  创建小视频消息的便利构造方法

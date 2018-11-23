@@ -27,7 +27,6 @@
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 
 #import "AFHTTPRequestOperation.h"
-#import "AFURLResponseSerialization.h"
 
 #import "UIImageView+AFNetworking.h"
 

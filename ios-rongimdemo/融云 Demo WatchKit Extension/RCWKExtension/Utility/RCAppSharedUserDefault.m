@@ -7,7 +7,6 @@
 //
 
 #import "RCAppSharedUserDefault.h"
-#import "RCWKAPPCommonDefine.h"
 
 @implementation RCAppSharedUserDefault
 + (id)getSharedDefaultObjectForKey:(NSString *)key {

@@ -25,22 +25,10 @@
 #if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000) ||                          \
     (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
 
-#import "AFURLRequestSerialization.h"
-#import "AFURLResponseSerialization.h"
-
-#import <Availability.h>
-#import <Security/Security.h>
-
 #ifdef _SYSTEMCONFIGURATION_H
-#import <arpa/inet.h>
-#import <ifaddrs.h>
-#import <netdb.h>
-#import <netinet/in.h>
-#import <netinet6/in6.h>
 #endif
 
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
-#import <UIKit/UIKit.h>
 #endif
 
 @interface AFHTTPSessionManager ()
