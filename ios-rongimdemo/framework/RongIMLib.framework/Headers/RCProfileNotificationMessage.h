@@ -27,17 +27,17 @@
 /*!
 公众服务账号信息变更的操作名
 */
-@property(nonatomic, strong) NSString *operation;
+@property(nonatomic, copy) NSString *operation;
 
 /*!
  信息变更的数据，可以为任意格式，如json数据。
  */
-@property(nonatomic, strong) NSString *data;
+@property(nonatomic, copy) NSString *data;
 
 /*!
  信息变更的附加信息
  */
-@property(nonatomic, strong) NSString *extra;
+@property(nonatomic, copy) NSString *extra;
 
 /*!
  初始化公众服务账号信息变更消息

@@ -21,9 +21,11 @@ FOUNDATION_EXPORT const unsigned char JYangToolKitVersionString[];
 #import <JYangToolKit/JYangTools.h>
 #import <JYangToolKit/NSDictionary+SafeObj.h>
 #import <JYangToolKit/UIScrollView+JrmfRefresh.h>
+#import <JYangToolKit/JYangTools.h>
 
 // 控件类
 #import <JYangToolKit/UIThemeButton.h>
 #import <JYangToolKit/UISecretTextField.h>
 #import <JYangToolKit/UITapLabel.h>
 #import <JYangToolKit/UIView+Frame.h>
+

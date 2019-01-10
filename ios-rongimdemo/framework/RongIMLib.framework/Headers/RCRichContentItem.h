@@ -22,27 +22,27 @@
 /*!
  图文信息条目的标题
  */
-@property(nonatomic, strong) NSString *title;
+@property(nonatomic, copy) NSString *title;
 
 /*!
  图文信息条目的内容摘要
  */
-@property(nonatomic, strong) NSString *digest;
+@property(nonatomic, copy) NSString *digest;
 
 /*!
  图文信息条目的图片URL
  */
-@property(nonatomic, strong) NSString *imageURL;
+@property(nonatomic, copy) NSString *imageURL;
 
 /*!
  图文信息条目中包含的需要跳转到的URL
  */
-@property(nonatomic, strong) NSString *url;
+@property(nonatomic, copy) NSString *url;
 
 /*!
  图文信息条目的扩展信息
  */
-@property(nonatomic, strong) NSString *extra;
+@property(nonatomic, copy) NSString *extra;
 
 /*!
  初始化公众服务图文信息条目

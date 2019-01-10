@@ -65,7 +65,6 @@
 		2E7A36E11E03A876005231BE /* JResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E7A36DB1E03A876005231BE /* JResource.bundle */; };
 		2E7A36E21E03A876005231BE /* jrmf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 2E7A36DC1E03A876005231BE /* jrmf.cer */; };
 		2E7A36E41E03A876005231BE /* JrmfWalletKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7A36DE1E03A876005231BE /* JrmfWalletKit.framework */; };
-		2E7A36E51E03A876005231BE /* JYangToolKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7A36DF1E03A876005231BE /* JYangToolKit.framework */; };
 		2E7A36E61E03A876005231BE /* WalletResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E7A36E01E03A876005231BE /* WalletResource.bundle */; };
 		466684241B5DEA10000B7504 /* RCDSettingBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684231B5DEA10000B7504 /* RCDSettingBaseViewController.m */; };
 		466684271B5DEA5B000B7504 /* RCDConversationSettingBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684261B5DEA5B000B7504 /* RCDConversationSettingBaseViewController.m */; };
@@ -87,6 +86,7 @@
 		5C0253F41B53D6F8003F48D9 /* RCDBlackListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0253F31B53D6F8003F48D9 /* RCDBlackListViewController.m */; };
 		5C7629831B54F7E60027DA82 /* RCDBlackListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7629821B54F7E60027DA82 /* RCDBlackListCell.m */; };
 		6E1C98201F39C90C008F96D8 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1C981F1F39C90C008F96D8 /* libresolv.tbd */; };
+		771BB16221B155B40066AE4A /* JYangToolKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 771BB16121B155B40066AE4A /* JYangToolKit.framework */; };
 		7755B4BC2106CE9F000C2DA8 /* JrmfPacketKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7755B4BB2106CE9F000C2DA8 /* JrmfPacketKit.framework */; };
 		77F56BF620874DEE00D080F7 /* RCColor.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77F56BF520874DEE00D080F7 /* RCColor.plist */; };
 		8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C55EB501B2A8CE5004285F4 /* Emoji.plist */; };
@@ -318,6 +318,9 @@
 		E4FCD7C41AD69DFB00915650 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FCD7C31AD69DFB00915650 /* ImageIO.framework */; };
 		E84C4F9A215A5BBE004A469D /* Bailingquic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E84C4F98215A5BBE004A469D /* Bailingquic.framework */; };
 		E84C4F9B215A5BBE004A469D /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E84C4F99215A5BBE004A469D /* GPUImage.framework */; };
+		F1D49DB621ABE4A70047381F /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D49DB521ABE4A70047381F /* NotificationService.m */; };
+		F1D49DBA21ABE4A70047381F /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F1D49DB221ABE4A70047381F /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F1E7784C21A622B00005C37D /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E7784B21A622B00005C37D /* UserNotifications.framework */; };
 		F821B7F51BE75BFD00F0D14C /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F821B7F41BE75BFD00F0D14C /* libMobClickLibrary.a */; };
 		F82B55401DE03E40007392BD /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F82B553F1DE03E40007392BD /* SafariServices.framework */; };
 		F836AB0E1C2262C400A1A5D2 /* RCDTestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = F836AB0D1C2262C400A1A5D2 /* RCDTestMessage.m */; };
@@ -347,6 +350,13 @@
 			remoteGlobalIDString = A6447A131B1DBE6500EA2CEE;
 			remoteInfo = "融云 Demo WatchKit App";
 		};
+		F1D49DB821ABE4A70047381F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4D40F201A031F460045097C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F1D49DB121ABE4A70047381F;
+			remoteInfo = ServiceExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -356,6 +366,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				F1D49DBA21ABE4A70047381F /* ServiceExtension.appex in Embed App Extensions */,
 				17D7D1E31D534F56000AEC54 /* SealTalkShareExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -463,7 +474,6 @@
 		2E7A36DB1E03A876005231BE /* JResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JResource.bundle; sourceTree = "<group>"; };
 		2E7A36DC1E03A876005231BE /* jrmf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = jrmf.cer; sourceTree = "<group>"; };
 		2E7A36DE1E03A876005231BE /* JrmfWalletKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JrmfWalletKit.framework; sourceTree = "<group>"; };
-		2E7A36DF1E03A876005231BE /* JYangToolKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JYangToolKit.framework; sourceTree = "<group>"; };
 		2E7A36E01E03A876005231BE /* WalletResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WalletResource.bundle; sourceTree = "<group>"; };
 		466684221B5DEA10000B7504 /* RCDSettingBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = RCDSettingBaseViewController.h; path = RCloudMessage/RCDSettingBaseViewController.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		466684231B5DEA10000B7504 /* RCDSettingBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = RCDSettingBaseViewController.m; path = RCloudMessage/RCDSettingBaseViewController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -503,6 +513,7 @@
 		5C7629811B54F7E60027DA82 /* RCDBlackListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RCDBlackListCell.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5C7629821B54F7E60027DA82 /* RCDBlackListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RCDBlackListCell.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6E1C981F1F39C90C008F96D8 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		771BB16121B155B40066AE4A /* JYangToolKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JYangToolKit.framework; sourceTree = "<group>"; };
 		7755B4BB2106CE9F000C2DA8 /* JrmfPacketKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JrmfPacketKit.framework; sourceTree = "<group>"; };
 		77F56BF520874DEE00D080F7 /* RCColor.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = RCColor.plist; path = framework/RCColor.plist; sourceTree = SOURCE_ROOT; };
 		8C55EB501B2A8CE5004285F4 /* Emoji.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Emoji.plist; path = framework/Emoji.plist; sourceTree = SOURCE_ROOT; };
@@ -942,6 +953,12 @@
 		E4FCD7C31AD69DFB00915650 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		E84C4F98215A5BBE004A469D /* Bailingquic.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bailingquic.framework; path = Blink/Bailingquic.framework; sourceTree = SOURCE_ROOT; };
 		E84C4F99215A5BBE004A469D /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GPUImage.framework; path = Blink/GPUImage.framework; sourceTree = SOURCE_ROOT; };
+		F1D49DB221ABE4A70047381F /* ServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1D49DB421ABE4A70047381F /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		F1D49DB521ABE4A70047381F /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		F1D49DB721ABE4A70047381F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F1D49DC021ABE4CD0047381F /* ServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
+		F1E7784B21A622B00005C37D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		F821B7F21BE75BF500F0D14C /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClick.h; path = UMAnalytics/MobClick.h; sourceTree = "<group>"; };
 		F821B7F31BE75BF500F0D14C /* MobClickSocialAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClickSocialAnalytics.h; path = UMAnalytics/MobClickSocialAnalytics.h; sourceTree = "<group>"; };
 		F821B7F41BE75BFD00F0D14C /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = ../RCloudMessage/Utilities/UMAnalytics/libMobClickLibrary.a; sourceTree = "<group>"; };
@@ -987,11 +1004,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1E7784C21A622B00005C37D /* UserNotifications.framework in Frameworks */,
 				B2A68D7A212FDBA9006FADEC /* RongSight.framework in Frameworks */,
 				1D3A232E212D540A009514F1 /* RongSticker.framework in Frameworks */,
 				A6BD6E2220A5AD880063F51D /* Bailingquic.framework in Frameworks */,
 				9870725020A17AC3008EE653 /* GLKit.framework in Frameworks */,
 				9870724E20A17AB9008EE653 /* OpenGLES.framework in Frameworks */,
+				771BB16221B155B40066AE4A /* JYangToolKit.framework in Frameworks */,
 				9870724D20A17967008EE653 /* Blink.framework in Frameworks */,
 				2724CCD71FF34411006FFC86 /* Contacts.framework in Frameworks */,
 				6E1C98201F39C90C008F96D8 /* libresolv.tbd in Frameworks */,
@@ -1004,7 +1023,6 @@
 				E4C330F41A0C722300E31B9A /* AudioToolbox.framework in Frameworks */,
 				27AADC261DDC4DB800E1AE31 /* AddressBook.framework in Frameworks */,
 				E4C330F21A0C721D00E31B9A /* AVFoundation.framework in Frameworks */,
-				2E7A36E51E03A876005231BE /* JYangToolKit.framework in Frameworks */,
 				E4C330FC1A0C724A00E31B9A /* CoreTelephony.framework in Frameworks */,
 				27C42ED51DE2FD7B003E2306 /* RongiFlyKit.framework in Frameworks */,
 				E4C497211A24849E00098C8A /* CoreLocation.framework in Frameworks */,
@@ -1037,6 +1055,13 @@
 				E4C330F81A0C723A00E31B9A /* CoreAudio.framework in Frameworks */,
 				A6BD04181B1EEA6B00ACAF17 /* RongIMLib.framework in Frameworks */,
 				E4C330F61A0C722F00E31B9A /* CFNetwork.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F1D49DAF21ABE4A70047381F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1194,7 +1219,7 @@
 				2E7A36DC1E03A876005231BE /* jrmf.cer */,
 				7755B4BB2106CE9F000C2DA8 /* JrmfPacketKit.framework */,
 				2E7A36DE1E03A876005231BE /* JrmfWalletKit.framework */,
-				2E7A36DF1E03A876005231BE /* JYangToolKit.framework */,
+				771BB16121B155B40066AE4A /* JYangToolKit.framework */,
 				2E7A36E01E03A876005231BE /* WalletResource.bundle */,
 				2E6B9A1B1E127C0C006EA6B4 /* zh-Hans.lproj */,
 			);
@@ -1882,6 +1907,7 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F1E7784B21A622B00005C37D /* UserNotifications.framework */,
 				E84C4F98215A5BBE004A469D /* Bailingquic.framework */,
 				E84C4F99215A5BBE004A469D /* GPUImage.framework */,
 				B2A68D79212FDBA9006FADEC /* RongSight.framework */,
@@ -1955,6 +1981,7 @@
 				A6447A061B1DBE6500EA2CEE /* 融云 Demo WatchKit Extension */,
 				A6447A181B1DBE6500EA2CEE /* 融云 Demo WatchKit App */,
 				17D7D1D91D534F56000AEC54 /* SealTalkShareExtension */,
+				F1D49DB321ABE4A70047381F /* ServiceExtension */,
 				E4C4E7E71A0A309100140067 /* Frameworks */,
 				E4D40F291A031F460045097C /* Products */,
 			);
@@ -1968,6 +1995,7 @@
 				A6447A051B1DBE6500EA2CEE /* SealTalk WatchKit Extension.appex */,
 				A6447A141B1DBE6500EA2CEE /* SealTalk WatchKit App.app */,
 				17D7D1D81D534F56000AEC54 /* SealTalkShareExtension.appex */,
+				F1D49DB221ABE4A70047381F /* ServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2207,6 +2235,17 @@
 			name = SettingViewController;
 			sourceTree = "<group>";
 		};
+		F1D49DB321ABE4A70047381F /* ServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				F1D49DC021ABE4CD0047381F /* ServiceExtension.entitlements */,
+				F1D49DB421ABE4A70047381F /* NotificationService.h */,
+				F1D49DB521ABE4A70047381F /* NotificationService.m */,
+				F1D49DB721ABE4A70047381F /* Info.plist */,
+			);
+			path = ServiceExtension;
+			sourceTree = "<group>";
+		};
 		F821B7F11BE75BD000F0D14C /* UMAnalytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -2327,11 +2366,29 @@
 			);
 			dependencies = (
 				17D7D1E21D534F56000AEC54 /* PBXTargetDependency */,
+				F1D49DB921ABE4A70047381F /* PBXTargetDependency */,
 			);
 			name = SealTalk;
 			productName = RongCloud;
 			productReference = E4D40F281A031F460045097C /* SealTalk.app */;
 			productType = "com.apple.product-type.application";
+		};
+		F1D49DB121ABE4A70047381F /* ServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F1D49DBB21ABE4A70047381F /* Build configuration list for PBXNativeTarget "ServiceExtension" */;
+			buildPhases = (
+				F1D49DAE21ABE4A70047381F /* Sources */,
+				F1D49DAF21ABE4A70047381F /* Frameworks */,
+				F1D49DB021ABE4A70047381F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ServiceExtension;
+			productName = ServiceExtension;
+			productReference = F1D49DB221ABE4A70047381F /* ServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -2339,6 +2396,8 @@
 		E4D40F201A031F460045097C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				DefaultBuildSystemTypeForWorkspace = Original;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = RongCloud;
 				TargetAttributes = {
@@ -2379,6 +2438,15 @@
 							};
 						};
 					};
+					F1D49DB121ABE4A70047381F = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = E4D40F231A031F460045097C /* Build configuration list for PBXProject "RCloudMessage" */;
@@ -2399,6 +2467,7 @@
 				A6447A041B1DBE6500EA2CEE /* SealTalk WatchKit Extension */,
 				A6447A131B1DBE6500EA2CEE /* SealTalk WatchKit App */,
 				17D7D1D71D534F56000AEC54 /* SealTalkShareExtension */,
+				F1D49DB121ABE4A70047381F /* ServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -2454,6 +2523,13 @@
 				1D3A232D212D540A009514F1 /* RongSticker.bundle in Resources */,
 				1D3A232C212D540A009514F1 /* RongSticker.strings in Resources */,
 				987653631D796C5B008A6BF0 /* Launch Screen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F1D49DB021ABE4A70047381F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2737,6 +2813,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F1D49DAE21ABE4A70047381F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1D49DB621ABE4A70047381F /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2749,6 +2833,11 @@
 			isa = PBXTargetDependency;
 			target = A6447A131B1DBE6500EA2CEE /* SealTalk WatchKit App */;
 			targetProxy = A6447A161B1DBE6500EA2CEE /* PBXContainerItemProxy */;
+		};
+		F1D49DB921ABE4A70047381F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F1D49DB121ABE4A70047381F /* ServiceExtension */;
+			targetProxy = F1D49DB821ABE4A70047381F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2956,6 +3045,7 @@
 		A608834E1B3954240003B082 /* AutoDebug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
@@ -3109,6 +3199,7 @@
 		A60883521B3972CB0003B082 /* AutoRelease */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
@@ -3421,6 +3512,7 @@
 		E4D40F4F1A031F460045097C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
@@ -3470,6 +3562,7 @@
 		E4D40F501A031F460045097C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
@@ -3514,6 +3607,207 @@
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
+		};
+		F1D49DBC21ABE4A70047381F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ServiceExtension/ServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.ServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F1D49DBD21ABE4A70047381F /* AutoDebug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ServiceExtension/ServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework",
+				);
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.ServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = AutoDebug;
+		};
+		F1D49DBE21ABE4A70047381F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ServiceExtension/ServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework",
+				);
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.ServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F1D49DBF21ABE4A70047381F /* AutoRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ServiceExtension/ServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework",
+				);
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.ServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = AutoRelease;
 		};
 /* End XCBuildConfiguration section */
 
@@ -3569,6 +3863,17 @@
 				A608834E1B3954240003B082 /* AutoDebug */,
 				E4D40F501A031F460045097C /* Release */,
 				A60883521B3972CB0003B082 /* AutoRelease */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F1D49DBB21ABE4A70047381F /* Build configuration list for PBXNativeTarget "ServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1D49DBC21ABE4A70047381F /* Debug */,
+				F1D49DBD21ABE4A70047381F /* AutoDebug */,
+				F1D49DBE21ABE4A70047381F /* Release */,
+				F1D49DBF21ABE4A70047381F /* AutoRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

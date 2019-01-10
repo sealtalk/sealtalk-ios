@@ -23,7 +23,7 @@
 /*!
  位置消息中的地理位置的名称
  */
-@property(nonatomic, strong) NSString *locationName;
+@property(nonatomic, copy) NSString *locationName;
 
 /*!
  返回按钮的点击事件

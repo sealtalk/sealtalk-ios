@@ -16,7 +16,7 @@
 /*!
  当前正在输入的用户ID
  */
-@property(nonatomic, strong) NSString *userId;
+@property(nonatomic, copy) NSString *userId;
 
 /*!
  当前正在输入的消息类型名
@@ -25,7 +25,7 @@
  contentType为用户当前正在编辑的消息类型名，即RCMessageContent中getObjectName的返回值。
  如文本消息，应该传类型名"RC:TxtMsg"。
  */
-@property(nonatomic, strong) NSString *contentType;
+@property(nonatomic, copy) NSString *contentType;
 
 /*!
  初始化用户输入状态对象

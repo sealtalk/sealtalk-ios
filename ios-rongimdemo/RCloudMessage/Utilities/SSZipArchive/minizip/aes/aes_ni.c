@@ -16,6 +16,7 @@ and fitness for purpose.
 ---------------------------------------------------------------------------
 Issue Date: 09/09/2014
 */
+#include "aes_ni.h"
 
 #if defined( USE_INTEL_AES_IF_PRESENT )
 

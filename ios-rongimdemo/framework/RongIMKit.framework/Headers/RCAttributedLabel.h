@@ -19,7 +19,7 @@
 ///**
 // *  text
 // */
-//@property(nonatomic, strong) NSString *text;
+//@property(nonatomic, copy) NSString *text;
 //
 //@end
 

@@ -65,7 +65,7 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 /*!
  目标会话ID
  */
-@property(nonatomic, strong) NSString *targetId;
+@property(nonatomic, copy) NSString *targetId;
 
 /*!
  当前的用户名称（已废弃，请勿使用）
@@ -250,8 +250,6 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 
 /*!
  会话页面消息是否可编辑选择,如果为 YES,消息 cell 会变为多选样式,如果为 NO，页面恢复初始状态。
- 
- @warning 非线程安全，请在主线程操作该属性
  */
 @property(nonatomic, assign) BOOL allowsMessageCellSelection;
 

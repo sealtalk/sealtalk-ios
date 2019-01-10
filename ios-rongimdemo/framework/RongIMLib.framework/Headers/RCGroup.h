@@ -20,17 +20,17 @@
 /*!
  群组ID
  */
-@property(nonatomic, strong) NSString *groupId;
+@property(nonatomic, copy) NSString *groupId;
 
 /*!
  群组名称
  */
-@property(nonatomic, strong) NSString *groupName;
+@property(nonatomic, copy) NSString *groupName;
 
 /*!
  群组头像的URL
  */
-@property(nonatomic, strong) NSString *portraitUri;
+@property(nonatomic, copy) NSString *portraitUri;
 
 /*!
  群组信息的初始化方法

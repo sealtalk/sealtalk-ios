@@ -58,12 +58,12 @@ typedef NS_ENUM(NSInteger, RCDiscussionNotificationType) {
 /*!
  操作者的用户ID
  */
-@property(nonatomic, strong) NSString *operatorId;
+@property(nonatomic, copy) NSString *operatorId;
 
 /*!
  讨论组通知的扩展信息
  */
-@property(nonatomic, strong) NSString *extension;
+@property(nonatomic, copy) NSString *extension;
 
 /*!
  初始化讨论组通知消息

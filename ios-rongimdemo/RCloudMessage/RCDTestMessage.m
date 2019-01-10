@@ -49,18 +49,9 @@
     }
 
     if (self.senderUserInfo) {
-        NSMutableDictionary *userInfoDic = [[NSMutableDictionary alloc] init];
-        if (self.senderUserInfo.name) {
-            [userInfoDic setObject:self.senderUserInfo.name forKeyedSubscript:@"name"];
-        }
-        if (self.senderUserInfo.portraitUri) {
-            [userInfoDic setObject:self.senderUserInfo.portraitUri forKeyedSubscript:@"portrait"];
-        }
-        if (self.senderUserInfo.userId) {
-            [userInfoDic setObject:self.senderUserInfo.userId forKeyedSubscript:@"id"];
-        }
-        [dataDict setObject:userInfoDic forKey:@"user"];
+        [dataDict setObject:[self encodeUserInfo:self.senderUserInfo] forKey:@"user"];
     }
+
     NSData *data = [NSJSONSerialization dataWithJSONObject:dataDict options:kNilOptions error:nil];
     return data;
 }

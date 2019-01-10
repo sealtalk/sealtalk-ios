@@ -44,7 +44,7 @@
 @property (nonatomic,copy) NSString *sendUserId;
 
 /**
- *  个人名片消息发送者的id
+ *  个人名片消息发送者的昵称
  */
 @property (nonatomic,copy) NSString *sendUserName;
 

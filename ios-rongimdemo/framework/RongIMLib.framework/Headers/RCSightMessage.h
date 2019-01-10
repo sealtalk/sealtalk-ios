@@ -19,12 +19,12 @@
 
  @discussion 小视频消息类，此消息会进行存储并计入未读消息数。
  */
-@interface RCSightMessage : RCMessageContent <NSCoding>
+@interface RCSightMessage : RCMediaMessageContent <NSCoding>
 
 /*!
  本地URL地址
  */
-@property(nonatomic, readonly) NSString *localPath;
+@property(nonatomic, copy) NSString *localPath;
 
 /*!
  网络URL地址

@@ -23,50 +23,50 @@
 /*!
  公众服务账号的名称
  */
-@property(nonatomic, strong) NSString *name;
+@property(nonatomic, copy) NSString *name;
 
 /*!
  公众服务账号的描述
  */
-@property(nonatomic, strong) NSString *introduction;
+@property(nonatomic, copy) NSString *introduction;
 
 /*!
  公众服务账号的ID
  */
-@property(nonatomic, strong) NSString *publicServiceId;
+@property(nonatomic, copy) NSString *publicServiceId;
 
 /*!
  公众服务账号头像URL
  */
-@property(nonatomic, strong) NSString *portraitUrl;
+@property(nonatomic, copy) NSString *portraitUrl;
 
 /*!
  公众服务账号的所有者
 
  @discussion 当前版本暂不支持。
  */
-@property(nonatomic, strong) NSString *owner;
+@property(nonatomic, copy) NSString *owner;
 
 /*!
  公众服务账号所有者的URL
 
  @discussion 当前版本暂不支持。
  */
-@property(nonatomic, strong) NSString *ownerUrl;
+@property(nonatomic, copy) NSString *ownerUrl;
 
 /*!
  公众服务账号的联系电话
 
  @discussion 当前版本暂不支持。
  */
-@property(nonatomic, strong) NSString *publicServiceTel;
+@property(nonatomic, copy) NSString *publicServiceTel;
 
 /*!
  公众服务账号历史消息
 
  @discussion 当前版本暂不支持。
  */
-@property(nonatomic, strong) NSString *histroyMsgUrl;
+@property(nonatomic, copy) NSString *histroyMsgUrl;
 
 /*!
  公众服务账号地理位置
@@ -80,7 +80,7 @@
 
  @discussion 当前版本暂不支持。
  */
-@property(nonatomic, strong) NSString *scope;
+@property(nonatomic, copy) NSString *scope;
 
 /*!
  公众服务账号类型

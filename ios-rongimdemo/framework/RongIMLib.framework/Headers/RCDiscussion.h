@@ -23,17 +23,17 @@
 /*!
  讨论组ID
  */
-@property(nonatomic, strong) NSString *discussionId;
+@property(nonatomic, copy) NSString *discussionId;
 
 /*!
  讨论组名称
  */
-@property(nonatomic, strong) NSString *discussionName;
+@property(nonatomic, copy) NSString *discussionName;
 
 /*!
  讨论组的创建者的用户ID
  */
-@property(nonatomic, strong) NSString *creatorId;
+@property(nonatomic, copy) NSString *creatorId;
 
 /*!
  讨论组成员的用户ID列表

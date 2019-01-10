@@ -29,7 +29,7 @@
 /*!
  包含@提醒的消息，本地通知和远程推送显示的内容
  */
-@property(nonatomic, strong) NSString *mentionedContent;
+@property(nonatomic, copy) NSString *mentionedContent;
 
 /*!
  是否@了我

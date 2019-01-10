@@ -1136,7 +1136,6 @@ NSMutableDictionary *userInputStatus;
 - (void)onEndForwardMessage:(NSNotification *)notification{
     //置为 NO,将消息 cell 重置为初始状态
     self.allowsMessageCellSelection = NO;
-    [self.conversationMessageCollectionView reloadItemsAtIndexPaths:[self.conversationMessageCollectionView indexPathsForVisibleItems]];
 }
 
 - (void)deleteMessages{

@@ -1253,7 +1253,7 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 
 /*!
  在会话中搜索指定消息的前 beforeCount 数量和后 afterCount
- 数量的消息。返回的消息列表中会包含指定的消息。消息列表时间顺序从旧到新。
+ 数量的消息。返回的消息列表中会包含指定的消息。消息列表时间顺序从新到旧。
 
  @param conversationType    会话类型
  @param targetId            目标会话ID
@@ -1401,6 +1401,26 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
               targetId:(NSString *)targetId
                success:(void (^)(void))successBlock
                  error:(void (^)(RCErrorCode status))errorBlock;
+
+
+/**
+ 批量删除某个会话中的指定远端消息（同时删除对应的本地消息）
+
+ @param conversationType 会话类型，不支持聊天室
+ @param targetId 目标会话ID
+ @param messages 将被删除的消息列表
+ @param successBlock 成功的回调
+ @param errorBlock 失败的回调
+ 
+ @discussion 此方法会同时删除远端和本地消息。
+ 一次批量操作仅支持删除属于同一个会话的消息，请确保消息列表中的所有消息来自同一会话
+ 一次最多删除 100 条消息。
+ */
+- (void)deleteRemoteMessage:(RCConversationType)conversationType
+                   targetId:(NSString *)targetId
+                   messages:(NSArray<RCMessage *> *)messages
+                    success:(void (^)(void))successBlock
+                      error:(void (^)(RCErrorCode status))errorBlock;
 
 /*!
  删除某个会话中的所有消息
@@ -2508,9 +2528,9 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
 
 #pragma mark - 历史消息
 /**
- 设置离线消息补偿时间（以天为单位）
+ 设置离线消息在服务端的存储时间（以天为单位）
 
- @param duration 离线消息补偿时间，范围【1~7天】
+ @param duration      存储时间，范围【1~7天】
  @param  successBlock 成功回调
  @param  errorBlock   失败回调
  */

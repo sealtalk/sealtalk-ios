@@ -52,12 +52,12 @@
  群组通知的当前操作名称，您可以使用预定义好的操作名，也可以是您自己定义的任何操作名。
  预定义的操作名：GroupNotificationMessage_GroupOperationAdd、GroupNotificationMessage_GroupOperationQuit、GroupNotificationMessage_GroupOperationKicked、GroupNotificationMessage_GroupOperationRename、GroupNotificationMessage_GroupOperationBulletin。
  */
-@property(nonatomic, strong) NSString *operation;
+@property(nonatomic, copy) NSString *operation;
 
 /*!
  当前操作发起用户的用户ID
  */
-@property(nonatomic, strong) NSString *operatorUserId;
+@property(nonatomic, copy) NSString *operatorUserId;
 
 /*!
  当前操作的目标对象
@@ -65,17 +65,17 @@
  @discussion
  当前操作的目标对象，如被当前操作目标用户的用户ID或变更后的群主名称等。
  */
-@property(nonatomic, strong) NSString *data;
+@property(nonatomic, copy) NSString *data;
 
 /*!
  当前操作的消息内容
  */
-@property(nonatomic, strong) NSString *message;
+@property(nonatomic, copy) NSString *message;
 
 /*!
  当前操作的附加信息
  */
-@property(nonatomic, strong) NSString *extra;
+@property(nonatomic, copy) NSString *extra;
 
 /*!
  初始化群组通知消息

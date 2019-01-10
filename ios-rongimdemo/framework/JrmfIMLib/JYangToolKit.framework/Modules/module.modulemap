@@ -1,0 +1,6 @@
+framework module JYangToolKit {
+  umbrella header "JYangToolKit.h"
+
+  export *
+  module * { export * }
+}

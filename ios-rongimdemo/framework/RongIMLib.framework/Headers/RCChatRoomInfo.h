@@ -17,7 +17,7 @@
 /*!
  聊天室ID
  */
-@property(nonatomic, strong) NSString *targetId;
+@property(nonatomic, copy) NSString *targetId;
 
 /*!
  包含的成员信息类型

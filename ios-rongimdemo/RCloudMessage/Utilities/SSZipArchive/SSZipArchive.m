@@ -11,6 +11,8 @@
 #include "zip.h"
 #include "minishared.h"
 
+#include <sys/stat.h>
+
 NSString *const SSZipArchiveErrorDomain = @"SSZipArchiveErrorDomain";
 
 #define CHUNK 16384

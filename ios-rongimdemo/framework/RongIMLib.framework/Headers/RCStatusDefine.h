@@ -221,7 +221,7 @@ typedef NS_ENUM(NSInteger, RCConnectErrorCode) {
      调用过connect之后，只有在token错误或者被踢下线或者用户logout的情况下才需要再次调用connect。SDK会自动重连，不需要应用多次调用connect来保证连接性。
      */
     RC_CONNECTION_EXIST = 34001,
-
+    
     /*!
      开发者接口调用时传入的参数错误
 
@@ -686,7 +686,7 @@ typedef NS_ENUM(NSUInteger, RCMessagePersistent) {
     MessagePersistent_ISCOUNTED = 3,
 
     /*!
-     在本地不存储，不计入未读数，并且如果对方不在线，服务器会直接丢弃该消息，对方如果之后再上线也不会再收到此消息(聊天室类型除外，此类消息聊天室会视为普通消息)。
+     在本地不存储，不计入未读数，并且如果对方不在线，服务器会直接丢弃该消息，对方如果之后再上线也不会再收到此消息。
 
      @discussion 一般用于发送输入状态之类的消息，该类型消息的messageUId为nil。
      */

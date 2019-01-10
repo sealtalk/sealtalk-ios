@@ -54,7 +54,7 @@ typedef NS_ENUM(NSUInteger, RCConversationModelType) {
 /*!
  目标会话ID
  */
-@property(nonatomic, strong) NSString *targetId;
+@property(nonatomic, copy) NSString *targetId;
 
 /*!
  会话的标题
@@ -104,17 +104,17 @@ typedef NS_ENUM(NSUInteger, RCConversationModelType) {
 /*!
  会话中存在的草稿
  */
-@property(nonatomic, strong) NSString *draft;
+@property(nonatomic, copy) NSString *draft;
 
 /*!
  会话中最后一条消息的类型名
  */
-@property(nonatomic, strong) NSString *objectName;
+@property(nonatomic, copy) NSString *objectName;
 
 /*!
  会话中最后一条消息的发送者用户ID
  */
-@property(nonatomic, strong) NSString *senderUserId;
+@property(nonatomic, copy) NSString *senderUserId;
 
 /*!
  会话中最后一条消息的发送者的用户名（已废弃，请勿使用）

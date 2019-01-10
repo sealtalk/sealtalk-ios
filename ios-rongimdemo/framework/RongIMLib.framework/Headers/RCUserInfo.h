@@ -20,17 +20,22 @@
 /*!
  用户ID
  */
-@property(nonatomic, strong) NSString *userId;
+@property(nonatomic, copy) NSString *userId;
 
 /*!
  用户名称
  */
-@property(nonatomic, strong) NSString *name;
+@property(nonatomic, copy) NSString *name;
 
 /*!
  用户头像的URL
  */
-@property(nonatomic, strong) NSString *portraitUri;
+@property(nonatomic, copy) NSString *portraitUri;
+
+/**
+ 用户信息附加字段
+ */
+@property(nonatomic, copy) NSString *extra;
 
 /*!
  用户信息的初始化方法

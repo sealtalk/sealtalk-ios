@@ -28,12 +28,12 @@
 /*!
  目标会话ID
  */
-@property(nonatomic, strong) NSString *targetId;
+@property(nonatomic, copy) NSString *targetId;
 
 /*!
  会话的标题
  */
-@property(nonatomic, strong) NSString *conversationTitle;
+@property(nonatomic, copy) NSString *conversationTitle;
 
 /*!
  会话中的未读消息数量
@@ -71,24 +71,24 @@
 /*!
  会话中存在的草稿
  */
-@property(nonatomic, strong) NSString *draft;
+@property(nonatomic, copy) NSString *draft;
 
 /*!
  会话中最后一条消息的类型名
  */
-@property(nonatomic, strong) NSString *objectName;
+@property(nonatomic, copy) NSString *objectName;
 
 /*!
  会话中最后一条消息的发送者用户ID
  */
-@property(nonatomic, strong) NSString *senderUserId;
+@property(nonatomic, copy) NSString *senderUserId;
 
 /*!
  会话中最后一条消息的发送者的用户名（已废弃，请勿使用）
 
  @warning **已废弃，请勿使用。**
  */
-@property(nonatomic, strong) NSString *senderUserName __deprecated_msg("已废弃，请勿使用。");
+@property(nonatomic, copy) NSString *senderUserName __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  会话中最后一条消息的消息ID
@@ -118,7 +118,7 @@
 
  @discussion 服务器消息唯一ID（在同一个Appkey下全局唯一）
  */
-@property(nonatomic, strong) NSString *lastestMessageUId;
+@property(nonatomic, copy) NSString *lastestMessageUId;
 
 /*!
  会话中是否存在被@的消息

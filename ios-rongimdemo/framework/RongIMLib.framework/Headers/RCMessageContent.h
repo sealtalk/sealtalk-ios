@@ -128,12 +128,28 @@
  */
 @property(nonatomic, strong) RCMentionedInfo *mentionedInfo;
 
+/**
+ 将用户信息编码到字典中
+ 
+ @param userInfo 要编码的用户信息
+ @return 存有用户信息的 Dictionary
+ */
+- (NSDictionary *)encodeUserInfo:(RCUserInfo *)userInfo;
+
 /*!
  将消息内容中携带的用户信息解码
 
  @param dictionary 用户信息的Dictionary
  */
 - (void)decodeUserInfo:(NSDictionary *)dictionary;
+
+/**
+ 将@提醒信息编码到字典中
+ 
+ @param mentionedInfo 要编码的@信息
+ @return 存有@信息的 Dictionary
+ */
+- (NSDictionary *)encodeMentionedInfo:(RCMentionedInfo *)mentionedInfo;
 
 /*!
  将消息内容中携带的@提醒信息解码

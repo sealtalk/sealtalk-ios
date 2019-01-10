@@ -42,6 +42,8 @@ typedef void (^JYResponseFail)(NSURLSessionDataTask * task, NSError * error);
 + (void)JYangLibsetImageWithImageView:(UIImageView *)imageView URL:(NSURL *)url placeholderImage:(UIImage *)placeholder;
 
 
++ (void)JYangLibDownloadImageWithUrl:(NSURL *)url block:(void(^)(UIImage * image))block;
+
 #pragma mark - 等待框
 /**
  显示等待框
@@ -75,6 +77,10 @@ typedef void (^JYResponseFail)(NSURLSessionDataTask * task, NSError * error);
  */
 + (void)JYangLibShowWait:(NSString *)hint InViewController:(UIViewController *)viewController completion:(void(^)(BOOL dismissed))completion;
 
+
++ (void)mf_showProgressHUDWith:(NSString *)title inView:(UIView *)view;
++ (void)mf_hideHUDInView:(UIView *)view;
+
 #pragma mark - 网络请求
 /**
  普通post方法请求网络数据
@@ -87,7 +93,14 @@ typedef void (^JYResponseFail)(NSURLSessionDataTask * task, NSError * error);
 + (NSURLSessionDataTask *)postGetRequestWithLink:(NSString *)reqUrl parameter:(NSString *)param Success:(JYResponseSuccess)success Fail:(JYResponseFail)fail;
 
 #pragma mark - Msg
++ (void)mf_collectErrorMsg:(NSString *)partnerId userId:(NSString *)userId;
+
 + (NSString *)GetJYangToolLibMsg;
 
++ (void)mf_setUserIcon:(NSString *)uId className:(NSString *)name with:(UIImageView *)uIcon webImage:(NSString *)iconStr defaultImage:(UIImage *)defaultImage;
+
++ (void)mf_setUserIcon:(NSString *)uId className:(NSString *)name with:(UIImageView *)uIcon webImage:(NSString *)iconStr defaultImage:(UIImage *)defaultImage block:(void(^)(NSString * imageStr,UIImage * uImage,NSString * user_nickname))block;
+
++ (NSURLSessionDataTask * )mf_post:(NSString *)urlStr param:(NSDictionary *)mdic block:(void(^)(id obj,NSError * err))block;
 
 @end

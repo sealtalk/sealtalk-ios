@@ -37,7 +37,7 @@
 /*!
  目标会话ID
  */
-@property(nonatomic, strong) NSString *targetId;
+@property(nonatomic, copy) NSString *targetId;
 
 /*!
  消息ID
@@ -52,7 +52,7 @@
 /*!
  发送者的用户ID
  */
-@property(nonatomic, strong) NSString *senderUserId;
+@property(nonatomic, copy) NSString *senderUserId;
 
 /*!
  消息的接收状态
@@ -77,7 +77,7 @@
 /*!
  消息的类型名
  */
-@property(nonatomic, strong) NSString *objectName;
+@property(nonatomic, copy) NSString *objectName;
 
 /*!
  消息的内容
@@ -92,7 +92,7 @@
 /*!
  消息的附加字段
  */
-@property(nonatomic, strong) NSString *extra;
+@property(nonatomic, copy) NSString *extra;
 
 /*!
  消息展示时的Cell高度
@@ -105,7 +105,7 @@
 
  @discussion 服务器消息唯一ID（在同一个Appkey下全局唯一）
  */
-@property(nonatomic, strong) NSString *messageUId;
+@property(nonatomic, copy) NSString *messageUId;
 
 /*!
  消息是否可以发送请求回执

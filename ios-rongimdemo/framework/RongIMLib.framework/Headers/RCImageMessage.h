@@ -10,7 +10,7 @@
 //  RCImageMessage.h
 //  Created by Heq.Shinoda on 14-6-13.
 
-#import "RCMessageContent.h"
+#import "RCMediaMessageContent.h"
 #import <UIKit/UIKit.h>
 
 /*!
@@ -23,19 +23,19 @@
 
  @discussion 图片消息类，此消息会进行存储并计入未读消息数。
  */
-@interface RCImageMessage : RCMessageContent <NSCoding>
+@interface RCImageMessage : RCMediaMessageContent <NSCoding>
 
 /*!
  图片消息的URL地址
 
  @discussion 发送方此字段为图片的本地路径，接收方此字段为网络URL地址。
  */
-@property(nonatomic, strong) NSString *imageUrl;
+@property(nonatomic, copy) NSString *imageUrl;
 
 /*!
  图片的本地路径
  */
-@property(nonatomic, strong) NSString *localPath;
+@property(nonatomic, copy) NSString *localPath;
 
 /*!
  图片消息的缩略图
@@ -52,7 +52,7 @@
 /*!
  图片消息的附加信息
  */
-@property(nonatomic, strong) NSString *extra;
+@property(nonatomic, copy) NSString *extra;
 
 /*!
  图片消息的原始图片信息

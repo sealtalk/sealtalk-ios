@@ -173,6 +173,8 @@ Issue Date: 20/12/2007
 
 #endif
 
+#include "aestab.h"
+
 #if defined(__cplusplus)
 extern "C"
 {

@@ -27,12 +27,12 @@
 /*!
  文本消息的内容
  */
-@property(nonatomic, strong) NSString *content;
+@property(nonatomic, copy) NSString *content;
 
 /*!
  文本消息的附加信息
  */
-@property(nonatomic, strong) NSString *extra;
+@property(nonatomic, copy) NSString *extra;
 
 /*!
  初始化文本消息

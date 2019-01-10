@@ -37,7 +37,7 @@
 /*!
  语音消息的附加信息
  */
-@property(nonatomic, strong) NSString *extra;
+@property(nonatomic, copy) NSString *extra;
 
 /*!
  初始化语音消息

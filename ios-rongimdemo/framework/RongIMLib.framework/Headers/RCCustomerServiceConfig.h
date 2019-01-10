@@ -25,12 +25,12 @@
 /*!
  * 公司名称
  */
-@property(nonatomic, strong) NSString *companyName;
+@property(nonatomic, copy) NSString *companyName;
 
 /*!
  * 公司的Url
  */
-@property(nonatomic, strong) NSString *companyUrl;
+@property(nonatomic, copy) NSString *companyUrl;
 
 /*!
  * 机器人会话是否不需要评价
@@ -48,10 +48,10 @@
 @property(nonatomic, strong) NSArray *humanEvaluateItems;
 
 @property(nonatomic) int adminTipTime;
-@property(nonatomic, strong) NSString *adminTipWord;
+@property(nonatomic, copy) NSString *adminTipWord;
 
 @property(nonatomic) int userTipTime;
-@property(nonatomic, strong) NSString *userTipWord;
+@property(nonatomic, copy) NSString *userTipWord;
 /*!
  * 评价时机
  */

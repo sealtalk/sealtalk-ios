@@ -21,17 +21,17 @@
 /*!
  菜单的ID
  */
-@property(nonatomic, strong) NSString *id;
+@property(nonatomic, copy) NSString *id;
 
 /*!
  菜单的标题
  */
-@property(nonatomic, strong) NSString *name;
+@property(nonatomic, copy) NSString *name;
 
 /*!
  菜单的URL链接
  */
-@property(nonatomic, strong) NSString *url;
+@property(nonatomic, copy) NSString *url;
 
 /*!
  菜单的类型

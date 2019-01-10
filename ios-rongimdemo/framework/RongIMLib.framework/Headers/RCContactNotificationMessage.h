@@ -44,29 +44,29 @@
  好友请求当前的操作名称，您可以使用预定义好的操作名，也可以是您自己定义的任何操作名。
  预定义的操作名：ContactNotificationMessage_ContactOperationRequest、ContactNotificationMessage_ContactOperationAcceptResponse、ContactNotificationMessage_ContactOperationRejectResponse。
  */
-@property(nonatomic, strong) NSString *operation;
+@property(nonatomic, copy) NSString *operation;
 
 /*!
  当前操作发起用户的用户ID
  */
-@property(nonatomic, strong) NSString *sourceUserId;
+@property(nonatomic, copy) NSString *sourceUserId;
 
 /*!
  当前操作目标用户的用户ID
  */
-@property(nonatomic, strong) NSString *targetUserId;
+@property(nonatomic, copy) NSString *targetUserId;
 
 /*!
  当前操作的消息内容
 
  @discussion 当前操作的消息内容，如同意、拒绝的理由等。
  */
-@property(nonatomic, strong) NSString *message;
+@property(nonatomic, copy) NSString *message;
 
 /*!
  当前操作的附加信息
  */
-@property(nonatomic, strong) NSString *extra;
+@property(nonatomic, copy) NSString *extra;
 
 /*!
  初始化好友请求消息

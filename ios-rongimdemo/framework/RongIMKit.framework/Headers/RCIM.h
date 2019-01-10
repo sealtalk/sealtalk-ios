@@ -999,6 +999,11 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
 
 #pragma mark - 公众号信息提供者
 
+/*!
+ 公众号信息提供者
+ 
+ @discussion SDK需要通过您实现公众号信息提供者，获取公众号信息并显示。
+ */
 @property (nonatomic,weak) id <RCIMPublicServiceProfileDataSource> publicServiceInfoDataSource;
 
 #pragma mark 头像显示

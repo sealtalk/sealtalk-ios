@@ -28,14 +28,14 @@
 /*!
  命令提醒的名称
  */
-@property(nonatomic, strong) NSString *name;
+@property(nonatomic, copy) NSString *name;
 
 /*!
  命令提醒消息的扩展数据
 
  @discussion 命令提醒消息的扩展数据，可以为任意字符串，如存放您定义的json数据。
  */
-@property(nonatomic, strong) NSString *data;
+@property(nonatomic, copy) NSString *data;
 
 /*!
  初始化命令提醒消息

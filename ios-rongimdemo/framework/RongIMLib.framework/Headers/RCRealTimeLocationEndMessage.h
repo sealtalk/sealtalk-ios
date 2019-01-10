@@ -23,7 +23,7 @@
 /*!
  结束消息的附加信息
  */
-@property(nonatomic, strong) NSString *extra;
+@property(nonatomic, copy) NSString *extra;
 
 /*!
  初始化实时位置共享的结束消息

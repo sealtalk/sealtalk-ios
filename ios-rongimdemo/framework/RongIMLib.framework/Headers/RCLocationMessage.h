@@ -34,7 +34,7 @@
 /*!
  地理位置的名称
  */
-@property(nonatomic, strong) NSString *locationName;
+@property(nonatomic, copy) NSString *locationName;
 
 /*!
  地理位置的缩略图
@@ -44,7 +44,7 @@
 /*!
  地理位置的附加信息
  */
-@property(nonatomic, strong) NSString *extra;
+@property(nonatomic, copy) NSString *extra;
 
 /*!
  初始化地理位置消息

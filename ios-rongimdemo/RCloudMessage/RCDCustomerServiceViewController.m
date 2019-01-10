@@ -29,23 +29,8 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-  [self notifyUpdateUnreadMessageCount];
   
   self.evaStarDic = [NSMutableDictionary dictionary];
-  /*
-    UIButton *button =
-    [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
-    UIImageView *imageView =
-    [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Private_Setting"]];
-    imageView.frame = CGRectMake(15, 5,16 , 17);
-    [button addSubview:imageView];
-    [button addTarget:self
-               action:@selector(rightBarButtonItemClicked:)
-     forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightBarButton =
-    [[UIBarButtonItem alloc] initWithCustomView:button];
-   */
-    self.navigationItem.rightBarButtonItem = nil;
   
   [[RCIMClient sharedRCIMClient] getHumanEvaluateCustomerServiceConfig:^(NSDictionary *evaConfig) {
     NSArray *array = [evaConfig valueForKey:@"evaConfig"];
@@ -60,25 +45,11 @@
   }];
 }
 
-/*
-- (void)rightBarButtonItemClicked:(id)sender {
-  RCDSettingBaseViewController *settingVC =
-      [[RCDSettingBaseViewController alloc] init];
-  settingVC.conversationType = self.conversationType;
-  settingVC.targetId = self.targetId;
-  //清除聊天记录之后reload data
-  __weak typeof(self) weakSelf = self;
-  settingVC.clearHistoryCompletion = ^(BOOL isSuccess) {
-    if (isSuccess) {
-      [weakSelf.conversationDataRepository removeAllObjects];
-      dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.conversationMessageCollectionView reloadData];
-      });
-    }
-  };
-  [self.navigationController pushViewController:settingVC animated:YES];
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self createNavLeftBarButtonItem];
+    self.navigationItem.rightBarButtonItems = nil;
 }
-*/
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
@@ -89,11 +60,8 @@
 //这个函数是基类的函数，他会根据当前服务时间来决定是否弹出评价，根据服务的类型来决定弹出评价类型。
 //弹出评价的函数是commentCustomerServiceAndQuit，应用可以根据这个函数内的注释来自定义评价界面。
 //等待用户评价结束后调用如下函数离开当前VC。
-- (void)leftBarButtonItemPressed:(id)sender {
-  //需要调用super的实现
-  [super leftBarButtonItemPressed:sender];
-
-  [self.navigationController popToRootViewControllerAnimated:YES];
+- (void)clickLeftBarButtonItem:(id)sender {
+    [super customerServiceLeftCurrentViewController];
 }
 
 //评价客服，并离开当前会话
@@ -112,7 +80,7 @@
 //(void)commentCustomerServiceWithStatus:(RCCustomerServiceStatus)serviceStatus
 //commentId:(NSString *)commentId quitAfterComment:(BOOL)isQuit {
 //    if (isQuit) {
-//        [self leftBarButtonItemPressed:nil];
+//        [super customerServiceLeftCurrentViewController];;
 //    }
 //}
 //＊＊＊＊＊＊＊＊＊应用去掉评价界面结束＊＊＊＊＊＊＊＊＊＊＊＊＊
@@ -129,7 +97,7 @@ commentId:(NSString *)commentId quitAfterComment:(BOOL)isQuit {
     self.commentId = commentId;
     self.quitAfterComment = isQuit;
     if (serviceStatus == 0) {
-        [self leftBarButtonItemPressed:nil];
+        [super customerServiceLeftCurrentViewController];;
     } else if (serviceStatus == 1) {
         //人工评价结果
       [self.evaluateView show];
@@ -159,7 +127,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
     //(2)离开当前客服VC
     if (self.quitAfterComment) {
-        [self leftBarButtonItemPressed:nil];
+        [super customerServiceLeftCurrentViewController];;
     }
 }
 
@@ -187,14 +155,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 - (void)didSubmitEvaluate:(RCCSResolveStatus)solveStatus star:(int)star tagString:(NSString *)tagString suggest:(NSString *)suggest{
   [[RCIMClient sharedRCIMClient] evaluateCustomerService:self.targetId dialogId:nil starValue:star suggest:suggest resolveStatus:solveStatus tagText:tagString extra:nil];
   if (self.quitAfterComment) {
-    [self leftBarButtonItemPressed:nil];
+    [super customerServiceLeftCurrentViewController];;
   }
 }
 
 - (void)dismissEvaluateView{
   [self.evaluateView hide];
   if (self.quitAfterComment) {
-    [self leftBarButtonItemPressed:nil];
+    [super customerServiceLeftCurrentViewController];;
   }
 }
 
@@ -218,4 +186,23 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
   }
   return _announceView;
 }
+
+#pragma mark Navigation Setting
+- (void) createNavLeftBarButtonItem {
+    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    backBtn.frame = CGRectMake(0, 6, 72, 23);
+    UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 70, 22)];
+    backText.text = @"返回";
+    backText.font = [UIFont systemFontOfSize:17];
+    [backText setBackgroundColor:[UIColor clearColor]];
+    [backText setTextColor:[RCIM sharedRCIM].globalNavigationBarTintColor];
+    [backBtn addSubview:backText];
+    UIImageView *backImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back"]];
+    backImg.frame = CGRectMake(-8, 0, 15, 22);
+    [backBtn addSubview:backImg];
+    [backBtn addTarget:self action:@selector(clickLeftBarButtonItem:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    [self.navigationItem setLeftBarButtonItem:leftButton];
+}
+
 @end
