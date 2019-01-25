@@ -1,0 +1,6 @@
+framework module RongRTCEngine {
+  umbrella header "RongRTCEngine.h"
+
+  export *
+  module * { export * }
+}

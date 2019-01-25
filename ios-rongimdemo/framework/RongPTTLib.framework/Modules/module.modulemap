@@ -1,0 +1,6 @@
+framework module RongPTTLib {
+  umbrella header "RongPTTLib.h"
+
+  export *
+  module * { export * }
+}

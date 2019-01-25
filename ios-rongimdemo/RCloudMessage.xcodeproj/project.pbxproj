@@ -46,6 +46,7 @@
 		1D3A232C212D540A009514F1 /* RongSticker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1D3A2327212D5409009514F1 /* RongSticker.strings */; };
 		1D3A232D212D540A009514F1 /* RongSticker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1D3A232A212D5409009514F1 /* RongSticker.bundle */; };
 		1D3A232E212D540A009514F1 /* RongSticker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3A232B212D5409009514F1 /* RongSticker.framework */; };
+		270EE2A321EF59BA001DFDED /* JrmfInfo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 270EE2A121EF59BA001DFDED /* JrmfInfo.strings */; };
 		2724CCD71FF34411006FFC86 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724CCD61FF34411006FFC86 /* Contacts.framework */; };
 		27AADC261DDC4DB800E1AE31 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AADC251DDC4DB800E1AE31 /* AddressBook.framework */; };
 		27AADC271DDC4DCE00E1AE31 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C3310B1A0C729600E31B9A /* QuartzCore.framework */; };
@@ -60,8 +61,6 @@
 		27D6FF9F1DFE4D2C00053F69 /* RCDSettingUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D6FF9E1DFE4D2C00053F69 /* RCDSettingUserDefaults.m */; };
 		2E29FF3C1DC1BE8400AF2DF0 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E29FF3A1DC1BE8400AF2DF0 /* AlipaySDK.bundle */; };
 		2E29FF3D1DC1BE8400AF2DF0 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E29FF3B1DC1BE8400AF2DF0 /* AlipaySDK.framework */; };
-		2E6B9A1A1E127BF7006EA6B4 /* JrmfInfo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2E6B9A181E127BF7006EA6B4 /* JrmfInfo.strings */; };
-		2E6B9A1E1E127C0C006EA6B4 /* JrmfInfo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2E6B9A1C1E127C0C006EA6B4 /* JrmfInfo.strings */; };
 		2E7A36E11E03A876005231BE /* JResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E7A36DB1E03A876005231BE /* JResource.bundle */; };
 		2E7A36E21E03A876005231BE /* jrmf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 2E7A36DC1E03A876005231BE /* jrmf.cer */; };
 		2E7A36E41E03A876005231BE /* JrmfWalletKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7A36DE1E03A876005231BE /* JrmfWalletKit.framework */; };
@@ -453,6 +452,8 @@
 		1D3A2329212D5409009514F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RongSticker.strings; sourceTree = "<group>"; };
 		1D3A232A212D5409009514F1 /* RongSticker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RongSticker.bundle; sourceTree = "<group>"; };
 		1D3A232B212D5409009514F1 /* RongSticker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongSticker.framework; sourceTree = "<group>"; };
+		270EE2A221EF59BA001DFDED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/JrmfInfo.strings; sourceTree = "<group>"; };
+		270EE2A421EF59C3001DFDED /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/JrmfInfo.strings"; sourceTree = "<group>"; };
 		2724CCD61FF34411006FFC86 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		27AADC251DDC4DB800E1AE31 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		27BCC76D1EA45EA000198BD8 /* RongContactCard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongContactCard.framework; path = framework/RongContactCard.framework; sourceTree = SOURCE_ROOT; };
@@ -469,8 +470,6 @@
 		27D6FF9E1DFE4D2C00053F69 /* RCDSettingUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSettingUserDefaults.m; sourceTree = SOURCE_ROOT; };
 		2E29FF3A1DC1BE8400AF2DF0 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
 		2E29FF3B1DC1BE8400AF2DF0 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
-		2E6B9A191E127BF7006EA6B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = JrmfInfo.strings; sourceTree = "<group>"; };
-		2E6B9A1D1E127C0C006EA6B4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = JrmfInfo.strings; sourceTree = "<group>"; };
 		2E7A36DB1E03A876005231BE /* JResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JResource.bundle; sourceTree = "<group>"; };
 		2E7A36DC1E03A876005231BE /* jrmf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = jrmf.cer; sourceTree = "<group>"; };
 		2E7A36DE1E03A876005231BE /* JrmfWalletKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JrmfWalletKit.framework; sourceTree = "<group>"; };
@@ -1214,14 +1213,13 @@
 		2E29FF2E1DC1BE7300AF2DF0 /* JrmfIMLib */ = {
 			isa = PBXGroup;
 			children = (
-				2E6B9A171E127BF7006EA6B4 /* en.lproj */,
+				270EE2A121EF59BA001DFDED /* JrmfInfo.strings */,
 				2E7A36DB1E03A876005231BE /* JResource.bundle */,
 				2E7A36DC1E03A876005231BE /* jrmf.cer */,
 				7755B4BB2106CE9F000C2DA8 /* JrmfPacketKit.framework */,
 				2E7A36DE1E03A876005231BE /* JrmfWalletKit.framework */,
 				771BB16121B155B40066AE4A /* JYangToolKit.framework */,
 				2E7A36E01E03A876005231BE /* WalletResource.bundle */,
-				2E6B9A1B1E127C0C006EA6B4 /* zh-Hans.lproj */,
 			);
 			name = JrmfIMLib;
 			path = framework/JrmfIMLib;
@@ -1235,23 +1233,6 @@
 			);
 			name = AlipaySDK;
 			path = framework/AlipaySDK;
-			sourceTree = SOURCE_ROOT;
-		};
-		2E6B9A171E127BF7006EA6B4 /* en.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				2E6B9A181E127BF7006EA6B4 /* JrmfInfo.strings */,
-			);
-			path = en.lproj;
-			sourceTree = "<group>";
-		};
-		2E6B9A1B1E127C0C006EA6B4 /* zh-Hans.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				2E6B9A1C1E127C0C006EA6B4 /* JrmfInfo.strings */,
-			);
-			name = "zh-Hans.lproj";
-			path = "framework/JrmfIMLib/zh-Hans.lproj";
 			sourceTree = SOURCE_ROOT;
 		};
 		46A831B81AC014B2001A533F /* FindPsw */ = {
@@ -2508,8 +2489,6 @@
 				F894EC391DF7E47600EFD084 /* BQMM.bundle in Resources */,
 				2E29FF3C1DC1BE8400AF2DF0 /* AlipaySDK.bundle in Resources */,
 				27C42EED1DE30637003E2306 /* RongCloudiFly.bundle in Resources */,
-				2E6B9A1E1E127C0C006EA6B4 /* JrmfInfo.strings in Resources */,
-				2E6B9A1A1E127BF7006EA6B4 /* JrmfInfo.strings in Resources */,
 				2E7A36E11E03A876005231BE /* JResource.bundle in Resources */,
 				77F56BF620874DEE00D080F7 /* RCColor.plist in Resources */,
 				8C55EB511B2A8CE5004285F4 /* Emoji.plist in Resources */,
@@ -2518,6 +2497,7 @@
 				2E7A36E21E03A876005231BE /* jrmf.cer in Resources */,
 				A6CF8A351BD4CB6E00F3EA1A /* RCConfig.plist in Resources */,
 				E4BFAE251A121839007165B1 /* Images.xcassets in Resources */,
+				270EE2A321EF59BA001DFDED /* JrmfInfo.strings in Resources */,
 				510624851AD63A9E00348452 /* RongCloudKit.strings in Resources */,
 				2E7A36E61E03A876005231BE /* WalletResource.bundle in Resources */,
 				1D3A232D212D540A009514F1 /* RongSticker.bundle in Resources */,
@@ -2859,18 +2839,11 @@
 			name = RongSticker.strings;
 			sourceTree = "<group>";
 		};
-		2E6B9A181E127BF7006EA6B4 /* JrmfInfo.strings */ = {
+		270EE2A121EF59BA001DFDED /* JrmfInfo.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				2E6B9A191E127BF7006EA6B4 /* en */,
-			);
-			name = JrmfInfo.strings;
-			sourceTree = "<group>";
-		};
-		2E6B9A1C1E127C0C006EA6B4 /* JrmfInfo.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2E6B9A1D1E127C0C006EA6B4 /* zh-Hans */,
+				270EE2A221EF59BA001DFDED /* en */,
+				270EE2A421EF59C3001DFDED /* zh-Hans */,
 			);
 			name = JrmfInfo.strings;
 			sourceTree = "<group>";

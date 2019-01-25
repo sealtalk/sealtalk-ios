@@ -1,0 +1,6 @@
+framework module RongIMLib {
+  umbrella header "RongIMLib.h"
+
+  export *
+  module * { export * }
+}
