@@ -33,22 +33,24 @@
     if (searchType == RCDSearchFriend || searchType == RCDSearchAll) {
         NSArray *friendArray = [self searchFriendBysearchText:searchText];
         if (friendArray.count > 0) {
-            [dic setObject:friendArray forKey:@"联系人"];
-            [array addObject:@"联系人"];
+            [dic setObject:friendArray forKey:RCDLocalizedString(@"all_contacts")];
+            [array addObject:RCDLocalizedString(@"all_contacts")];
         }
     }
     if (searchType == RCDSearchGroup || searchType == RCDSearchAll) {
         NSArray *groupArray = [self searchGroupBysearchText:searchText];
         if (groupArray.count > 0) {
-            [dic setObject:groupArray forKey:@"群组"];
-            [array addObject:@"群组"];
+            [dic setObject:groupArray forKey:RCDLocalizedString(@"group")
+];
+            [array addObject:RCDLocalizedString(@"group")
+];
         }
     }
     if (searchType == RCDSearchChatHistory || searchType == RCDSearchAll) {
         NSArray *messsageResult = [self searchMessageBysearchText:searchText];
         if (messsageResult.count > 0) {
-            [dic setObject:messsageResult forKey:@"聊天记录"];
-            [array addObject:@"聊天记录"];
+            [dic setObject:messsageResult forKey:RCDLocalizedString(@"chat_history")];
+            [array addObject:RCDLocalizedString(@"chat_history")];
         }
     }
     result(dic.copy, array.copy);
@@ -150,7 +152,7 @@
         model.conversationType = result.conversation.conversationType;
         model.targetId = result.conversation.targetId;
         if (result.matchCount > 1) {
-            model.otherInformation = [NSString stringWithFormat:@"%d条相关的记录", result.matchCount];
+            model.otherInformation = [NSString stringWithFormat:RCDLocalizedString(@"total_related_message"), result.matchCount];
         } else {
             NSString *string = nil;
             model.objectName = result.conversation.objectName;

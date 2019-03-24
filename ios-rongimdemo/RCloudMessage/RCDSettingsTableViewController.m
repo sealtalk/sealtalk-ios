@@ -30,11 +30,16 @@
     self.tableView.tableFooterView = [UIView new];
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
 
-    self.navigationItem.title = @"帐号设置";
+    self.navigationItem.title = RCDLocalizedString(@"account_setting");
     RCDUIBarButtonItem *leftBtn =
-    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"我" target:self action:@selector(clickBackBtn:)];
+    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
+ target:self action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftBtn;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+}
+
+- (void)viewDidLayoutSubviews {
+    self.tableView.frame = self.view.frame;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,19 +86,23 @@
         switch (indexPath.row) {
         case 0: {
 
-            cell.leftLabel.text = @"密码修改";
+            cell.leftLabel.text = RCDLocalizedString(@"change_password")
+;
         } break;
 
         case 1: {
-            cell.leftLabel.text = @"隐私";
+            cell.leftLabel.text = RCDLocalizedString(@"privacy")
+;
         } break;
 
         case 2: {
-            cell.leftLabel.text = @"新消息通知";
+            cell.leftLabel.text = RCDLocalizedString(@"new_message_notification")
+;
         } break;
 
         case 3: {
-            cell.leftLabel.text = @"推送设置";
+            cell.leftLabel.text = RCDLocalizedString(@"push_setting")
+;
         } break;
 
         default:
@@ -102,7 +111,8 @@
     } break;
 
     case 1: {
-        cell.leftLabel.text = @"清除缓存";
+        cell.leftLabel.text = RCDLocalizedString(@"clear_cache")
+;
     } break;
 
     case 2: {
@@ -151,10 +161,13 @@
         case 0: {
             //清除缓存
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:@"是否清理缓存？"
+                                                                message:RCDLocalizedString(@"clear_cache_alert")
+
                                                                delegate:self
-                                                      cancelButtonTitle:@"取消"
-                                                      otherButtonTitles:@"确定", nil];
+                                                      cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                                      otherButtonTitles:RCDLocalizedString(@"confirm")
+, nil];
             alertView.tag = 1011;
             [alertView show];
 
@@ -170,10 +183,13 @@
         case 0: {
             //退出登录
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:@"是否退出登录？"
+                                                                message:RCDLocalizedString(@"logout_alert")
+
                                                                delegate:self
-                                                      cancelButtonTitle:@"取消"
-                                                      otherButtonTitles:@"确定", nil];
+                                                      cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                                      otherButtonTitles:RCDLocalizedString(@"confirm")
+, nil];
             alertView.tag = 1010;
             [alertView show];
         } break;
@@ -225,9 +241,11 @@
 
 - (void)clearCacheSuccess {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:@"缓存清理成功！"
+                                                        message:RCDLocalizedString(@"clear_cache_succrss")
+
                                                        delegate:nil
-                                              cancelButtonTitle:@"确定"
+                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                               otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -265,7 +283,8 @@
     UILabel *label = [[UILabel alloc] init];
     label.font = [UIFont systemFontOfSize:16];
     label.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];
-    label.text = @"退出登录";
+    label.text = RCDLocalizedString(@"logout")
+;
     label.translatesAutoresizingMaskIntoConstraints = NO;
     quitCell.contentView.layer.borderWidth = 0.5;
     quitCell.contentView.layer.borderColor = [[UIColor colorWithHexString:@"dfdfdf" alpha:1.0] CGColor];

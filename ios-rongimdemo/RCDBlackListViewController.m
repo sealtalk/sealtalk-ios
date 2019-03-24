@@ -43,7 +43,8 @@
 
     self.tableView.tableFooterView = [UIView new];
 
-    self.title = @"黑名单";
+    self.title = RCDLocalizedString(@"blacklist")
+;
 }
 
 #pragma mark - private

@@ -73,25 +73,26 @@
     [self.viewControllers
         enumerateObjectsUsingBlock:^(__kindof UIViewController *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
             if ([obj isKindOfClass:[RCDChatListViewController class]]) {
-                obj.tabBarItem.title = @"会话";
+                obj.tabBarItem.title = RCDLocalizedString(@"conversation");
                 obj.tabBarItem.image =
                     [[UIImage imageNamed:@"icon_chat"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
                 obj.tabBarItem.selectedImage =
                     [[UIImage imageNamed:@"icon_chat_hover"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
             } else if ([obj isKindOfClass:[RCDContactViewController class]]) {
-                obj.tabBarItem.title = @"通讯录";
+                obj.tabBarItem.title = RCDLocalizedString(@"contacts");
                 obj.tabBarItem.image =
                     [[UIImage imageNamed:@"contact_icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
                 obj.tabBarItem.selectedImage = [[UIImage imageNamed:@"contact_icon_hover"]
                     imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
             } else if ([obj isKindOfClass:[RCDSquareTableViewController class]]) {
-                obj.tabBarItem.title = @"发现";
+                obj.tabBarItem.title = RCDLocalizedString(@"discover");
                 obj.tabBarItem.image =
                     [[UIImage imageNamed:@"square"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
                 obj.tabBarItem.selectedImage =
                     [[UIImage imageNamed:@"square_hover"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
             } else if ([obj isKindOfClass:[RCDMeTableViewController class]]) {
-                obj.tabBarItem.title = @"我";
+                obj.tabBarItem.title = RCDLocalizedString(@"me")
+;
                 obj.tabBarItem.image =
                     [[UIImage imageNamed:@"icon_me"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
                 obj.tabBarItem.selectedImage =

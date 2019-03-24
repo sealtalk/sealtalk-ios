@@ -68,7 +68,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.tabBarController.navigationItem.title = @"发现";
+    self.tabBarController.navigationItem.title = RCDLocalizedString(@"discover");
     self.tabBarController.navigationItem.rightBarButtonItems = nil;
 }
 
@@ -137,7 +137,7 @@
     [sectionHeaderView addSubview:Title];
     switch (section) {
     case 0:
-        Title.text = @"聊天室";
+        Title.text = RCDLocalizedString(@"chatroom");
         break;
     default:
         break;
@@ -171,21 +171,4 @@
     [self.navigationController pushViewController:chatVC animated:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
-#pragma mark - 本类私有方法
-
-- (void)gotoChatRoomConversation:(UITapGestureRecognizer *)recognizer {
-    NSArray *chatRoomNameArr = [[NSArray alloc] initWithObjects:@"聊天室1", @"聊天室2", @"聊天室3", @"聊天室4", nil];
-    if (chatRoomIdList.count == 0) {
-        return;
-    }
-    NSString *chatroomId;
-    NSInteger tag = recognizer.view.tag;
-    chatroomId = chatRoomIdList[tag - 10];
-    RCDChatViewController *chatVC =
-        [[RCDChatViewController alloc] initWithConversationType:ConversationType_CHATROOM targetId:chatroomId];
-    chatVC.title = chatRoomNameArr[tag - 10];
-    [self.navigationController pushViewController:chatVC animated:YES];
-}
-
 @end

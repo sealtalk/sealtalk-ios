@@ -79,6 +79,9 @@ typedef NS_ENUM(NSInteger, RequestMethodType) { RequestMethodTypePost = 1, Reque
               success:(void (^)(id response))success
               failure:(void (^)(NSError *err))failure;
 
++ (void)getRegionlist:(void (^)(id response))success
+              failure:(void (^)(NSError *err))failure;
+
 // get user info
 + (void)getUserInfo:(NSString *)userId success:(void (^)(id response))success failure:(void (^)(NSError *err))failure;
 
@@ -92,6 +95,7 @@ typedef NS_ENUM(NSInteger, RequestMethodType) { RequestMethodTypePost = 1, Reque
 
 // find user by phone
 + (void)findUserByPhone:(NSString *)Phone
+                 region:(NSString *)region
                 success:(void (^)(id response))success
                 failure:(void (^)(NSError *err))failure;
 

@@ -16,7 +16,7 @@
 #import "RCDPersonDetailViewController.h"
 #import "RCDPublicServiceListViewController.h"
 #import "RCDRCIMDataSource.h"
-#import "RCDSearchFriendViewController.h"
+#import "RCDSearchFriendController.h"
 #import "RCDataBaseManager.h"
 #import "UIImageView+WebCache.h"
 
@@ -130,15 +130,19 @@
     searchField.layer.borderWidth = 0.5f;
     searchField.layer.borderColor = [HEXCOLOR(0xdfdfdf) CGColor];
     searchField.layer.cornerRadius = 5.f;
-    self.searchFriendsBar.placeholder = @"搜索";
+    self.searchFriendsBar.placeholder = RCDLocalizedString(@"search");
 
-    self.defaultCellsTitle = [NSArray arrayWithObjects:@"新朋友", @"群组", @"公众号", nil];
+    self.defaultCellsTitle = [NSArray arrayWithObjects:RCDLocalizedString(@"new_friend")
+, RCDLocalizedString(@"group")
+, RCDLocalizedString(@"public_account")
+, nil];
     self.defaultCellsPortrait = [NSArray arrayWithObjects:@"newFriend", @"defaultGroup", @"publicNumber", nil];
 
     self.isBeginSearch = NO;
     
     if ([RCDForwardMananer shareInstance].isForward) {
-        UIBarButtonItem *left = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:(UIBarButtonItemStylePlain) target:self action:@selector(onCancelAction)];
+        UIBarButtonItem *left = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"cancel")
+ style:(UIBarButtonItemStylePlain) target:self action:@selector(onCancelAction)];
         self.navigationItem.leftBarButtonItem = left;
     }
     self.queue = dispatch_queue_create("sealtalksearch", DISPATCH_QUEUE_SERIAL);
@@ -161,7 +165,12 @@
                                                                          action:@selector(pushAddFriend:)];
     self.tabBarController.navigationItem.rightBarButtonItems = [rightBtn setTranslation:rightBtn translation:-6];
 
-    self.tabBarController.navigationItem.title = @"通讯录";
+    self.tabBarController.navigationItem.title = RCDLocalizedString(@"contacts");
+}
+
+- (void)viewDidLayoutSubviews {
+    self.searchFriendsBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
+    self.friendsTabelView.frame = CGRectMake(0, CGRectGetMaxY(self.searchFriendsBar.frame), self.view.bounds.size.width, self.view.bounds.size.height - CGRectGetMaxY(self.searchFriendsBar.frame));
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -471,7 +480,7 @@
  *  @param sender sender description
  */
 - (void)pushAddFriend:(id)sender {
-    RCDSearchFriendViewController *searchFirendVC = [RCDSearchFriendViewController searchFriendViewController];
+    RCDSearchFriendController *searchFirendVC = [[RCDSearchFriendController alloc] init];
     [self.navigationController pushViewController:searchFirendVC animated:YES];
 }
 

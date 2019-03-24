@@ -12,7 +12,7 @@
 
 - (id)initWithImageName:(NSString *)imageName labelName:(NSString *)labelName;
 
-- (void)setCellWithImageName:(NSString *)imageName labelName:(NSString *)labelName;
+- (void)setCellWithImageName:(NSString *)imageName labelName:(NSString *)labelName rightLabelName:(NSString *)rightLabelName;
 
 - (void)addRedpointImageView;
 @end

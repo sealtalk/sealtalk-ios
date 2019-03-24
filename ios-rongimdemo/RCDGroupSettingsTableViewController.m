@@ -96,7 +96,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     // bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     numberOfSections = 0;
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self action:@selector(backBarButtonItemClicked:)];
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(backBarButtonItemClicked:)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -125,9 +125,10 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         [self startLoad];
     }
     if (self.Group.number) {
-        self.title = [NSString stringWithFormat:@"群组信息(%@)", self.Group.number];
+        self.title = [NSString stringWithFormat:RCDLocalizedString(@"group_information_x"),self.Group.number];
     } else {
-        self.title = @"群组信息";
+        self.title = RCDLocalizedString(@"group_information")
+;
     }
 }
 
@@ -209,12 +210,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                           if ([result count] > 0) {
                                               dispatch_async(dispatch_get_main_queue(), ^{
                                                   weakSelf.title = [NSString
-                                                      stringWithFormat:@"群组信息(%lu)", (unsigned long)result.count];
+                                                      stringWithFormat:RCDLocalizedString(@"group_information_x"),[NSString stringWithFormat:@"%lu",(unsigned long)result.count]];
                                                   RCDGroupSettingsTableViewCell *cell =
                                                       (RCDGroupSettingsTableViewCell *)[weakSelf.tableView
                                                           viewWithTag:RCDGroupSettingsTableViewCellGroupNameTag];
                                                   cell.leftLabel.text = [NSString
-                                                      stringWithFormat:@"全部群成员(%lu)", (unsigned long)result.count];
+                                                                         stringWithFormat:RCDLocalizedString(@"all_group_member_z"),[NSString stringWithFormat:@"%lu",(unsigned long)result.count]];
                                               });
                                               collectionViewResource = [NSMutableArray new];
                                               NSMutableArray *tempArray = result;
@@ -245,7 +246,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     _btJoinOrQuitGroup = [[UIButton alloc] init];
     [_btJoinOrQuitGroup setBackgroundImage:quitImage forState:UIControlStateNormal];
     [_btJoinOrQuitGroup setBackgroundImage:quitImageSelected forState:UIControlStateSelected];
-    [_btJoinOrQuitGroup setTitle:@"删除并退出" forState:UIControlStateNormal];
+    [_btJoinOrQuitGroup setTitle:RCDLocalizedString(@"delete_and_exit")
+ forState:UIControlStateNormal];
     [_btJoinOrQuitGroup setCenter:CGPointMake(view.bounds.size.width / 2, view.bounds.size.height / 2)];
     [_btJoinOrQuitGroup addTarget:self action:@selector(btnJOQAction:) forControlEvents:UIControlEventTouchUpInside];
     _btJoinOrQuitGroup.layer.cornerRadius = 5.f;
@@ -257,7 +259,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     _btDismissGroup = [[UIButton alloc] init];
     [_btDismissGroup setBackgroundImage:quitImage forState:UIControlStateNormal];
     [_btDismissGroup setBackgroundImage:quitImageSelected forState:UIControlStateSelected];
-    [_btDismissGroup setTitle:@"解散并删除" forState:UIControlStateNormal];
+    [_btDismissGroup setTitle:RCDLocalizedString(@"DisbandAndDelete") forState:UIControlStateNormal];
     [_btDismissGroup setBackgroundColor:[UIColor orangeColor]];
     [_btDismissGroup setCenter:CGPointMake(view.bounds.size.width / 2, view.bounds.size.height / 2)];
     [_btDismissGroup addTarget:self action:@selector(btnDismissAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -307,10 +309,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 - (void)btnJOQAction:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"确定退出群组？"
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:RCDLocalizedString(@"delete_group_alert")
                                                              delegate:self
-                                                    cancelButtonTitle:@"取消"
-                                               destructiveButtonTitle:@"确定"
+                                                    cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                               destructiveButtonTitle:RCDLocalizedString(@"confirm")
+
                                                     otherButtonTitles:nil];
 
     [actionSheet showInView:self.view];
@@ -318,10 +322,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 - (void)btnDismissAction:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"确定解散群组？"
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:RCDLocalizedString(@"Disband_group_alert")
                                                              delegate:self
-                                                    cancelButtonTitle:@"取消"
-                                               destructiveButtonTitle:@"确定"
+                                                    cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                               destructiveButtonTitle:RCDLocalizedString(@"confirm")
+
                                                     otherButtonTitles:nil];
 
     [actionSheet showInView:self.view];
@@ -348,7 +354,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
-    hud.labelText = @"上传头像中...";
+    hud.labelText = RCDLocalizedString(@"Uploading_avatar");
     [hud show:YES];
     __weak typeof(self) weakSelf = self;
     [RCDHTTPTOOL uploadImageToQiNiu:[RCIM sharedRCIM].currentUserInfo.userId
@@ -382,9 +388,10 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                        //关闭HUD
                                        [hud hide:YES];
                                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                                       message:@"上传头像失败"
+                                                                                       message:RCDLocalizedString(@"Upload_avatar_fail")
                                                                                       delegate:weakSelf
-                                                                             cancelButtonTitle:@"确定"
+                                                                             cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                                              otherButtonTitles:nil];
                                        [alert show];
                                    }
@@ -394,9 +401,10 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                 //关闭HUD
                 [hud hide:YES];
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:@"上传头像失败"
+                                                                message:RCDLocalizedString(@"Upload_avatar_fail")
                                                                delegate:weakSelf
-                                                      cancelButtonTitle:@"确定"
+                                                      cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                       otherButtonTitles:nil];
                 [alert show];
             }
@@ -405,9 +413,10 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             //关闭HUD
             [hud hide:YES];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:@"上传头像失败"
+                                                            message:RCDLocalizedString(@"Upload_avatar_fail")
                                                            delegate:weakSelf
-                                                  cancelButtonTitle:@"确定"
+                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                   otherButtonTitles:nil];
             [alert show];
         }];
@@ -445,9 +454,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 - (void)chosePortrait {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
-                                                    cancelButtonTitle:@"取消"
-                                               destructiveButtonTitle:@"拍照"
-                                                    otherButtonTitles:@"我的相册", nil];
+                                                    cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                               destructiveButtonTitle:RCDLocalizedString(@"take_picture")
+
+                                                    otherButtonTitles:RCDLocalizedString(@"my_album")
+, nil];
     actionSheet.tag = 200;
     [actionSheet showInView:self.view];
 }
@@ -483,7 +495,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                         message:msg
                                                        delegate:nil
-                                              cancelButtonTitle:@"确定"
+                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                               otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -516,7 +529,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                                                                                           targetId:groupId
                                                                                                            success:^{
                                                                                                                [weakSelf performSelectorOnMainThread:@selector(clearCacheAlertMessage:)
-                                                                                                                                          withObject:@"清除聊天记录成功！"
+                                                                                                                                          withObject:RCDLocalizedString(@"clear_chat_history_success")
                                                                                                                                        waitUntilDone:YES];
                                                                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearHistoryMsg" object:nil];
                                                                                                                dispatch_async(dispatch_get_main_queue(), ^{
@@ -529,7 +542,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                                                  }
                                                                    error:^(RCErrorCode status) {
                                                                        [weakSelf performSelectorOnMainThread:@selector(clearCacheAlertMessage:)
-                                                                                                  withObject:@"清除聊天记录失败！"
+                                                                                                  withObject:RCDLocalizedString(@"clear_chat_history_fail")
                                                                                                waitUntilDone:YES];
                                                                        dispatch_async(dispatch_get_main_queue(), ^{
                                                                            [loadingView removeFromSuperview];
@@ -586,9 +599,10 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                         [self.navigationController popToRootViewControllerAnimated:YES];
                                     } else {
                                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                            message:@"退出失败！"
+                                                                                            message:RCDLocalizedString(@"quit_fail")
                                                                                            delegate:nil
-                                                                                  cancelButtonTitle:@"确定"
+                                                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                                                   otherButtonTitles:nil, nil];
                                         [alertView show];
                                     }
@@ -623,9 +637,10 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                            [self.navigationController popToRootViewControllerAnimated:YES];
                                        } else {
                                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                               message:@"解散群组失败！"
+                                                                                               message:RCDLocalizedString(@"Disband_group_fail")
                                                                                               delegate:nil
-                                                                                     cancelButtonTitle:@"确定"
+                                                                                     cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                                                      otherButtonTitles:nil, nil];
                                            [alertView show];
                                        }
@@ -712,7 +727,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             if (isCreator == YES) {
                 [self chosePortrait];
             } else {
-                [self showAlert:@"只有群主可以修改群组头像"];
+                [self showAlert:RCDLocalizedString(@"Only_the_owner_can_change_the_group_portrait")];
             }
         } break;
 
@@ -725,7 +740,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                 editGroupNameVC.groupInfo = _Group;
                 [self.navigationController pushViewController:editGroupNameVC animated:YES];
             } else {
-                [self showAlert:@"只有群主可以修改群组名称"];
+                [self showAlert:RCDLocalizedString(@"Only_the_owner_can_edit_the_group_name")];
             }
         } break;
 
@@ -741,7 +756,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             }
             else
             {
-              [self showAlert:@"只有群主可以发布群公告"];
+              [self showAlert:RCDLocalizedString(@"Only_the_group_owner_can_post_a_group_announcement")];
             }
              */
         } break;
@@ -759,10 +774,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     case 3: {
         switch (indexPath.row) {
         case 2: {
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"确定清除聊天记录？"
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:RCDLocalizedString(@"clear_chat_history_alert")
                                                                      delegate:self
-                                                            cancelButtonTitle:@"取消"
-                                                       destructiveButtonTitle:@"确定"
+                                                            cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                                       destructiveButtonTitle:RCDLocalizedString(@"confirm")
+
                                                             otherButtonTitles:nil];
 
             [actionSheet showInView:self.view];
@@ -856,7 +873,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     if (isCreator == YES) {
         //点加号
         if (indexPath.row == collectionViewResource.count - 2) {
-            contactSelectedVC.titleStr = @"选择联系人";
+            contactSelectedVC.titleStr = RCDLocalizedString(@"select_contact");
             contactSelectedVC.addGroupMembers = membersId;
             [self.navigationController pushViewController:contactSelectedVC animated:YES];
             return;
@@ -866,7 +883,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             if (collectionViewResource.count == 3) {
                 return;
             }
-            contactSelectedVC.titleStr = @"移除成员";
+            contactSelectedVC.titleStr = RCDLocalizedString(@"remove_member");
             NSMutableArray *members = [NSMutableArray new];
             for (id user in groupMemberList) {
                 if ([user isKindOfClass:[RCUserInfo class]]) {
@@ -882,7 +899,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     } else {
         if (indexPath.row == collectionViewResource.count - 1) {
             NSLog(@"点加号");
-            contactSelectedVC.titleStr = @"选择联系人";
+            contactSelectedVC.titleStr = RCDLocalizedString(@"select_contact");
             contactSelectedVC.addGroupMembers = membersId;
             [self.navigationController pushViewController:contactSelectedVC animated:YES];
             return;
@@ -932,8 +949,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                                           complete:^(BOOL results) {
                                                               dispatch_async(dispatch_get_main_queue(), ^{
                                                                   self.title = [NSString
-                                                                      stringWithFormat:@"群组信息(%lu)",
-                                                                                       (unsigned long)result.count];
+                                                                      stringWithFormat:RCDLocalizedString(@"group_information_x"),
+                                                                                       [NSString stringWithFormat:@"%lu",(unsigned long)result.count]];
                                                                   [self refreshHeaderView];
                                                                   [self refreshTabelViewInfo];
                                                               });
@@ -977,7 +994,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:alertContent
                                                    delegate:nil
-                                          cancelButtonTitle:@"确定"
+                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                           otherButtonTitles:nil];
     [alert show];
 }

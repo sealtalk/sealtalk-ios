@@ -31,9 +31,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    self.navigationItem.title = @"推送设置";
+    self.navigationItem.title = RCDLocalizedString(@"push_setting")
+;
     RCDUIBarButtonItem *leftBtn =
-    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"我" target:self action:@selector(clickBackBtn:)];
+    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me") target:self action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 
     self.tableView = [[UITableView alloc] init];
@@ -44,6 +45,10 @@
 
     self.actionSheet = [[UIActionSheet alloc] init];
     [self setActionSheetLayout];
+}
+
+- (void)viewDidLayoutSubviews {
+    self.tableView.frame = self.view.bounds;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,7 +79,8 @@
             [cell setCellStyle:SwitchStyle];
             cell.switchButton.tag = 101;
             cell.switchButton.on = [RCIMClient sharedRCIMClient].pushProfile.isShowPushContent;
-            cell.leftLabel.text = @"显示远程推送的内容";
+            cell.leftLabel.text = RCDLocalizedString(@"Display_remotely_pushed_content")
+;
 
         } break;
 
@@ -151,11 +157,11 @@
     NSString *title;
     switch (row) {
     case 0:
-        title = @"汉语";
+        title = RCDLocalizedString(@"chinese");
         break;
 
     case 1:
-        title = @"英语";
+        title = RCDLocalizedString(@"english");
         break;
 
     default:
@@ -194,7 +200,8 @@
     self.actionSheet.delegate = self;
     self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                    delegate:self
-                                          cancelButtonTitle:@"取消"
+                                          cancelButtonTitle:RCDLocalizedString(@"cancel")
+
                                      destructiveButtonTitle:nil
                                           otherButtonTitles:@"中文", @"英文", nil];
 }
@@ -244,24 +251,24 @@
             [[RCIMClient sharedRCIMClient].pushProfile updateShowPushContentStatus:YES
                 success:^{
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self AlertMessage:@"设置成功"];
+                        [self AlertMessage:RCDLocalizedString(@"setting_success")];
                     });
                 }
                 error:^(RCErrorCode status) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self AlertMessage:@"设置失败"];
+                        [self AlertMessage:RCDLocalizedString(@"set_fail")];
                     });
                 }];
         } else {
             [[RCIMClient sharedRCIMClient].pushProfile updateShowPushContentStatus:NO
                 success:^{
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self AlertMessage:@"设置成功"];
+                        [self AlertMessage:RCDLocalizedString(@"setting_success")];
                     });
                 }
                 error:^(RCErrorCode status) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self AlertMessage:@"设置失败"];
+                        [self AlertMessage:RCDLocalizedString(@"set_fail")];
                     });
                 }];
         }
@@ -271,20 +278,20 @@
         //      if (switchButton.on == YES) {
         //        [[RCIMClient sharedRCIMClient].pushProfile updateMultiDevicePushStatus:YES success:^{
         //          dispatch_async(dispatch_get_main_queue(), ^{
-        //            [self AlertMessage:@"设置成功"];
+        //            [self AlertMessage:RCDLocalizedString(@"setting_success")];
         //          });
         //        } error:^(RCErrorCode status) {
         //          dispatch_async(dispatch_get_main_queue(), ^{
-        //            [self AlertMessage:@"设置失败"];
+        //            [self AlertMessage:RCDLocalizedString(@"set_fail")];
         //          });
         //        }];      } else {
         //          [[RCIMClient sharedRCIMClient].pushProfile updateMultiDevicePushStatus:NO success:^{
         //            dispatch_async(dispatch_get_main_queue(), ^{
-        //              [self AlertMessage:@"设置成功"];
+        //              [self AlertMessage:RCDLocalizedString(@"setting_success")];
         //            });
         //          } error:^(RCErrorCode status) {
         //            dispatch_async(dispatch_get_main_queue(), ^{
-        //              [self AlertMessage:@"设置失败"];
+        //              [self AlertMessage:RCDLocalizedString(@"set_fail")];
         //            });
         //          }];      }
     } break;
@@ -303,7 +310,8 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:message
                                                        delegate:self
-                                              cancelButtonTitle:@"确定"
+                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                               otherButtonTitles:nil];
         [alert show];
     });

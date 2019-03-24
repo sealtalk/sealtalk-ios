@@ -136,7 +136,8 @@
                            forControlEvents:UIControlEventValueChanged];
     _cell_newMessageNotify.swich.on = _switch_newMessageNotify;
     _cell_newMessageNotify.label.text =
-        NSLocalizedStringFromTable(@"NewMsgNotification", @"RongCloudKit", nil); //@"新消息通知";
+        NSLocalizedStringFromTable(@"NewMsgNotification", @"RongCloudKit", nil); //RCDLocalizedString(@"new_message_notification")
+;
 
     RCDConversationSettingClearMessageCell *cell_clearHistory =
         [[RCDConversationSettingClearMessageCell alloc] initWithFrame:CGRectZero];
@@ -144,7 +145,7 @@
                                    action:@selector(onClickClearMessageHistory:)
                          forControlEvents:UIControlEventTouchUpInside];
     cell_clearHistory.nameLabel.text =
-        NSLocalizedStringFromTable(@"ClearRecord", @"RongCloudKit", nil); //@"清除聊天记录";
+        NSLocalizedStringFromTable(@"ClearRecord", @"RongCloudKit", nil); //RCDLocalizedString(@"clear_chat_history");
 
     NSArray *_defaultCells = @[ _cell_isTop, _cell_newMessageNotify, cell_clearHistory ];
 

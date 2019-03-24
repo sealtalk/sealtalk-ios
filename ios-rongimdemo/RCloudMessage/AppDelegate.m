@@ -23,13 +23,16 @@
 #import "RCWKNotifier.h"
 #import "RCWKRequestHandler.h"
 #import "UIColor+RCColor.h"
+#import "RCDBuglyManager.h"
 
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
+#import "RCDCountry.h"
 
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // offline key
 
 #define UMENG_APPKEY @"563755cbe0f55a5cb300139c"
+#define BUGLY_APPID @"84247f1866"
 
 #define LOG_EXPIRE_TIME -7 * 24 * 60 * 60
 
@@ -52,7 +55,13 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentCountry"];
+    RCDCountry *currentCountry;
+    if (!dic) {
+        currentCountry = [[RCDCountry alloc] initWithDict:@{@"region": @"86",
+                                                            @"locale": @{@"en":@"China",@"zh":@"中国"}}];
+        [[NSUserDefaults standardUserDefaults] setObject:[currentCountry getModelJson] forKey:@"currentCountry"];
+    }
     //重定向log到本地问题
     //在info.plist中打开Application supports iTunes file sharing
     //    if (![[[UIDevice currentDevice] model] isEqualToString:@"iPhone
@@ -65,6 +74,7 @@
     //为了在启动页面不显示statusBar，所以在工程设置里面把statusBar隐藏了，在启动页面过后，显示statusBar。
     application.statusBarHidden = NO;
 
+    [RCDBuglyManager startWithAppId:BUGLY_APPID];
     [self umengTrack];
     /**
      *  推送说明：
@@ -117,7 +127,10 @@
 
     // 注册自定义测试消息
     [[RCIM sharedRCIM] registerMessageType:[RCDTestMessage class]];
-
+    
+    // 设置语音消息采样率为 16KHZ
+    [RCIMClient sharedRCIMClient].sampleRate = RCSample_Rate_16000;
+    
     //设置会话列表头像和会话页面头像
 
     [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
@@ -185,7 +198,6 @@
     NSString *password = [DEFAULTS objectForKey:@"userPwd"];
     NSString *userNickName = [DEFAULTS objectForKey:@"userNickName"];
     NSString *userPortraitUri = [DEFAULTS objectForKey:@"userPortraitUri"];
-
     if (token.length && userId.length && password.length) {
         RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
         RCDNavigationViewController *rootNavi =
@@ -210,6 +222,7 @@
                                                     [DEFAULTS setObject:user.name forKey:@"userNickName"];
                                                     [DEFAULTS synchronize];
                                                     [RCIMClient sharedRCIMClient].currentUserInfo = user;
+                                                    [RCDBuglyManager setUserIdentifier:[NSString stringWithFormat:@"%@ - %@", user.userId,user.name]];
                                                 }];
                                    //登录demoserver成功之后才能调demo 的接口
                                    [RCDDataSource syncGroups];
@@ -247,7 +260,8 @@
                                                              password:password];
                                                }
                                                error:^(RCConnectErrorCode status) {
-                                                   [self gotoLoginViewAndDisplayReasonInfo:@"登录失效，请重新登录。"];
+                                                   [self gotoLoginViewAndDisplayReasonInfo:RCDLocalizedString(@"Login_is_invalid_please_login_again")
+];
                                                }
                                                tokenIncorrect:^{
                                                    [self gotoLoginViewAndDisplayReasonInfo:@"无法连接到服务器"];
@@ -623,11 +637,11 @@
  */
 - (void)onRCIMConnectionStatusChanged:(RCConnectionStatus)status {
     if (status == ConnectionStatus_KICKED_OFFLINE_BY_OTHER_CLIENT) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                        message:@"您的帐号在别的设备上登录，"
-                                                                @"您被迫下线！"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"alert")
+                                                        message:RCDLocalizedString(@"accout_kicked")
                                                        delegate:nil
-                                              cancelButtonTitle:@"知道了"
+                                              cancelButtonTitle:RCDLocalizedString(@"i_know")
+
                                               otherButtonTitles:nil, nil];
         [alert show];
         RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
@@ -652,10 +666,12 @@
                             }];
     } else if (status == ConnectionStatus_DISCONN_EXCEPTION) {
         [[RCIMClient sharedRCIMClient] disconnect];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                        message:@"您的帐号被封禁"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"alert")
+                                                        message:RCDLocalizedString(@"Your_account_has_been_banned")
+
                                                        delegate:nil
-                                              cancelButtonTitle:@"知道了"
+                                              cancelButtonTitle:RCDLocalizedString(@"i_know")
+
                                               otherButtonTitles:nil, nil];
         [alert show];
         RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
@@ -838,7 +854,8 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                             message:reason
                                                            delegate:nil
-                                                  cancelButtonTitle:@"确定"
+                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                   otherButtonTitles:nil, nil];
         ;
         [alertView show];

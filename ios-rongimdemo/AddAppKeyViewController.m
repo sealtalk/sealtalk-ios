@@ -40,7 +40,7 @@
     int env = [self.devField.text intValue];
     if (env != 1 && env != 2) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
-                                                        message:@"dev值必须是1或者2"
+                                                        message:RCDLocalizedString(@"dev_value_must_1_or_2")
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:nil, nil];

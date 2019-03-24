@@ -24,6 +24,7 @@
 @property(nonatomic, copy) NSString *creatorId;
 @property(nonatomic, strong) NSMutableDictionary *members;
 @property(nonatomic, strong) NSMutableArray *userList;
+@property(nonatomic, strong) UIButton *button;
 @property(nonatomic) BOOL isOwner;
 @property(nonatomic, assign) BOOL isClick;
 @end
@@ -100,11 +101,14 @@
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 42, 90 / 2)];
 
     [button setBackgroundImage:image forState:UIControlStateNormal];
-    [button setTitle:@"删除并退出" forState:UIControlStateNormal];
+    [button setTitle:RCDLocalizedString(@"delete_and_exit")
+ forState:UIControlStateNormal];
     [button setCenter:CGPointMake(view.bounds.size.width / 2, view.bounds.size.height / 2)];
     [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:button];
+    self.button = button;
     self.tableView.tableFooterView = view;
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshHeaderView:)
@@ -117,11 +121,19 @@
     _isClick = YES;
 }
 
+- (void)viewDidLayoutSubviews {
+    self.button.frame = CGRectMake(0, 0, self.view.frame.size.width - 42, 90 / 2);
+    [self.button setCenter:CGPointMake(self.view.bounds.size.width / 2, 45 / 2)];
+}
+
 - (void)buttonAction:(UIButton *)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"删除并且退出讨论组"
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:RCDLocalizedString(@"delete_and_exit_discuss_group")
+
                                                              delegate:self
-                                                    cancelButtonTitle:@"取消"
-                                               destructiveButtonTitle:@"确定"
+                                                    cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                               destructiveButtonTitle:RCDLocalizedString(@"confirm")
+
                                                     otherButtonTitles:nil];
     [actionSheet showInView:self.view];
 }
@@ -175,14 +187,14 @@
     case 0: {
         RCDDiscussSettingCell *discussCell = [[RCDDiscussSettingCell alloc] initWithFrame:CGRectZero];
         discussCell.lblDiscussName.text = self.conversationTitle;
-        discussCell.lblTitle.text = @"讨论组名称";
+        discussCell.lblTitle.text = RCDLocalizedString(@"discussion_group_name");
         cell = discussCell;
         _discussTitle = discussCell.lblDiscussName.text;
     } break;
     case 1: {
         if (self.isOwner) {
             RCDDiscussSettingSwitchCell *switchCell = [[RCDDiscussSettingSwitchCell alloc] initWithFrame:CGRectZero];
-            switchCell.label.text = @"开放成员邀请";
+            switchCell.label.text = RCDLocalizedString(@"open_member_invite");
             [[RCIMClient sharedRCIMClient] getDiscussion:self.targetId
                                                  success:^(RCDiscussion *discussion) {
                                                      if (discussion.inviteStatus == 0) {
@@ -319,7 +331,7 @@
     [[RCIM sharedRCIM] setDiscussionInviteStatus:self.targetId
                                           isOpen:swch.on
                                          success:^{
-                                             //        DebugLog(@"设置成功");
+                                             //        DebugLog(RCDLocalizedString(@"setting_success"));
                                          }
                                            error:^(RCErrorCode status){
 
@@ -337,7 +349,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) {
         RCDDiscussSettingCell *discussCell = (RCDDiscussSettingCell *)[tableView cellForRowAtIndexPath:indexPath];
-        discussCell.lblTitle.text = @"讨论组名称";
+        discussCell.lblTitle.text = RCDLocalizedString(@"discussion_group_name");
         RCDUpdateNameViewController *updateNameViewController = [RCDUpdateNameViewController updateNameViewController];
         updateNameViewController.targetId = self.targetId;
         updateNameViewController.displayText = discussCell.lblDiscussName.text;

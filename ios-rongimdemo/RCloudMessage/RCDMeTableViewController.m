@@ -17,6 +17,8 @@
 #import "RCDMeInfoTableViewController.h"
 #import "RCDSettingsTableViewController.h"
 #import "UIColor+RCColor.h"
+#import "RCDLanguageManager.h"
+#import "RCDLanguageSettingViewController.h"
 
 /* RedPacket_FTR */
 #import <JrmfWalletKit/JrmfWalletKit.h>
@@ -32,6 +34,7 @@
 
 @property(nonatomic, strong) NSURLConnection *connection;
 @property(nonatomic, strong) NSMutableData *receiveData;
+@property (nonatomic, strong) NSDictionary *languageDic;
 
 @end
 
@@ -43,6 +46,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.languageDic = @{@"en":@"English", @"zh-Hans":@"简体中文"};
+    
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.navigationController.navigationBar.translucent = NO;
     self.tableView.tableFooterView = [UIView new];
@@ -62,7 +67,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.tabBarController.navigationItem.title = @"我";
+    self.tabBarController.navigationItem.title =RCDLocalizedString(@"me");
     self.tabBarController.navigationItem.rightBarButtonItems = nil;
     [self.tableView reloadData];
 }
@@ -81,7 +86,7 @@
 
     case 1:
         /* RedPacket_FTR */ //添加了红包，row+=1；
-        rows = 2;
+        rows = 3;
         break;
 
     case 2:
@@ -129,13 +134,20 @@
     case 1: {
         switch (indexPath.row) {
         case 0: {
-            [cell setCellWithImageName:@"setting_up" labelName:@"帐号设置"];
+            [cell setCellWithImageName:@"setting_up" labelName:RCDLocalizedString(@"account_setting") rightLabelName:@""];
         } break;
 
-        /* RedPacket_FTR */ // wallet cell
         case 1: {
-            [cell setCellWithImageName:@"wallet" labelName:@"我的钱包"];
+            NSString *currentLanguage = [RCDLanguageManager sharedRCDLanguageManager].localzableLanguage;
+            NSString *currentLanguageString =self.languageDic[currentLanguage];
+            NSString *rightString = currentLanguageString ? currentLanguageString : RCDLocalizedString(@"language");
+            [cell setCellWithImageName:@"icon_ multilingual" labelName:RCDLocalizedString(@"language") rightLabelName:rightString];
+            break;
         }
+        /* RedPacket_FTR */ // wallet cell
+        case 2: {
+            [cell setCellWithImageName:@"wallet" labelName:RCDLocalizedString(@"my_wallet") rightLabelName:@""];
+        }break;
         default:
             break;
         }
@@ -145,12 +157,12 @@
     case 2: {
         switch (indexPath.row) {
         case 0: {
-            [cell setCellWithImageName:@"sevre_inactive" labelName:@"意见反馈"];
+            [cell setCellWithImageName:@"sevre_inactive" labelName:RCDLocalizedString(@"feedback") rightLabelName:@""];
             return cell;
         } break;
 
         case 1: {
-            [cell setCellWithImageName:@"about_rongcloud" labelName:@"关于 SealTalk"];
+            [cell setCellWithImageName:@"about_rongcloud" labelName:RCDLocalizedString(@"about_sealtalk") rightLabelName:@""];
             NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
             if ([isNeedUpdate isEqualToString:@"YES"]) {
                 [cell addRedpointImageView];
@@ -159,11 +171,11 @@
         } break;
 #if RCDDebugTestFunction
         case 2: {
-            [cell setCellWithImageName:@"sevre_inactive" labelName:@"小能客服"];
+            [cell setCellWithImageName:@"sevre_inactive" labelName:RCDLocalizedString(@"customer_service_xn") rightLabelName:@""];
             return cell;
         } break;
         case 3: {
-            [cell setCellWithImageName:@"sevre_inactive" labelName:@"佳信"];
+            [cell setCellWithImageName:@"sevre_inactive" labelName:RCDLocalizedString(@"customer_service_jx") rightLabelName:@""];
             return cell;
         } break;
 #endif
@@ -208,6 +220,11 @@
         } break;
         /* RedPacket_FTR */ // open my wallet
         case 1: {
+            RCDLanguageSettingViewController *vc = [[RCDLanguageSettingViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 2: {
             Class walletSDKClass = NSClassFromString(@"JrmfWalletSDK");
             if (walletSDKClass) {
                 [walletSDKClass performSelector:@selector(openWallet)];
@@ -266,7 +283,8 @@
     //上传用户信息，nickname是必须要填写的
     RCCustomerServiceInfo *csInfo = [[RCCustomerServiceInfo alloc] init];
     csInfo.userId = [RCIMClient sharedRCIMClient].currentUserInfo.userId;
-    csInfo.nickName = @"昵称";
+    csInfo.nickName = RCDLocalizedString(@"nickname")
+;
     csInfo.loginName = @"登录名称";
     csInfo.name = [RCIMClient sharedRCIMClient].currentUserInfo.name;
     csInfo.grade = @"11级";
@@ -294,7 +312,7 @@
     csInfo.define = @"自定义信息";
 
     chatService.csInfo = csInfo;
-    chatService.title = @"客服";
+    chatService.title = RCDLocalizedString(@"customer");
 
     [self.navigationController pushViewController:chatService animated:YES];
 }

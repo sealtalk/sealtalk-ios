@@ -93,7 +93,8 @@ MBProgressHUD *hud;
     self.matchSearchList = [NSMutableArray new];
 
     //自定义rightBarButtonItem
-    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:@"确定"
+    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"confirm")
+
                                                          titleColor:[UIColor colorWithHexString:@"000000" alpha:1.0]
                                                         buttonFrame:CGRectMake(0, 0, 90, 30)
                                                              target:self
@@ -132,6 +133,11 @@ MBProgressHUD *hud;
     }
 }
 
+- (void)viewDidLayoutSubviews {
+    self.noFriendView.frame = CGRectMake(0, 0, RCDscreenWidth, RCDscreenHeight - 64);
+    self.tableView.frame = CGRectMake(0, 54, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64 - 54 - RCDExtraTopHeight - RCDExtraBottomHeight);
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
@@ -145,6 +151,7 @@ MBProgressHUD *hud;
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.frame =
         CGRectMake(0, 54, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64 - 54 - RCDExtraTopHeight - RCDExtraBottomHeight);
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [self.view addSubview:self.tableView];
 
     //控制多选
@@ -228,7 +235,7 @@ MBProgressHUD *hud;
         self.selectedUsersCollectionView.frame = frame;
         self.searchBar.frame = [self getSearchBarFrame:frame];
         self.searchField.leftView = self.searchBarLeftView;
-        self.searchBar.text = @"搜索";
+        self.searchBar.text = RCDLocalizedString(@"search");
     } else if (count == 1) {
         frame = CGRectMake(0, 0, 46, 54);
         self.selectedUsersCollectionView.frame = frame;
@@ -296,10 +303,11 @@ MBProgressHUD *hud;
                                           [self.navigationController popViewControllerAnimated:YES];
                                       } else {
                                           [hud hide:YES];
-                                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"添加成员失败"
+                                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"add_member_fail")
                                                                                           message:nil
                                                                                          delegate:self
-                                                                                cancelButtonTitle:@"确定"
+                                                                                cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                                                 otherButtonTitles:nil, nil];
                                           [alert show];
                                           [self.rightBtn buttonIsCanClick:YES
@@ -317,10 +325,11 @@ MBProgressHUD *hud;
                                             [self.navigationController popViewControllerAnimated:YES];
                                         } else {
                                             [hud hide:YES];
-                                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"删除成员失败"
+                                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"delete_member_fail")
                                                                                             message:nil
                                                                                            delegate:self
-                                                                                  cancelButtonTitle:@"确定"
+                                                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                                                   otherButtonTitles:nil, nil];
                                             [alert show];
                                             [self.rightBtn buttonIsCanClick:YES
@@ -367,7 +376,7 @@ MBProgressHUD *hud;
                             chat.targetId = discussion.discussionId;
                             chat.userName = discussion.discussionName;
                             chat.conversationType = ConversationType_DISCUSSION;
-                            chat.title = @"讨论组";
+                            chat.title = RCDLocalizedString(@"discuss_group");
                             chat.needPopToRootView = YES;
                             [self.navigationController pushViewController:chat animated:YES];
                         });
@@ -419,7 +428,7 @@ MBProgressHUD *hud;
                         chat.targetId = discussion.discussionId;
                         chat.userName = discussion.discussionName;
                         chat.conversationType = ConversationType_DISCUSSION;
-                        chat.title = @"讨论组";
+                        chat.title = RCDLocalizedString(@"discuss_group");
                         chat.needPopToRootView = YES;
                         [self.navigationController pushViewController:chat animated:YES];
                     });
@@ -438,7 +447,7 @@ MBProgressHUD *hud;
     if (self.collectionViewResource.count < 1) {
         self.searchField.leftView = self.searchBarLeftView;
     }
-    self.searchBar.text = @"搜索";
+    self.searchBar.text = RCDLocalizedString(@"search");
     self.searchContent = @"";
     [self.searchBar resignFirstResponder];
 }
@@ -456,9 +465,10 @@ MBProgressHUD *hud;
 - (void)setRightButton {
     NSString *titleStr;
     if (self.selecteUserIdList.count > 0) {
-        titleStr = [NSString stringWithFormat:@"确定(%zd)", [self.selecteUserIdList count]];
+        titleStr = [NSString stringWithFormat:@"%@(%zd)",RCDLocalizedString(@"confirm"), [self.selecteUserIdList count]];
     } else {
-        titleStr = @"确定";
+        titleStr = RCDLocalizedString(@"confirm")
+;
         [self.rightBtn buttonIsCanClick:NO
                             buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
                           barButtonItem:self.rightBtn];
@@ -474,7 +484,7 @@ MBProgressHUD *hud;
         self.searchField.leftView = self.searchBarLeftView;
     }
     if (self.searchContent.length < 1) {
-        self.searchBar.text = @"搜索";
+        self.searchBar.text = RCDLocalizedString(@"search");
     }
     if (self.isSearchResult == YES) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -738,7 +748,7 @@ MBProgressHUD *hud;
     if (_friendsArr.count < 1) {
         CGRect frame = CGRectMake(0, 0, RCDscreenWidth, RCDscreenHeight - 64);
         self.noFriendView = [[RCDNoFriendView alloc] initWithFrame:frame];
-        self.noFriendView.displayLabel.text = @"暂无好友";
+        self.noFriendView.displayLabel.text = RCDLocalizedString(@"no_friend");
         [self.view addSubview:self.noFriendView];
         [self.view bringSubviewToFront:self.noFriendView];
     } else {
@@ -887,7 +897,7 @@ MBProgressHUD *hud;
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    if ([self.searchField.text isEqualToString:@"搜索"] || [self.searchField.text isEqualToString:@"Search"]) {
+    if ([self.searchField.text isEqualToString:RCDLocalizedString(@"search")] || [self.searchField.text isEqualToString:@"Search"]) {
         self.searchField.leftView = nil;
         self.searchField.text = @"";
     }

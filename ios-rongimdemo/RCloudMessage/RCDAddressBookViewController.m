@@ -50,9 +50,10 @@ MBProgressHUD *hud;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationItem.title = @"新朋友";
+    self.navigationItem.title = RCDLocalizedString(@"new_friend");
 
     self.tableView.tableFooterView = [UIView new];
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 
     _friendsDic = [[NSMutableDictionary alloc] init];
 
@@ -64,6 +65,10 @@ MBProgressHUD *hud;
     [super viewWillAppear:animated];
     _needSyncFriendList = YES;
     [self getAllData];
+}
+
+- (void)viewDidLayoutSubviews {
+    self.noFriendView.frame = self.view.bounds;
 }
 
 //删除已选中用户
@@ -92,7 +97,7 @@ MBProgressHUD *hud;
     } else {
         CGRect frame = CGRectMake(0, 0, RCDscreenWidth, RCDscreenHeight - 64);
         self.noFriendView = [[RCDNoFriendView alloc] initWithFrame:frame];
-        self.noFriendView.displayLabel.text = @"暂无数据";
+        self.noFriendView.displayLabel.text = RCDLocalizedString(@"no_invite");
         [self.view addSubview:self.noFriendView];
         [self.view bringSubviewToFront:self.noFriendView];
     }
@@ -169,7 +174,7 @@ MBProgressHUD *hud;
 - (void)doAccept:(UIButton *)sender {
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
-    hud.labelText = @"添加好友中...";
+    hud.labelText = RCDLocalizedString(@"adding_friend");
     [hud show:YES];
     NSInteger tempTag = sender.tag;
     tempTag -= 5000;
@@ -186,7 +191,7 @@ MBProgressHUD *hud;
                                                    cell.acceptBtn.hidden = YES;
                                                    cell.arrow.hidden = NO;
                                                    cell.rightLabel.hidden = NO;
-                                                   cell.rightLabel.text = @"已接受";
+                                                   cell.rightLabel.text = RCDLocalizedString(@"had_accept");
                                                    cell.selected = YES;
                                                    [hud hide:YES];
                                                });
@@ -197,10 +202,11 @@ MBProgressHUD *hud;
                                        } else {
                                            dispatch_async(dispatch_get_main_queue(), ^{
                                                [hud hide:YES];
-                                               UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"添加失败"
+                                               UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"add_fail")
                                                                                                    message:nil
                                                                                                   delegate:nil
-                                                                                         cancelButtonTitle:@"确定"
+                                                                                         cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                                                          otherButtonTitles:nil, nil];
                                                [failAlert show];
                                            });

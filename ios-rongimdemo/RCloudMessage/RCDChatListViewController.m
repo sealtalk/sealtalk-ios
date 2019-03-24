@@ -16,13 +16,12 @@
 #import "RCDHttpTool.h"
 #import "RCDPublicServiceListViewController.h"
 #import "RCDSearchBar.h"
-#import "RCDSearchFriendViewController.h"
 #import "RCDSearchViewController.h"
 #import "RCDUIBarButtonItem.h"
 #import "UIColor+RCColor.h"
 #import "UIImageView+WebCache.h"
 #import "UITabBar+badge.h"
-
+#import "RCDSearchFriendController.h"
 @interface RCDChatListViewController () <UISearchBarDelegate, RCDSearchViewDelegate>
 @property(nonatomic, strong) UINavigationController *searchNavigationController;
 @property(nonatomic, strong) UIView *headerView;
@@ -144,6 +143,12 @@
     [self checkVersion];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.searchBar.frame = CGRectMake(0, 0, self.conversationListTableView.frame.size.width, 44);
+    [self updateBadgeValueForTabBarItem];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.translucent = NO;
@@ -159,7 +164,7 @@
                                                                          target:self
                                                                          action:@selector(showMenu:)];
     self.tabBarController.navigationItem.rightBarButtonItems = @[rightBtn];
-    self.tabBarController.navigationItem.title = @"会话";
+    self.tabBarController.navigationItem.title = RCDLocalizedString(@"conversation");
 
     //  [self notifyUpdateUnreadMessageCount];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -229,8 +234,8 @@
             _conversationVC.enableNewComingMessageIcon = YES; //开启消息提醒
             _conversationVC.enableUnreadMessageIcon = YES;
             if (model.conversationType == ConversationType_SYSTEM) {
-                _conversationVC.userName = @"系统消息";
-                _conversationVC.title = @"系统消息";
+                _conversationVC.userName = RCDLocalizedString(@"de_actionbar_sub_system");
+                _conversationVC.title = RCDLocalizedString(@"de_actionbar_sub_system");
             }
             if ([model.objectName isEqualToString:@"RC:ContactNtf"]) {
                 RCDAddressBookViewController *addressBookVC = [RCDAddressBookViewController addressBookViewController];
@@ -277,22 +282,23 @@
 - (void)showMenu:(UIButton *)sender {
     NSArray *menuItems = @[
 
-        [KxMenuItem menuItem:@"发起聊天"
+        [KxMenuItem menuItem:RCDLocalizedString(@"start_chatting")
                        image:[UIImage imageNamed:@"startchat_icon"]
                       target:self
                       action:@selector(pushChat:)],
 
-        [KxMenuItem menuItem:@"创建群组"
+        [KxMenuItem menuItem:RCDLocalizedString(@"create_groups")
                        image:[UIImage imageNamed:@"creategroup_icon"]
                       target:self
                       action:@selector(pushContactSelected:)],
 
-        [KxMenuItem menuItem:@"添加好友"
+        [KxMenuItem menuItem:RCDLocalizedString(@"add_contacts")
+
                        image:[UIImage imageNamed:@"addfriend_icon"]
                       target:self
                       action:@selector(pushAddFriend:)],
 #if RCDDebugTestFunction
-        [KxMenuItem menuItem:@"创建讨论组"
+        [KxMenuItem menuItem:RCDLocalizedString(@"create_discussion_group")
                        image:[UIImage imageNamed:@"addfriend_icon"]
                       target:self
                       action:@selector(pushToCreateDiscussion:)],
@@ -322,7 +328,7 @@
     RCDContactSelectedTableViewController *contactSelectedVC = [[RCDContactSelectedTableViewController alloc] init];
     //    contactSelectedVC.forCreatingDiscussionGroup = YES;
     contactSelectedVC.isAllowsMultipleSelection = NO;
-    contactSelectedVC.titleStr = @"发起聊天";
+    contactSelectedVC.titleStr = RCDLocalizedString(@"start_chatting");
     [self.navigationController pushViewController:contactSelectedVC animated:YES];
 }
 
@@ -335,7 +341,7 @@
     RCDContactSelectedTableViewController *contactSelectedVC = [[RCDContactSelectedTableViewController alloc] init];
     contactSelectedVC.forCreatingGroup = YES;
     contactSelectedVC.isAllowsMultipleSelection = YES;
-    contactSelectedVC.titleStr = @"选择联系人";
+    contactSelectedVC.titleStr = RCDLocalizedString(@"select_contact");
     [self.navigationController pushViewController:contactSelectedVC animated:YES];
 }
 
@@ -355,7 +361,7 @@
  *  @param sender sender description
  */
 - (void)pushAddFriend:(id)sender {
-    RCDSearchFriendViewController *searchFirendVC = [RCDSearchFriendViewController searchFriendViewController];
+    RCDSearchFriendController *searchFirendVC = [[RCDSearchFriendController alloc] init];
     [self.navigationController pushViewController:searchFirendVC animated:YES];
 }
 
@@ -447,7 +453,7 @@
             if (_contactNotificationMsg.sourceUserId == nil) {
                 RCDChatListCell *cell =
                     [[RCDChatListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
-                cell.lblDetail.text = @"好友请求";
+                cell.lblDetail.text = RCDLocalizedString(@"friend_request");
                 [cell.ivAva sd_setImageWithURL:[NSURL URLWithString:portraitUri]
                               placeholderImage:[UIImage imageNamed:@"system_notice"]];
                 return cell;
@@ -498,9 +504,9 @@
     NSString *operation = _contactNotificationMsg.operation;
     NSString *operationContent;
     if ([operation isEqualToString:@"Request"]) {
-        operationContent = [NSString stringWithFormat:@"来自%@的好友请求", userName];
+        operationContent = [NSString stringWithFormat:RCDLocalizedString(@"from_someone_friend_request"), userName];
     } else if ([operation isEqualToString:@"AcceptResponse"]) {
-        operationContent = [NSString stringWithFormat:@"%@通过了你的好友请求", userName];
+        operationContent = [NSString stringWithFormat:RCDLocalizedString(@"someone_accept_you_friend_request"), userName];
     }
     cell.lblDetail.text = operationContent;
     [cell.ivAva sd_setImageWithURL:[NSURL URLWithString:portraitUri]
@@ -597,8 +603,8 @@
         _conversationVC.enableNewComingMessageIcon = YES; //开启消息提醒
         _conversationVC.enableUnreadMessageIcon = YES;
         if (model.conversationType == ConversationType_SYSTEM) {
-            _conversationVC.userName = @"系统消息";
-            _conversationVC.title = @"系统消息";
+            _conversationVC.userName = RCDLocalizedString(@"de_actionbar_sub_system");
+            _conversationVC.title = RCDLocalizedString(@"de_actionbar_sub_system");
         }
         if ([model.objectName isEqualToString:@"RC:ContactNtf"]) {
             RCDAddressBookViewController *addressBookVC = [RCDAddressBookViewController addressBookViewController];
@@ -690,7 +696,7 @@ atIndexPath:(NSIndexPath *)indexPath
     RCDContactSelectedTableViewController *contactSelectedVC = [[RCDContactSelectedTableViewController alloc] init];
     contactSelectedVC.forCreatingDiscussionGroup = YES;
     contactSelectedVC.isAllowsMultipleSelection = YES;
-    contactSelectedVC.titleStr = @"选择联系人";
+    contactSelectedVC.titleStr = RCDLocalizedString(@"select_contact");
     [self.navigationController pushViewController:contactSelectedVC animated:YES];
 }
 

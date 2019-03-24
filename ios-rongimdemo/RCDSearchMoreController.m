@@ -16,6 +16,8 @@
 #import "RCDSearchResultViewCell.h"
 #import "UIColor+RCColor.h"
 #import "RCDUIBarButtonItem.h"
+#import "RCDLanguageManager.h"
+
 @interface RCDSearchMoreController () <UISearchBarDelegate>
 @property(nonatomic, strong) RCDSearchBar *searchBars;
 @property(nonatomic, strong) UIButton *cancelButton;
@@ -97,12 +99,13 @@
     _searchBars.delegate = self;
     _searchBars.placeholder = nil;
     _searchBars.tintColor = [UIColor blueColor];
-    _searchBars.frame = CGRectMake(-17, 0, self.searchView.frame.size.width - 55, 44);
+    _searchBars.frame = CGRectMake(-17, 0, self.searchView.frame.size.width -75, 44);
     [self.searchView addSubview:self.searchBars];
 
     _cancelButton = [[UIButton alloc]
-        initWithFrame:CGRectMake(CGRectGetMaxX(_searchBars.frame) - 3, CGRectGetMinY(self.searchBars.frame), 55, 44)];
-    [_cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+        initWithFrame:CGRectMake(CGRectGetMaxX(_searchBars.frame) - 3, CGRectGetMinY(self.searchBars.frame),60, 44)];
+    [_cancelButton setTitle:RCDLocalizedString(@"cancel")
+ forState:UIControlStateNormal];
     [_cancelButton setTitleColor:HEXCOLOR(0x0099ff) forState:UIControlStateNormal];
     _cancelButton.titleLabel.font = [UIFont systemFontOfSize:18.];
     [_cancelButton addTarget:self action:@selector(cancelButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -168,7 +171,7 @@
     if (model.count > 1) {
         RCDSearchMoreController *viewController = [[RCDSearchMoreController alloc] init];
         viewController.searchString = self.searchBars.text;
-        viewController.type = [NSString stringWithFormat:@"共%d条相关的聊天记录", model.count];
+        viewController.type = [NSString stringWithFormat:RCDLocalizedString(@"total_related_message"), model.count];
         NSArray *array = [[RCIMClient sharedRCIMClient] searchMessages:model.conversationType
                                                               targetId:model.targetId
                                                                keyword:self.searchBars.text
@@ -233,11 +236,11 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     self.resultArray = nil;
     NSInteger type;
-    if ([self.type isEqualToString:@"联系人"]) {
+    if ([self.type isEqualToString:RCDLocalizedString(@"all_contacts")]) {
         type = RCDSearchFriend;
-    } else if ([self.type isEqualToString:@"群组"]) {
+    } else if ([self.type isEqualToString:RCDLocalizedString(@"group")]) {
         type = RCDSearchGroup;
-    } else if ([self.type isEqualToString:@"聊天记录"]) {
+    } else if ([self.type isEqualToString:RCDLocalizedString(@"chat_history")]) {
         type = RCDSearchChatHistory;
     }
     __weak typeof(self) weakSelf = self;
@@ -259,12 +262,20 @@
     [self.tableView reloadData];
     NSString *searchStr = [searchText stringByReplacingOccurrencesOfString:@" " withString:@""];
     if (!self.resultArray.count && searchText.length > 0 && searchStr.length > 0) {
-        NSString *str = [NSString stringWithFormat:@"没有搜索到“%@”相关的内容", searchText];
+        NSString *text = RCDLocalizedString(@"no_search_result");
+        NSString *str = [NSString stringWithFormat:text, searchText];
         self.emptyLabel.textColor = HEXCOLOR(0x999999);
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:str];
+        int index;
+        NSString *currentlanguage = [RCDLanguageManager sharedRCDLanguageManager].localzableLanguage;
+        if ([currentlanguage isEqualToString:@"en"]) {
+            index = 24;
+        }else if ([currentlanguage isEqualToString:@"zh-Hans"]){
+            index = 6;
+        }
         [attributedString addAttribute:NSForegroundColorAttributeName
                                  value:HEXCOLOR(0x0099ff)
-                                 range:NSMakeRange(6, searchText.length)];
+                                 range:NSMakeRange(index, searchText.length)];
         self.emptyLabel.attributedText = attributedString;
         CGFloat height = [self labelAdaptive:str];
         CGRect rect = self.emptyLabel.frame;

@@ -121,6 +121,35 @@
     [self addSubview:self.moreIcon];
 }
 
+- (void)layoutSubviews {
+    if (!self.isHidden) {
+        CGRect statusFrame = self.statusLabel.frame;
+        statusFrame = CGRectMake(30, 0, self.frame.size.width - 60, 40);
+        self.statusLabel.frame = statusFrame;
+        
+        CGRect locationFrame = self.locationIcon.frame;
+        locationFrame = CGRectMake(10, 13, 10, 14);
+        self.locationIcon.frame = locationFrame;
+        
+        CGRect moreIconFrame = self.moreIcon.frame;
+        moreIconFrame = CGRectMake(self.frame.size.width - 20, 13, 10, 14);
+        self.moreIcon.frame = moreIconFrame;
+        
+        CGRect expendLabelFrame = self.expendLabel.frame;
+        expendLabelFrame = CGRectMake(30, 0, self.frame.size.width - 48, 60);
+        self.expendLabel.frame = expendLabelFrame;
+        
+        CGRect cancelFrame = self.cancelButton.frame;
+        cancelFrame = CGRectMake(79, 52, 50, 25);
+        self.cancelButton.frame = cancelFrame;
+        
+        CGRect joinFrame = self.joinButton.frame;
+        joinFrame = CGRectMake(self.frame.size.width - 50 - 79, 52, 50, 25);
+        self.joinButton.frame = joinFrame;
+    }
+    [self setIsExpended:self.isExpended];
+}
+
 - (void)showExtendedView {
     for (UIView *subView in self.subviews) {
         [subView removeFromSuperview];
@@ -157,9 +186,7 @@
         _expendLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, self.frame.size.width - 48, 60)];
         _expendLabel.textAlignment = NSTextAlignmentCenter;
         _expendLabel.textColor = [UIColor whiteColor];
-        [_expendLabel setText:@"加"
-                              @"入位置共享，聊天中其他人也能看到你的位置，确定加入"
-                              @"？"];
+        [_expendLabel setText:RCDLocalizedString(@"join_share_location_alert")];
         _expendLabel.numberOfLines = 0;
     }
     return _expendLabel;
@@ -167,7 +194,8 @@
 - (UIButton *)cancelButton {
     if (!_cancelButton) {
         _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(79, 52, 50, 25)];
-        [_cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+        [_cancelButton setTitle:RCDLocalizedString(@"cancel")
+ forState:UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"location_share_button"] forState:UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"location_share_button_hover"]
                                  forState:UIControlStateHighlighted];

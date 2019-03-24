@@ -34,7 +34,8 @@
         self.AnnouncementContent.delegate = self;
         self.AnnouncementContent.font = [UIFont systemFontOfSize:16.f];
         self.AnnouncementContent.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];
-        self.AnnouncementContent.myPlaceholder = @"请编辑群公告";
+        self.AnnouncementContent.myPlaceholder = RCDLocalizedString(@"Please_edit_the_group_announcement")
+;
         self.AnnouncementContent.frame =
             CGRectMake(4.5, 8, self.view.frame.size.width - 5,
                        self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - 90);
@@ -50,7 +51,8 @@
 
     self.rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 34)];
     self.rightLabel = [[UILabel alloc] initWithFrame:CGRectMake(22.5, 0, 50, 34)];
-    self.rightLabel.text = @"完成";
+    self.rightLabel.text = RCDLocalizedString(@"done")
+;
     [self.rightBtn addSubview:self.rightLabel];
     [self.rightBtn addTarget:self action:@selector(clickRightBtn:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:self.rightBtn];
@@ -60,7 +62,8 @@
 
     self.leftBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 34)];
     UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(-6.5, 0, 50, 34)];
-    leftLabel.text = @"取消";
+    leftLabel.text = RCDLocalizedString(@"cancel")
+;
     [self.leftBtn addSubview:leftLabel];
     [leftLabel setTextColor:[UIColor whiteColor]];
     [self.leftBtn addTarget:self action:@selector(clickLeftBtn:) forControlEvents:UIControlEventTouchUpInside];
@@ -70,7 +73,8 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-    self.navigationItem.title = @"群公告";
+    self.navigationItem.title = RCDLocalizedString(@"group_announcement")
+;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -144,10 +148,10 @@
     [self navigationButtonIsCanClick:NO];
     if (self.AnnouncementContent.text.length > 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:@"退出本次编辑"
+                                                        message:RCDLocalizedString(@"Exit_this_edit")
                                                        delegate:self
-                                              cancelButtonTitle:@"继续编辑"
-                                              otherButtonTitles:@"退出", nil];
+                                              cancelButtonTitle:RCDLocalizedString(@"Continue_editing")
+                                              otherButtonTitles:RCDLocalizedString(@"quit"), nil];
         alert.tag = 101;
         [alert show];
     } else {
@@ -164,10 +168,11 @@
     }
 
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:@"该公告会通知全部群成员，是否发布？"
+                                                    message:RCDLocalizedString(@"The_announcement_will_notify_all_members_of_the_group")
                                                    delegate:self
-                                          cancelButtonTitle:@"取消"
-                                          otherButtonTitles:@"发布", nil];
+                                          cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                          otherButtonTitles:RCDLocalizedString(@"send"), nil];
     alert.tag = 102;
     [alert show];
 }
@@ -231,7 +236,7 @@
             self.hud.margin = 0;
             [self.hud show:YES];
             //发布成功后，使用自定义图片
-            NSString *txt = [NSString stringWithFormat:@"@所有人\n%@", self.AnnouncementContent.text];
+            NSString *txt = [NSString stringWithFormat:@"%@\n%@", RCDLocalizedString(@"mention_all"),self.AnnouncementContent.text];
             //去除收尾的空格
             txt = [txt stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             //去除收尾的换行
@@ -263,9 +268,10 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.hud hide:YES];
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                        message:@"群公告发送失败"
+                                                                        message:RCDLocalizedString(@"Group_announcement_failed_to_be_sent")
                                                                        delegate:nil
-                                                              cancelButtonTitle:@"确定"
+                                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                               otherButtonTitles:nil];
                         [alert show];
                     });

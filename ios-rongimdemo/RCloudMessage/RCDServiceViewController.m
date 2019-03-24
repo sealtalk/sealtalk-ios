@@ -24,7 +24,7 @@
     RCDCustomerServiceViewController *chatService = [[RCDCustomerServiceViewController alloc] init];
 //#define SERVICE_ID @"KEFU145801184889727"
 #define SERVICE_ID @"KEFU146001495753714"
-    chatService.userName = @"客服";
+    chatService.userName = RCDLocalizedString(@"customer");
     chatService.conversationType = ConversationType_CUSTOMERSERVICE;
 #if RCDDebugTestFunction
     NSString *kefuId = self.kefuIdField.text;
@@ -37,7 +37,8 @@
     //上传用户信息，nickname是必须要填写的
     RCCustomerServiceInfo *csInfo = [[RCCustomerServiceInfo alloc] init];
     csInfo.userId = [RCIMClient sharedRCIMClient].currentUserInfo.userId;
-    csInfo.nickName = @"昵称";
+    csInfo.nickName = RCDLocalizedString(@"nickname")
+;
     csInfo.loginName = @"登录名称";
     csInfo.name = @"用户名称";
     csInfo.grade = @"11级";
@@ -94,9 +95,9 @@
     //    titleView.font = [UIFont boldSystemFontOfSize:19];
     //    titleView.textColor = [UIColor whiteColor];
     //    titleView.textAlignment = NSTextAlignmentCenter;
-    //    titleView.text = @"客服";
+    //    titleView.text = RCDLocalizedString(@"customer");
     //    self.tabBarController.navigationItem.titleView = titleView;
-    self.tabBarController.navigationItem.title = @"客服";
+    self.tabBarController.navigationItem.title = RCDLocalizedString(@"customer");
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
 }
 // live800 KEFU146227005669524

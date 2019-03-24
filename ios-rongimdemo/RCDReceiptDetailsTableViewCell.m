@@ -51,7 +51,7 @@
     [self.contentView addSubview:self.verticalLine];
 
     self.hasReadButton =
-        [self createButton:[NSString stringWithFormat:@"%lu人已读", (unsigned long)self.userList.count]];
+        [self createButton:[NSString stringWithFormat:RCDLocalizedString(@"x_people_had_read"), (unsigned long)self.userList.count]];
     [self.hasReadButton addTarget:self
                            action:@selector(clickHasReadButton:)
                  forControlEvents:UIControlEventTouchUpInside];
@@ -61,7 +61,7 @@
     self.leftSelectLine = [self createLine:[UIColor colorWithHexString:@"0099ff" alpha:1.f]];
     [self.hasReadButton addSubview:self.leftSelectLine];
 
-    self.unReadButton = [self createButton:@"0人未读"];
+    self.unReadButton = [self createButton:RCDLocalizedString(@"zero_people_unread")];
     [self.unReadButton addTarget:self
                           action:@selector(clickUnreadButton:)
                 forControlEvents:UIControlEventTouchUpInside];
@@ -245,12 +245,12 @@
 }
 
 - (void)setHasReadUsersCount:(NSUInteger)hasReadUsersCount {
-    [self.hasReadButton setTitle:[NSString stringWithFormat:@"%lu人已读", (unsigned long)hasReadUsersCount]
+    [self.hasReadButton setTitle:[NSString stringWithFormat:RCDLocalizedString(@"x_people_had_read"), (unsigned long)hasReadUsersCount]
                         forState:UIControlStateNormal];
 }
 
 - (void)setUnreadUsersCount:(NSUInteger)unreadUsersCount {
-    [self.unReadButton setTitle:[NSString stringWithFormat:@"%lu人未读", (unsigned long)unreadUsersCount]
+    [self.unReadButton setTitle:[NSString stringWithFormat:RCDLocalizedString(@"x_people_unread"), (unsigned long)unreadUsersCount]
                        forState:UIControlStateNormal];
 }
 #pragma mark - UICollectionViewDelegateFlowLayout

@@ -59,7 +59,8 @@
 //    [RCAppQueryHelper queryParentAppConnectionStatus:^(BOOL isConnected) {
 //        if (isConnected) {
             [RCAppQueryHelper queryParentAppUnreadMessageCount:^(int count) {
-                [self.newmsgcount setText:[NSString  stringWithFormat:@"%d条未读消息", count]];
+                [self.newmsgcount setText:[NSString  stringWithFormat:RCDLocalizedString(@"x_unread_message")
+, count]];
             }];
 //        } else {
 //            [self.newmsgcount setText:@"客户端未登录"];

@@ -91,12 +91,12 @@
 - (void)didClickSubmitButton{
     if (self.model.isTagMust && self.model.tags.count > 0) {
         if (self.selectTags.count == 0) {
-            [self showAlertWarning:@"请选择标签"];
+            [self showAlertWarning:RCDLocalizedString(@"choose_tag")];
             return;
         }
     }
     if (self.model.isInputMust && self.inputView.suggestText.text.length == 0) {
-        [self showAlertWarning:@"请填写你的想法"];
+        [self showAlertWarning:RCDLocalizedString(@"type_idea")];
         return;
     }
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSubmitEvaluate:star:tagString:suggest:)]) {
@@ -347,7 +347,8 @@
 }
 
 - (void)showAlertWarning:(NSString *)message{
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:@"我知道了", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:RCDLocalizedString(@"i_know_it")
+, nil];
     [alertView show];
 }
 
@@ -382,7 +383,7 @@
         
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 50)];
         titleLabel.textColor = HEXCOLOR(0x333333);
-        titleLabel.text = @"评价";
+        titleLabel.text = RCDLocalizedString(@"remark");
         titleLabel.font = [UIFont systemFontOfSize:18];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         
@@ -401,7 +402,7 @@
         _submitButton = [[UIButton alloc] init];
         _submitButton.backgroundColor =  HEXCOLOR(0x0099ff);
         _submitButton.titleLabel.font = [UIFont systemFontOfSize:18];
-        [_submitButton setTitle:@"提交评价" forState:(UIControlStateNormal)];
+        [_submitButton setTitle:RCDLocalizedString(@"submit_remark") forState:(UIControlStateNormal)];
         [_submitButton addTarget:self action:@selector(didClickSubmitButton) forControlEvents:(UIControlEventTouchUpInside)];
     }
     return _submitButton;

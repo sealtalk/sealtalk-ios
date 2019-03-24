@@ -69,7 +69,7 @@
 - (void)getFriendscomplete:(void (^)(NSMutableArray *))friendList;
 
 //通过手机号搜索好友
-- (void)searchUserByPhone:(NSString *)phone complete:(void (^)(NSMutableArray *))userList;
+- (void)searchUserByPhone:(NSString *)phone region:(NSString *)region complete:(void (^)(NSMutableArray *))userList;
 
 //请求加好友
 - (void)requestFriend:(NSString *)userId complete:(void (^)(BOOL result))result;

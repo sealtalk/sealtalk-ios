@@ -96,7 +96,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _swch = [[UISwitch alloc] init];
-    self.title = @"免打扰设置";
+    self.title = RCDLocalizedString(@"Do_not_disturb_setting");
     self.datePicker = [[UIDatePicker alloc] init];
     self.datePicker.datePickerMode = UIDatePickerModeCountDownTimer;
     NSDateFormatter *formatterE = [[NSDateFormatter alloc] init];
@@ -116,7 +116,13 @@
     [self.tableView selectRowAtIndexPath:self.startIndexPath
                                 animated:YES
                           scrollPosition:UITableViewScrollPositionMiddle];
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     self.endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+}
+
+- (void)viewDidLayoutSubviews {
+    self.tableView.frame = self.view.frame;
+    [self.swch setFrame:CGRectMake(self.view.frame.size.width - self.swch.frame.size.width - 15, 6, 0, 0)];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -152,10 +158,11 @@
             }
             error:^(RCErrorCode status) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                    message:@"设置失败"
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"alert")
+                                                                    message:RCDLocalizedString(@"set_fail")
                                                                    delegate:nil
-                                                          cancelButtonTitle:@"取消"
+                                                          cancelButtonTitle:RCDLocalizedString(@"cancel")
+
                                                           otherButtonTitles:nil, nil];
                     [alert show];
                 });
@@ -196,16 +203,17 @@
         switch (indexPath.row) {
         case 0: {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = @"开启消息免打扰";
+            cell.textLabel.text = RCDLocalizedString(@"Turn_on_message_do_not_disturb");
             [_swch setFrame:CGRectMake(self.view.frame.size.width - _swch.frame.size.width - 15, 6, 0, 0)];
             [_swch addTarget:self action:@selector(setSwitchState:) forControlEvents:UIControlEventValueChanged];
             [cell.contentView addSubview:_swch];
         } break;
         case 1: {
-            cell.textLabel.text = @"开始时间";
+            cell.textLabel.text = RCDLocalizedString(@"Start_time");
         } break;
         case 2: {
-            cell.textLabel.text = @"结束时间";
+            cell.textLabel.text = RCDLocalizedString(@"end_time")
+;
         } break;
         default:
             break;
@@ -272,7 +280,7 @@
     //
     //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
     //        message:@"开始时间不能大于等于结束时间" delegate:nil
-    //        cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    //        cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil, nil];
     //        [alertView show];
     //        return;
     //    }
@@ -319,10 +327,11 @@
             }
             error:^(RCErrorCode status) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                    message:@"设置失败"
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"alert")
+                                                                    message:RCDLocalizedString(@"set_fail")
                                                                    delegate:nil
-                                                          cancelButtonTitle:@"取消"
+                                                          cancelButtonTitle:RCDLocalizedString(@"cancel")
+
                                                           otherButtonTitles:nil, nil];
                     [alert show];
                     blockSelf.swch.on = NO;
@@ -334,10 +343,12 @@
         }
             error:^(RCErrorCode status) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                    message:@"关闭失败"
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"alert")
+                                                                    message:RCDLocalizedString(@"shut_down_failed")
+
                                                                    delegate:nil
-                                                          cancelButtonTitle:@"取消"
+                                                          cancelButtonTitle:RCDLocalizedString(@"cancel")
+
                                                           otherButtonTitles:nil, nil];
                     [alert show];
                     blockSelf.swch.on = YES;

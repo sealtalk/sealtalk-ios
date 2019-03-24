@@ -26,7 +26,7 @@
 
     self.tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
     self.tableView.separatorColor = HEXCOLOR(0xdfdfdf);
-    self.navigationItem.title = @"添加好友";
+    self.navigationItem.title = RCDLocalizedString(@"add_contacts");
 
     [self setHeaderView];
     [self setFooterView];
@@ -102,13 +102,14 @@
     [self.addFriendBtn setBackgroundColor:[UIColor colorWithHexString:@"0099ff" alpha:1.0]];
     self.addFriendBtn.layer.masksToBounds = YES;
     self.addFriendBtn.layer.cornerRadius = 5.f;
-    [self.addFriendBtn setTitle:@"添加好友" forState:UIControlStateNormal];
+    [self.addFriendBtn setTitle:RCDLocalizedString(@"add_contacts") forState:UIControlStateNormal];
     [view addSubview:self.addFriendBtn];
     [self.addFriendBtn setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.addFriendBtn addTarget:self action:@selector(actionAddFriend:) forControlEvents:UIControlEventTouchUpInside];
 
     self.startChat = [[UIButton alloc] initWithFrame:CGRectMake(10, 30, self.view.bounds.size.width, 86)];
-    [self.startChat setTitle:@"发起会话" forState:UIControlStateNormal];
+    [self.startChat setTitle:RCDLocalizedString(@"start_chat")
+ forState:UIControlStateNormal];
     [self.startChat setTintColor:[UIColor blackColor]];
     [self.startChat setBackgroundColor:[UIColor colorWithHexString:@"0099ff" alpha:1.0]];
     self.startChat.layer.masksToBounds = YES;
@@ -185,9 +186,10 @@
 
         if (friend && [friend.status isEqualToString:@"10"]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:@"已发送好友邀请"
+                                                                message:RCDLocalizedString(@"friend_invite_had_send")
                                                                delegate:nil
-                                                      cancelButtonTitle:@"确定"
+                                                      cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                       otherButtonTitles:nil, nil];
             [alertView show];
         } else {
@@ -195,18 +197,20 @@
                               complete:^(BOOL result) {
                                   if (result) {
                                       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                          message:@"请求已发送"
+                                                                                          message:RCDLocalizedString(@"request_had_send")
                                                                                          delegate:nil
-                                                                                cancelButtonTitle:@"确定"
+                                                                                cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                                                 otherButtonTitles:nil, nil];
                                       [RCDHTTPTOOL getFriendscomplete:^(NSMutableArray *result){
                                       }];
                                       [alertView show];
                                   } else {
                                       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                          message:@"请求失败，请重试"
+                                                                                          message:RCDLocalizedString(@"request_fail_retry")
                                                                                          delegate:nil
-                                                                                cancelButtonTitle:@"确定"
+                                                                                cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                                                 otherButtonTitles:nil, nil];
                                       [alertView show];
                                   }

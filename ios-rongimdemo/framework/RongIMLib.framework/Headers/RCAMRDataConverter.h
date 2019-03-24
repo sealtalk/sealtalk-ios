@@ -35,7 +35,7 @@
 /*!
  将AMR格式的音频数据转化为WAV格式的音频数据
 
- @param data    AMR格式的音频数据，必须是AMR-NB的格式
+ @param data    AMR格式的音频数据，可以是AMR-NB或者AMR-WB格式
  @return        WAV格式的音频数据
  */
 - (NSData *)decodeAMRToWAVE:(NSData *)data;
@@ -63,7 +63,17 @@
  如果您想和SDK自带的语音消息保持一致和互通，考虑到跨平台和传输的原因，SDK对于WAV音频有所限制.
  具体可以参考RCVoiceMessage中的音频参数说明(nChannels为1，nBitsPerSample为16)。
  */
-- (NSData *)encodeWAVEToAMR:(NSData *)data channel:(int)nChannels nBitsPerSample:(int)nBitsPerSample;
+- (NSData *)encodeWAVEToAMR:(NSData *)data channel:(int)nChannels nBitsPerSample:(int)nBitsPerSample __deprecated_msg("已废弃，请勿使用。");
+
+/*!
+ 将WAV格式的音频数据转化为AMR格式的音频数据（8KHz/16KHz采样）
+ 
+ @param data            WAV格式的音频数据
+ @return                AMR-NB/AMR-WB格式的音频数据
+ @discussion 如果采样率为8KHz则返回 AMR-NB 格式数据，如果采样率为16KHz则返回 AMR-WB 格式数据。
+ */
+- (NSData *)encodeWAVEToAMR:(NSData *)data;
+
 @end
 
 #endif

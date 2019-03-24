@@ -16,6 +16,7 @@
 @end
 
 #define ReuseIdentifier @"cellReuseIdentifier"
+#define RCDLocalizedString(key) NSLocalizedStringFromTable(key, @"SealTalk", nil)
 
 #define DemoServer @"http://api.sealtalk.im/" //线上正式环境
 //#define DemoServer @"http://api.hitalk.im/" //测试环境
@@ -24,9 +25,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"选择";
+    self.title = RCDLocalizedString(@"choose")
+;
 
-    self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"发送"
+    self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"send")
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(sendMessageTofriend:)];
@@ -106,7 +108,8 @@
 
     [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:sendMessageDict options:0 error:nil]];
     [request setTimeoutInterval:10.0];
-    self.rightBarButton.title = @"发送中";
+    self.rightBarButton.title = RCDLocalizedString(@"sending")
+;
     self.rightBarButton.enabled = NO;
 
     // 4.建立连接
@@ -122,9 +125,11 @@
                                    [array addObject:insertMessageDict];
                                    [shareUserDefaults setValue:array forKey:@"sharedMessages"];
                                    [shareUserDefaults synchronize];
-                                   notify = @"发送成功";
+                                   notify = RCDLocalizedString(@"send_success")
+;
                                } else {
-                                   notify = @"发送失败";
+                                   notify = RCDLocalizedString(@"send_fail")
+;
                                }
                                dispatch_async(dispatch_get_main_queue(), ^{
                                    UIAlertController *alertController =

@@ -51,9 +51,9 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self                action:@selector(leftBarButtonItemPressed:)];
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self                action:@selector(leftBarButtonItemPressed:)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
-    self.title = @"聊天详情";
+    self.title = RCDLocalizedString(@"chat_detail");
 
     self.tableView.tableFooterView = [UIView new];
     self.tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
@@ -160,7 +160,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             if (self.userInfo.displayName.length > 0) {
                 infoCell = [[RCDPrivateSettingsUserInfoCell alloc] initWithIsHaveDisplayName:YES];
                 infoCell.NickNameLabel.text = self.userInfo.displayName;
-                infoCell.displayNameLabel.text = [NSString stringWithFormat:@"昵称: %@", self.userInfo.name];
+                infoCell.displayNameLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"someone_nickname"), self.userInfo.name];
             } else {
                 infoCell = [[RCDPrivateSettingsUserInfoCell alloc] initWithIsHaveDisplayName:NO];
                 infoCell.NickNameLabel.text = self.userInfo.name;
@@ -191,7 +191,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         if (!cell) {
             cell = [[RCDBaseSettingTableViewCell alloc] init];
         }
-        cell.leftLabel.text = @"查找聊天记录";
+        cell.leftLabel.text = RCDLocalizedString(@"search_chat_history");
         [cell setCellStyle:DefaultStyle];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
@@ -200,7 +200,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         switch (indexPath.row) {
         case 0: {
             [cell setCellStyle:SwitchStyle];
-            cell.leftLabel.text = @"消息免打扰";
+            cell.leftLabel.text = RCDLocalizedString(@"mute_notifications");
             cell.switchButton.hidden = NO;
             cell.switchButton.on = !enableNotification;
             [cell.switchButton removeTarget:self
@@ -215,7 +215,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
         case 1: {
             [cell setCellStyle:SwitchStyle];
-            cell.leftLabel.text = @"会话置顶";
+            cell.leftLabel.text = RCDLocalizedString(@"stick_on_top")
+;
             cell.switchButton.hidden = NO;
             cell.switchButton.on = currentConversation.isTop;
             [cell.switchButton addTarget:self
@@ -225,7 +226,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
         case 2: {
             [cell setCellStyle:SwitchStyle];
-            cell.leftLabel.text = @"清除聊天记录";
+            cell.leftLabel.text = RCDLocalizedString(@"clear_chat_history");
             cell.switchButton.hidden = YES;
         } break;
 
@@ -243,7 +244,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     //    if (self.userInfo.displayName.length > 0 && ![self.userInfo.displayName isEqualToString:@""]) {
     //      infoCell = [[RCDPrivateSettingsUserInfoCell alloc] initWithIsHaveDisplayName:YES];
     //      infoCell.NickNameLabel.text = self.userInfo.displayName;
-    //      infoCell.displayNameLabel.text = [NSString stringWithFormat:@"昵称: %@",self.userInfo.name];
+    //      infoCell.displayNameLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"someone_nickname"),self.userInfo.name];
     //    } else {
     //      infoCell = [[RCDPrivateSettingsUserInfoCell alloc] initWithIsHaveDisplayName:NO];
     //      infoCell.NickNameLabel.text = self.userInfo.name;
@@ -282,7 +283,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     //
     //  switch (indexPath.row) {
     //  case 0: {
-    //    cell.TitleLabel.text = @"消息免打扰";
+    //    cell.TitleLabel.text = RCDLocalizedString(@"mute_notifications");
     //    cell.SwitchButton.hidden = NO;
     //    cell.SwitchButton.on = !enableNotification;
     //    [cell.SwitchButton removeTarget:self
@@ -296,7 +297,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     //  } break;
     //
     //  case 1: {
-    //    cell.TitleLabel.text = @"会话置顶";
+    //    cell.TitleLabel.text = RCDLocalizedString(@"stick_on_top")
+;
     //    cell.SwitchButton.hidden = NO;
     //    cell.SwitchButton.on = currentConversation.isTop;
     //    [cell.SwitchButton addTarget:self
@@ -305,7 +307,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     //  } break;
     //
     //  case 2: {
-    //    cell.TitleLabel.text = @"清除聊天记录";
+    //    cell.TitleLabel.text = RCDLocalizedString(@"clear_chat_history");
     //    cell.SwitchButton.hidden = YES;
     //  } break;
     //
@@ -326,10 +328,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     }
     if (indexPath.section == 2) {
         if (indexPath.row == 2) {
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"确定清除聊天记录？"
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:RCDLocalizedString(@"clear_chat_history_alert")
                                                                      delegate:self
-                                                            cancelButtonTitle:@"取消"
-                                                       destructiveButtonTitle:@"确定"
+                                                            cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                                       destructiveButtonTitle:RCDLocalizedString(@"confirm")
+
                                                             otherButtonTitles:nil];
 
             [actionSheet showInView:self.view];
@@ -366,7 +370,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                                                                                           targetId:_userId
                                                                                                            success:^{
                                                                                                                [weakSelf performSelectorOnMainThread:@selector(clearCacheAlertMessage:)
-                                                                                                                                          withObject:@"清除聊天记录成功！"
+                                                                                                                                          withObject:RCDLocalizedString(@"clear_chat_history_success")
                                                                                                                                        waitUntilDone:YES];
                                                                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearHistoryMsg" object:nil];
                                                                                                                dispatch_async(dispatch_get_main_queue(), ^{
@@ -379,7 +383,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                                                  }
                                                                    error:^(RCErrorCode status) {
                                                                        [weakSelf performSelectorOnMainThread:@selector(clearCacheAlertMessage:)
-                                                                                                  withObject:@"清除聊天记录失败！"
+                                                                                                  withObject:RCDLocalizedString(@"clear_chat_history_fail")
                                                                                                waitUntilDone:YES];
                                                                        dispatch_async(dispatch_get_main_queue(), ^{
                                                                            [loadingView removeFromSuperview];
@@ -396,7 +400,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                         message:msg
                                                        delegate:nil
-                                              cancelButtonTitle:@"确定"
+                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                               otherButtonTitles:nil, nil];
     [alertView show];
 }

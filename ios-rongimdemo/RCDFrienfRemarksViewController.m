@@ -34,7 +34,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    self.navigationItem.title = @"设置备注";
+    self.navigationItem.title = RCDLocalizedString(@"set_remarks")
+;
 
     [self setNavigationButtons];
 
@@ -56,7 +57,8 @@
 - (void)setNavigationButtons {
     self.rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 34)];
     self.rightLabel = [[UILabel alloc] initWithFrame:CGRectMake(22.5, 0, 50, 34)];
-    self.rightLabel.text = @"完成";
+    self.rightLabel.text = RCDLocalizedString(@"done")
+;
     [self.rightBtn addSubview:self.rightLabel];
     [self.rightBtn addTarget:self action:@selector(clickRightBtn:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:self.rightBtn];
@@ -64,7 +66,7 @@
     self.rightBtn.userInteractionEnabled = NO;
     self.navigationItem.rightBarButtonItem = rightButton;
 
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self action:@selector(clickBackBtn:)];
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn:)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
@@ -76,7 +78,7 @@
         [self.navigationController popViewControllerAnimated:YES];
     } else {
         self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        self.hud.labelText = @"设置中...";
+        self.hud.labelText = RCDLocalizedString(@"setting");
         [self.hud show:YES];
         [RCDHTTPTOOL setFriendDisplayName:self.friendInfo.userId
                               displayName:remarksStr
@@ -98,7 +100,7 @@
                                      } else {
                                          self.rightBtn.userInteractionEnabled = YES;
                                          [self.hud hide:YES];
-                                         [self aletrInfo:@"设置失败"];
+                                         [self aletrInfo:RCDLocalizedString(@"set_fail")];
                                      }
                                  }];
     }
@@ -114,7 +116,7 @@
     titleLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:titleLabel];
-    titleLabel.text = @"备注名";
+    titleLabel.text = RCDLocalizedString(@"Remark_name");
 
     UIView *inputView = [[UIView alloc] init];
     inputView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -175,7 +177,8 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:infoStr
                                                    delegate:nil
-                                          cancelButtonTitle:@"确定"
+                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                           otherButtonTitles:nil];
     [alert show];
 }

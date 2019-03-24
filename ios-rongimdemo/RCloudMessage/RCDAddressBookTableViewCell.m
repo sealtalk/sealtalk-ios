@@ -56,13 +56,14 @@
     self.arrow.image = [UIImage imageNamed:@"grayarrow"];
 
     //右侧label
-    CGFloat rightLabelWidth = 53;
+    CGFloat rightLabelWidth = 80;
     CGFloat rightLabelHeight = cellHeight - 16.5 - 16;
     CGFloat rightLabelX = CGRectGetMaxX(self.arrow.frame) - 20 - rightLabelWidth;
     CGFloat rightLabelY = 16.5;
     self.rightLabel =
         [[UILabel alloc] initWithFrame:CGRectMake(rightLabelX, rightLabelY, rightLabelWidth, rightLabelHeight)];
     self.rightLabel.font = [UIFont systemFontOfSize:14];
+    self.rightLabel.textAlignment = NSTextAlignmentRight;
 
     //“接受”按钮
     CGFloat acceptBtnWidth = rightLabelWidth - 15;
@@ -71,7 +72,7 @@
     CGFloat acceptBtnY = rightLabelY + 5;
     _acceptBtn = [[UIButton alloc] initWithFrame:CGRectMake(acceptBtnX, acceptBtnY, acceptBtnWidth, acceptBtnHeight)];
     _acceptBtn.tag = self.tag;
-    [_acceptBtn setTitle:@"接受" forState:UIControlStateNormal];
+    [_acceptBtn setTitle:RCDLocalizedString(@"accept") forState:UIControlStateNormal];
     [_acceptBtn setTintColor:[UIColor whiteColor]];
     [_acceptBtn setBackgroundColor:[[UIColor alloc] initWithRed:23 / 255.f green:136 / 255.f blue:213 / 255.f alpha:1]];
     _acceptBtn.translatesAutoresizingMaskIntoConstraints = NO;
@@ -82,6 +83,28 @@
     [self.contentView addSubview:self.rightLabel];
     [self.contentView addSubview:self.arrow];
     [self.contentView addSubview:_acceptBtn];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    CGFloat cellWidth = self.frame.size.width;
+    CGFloat screenWidth = RCDscreenWidth;
+    if (cellWidth < screenWidth) {
+        cellWidth = screenWidth;
+    }
+    CGFloat arrowX = cellWidth - 15 - 8;
+    CGRect arrowFrame = self.arrow.frame;
+    arrowFrame.origin.x = arrowX;
+    self.arrow.frame = arrowFrame;
+    
+    CGRect rightLabelFrame = self.rightLabel.frame;
+    rightLabelFrame.origin.x = CGRectGetMaxX(self.arrow.frame) - 20 - 80;
+    self.rightLabel.frame = rightLabelFrame;
+    
+    CGRect acceptFrame = self.acceptBtn.frame;
+    acceptFrame.origin.x = rightLabelFrame.origin.x;
+    self.acceptBtn.frame = acceptFrame;
 }
 
 - (void)setModel:(RCDUserInfo *)user {
@@ -99,12 +122,12 @@
         }
     }
     if ([user.status intValue] == 20) {
-        self.rightLabel.text = @"已接受";
+        self.rightLabel.text = RCDLocalizedString(@"had_accept");
         self.acceptBtn.hidden = YES;
         self.arrow.hidden = NO;
     }
     if ([user.status intValue] == 10) {
-        self.rightLabel.text = @"已邀请";
+        self.rightLabel.text = RCDLocalizedString(@"had_invite");
         self.selected = NO;
         self.arrow.hidden = YES;
         self.acceptBtn.hidden = YES;

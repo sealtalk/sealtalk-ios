@@ -26,7 +26,7 @@
 - (void)settagTitle{
   self.tagTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 20)];
   self.tagTitle.textColor = HEXCOLOR(0x3c4d65);
-  self.tagTitle.text = @"存在哪些问题";
+  self.tagTitle.text = RCDLocalizedString(@"cs_evaluate_problem_title");
   self.tagTitle.font = [UIFont systemFontOfSize:16];
   self.tagTitle.textAlignment = NSTextAlignmentCenter;
   [self addSubview:self.tagTitle];
@@ -72,9 +72,9 @@
 - (void)isMustSelect:(BOOL)isMustSelect{
   dispatch_async(dispatch_get_main_queue(), ^{
     if (isMustSelect) {
-      self.tagTitle.text = @"存在哪些问题(必选)";
+      self.tagTitle.text = RCDLocalizedString(@"cs_evaluate_problem_must_title");
     }else{
-      self.tagTitle.text = @"存在哪些问题";
+      self.tagTitle.text = RCDLocalizedString(@"cs_evaluate_problem_title");
     }
   });
 }

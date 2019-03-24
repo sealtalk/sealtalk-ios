@@ -10,6 +10,7 @@
 #import "RCDCSAnnounceView.h"
 #import "RCDCSEvaluateView.h"
 #import "RCDCSEvaluateModel.h"
+#import "RCDCommonDefine.h"
 @interface RCDCustomerServiceViewController ()<RCDCSAnnounceViewDelegate,RCDCSEvaluateViewDelegate>
 //＊＊＊＊＊＊＊＊＊应用自定义评价界面开始1＊＊＊＊＊＊＊＊＊＊＊＊＊
 @property (nonatomic, strong)NSString *commentId;
@@ -49,6 +50,20 @@
     [super viewWillAppear:animated];
     [self createNavLeftBarButtonItem];
     self.navigationItem.rightBarButtonItems = nil;
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    CGRect collectionViewFrame = self.conversationMessageCollectionView.frame;
+    CGRect frame = CGRectMake(0, collectionViewFrame.origin.y, self.view.frame.size.width, 44);
+    if (RCDIsIPad) {
+        frame.origin.y += 20;
+        collectionViewFrame.origin.y += 64;
+        collectionViewFrame.size.height -= 64;
+        self.conversationMessageCollectionView.frame = collectionViewFrame;
+    }
+    self.announceView.frame = frame;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -104,9 +119,9 @@ commentId:(NSString *)commentId quitAfterComment:(BOOL)isQuit {
     } else if (serviceStatus == 2) {
         //机器人评价结果
         UIAlertView *alert = [[UIAlertView alloc]
-        initWithTitle:@"请评价我们的机器人服务"
-        message:@"如果您满意就按是，不满意就按否" delegate:self
-        cancelButtonTitle:@"是" otherButtonTitles:@"否", nil];
+        initWithTitle:RCDLocalizedString(@"remark_rebot_service")
+        message:RCDLocalizedString(@"satisfaction") delegate:self
+        cancelButtonTitle:RCDLocalizedString(@"yes") otherButtonTitles:RCDLocalizedString(@"no"), nil];
         [alert show];
     }
 }
@@ -192,7 +207,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.frame = CGRectMake(0, 6, 72, 23);
     UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 70, 22)];
-    backText.text = @"返回";
+    backText.text = RCDLocalizedString(@"back");
     backText.font = [UIFont systemFontOfSize:17];
     [backText setBackgroundColor:[UIColor clearColor]];
     [backText setTextColor:[RCIM sharedRCIM].globalNavigationBarTintColor];

@@ -484,9 +484,9 @@
         }];
 }
 
-- (void)searchUserByPhone:(NSString *)phone complete:(void (^)(NSMutableArray *))userList {
+- (void)searchUserByPhone:(NSString *)phone region:(NSString *)region complete:(void (^)(NSMutableArray *))userList {
     NSMutableArray *list = [NSMutableArray new];
-    [AFHttpTool findUserByPhone:phone
+    [AFHttpTool findUserByPhone:phone region:region
         success:^(id response) {
             if (userList && [response[@"code"] intValue] == 200) {
                 id result = response[@"result"];

@@ -62,14 +62,14 @@
             self.otherLabel.frame = CGRectMake(width, height, 35, 16);
             self.additionalLabel.frame =
                 CGRectMake(width + 35, height, additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
-            self.otherLabel.text = @"包含:";
+            self.otherLabel.text = RCDLocalizedString(@"include");
             [self.additionalLabel attributedText:model.otherInformation byHighlightedText:self.searchString];
             self.nameLabel.text = model.name;
         } else if (model.searchType == RCDSearchFriend) {
             self.otherLabel.frame = CGRectMake(width, height, 35, 16);
             self.additionalLabel.frame =
                 CGRectMake(width + 35, height, additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
-            self.otherLabel.text = @"昵称:";
+            self.otherLabel.text = RCDLocalizedString(@"nickname");
             [self.additionalLabel attributedText:model.name byHighlightedText:self.searchString];
             self.nameLabel.text = model.otherInformation;
         } else {
@@ -77,9 +77,9 @@
             self.additionalLabel.frame =
                 CGRectMake(width + 40, height, additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
             if ([model.objectName isEqualToString:@"RC:FileMsg"]) {
-                self.otherLabel.text = @"[文件]";
+                self.otherLabel.text = RCDLocalizedString(@"file");
             } else if ([model.objectName isEqualToString:@"RC:ImgTextMsg"]) {
-                self.otherLabel.text = @"[链接]";
+                self.otherLabel.text = RCDLocalizedString(@"link");
             } else {
                 self.otherLabel.frame = CGRectZero;
                 CGRect rect = self.additionalLabel.frame;

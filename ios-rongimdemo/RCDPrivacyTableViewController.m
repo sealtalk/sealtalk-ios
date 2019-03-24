@@ -20,12 +20,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.navigationItem.title = @"隐私";
+    self.navigationItem.title = RCDLocalizedString(@"privacy")
+;
 
     self.tableView.tableFooterView = [UIView new];
 
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+}
+
+- (void)viewDidLayoutSubviews {
+    self.tableView.frame = self.view.frame;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,7 +63,8 @@
         switch (indexPath.row) {
         case 0: {
             [cell setCellStyle:DefaultStyle];
-            cell.leftLabel.text = @"黑名单";
+            cell.leftLabel.text = RCDLocalizedString(@"blacklist")
+;
         } break;
 
         default:

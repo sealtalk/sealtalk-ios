@@ -78,7 +78,7 @@
     self.GroupName =
         [[UITextField alloc] initWithFrame:CGRectMake(groupNameX, groupNameY, groupNameWidth, groupNameHeight)];
     self.GroupName.font = [UIFont systemFontOfSize:14];
-    self.GroupName.placeholder = @"填写群名称（2-10个字符）";
+    self.GroupName.placeholder = RCDLocalizedString(@"type_croup_name_hint");
     self.GroupName.textAlignment = NSTextAlignmentCenter;
     self.GroupName.delegate = self;
     self.GroupName.returnKeyType = UIReturnKeyDone;
@@ -101,7 +101,8 @@
     [self.view addGestureRecognizer:resetBottomTapGesture];
 
     //创建rightBarButtonItem
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"完成"
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"done")
+
                                                              style:UIBarButtonItemStylePlain
                                                             target:self
                                                             action:@selector(ClickDoneBtn:)];
@@ -150,7 +151,8 @@
     //  [self.view addGestureRecognizer:resetBottomTapGesture];
     //
     //  UIBarButtonItem *item =
-    //      [[UIBarButtonItem alloc] initWithTitle:@"完成"
+    //      [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"done")
+
     //                                       style:UIBarButtonItemStylePlain
     //                                      target:self
     //                                      action:@selector(ClickDoneBtn:)];
@@ -244,17 +246,17 @@ preparation before navigation
 
     //群组名称需要大于2位
     if ([nameStr length] == 0) {
-        [self Alert:@"群组名称不能为空"];
+        [self Alert:RCDLocalizedString(@"group_name_can_not_nil")];
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
     //群组名称需要大于2个字
     else if ([nameStr length] < 2) {
-        [self Alert:@"群组名称过短"];
+        [self Alert:RCDLocalizedString(@"Group_name_is_too_short")];
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
     //群组名称需要小于10个字
     else if ([nameStr length] > 10) {
-        [self Alert:@"群组名称不能超过10个字"];
+        [self Alert:RCDLocalizedString(@"Group_name_cannot_exceed_10_words")];
         self.navigationItem.rightBarButtonItem.enabled = YES;
     } else {
         BOOL isAddedcurrentUserID = false;
@@ -271,7 +273,7 @@ preparation before navigation
 
         hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
-        hud.labelText = @"创建中...";
+        hud.labelText = RCDLocalizedString(@"creating_group");
         [hud show:YES];
 
         [[RCDHttpTool shareInstance]
@@ -319,8 +321,7 @@ preparation before navigation
                                                                                self.navigationItem.rightBarButtonItem
                                                                                    .enabled = YES; //关闭HUD
                                                                                [hud hide:YES];
-                                                                               [self Alert:@"创建群组失败，请检查你的网"
-                                                                                           @"络设置。"];
+                                                                               [self Alert:RCDLocalizedString(@"create_group_fail")];
                                                                            }
                                                                        }];
                                                     });
@@ -335,7 +336,7 @@ preparation before navigation
                                                 self.navigationItem.rightBarButtonItem.enabled = YES;
                                                 //关闭HUD
                                                 [hud hide:YES];
-                                                [self Alert:@"创建群组失败，请检查你的网络设置。"];
+                                                [self Alert:RCDLocalizedString(@"create_group_fail")];
                                             }];
                                     } else {
 
@@ -354,7 +355,7 @@ preparation before navigation
                                 } else {
                                     [hud hide:YES];
                                     self.navigationItem.rightBarButtonItem.enabled = YES;
-                                    [self Alert:@"创建群组失败，请检查你的网络设置。"];
+                                    [self Alert:RCDLocalizedString(@"create_group_fail")];
                                 }
                             }];
     }
@@ -375,7 +376,8 @@ preparation before navigation
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:alertContent
                                                    delegate:self
-                                          cancelButtonTitle:@"确定"
+                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                           otherButtonTitles:nil];
     [alert show];
 }
@@ -385,9 +387,12 @@ preparation before navigation
     [_GroupName resignFirstResponder];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
-                                                    cancelButtonTitle:@"取消"
-                                               destructiveButtonTitle:@"拍照"
-                                                    otherButtonTitles:@"我的相册", nil];
+                                                    cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                               destructiveButtonTitle:RCDLocalizedString(@"take_picture")
+
+                                                    otherButtonTitles:RCDLocalizedString(@"my_album")
+, nil];
     [actionSheet showInView:self.view];
 }
 

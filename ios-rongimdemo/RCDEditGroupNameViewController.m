@@ -51,7 +51,8 @@
     _groupNameTextField.delegate = self;
 
     //自定义rightBarButtonItem
-    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:@"保存"
+    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"save")
+
                                                          titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
                                                         buttonFrame:CGRectMake(0, 0, 50, 30)
                                                              target:self
@@ -86,17 +87,17 @@
 
     //群组名称需要大于2位
     if ([nameStr length] == 0) {
-        [self Alert:@"群组名称不能为空"];
+        [self Alert:RCDLocalizedString(@"group_name_can_not_nil")];
         return;
     }
     //群组名称需要大于2个字
     if ([nameStr length] < 2) {
-        [self Alert:@"群组名称过短"];
+        [self Alert:RCDLocalizedString(@"Group_name_is_too_short")];
         return;
     }
     //群组名称需要小于10个字
     if ([nameStr length] > 10) {
-        [self Alert:@"群组名称不能超过10个字"];
+        [self Alert:RCDLocalizedString(@"Group_name_cannot_exceed_10_words")];
         return;
     }
 
@@ -117,7 +118,7 @@
                              [self.navigationController popViewControllerAnimated:YES];
                          }
                          if (result == NO) {
-                             [self Alert:@"群组名称修改失败"];
+                             [self Alert:RCDLocalizedString(@"Group_name_modification_failed")];
                          }
                      }];
 }
@@ -126,7 +127,8 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:alertContent
                                                    delegate:self
-                                          cancelButtonTitle:@"确定"
+                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                           otherButtonTitles:nil];
     [alert show];
 }

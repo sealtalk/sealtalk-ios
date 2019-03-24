@@ -140,12 +140,14 @@
 - (void)updateUI
 {
     if (self.isRecording) {
-        [self.recordButton setTitle:@"停止录音"];
+        [self.recordButton setTitle:RCDLocalizedString(@"stop_record")
+];
         [self.recordImage setImageNamed:@"to_voice_play"];
         [self.recordImage startAnimating];
         [self.sendButton setEnabled:false];
     } else {
-        [self.recordButton setTitle:@"开始录音"];
+        [self.recordButton setTitle:RCDLocalizedString(@"start_record")
+];
         if (self.recordedData && self.duration > 1) {
             [self.sendButton setEnabled:true];
             [self.recordImage setImageNamed:@"to_voice"];

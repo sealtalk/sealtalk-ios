@@ -1,7 +1,7 @@
 /*!
  @header BlinkEngine.h
  @author BailingCloud
- @version 2.0.3_20190123180221_dev_meeting_dev_seal_9bcdf80
+ @version 2.0.3_20190305204820_dev_meeting_dev_seal_3f41477
  @Copyright © 2018年 BailingCloud. All rights reserved.
  */
 
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreMedia/CoreMedia.h>
 
-#define SDKCompileInfo @"2.0.3_20190123180143_dev_meeting_dev_seal_9bcdf80"
+#define SDKCompileInfo @"2.0.3_20190305204806_dev_meeting_dev_seal_3f41477"
 
 //宏定义说明, 设置视频聊天参数时的Key值, 详见SetVideoParameters:方法
 #define kAudioOnly      @"AudioOnly"

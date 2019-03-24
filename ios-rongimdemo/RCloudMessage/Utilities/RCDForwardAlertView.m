@@ -75,7 +75,8 @@
 }
 
 - (void)updateUI {
-    self.titleLabel.text = @"确定发送给：";
+    self.titleLabel.text = RCDLocalizedString(@"confirm_send")
+;
 }
 
 - (void)loadSubviews {
@@ -128,7 +129,8 @@
     CGFloat cancelButtonHeight = 44;
     UIButton *button = [[UIButton alloc]
         initWithFrame:CGRectMake(cancelButtonX, cancelButtonY, cancelButtonWidth, cancelButtonHeight)];
-    [button setTitle:@"取消" forState:UIControlStateNormal];
+    [button setTitle:RCDLocalizedString(@"cancel")
+ forState:UIControlStateNormal];
     [button setTitleColor:HEXCOLOR(0x262626) forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:18];
     [button addTarget:self action:@selector(cancelButtonEvent) forControlEvents:UIControlEventTouchUpInside];
@@ -145,7 +147,8 @@
     CGFloat cancelButtonHeight = 44;
     UIButton *button = [[UIButton alloc]
         initWithFrame:CGRectMake(cancelButtonX, cancelButtonY, cancelButtonWidth, cancelButtonHeight)];
-    [button setTitle:@"发送" forState:UIControlStateNormal];
+    [button setTitle:RCDLocalizedString(@"send")
+ forState:UIControlStateNormal];
     [button setTitleColor:HEXCOLOR(0x4093f0) forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:18];
     [button addTarget:self action:@selector(confirmButtonEvent) forControlEvents:UIControlEventTouchUpInside];

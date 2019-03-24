@@ -29,9 +29,9 @@
 }
 
 - (void)setSubview{
-  self.solveTitle.text = @"请问客服是否解决了您的问题";
-  [self.solvedButton setTitle:@"已解决" forState:(UIControlStateNormal)];
-  [self.noSolveButton setTitle:@"未解决" forState:(UIControlStateNormal)];
+  self.solveTitle.text = RCDLocalizedString(@"cs_evaluate_resolved_title");
+  [self.solvedButton setTitle:RCDLocalizedString(@"cs_evaluate_resolved") forState:(UIControlStateNormal)];
+  [self.noSolveButton setTitle:RCDLocalizedString(@"cs_evaluate_unresolved") forState:(UIControlStateNormal)];
 }
 
 - (void)didClickSolveButton:(UIButton *)sender{

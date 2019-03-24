@@ -38,7 +38,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    self.navigationItem.title = @"密码修改";
+    self.navigationItem.title = RCDLocalizedString(@"change_password")
+;
 
     [self initialize];
     [self setNavigationButton];
@@ -57,23 +58,25 @@
 }
 
 - (void)initialize {
-    self.oldPwdLabel = [self setLabel:@"原密码"];
+    self.oldPwdLabel = [self setLabel:RCDLocalizedString(@"old_password")];
     self.oldPwdView = [self setSubView];
     self.oldPwdTextField = [self setTextField:nil];
     [self.view addSubview:self.oldPwdLabel];
     [self.view addSubview:self.oldPwdView];
     [self.oldPwdView addSubview:self.oldPwdTextField];
 
-    self.newsPwdLabel = [self setLabel:@"新密码"];
+    self.newsPwdLabel = [self setLabel:RCDLocalizedString(@"new_password")
+];
     self.newsPwdView = [self setSubView];
-    self.newsPwdTextField = [self setTextField:@"6-16位字符，区分大小写"];
+    self.newsPwdTextField = [self setTextField:RCDLocalizedString(@"password_hint")];
     [self.view addSubview:self.newsPwdLabel];
     [self.view addSubview:self.newsPwdView];
     [self.newsPwdView addSubview:self.newsPwdTextField];
 
-    self.confirmPwdLabel = [self setLabel:@"确认密码"];
+    self.confirmPwdLabel = [self setLabel:RCDLocalizedString(@"confirm_new_password")
+];
     self.confirmPwdView = [self setSubView];
-    self.confirmPwdTextField = [self setTextField:@"6-16位字符，区分大小写"];
+    self.confirmPwdTextField = [self setTextField:RCDLocalizedString(@"password_hint")];
     [self.view addSubview:self.confirmPwdLabel];
     [self.view addSubview:self.confirmPwdView];
     [self.confirmPwdView addSubview:self.confirmPwdTextField];
@@ -82,10 +85,11 @@
 }
 
 - (void)setNavigationButton {
-    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"设置" target:self action:@selector(clickBackBtn)];
+    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"settings") target:self action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = self.leftBtn;
 
-    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:@"完成"
+    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"done")
+
                                                          titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
                                                         buttonFrame:CGRectMake(0, 0, 50, 30)
                                                              target:self
@@ -218,7 +222,8 @@
     if ([userPwd isEqualToString:self.oldPwdTextField.text]) {
         NSInteger newPwdLength = self.newsPwdTextField.text.length;
         if (newPwdLength < 6 || newPwdLength > 20) {
-            [self AlertShow:@"密码必须为6-16位字符，区分大小写"];
+            [self AlertShow:RCDLocalizedString(@"password_alert")
+];
         } else {
             if ([self.newsPwdTextField.text isEqualToString:self.confirmPwdTextField.text]) {
                 [AFHttpTool changePassword:self.oldPwdTextField.text
@@ -235,12 +240,14 @@
                                    }];
 
             } else {
-                [self AlertShow:@"填写的确认密码与新密码不一致"];
+                [self AlertShow:RCDLocalizedString(@"old_and_new_friend_different")
+];
             }
         }
 
     } else {
-        [self AlertShow:@"原密码填写错误"];
+        [self AlertShow:RCDLocalizedString(@"old_password_error")
+];
     }
 }
 
@@ -248,7 +255,8 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:content
                                                    delegate:self
-                                          cancelButtonTitle:@"确定"
+                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                           otherButtonTitles:nil];
     [alert show];
 }

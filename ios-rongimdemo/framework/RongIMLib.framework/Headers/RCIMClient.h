@@ -1290,6 +1290,28 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
                            success:(void (^)(void))successBlock
                              error:(void (^)(RCErrorCode status))errorBlock;
 
+/*!
+ 清除历史消息
+ 
+ @param conversationType    会话类型
+ @param targetId            目标会话ID
+ @param recordTime          清除消息时间戳，【0 <= recordTime <= 当前会话最后一条消息的 sentTime,0 清除所有消息，其他值清除小于等于 recordTime 的消息】
+ @param clearRemote         是否同时删除服务端消息
+ @param successBlock        获取成功的回调
+ @param errorBlock          获取失败的回调 [status:清除失败的错误码]
+ 
+ @discussion
+ 此方法可以清除服务器端历史消息和本地消息，如果清除服务器端消息必须先开通历史消息云存储功能。
+ 例如，您不想从服务器上获取更多的历史消息，通过指定 recordTime 并设置 clearRemote 为 YES 清除消息，成功后只能获取该时间戳之后的历史消息。如果 clearRemote 传 NO，
+ 只会清除本地消息。
+ */
+- (void)clearHistoryMessages:(RCConversationType)conversationType
+                    targetId:(NSString *)targetId
+                  recordTime:(long long)recordTime
+                 clearRemote:(BOOL)clearRemote
+                     success:(void (^)(void))successBlock
+                       error:(void (^)(RCErrorCode status))errorBlock;
+
 
 /*!
  从服务器端获取之前的历史消息
@@ -2273,6 +2295,15 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  */
 - (NSData *)encodeWAVEToAMR:(NSData *)data channel:(int)nChannels nBitsPerSample:(int)nBitsPerSample;
 
+#pragma mark - 语音消息设置
+/**
+ 语音消息采样率，默认8KHz
+ 
+ @discussion
+ 2.9.12 之前的版本只支持 8KHz。如果设置为 16KHz，老版本将无法播放 16KHz 的语音消息。
+ */
+@property (nonatomic, assign) RCSampleRate sampleRate;
+
 #pragma mark - 客服方法
 /*!
  发起客服聊天
@@ -2461,13 +2492,30 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  @param targetId         会话ID
  @param keyword          关键字
  @param count            最大的查询数量
- @param startTime        查询记录的起始时间（传 0 表示不限时间）
+ @param startTime        查询 startTime 之前的消息（传 0 表示不限时间）
 
  @return 匹配的消息列表
  */
 - (NSArray<RCMessage *> *)searchMessages:(RCConversationType)conversationType
                                 targetId:(NSString *)targetId
                                  keyword:(NSString *)keyword
+                                   count:(int)count
+                               startTime:(long long)startTime;
+
+/*!
+ 按用户 ID 搜索指定会话中的消息
+ 
+ @param conversationType 会话类型
+ @param targetId         会话ID
+ @param userId           搜索用户ID
+ @param count            最大的查询数量
+ @param startTime        查询 startTime 之前的消息（传 0 表示不限时间）
+ 
+ @return 匹配的消息列表
+ */
+- (NSArray<RCMessage *> *)searchMessages:(RCConversationType)conversationType
+                                targetId:(NSString *)targetId
+                                  userId:(NSString *)userId
                                    count:(int)count
                                startTime:(long long)startTime;
 

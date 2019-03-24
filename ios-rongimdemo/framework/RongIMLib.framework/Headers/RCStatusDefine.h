@@ -613,6 +613,11 @@ typedef NS_ENUM(NSUInteger, RCConversationType) {
      */
     ConversationType_Encrypted = 11,
     
+    /**
+     * RTC 会话
+     */
+    ConversationType_RTC = 12,
+    
     /*!
      无效类型
      */
@@ -839,6 +844,18 @@ typedef NS_ENUM(NSUInteger, RCMentionedType) {
      @部分指定用户
      */
     RC_Mentioned_Users = 2,
+};
+
+/**
+ 语音消息采样率
+ 
+ - RCSample_Rate_8000: 8KHz
+ - RCSample_Rate_16000: 16KHz
+ */
+typedef NS_ENUM(NSInteger,RCSampleRate)
+{
+    RCSample_Rate_8000 = 1,         //8KHz
+    RCSample_Rate_16000 = 2,        //16KHz
 };
 
 #pragma mark - 公众服务相关

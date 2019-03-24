@@ -264,6 +264,11 @@ NSMutableDictionary *userInputStatus;
     [self addToolbarItems];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.realTimeLocationStatusView.frame = CGRectMake(0, 62, self.view.frame.size.width, 0);
+}
+
 - (void)willMoveToParentViewController:(UIViewController*)parent{
     [super willMoveToParentViewController:parent];
     if (!parent) {
@@ -359,10 +364,13 @@ NSMutableDictionary *userInputStatus;
         [self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_CONNECTED) {
         [self.chatSessionInputBarControl resetToDefaultStatus];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:@"离开聊天，位置共享也会结束，确认离开"
+                                   message:RCDLocalizedString(@"leave_location_share_when_leave_chat")
+
                                                            delegate:self
-                                                  cancelButtonTitle:@"取消"
-                                                  otherButtonTitles:@"确定", nil];
+                                                  cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                                  otherButtonTitles:RCDLocalizedString(@"confirm")
+, nil];
         alertView.tag = 101;
         [alertView show];
     } else {
@@ -478,7 +486,7 @@ NSMutableDictionary *userInputStatus;
 
 - (void)setLeftNavigationItem
 {
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self                        action:@selector(leftBarButtonItemPressed:)];
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self                        action:@selector(leftBarButtonItemPressed:)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
@@ -497,11 +505,11 @@ NSMutableDictionary *userInputStatus;
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *backString = nil;
         if (count > 0 && count < 1000) {
-            backString = [NSString stringWithFormat:@"返回(%d)", count];
+            backString = [NSString stringWithFormat:@"%@(%d)",RCDLocalizedString(@"back"),count];
         } else if (count >= 1000) {
-            backString = @"返回(...)";
+            backString = [NSString stringWithFormat:@"%@(...)",RCDLocalizedString(@"back")];
         } else {
-            backString = @"返回";
+            backString = RCDLocalizedString(@"back");
         }
         RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:backString target:self                        action:@selector(leftBarButtonItemPressed:)];
         [self.navigationItem setLeftBarButtonItem:leftButton];
@@ -527,9 +535,10 @@ NSMutableDictionary *userInputStatus;
         if (self.realTimeLocation) {
             UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                      delegate:self
-                                                            cancelButtonTitle:@"取消"
+                                                            cancelButtonTitle:RCDLocalizedString(@"cancel")
+
                                                        destructiveButtonTitle:nil
-                                                            otherButtonTitles:@"发送位置", @"位置实时共享", nil];
+                                                            otherButtonTitles:RCDLocalizedString(@"send_location"), RCDLocalizedString(@"location_share"), nil];
             [actionSheet showInView:self.view];
         } else {
             [super pluginBoardView:pluginBoardView clickedItemWithTag:tag];
@@ -725,16 +734,17 @@ NSMutableDictionary *userInputStatus;
 - (void)onParticipantsJoin:(NSString *)userId {
     __weak typeof(self) weakSelf = self;
     if ([userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
-        [self notifyParticipantChange:@"你加入了地理位置共享"];
+        [self notifyParticipantChange:RCDLocalizedString(@"you_join_location_share")];
     } else {
         [[RCIM sharedRCIM].userInfoDataSource
             getUserInfoWithUserId:userId
                        completion:^(RCUserInfo *userInfo) {
                            if (userInfo.name.length) {
-                               [weakSelf notifyParticipantChange:[NSString stringWithFormat:@"%@加入地理位置共享",
+                               [weakSelf notifyParticipantChange:[NSString stringWithFormat:RCDLocalizedString(@"someone_join_share_location"),
                                                                                             userInfo.name]];
                            } else {
-                               [weakSelf notifyParticipantChange:[NSString stringWithFormat:@"user<%@>加入地理位置共享",
+                               [weakSelf notifyParticipantChange:[NSString stringWithFormat:RCDLocalizedString(@"user_join_share_location")
+,
                                                                                             userId]];
                            }
                        }];
@@ -744,16 +754,16 @@ NSMutableDictionary *userInputStatus;
 - (void)onParticipantsQuit:(NSString *)userId {
     __weak typeof(self) weakSelf = self;
     if ([userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
-        [self notifyParticipantChange:@"你退出地理位置共享"];
+        [self notifyParticipantChange:RCDLocalizedString(@"you_quit_location_share")];
     } else {
         [[RCIM sharedRCIM].userInfoDataSource
             getUserInfoWithUserId:userId
                        completion:^(RCUserInfo *userInfo) {
                            if (userInfo.name.length) {
-                               [weakSelf notifyParticipantChange:[NSString stringWithFormat:@"%@退出地理位置共享",
+                               [weakSelf notifyParticipantChange:[NSString stringWithFormat:RCDLocalizedString(@"someone_quit_location_share"),
                                                                                             userInfo.name]];
                            } else {
-                               [weakSelf notifyParticipantChange:[NSString stringWithFormat:@"user<%@>退出地理位置共享",
+                               [weakSelf notifyParticipantChange:[NSString stringWithFormat:RCDLocalizedString(@"user_quit_location_share"),
                                                                                             userId]];
                            }
                        }];
@@ -832,7 +842,7 @@ NSMutableDictionary *userInputStatus;
         NSArray *participants = nil;
         switch ([self.realTimeLocation getStatus]) {
         case RC_REAL_TIME_LOCATION_STATUS_OUTGOING:
-            [self.realTimeLocationStatusView updateText:@"你正在共享位置"];
+            [self.realTimeLocationStatusView updateText:RCDLocalizedString(@"you_location_sharing")];
             break;
         case RC_REAL_TIME_LOCATION_STATUS_CONNECTED:
         case RC_REAL_TIME_LOCATION_STATUS_INCOMING:
@@ -840,14 +850,14 @@ NSMutableDictionary *userInputStatus;
             if (participants.count == 1) {
                 NSString *userId = participants[0];
                 [weakSelf.realTimeLocationStatusView
-                    updateText:[NSString stringWithFormat:@"user<%@>正在共享位置", userId]];
+                    updateText:[NSString stringWithFormat:RCDLocalizedString(@"user_location_sharing"), userId]];
                 [[RCIM sharedRCIM].userInfoDataSource
                     getUserInfoWithUserId:userId
                                completion:^(RCUserInfo *userInfo) {
                                    if (userInfo.name.length) {
                                        dispatch_async(dispatch_get_main_queue(), ^{
                                            [weakSelf.realTimeLocationStatusView
-                                               updateText:[NSString stringWithFormat:@"%@正在共享位置", userInfo.name]];
+                                               updateText:[NSString stringWithFormat:RCDLocalizedString(@"someone_location_sharing"), userInfo.name]];
                                        });
                                    }
                                }];
@@ -1119,16 +1129,17 @@ NSMutableDictionary *userInputStatus;
         [RCDForwardMananer shareInstance].isForward = YES;
         [RCDForwardMananer shareInstance].selectedMessages = self.selectedMessages;
         RCDContactViewController *contactViewController = [[RCDContactViewController alloc] init];
-        contactViewController.title = @"选择一个聊天";
+        contactViewController.title = RCDLocalizedString(@"select_contact");
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:contactViewController];
         [self.navigationController presentViewController:navi animated:YES completion:nil];
         return;
     }
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:@"语音、表情、红包、发送失败的消息和其它特殊消息类型不支持转发。"
+                                              message:RCDLocalizedString(@"Forwarding_is_not_supported")
                                                        delegate:nil
                                               cancelButtonTitle:nil
-                                              otherButtonTitles:@"确定", nil];
+                                              otherButtonTitles:RCDLocalizedString(@"confirm")
+, nil];
     [alertView show];
     
 }

@@ -28,5 +28,6 @@
 #define RCD_IS_IPHONEX (RCDscreenWidth>=375.0f && RCDscreenHeight>=812.0f)
 #define RCDExtraBottomHeight (RCD_IS_IPHONEX ? 34 : 0)
 #define RCDExtraTopHeight (RCD_IS_IPHONEX ? 24 : 0)
+#define RCDIsIPad [[UIDevice currentDevice].model containsString:@"iPad"]
 
 #endif

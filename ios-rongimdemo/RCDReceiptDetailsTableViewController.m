@@ -56,9 +56,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.navigationItem.title = @"回执详情";
+    self.navigationItem.title = RCDLocalizedString(@"Receipt_details");
 
-    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self action:@selector(clickBackBtn)];
+    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = self.leftBtn;
 
     [self setHeaderView];

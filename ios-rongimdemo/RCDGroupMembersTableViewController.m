@@ -34,10 +34,11 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.tableView.tableFooterView = [UIView new];
 
-    self.title = [NSString stringWithFormat:@"群组成员(%lu)", (unsigned long)[_GroupMembers count]];
+    self.title = [NSString stringWithFormat:RCDLocalizedString(@"group_members_x")
+, (unsigned long)[_GroupMembers count]];
 
     
-    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self action:@selector(clickBackBtn)];
+    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = self.leftBtn;
 }
 

@@ -44,7 +44,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.navigationItem.title = @"新消息通知";
+    self.navigationItem.title = RCDLocalizedString(@"new_message_notification")
+;
 
     self.tableView.tableFooterView = [UIView new];
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
@@ -77,13 +78,14 @@
         switch (indexPath.row) {
         case 0: {
             [cell setCellStyle:SwitchStyle];
-            cell.leftLabel.text = @"接收新消息通知";
+            cell.leftLabel.text = RCDLocalizedString(@"Receive_new_message_notifications")
+;
             cell.switchButton.on = self.isReceiveNotification;
         } break;
 
         case 1: {
             [cell setCellStyle:DefaultStyle];
-            cell.leftLabel.text = @"消息免打扰";
+            cell.leftLabel.text = RCDLocalizedString(@"mute_notifications");
             if (self.isReceiveNotification == YES) {
                 cell.backgroundColor = [UIColor whiteColor];
             } else {
@@ -120,7 +122,7 @@
 
 - (void)onClickSwitchButton:(id)sender {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"设置中...";
+    hud.labelText = RCDLocalizedString(@"setting");
     UISwitch *switchBtn = (UISwitch *)sender;
     if (!switchBtn.on) {
         [[RCIMClient sharedRCIMClient] setNotificationQuietHours:@"00:00:00"
@@ -136,10 +138,11 @@
             }
             error:^(RCErrorCode status) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                    message:@"设置失败"
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"alert")
+                                                                    message:RCDLocalizedString(@"set_fail")
                                                                    delegate:nil
-                                                          cancelButtonTitle:@"取消"
+                                                          cancelButtonTitle:RCDLocalizedString(@"cancel")
+
                                                           otherButtonTitles:nil, nil];
                     [alert show];
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -160,10 +163,11 @@
             error:^(RCErrorCode status) {
 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"alert")
                                                                     message:@"取消失败"
                                                                    delegate:nil
-                                                          cancelButtonTitle:@"取消"
+                                                          cancelButtonTitle:RCDLocalizedString(@"cancel")
+
                                                           otherButtonTitles:nil, nil];
                     [alert show];
                     dispatch_async(dispatch_get_main_queue(), ^{

@@ -6,6 +6,7 @@
   Copyright © 2016年 JYang. All rights reserved.
 */
 "Packet" = "Red Packet";
+"转账" = "Transfer";
 "红包" = "Red Packet";
 "实名认证" = "Real-name authentication";
 "真实姓名" = "Real Name";
@@ -165,6 +166,7 @@
 "安全设置" = "Security setting";
 "银行卡设置" = "Cards";
 "我的零钱" = "Balance";
+//"%@张" = "Amounts: %@ ";
 "%@张" = " %@ ";
 "充值" = "Top Up";
 "提现" = "Withdraw";
@@ -257,3 +259,44 @@
 "网络异常,请检查网络" = "Network anomaly, please check the network";
 "https公钥未找到" = "Https public key not found";
 "服务器异常,请重试" = "Server is abnormal, please try again";
+
+
+// 转账
+"[转账]待确认收款" = "[Transfer] Wait for your receipt";
+"[转账]请确认收款" = "[Transfer] Confirm";
+"[转账]已确认收款" = "[Transfer] Receipt confirm";
+"[转账]确认收款"  = "[Transfer] You've confirmed receipt";
+"[转账]款已被退还" = "[Transfer] Your friend has rejected the transfer";
+"[转账]已将款退还" = "[Transfer] You've rejected this money";
+"已收款" = "Accepted";
+"待%@确认收款" = "Wait for %@ receipt";
+"确认收款" = "Confirm Receipt";
+"收款时间：%@" = "Collection Time：%@";
+"%@已收款" = "%@ Receipt confirm";
+
+"云转账" = "Cloud Transfer";
+"添加转账说明" = "Add Note";
+"你有%@笔相同的转账对方未确认收款，你是否要继续转账" = "You have %@ transfer(s) with the same amount awaiting confirmation by the receiver. You can open transaction history to resend these transfer messages or continue to make a new transfer";
+"继续转账" = "Continue";
+"修改" = "Change";
+"向%转账" = "Transfer money to %@";
+"完成" = "Done";
+"转账时间：%@" = "Transfer Time：%@";
+"转账详情" = "Transfer Details";
+"1天内朋友未确认，将退还给对方。立即退还" = "If the friend does not confirm within one day, it will be returned to the other party. Immediately returned";
+"1天内朋友未确认，将退还给对方。" = "More than one day will be refunded";
+"1天内朋友未确认，将退还给你。" = "Money will be refunded to other user if receipt not confirmed within in 1 day ";
+"立即退还" = "Refond now";
+"是否退还%@的转账" = "To reject %@’s transfer";
+"已退还" = "Rejected";
+"%@ 已退还" = "%@ Rejected";
+"退还时间：%@" = "Rejected time：%@";
+"已退款到钱包" = "This money has been returned to Balance";
+"转账金额" = "Transfer amount";
+"转账给%@" = "Pay to %@";
+"向%@转账" = "Pay to %@";
+"您尚未进行实名认证,账户可能存在安全风险，请实名认证后尝试" = "You have not been the real-name authentication, the account may have security risks, please try after the real-name authentication";
+"实名认证" = "Real-name Authentication";
+"转账给你" = "Transfer to you";
+"已退还（过期）" = "Rejected(Expired)";
+"转账说明" = "Transfer instructions";

@@ -13,16 +13,20 @@
 #import "RCDRegisterViewController.h"
 #import "RCUnderlineTextField.h"
 #import "UIColor+RCColor.h"
+#import "RCDIndicateTextField.h"
+#import "RCDCountryListController.h"
+#import "RCDCountry.h"
+#import "RCDLanguageManager.h"
+#import "AppDelegate.h"
+@interface RCDFindPswViewController () <UITextFieldDelegate, RCDCountryListControllerDelegate>
+@property(nonatomic, strong) RCDCountry *currentRegion;
 
-@interface RCDFindPswViewController () <UITextFieldDelegate>
-@property(unsafe_unretained, nonatomic) IBOutlet UITextField *tfEmail;
-@property(unsafe_unretained, nonatomic) IBOutlet UITextField *tfNickName;
-@property(unsafe_unretained, nonatomic) IBOutlet UITextField *tfPassword;
-@property(unsafe_unretained, nonatomic) IBOutlet UITextField *tfRePassword;
+@property(nonatomic, strong) RCDIndicateTextField *countryTextField;
+@property(nonatomic, strong) RCDIndicateTextField *phoneTextField;
+
 @property(nonatomic, strong) UIView *headBackground;
 @property(nonatomic, strong) UIImageView *rongLogo;
 @property(nonatomic, strong) UIView *inputBackground;
-@property(weak, nonatomic) IBOutlet UITextField *tfMobile;
 @property(strong, nonatomic) RCAnimatedImagesView *animatedImagesView;
 @property(nonatomic, strong) UIView *statusBarView;
 @property(nonatomic, strong) UILabel *licenseLb;
@@ -44,6 +48,7 @@
 @synthesize inputBackground = _inputBackground;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.currentRegion = [[RCDCountry alloc] initWithDict:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentCountry"]];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     self.animatedImagesView = [[RCAnimatedImagesView alloc]
         initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
@@ -56,14 +61,26 @@
     [self.view addSubview:_headBackground];
 
     UIButton *registerHeadButton =
-        [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 80, 0, 70, 50)];
-    [registerHeadButton setTitle:@"登录" forState:UIControlStateNormal];
+        [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 90, 0, 80, 50)];
+    [registerHeadButton setTitle:RCDLocalizedString(@"Login") forState:UIControlStateNormal];
     [registerHeadButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
                              forState:UIControlStateNormal];
+    registerHeadButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [registerHeadButton.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
     [registerHeadButton addTarget:self action:@selector(loginPageEvent) forControlEvents:UIControlEventTouchUpInside];
-
     [_headBackground addSubview:registerHeadButton];
+    
+    UIButton *switchLanguage = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 80,30, 70, 40)];
+    [switchLanguage setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
+    switchLanguage.titleLabel.font = [UIFont systemFontOfSize:16.];
+    NSString *currentlanguage = [RCDLanguageManager sharedRCDLanguageManager].localzableLanguage;
+    if ([currentlanguage isEqualToString:@"en"]) {
+        [switchLanguage setTitle:@"简体中文" forState:(UIControlStateNormal)];
+    }else if ([currentlanguage isEqualToString:@"zh-Hans"]){
+        [switchLanguage setTitle:@"EN" forState:(UIControlStateNormal)];
+    }
+    [switchLanguage addTarget:self action:@selector(didTapSwitchLanguage:) forControlEvents:(UIControlEventTouchUpInside)];
+    [self.animatedImagesView addSubview:switchLanguage];
     UIImage *rongLogoSmallImage = [UIImage imageNamed:@"title_logo_small"];
 
     UIImageView *rongLogoSmallImageView =
@@ -75,11 +92,12 @@
     rongLogoSmallImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     rongLogoSmallImageView.clipsToBounds = YES;
     [_headBackground addSubview:rongLogoSmallImageView];
-    UIButton *forgetPswHeadButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 50)];
+    UIButton *forgetPswHeadButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 0, 80, 50)];
 
-    [forgetPswHeadButton setTitle:@"新用户" forState:UIControlStateNormal];
+    [forgetPswHeadButton setTitle:RCDLocalizedString(@"new_user") forState:UIControlStateNormal];
     [forgetPswHeadButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
                               forState:UIControlStateNormal];
+    forgetPswHeadButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [forgetPswHeadButton.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
     [forgetPswHeadButton addTarget:self action:@selector(registerEvent) forControlEvents:UIControlEventTouchUpInside];
     [_headBackground addSubview:forgetPswHeadButton];
@@ -106,33 +124,21 @@
     _errorMsgLb.translatesAutoresizingMaskIntoConstraints = NO;
     _errorMsgLb.textColor = [UIColor colorWithRed:204.0f / 255.0f green:51.0f / 255.0f blue:51.0f / 255.0f alpha:1];
     [self.view addSubview:_errorMsgLb];
-    RCUnderlineTextField *userNameTextField = [[RCUnderlineTextField alloc] initWithFrame:CGRectZero];
-
-    userNameTextField.backgroundColor = [UIColor clearColor];
-    userNameTextField.tag = UserTextFieldTag;
-    //_account.placeholder=[NSString stringWithFormat:@"Email"];
+    
     UIColor *color = [UIColor whiteColor];
-    userNameTextField.attributedPlaceholder =
-        [[NSAttributedString alloc] initWithString:@"手机号" attributes:@{NSForegroundColorAttributeName : color}];
-    userNameTextField.textColor = [UIColor whiteColor];
-    self.view.translatesAutoresizingMaskIntoConstraints = YES;
-    userNameTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    userNameTextField.delegate = self;
-    userNameTextField.keyboardType = UIKeyboardTypeNumberPad;
-    [_inputBackground addSubview:userNameTextField];
-    if (userNameTextField.text.length > 0) {
-        [userNameTextField setFont:[UIFont fontWithName:@"Heiti SC" size:25.0]];
+    self.countryTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    [_inputBackground addSubview:self.countryTextField];
+    self.phoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    [_inputBackground addSubview:self.phoneTextField];
+    if (self.phoneTextField.textField.text.length > 0) {
+        [self.phoneTextField.textField setFont:[UIFont fontWithName:@"Heiti SC" size:25.0]];
     }
-
-    [userNameTextField addTarget:self
-                          action:@selector(textFieldDidChange:)
-                forControlEvents:UIControlEventEditingChanged];
 
     RCUnderlineTextField *verificationCodeField = [[RCUnderlineTextField alloc] initWithFrame:CGRectZero];
 
     verificationCodeField.backgroundColor = [UIColor clearColor];
     verificationCodeField.attributedPlaceholder =
-        [[NSAttributedString alloc] initWithString:@"验证码" attributes:@{NSForegroundColorAttributeName : color}];
+        [[NSAttributedString alloc] initWithString:RCDLocalizedString(@"verification_code") attributes:@{NSForegroundColorAttributeName : color}];
     verificationCodeField.textColor = [UIColor whiteColor];
     verificationCodeField.delegate = self;
     verificationCodeField.translatesAutoresizingMaskIntoConstraints = NO;
@@ -143,7 +149,7 @@
     UIButton *sendCodeButton = [[UIButton alloc] initWithFrame:CGRectZero];
     [sendCodeButton
         setBackgroundColor:[[UIColor alloc] initWithRed:133 / 255.f green:133 / 255.f blue:133 / 255.f alpha:1]];
-    [sendCodeButton setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [sendCodeButton setTitle:RCDLocalizedString(@"send_verification_code") forState:UIControlStateNormal];
     [sendCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     sendCodeButton.titleLabel.font = [UIFont systemFontOfSize:13];
     [sendCodeButton addTarget:self action:@selector(sendCodeEvent) forControlEvents:UIControlEventTouchUpInside];
@@ -169,7 +175,7 @@
     //[_inputBackground addSubview:reSendCodeButton];
 
     UILabel *vCodeTimerLb = [[UILabel alloc] initWithFrame:CGRectZero];
-    vCodeTimerLb.text = @"60秒后获取";
+    vCodeTimerLb.text = RCDLocalizedString(@"after_60_seconds_obtain");
     vCodeTimerLb.font = [UIFont fontWithName:@"Heiti SC" size:13.0];
     vCodeTimerLb.translatesAutoresizingMaskIntoConstraints = NO;
     //  vCodeTimerLb.textColor =
@@ -190,11 +196,12 @@
     passwordTextField.secureTextEntry = YES;
 
     passwordTextField.attributedPlaceholder =
-        [[NSAttributedString alloc] initWithString:@"新密码" attributes:@{NSForegroundColorAttributeName : color}];
+        [[NSAttributedString alloc] initWithString:RCDLocalizedString(@"new_password")
+ attributes:@{NSForegroundColorAttributeName : color}];
     passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
     [_inputBackground addSubview:passwordTextField];
     UILabel *pswMsgLb = [[UILabel alloc] initWithFrame:CGRectZero];
-    pswMsgLb.text = @"6-16位字符区分大小写";
+    pswMsgLb.text = RCDLocalizedString(@"char_section_case_sensitive_from6_t16");
     pswMsgLb.font = [UIFont fontWithName:@"Heiti SC" size:10.0];
     pswMsgLb.translatesAutoresizingMaskIntoConstraints = NO;
     pswMsgLb.textColor = [[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5];
@@ -202,8 +209,11 @@
 
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [loginButton addTarget:self action:@selector(btnDoneClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [loginButton setBackgroundImage:[UIImage imageNamed:@"confirm_button"] forState:UIControlStateNormal];
-    loginButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    [loginButton setTitle:RCDLocalizedString(@"confirm") forState:UIControlStateNormal];
+    loginButton.backgroundColor = [UIColor colorWithRed:28 / 255.0 green:119 / 255.0 blue:211 / 255.0 alpha:0.95];
+    [loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    loginButton.layer.cornerRadius = 3;
+    loginButton.titleLabel.font = [UIFont systemFontOfSize:23];
     loginButton.translatesAutoresizingMaskIntoConstraints = NO;
     [_inputBackground addSubview:loginButton];
 
@@ -211,16 +221,18 @@
     bottomBackground.translatesAutoresizingMaskIntoConstraints = NO;
     UIButton *registerButton =
         [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 100, -16, 80, 50)];
-    [registerButton setTitle:@"登录" forState:UIControlStateNormal];
+    [registerButton setTitle:RCDLocalizedString(@"Login") forState:UIControlStateNormal];
     [registerButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
                          forState:UIControlStateNormal];
+    registerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [registerButton.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
     [registerButton addTarget:self action:@selector(loginPageEvent) forControlEvents:UIControlEventTouchUpInside];
 
-    UIButton *forgetPswButton = [[UIButton alloc] initWithFrame:CGRectMake(-10, -16, 80, 50)];
-    [forgetPswButton setTitle:@"新用户" forState:UIControlStateNormal];
+    UIButton *forgetPswButton = [[UIButton alloc] initWithFrame:CGRectMake(0, -16, 80, 50)];
+    [forgetPswButton setTitle:RCDLocalizedString(@"new_user") forState:UIControlStateNormal];
     [forgetPswButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
                           forState:UIControlStateNormal];
+    forgetPswButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     forgetPswButton.titleLabel.font = [UIFont systemFontOfSize:18];
     [forgetPswButton.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
     [forgetPswButton addTarget:self action:@selector(registerEvent) forControlEvents:UIControlEventTouchUpInside];
@@ -351,7 +363,7 @@
         arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-70-[_rongLogo(100)]-[_"
                                                                                       @"errorMsgLb(==15)]-[_"
                                                                                       @"inputBackground("
-                                                                                      @"==235)]"
+                                                                                      @"==295)]"
                                                                               options:0
                                                                               metrics:nil
                                                                                 views:views]]
@@ -375,13 +387,17 @@
     [self.view addConstraints:viewConstraints];
 
     NSDictionary *inputViews =
-        NSDictionaryOfVariableBindings(verificationCodeField, pswMsgLb, userNameTextField, passwordTextField,
+        NSDictionaryOfVariableBindings(verificationCodeField, pswMsgLb, _countryTextField, _phoneTextField, passwordTextField,
                                        loginButton, vCodeTimerLb, sendCodeButton, vCodeTimerLb);
 
-    NSArray *inputViewConstraints = [[[[[[[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[userNameTextField]|"
+    NSArray *inputViewConstraints = [[[[[[[[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_countryTextField]|"
                                                                                   options:0
                                                                                   metrics:nil
                                                                                     views:inputViews]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_phoneTextField]|"
+                                                                                                                options:0
+                                                                                                                metrics:nil
+                                                                                                                  views:inputViews]]
         arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[passwordTextField]|"
                                                                               options:0
                                                                               metrics:nil
@@ -402,7 +418,7 @@
                                                               metrics:nil
                                                                 views:inputViews]]
         arrayByAddingObjectsFromArray:
-            [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[userNameTextField(60)]-[verificationCodeField(50)]-["
+            [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_countryTextField(60)]-[_phoneTextField(60)]-[verificationCodeField(50)]-["
                                                             @"passwordTextField(55)]-[loginButton(50)]"
                                                     options:0
                                                     metrics:nil
@@ -428,6 +444,13 @@
     [self.view addSubview:_statusBarView];
     [self.view setNeedsLayout];
     [self.view setNeedsUpdateConstraints];
+}
+
+#pragma mark - RCDCountryListControllerDelegate
+- (void)fetchCountryPhoneCode:(RCDCountry *)country{
+    self.currentRegion = country;
+    self.countryTextField.textField.text = country.countryName;
+    self.phoneTextField.indicateInfoLabel.text = [NSString stringWithFormat:@"+%@",self.currentRegion.phoneCode];
 }
 
 - (void)textFieldDidChange:(UITextField *)textField {
@@ -525,10 +548,10 @@
     hud.color = [UIColor colorWithHexString:@"343637" alpha:0.8];
     [hud show:YES];
     _errorMsgLb.text = @"";
-    NSString *phoneNumber = [(UITextField *)[self.view viewWithTag:UserTextFieldTag] text];
-    if (phoneNumber.length == 11) {
+    NSString *phoneNumber = self.phoneTextField.textField.text;
+    if (phoneNumber.length > 0) {
         [AFHttpTool
-            checkPhoneNumberAvailable:@"86"
+            checkPhoneNumberAvailable:self.currentRegion.phoneCode
                           phoneNumber:phoneNumber
                               success:^(id response) {
                                   if ([response[@"code"] intValue] == 200) {
@@ -537,7 +560,7 @@
                                       //                isEqualToString:@"Phone number has already
                                       //                existed."]) {
                                       if ([response[@"result"] integerValue] == 0) {
-                                          [AFHttpTool getVerificationCode:@"86"
+                                          [AFHttpTool getVerificationCode:self.currentRegion.phoneCode
                                               phoneNumber:phoneNumber
                                               success:^(id response) {
                                                   [hud hide:YES];
@@ -547,9 +570,17 @@
                                                       ((UIButton *)[self.view viewWithTag:SendCodeButtonTag]).hidden =
                                                           YES;
                                                       [self countDown:60];
+                                                  }else{
+                                                      if([response[@"code"] intValue] == 3102){
+                                                          _errorMsgLb.text = RCDLocalizedString(@"phone_number_type_error");
+                                                      }else{
+                                                          _errorMsgLb.text = response[@"result"][@"msg"];
+                                                      }
                                                   }
                                               }
                                               failure:^(NSError *err) {
+                                                  [hud hide:YES];
+                                                  _errorMsgLb.text = RCDLocalizedString(@"network_can_not_use_please_check");
                                                   NSLog(@"%@", err);
                                               }];
 
@@ -557,14 +588,19 @@
                                           [hud hide:YES];
                                           _errorMsgLb.text = @"手机号未注册";
                                       }
+                                  }else{
+                                      [hud hide:YES];
+                                      _errorMsgLb.text = RCDLocalizedString(@"phone_number_type_error");
                                   }
                               }
                               failure:^(NSError *err){
+                                  [hud hide:YES];
+                                  _errorMsgLb.text = RCDLocalizedString(@"network_can_not_use_please_check");
                               }];
 
     } else {
         [hud hide:YES];
-        _errorMsgLb.text = @"手机号输入有误";
+        _errorMsgLb.text = RCDLocalizedString(@"phone_number_type_error");
     }
 }
 - (void)registerEvent {
@@ -572,35 +608,14 @@
     [self.navigationController pushViewController:temp animated:YES];
 }
 
-/**
- *  获取默认用户
- *
- *  @return 是否获取到数据
- */
-- (BOOL)getDefaultUser {
-    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
-    NSString *userPwd = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPwd"];
-    return userName && userPwd;
-}
-/*获取用户账号*/
-- (NSString *)getDefaultUserName {
-    NSString *defaultUser = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
-    return defaultUser;
-}
-/*获取用户密码*/
-- (NSString *)getDefaultUserPwd {
-    NSString *defaultUserPwd = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPwd"];
-    return defaultUserPwd;
-}
-
 - (IBAction)btnDoneClicked:(id)sender {
     _errorMsgLb.text = @"";
     if (![self checkContent])
         return;
-    NSString *phone = [(UITextField *)[self.view viewWithTag:UserTextFieldTag] text];
+    NSString *phone = self.phoneTextField.textField.text;
     NSString *userPwd = [(UITextField *)[self.view viewWithTag:PassWordFieldTag] text];
     NSString *vCode = [(UITextField *)[self.view viewWithTag:VerificationCodeField] text];
-    [AFHttpTool verifyVerificationCode:@"86"
+    [AFHttpTool verifyVerificationCode:self.currentRegion.phoneCode
                            phoneNumber:phone
                       verificationCode:vCode
                                success:^(id response) {
@@ -611,7 +626,7 @@
                                                           vToken:vToken
                                                          success:^(id response) {
                                                              if ([response[@"code"] intValue] == 200) {
-                                                                 _errorMsgLb.text = @"修改成功!";
+                                                                 _errorMsgLb.text = RCDLocalizedString(@"change_success");
                                                                  dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
                                                                                               0.5 * NSEC_PER_MSEC),
                                                                                 dispatch_get_main_queue(), ^{
@@ -638,8 +653,6 @@
  *  @return 是否合法输入
  */
 - (BOOL)checkContent {
-    //  NSString *userName =
-    //      [(UITextField *)[self.view viewWithTag:UserTextFieldTag] text];
     NSString *userPwd = [(UITextField *)[self.view viewWithTag:PassWordFieldTag] text];
     NSString *vCode = [(UITextField *)[self.view viewWithTag:VerificationCodeField] text];
 
@@ -650,21 +663,21 @@
 
     //  if (userName.length == 0) {
     //
-    //    _errorMsgLb.text = @"用户名不能为空!";
+    //    _errorMsgLb.text = RCDLocalizedString(@"username_can_not_nil");
     //    return NO;
     //  }
     //    if (userPwd.length < 6) {
     //        _errorMsgLb.text = @"密码不能小于6位!";
     //    }
     if (userPwd.length > 20) {
-        _errorMsgLb.text = @"密码不能大于20位!";
+        _errorMsgLb.text = RCDLocalizedString(@"password_can_not_more_than_20");
     }
     if (userPwd.length == 0) {
-        _errorMsgLb.text = @"密码不能为空!";
+        _errorMsgLb.text = RCDLocalizedString(@"password_can_not_nil");
         return NO;
     }
     if (vCode.length == 0) {
-        _errorMsgLb.text = @"验证码不能为空!";
+        _errorMsgLb.text = RCDLocalizedString(@"verification_code_can_not_nil");
         return NO;
     }
     return YES;
@@ -688,24 +701,71 @@
 }
 - (void)timeFireMethod {
     _seconds--;
-    ((UILabel *)[self.view viewWithTag:vCodeTimerLabelTag]).text = [NSString stringWithFormat:@"%d秒后发送", _seconds];
+    ((UILabel *)[self.view viewWithTag:vCodeTimerLabelTag]).text = [NSString stringWithFormat:RCDLocalizedString(@"after_x_seconds_send"), _seconds];
     if (_seconds == 0) {
         [_countDownTimer invalidate];
         ((UILabel *)[self.view viewWithTag:vCodeTimerLabelTag]).hidden = YES;
         ((UIButton *)[self.view viewWithTag:SendCodeButtonTag]).hidden = NO;
-        ((UILabel *)[self.view viewWithTag:vCodeTimerLabelTag]).text = @"60秒后发送";
+        ((UILabel *)[self.view viewWithTag:vCodeTimerLabelTag]).text = RCDLocalizedString(@"after_60_seconds_send");
     }
 }
 
-/*
- #pragma mark - Navigation
+- (void)didTapCountryTextField{
+    RCDCountryListController *countryListVC = [[RCDCountryListController alloc] init];
+    countryListVC.delegate = self;
+    [self.navigationController pushViewController:countryListVC animated:YES];
+}
 
- // In a storyboard-based application, you will often want to do a little
- preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+- (void)didTapSwitchLanguage:(UIButton *)button{
+    NSString *currentLanguage = [RCDLanguageManager sharedRCDLanguageManager].localzableLanguage;
+    if ([currentLanguage isEqualToString:@"en"]) {
+        [[RCDLanguageManager sharedRCDLanguageManager] setLocalizableLanguage:@"zh-Hans"];
+    }else if ([currentLanguage isEqualToString:@"zh-Hans"]){
+        [[RCDLanguageManager sharedRCDLanguageManager] setLocalizableLanguage:@"en"];
+    }
+    RCDFindPswViewController *temp = [[RCDFindPswViewController alloc] init];
+    CATransition *transition = [CATransition animation];
+    transition.type = kCATransitionPush;        //可更改为其他方式
+    transition.subtype = kCATransitionFromLeft; //可更改为其他方式
+    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+    [self.navigationController pushViewController:temp animated:NO];
+}
+
+#pragma mark - Getters and setters
+-(RCDIndicateTextField *)countryTextField{
+    if (!_countryTextField) {
+        _countryTextField = [[RCDIndicateTextField alloc] init];
+        _countryTextField.indicateInfoLabel.text = RCDLocalizedString(@"country");
+        _countryTextField.textField.text = self.currentRegion.countryName;
+        _countryTextField.textField.userInteractionEnabled = NO;
+        [_countryTextField indicateIconShow:YES];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCountryTextField)];
+        [_countryTextField addGestureRecognizer:tap];
+        _countryTextField.userInteractionEnabled = YES;
+    }
+    return _countryTextField;
+}
+
+- (RCDIndicateTextField *)phoneTextField{
+    if (!_phoneTextField) {
+        _phoneTextField = [[RCDIndicateTextField alloc] initWithFrame:CGRectZero];
+        _phoneTextField.backgroundColor = [UIColor clearColor];
+        _phoneTextField.textField.tag = UserTextFieldTag;
+        [_phoneTextField.textField addTarget:self
+                                      action:@selector(textFieldDidChange:)
+                            forControlEvents:UIControlEventEditingChanged];
+        _phoneTextField.indicateInfoLabel.text = [NSString stringWithFormat:@"+%@",self.currentRegion.phoneCode];
+        _phoneTextField.userInteractionEnabled = YES;
+        _phoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        _phoneTextField.textField.adjustsFontSizeToFitWidth = YES;
+        _phoneTextField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _phoneTextField.textField.keyboardType = UIKeyboardTypeNumberPad;
+        _phoneTextField.textField.delegate = self;
+        if (_phoneTextField.textField.text.length > 0) {
+            [_phoneTextField.textField setFont:[UIFont fontWithName:@"Heiti SC" size:25.0]];
+        }
+    }
+    return _phoneTextField;
+}
 
 @end

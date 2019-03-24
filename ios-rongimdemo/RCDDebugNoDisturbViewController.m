@@ -24,7 +24,7 @@
     [self.view setBackgroundColor:[UIColor lightGrayColor]];
     
     UILabel *startTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 100, 130, 44)];
-    startTimeLabel.text = @"开始时间：";
+    startTimeLabel.text = RCDLocalizedString(@"Start_time1");
     [self.view addSubview:startTimeLabel];
     
     self.startTimeTextField = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(startTimeLabel.frame), 100, 160, 44)];
@@ -33,7 +33,8 @@
     [self.view addSubview:self.startTimeTextField];
     
     UILabel *endTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.startTimeTextField.frame)+20, 130, 44)];
-    endTimeLabel.text = @"持续时间(分)：";
+    endTimeLabel.text = RCDLocalizedString(@"continue_times")
+;
     [self.view addSubview:endTimeLabel];
     
     self.durationTimeTextField = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(endTimeLabel.frame), endTimeLabel.frame.origin.y, 160, 44)];
@@ -41,7 +42,8 @@
     [self.view addSubview:self.durationTimeTextField];
     
     UIButton *confirmButton = [[UIButton alloc] initWithFrame:CGRectMake(50, CGRectGetMaxY(self.durationTimeTextField.frame)+40, self.view.bounds.size.width-100, 44)];
-    [confirmButton setTitle:@"确定" forState:UIControlStateNormal];
+    [confirmButton setTitle:RCDLocalizedString(@"confirm")
+ forState:UIControlStateNormal];
     [confirmButton addTarget:self action:@selector(confirmButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [confirmButton setBackgroundColor:[UIColor blueColor]];
     [self.view addSubview:confirmButton];
@@ -60,12 +62,14 @@
     
     [[RCIMClient sharedRCIMClient] setNotificationQuietHours:startTime spanMins:spanMins success:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"设置成功" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"setting_success") message:nil delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm")
+ otherButtonTitles:nil, nil];
             [alert show];
         });
     } error:^(RCErrorCode status) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"设置失败" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"set_fail") message:nil delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm")
+ otherButtonTitles:nil, nil];
             [alert show];
         });
     }];

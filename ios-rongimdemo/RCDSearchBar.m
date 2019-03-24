@@ -14,7 +14,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.placeholder = @"搜索";
+        self.placeholder = RCDLocalizedString(@"search");
         self.keyboardType = UIKeyboardTypeDefault;
         self.backgroundImage = [RCDUtilities getImageWithColor:[UIColor clearColor] andHeight:44.0f];
         //设置顶部搜索栏的背景色

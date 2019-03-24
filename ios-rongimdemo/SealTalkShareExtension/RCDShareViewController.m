@@ -9,6 +9,8 @@
 #import "RCDShareViewController.h"
 #import "RCDShareChatListController.h"
 #import "TFHpple.h"
+#define RCDLocalizedString(key) NSLocalizedStringFromTable(key, @"SealTalk", nil)
+
 
 @interface RCDShareViewController ()
 @property(nonatomic, copy) NSString *titleString;
@@ -81,9 +83,11 @@
     if (self.isLogin) {
         //不支持此类型的分享
         if (!self.canShare) {
-            item.title = @"我知道了";
+            item.title = RCDLocalizedString(@"i_know_it")
+;
             __weak typeof(self) weakSelf = self;
-            self.textView.text = @"抱歉，暂不支持此类型内容的分享";
+            self.textView.text = RCDLocalizedString(@"support_share")
+;
             self.textView.textAlignment = NSTextAlignmentCenter;
             item.tapHandler = ^{
                 [weakSelf.extensionContext completeRequestReturningItems:@[] completionHandler:nil];
@@ -91,7 +95,8 @@
             return @[ item ];
         }
         
-        item.title = @"分享给朋友";
+        item.title = RCDLocalizedString(@"share_to_friend")
+;
         __weak typeof(self) weakSelf = self;
         item.tapHandler = ^{
             RCDShareChatListController *tableView = [[RCDShareChatListController alloc] init];
@@ -161,10 +166,12 @@
         };
         
     }else{
-        item.title = @"我知道了";
+        item.title = RCDLocalizedString(@"i_know_it")
+;
         __weak typeof(self) weakSelf = self;
         
-        self.textView.text = @"抱歉，请先打开 SealTalk，并登录，才可以使用分享功能";
+        self.textView.text = RCDLocalizedString(@"use_share_must_open_sealtalk")
+;
         self.textView.textAlignment = NSTextAlignmentCenter;
         item.tapHandler = ^{
             [weakSelf.extensionContext completeRequestReturningItems:@[] completionHandler:nil];

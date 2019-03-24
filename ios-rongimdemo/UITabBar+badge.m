@@ -10,6 +10,7 @@
 #define TabbarItemNums 4.0
 #import "RCDTabBarBtn.h"
 #import "UIColor+RCColor.h"
+#import "RCDCommonDefine.h"
 
 @implementation UITabBar (badge)
 
@@ -103,7 +104,15 @@
     //新建小红点
     CGRect tabFrame = self.frame;
     //确定小红点的位置
-    float percentX = (index + 0.5) / TabbarItemNums;
+    float scale = 0.5;
+    if (RCDIsIPad) {
+        if (([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) || ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+            scale = 0.55;
+        } else {
+            scale = 0.6;
+        }
+    }
+    float percentX = (index + scale) / TabbarItemNums;
     CGFloat x = ceilf(percentX * tabFrame.size.width);
     CGFloat y = ceilf(0.1 * tabFrame.size.height);
     if (badgeValue < 10) {

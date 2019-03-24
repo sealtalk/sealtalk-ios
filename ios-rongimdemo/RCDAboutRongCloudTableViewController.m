@@ -40,10 +40,12 @@
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    self.navigationItem.title = @"关于 SealTalk";
+    self.navigationItem.title = RCDLocalizedString(@"about_sealtalk")
+;
 
     RCDUIBarButtonItem *leftBtn =
-    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"我" target:self action:@selector(clickBackBtn:)];
+    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
+ target:self action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
@@ -83,25 +85,29 @@
 
         case 1: {
             [cell setCellStyle:DefaultStyle];
-            cell.leftLabel.text = @"更新日志";
+            cell.leftLabel.text = RCDLocalizedString(@"update_log")
+;
             return cell;
         } break;
 
         case 2: {
             [cell setCellStyle:DefaultStyle];
-            cell.leftLabel.text = @"功能介绍";
+            cell.leftLabel.text = RCDLocalizedString(@"function_introduce")
+;
             return cell;
         } break;
 
         case 3: {
             [cell setCellStyle:DefaultStyle];
-            cell.leftLabel.text = @"官方网站";
+            cell.leftLabel.text = RCDLocalizedString(@"offical_website")
+;
             return cell;
         } break;
 
         case 4: {
             [versionCell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
-            versionCell.leftLabel.text = @"SealTalk 版本";
+            versionCell.leftLabel.text = RCDLocalizedString(@"SealTalk_version")
+;
             NSString *SealTalkVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"SealTalk Version"];
             versionCell.rightLabel.text = SealTalkVersion;
             NSString *isNeedUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"isNeedUpdate"];
@@ -113,7 +119,8 @@
 
         case 5: {
             [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
-            cell.leftLabel.text = @"SDK 版本";
+            cell.leftLabel.text = RCDLocalizedString(@"SDK_version")
+;
             NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
             cell.rightLabel.text = version;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;

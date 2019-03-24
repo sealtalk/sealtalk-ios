@@ -54,7 +54,7 @@
 
     UIButton *registerHeadButton =
         [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 80, 0, 70, 50)];
-    [registerHeadButton setTitle:@"登录" forState:UIControlStateNormal];
+    [registerHeadButton setTitle:RCDLocalizedString(@"Login") forState:UIControlStateNormal];
     [registerHeadButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
                              forState:UIControlStateNormal];
     [registerHeadButton.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
@@ -72,9 +72,9 @@
     rongLogoSmallImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     rongLogoSmallImageView.clipsToBounds = YES;
     [_headBackground addSubview:rongLogoSmallImageView];
-    UIButton *forgetPswHeadButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 50)];
+    UIButton *forgetPswHeadButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 120, 50)];
 
-    [forgetPswHeadButton setTitle:@"找回密码" forState:UIControlStateNormal];
+    [forgetPswHeadButton setTitle:RCDLocalizedString(@"forgot_password") forState:UIControlStateNormal];
     [forgetPswHeadButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
                               forState:UIControlStateNormal];
     [forgetPswHeadButton.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
@@ -110,7 +110,7 @@
     //_account.placeholder=[NSString stringWithFormat:@"Email"];
     UIColor *color = [UIColor whiteColor];
     demoServerTextField.attributedPlaceholder =
-        [[NSAttributedString alloc] initWithString:@"请输入demo服务器地址"
+        [[NSAttributedString alloc] initWithString:RCDLocalizedString(@"please_type_demo_server")
                                         attributes:@{NSForegroundColorAttributeName : color}];
     demoServerTextField.textColor = [UIColor whiteColor];
     self.view.translatesAutoresizingMaskIntoConstraints = YES;
@@ -138,7 +138,7 @@
     naviServerTextField.backgroundColor = [UIColor clearColor];
     naviServerTextField.tag = naviServerTextFieldTag;
     naviServerTextField.attributedPlaceholder =
-        [[NSAttributedString alloc] initWithString:@"请输入导航服务器地址"
+        [[NSAttributedString alloc] initWithString:RCDLocalizedString(@"please_type_navigation_server")
                                         attributes:@{NSForegroundColorAttributeName : color}];
     naviServerTextField.textColor = [UIColor whiteColor];
     self.view.translatesAutoresizingMaskIntoConstraints = YES;
@@ -162,14 +162,14 @@
     // fileServerTextField.secureTextEntry = YES;
     fileServerTextField.delegate = self;
     fileServerTextField.attributedPlaceholder =
-        [[NSAttributedString alloc] initWithString:@"请输入文件服务器地址"
+        [[NSAttributedString alloc] initWithString:RCDLocalizedString(@"please_type_file_server_address")
                                         attributes:@{NSForegroundColorAttributeName : color}];
     fileServerTextField.translatesAutoresizingMaskIntoConstraints = NO;
     fileServerTextField.adjustsFontSizeToFitWidth = YES;
     fileServerTextField.text = [RCDSettingUserDefaults getRCFileServer];
     [_inputBackground addSubview:fileServerTextField];
     UILabel *pswMsgLb = [[UILabel alloc] initWithFrame:CGRectZero];
-    //    pswMsgLb.text = @"6-16位字符区分大小写";
+    //    pswMsgLb.text = RCDLocalizedString(@"char_section_case_sensitive_from6_t16");
     pswMsgLb.font = [UIFont fontWithName:@"Heiti SC" size:10.0];
     pswMsgLb.translatesAutoresizingMaskIntoConstraints = NO;
     pswMsgLb.textColor = [[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5];
@@ -185,7 +185,7 @@
     appKeyTextField.adjustsFontSizeToFitWidth = YES;
     appKeyTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     appKeyTextField.attributedPlaceholder =
-        [[NSAttributedString alloc] initWithString:@"请输入App Key"
+        [[NSAttributedString alloc] initWithString:RCDLocalizedString(@"please_type_appKey")
                                         attributes:@{NSForegroundColorAttributeName : color}];
     appKeyTextField.translatesAutoresizingMaskIntoConstraints = NO;
     appKeyTextField.text = [RCDSettingUserDefaults getRCAppKey];
@@ -203,7 +203,7 @@
     [_inputBackground addSubview:confirmButton];
 
     UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    tipLabel.text = @"注：服务器地址请不要输入'http://'";
+    tipLabel.text = RCDLocalizedString(@"note_server_can_not_type_http");
     tipLabel.textColor = [UIColor whiteColor];
     tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
     tipLabel.font = [UIFont systemFontOfSize:12];
@@ -227,7 +227,7 @@
     bottomBackground.translatesAutoresizingMaskIntoConstraints = NO;
     UIButton *registerButton =
         [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 100, -16, 80, 50)];
-    [registerButton setTitle:@"登录" forState:UIControlStateNormal];
+    [registerButton setTitle:RCDLocalizedString(@"Login") forState:UIControlStateNormal];
     [registerButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
                          forState:UIControlStateNormal];
     [registerButton.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
@@ -235,8 +235,8 @@
 
     [bottomBackground addSubview:registerButton];
 
-    UIButton *forgetPswButton = [[UIButton alloc] initWithFrame:CGRectMake(-10, -16, 80, 50)];
-    [forgetPswButton setTitle:@"找回密码" forState:UIControlStateNormal];
+    UIButton *forgetPswButton = [[UIButton alloc] initWithFrame:CGRectMake(-10, -16, 120, 50)];
+    [forgetPswButton setTitle:RCDLocalizedString(@"forgot_password") forState:UIControlStateNormal];
     [forgetPswButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
                           forState:UIControlStateNormal];
     forgetPswButton.titleLabel.font = [UIFont systemFontOfSize:18];
@@ -510,7 +510,7 @@
     RCNetworkStatus status = [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
 
     if (RC_NotReachable == status) {
-        _errorMsgLb.text = @"当前网络不可用，请检查！";
+        _errorMsgLb.text = RCDLocalizedString(@"network_can_not_use_please_check");
     }
     NSString *appKeyString = [(UITextField *)[self.view viewWithTag:appKeyTextFieldTag] text];
     NSString *demoServerString = [(UITextField *)[self.view viewWithTag:demoServerTextFieldTag] text];
@@ -545,19 +545,19 @@
     NSString *fileServer = [(UITextField *)[self.view viewWithTag:fileServerTextFieldTag] text];
 
     if (appKey.length == 0) {
-        _errorMsgLb.text = @"appKey不能为空";
+        _errorMsgLb.text = RCDLocalizedString(@"appKey_can_not_nil");
         return NO;
     }
     if (demoServer.length == 0) {
-        _errorMsgLb.text = @"demo server不能为空!";
+        _errorMsgLb.text = RCDLocalizedString(@"demo_server_can_not_nil");
         return NO;
     }
     if (naviServer.length == 0) {
-        _errorMsgLb.text = @"导航server不能为空";
+        _errorMsgLb.text = RCDLocalizedString(@"navi_server_can_not_nil");
         return NO;
     }
     if (fileServer.length == 0) {
-        _errorMsgLb.text = @"文件server不能为空!";
+        _errorMsgLb.text = RCDLocalizedString(@"file_server_can_not_nil");
         return NO;
     }
     return YES;

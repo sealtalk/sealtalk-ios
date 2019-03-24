@@ -65,7 +65,7 @@
 - (void)setStarTitle{
   self.starTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 20)];
   self.starTitle.textColor = HEXCOLOR(0x3c4d65);
-  self.starTitle.text = @"请您对客服进行评价";
+  self.starTitle.text = RCDLocalizedString(@"remark_customer");
   self.starTitle.font = [UIFont systemFontOfSize:16];
   self.starTitle.textAlignment = NSTextAlignmentCenter;
   [self addSubview:self.starTitle];

@@ -34,7 +34,7 @@
     //    RCMessageContent *content = model.content;
 
     CGFloat maxMessageLabelWidth = self.baseContentView.bounds.size.width - 30 * 2;
-    [self.tipMessageLabel setText:@"位置共享已结束" dataDetectorEnabled:NO];
+    [self.tipMessageLabel setText:RCDLocalizedString(@"share_location_finished") dataDetectorEnabled:NO];
 
     NSString *__text = self.tipMessageLabel.text;
     CGSize __textSize = [RCKitUtility getTextDrawingSize:__text

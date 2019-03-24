@@ -74,7 +74,7 @@ MBProgressHUD *hud;
 
     hud = [MBProgressHUD showHUDAddedTo:self.mapView animated:YES];
     hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
-    hud.labelText = @"定位中...";
+    hud.labelText = RCDLocalizedString(@"locating");
     [hud show:YES];
 }
 
@@ -84,17 +84,21 @@ MBProgressHUD *hud;
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (status == kCLAuthorizationStatusDenied) {
         [hud hide:YES];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"无法访问"
-                                                            message:@"没"
-                                                                    @"有权限访问位置信息，请从设置-"
-                                                                    @"隐私-定位服务 "
-                                                                    @"中打开位置访问权限"
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"Inaccessible")
+                                                            message:RCDLocalizedString(@"Location_access_without_permission")
                                                            delegate:nil
-                                                  cancelButtonTitle:@"确定"
+                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                   otherButtonTitles:nil];
         [alertView show];
     }
 }
+
+- (void)viewDidLayoutSubviews {
+    self.mapView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    self.headCollectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 95);
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.realTimeLocationProxy removeRealTimeLocationObserver:self];
@@ -108,10 +112,11 @@ MBProgressHUD *hud;
 }
 
 - (BOOL)quitButtonPressed {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否结束位置共享？"
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:RCDLocalizedString(@"end_share_location_alert")
                                                              delegate:self
-                                                    cancelButtonTitle:@"取消"
-                                               destructiveButtonTitle:@"结束"
+                                                    cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                               destructiveButtonTitle:RCDLocalizedString(@"end")
                                                     otherButtonTitles:nil];
     [actionSheet showInView:self.view];
     return YES;
@@ -378,7 +383,7 @@ MBProgressHUD *hud;
         for (UIView *subView in actionSheet.subviews) {
             if ([subView isKindOfClass:[UIButton class]]) {
                 UIButton *btn = (UIButton *)subView;
-                if ([btn.titleLabel.text isEqualToString:@"结束"]) {
+                if ([btn.titleLabel.text isEqualToString:RCDLocalizedString(@"end")]) {
                     [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
                 } else {
                     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];

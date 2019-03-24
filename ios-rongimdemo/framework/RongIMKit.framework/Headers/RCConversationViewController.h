@@ -189,6 +189,16 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
             replacementText:(NSString *)text;
 
 /*!
+ 输入工具栏尺寸（高度）发生变化的回调
+ 
+ @param chatInputBar 输入工具栏
+ @param frame        输入工具栏最终需要显示的Frame
+ 
+ @discussion 如重写此方法，请先调用父类方法。
+ */
+- (void)chatInputBar:(RCChatSessionInputBarControl *)chatInputBar shouldChangeFrame:(CGRect)frame;
+
+/*!
  扩展功能板的点击回调
 
  @param pluginBoardView 输入扩展功能板View
@@ -582,9 +592,12 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 
  @discussion 自定义消息如果需要显示，则必须先通过RCIM的registerMessageType:注册该自定义消息类型，
  并在会话页面中通过registerClass:forCellWithReuseIdentifier:注册该自定义消息的Cell，否则将此回调将不会被调用。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：即将显示消息的回调统一使用 willDisplayMessageCell:atIndexPath: 方法。
  */
 - (RCMessageBaseCell *)rcConversationCollectionView:(UICollectionView *)collectionView
-                             cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+                             cellForItemAtIndexPath:(NSIndexPath *)indexPath __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  自定义消息Cell显示的回调
@@ -596,10 +609,13 @@ typedef NS_ENUM(NSUInteger, RCCustomerServiceStatus) {
 
  @discussion 自定义消息如果需要显示，则必须先通过RCIM的registerMessageType:注册该自定义消息类型，
  并在会话页面中通过registerClass:forCellWithReuseIdentifier:注册该自定义消息的Cell，否则将此回调将不会被调用。
+ 
+ @warning  **已废弃，请勿使用。**
+ 升级说明：请实现自定义消息 Cell 的 sizeForMessageModel:withCollectionViewWidth:referenceExtraHeight: 方法来设置 size。
  */
 - (CGSize)rcConversationCollectionView:(UICollectionView *)collectionView
                                 layout:(UICollectionViewLayout *)collectionViewLayout
-                sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
+                sizeForItemAtIndexPath:(NSIndexPath *)indexPath __deprecated_msg("已废弃，请勿使用。");
 
 /*!
  未注册消息Cell显示的回调

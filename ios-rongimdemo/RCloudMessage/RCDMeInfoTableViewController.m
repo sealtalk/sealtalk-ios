@@ -42,10 +42,11 @@
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    self.navigationItem.title = @"个人信息";
+    self.navigationItem.title = RCDLocalizedString(@"Personal_information");
 
     RCDUIBarButtonItem *leftBtn =
-    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"我" target:self action:@selector(clickBackBtn:)];
+    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
+ target:self action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
@@ -83,20 +84,22 @@
             }
             [cell setImageView:cell.rightImageView ImageStr:portraitUrl imageSize:CGSizeMake(65, 65) LeftOrRight:1];
             cell.rightImageCornerRadius = 5.f;
-            cell.leftLabel.text = @"头像";
+            cell.leftLabel.text = RCDLocalizedString(@"portrait");
             return cell;
         } break;
 
         case 1: {
             [cell setCellStyle:DefaultStyle_RightLabel];
-            cell.leftLabel.text = @"昵称";
+            cell.leftLabel.text = RCDLocalizedString(@"nickname")
+;
             cell.rightLabel.text = [DEFAULTS stringForKey:@"userNickName"];
             return cell;
         } break;
 
         case 2: {
             [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
-            cell.leftLabel.text = @"手机号";
+            cell.leftLabel.text = RCDLocalizedString(@"mobile_number")
+;
             cell.rightLabel.text = [DEFAULTS stringForKey:@"userName"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
@@ -162,9 +165,12 @@
 - (void)changePortrait {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
-                                                    cancelButtonTitle:@"取消"
-                                               destructiveButtonTitle:@"拍照"
-                                                    otherButtonTitles:@"我的相册", nil];
+                                                    cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                                               destructiveButtonTitle:RCDLocalizedString(@"take_picture")
+
+                                                    otherButtonTitles:RCDLocalizedString(@"my_album")
+, nil];
     [actionSheet showInView:self.view];
 }
 
@@ -213,7 +219,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
-    hud.labelText = @"上传头像中...";
+    hud.labelText = RCDLocalizedString(@"Uploading_avatar");
     [hud show:YES];
 
     [RCDHTTPTOOL uploadImageToQiNiu:[RCIM sharedRCIM].currentUserInfo.userId
@@ -245,9 +251,10 @@
                                                //关闭HUD
                                                [hud hide:YES];
                                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                                               message:@"上传头像失败"
+                                                                                               message:RCDLocalizedString(@"Upload_avatar_fail")
                                                                                               delegate:self
-                                                                                     cancelButtonTitle:@"确定"
+                                                                                     cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                                                      otherButtonTitles:nil];
                                                [alert show];
                                            }
@@ -256,9 +263,10 @@
                 //关闭HUD
                 [hud hide:YES];
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:@"上传头像失败"
+                                                                message:RCDLocalizedString(@"Upload_avatar_fail")
                                                                delegate:self
-                                                      cancelButtonTitle:@"确定"
+                                                      cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                       otherButtonTitles:nil];
                 [alert show];
             }
@@ -267,9 +275,10 @@
             //关闭HUD
             [hud hide:YES];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:@"上传头像失败"
+                                                            message:RCDLocalizedString(@"Upload_avatar_fail")
                                                            delegate:self
-                                                  cancelButtonTitle:@"确定"
+                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                   otherButtonTitles:nil];
             [alert show];
         }];
@@ -307,9 +316,10 @@
     RCNetworkStatus networkStatus = [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
     if (networkStatus == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:@"当前网络不可用，请检查你的网络设置"
+                                                        message:NSLocalizedStringFromTable(@"ConnectionIsNotReachable", @"RongCloudKit", nil)
                                                        delegate:nil
-                                              cancelButtonTitle:@"确定"
+                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                               otherButtonTitles:nil];
         [alert show];
         return isconnected;

@@ -63,6 +63,7 @@
         [backButton setImage:[UIImage imageNamed:@"back_to_conversation"] forState:UIControlStateNormal];
         [backButton addTarget:self action:@selector(onBackButtonPressed:) forControlEvents:UIControlEventTouchDown];
         [self addSubview:backButton];
+        self.backButton = backButton;
 
         self.tipLabel =
             [[UILabel alloc] initWithFrame:CGRectMake(self.headViewRect.origin.x, 20 + self.headViewSize + 12,
@@ -78,6 +79,19 @@
     }
 
     return self;
+}
+
+- (void)layoutSubviews {
+    self.backButton.frame = CGRectMake(self.bounds.size.width - 8 - 26, 41.5, 26, 26);
+    self.tipLabel.frame = CGRectMake(0, 20 + self.headViewSize + 12, self.headViewRect.size.width, 13);
+    CGPoint tipLabelCenter = self.tipLabel.center;
+    tipLabelCenter.x = self.center.x;
+    self.tipLabel.center = tipLabelCenter;
+    
+    CGPoint scrollViewCenter = self.scrollView.center;
+    scrollViewCenter.x = self.center.x;
+    self.scrollView.center = scrollViewCenter;
+    
 }
 
 #pragma mark user source processing
@@ -105,10 +119,10 @@
                                [self.rcUserInfos addObject:userInfo];
                                [self addHeadViewUser:userInfo];
                                if (show) {
-                                   [self showUserChangeInfo:[NSString stringWithFormat:@"%@加入...", userInfo.name]];
+                                   [self showUserChangeInfo:[NSString stringWithFormat:RCDLocalizedString(@"join_share_location"), userInfo.name]];
                                } else {
                                    self.tipLabel.text = [NSString
-                                       stringWithFormat:@"%lu人在共享位置", (unsigned long)self.rcUserInfos.count];
+                                       stringWithFormat:RCDLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
                                }
                            }];
         } else {
@@ -116,10 +130,10 @@
             [self.rcUserInfos addObject:userInfo];
             [self addHeadViewUser:userInfo];
             if (show) {
-                [self showUserChangeInfo:[NSString stringWithFormat:@"%@加入...", userInfo.name]];
+                [self showUserChangeInfo:[NSString stringWithFormat:RCDLocalizedString(@"join_share_location"), userInfo.name]];
             } else {
                 self.tipLabel.text =
-                    [NSString stringWithFormat:@"%lu人在共享位置", (unsigned long)self.rcUserInfos.count];
+                    [NSString stringWithFormat:RCDLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
             }
         }
         return YES;
@@ -139,7 +153,7 @@
                 [self showUserChangeInfo:[NSString stringWithFormat:@"%@退出...", userInfo.name]];
             } else {
                 self.tipLabel.text =
-                    [NSString stringWithFormat:@"%lu人在共享位置", (unsigned long)self.rcUserInfos.count];
+                    [NSString stringWithFormat:RCDLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
             }
             return YES;
         } else {
@@ -162,7 +176,7 @@
 
 - (void)showUserShareInfo {
     self.tipLabel.textColor = [UIColor whiteColor];
-    self.tipLabel.text = [NSString stringWithFormat:@"%lu人在共享位置", (unsigned long)self.rcUserInfos.count];
+    self.tipLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
 }
 
 - (NSArray *)getParticipantsUserInfo {

@@ -82,16 +82,21 @@
     cell.textLabel.text = title;
     cell.backgroundColor = [UIColor whiteColor];
     cell.detailTextLabel.text = @"";
-    if ([title isEqualToString:@"显示ID"]) {
+    if ([title isEqualToString:RCDLocalizedString(@"show_ID")
+]) {
         [self setSwitchButtonCell:cell tag:DISPLAY_ID_TAG];
     }
-    if ([title isEqualToString:@"显示在线状态"]) {
+    if ([title isEqualToString:RCDLocalizedString(@"show_online_status")
+]) {
         [self setSwitchButtonCell:cell tag:DISPLAY_ONLINE_STATUS_TAG];
     }
-    if ([title isEqualToString:@"加入聊天室失败仍停留在会话界面"]) {
+    if ([title isEqualToString:RCDLocalizedString(@"Joining_the_chat_room_failed_to_stay_in_the_session_interface")
+]) {
         [self setSwitchButtonCell:cell tag:JOIN_CHATROOM_TAG];
     }
-    if ([title isEqualToString:@"设置离线消息补偿时间"] || [title isEqualToString:@"设置全局免打扰时间"]) {
+    if ([title isEqualToString:RCDLocalizedString(@"Set_offline_message_compensation_time")
+] || [title isEqualToString:RCDLocalizedString(@"Set_global_DND_time")
+]) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return cell;
@@ -143,9 +148,19 @@
 #pragma mark init data for tabelview
 - (void)initdata {
     self.functions = [NSDictionary dictionaryWithObjectsAndKeys:
-  @[@"显示ID", @"显示在线状态"], @"显示设置",
-  @[@"强制Crash", @"发送Log", @"加入聊天室失败仍停留在会话界面"], @"自定义设置",
-  @[@"设置离线消息补偿时间", @"设置全局免打扰时间"], @"时间设置", nil];
+  @[RCDLocalizedString(@"show_ID")
+, RCDLocalizedString(@"show_online_status")
+], RCDLocalizedString(@"show_setting")
+,
+  @[RCDLocalizedString(@"force_crash")
+, RCDLocalizedString(@"send_log")
+, RCDLocalizedString(@"Joining_the_chat_room_failed_to_stay_in_the_session_interface")
+], RCDLocalizedString(@"custom_setting")
+,
+  @[RCDLocalizedString(@"Set_offline_message_compensation_time")
+, RCDLocalizedString(@"Set_global_DND_time")
+], RCDLocalizedString(@"time_setting")
+, nil];
 }
 
 #pragma mark UI setting
@@ -263,7 +278,8 @@
  */
 - (void)pushToDebugVC {
     RCDDebugViewController *vc = [[RCDDebugViewController alloc] init];
-    vc.title = @"设置离线消息补偿时间";
+    vc.title = RCDLocalizedString(@"Set_offline_message_compensation_time")
+;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

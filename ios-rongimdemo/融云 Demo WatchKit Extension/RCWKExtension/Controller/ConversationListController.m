@@ -77,7 +77,7 @@
     [super awakeWithContext:context];
     
     // Configure interface objects here.
-    [self setTitle:@"会话"];
+    [self setTitle:RCDLocalizedString(@"conversation")];
 }
 
 - (void)willActivate {
@@ -201,16 +201,19 @@
             RCTextMessage *textMsg = (RCTextMessage *)conversation.lastestMessage;
             [row.lastMsg setText:textMsg.content];
         } else if ([conversation.lastestMessage isKindOfClass:[RCImageMessage class]]) {
-            [row.lastMsg setText:@"[图片]"];
+            [row.lastMsg setText:RCDLocalizedString(@"picture")
+];
         } else if ([conversation.lastestMessage isKindOfClass:[RCVoiceMessage class]]) {
-            [row.lastMsg setText:@"[语音]"];
+            [row.lastMsg setText:RCDLocalizedString(@"voice")
+];
         } else if ([conversation.lastestMessage isKindOfClass:[RCLocationMessage class]]) {
-            [row.lastMsg setText:@"[位置]"];
+            [row.lastMsg setText:RCDLocalizedString(@"location")
+];
         } else if ([conversation.lastestMessage isKindOfClass:[RCDiscussionNotificationMessage class]]) {
             NSString *notifyString = [RCWKUtility formatDiscussionNotificationMessageContent:(RCDiscussionNotificationMessage *)conversation.lastestMessage];
             [row.lastMsg setText:notifyString];
         } else {
-            [row.lastMsg setText:@"[不支持消息]"];
+            [row.lastMsg setText:RCDLocalizedString(@"no_support")];
         }
     }];
 }

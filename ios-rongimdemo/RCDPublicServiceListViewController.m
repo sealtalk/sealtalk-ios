@@ -26,6 +26,12 @@
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
     [rightBtn setTintColor:[UIColor whiteColor]];
     self.navigationItem.rightBarButtonItem = rightButton;
+    
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+}
+
+- (void)viewDidLayoutSubviews {
+    self.tableView.frame = self.view.frame;
 }
 
 - (void)didReceiveMemoryWarning {

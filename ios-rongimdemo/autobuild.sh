@@ -248,6 +248,25 @@ mkdir -p "$BIN_DIR"
 mkdir -p "$BUILD_DIR"
 xcodebuild clean -alltargets
 
+echo "Copy 3rd framework start."
+if [ -d "../ios-3rd-vendor/jrmf/AlipaySDK" ]; then
+rm -rf ./framework/AlipaySDK
+cp -rf ../ios-3rd-vendor/jrmf/AlipaySDK ./framework/
+fi
+if [ -d "../ios-3rd-vendor/jrmf/JrmfIMLib" ]; then
+rm -rf ./framework/JrmfIMLib
+cp -rf ../ios-3rd-vendor/jrmf/JrmfIMLib ./framework/
+fi
+if [ -d "../ios-3rd-vendor/ifly" ]; then
+rm -rf ./framework/ifly
+cp -rf ../ios-3rd-vendor/ifly ./framework/
+fi
+if [ -d "../ios-3rd-vendor/bqmm" ]; then
+rm -rf ./framework/bqmm
+cp -rf ../ios-3rd-vendor/bqmm ./framework/
+fi
+echo "Copy 3rd framework end."
+
 echo "***开始build iphoneos文件***"
   xcodebuild -scheme "${targetName}" archive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -configuration "${configuration}" APP_PROFILE="${BUILD_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}"
   xcodebuild -exportArchive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -exportOptionsPlist "archive.plist" -exportPath "./${BIN_DIR}"

@@ -39,6 +39,7 @@
     [self.navigationController.view setBackgroundColor:color];
     self.tableView.tableHeaderView = self.searchBar;
     self.tableView.tableFooterView = [UIView new];
+    self.searchBar.placeholder = RCDLocalizedString(@"add_friend_placeholder");
     self.searchDisplayController =
         [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
     [self setSearchDisplayController:self.searchDisplayController];
@@ -46,7 +47,8 @@
     [self.searchDisplayController setSearchResultsDataSource:self];
     [self.searchDisplayController setSearchResultsDelegate:self];
 
-    self.navigationItem.title = @"添加好友";
+    self.navigationItem.title = RCDLocalizedString(@"add_contacts")
+;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
     // initial data
@@ -134,9 +136,10 @@
 
     if ([userInfo.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:@"你不能添加自己到通讯录"
+                                                        message:RCDLocalizedString(@"can_not_add_self_to_address_book")
                                                        delegate:nil
-                                              cancelButtonTitle:@"确定"
+                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                               otherButtonTitles:nil];
         [alert show];
     } else if (user && tableView == self.searchDisplayController.searchResultsTableView) {
@@ -169,35 +172,68 @@
  *  @param searchText searchText description
  */
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(searchFriend:) withObject:searchText afterDelay:0.3];
+    
+}
+
+- (void)searchFriend:(NSString *)searchText{
+    NSLog(@"============searchFriend");
     [_searchResult removeAllObjects];
-    if ([searchText length] == 11) {
+    if ([searchText length] > 0) {
+        NSString *region, *phone;
+        if ([searchText containsString:@")"] && [searchText hasPrefix:@"("] && searchText.length > 2) {
+            NSArray *array = [[searchText stringByReplacingOccurrencesOfString:@"(" withString:@""] componentsSeparatedByString:@")"];
+            if (array.count == 2) {
+                region = array[0];
+                phone = array[1];
+            }else{
+                region = @"86";
+                phone = searchText;
+            }
+        }else if([searchText hasPrefix:@"（"] && [searchText containsString:@"）"] && searchText.length > 2){
+            NSArray *array = [[searchText stringByReplacingOccurrencesOfString:@"（" withString:@""] componentsSeparatedByString:@"）"];
+            if (array.count == 2) {
+                region = array[0];
+                phone = array[1];
+            }else{
+                region = @"86";
+                phone = searchText;
+            }
+        } else{
+            region = @"86";
+            phone = searchText;
+        }
+        if (phone.length == 0) {
+           [self.searchDisplayController.searchResultsTableView reloadData];
+        }
         [RCDHTTPTOOL
-            searchUserByPhone:searchText
-                     complete:^(NSMutableArray *result) {
-                         if (result) {
-                             for (RCDUserInfo *user in result) {
-                                 if ([user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-                                     [[RCDUserInfoManager shareInstance]
-                                         getUserInfo:user.userId
-                                          completion:^(RCUserInfo *user) {
-                                              [_searchResult addObject:user];
-                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                  [self.searchDisplayController.searchResultsTableView reloadData];
-                                              });
-                                          }];
-                                 } else {
-                                     [[RCDUserInfoManager shareInstance]
-                                         getFriendInfo:user.userId
-                                            completion:^(RCUserInfo *user) {
-                                                [_searchResult addObject:user];
-                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                    [self.searchDisplayController.searchResultsTableView reloadData];
-                                                });
-                                            }];
-                                 }
-                             }
-                         }
-                     }];
+         searchUserByPhone:phone region:region
+         complete:^(NSMutableArray *result) {
+             if (result) {
+                 for (RCDUserInfo *user in result) {
+                     if ([user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+                         [[RCDUserInfoManager shareInstance]
+                          getUserInfo:user.userId
+                          completion:^(RCUserInfo *user) {
+                              [_searchResult addObject:user];
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  [self.searchDisplayController.searchResultsTableView reloadData];
+                              });
+                          }];
+                     } else {
+                         [[RCDUserInfoManager shareInstance]
+                          getFriendInfo:user.userId
+                          completion:^(RCUserInfo *user) {
+                              [_searchResult addObject:user];
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  [self.searchDisplayController.searchResultsTableView reloadData];
+                              });
+                          }];
+                     }
+                 }
+             }
+         }];
     }
 }
 

@@ -213,6 +213,8 @@
 "bottom_result_view_choosed_person_subfix"="人";
 "message_destructed"="该消息已自动销毁，无法继续查看";
 "receive_new_message"="你收到一条新消息";
+"push_to_talk"="对讲机";
+"no_message"="暂无消息";
 "hold_to_talk_title"="按住 说话";
 "release_to_send_title"="松开 发送";
 "slide_up_to_cancel_title"="手指上滑，取消发送";

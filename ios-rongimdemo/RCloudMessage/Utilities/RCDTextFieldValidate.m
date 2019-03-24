@@ -13,11 +13,13 @@
 //验证手机号码
 + (BOOL)validateMobile:(NSString *)mobile {
     if (mobile.length == 0) {
-        NSString *message = @"手机号码不能为空！";
+        NSString *message = RCDLocalizedString(@"mobile_number_unempty")
+;
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                             message:message
                                                            delegate:nil
-                                                  cancelButtonTitle:@"确定"
+                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                   otherButtonTitles:nil, nil];
         [alertView show];
         return NO;
@@ -26,11 +28,12 @@
     NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9]))\\d{8}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", phoneRegex];
     if (![phoneTest evaluateWithObject:mobile]) {
-        NSString *message = @"手机号码格式不正确！";
+        NSString *message = RCDLocalizedString(@"mobile_number_unempty");
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                             message:message
                                                            delegate:nil
-                                                  cancelButtonTitle:@"确定"
+                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                   otherButtonTitles:nil, nil];
         [alertView show];
         return NO;
@@ -45,7 +48,8 @@
         //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
         //                                                            message:message
         //                                                           delegate:nil
-        //                                                  cancelButtonTitle:@"确定"
+        //                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
         //                                                  otherButtonTitles:nil,
         //                                                  nil];
         //        [alertView show];
@@ -62,7 +66,8 @@
         //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
         //                                                            message:@"邮箱格式错误！"
         //                                                           delegate:nil
-        //                                                  cancelButtonTitle:@"确定"
+        //                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
         //                                                  otherButtonTitles:nil,
         //                                                  nil];
         //        [alertView show];
@@ -74,22 +79,24 @@
 //验证密码
 + (BOOL)validatePassword:(NSString *)password {
     if (password.length == 0) {
-        NSString *message = @"密码不能为空！";
+        NSString *message = RCDLocalizedString(@"password_can_not_be_blank");
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                             message:message
                                                            delegate:nil
-                                                  cancelButtonTitle:@"确定"
+                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                   otherButtonTitles:nil, nil];
         [alertView show];
         return NO;
     }
     NSRange _range = [password rangeOfString:@" "];
     if (_range.location != NSNotFound) {
-        NSString *message = @"密码中不能有空格!";
+        NSString *message = RCDLocalizedString(@"There_can_be_no_spaces_in_the_password");
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                             message:message
                                                            delegate:nil
-                                                  cancelButtonTitle:@"确定"
+                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                   otherButtonTitles:nil, nil];
         [alertView show];
         return NO;
@@ -98,7 +105,8 @@
     //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
     //                                                            message:@"密码不足六位！"
     //                                                           delegate:nil
-    //                                                  cancelButtonTitle:@"确定"
+    //                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
     //                                                  otherButtonTitles:nil,
     //                                                  nil];
     //        [alertView show];

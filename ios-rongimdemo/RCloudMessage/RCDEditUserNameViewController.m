@@ -42,7 +42,7 @@
     self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     [self setNavigationButton];
     [self setSubViews];
-    self.navigationItem.title = @"昵称修改";
+    self.navigationItem.title = RCDLocalizedString(@"modify_nickname");
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(textFieldEditChanged:)
                                                  name:@"UITextFieldTextDidChangeNotification"
@@ -56,16 +56,17 @@
     __weak __typeof(self) weakSelf = self;
     NSString *errorMsg = @"";
     if (self.userName.text.length == 0) {
-        errorMsg = @"用户名不能为空!";
+        errorMsg = RCDLocalizedString(@"username_can_not_nil");
     } else if (self.userName.text.length > 32) {
-        errorMsg = @"用户名不能大于32位!";
+        errorMsg = RCDLocalizedString(@"Username_cannot_be_greater_than_32_digits");
     }
     if ([errorMsg length] > 0) {
         [hud hide:YES];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:errorMsg
                                                        delegate:self
-                                              cancelButtonTitle:@"确定"
+                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                               otherButtonTitles:nil, nil];
         [alert show];
     } else {
@@ -86,9 +87,10 @@
             failure:^(NSError *err) {
                 [hud hide:YES];
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:@"修改失败，请检查输入的名称"
+                                                                message:RCDLocalizedString(@"modify_nickname_fail")
                                                                delegate:self
-                                                      cancelButtonTitle:@"确定"
+                                                      cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                       otherButtonTitles:nil, nil];
                 [alert show];
             }];
@@ -100,10 +102,11 @@
 }
 
 - (void)setNavigationButton {
-    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self action:@selector(clickBackBtn)];
+    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = self.leftBtn;
 
-    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:@"保存"
+    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"save")
+
                                                          titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
                                                         buttonFrame:CGRectMake(0, 0, 50, 30)
                                                              target:self

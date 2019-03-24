@@ -53,7 +53,8 @@
     [super awakeWithContext:context];
     
     // Configure interface objects here.
-    [self setTitle:@"好友"];
+    [self setTitle:RCDLocalizedString(@"good_friend")
+];
 }
 
 - (void)willActivate {

@@ -29,6 +29,7 @@ NSString *const RCDUpdateNameTableViewCellIdentifier = @"RCDUpdateNameTableViewC
         self.tableView.backgroundColor = [UIColor colorWithRed:239 / 255.0 green:239 / 255.0 blue:244 / 255.0 alpha:1];
         [self.tableView registerClass:[UITableViewCell class]
                forCellReuseIdentifier:RCDUpdateNameTableViewCellIdentifier];
+        self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }
     return self;
 }
@@ -40,13 +41,15 @@ NSString *const RCDUpdateNameTableViewCellIdentifier = @"RCDUpdateNameTableViewC
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
 
     self.navigationItem.leftBarButtonItem =
-        [[UIBarButtonItem alloc] initWithTitle:@"取消"
+        [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"cancel")
+
                                          style:UIBarButtonItemStylePlain
                                         target:self
                                         action:@selector(backBarButtonItemClicked:)];
 
     self.navigationItem.rightBarButtonItem =
-        [[UIBarButtonItem alloc] initWithTitle:@"保存"
+        [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"save")
+
                                          style:UIBarButtonItemStylePlain
                                         target:self
                                         action:@selector(rightBarButtonItemClicked:)];
@@ -67,9 +70,10 @@ NSString *const RCDUpdateNameTableViewCellIdentifier = @"RCDUpdateNameTableViewC
     //保存讨论组名称
     if (self.nameTextField.text.length == 0) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:@"请输入讨论组名称!"
+                                                            message:RCDLocalizedString(@"please_type_discuss_group_name")
                                                            delegate:nil
-                                                  cancelButtonTitle:@"确定"
+                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                   otherButtonTitles:nil, nil];
         [alertView show];
         return;
@@ -78,9 +82,10 @@ NSString *const RCDUpdateNameTableViewCellIdentifier = @"RCDUpdateNameTableViewC
     NSRange range = [self.nameTextField.text rangeOfString:@" "];
     if (range.location != NSNotFound) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:@"讨论组名称不能包含空格!"
+                                                            message:RCDLocalizedString(@"discuss_group_can_not_space")
                                                            delegate:nil
-                                                  cancelButtonTitle:@"确定"
+                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                   otherButtonTitles:nil, nil];
         [alertView show];
         return;

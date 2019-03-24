@@ -7,7 +7,6 @@
 //
 
 #import "NotificationService.h"
-#import <RongIMKit/RongIMKit.h>
 
 @interface NotificationService ()
 

@@ -34,7 +34,7 @@
     //        [subView removeFromSuperview];
     //    }
 
-    NSString *content = @"我发起了位置共享";
+    NSString *content = RCDLocalizedString(@"i_start_location_share");
     [self.textLabel setText:content dataDetectorEnabled:NO];
     self.bubbleBackgroundView.userInteractionEnabled = YES;
     UILongPressGestureRecognizer *longPress =

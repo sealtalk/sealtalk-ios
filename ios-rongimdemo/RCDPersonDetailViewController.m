@@ -70,7 +70,8 @@
     self.conversationBtn = [[UIButton alloc] init];
     self.conversationBtn.backgroundColor = [UIColor colorWithHexString:@"0099ff" alpha:1.f];
     self.conversationBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.conversationBtn setTitle:@"发起会话" forState:UIControlStateNormal];
+    [self.conversationBtn setTitle:RCDLocalizedString(@"start_chat")
+ forState:UIControlStateNormal];
     [self.conversationBtn addTarget:self
                              action:@selector(btnConversation:)
                    forControlEvents:UIControlEventTouchUpInside];
@@ -79,7 +80,8 @@
 
     self.audioCallBtn = [[UIButton alloc] init];
     self.audioCallBtn.backgroundColor = [UIColor whiteColor];
-    [self.audioCallBtn setTitle:@"语音通话" forState:UIControlStateNormal];
+    [self.audioCallBtn setTitle:RCDLocalizedString(@"voice_call")
+ forState:UIControlStateNormal];
     //    [self.audioCallBtn setTintColor:[UIColor blackColor]];
     [self.audioCallBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.audioCallBtn addTarget:self action:@selector(btnVoIP:) forControlEvents:UIControlEventTouchUpInside];
@@ -88,7 +90,8 @@
 
     self.videoCallBtn = [[UIButton alloc] init];
     self.videoCallBtn.backgroundColor = [UIColor whiteColor];
-    [self.videoCallBtn setTitle:@"视频通话" forState:UIControlStateNormal];
+    [self.videoCallBtn setTitle:RCDLocalizedString(@"video_call")
+ forState:UIControlStateNormal];
     [self.videoCallBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.videoCallBtn addTarget:self action:@selector(btnVideoCall:) forControlEvents:UIControlEventTouchUpInside];
     self.videoCallBtn.translatesAutoresizingMaskIntoConstraints = NO;
@@ -153,8 +156,9 @@
 }
 
 - (void)setNavigationButtons {
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:@"返回" target:self action:@selector(clickBackBtn:)];
-    self.navigationItem.title = @"详细资料";
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn:)];
+    self.navigationItem.title = RCDLocalizedString(@"detailed_information")
+;
 }
 
 - (void)clickBackBtn:(id)sender {
@@ -214,16 +218,20 @@
     if (self.inBlackList) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
-                                                        cancelButtonTitle:@"取消"
+                                                        cancelButtonTitle:RCDLocalizedString(@"cancel")
+
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"取消黑名单", nil];
+                                                        otherButtonTitles:RCDLocalizedString(@"cancel_block")
+, nil];
         [actionSheet showInView:self.view];
     } else {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
-                                                        cancelButtonTitle:@"取消"
+                                                        cancelButtonTitle:RCDLocalizedString(@"cancel")
+
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"加入黑名单", nil];
+                                                        otherButtonTitles:RCDLocalizedString(@"add_to_blacklist")
+, nil];
         [actionSheet showInView:self.view];
     }
 }
@@ -242,7 +250,8 @@
         //黑名单
         __weak RCDPersonDetailViewController *weakSelf = self;
         if (!self.inBlackList) {
-            hud.labelText = @"正在加入黑名单";
+            hud.labelText = RCDLocalizedString(@"adding_to_blacklist")
+;
             [[RCIMClient sharedRCIMClient] addToBlacklist:self.friendInfo.userId
                 success:^{
                     weakSelf.inBlackList = YES;
@@ -256,9 +265,11 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [hud hide:YES];
                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                            message:@"加入黑名单失败"
+                                                                            message:RCDLocalizedString(@"fail_to_add_to_blacklist")
+
                                                                            delegate:nil
-                                                                  cancelButtonTitle:@"确定"
+                                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                                   otherButtonTitles:nil, nil];
                         [alertView show];
                     });
@@ -266,7 +277,8 @@
                     weakSelf.inBlackList = NO;
                 }];
         } else {
-            hud.labelText = @"正在从黑名单移除";
+            hud.labelText = RCDLocalizedString(@"removing_from_blacklist")
+;
             [[RCIMClient sharedRCIMClient] removeFromBlacklist:self.friendInfo.userId
                 success:^{
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -280,9 +292,11 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [hud hide:YES];
                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                            message:@"从黑名单移除失败"
+                                                                            message:RCDLocalizedString(@"fail_to_remove_from_blacklist")
+
                                                                            delegate:nil
-                                                                  cancelButtonTitle:@"确定"
+                                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+
                                                                   otherButtonTitles:nil, nil];
                         [alertView show];
                     });
@@ -349,7 +363,8 @@
     remarkLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1.f];
     remarkLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [remarksView addSubview:remarkLabel];
-    remarkLabel.text = @"设置备注";
+    remarkLabel.text = RCDLocalizedString(@"set_remarks")
+;
 
     UIImageView *rightArrow = [[UIImageView alloc] init];
     rightArrow.translatesAutoresizingMaskIntoConstraints = NO;
@@ -533,7 +548,7 @@
         self.displayNameLabel.text = self.friendInfo.displayName;
         [self.infoView addSubview:self.displayNameLabel];
 
-        self.lblName.text = [NSString stringWithFormat:@"昵称: %@", self.friendInfo.name];
+        self.lblName.text = [NSString stringWithFormat:RCDLocalizedString(@"someone_nickname"), self.friendInfo.name];
         self.lblName.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
         self.lblName.font = [UIFont systemFontOfSize:14.f];
 
@@ -625,7 +640,7 @@
                                          [[NSMutableAttributedString alloc] initWithString:self.phoneNumberLabel.text];
                                      [attributedStr addAttribute:NSForegroundColorAttributeName
                                                            value:[UIColor colorWithHexString:@"0099ff" alpha:1.f]
-                                                           range:NSMakeRange(5, 11)];
+                                                           range:NSMakeRange(5, self.phoneNumberLabel.text.length-5)];
                                      self.phoneNumberLabel.attributedText = attributedStr;
                                      self.phonenumber =
                                          [NSString stringWithFormat:@"%@", [infoDic objectForKey:@"phone"]];

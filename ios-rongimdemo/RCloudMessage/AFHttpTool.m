@@ -141,7 +141,7 @@
     NSDictionary *params = @{@"region" : region, @"phone" : phoneNumber};
 
     [AFHttpTool requestWihtMethod:RequestMethodTypePost
-                              url:@"user/send_code"
+                              url:@"user/send_code_yp"
                            params:params
                           success:success
                           failure:failure];
@@ -156,7 +156,7 @@
     NSDictionary *params = @{@"region" : region, @"phone" : phoneNumber, @"code" : verificationCode};
 
     [AFHttpTool requestWihtMethod:RequestMethodTypePost
-                              url:@"user/verify_code"
+                              url:@"user/verify_code_yp"
                            params:params
                           success:success
                           failure:failure];
@@ -234,6 +234,14 @@
                           failure:failure];
 }
 
++ (void)getRegionlist:(void (^)(id response))success failure:(void (^)(NSError *))failure{
+    [AFHttpTool requestWihtMethod:RequestMethodTypeGet
+                              url:@"user/regionlist"
+                           params:nil
+                          success:success
+                          failure:failure];
+}
+
 // get user info
 + (void)getUserInfo:(NSString *)userId success:(void (^)(id response))success failure:(void (^)(NSError *err))failure {
     [AFHttpTool requestWihtMethod:RequestMethodTypeGet
@@ -270,10 +278,11 @@
 
 // find user by phone
 + (void)findUserByPhone:(NSString *)Phone
+                 region:(NSString *)region
                 success:(void (^)(id response))success
                 failure:(void (^)(NSError *err))failure {
     [AFHttpTool requestWihtMethod:RequestMethodTypeGet
-                              url:[NSString stringWithFormat:@"user/find/86/%@", Phone]
+                              url:[NSString stringWithFormat:@"user/find/%@/%@", region,Phone]
                            params:nil
                           success:success
                           failure:failure];
