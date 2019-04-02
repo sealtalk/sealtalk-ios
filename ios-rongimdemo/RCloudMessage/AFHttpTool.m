@@ -265,6 +265,11 @@
 
 // invite user
 + (void)inviteUser:(NSString *)userId success:(void (^)(id response))success failure:(void (^)(NSError *err))failure {
+    if (!userId && failure) {
+        NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:-1 userInfo:@{@"error": [NSString stringWithFormat:@"invalid parameter, userId is nil."]}];
+        failure(error);
+        return;
+    }
     NSDictionary *params = @{
         @"friendId" : userId,
         @"message" : [NSString stringWithFormat:@"我是%@", [RCIM sharedRCIM].currentUserInfo.name]

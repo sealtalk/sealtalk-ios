@@ -52,5 +52,7 @@
 
 + (NSString *)getUniqueFileName:(NSString *)baseFileName;
 
++ (NSString *)getTypeName:(NSString *)fileName;
+
 @end
 #endif

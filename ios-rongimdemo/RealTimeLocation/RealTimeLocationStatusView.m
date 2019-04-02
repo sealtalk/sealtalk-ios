@@ -7,6 +7,7 @@
 //
 
 #import "RealTimeLocationStatusView.h"
+#import "RCDCommonDefine.h"
 
 @interface RealTimeLocationStatusView ()
 @property(nonatomic) BOOL isExpended;
@@ -122,32 +123,35 @@
 }
 
 - (void)layoutSubviews {
-    if (!self.isHidden) {
+    [super layoutSubviews];
+    
+    // iPad 位置共享提示横竖屏适配
+    if (RCDIsIPad && [self.delegate getStatus] != RC_REAL_TIME_LOCATION_STATUS_IDLE) {
         CGRect statusFrame = self.statusLabel.frame;
         statusFrame = CGRectMake(30, 0, self.frame.size.width - 60, 40);
         self.statusLabel.frame = statusFrame;
-        
+
         CGRect locationFrame = self.locationIcon.frame;
         locationFrame = CGRectMake(10, 13, 10, 14);
         self.locationIcon.frame = locationFrame;
-        
+
         CGRect moreIconFrame = self.moreIcon.frame;
         moreIconFrame = CGRectMake(self.frame.size.width - 20, 13, 10, 14);
         self.moreIcon.frame = moreIconFrame;
-        
+
         CGRect expendLabelFrame = self.expendLabel.frame;
         expendLabelFrame = CGRectMake(30, 0, self.frame.size.width - 48, 60);
         self.expendLabel.frame = expendLabelFrame;
-        
+
         CGRect cancelFrame = self.cancelButton.frame;
-        cancelFrame = CGRectMake(79, 52, 50, 25);
+        cancelFrame = CGRectMake(79, 52, 60, 25);
         self.cancelButton.frame = cancelFrame;
-        
+
         CGRect joinFrame = self.joinButton.frame;
-        joinFrame = CGRectMake(self.frame.size.width - 50 - 79, 52, 50, 25);
+        joinFrame = CGRectMake(self.frame.size.width - 60 - 79, 52, 60, 25);
         self.joinButton.frame = joinFrame;
+        [self setIsExpended:_isExpended];
     }
-    [self setIsExpended:self.isExpended];
 }
 
 - (void)showExtendedView {
@@ -193,7 +197,7 @@
 }
 - (UIButton *)cancelButton {
     if (!_cancelButton) {
-        _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(79, 52, 50, 25)];
+        _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(79, 52, 60, 25)];
         [_cancelButton setTitle:RCDLocalizedString(@"cancel")
  forState:UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"location_share_button"] forState:UIControlStateNormal];
@@ -205,8 +209,8 @@
 }
 - (UIButton *)joinButton {
     if (!_joinButton) {
-        _joinButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 50 - 79, 52, 50, 25)];
-        [_joinButton setTitle:@"加入" forState:UIControlStateNormal];
+        _joinButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 60 - 79, 52, 60, 25)];
+        [_joinButton setTitle:RCDLocalizedString(@"join") forState:UIControlStateNormal];
         [_joinButton setBackgroundImage:[UIImage imageNamed:@"location_share_button"] forState:UIControlStateNormal];
         [_joinButton setBackgroundImage:[UIImage imageNamed:@"location_share_button_hover"]
                                forState:UIControlStateHighlighted];

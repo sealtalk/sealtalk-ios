@@ -180,6 +180,11 @@
 "GroupQuit"="%@退出了群组";
 "GroupChanged"="%@修改群名为“%@”";
 "GroupJoin"="%@加入了群组";
+"GroupHaveCreated"="%@创建了群组";
+"GroupHaveInvited"="%@邀请%@加入了群组";
+"GroupHaveRemoved"="%@将%@移出了群组";
+"GroupHaveDismiss"="%@解散了群组";
+"GroupHaveQuit"="%@退出了群组";
 "GroupEtc"="等";
 "GroupAnnouncementUpdated"="%@更新了群公告";
 "ImageLoadFailed"="图片加载失败";

@@ -128,7 +128,6 @@
 		983B73A620A598180059B047 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 983B739020A598170059B047 /* zip.c */; };
 		983B73A720A598180059B047 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 983B739320A598170059B047 /* SSZipArchive.m */; };
 		986A192A1D751FFC00FFEA2F /* RCDBaseSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 986A19291D751FFC00FFEA2F /* RCDBaseSettingTableViewCell.m */; };
-		9870724D20A17967008EE653 /* Blink.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9870724C20A17967008EE653 /* Blink.framework */; };
 		9870724E20A17AB9008EE653 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C331091A0C728D00E31B9A /* OpenGLES.framework */; };
 		9870725020A17AC3008EE653 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9870724F20A17AC2008EE653 /* GLKit.framework */; };
 		987653631D796C5B008A6BF0 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 987653621D796C5B008A6BF0 /* Launch Screen.storyboard */; };
@@ -231,13 +230,13 @@
 		A6B1D8FB1B201B3600AD32EC /* RCWKUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B1D8F61B201B3600AD32EC /* RCWKUtility.m */; };
 		A6B1D9051B204E6600AD32EC /* RongIMLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6BD04171B1EEA6B00ACAF17 /* RongIMLib.framework */; };
 		A6BD04181B1EEA6B00ACAF17 /* RongIMLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6BD04171B1EEA6B00ACAF17 /* RongIMLib.framework */; };
-		A6BD6E2220A5AD880063F51D /* Bailingquic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6BD6E2120A5AD640063F51D /* Bailingquic.framework */; };
 		A6CF8A351BD4CB6E00F3EA1A /* RCConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A6CF8A341BD4CB6E00F3EA1A /* RCConfig.plist */; };
 		A6EFAB9F1BB0ED94007E9D67 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFAB9E1BB0ED94007E9D67 /* libz.tbd */; };
 		A6EFABA11BB0EDAC007E9D67 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */; };
 		A6EFABA51BB0EDE1007E9D67 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA41BB0EDE1007E9D67 /* libsqlite3.tbd */; };
 		A6EFABA71BB0EDFB007E9D67 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA61BB0EDFB007E9D67 /* libc++.tbd */; };
 		B2A68D7A212FDBA9006FADEC /* RongSight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2A68D79212FDBA9006FADEC /* RongSight.framework */; };
+		B2D23B04224C7A97008D705A /* RongRTCLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2D23B03224C7A97008D705A /* RongRTCLib.framework */; };
 		E412BD1E1ADE19A4000DCA7A /* RCDChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E412BD1D1ADE19A4000DCA7A /* RCDChatListCell.m */; };
 		E412BD241ADE6BFB000DCA7A /* RCDHttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E412BD231ADE6BFB000DCA7A /* RCDHttpTool.m */; };
 		E412BD271ADFA2A0000DCA7A /* RCDAddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E412BD261ADFA2A0000DCA7A /* RCDAddFriendViewController.m */; };
@@ -328,8 +327,6 @@
 		E4E939CC1AD65E1E001E0AC6 /* UITextFiled+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939C91AD65E1E001E0AC6 /* UITextFiled+Shake.m */; };
 		E4E939D21AD6805E001E0AC6 /* RCDPersonDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E939D11AD6805E001E0AC6 /* RCDPersonDetailViewController.m */; };
 		E4FCD7C41AD69DFB00915650 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FCD7C31AD69DFB00915650 /* ImageIO.framework */; };
-		E84C4F9A215A5BBE004A469D /* Bailingquic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E84C4F98215A5BBE004A469D /* Bailingquic.framework */; };
-		E84C4F9B215A5BBE004A469D /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E84C4F99215A5BBE004A469D /* GPUImage.framework */; };
 		F1D49DB621ABE4A70047381F /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D49DB521ABE4A70047381F /* NotificationService.m */; };
 		F1D49DBA21ABE4A70047381F /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F1D49DB221ABE4A70047381F /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F1E7784C21A622B00005C37D /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E7784B21A622B00005C37D /* UserNotifications.framework */; };
@@ -606,7 +603,6 @@
 		983B739520A598170059B047 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
 		986A19281D751FFC00FFEA2F /* RCDBaseSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDBaseSettingTableViewCell.h; sourceTree = SOURCE_ROOT; };
 		986A19291D751FFC00FFEA2F /* RCDBaseSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDBaseSettingTableViewCell.m; sourceTree = SOURCE_ROOT; };
-		9870724C20A17967008EE653 /* Blink.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Blink.framework; path = framework/Blink.framework; sourceTree = SOURCE_ROOT; };
 		9870724F20A17AC2008EE653 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		987653621D796C5B008A6BF0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = SOURCE_ROOT; };
 		9891E8DB1D8263F700E874AB /* RCDMeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDMeCell.h; sourceTree = SOURCE_ROOT; };
@@ -799,7 +795,6 @@
 		A6BD040F1B1E938000ACAF17 /* 融云 Demo WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "融云 Demo WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		A6BD04101B1E941D00ACAF17 /* RCloudMessage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = RCloudMessage.entitlements; path = RCloudMessage/RCloudMessage.entitlements; sourceTree = SOURCE_ROOT; };
 		A6BD04171B1EEA6B00ACAF17 /* RongIMLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongIMLib.framework; path = framework/RongIMLib.framework; sourceTree = SOURCE_ROOT; };
-		A6BD6E2120A5AD640063F51D /* Bailingquic.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bailingquic.framework; path = framework/Bailingquic.framework; sourceTree = SOURCE_ROOT; };
 		A6CF8A341BD4CB6E00F3EA1A /* RCConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = RCConfig.plist; path = framework/RCConfig.plist; sourceTree = SOURCE_ROOT; };
 		A6EFAB9E1BB0ED94007E9D67 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
@@ -807,6 +802,7 @@
 		A6EFABA41BB0EDE1007E9D67 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		A6EFABA61BB0EDFB007E9D67 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		B2A68D79212FDBA9006FADEC /* RongSight.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RongSight.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2D23B03224C7A97008D705A /* RongRTCLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongRTCLib.framework; path = framework/RongRTCLib.framework; sourceTree = SOURCE_ROOT; };
 		E412BD1C1ADE19A4000DCA7A /* RCDChatListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDChatListCell.h; sourceTree = SOURCE_ROOT; };
 		E412BD1D1ADE19A4000DCA7A /* RCDChatListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDChatListCell.m; sourceTree = SOURCE_ROOT; };
 		E412BD221ADE6BFB000DCA7A /* RCDHttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDHttpTool.h; sourceTree = SOURCE_ROOT; };
@@ -985,8 +981,6 @@
 		E4E939D01AD6805E001E0AC6 /* RCDPersonDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPersonDetailViewController.h; sourceTree = SOURCE_ROOT; };
 		E4E939D11AD6805E001E0AC6 /* RCDPersonDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPersonDetailViewController.m; sourceTree = SOURCE_ROOT; };
 		E4FCD7C31AD69DFB00915650 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		E84C4F98215A5BBE004A469D /* Bailingquic.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bailingquic.framework; path = Blink/Bailingquic.framework; sourceTree = SOURCE_ROOT; };
-		E84C4F99215A5BBE004A469D /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GPUImage.framework; path = Blink/GPUImage.framework; sourceTree = SOURCE_ROOT; };
 		F1D49DB221ABE4A70047381F /* ServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1D49DB421ABE4A70047381F /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
 		F1D49DB521ABE4A70047381F /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
@@ -1038,24 +1032,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2D23B04224C7A97008D705A /* RongRTCLib.framework in Frameworks */,
 				3B7D8F2822326670009E1417 /* Security.framework in Frameworks */,
 				3B7D8F2322326312009E1417 /* Bugly.framework in Frameworks */,
 				F1E7784C21A622B00005C37D /* UserNotifications.framework in Frameworks */,
 				B2A68D7A212FDBA9006FADEC /* RongSight.framework in Frameworks */,
 				1D3A232E212D540A009514F1 /* RongSticker.framework in Frameworks */,
-				A6BD6E2220A5AD880063F51D /* Bailingquic.framework in Frameworks */,
 				3B7D8F2622326634009E1417 /* Bugly.framework in Frameworks */,
 				1D5551FB223A30F700887BD0 /* libopencore-amrwb.a in Frameworks */,
 				9870725020A17AC3008EE653 /* GLKit.framework in Frameworks */,
 				9870724E20A17AB9008EE653 /* OpenGLES.framework in Frameworks */,
 				771BB16221B155B40066AE4A /* JYangToolKit.framework in Frameworks */,
-				9870724D20A17967008EE653 /* Blink.framework in Frameworks */,
 				2724CCD71FF34411006FFC86 /* Contacts.framework in Frameworks */,
 				6E1C98201F39C90C008F96D8 /* libresolv.tbd in Frameworks */,
 				E4C4E7E41A0A2F2800140067 /* CoreGraphics.framework in Frameworks */,
 				27AADC281DDC4DD800E1AE31 /* Foundation.framework in Frameworks */,
 				E4C4E7E61A0A2F2E00140067 /* UIKit.framework in Frameworks */,
-				E84C4F9B215A5BBE004A469D /* GPUImage.framework in Frameworks */,
 				27AADC271DDC4DCE00E1AE31 /* QuartzCore.framework in Frameworks */,
 				E4C3310E1A0C72A000E31B9A /* SystemConfiguration.framework in Frameworks */,
 				E4C330F41A0C722300E31B9A /* AudioToolbox.framework in Frameworks */,
@@ -1079,7 +1071,6 @@
 				A6EFABA11BB0EDAC007E9D67 /* libxml2.tbd in Frameworks */,
 				2E29FF3D1DC1BE8400AF2DF0 /* AlipaySDK.framework in Frameworks */,
 				F821B7F51BE75BFD00F0D14C /* libMobClickLibrary.a in Frameworks */,
-				E84C4F9A215A5BBE004A469D /* Bailingquic.framework in Frameworks */,
 				8CCBC9871AEDDF8600BA1135 /* AssetsLibrary.framework in Frameworks */,
 				E4FCD7C41AD69DFB00915650 /* ImageIO.framework in Frameworks */,
 				27BCC76E1EA45EA000198BD8 /* RongContactCard.framework in Frameworks */,
@@ -1965,20 +1956,17 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B2D23B03224C7A97008D705A /* RongRTCLib.framework */,
 				1D5551F9223A30F700887BD0 /* libopencore-amrwb.a */,
 				1D5551FA223A30F700887BD0 /* libvo-amrwbenc.a */,
 				3B7D8F2722326670009E1417 /* Security.framework */,
 				3B7D8F2222326311009E1417 /* Bugly.framework */,
 				F1E7784B21A622B00005C37D /* UserNotifications.framework */,
-				E84C4F98215A5BBE004A469D /* Bailingquic.framework */,
-				E84C4F99215A5BBE004A469D /* GPUImage.framework */,
 				B2A68D79212FDBA9006FADEC /* RongSight.framework */,
 				1D3A2326212D5409009514F1 /* RCSticker */,
 				9870724F20A17AC2008EE653 /* GLKit.framework */,
-				9870724C20A17967008EE653 /* Blink.framework */,
 				2724CCD61FF34411006FFC86 /* Contacts.framework */,
 				6E1C981F1F39C90C008F96D8 /* libresolv.tbd */,
-				A6BD6E2120A5AD640063F51D /* Bailingquic.framework */,
 				27BCC76D1EA45EA000198BD8 /* RongContactCard.framework */,
 				27579B631E10D28700A30A62 /* PTT */,
 				F894EC361DF7E3A200EFD084 /* BQMM */,
@@ -2613,7 +2601,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh xcodebuild.sh";
+			shellScript = "sh xcodebuild.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

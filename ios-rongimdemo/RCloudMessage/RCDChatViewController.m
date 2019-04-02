@@ -266,7 +266,9 @@ NSMutableDictionary *userInputStatus;
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    self.realTimeLocationStatusView.frame = CGRectMake(0, 62, self.view.frame.size.width, 0);
+    CGRect frame = self.realTimeLocationStatusView.frame;
+    frame.size.width = self.view.bounds.size.width;
+    self.realTimeLocationStatusView.frame = frame;
 }
 
 - (void)willMoveToParentViewController:(UIViewController*)parent{

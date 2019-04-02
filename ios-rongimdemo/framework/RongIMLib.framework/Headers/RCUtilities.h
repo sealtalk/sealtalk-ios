@@ -263,5 +263,11 @@
  */
 + (BOOL)isOpaque:(UIImage *)image;
 
+/**
+ URL 编码
+ 
+ @return 编码后的 URL
+ */
++ (NSString *)encodeURL:(NSString *)url;
 @end
 #endif

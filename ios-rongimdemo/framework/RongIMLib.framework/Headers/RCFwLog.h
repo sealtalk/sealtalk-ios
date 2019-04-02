@@ -39,7 +39,8 @@ typedef NS_OPTIONS(NSUInteger, LogType) {
     RC_Type_MED = 1 << 8,  // Media file.
     RC_Type_LOG = 1 << 9,
     RC_Type_DEB = 1 << 10, // Debug log.
-    RC_Type_CRS = 1 << 11  // Crash stack.
+    RC_Type_CRS = 1 << 11, // Crash stack.
+    RC_Type_RTC = 1 << 12  // RTC.
 };
 
 @interface RCFwLog : NSObject

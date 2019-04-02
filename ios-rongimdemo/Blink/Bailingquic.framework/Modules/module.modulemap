@@ -1,8 +1,0 @@
-framework module "Bailingquic" {
-	header "ref.h"
-    header "Bailingquic.objc.h"
-    header "Universe.objc.h"
-    header "Bailingquic.h"
-
-    export *
-}

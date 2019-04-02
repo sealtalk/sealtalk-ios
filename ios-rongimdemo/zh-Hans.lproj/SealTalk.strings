@@ -9,6 +9,7 @@
 "add_friend_placeholder"="搜索好友，如(86)137XXXXX";
 "create_discussion_group"="创建讨论组";
 "cancel"="取消";
+"join"="加入";
 "back"="返回";
 "mention_all"="@所有人";
 "group_information_x"="群组信息(%@)";
@@ -55,6 +56,7 @@
 "customer_service_xn"="小能客服";
 "customer_service_jx"="佳信";
 "group"="群组";
+"groups"="群组";
 "nickname"="昵 称";
 "take_picture"="拍照";
 "my_album"="我的相册";

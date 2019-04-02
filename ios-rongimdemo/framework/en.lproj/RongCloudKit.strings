@@ -86,7 +86,7 @@
 "VoIP_SessionIDWrong"="Session ID is wrong";
 "Yesterday"="Yesterday";
 "SearchPublicService"="Search Service Account";
-"PublicService"="Service Account";
+"PublicService"="Public Accounts";
 "NOT_IN_DISCUSSION"="You are not in current discussion";
 "NOT_IN_GROUP"="You are not in current group";
 "FORBIDDEN_IN_GROUP"="You are banned to send message in current group.";
@@ -179,6 +179,11 @@
 "GroupByRemoved"="%@ has removed by %@ from the group";
 "GroupDismiss"="%@ has dismissed the group";
 "GroupQuit"="%@ has quit the group";
+"GroupHaveCreated"="%@ have created the group";
+"GroupHaveInvited"="%@ have invited %@ to join the group";
+"GroupHaveRemoved"="%@ have removed %@ from the group ";
+"GroupHaveDismiss"="%@ have dismissed the group";
+"GroupHaveQuit"="%@ have quit the group";
 "GroupChanged"="%@ changed the group name to \"%@\"";
 "GroupJoin"="%@ joined the group";
 "GroupEtc"="and etc.";
@@ -208,7 +213,7 @@
 "RecommendedToYou"="recommended %@ to you.";
 "Person"="Member";
 "SelectContact"="Select Contacts";
-"MessageTapMore"="More...";
+"MessageTapMore"="Select...";
 
 "bottom_result_view_choosed_person_prefix"="Selected";
 "bottom_result_view_choosed_person_subfix"="member(s)";

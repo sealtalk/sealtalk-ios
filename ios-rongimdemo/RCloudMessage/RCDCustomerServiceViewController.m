@@ -54,6 +54,10 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+
+    if (![[UIDevice currentDevice].model containsString:@"iPad"]) {
+        return;
+    }
     
     CGRect collectionViewFrame = self.conversationMessageCollectionView.frame;
     CGRect frame = CGRectMake(0, collectionViewFrame.origin.y, self.view.frame.size.width, 44);

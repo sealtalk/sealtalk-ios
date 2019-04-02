@@ -1,0 +1,6 @@
+framework module RongRTCLib {
+  umbrella header "RongRTCLib.h"
+
+  export *
+  module * { export * }
+}
