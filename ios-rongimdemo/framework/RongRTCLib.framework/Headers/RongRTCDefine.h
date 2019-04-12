@@ -103,27 +103,31 @@ typedef enum : NSUInteger {
     RongRTCStreamStateEnable,
 } RongRTCStreamState;
 
-/**
- 分辨率
- */
 typedef NS_ENUM(NSUInteger, RongRTCVideoSizePreset) {
     /**
-     分辨率 192X144
+     分辨率 256X144
      */
-    RongRTCVideoSizePreset192x144        = 1,
+    RongRTCVideoSizePreset256x144        = 1,
     /**
-     分辨率 352X288
+     分辨率 320X240
      */
-    RongRTCVideoSizePreset352x288,
+    RongRTCVideoSizePreset320x240,
     /**
      分辨率 480X360
      */
     RongRTCVideoSizePreset480x360,
     /**
+     分辨率 640X360
+     */
+    RongRTCVideoSizePreset640x360,
+    /**
      分辨率 640X480
      */
     RongRTCVideoSizePreset640x480,
-    
+    /**
+     分辨率 720X480
+     */
+    RongRTCVideoSizePreset720x480,
     /**
      分辨率 1280X720
      */

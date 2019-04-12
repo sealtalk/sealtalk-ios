@@ -3,7 +3,7 @@
 //  RongRTCLib
 //
 //  Created by zhaobingdong on 2019/1/8.
-//  Copyright © 2019年 Bailing Cloud. All rights reserved.
+//  Copyright © 2019年 RongCloud. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

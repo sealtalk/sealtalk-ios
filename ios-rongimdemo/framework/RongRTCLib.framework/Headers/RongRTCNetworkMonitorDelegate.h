@@ -3,7 +3,7 @@
 //  RongRTCLib
 //
 //  Created by birney on 2019/2/28.
-//  Copyright © 2019年 Bailing Cloud. All rights reserved.
+//  Copyright © 2019年 RongCloud. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -51,7 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
              bitRate:(float)rate
             packLoss:(float)loss;
 
-
 /**
  音视频流传输数据信息
  
@@ -60,6 +59,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)onAudioVideoTransfer:(NSArray *)memberArray
                     transfer:(NSArray *)localArray;
+
+/**
+ 音频流音量数据信息
+ 
+ @param levelArray 本地+远端用户音量数据
+ */
+- (void)onUserAudioLevel:(NSArray *)levelArray;
 
 @end
 

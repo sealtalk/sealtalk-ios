@@ -144,8 +144,8 @@
 "VoIPVideoCallMaxNumSelectMember"="Select up to @ members for a video call";
 "VoIPCallEnd"="Call ended";
 "VoIPAudioCallCamera"="Camera";
-"VoIPVideoCallCloseCamera"="Turn-off the camera";
-"VoIPVideoCallOpenCamera"="Turn-on the camera";
+"VoIPVideoCallCloseCamera"="Turn off camera";
+"VoIPVideoCallOpenCamera"="Turn on camera";
 "VoIPVideoCallTurnToAudioCall"="Voice Call";
 "VoIPCallHangup"="Hang Up";
 "VoIPCallAccept"="Accept";
@@ -214,7 +214,6 @@
 "Person"="Member";
 "SelectContact"="Select Contacts";
 "MessageTapMore"="Select...";
-
 "bottom_result_view_choosed_person_prefix"="Selected";
 "bottom_result_view_choosed_person_subfix"="member(s)";
 "message_destructed"="The message cannot be viewed due to automatically destroyed";

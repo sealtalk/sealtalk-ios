@@ -88,7 +88,7 @@
     self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"settings") target:self action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = self.leftBtn;
 
-    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"done")
+    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"save")
 
                                                          titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
                                                         buttonFrame:CGRectMake(0, 0, 50, 30)

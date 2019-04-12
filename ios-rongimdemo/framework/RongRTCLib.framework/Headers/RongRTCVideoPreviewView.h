@@ -3,7 +3,7 @@
 //  RongRTCLib
 //
 //  Created by zhaobingdong on 2018/12/17.
-//  Copyright © 2018年 Bailing Cloud. All rights reserved.
+//  Copyright © 2018年 RongCloud. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

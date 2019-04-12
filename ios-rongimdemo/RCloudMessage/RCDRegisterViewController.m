@@ -26,12 +26,10 @@
 @property(unsafe_unretained, nonatomic) IBOutlet UITextField *tfNickName;
 @property(unsafe_unretained, nonatomic) IBOutlet UITextField *tfPassword;
 @property(unsafe_unretained, nonatomic) IBOutlet UITextField *tfRePassword;
-@property(nonatomic, strong) UIView *headBackground;
 @property(nonatomic, strong) UIImageView *rongLogo;
 @property(nonatomic, strong) UIView *inputBackground;
 @property(weak, nonatomic) IBOutlet UITextField *tfMobile;
 @property(retain, nonatomic) IBOutlet RCAnimatedImagesView *animatedImagesView;
-@property(nonatomic, strong) UIView *statusBarView;
 @property(nonatomic, strong) UILabel *licenseLb;
 @property(nonatomic, strong) UILabel *errorMsgLb;
 @property(strong, nonatomic) IBOutlet UILabel *countDownLable;
@@ -61,22 +59,6 @@
     [self.view addSubview:self.animatedImagesView];
     self.animatedImagesView.delegate = self;
 
-    _headBackground = [[UIView alloc] initWithFrame:CGRectMake(0, -100, self.view.bounds.size.width, 50)];
-    _headBackground.userInteractionEnabled = YES;
-    _headBackground.backgroundColor = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0.2];
-    [self.view addSubview:_headBackground];
-
-    UIButton *registerHeadButton =
-        [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 90, 0, 80, 50)];
-    [registerHeadButton setTitle:RCDLocalizedString(@"Login") forState:UIControlStateNormal];
-    [registerHeadButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
-                             forState:UIControlStateNormal];
-    registerHeadButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    [registerHeadButton.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
-    [registerHeadButton addTarget:self action:@selector(loginPageEvent) forControlEvents:UIControlEventTouchUpInside];
-
-    [_headBackground addSubview:registerHeadButton];
-    
     UIButton *switchLanguage = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 80,30, 70, 40)];
     [switchLanguage setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
     switchLanguage.titleLabel.font = [UIFont systemFontOfSize:16.];
@@ -88,27 +70,6 @@
     }
     [switchLanguage addTarget:self action:@selector(didTapSwitchLanguage:) forControlEvents:(UIControlEventTouchUpInside)];
     [self.animatedImagesView addSubview:switchLanguage];
-    
-    UIImage *rongLogoSmallImage = [UIImage imageNamed:@"title_logo_small"];
-
-    UIImageView *rongLogoSmallImageView =
-        [[UIImageView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width / 2 - 60, 5, 100, 40)];
-    [rongLogoSmallImageView setImage:rongLogoSmallImage];
-
-    [rongLogoSmallImageView setContentScaleFactor:[[UIScreen mainScreen] scale]];
-    rongLogoSmallImageView.contentMode = UIViewContentModeScaleAspectFit;
-    rongLogoSmallImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    rongLogoSmallImageView.clipsToBounds = YES;
-    [_headBackground addSubview:rongLogoSmallImageView];
-    UIButton *forgetPswHeadButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 0, 120, 50)];
-
-    [forgetPswHeadButton setTitle:RCDLocalizedString(@"forgot_password") forState:UIControlStateNormal];
-    [forgetPswHeadButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
-                              forState:UIControlStateNormal];
-    forgetPswHeadButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [forgetPswHeadButton.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
-    [forgetPswHeadButton addTarget:self action:@selector(forgetPswEvent) forControlEvents:UIControlEventTouchUpInside];
-    [_headBackground addSubview:forgetPswHeadButton];
     _licenseLb = [[UILabel alloc] initWithFrame:CGRectZero];
     //  _licenseLb.text = @"仅供演示融云 SDK 功能使用";
     _licenseLb.font = [UIFont fontWithName:@"Heiti SC" size:12.0];
@@ -521,9 +482,6 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:self.view.window];
-    _statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 20)];
-    _statusBarView.backgroundColor = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0.2];
-    [self.view addSubview:_statusBarView];
     [self.view setNeedsLayout];
     [self.view setNeedsUpdateConstraints];
 }
@@ -586,18 +544,16 @@
 
 #pragma mark - noti
 - (void)keyboardWillShow:(NSNotification *)notif {
-
-    [UIView animateWithDuration:0.25
-                     animations:^{
-
-                         self.view.frame =
-                             CGRectMake(0.f, -150, self.view.frame.size.width, self.view.frame.size.height);
-                         _headBackground.frame = CGRectMake(0, 70, self.view.bounds.size.width, 50);
-                         _rongLogo.hidden = YES;
-                         _licenseLb.hidden = YES;
-                         _statusBarView.frame = CGRectMake(0.f, 50, self.view.frame.size.width, 20);
-                     }
-                     completion:nil];
+    CGRect keyboardBounds = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat space = CGRectGetMaxY(self.inputBackground.frame) - 50 - keyboardBounds.origin.y;
+    if (space > 0) {
+        [UIView animateWithDuration:0.25
+                         animations:^{
+                             self.view.frame =
+                             CGRectMake(0.f,-space, self.view.frame.size.width, self.view.frame.size.height);
+                         }
+                         completion:nil];
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notif {
@@ -605,11 +561,6 @@
                      animations:^{
                          self.view.frame =
                              CGRectMake(0.f, 0.f, self.view.frame.size.width, self.view.frame.size.height);
-                         CGRectMake(0, -100, self.view.bounds.size.width, 50);
-                         _headBackground.frame = CGRectMake(0, -100, self.view.bounds.size.width, 50);
-                         _rongLogo.hidden = NO;
-                         _licenseLb.hidden = NO;
-                         _statusBarView.frame = CGRectMake(0.f, 0, self.view.frame.size.width, 20);
                      }
                      completion:nil];
 }

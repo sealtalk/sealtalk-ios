@@ -68,7 +68,8 @@
     //“接受”按钮
     CGFloat acceptBtnWidth = rightLabelWidth - 15;
     CGFloat acceptBtnHeight = rightLabelHeight - 8;
-    CGFloat acceptBtnX = rightLabelX;
+    CGFloat acceptBtnX = cellWidth - acceptBtnWidth - 8;
+
     CGFloat acceptBtnY = rightLabelY + 5;
     _acceptBtn = [[UIButton alloc] initWithFrame:CGRectMake(acceptBtnX, acceptBtnY, acceptBtnWidth, acceptBtnHeight)];
     _acceptBtn.tag = self.tag;
@@ -103,7 +104,8 @@
     self.rightLabel.frame = rightLabelFrame;
     
     CGRect acceptFrame = self.acceptBtn.frame;
-    acceptFrame.origin.x = rightLabelFrame.origin.x;
+    acceptFrame.origin.x = cellWidth - acceptFrame.size.width - 8;
+
     self.acceptBtn.frame = acceptFrame;
 }
 

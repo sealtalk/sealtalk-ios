@@ -23,10 +23,10 @@
 #import "RCWKNotifier.h"
 #import "RCWKRequestHandler.h"
 #import "UIColor+RCColor.h"
+#import "RCDCountry.h"
 #import "RCDBuglyManager.h"
 
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
-#import "RCDCountry.h"
 
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // offline key
@@ -46,7 +46,6 @@
          : NO)
 
 @interface AppDelegate () <RCWKAppInfoProvider>
-
 @end
 
 @implementation AppDelegate

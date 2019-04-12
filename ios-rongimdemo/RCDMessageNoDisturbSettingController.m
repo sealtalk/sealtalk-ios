@@ -37,8 +37,8 @@
         NSString *endTime = [formatterE stringFromDate:endDate];
         if (spansMin > 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-                NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+                NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+                NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
                 UITableViewCell *startCell = [weakSelf.tableView cellForRowAtIndexPath:startIndexPath];
                 UITableViewCell *endCell = [weakSelf.tableView cellForRowAtIndexPath:endIndexPath];
                 weakSelf.swch.on = YES;
@@ -56,8 +56,8 @@
                     objectForKey:[NSString stringWithFormat:@"startTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
                 NSString *endT = [UserDefaults
                     objectForKey:[NSString stringWithFormat:@"endTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
-                NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-                NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+                NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+                NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
                 UITableViewCell *startCell = [weakSelf.tableView cellForRowAtIndexPath:startIndexPath];
                 UITableViewCell *endCell = [weakSelf.tableView cellForRowAtIndexPath:endIndexPath];
                 if (startT && endT) {
@@ -77,8 +77,8 @@
                     objectForKey:[NSString stringWithFormat:@"startTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
                 NSString *endT = [UserDefaults
                     objectForKey:[NSString stringWithFormat:@"endTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
-                NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-                NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+                NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+                NSIndexPath *endIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
                 UITableViewCell *startCell = [weakSelf.tableView cellForRowAtIndexPath:startIndexPath];
                 UITableViewCell *endCell = [weakSelf.tableView cellForRowAtIndexPath:endIndexPath];
                 if (startT && endT) {
@@ -112,12 +112,12 @@
                         action:@selector(datePickerValueChanged:)
               forControlEvents:UIControlEventValueChanged];
     self.tableView.tableFooterView = [UIView new];
-    self.startIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+    self.startIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
     [self.tableView selectRowAtIndexPath:self.startIndexPath
                                 animated:YES
                           scrollPosition:UITableViewScrollPositionMiddle];
     self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
-    self.endIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+    self.endIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -177,17 +177,44 @@
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0)
-        return 3;
+        return 1;
+    else if (section == 1) {
+        return 2;
+    }
     return 1;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 1) {
+        return 70;
+    }
+    return 0.01;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    if (section == 1) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0)];
+        view.backgroundColor = self.tableView.backgroundColor;
+        UILabel *label = [[UILabel alloc] init];
+        label.frame = CGRectMake(20, -5, view.frame.size.width - 40, 70);
+        label.numberOfLines = 0;
+        label.font = [UIFont systemFontOfSize:14];
+        label.textColor = [UIColor grayColor];
+        label.text = RCDLocalizedString(@"mute_notifications_prompt");
+        [view addSubview:label];
+        return view;
+    }
+    return nil;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
+    if (indexPath.section == 0 || indexPath.section == 1) {
         return 44;
     }
     return 200;
@@ -200,23 +227,16 @@
             [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"MyCellReuseIdentifier"];
     }
     if (indexPath.section == 0) {
-        switch (indexPath.row) {
-        case 0: {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = RCDLocalizedString(@"Turn_on_message_do_not_disturb");
             [_swch setFrame:CGRectMake(self.view.frame.size.width - _swch.frame.size.width - 15, 6, 0, 0)];
             [_swch addTarget:self action:@selector(setSwitchState:) forControlEvents:UIControlEventValueChanged];
             [cell.contentView addSubview:_swch];
-        } break;
-        case 1: {
+    } else if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
             cell.textLabel.text = RCDLocalizedString(@"Start_time");
-        } break;
-        case 2: {
-            cell.textLabel.text = RCDLocalizedString(@"end_time")
-;
-        } break;
-        default:
-            break;
+        } else {
+            cell.textLabel.text = RCDLocalizedString(@"end_time");
         }
     } else {
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -247,7 +267,7 @@
         [self.tableView selectRowAtIndexPath:_indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
     }
 
-    if ((indexPath.section == 0 && indexPath.row == 1) || (indexPath.section == 0 && indexPath.row == 2)) {
+    if (indexPath.section == 1) {
         _indexPath = indexPath;
     }
 }

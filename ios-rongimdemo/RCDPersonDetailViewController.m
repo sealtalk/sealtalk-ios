@@ -624,7 +624,7 @@
 - (void)setPhoneNumber {
     self.phoneNumberLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
     self.phoneNumberLabel.font = [UIFont systemFontOfSize:14.f];
-    self.phoneNumberLabel.text = @"手机号: --";
+    self.phoneNumberLabel.text = [NSString stringWithFormat:@"%@: --", RCDLocalizedString(@"mobile_number")];
     self.phoneNumberLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *clickPhoneNumber =
         [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doCall:)];
@@ -633,14 +633,14 @@
                                  if ([response[@"code"] integerValue] == 200) {
                                      NSDictionary *dic = response[@"result"];
                                      NSDictionary *infoDic = dic[@"user"];
-                                     self.phoneNumberLabel.text =
-                                         [NSString stringWithFormat:@"手机号: %@", [infoDic objectForKey:@"phone"]];
+                                     self.phoneNumberLabel.text = [NSString stringWithFormat:@"%@: %@", RCDLocalizedString(@"mobile_number"), [infoDic objectForKey:@"phone"]];
+                                     NSUInteger textLength = RCDLocalizedString(@"mobile_number").length + 1;
                                      //创建 NSMutableAttributedString
                                      NSMutableAttributedString *attributedStr =
                                          [[NSMutableAttributedString alloc] initWithString:self.phoneNumberLabel.text];
                                      [attributedStr addAttribute:NSForegroundColorAttributeName
                                                            value:[UIColor colorWithHexString:@"0099ff" alpha:1.f]
-                                                           range:NSMakeRange(5, self.phoneNumberLabel.text.length-5)];
+                                                           range:NSMakeRange(textLength, self.phoneNumberLabel.text.length-textLength)];
                                      self.phoneNumberLabel.attributedText = attributedStr;
                                      self.phonenumber =
                                          [NSString stringWithFormat:@"%@", [infoDic objectForKey:@"phone"]];

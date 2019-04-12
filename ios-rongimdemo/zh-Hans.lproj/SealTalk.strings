@@ -248,6 +248,7 @@
 "settings"="设置";
 "setting_success"="设置成功";
 "Do_not_disturb_setting"="免打扰设置";
+"mute_notifications_prompt"="开启后，在设定时间段内收到新消息时不会响铃和振动。";
 "alert"="提示";
 "Turn_on_message_do_not_disturb"="开启消息免打扰";
 "Start_time"="开始时间";

@@ -3,7 +3,7 @@
 //  RongRTCLib
 //
 //  Created by zhaobingdong on 2019/1/8.
-//  Copyright © 2019年 Bailing Cloud. All rights reserved.
+//  Copyright © 2019年 RongCloud. All rights reserved.
 //
 
 #import "RongRTCAVOutputStream.h"
@@ -78,8 +78,9 @@ NS_ASSUME_NONNULL_BEGIN
  切换使用外放/听筒
 
  @param useSpeaker yes 使用扬声器 no 不使用
+ @return 接入外设时，如蓝牙音箱等 返回 NO
  */
-- (void)useSpeaker:(BOOL)useSpeaker;
+- (BOOL)useSpeaker:(BOOL)useSpeaker;
 
 /**
  开启音视频采集

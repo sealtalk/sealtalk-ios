@@ -434,6 +434,13 @@
         [self.friendsTabelView reloadData];
     }
     self.searchFriendsBar.showsCancelButton = YES;
+    for(UIView *view in [[[self.searchFriendsBar subviews] objectAtIndex:0] subviews]) {
+        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
+            UIButton * cancel = (UIButton *)view;
+            [cancel setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
+            break;
+        }
+    }
     return YES;
 }
 
@@ -467,8 +474,8 @@
 - (void)sortAndRefreshWithList:(NSArray *)friendList {
     dispatch_async(self.queue, ^{
         self.resultDic = [RCDUtilities sortedArrayWithPinYinDic:friendList];
+        self.allFriendSectionDic = self.resultDic[@"infoDic"];
         dispatch_sync(dispatch_get_main_queue(), ^{
-            self.allFriendSectionDic = self.resultDic[@"infoDic"];
             [self.friendsTabelView reloadData];
         });
     });

@@ -3,7 +3,7 @@
 //  RongRTCLib
 //
 //  Created by 杜立召 on 2019/1/7.
-//  Copyright © 2019 Bailing Cloud. All rights reserved.
+//  Copyright © 2019 RongCloud. All rights reserved.
 //
 
 #ifndef RongRTCRoomDelegate_h

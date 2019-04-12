@@ -42,9 +42,8 @@
 "removing_from_blacklist"="Removing from blacklist";
 "fail_to_remove_from_blacklist"="Failed to remove from blacklist";
 "new_friend"="New Friends";
-"group"="Group";
-"groups"="Groups";
-"public_account"="Public Account";
+"group"="Groups";
+"public_account"="Public Accounts";
 "add_friend"="Add Contacts";
 "chatroom"="Chatroom";
 "account_setting"="Account Settings";
@@ -71,7 +70,7 @@
 "old_password"="Old Password";
 "old_and_new_friend_different"="The confirmed password is inconsistent with the new password.";
 "old_password_error"="The old password is incorrect";
-"password_hint"="Input 6-16 characters, case sensitive";
+"password_hint"="6-16 characters, case sensitive";
 "password_alert"="Password must be 6-16 characters, case sensitive";
 "new_password"="New Password";
 "confirm_new_password"="Confirm Password";
@@ -112,7 +111,7 @@
 "user_quit_location_share"="User<%@> has quit a location sharing";
 "Forwarding_is_not_supported"="Voice message, emoticons, failed messages, and other special type of message are not be able to forward";
 "de_actionbar_sub_system"="System Message";
-"select_contact"="Select members";
+"select_contact"="Select Members";
 "friend_request"="Friend Request";
 "from_someone_friend_request"="Friend request from %@";
 "someone_accept_you_friend_request"="%@ has accepted your friend request";
@@ -245,6 +244,7 @@
 "settings"="Settings";
 "setting_success"="Setting completed";
 "Do_not_disturb_setting"="Mute Notifications";
+"mute_notifications_prompt"="Once enabled,it will not ring or vibrate when a new message is received within the set time period.";
 "alert"="Prompt";
 "Turn_on_message_do_not_disturb"="Turn on mute notification";
 "Start_time"="Start Time";

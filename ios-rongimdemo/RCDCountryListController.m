@@ -33,8 +33,8 @@ UISearchControllerDelegate, UISearchResultsUpdating>
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.extendedLayoutIncludesOpaqueBars = YES;
-    self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
+
     self.title = RCDLocalizedString(@"select_country");
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self configCountryData];
@@ -182,13 +182,11 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         self.searchResultDic = [self sortedArrayWithPinYinDic:self.searchListArry];
+        self.allSearchCountryDic = self.searchResultDic[@"infoDic"];
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.allSearchCountryDic = self.searchResultDic[@"infoDic"];
             [self.tableView reloadData];
         });
     });
-    
-    [self.tableView reloadData];
 }
 
 #pragma mark - 属性初始化 -
@@ -198,7 +196,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
         _searchController.delegate = self;
         _searchController.searchResultsUpdater = self;
         //提醒字眼
-        _searchController.searchBar.placeholder = @"搜索";
+        _searchController.searchBar.placeholder = NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil);
         _searchController.searchBar.backgroundImage = [UIColor imageWithColor:[UIColor clearColor]];
         [_searchController.searchBar setBackgroundColor:HEXCOLOR(0xE4E5E7)];
         _searchController.dimsBackgroundDuringPresentation = NO;

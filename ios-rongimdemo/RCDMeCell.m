@@ -50,7 +50,7 @@
     UIImageView *rightArrow = self.rightArrow;
     NSDictionary *views = NSDictionaryOfVariableBindings(leftLabel, leftImageView, rightLabel, rightArrow);
     [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-10-[leftImageView(width)]-8-[leftLabel]-(>=10)-[rightLabel]-13-[rightArrow(8)]-10-|" options:0 metrics:@{ @"width" : @(self.leftImageView.frame.size.width) } views:views]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[rightLabel(12)]"
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[rightLabel(21)]"
                                                                              options:0
                                                                              metrics:nil
                                                                                views:views]];

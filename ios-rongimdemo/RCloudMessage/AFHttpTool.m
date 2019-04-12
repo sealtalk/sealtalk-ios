@@ -65,7 +65,7 @@
 
     if (cookieString)
         [mgr.requestSerializer setValue:cookieString forHTTPHeaderField:@"Cookie"];
-
+    [mgr.requestSerializer setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
     url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     switch (methodType) {
     case RequestMethodTypeGet: {

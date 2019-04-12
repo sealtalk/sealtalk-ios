@@ -3,7 +3,7 @@
 //  RongRTCLib
 //
 //  Created by zhaobingdong on 2019/1/10.
-//  Copyright © 2019年 Bailing Cloud. All rights reserved.
+//  Copyright © 2019年 RongCloud. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -96,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
 帧率
  */
-- (int32_t)fpsValue;
+- (NSInteger)fpsValue;
 
 @end
 

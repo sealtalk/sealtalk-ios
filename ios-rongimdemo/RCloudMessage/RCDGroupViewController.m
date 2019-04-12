@@ -74,7 +74,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = RCDLocalizedString(@"groups");
+    self.navigationItem.title = RCDLocalizedString(@"group");
 ;
 }
 
