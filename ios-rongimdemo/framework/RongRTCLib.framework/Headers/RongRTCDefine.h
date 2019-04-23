@@ -89,20 +89,6 @@ typedef enum : NSUInteger {
     RTCMediaTypeNothing
 } RTCMediaType;
 
-/**
- 流的状态
- */
-typedef enum : NSUInteger {
-    /**
-     关闭
-     */
-    RongRTCStreamStateDisable = 0,
-    /**
-     开启
-     */
-    RongRTCStreamStateEnable,
-} RongRTCStreamState;
-
 typedef NS_ENUM(NSUInteger, RongRTCVideoSizePreset) {
     /**
      分辨率 256X144

@@ -1623,6 +1623,15 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  */
 - (int)getTotalUnreadCount:(NSArray<RCConversation *> *)conversations;
 
+/**
+ 获取某些类型的会话中所有的未读消息数
+ 
+ @param conversationTypes   会话类型的数组
+ @param isContain           是否包含免打扰消息的未读数
+ @return                    该类型的会话中所有的未读消息数
+ */
+- (int)getUnreadCount:(NSArray *)conversationTypes containBlocked:(bool)isContain;
+
 /*!
  获取某个类型的会话中所有的未读消息数
 

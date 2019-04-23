@@ -230,7 +230,7 @@ typedef int (^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionar
  the file is write protected by the operating system. In either case the
  database must already exist, otherwise an error is returned.
 
- `SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE`
+ `SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE`
 
  The database is opened for reading and writing, and is created if it does not
  already exist. This is the behavior that is always used for `open` method.

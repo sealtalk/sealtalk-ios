@@ -56,6 +56,7 @@
  */
 @property(nonatomic, copy) NSString *extra;
 
+
 /**
  创建小视频消息的便利构造方法
 

@@ -261,15 +261,7 @@
  强制Crash
  */
 - (void)doCrash {
-    id<UIApplicationDelegate> app = [UIApplication sharedApplication].delegate;
-    UIWindow *window = app.window;
-    [UIView animateWithDuration:1.0f
-                     animations:^{
-                         window.alpha = 0;
-                     }
-                     completion:^(BOOL finished) {
-                         exit(0);
-                     }];
+    [@[] objectAtIndex:1];
 }
 
 

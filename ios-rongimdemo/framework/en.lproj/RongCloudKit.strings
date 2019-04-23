@@ -214,6 +214,7 @@
 "Person"="Member";
 "SelectContact"="Select Contacts";
 "MessageTapMore"="Select...";
+
 "bottom_result_view_choosed_person_prefix"="Selected";
 "bottom_result_view_choosed_person_subfix"="member(s)";
 "message_destructed"="The message cannot be viewed due to automatically destroyed";

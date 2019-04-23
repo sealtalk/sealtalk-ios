@@ -213,6 +213,7 @@
 "Person"="人";
 "SelectContact"="选择联系人";
 "MessageTapMore"="更多...";
+
 "bottom_result_view_choosed_person_prefix"="已选择";
 "bottom_result_view_choosed_person_subfix"="人";
 "message_destructed"="该消息已自动销毁，无法继续查看";

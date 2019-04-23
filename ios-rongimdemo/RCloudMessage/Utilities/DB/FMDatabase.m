@@ -140,7 +140,7 @@
         return YES;
     }
 
-    int err = sqlite3_open([self sqlitePath], &_db);
+    int err = sqlite3_open_v2([self sqlitePath], (sqlite3 **)&_db, SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil);
     if (err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
         return NO;
@@ -190,7 +190,7 @@
 
     do {
         retry = NO;
-        rc = sqlite3_close(_db);
+        rc = sqlite3_close_v2(_db);
         if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
             if (!triedFinalizingOpenStatements) {
                 triedFinalizingOpenStatements = YES;
