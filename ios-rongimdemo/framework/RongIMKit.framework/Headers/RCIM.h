@@ -313,6 +313,42 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
 
 @end
 
+
+#pragma mark - 消息发送监听器
+
+/*!
+ IMKit消息发送监听器
+ 
+ @discussion 设置IMKit的消息发送监听器，可以监听消息发送前以及消息发送后的结果。
+ 
+ @warning 如果您使用IMKit，可以设置并实现此Delegate监听消息发送；
+ */
+@protocol RCIMSendMessageDelegate <NSObject>
+
+/*!
+ 准备发送消息的监听器
+ 
+ @param messageContent 消息内容
+ 
+ @return 修改后的消息内容
+ 
+ @discussion 此方法在消息准备向外发送时会执行，您可以在此方法中对消息内容进行过滤和修改等操作。如果此方法的返回值不为 nil，SDK 会对外发送返回的消息内容。如果您使用了RCConversationViewController 中的 willSendMessage: 方法，请不要重复使用此方法。选择其中一种方式实现您的需求即可。
+ */
+- (RCMessageContent *)willSendIMMessage:(RCMessageContent *)messageContent;
+
+/*!
+ 发送消息完成的监听器
+ 
+ @param messageContent   消息内容
+
+ @param status          发送状态，0表示成功，非0表示失败的错误码
+ 
+ @discussion 此方法在消息向外发送结束之后会执行。您可以通过此方法监听消息发送情况。如果您使用了 RCConversationViewController 中的 didSendMessage:content: 方法，请不要重复使用此方法。选择其中一种方式实现您的需求即可。
+ */
+- (void)didSendIMMessage:(RCMessageContent *)messageContent status:(NSInteger)status;
+
+@end
+
 #pragma mark - IMKit核心类
 
 /*!
@@ -454,6 +490,10 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
  如果您使用IMLib，请使用RCIMClient中的同名方法注册自定义的消息类型，而不要使用此方法。
  */
 - (void)registerMessageType:(Class)messageClass;
+
+#pragma mark 消息发送监听
+
+@property(nonatomic, weak) id<RCIMSendMessageDelegate> sendMessageDelegate;
 
 #pragma mark 消息发送
 /*!

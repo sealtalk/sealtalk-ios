@@ -21,12 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  音视频 SDK 对应版本
  
- RongRTCLib version: RongRTCLib_Version=>version
- RongRTCLib branch: RongRTCLib_Branch=>branch
- RongRTCLib commit: RongRTCLib_Commit=>commit
- RongRTCLib time: RongRTCLib_Time=>time
- RongIMLib branch: RongIMLib_Branch=>branch
- Protocol branch: Protocol_Branch=>branch
+ RongRTCLib version: 3.0.3
+ RongRTCLib branch: dev_reconsitution
+ RongRTCLib commit: 519a3458
+ RongRTCLib time: 2019-05-08
+ RongIMLib branch: dev_webrtc
+ Protocol branch: dev_RTC
  
  */
 
@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
      completion:(nullable void (^)( RongRTCRoom  * _Nullable room,RongRTCCode code))completion;
 
 /**
- 离开房间
+ 离开房间(注：离开房间时不需要调用取消资源发布和关闭摄像头，SDK 内部会做好取消发布和关闭摄像头资源释放逻辑)
  
  @param roomId 房间 Id
  @param completion 加入房间回调

@@ -119,6 +119,13 @@
 - (void)setVideoProfile:(RCVideoProfile)profile;
 
 /**
+ 设置码率
+
+ @param bitRate 码率 单位 kbps
+ */
+- (void)setBitRate:(NSUInteger)rate;
+
+/**
  设置本地视频属性，可用此接口设置本地视频分辨率，设置宽和高替换
 
  @param profile profile

@@ -31,6 +31,7 @@
 #import "RCUserInfo.h"
 #import "RCUserOnlineStatusInfo.h"
 #import "RCWatchKitStatusDelegate.h"
+#import "RCSendMessageOption.h"
 
 #pragma mark - 消息接收监听器
 
@@ -572,6 +573,44 @@
                    content:(RCMessageContent *)content
                pushContent:(NSString *)pushContent
                   pushData:(NSString *)pushData
+                   success:(void (^)(long messageId))successBlock
+                     error:(void (^)(RCErrorCode nErrorCode, long messageId))errorBlock;
+
+/*!
+ 发送消息
+ 
+ @param conversationType    发送消息的会话类型
+ @param targetId            发送消息的目标会话ID
+ @param content             消息的内容
+ @param pushContent         接收方离线时需要显示的远程推送内容
+ @param pushData            接收方离线时需要在远程推送中携带的非显示数据
+ @param option              消息的相关配置
+ @param successBlock        消息发送成功的回调 [messageId:消息的ID]
+ @param errorBlock          消息发送失败的回调 [nErrorCode:发送失败的错误码,
+ messageId:消息的ID]
+ @return                    发送的消息实体
+ 
+ @discussion 当接收方离线并允许远程推送时，会收到远程推送。
+ 远程推送中包含两部分内容，一是pushContent，用于显示；二是pushData，用于携带不显示的数据。
+ 
+ SDK内置的消息类型，如果您将pushContent和pushData置为nil，会使用默认的推送格式进行远程推送。
+ 自定义类型的消息，需要您自己设置pushContent和pushData来定义推送内容，否则将不会进行远程推送。
+ 
+ 如果您使用此方法发送图片消息，需要您自己实现图片的上传，构建一个RCImageMessage对象，
+ 并将RCImageMessage中的imageUrl字段设置为上传成功的URL地址，然后使用此方法发送。
+ 
+ 如果您使用此方法发送文件消息，需要您自己实现文件的上传，构建一个RCFileMessage对象，
+ 并将RCFileMessage中的fileUrl字段设置为上传成功的URL地址，然后使用此方法发送。
+ 
+ @warning 如果您使用IMLib，可以使用此方法发送消息；
+ 如果您使用IMKit，请使用RCIM中的同名方法发送消息，否则不会自动更新UI。
+ */
+- (RCMessage *)sendMessage:(RCConversationType)conversationType
+                  targetId:(NSString *)targetId
+                   content:(RCMessageContent *)content
+               pushContent:(NSString *)pushContent
+                  pushData:(NSString *)pushData
+                    option:(RCSendMessageOption *)option
                    success:(void (^)(long messageId))successBlock
                      error:(void (^)(RCErrorCode nErrorCode, long messageId))errorBlock;
 
