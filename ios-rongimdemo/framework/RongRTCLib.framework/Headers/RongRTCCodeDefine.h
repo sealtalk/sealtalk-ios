@@ -48,7 +48,7 @@ typedef NS_ENUM (NSInteger, RongRTCCode)
     RongRTCCodeInvalidUserId = 40004,
     
     /**
-     重复加入已经存在的 RTC room
+     重复加入已经存在的 RTC room，表示在服务端重复加入
      */
     RongRTCCodeJoinRepeatedRoom = 40005,
     
@@ -63,7 +63,7 @@ typedef NS_ENUM (NSInteger, RongRTCCode)
     RongRTCCodeParameterError = 50001 ,
     
     /**
-     加入相同房间错误
+     加入相同房间错误，表示用户在客户端重复加入相同的房间
      */
     RongRTCCodeJoinToSameRoom = 50002,
     
@@ -81,7 +81,7 @@ typedef NS_ENUM (NSInteger, RongRTCCode)
      HTTP 请求错误（含网络不可达，请求未能为能正常发出）
      */
     RongRTCCodeHttpRequestError = 50012,
-
+    
     /**
      发布重复资源
      */

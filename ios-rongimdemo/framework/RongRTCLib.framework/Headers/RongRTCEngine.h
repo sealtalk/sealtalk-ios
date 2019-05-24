@@ -21,12 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  音视频 SDK 对应版本
  
- RongRTCLib version: 3.0.3
- RongRTCLib branch: dev_reconsitution
- RongRTCLib commit: 519a3458
- RongRTCLib time: 2019-05-08
- RongIMLib branch: dev_webrtc
- Protocol branch: dev_RTC
+ RongRTCLib version: 3.0.5
+ RongRTCLib commit: cc08620f
+ RongRTCLib time: 2019-05-20
  
  */
 

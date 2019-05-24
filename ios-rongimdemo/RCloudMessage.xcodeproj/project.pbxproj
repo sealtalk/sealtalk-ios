@@ -1077,6 +1077,7 @@
 				F8B7DBD21BAC189700E9F9BD /* libopencore-amrnb.a in Frameworks */,
 				1D5551FC223A30F700887BD0 /* libvo-amrwbenc.a in Frameworks */,
 				E4C330FE1A0C725200E31B9A /* CoreVideo.framework in Frameworks */,
+				1DA88D982135119700F4F1F9 /* RongSticker.framework in Frameworks */,
 				2E7A36E41E03A876005231BE /* JrmfWalletKit.framework in Frameworks */,
 				27C42EEC1DE30637003E2306 /* iflyMSC.framework in Frameworks */,
 				E4C330F81A0C723A00E31B9A /* CoreAudio.framework in Frameworks */,
