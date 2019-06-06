@@ -31,5 +31,7 @@ FOUNDATION_EXPORT const unsigned char RongRTCLibVersionString[];
 #import <RongRTCLib/RongRTCRemoteVideoView.h>
 #import <RongRTCLib/RongRTCLocalUser.h>
 #import <RongRTCLib/RongRTCRoom.h>
+#import <RongRTCLib/RongRTCConfig.h>
 #import <RongRTCLib/RongRTCRoomDelegate.h>
 #import <RongRTCLib/RongRTCNetworkMonitorDelegate.h>
+#import <RongRTCLib/RongRTCAudioMixerEngine.h>

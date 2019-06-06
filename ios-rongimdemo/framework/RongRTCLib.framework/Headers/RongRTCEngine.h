@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "RongRTCDefine.h"
+#import "RongRTCConfig.h"
 #import "RongRTCCodeDefine.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -21,9 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  音视频 SDK 对应版本
  
- RongRTCLib version: 3.0.5
- RongRTCLib commit: cc08620f
- RongRTCLib time: 2019-05-20
+ RongRTCLib version: 3.0.6
+ RongRTCLib commit: 248b2a62
+ RongRTCLib time: 2019-05-30
  
  */
 
@@ -42,6 +43,11 @@ NS_ASSUME_NONNULL_BEGIN
  数据上报
  */
 @property (nonatomic, weak) id<RongRTCNetworkMonitorDelegate> netMonitor;
+
+/**
+ 当然已加入的房间
+ */
+@property (nonatomic,strong,readonly)RongRTCRoom *currentRoom;
 
 
 /**

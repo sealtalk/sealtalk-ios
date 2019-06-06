@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  初始化流数据的参数
 
  @param pars 参数
- @param tag 用户自定标签
+ @param tag 用户自定标签，注：用户不能传特殊字符，只支持 ascii
  @return 流对象
  */
 -(instancetype)initWithParameters:(nullable RongRTCStreamParams*)pars

@@ -129,4 +129,9 @@
  */
 - (void)dismissCallViewController:(UIViewController *)viewController;
 
+/*!
+ 停止来电铃声和震动
+ */
+- (void)cancelTriggerRingingVibrate;
+
 @end

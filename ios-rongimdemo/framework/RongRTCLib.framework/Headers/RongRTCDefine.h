@@ -197,6 +197,20 @@ typedef enum : NSUInteger {
 } RongRTCDeviceCamera;
 
 /**
+ 设置加入房间时音视频使用模式
+ */
+typedef enum : NSUInteger {
+    /**
+     普通试试音视频模式加入
+     */
+    RongRTCJoinRoomModeNormal,
+    /**
+     类直播场景模式加入，观察者模式加入之后会减少信令服务器的消息转发压力，提高直播场景体验
+     */
+    RongRTCJoinRoomModeLive,
+} RongRTCJoinRoomMode;
+
+/**
  * Error passing block.
  */
 typedef void (^RongRTCVideoCapturerErrorBlock)(NSError * _Nullable error);
