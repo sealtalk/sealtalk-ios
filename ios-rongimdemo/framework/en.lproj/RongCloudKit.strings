@@ -100,6 +100,7 @@
 "Connecting..."="Connecting...";
 "FromFriendInvitation"="friend invitation from %@";
 "AcceptFriendRequest"="Accepted your friend request";
+"RejectFriendRequest"="%@ Rejected your friend request";
 "AddFriendRequest"="Friend adding request";
 "ReadAll"="Read all";
 "OfficialAccounts"="Public account";
@@ -214,6 +215,7 @@
 "Person"="Member";
 "SelectContact"="Select Contacts";
 "MessageTapMore"="Select...";
+
 "bottom_result_view_choosed_person_prefix"="Selected";
 "bottom_result_view_choosed_person_subfix"="member(s)";
 "message_destructed"="The message cannot be viewed due to automatically destroyed";

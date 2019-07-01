@@ -52,6 +52,7 @@ FOUNDATION_EXPORT const unsigned char RongIMLibVersionString[];
 #import <RongIMLib/RCTextMessage.h>
 #import <RongIMLib/RCUnknownMessage.h>
 #import <RongIMLib/RCVoiceMessage.h>
+#import <RongIMLib/RCHQVoiceMessage.h>
 #import <RongIMLib/RCSightMessage.h>
 /// 工具类
 #import <RongIMLib/RCAMRDataConverter.h>

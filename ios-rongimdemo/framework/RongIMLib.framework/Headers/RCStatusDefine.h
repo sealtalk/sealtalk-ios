@@ -858,6 +858,19 @@ typedef NS_ENUM(NSInteger,RCSampleRate)
     RCSample_Rate_16000 = 2,        //16KHz
 };
 
+/**
+ 语音消息类型
+ 
+ - RCVoiceMessageTypeOrdinary: 普通音质语音消息
+ - RCVoiceMessageTypeHighQuality: 高音质语音消息
+ */
+typedef NS_ENUM(NSInteger,RCVoiceMessageType)
+{
+    RCVoiceMessageTypeOrdinary = 1,
+    RCVoiceMessageTypeHighQuality = 2,
+};
+
+
 #pragma mark - 公众服务相关
 
 #pragma mark RCPublicServiceType - 公众服务账号类型
@@ -1036,6 +1049,16 @@ typedef NS_ENUM(NSUInteger, RCLogLevel) {
      *  输出错误、警告和一般的日志
      */
     RC_Log_Level_Info = 3,
+    
+    /*!
+     *  输出输出错误、警告和一般的日志以及 debug 日志
+     */
+    RC_Log_Level_Debug = 4,
+    
+    /*!
+     *  输出所有日志
+     */
+    RC_Log_Level_Verbose = 5,
 };
 
 #pragma mark RCTimestampOrder - 历史消息查询顺序

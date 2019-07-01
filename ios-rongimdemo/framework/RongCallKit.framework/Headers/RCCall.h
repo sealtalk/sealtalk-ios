@@ -132,6 +132,6 @@
 /*!
  停止来电铃声和震动
  */
-- (void)cancelTriggerRingingVibrate;
+- (void)stopReceiveCallVibrate;
 
 @end

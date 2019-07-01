@@ -99,6 +99,7 @@
 "Connecting..."="连接中...";
 "FromFriendInvitation"="来自%@的好友请求";
 "AcceptFriendRequest"="通过了你的好友请求";
+"RejectFriendRequest"="%@拒绝了你的好友请求";
 "AddFriendInvitation"="添加好友请求";
 "ReadAll"="阅读全文";
 "OfficialAccounts"="公共账号";
@@ -213,6 +214,7 @@
 "Person"="人";
 "SelectContact"="选择联系人";
 "MessageTapMore"="更多...";
+
 "bottom_result_view_choosed_person_prefix"="已选择";
 "bottom_result_view_choosed_person_subfix"="人";
 "message_destructed"="该消息已自动销毁，无法继续查看";

@@ -18,13 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 @class RongRTCVideoCaptureParam;
 @class RongRTCAVOutputStream;
 @protocol RongRTCNetworkMonitorDelegate;
-
+@protocol RongRTCActivityMonitorDelegate;
 /**
  音视频 SDK 对应版本
  
  RongRTCLib version: 3.0.6
- RongRTCLib commit: 248b2a62
- RongRTCLib time: 2019-05-30
+ RongRTCLib commit: 6993629e
+ RongRTCLib time: 2019-06-27
  
  */
 
@@ -40,9 +40,15 @@ NS_ASSUME_NONNULL_BEGIN
 +(RongRTCEngine *)sharedEngine;
 
 /**
- 数据上报
+ 数据上报,该属性已废弃，请使用 monitorDelegate
  */
-@property (nonatomic, weak) id<RongRTCNetworkMonitorDelegate> netMonitor;
+@property (nonatomic, weak) id<RongRTCNetworkMonitorDelegate> netMonitor DEPRECATED_ATTRIBUTE;
+
+
+/**
+ sdk 状态监视器代理
+ */
+@property (nonatomic, weak) id <RongRTCActivityMonitorDelegate> monitorDelegate;
 
 /**
  当然已加入的房间
@@ -61,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
  加入房间
 
  @param roomId 房间 Id(支持大小写英文字母、数字、部分特殊符号 + = - _ 的组合方式 最长 64 个字符)
- @param completion 加入房间回调,其中，room 对象中的 remoteUsers ，只存储当前房间中发布过资源的人，如果某用户加入房间但是没有发布资源，remoteUsers 不会包含此人。
+ @param completion 加入房间回调,其中，room 对象中的 remoteUsers ，存储当前房间中的所有人，包括发布资源和没有发布资源的人。
  */
 -(void)joinRoom:(NSString *)roomId
      completion:(nullable void (^)( RongRTCRoom  * _Nullable room,RongRTCCode code))completion;

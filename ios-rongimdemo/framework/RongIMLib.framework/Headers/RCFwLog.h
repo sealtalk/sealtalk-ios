@@ -27,7 +27,7 @@
 
 typedef NS_ENUM(NSUInteger, RCFwLogLevel) { RC_Level_F = 1, RC_Level_E = 2, RC_Level_W = 3, RC_Level_I = 4, RC_Level_D = 5, RC_Level_V = 6 };
 
-typedef NS_OPTIONS(NSUInteger, LogType) {
+typedef NS_OPTIONS(NSUInteger, RCLogType) {
     RC_Type_APP = 1 << 0,  // User interface.
     RC_Type_PTC = 1 << 1,  // Protocol.
     RC_Type_ENV = 1 << 2,
@@ -56,7 +56,7 @@ typedef NS_OPTIONS(NSUInteger, LogType) {
 + (void)setConsoleLogLevel:(RCFwLogLevel)level;
 + (NSString *)getIpWithHost:(NSString *)hostName;
 - (void)write:(RCFwLogLevel)level
-         type:(LogType)type
+         type:(RCLogType)type
           tag:(NSString *)tag
          keys:(NSString *)keys, ... NS_FORMAT_FUNCTION(4, 5);
 

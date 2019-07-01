@@ -215,7 +215,31 @@
 
  @param delegate 通话状态变化的监听器
  */
-- (void)setDelegate:(id<RCCallSessionDelegate>)delegate;
+- (void)setDelegate:(id<RCCallSessionDelegate>)delegate DEPRECATED_MSG_ATTRIBUTE("please call method addDelegate:");
+
+
+/**
+ 添加通话状态的监听器
+
+ @param delegate 通话状态变化的监听器
+ */
+- (void)addDelegate:(id<RCCallSessionDelegate>)delegate;
+
+
+/**
+ 删除通话状态的监听器
+
+ @param delegate 通话状态的监听器
+ */
+- (void)removeDelegate:(id<RCCallSessionDelegate>)delegate;
+
+
+/**
+ 获取所有的监听器
+
+ @return 返回监听器数组
+ */
+- (NSArray<id<RCCallSessionDelegate>>*)allDelegates;
 
 /*!
  接听来电

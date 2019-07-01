@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "AFHttpTool.h"
-#import "MobClick.h"
 #import "RCDCommonDefine.h"
 #import "RCDHttpTool.h"
 #import "RCDLoginViewController.h"
@@ -23,15 +22,14 @@
 #import "RCWKNotifier.h"
 #import "RCWKRequestHandler.h"
 #import "UIColor+RCColor.h"
-#import "RCDCountry.h"
 #import "RCDBuglyManager.h"
 
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
+#import "RCDCountry.h"
 
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // offline key
 
-#define UMENG_APPKEY @"563755cbe0f55a5cb300139c"
 #define BUGLY_APPID @"84247f1866"
 
 #define LOG_EXPIRE_TIME -7 * 24 * 60 * 60
@@ -46,6 +44,7 @@
          : NO)
 
 @interface AppDelegate () <RCWKAppInfoProvider>
+
 @end
 
 @implementation AppDelegate
@@ -74,7 +73,6 @@
     application.statusBarHidden = NO;
 
     [RCDBuglyManager startWithAppId:BUGLY_APPID];
-    [self umengTrack];
     /**
      *  推送说明：
      *
@@ -129,6 +127,8 @@
     
     // 设置语音消息采样率为 16KHZ
     [RCIMClient sharedRCIMClient].sampleRate = RCSample_Rate_16000;
+    
+    [RCIMClient sharedRCIMClient].voiceMsgType = RCVoiceMessageTypeHighQuality;
     
     //设置会话列表头像和会话页面头像
 
@@ -773,27 +773,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RCKitDispatchMessageNotification object:nil];
-}
-
-- (void)umengTrack {
-    //    [MobClick setCrashReportEnabled:NO]; // 如果不需要捕捉异常，注释掉此行
-    [MobClick setLogEnabled:YES]; // 打开友盟sdk调试，注意Release发布时需要注释掉此行,减少io消耗
-    [MobClick setAppVersion:XcodeAppVersion]; //参数为NSString *
-                                              //类型,自定义app版本信息，如果不设置，默认从CFBundleVersion里取
-    //
-    [MobClick startWithAppkey:UMENG_APPKEY reportPolicy:(ReportPolicy)REALTIME channelId:nil];
-    //   reportPolicy为枚举类型,可以为 REALTIME, BATCH,SENDDAILY,SENDWIFIONLY几种
-    //   channelId 为NSString * 类型，channelId 为nil或@""时,默认会被被当作@"App
-    //   Store"渠道
-
-    [MobClick updateOnlineConfig]; //在线参数配置
-
-    //    1.6.8之前的初始化方法
-    //    [MobClick setDelegate:self reportPolicy:REALTIME];  //建议使用新方法
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onlineConfigCallBack:)
-                                                 name:UMOnlineConfigDidFinishedNotification
-                                               object:nil];
 }
 
 - (void)loginSuccess:(NSString *)userName

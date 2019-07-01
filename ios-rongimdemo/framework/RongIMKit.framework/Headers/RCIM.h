@@ -1036,6 +1036,15 @@ FOUNDATION_EXPORT NSString *const RCKitDispatchMessageReceiptRequestNotification
  */
 @property(nonatomic, weak) id<RCIMGroupMemberDataSource> groupMemberDataSource;
 
+#pragma mark 高质量语音消息自动下载
+
+/*!
+ 在线时是否自动下载高质量语音消息
+
+ @discussion 默认为 YES
+ */
+@property(nonatomic, assign) BOOL automaticDownloadHQVoiceMsgEnable;
+
 
 #pragma mark - 公众号信息提供者
 

@@ -151,13 +151,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  混合 PCM 数据，单声道，16 bit signed, 48000 采样率，外置 mic 和网络音频流场景可以
  通过该方法实现外置 mic 的混合以及替换的逻辑，目前只支持下面两种使用方式。
- action: RTCAudioActionOnlyMix, RTCAudioActionReplace
+  action: RTCAudioActionOnlyMix, RTCAudioActionReplace
  
  内部会保证时间同步，上层请注意往里面写的频率（写入速度太快容易导致内部缓冲区满而导致丢失数据）
  另外如果仅仅是文件声音混合，请直接使用 RongRTCAudioMixerEngine，使用更加简单方便
-
+ 
  @param pcmBuffer 声音 buffer
- @param action 混音使用的模式
  @return 是否混合成功
  */
 -(BOOL)writePCMBuffer:(NSData *)pcmBuffer action:(RTCAudioAction)action;

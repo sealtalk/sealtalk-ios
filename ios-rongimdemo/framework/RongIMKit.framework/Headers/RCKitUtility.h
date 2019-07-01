@@ -258,4 +258,12 @@
  @return AppDelegate window 的 safeAreaInsets
  */
 + (UIEdgeInsets)getWindowSafeAreaInsets;
+
+/**
+ 修正iOS系统图片的图片方向
+
+ @param image 需要修正的图片
+ @return 修正后的图片
+ */
++ (UIImage *)fixOrientation:(UIImage *)image;
 @end

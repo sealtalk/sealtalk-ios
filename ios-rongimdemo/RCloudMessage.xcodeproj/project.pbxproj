@@ -330,7 +330,6 @@
 		F1D49DB621ABE4A70047381F /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D49DB521ABE4A70047381F /* NotificationService.m */; };
 		F1D49DBA21ABE4A70047381F /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F1D49DB221ABE4A70047381F /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F1E7784C21A622B00005C37D /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E7784B21A622B00005C37D /* UserNotifications.framework */; };
-		F821B7F51BE75BFD00F0D14C /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F821B7F41BE75BFD00F0D14C /* libMobClickLibrary.a */; };
 		F82B55401DE03E40007392BD /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F82B553F1DE03E40007392BD /* SafariServices.framework */; };
 		F836AB0E1C2262C400A1A5D2 /* RCDTestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = F836AB0D1C2262C400A1A5D2 /* RCDTestMessage.m */; };
 		F836AB151C226A7F00A1A5D2 /* RCDTestMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F836AB141C226A7F00A1A5D2 /* RCDTestMessageCell.m */; };
@@ -985,9 +984,6 @@
 		F1D49DB721ABE4A70047381F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F1D49DC021ABE4CD0047381F /* ServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
 		F1E7784B21A622B00005C37D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
-		F821B7F21BE75BF500F0D14C /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClick.h; path = UMAnalytics/MobClick.h; sourceTree = "<group>"; };
-		F821B7F31BE75BF500F0D14C /* MobClickSocialAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClickSocialAnalytics.h; path = UMAnalytics/MobClickSocialAnalytics.h; sourceTree = "<group>"; };
-		F821B7F41BE75BFD00F0D14C /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = ../RCloudMessage/Utilities/UMAnalytics/libMobClickLibrary.a; sourceTree = "<group>"; };
 		F82B553F1DE03E40007392BD /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		F836AB0C1C2262C400A1A5D2 /* RCDTestMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDTestMessage.h; path = RCloudMessage/RCDTestMessage.h; sourceTree = SOURCE_ROOT; };
 		F836AB0D1C2262C400A1A5D2 /* RCDTestMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDTestMessage.m; path = RCloudMessage/RCDTestMessage.m; sourceTree = SOURCE_ROOT; };
@@ -1067,7 +1063,6 @@
 				A6EFABA51BB0EDE1007E9D67 /* libsqlite3.tbd in Frameworks */,
 				A6EFABA11BB0EDAC007E9D67 /* libxml2.tbd in Frameworks */,
 				2E29FF3D1DC1BE8400AF2DF0 /* AlipaySDK.framework in Frameworks */,
-				F821B7F51BE75BFD00F0D14C /* libMobClickLibrary.a in Frameworks */,
 				8CCBC9871AEDDF8600BA1135 /* AssetsLibrary.framework in Frameworks */,
 				E4FCD7C41AD69DFB00915650 /* ImageIO.framework in Frameworks */,
 				27BCC76E1EA45EA000198BD8 /* RongContactCard.framework in Frameworks */,
@@ -1077,7 +1072,6 @@
 				F8B7DBD21BAC189700E9F9BD /* libopencore-amrnb.a in Frameworks */,
 				1D5551FC223A30F700887BD0 /* libvo-amrwbenc.a in Frameworks */,
 				E4C330FE1A0C725200E31B9A /* CoreVideo.framework in Frameworks */,
-				1DA88D982135119700F4F1F9 /* RongSticker.framework in Frameworks */,
 				2E7A36E41E03A876005231BE /* JrmfWalletKit.framework in Frameworks */,
 				27C42EEC1DE30637003E2306 /* iflyMSC.framework in Frameworks */,
 				E4C330F81A0C723A00E31B9A /* CoreAudio.framework in Frameworks */,
@@ -2006,7 +2000,6 @@
 				E4C331031A0C726F00E31B9A /* libsqlite3.dylib */,
 				E4C331011A0C726700E31B9A /* libc++.dylib */,
 				E4C330FF1A0C725E00E31B9A /* libc++abi.dylib */,
-				F821B7F41BE75BFD00F0D14C /* libMobClickLibrary.a */,
 				E4C330FD1A0C725200E31B9A /* CoreVideo.framework */,
 				E4C330FB1A0C724A00E31B9A /* CoreTelephony.framework */,
 				E4C330F91A0C724400E31B9A /* CoreMedia.framework */,
@@ -2110,7 +2103,6 @@
 				172B89F120747C57005481D7 /* RCDForwardAlertView.m */,
 				98AB3C071D38940600C3B87C /* SortForTime.h */,
 				98AB3C081D38940600C3B87C /* SortForTime.m */,
-				F821B7F11BE75BD000F0D14C /* UMAnalytics */,
 				46E17CB81B0EC275001AC57A /* DB */,
 				E4E938CC1AD65A95001E0AC6 /* AFNetworking */,
 				E4E9390C1AD65A95001E0AC6 /* KxMenu */,
@@ -2296,15 +2288,6 @@
 				F1D49DB721ABE4A70047381F /* Info.plist */,
 			);
 			path = ServiceExtension;
-			sourceTree = "<group>";
-		};
-		F821B7F11BE75BD000F0D14C /* UMAnalytics */ = {
-			isa = PBXGroup;
-			children = (
-				F821B7F21BE75BF500F0D14C /* MobClick.h */,
-				F821B7F31BE75BF500F0D14C /* MobClickSocialAnalytics.h */,
-			);
-			name = UMAnalytics;
 			sourceTree = "<group>";
 		};
 		F82F1ACD1D62F3C50039AE45 /* Utilities */ = {
@@ -3138,7 +3121,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/framework",
-					"$(PROJECT_DIR)/RCloudMessage/Utilities/UMAnalytics",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-fembed-bitcode";
@@ -3294,7 +3276,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/framework",
-					"$(PROJECT_DIR)/RCloudMessage/Utilities/UMAnalytics",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-fembed-bitcode";
@@ -3609,7 +3590,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/framework",
-					"$(PROJECT_DIR)/RCloudMessage/Utilities/UMAnalytics",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-fembed-bitcode";
@@ -3661,7 +3641,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/framework",
-					"$(PROJECT_DIR)/RCloudMessage/Utilities/UMAnalytics",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-fembed-bitcode";

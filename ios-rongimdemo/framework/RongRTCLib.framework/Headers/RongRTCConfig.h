@@ -20,13 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  加入房间场景
- 1、默认模式 RongRTCJoinRoomModeNormal，普通的音视频会议功能
-    单个房间内最多允许 9 人同时进行视频通话
-    单个房间内最多允许 20 人同时进行音频通话
-    注：同一房间中可发起音视频通话总用户上限为 20 人。
- 
- 2、设置该模式为 RongRTCJoinRoomModeLive 时只支持发布最多两路音频，可以支持同时上万人数的音频订阅，满足上万人的音频直播场景等特殊功能需求
- 
  */
 @property (nonatomic)RongRTCJoinRoomMode mode;
 

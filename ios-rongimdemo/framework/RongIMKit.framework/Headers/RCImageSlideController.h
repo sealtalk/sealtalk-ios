@@ -14,9 +14,14 @@
 @interface RCImageSlideController : RCBaseViewController
 
 /*!
- 当前图片消息的数据模型
+ 图片预览初始化的数据模型
  */
-@property(nonatomic, strong) RCMessageModel *messageModel;
+@property (nonatomic, strong) RCMessageModel *messageModel;
+
+/*!
+ 当前预览的图片消息
+ */
+@property (nonatomic, strong) RCImageMessage *currentPreviewImage;
 
 
 /**
@@ -32,6 +37,6 @@
  图片消息进度的View
  @warning  **已废弃，请勿使用。**
  */
-@property(nonatomic, strong) RCImageMessageProgressView *rcImageProressView;
+@property (nonatomic, strong) RCImageMessageProgressView *rcImageProressView;
 
 @end

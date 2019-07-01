@@ -373,18 +373,6 @@
                    error:(void (^)(RCConnectErrorCode status))errorBlock
           tokenIncorrect:(void (^)(void))tokenIncorrectBlock;
 
-///*!
-// 重新建立与服务器的连接
-//
-// @param successBlock 重新连接成功的回调
-// @param errorBlock   重新连接失败的回调
-//
-// @warning 升级说明：从2.2.3版本开始，删除此方法。
-// SDK在前后台切换或者网络出现异常都会自动重连，会保证连接的可靠性，不需要App手动进行重连操作。
-// */
-//- (void)reconnect:(void (^)(NSString *userId))successBlock
-//            error:(void (^)(RCConnectErrorCode status))errorBlock;
-
 /*!
  断开与融云服务器的连接
 
@@ -800,6 +788,21 @@
                              content:(RCMessageContent *)content
                             sentTime:(long long)sentTime;
 
+
+/*!
+ 根据文件URL地址下载文件内容
+ 
+ @param fileName            指定的文件名称 需要开发者指定文件后缀 (例如 rongCloud.mov)
+ @param mediaUrl            文件的URL地址
+ @param progressBlock       文件下载进度更新的回调 [progress:当前的下载进度, 0 <= progress <= 100]
+ @param successBlock        下载成功的回调[mediaPath:下载成功后本地存放的文件路径 文件路径为文件消息的默认地址]
+ @param errorBlock          下载失败的回调[errorCode:下载失败的错误码]
+  */
+- (void)downloadMediaFile:(NSString *)fileName
+                 mediaUrl:(NSString *)mediaUrl
+                 progress:(void (^)(int progress))progressBlock
+                  success:(void (^)(NSString *mediaPath))successBlock
+                    error:(void (^)(RCErrorCode errorCode))errorBlock;
 /*!
  下载消息内容中的媒体信息
 
@@ -2350,7 +2353,16 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
  @discussion
  2.9.12 之前的版本只支持 8KHz。如果设置为 16KHz，老版本将无法播放 16KHz 的语音消息。
  */
-@property (nonatomic, assign) RCSampleRate sampleRate;
+@property (nonatomic, assign) RCSampleRate sampleRate __deprecated_msg("已废弃，请勿使用。");
+
+/**
+  语音消息类型，默认RCVoiceMessageTypeOrdinary
+  
+  @discussion 老版本 SDK 不兼容新版本语音消息
+  2.9.19 之前的版本无法播放高音质语音消息；
+  2.9.19 及之后的版本可以同时兼容普通音质语音消息和高音质语音消息。
+  */
+@property (nonatomic, assign) RCVoiceMessageType voiceMsgType;
 
 #pragma mark - 客服方法
 /*!
@@ -2635,9 +2647,9 @@ FOUNDATION_EXPORT NSString *const RCLibDispatchReadReceiptNotification;
                           failure:(void (^)(RCErrorCode nErrorCode))errorBlock;
 
 /**
- 获取离线消息补偿时间 （以天为单位）
+ 获取离线消息时间 （以天为单位）
 
- @return 离线消息补偿时间
+ @return 离线消息存储时间
  */
 - (int)getOfflineMessageDuration;
 
