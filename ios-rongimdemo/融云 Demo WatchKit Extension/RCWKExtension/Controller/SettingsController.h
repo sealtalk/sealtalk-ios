@@ -9,6 +9,6 @@
 #import <WatchKit/WatchKit.h>
 
 @interface SettingsController : WKInterfaceController
-@property (weak, nonatomic) IBOutlet WKInterfaceSwitch *sound;
-@property (weak, nonatomic) IBOutlet WKInterfaceButton *quit;
+@property (weak, nonatomic) WKInterfaceSwitch *sound;
+@property (weak, nonatomic) WKInterfaceButton *quit;
 @end

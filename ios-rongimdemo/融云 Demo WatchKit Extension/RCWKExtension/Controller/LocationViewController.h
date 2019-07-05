@@ -9,6 +9,6 @@
 #import <WatchKit/WatchKit.h>
 
 @interface LocationViewController : WKInterfaceController
-@property (weak, nonatomic) IBOutlet WKInterfaceMap *mapView;
+@property (weak, nonatomic) WKInterfaceMap *mapView;
 
 @end

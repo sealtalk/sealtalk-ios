@@ -1,6 +1,0 @@
-framework module RongPTTKit {
-  umbrella header "RongPTTKit.h"
-
-  export *
-  module * { export * }
-}

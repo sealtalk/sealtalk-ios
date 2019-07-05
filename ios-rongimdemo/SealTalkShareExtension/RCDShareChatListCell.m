@@ -36,8 +36,7 @@
     [self.contentView addSubview:self.nameLabel];
 
     self.selectImageView =
-        [[UIImageView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 52,
-                                                      (self.contentView.frame.size.height - 10) / 2, 13, 10)];
+        [[UIImageView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 52, (self.contentView.frame.size.height - 10) / 2, 13, 10)];
     self.selectImageView.image = [UIImage imageNamed:@"check"];
     [self.contentView addSubview:self.selectImageView];
 }
@@ -48,9 +47,7 @@
         //    NSData *data = [NSData dataWithContentsOfURL:url];
         UIImage *image;
         if (1) { // todo
-            DefaultPortraitView *portraitView = [[DefaultPortraitView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-            [portraitView setColorAndLabel:dataDic[@"targetId"] Nickname:dataDic[@"name"]];
-            image = [portraitView imageFromView];
+            image = [DefaultPortraitView portraitView:dataDic[@"targetId"] name:dataDic[@"name"]];
         }
         self.headerImageView.image = image;
         NSString *str = dataDic[@"name"];

@@ -1,0 +1,84 @@
+//
+//  RCDDBManager.h
+//  SealTalk
+//
+//  Created by LiFei on 2019/5/31.
+//  Copyright © 2019 RongCloud. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <RongIMLib/RongIMLib.h>
+#import "RCDGroupInfo.h"
+#import "RCDFriendInfo.h"
+#import "RCDGroupMember.h"
+NS_ASSUME_NONNULL_BEGIN
+
+@interface RCDDBManager : NSObject
+
++ (BOOL)openDB:(NSString *)path;
+
++ (void)closeDB;
+
+#pragma mark - User
+
++ (void)saveUsers:(NSArray<RCUserInfo *>*)userList;
+
++ (RCUserInfo *)getUser:(NSString *)userId;
+
+#pragma mark - Friend
++ (void)saveFriends:(NSArray<RCDFriendInfo *>*)friendList;
+
++ (void)deleteFriends:(NSArray<NSString *>*)userIdList;
+
++ (RCDFriendInfo *)getFriend:(NSString *)userId;
+
++ (void)clearFriends;
+
+// 获取所有好友信息（已经成功添加好友）
++ (NSArray<RCDFriendInfo *>*)getAllFriends;
+
+//获取所有好友信息（包含成功添加的以及尚未通过的）
++ (NSArray<RCDFriendInfo *>*)getAllFriendRequests;
+
+#pragma mark - Blacklist
++ (void)addBlacklist:(NSArray<NSString *>*)userIdList;
+
++ (NSArray<NSString *>*)getBlacklist;
+
++ (void)removeBlacklist:(NSArray<NSString *>*)userIdList;
+
++ (void)clearBlacklist;
+
++ (void)saveGroups:(NSArray<RCDGroupInfo *>*)groupList;
+
+#pragma mark - Group
++ (RCDGroupInfo *)getGroup:(NSString *)groupId;
+
++ (void)deleteGroup:(NSString *)groupId;
+
++ (NSArray<RCDGroupInfo *>*)getAllGroupList;
+
+#pragma mark - My Group
++ (void)saveMyGroups:(NSArray<NSString *>*)groupIdList;
+
++ (NSArray<RCDGroupInfo *>*)getMyGroups;
+
++ (void)clearMyGroups;
+
+#pragma mark - Group Member
++ (void)saveGroupMembers:(NSArray<RCDGroupMember *>*)memberList
+                 inGroup:(NSString *)groupId;
+
++ (void)clearGroupMembers:(NSString *)groupId;
+
++ (NSArray<NSString *>*)getGroupMembers:(NSString *)groupId;
+
++ (RCDGroupMember *)getGroupMember:(NSString *)userId
+                           inGroup:(NSString *)groupId;
+
++ (NSArray<NSString *>*)getGroupManagers:(NSString *)groupId;
+
++ (NSString *)getGroupOwner:(NSString *)groupId;
+@end
+
+NS_ASSUME_NONNULL_END

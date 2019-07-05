@@ -7,41 +7,31 @@
 //
 
 #import "AppDelegate.h"
-#import "AFHttpTool.h"
 #import "RCDCommonDefine.h"
-#import "RCDHttpTool.h"
 #import "RCDLoginViewController.h"
 #import "RCDMainTabBarViewController.h"
 #import "RCDNavigationViewController.h"
 #import "RCDRCIMDataSource.h"
-#import "RCDSettingServerUrlViewController.h"
-#import "RCDSettingUserDefaults.h"
 #import "RCDTestMessage.h"
 #import "RCDUtilities.h"
-#import "RCDataBaseManager.h"
 #import "RCWKNotifier.h"
 #import "RCWKRequestHandler.h"
 #import "UIColor+RCColor.h"
 #import "RCDBuglyManager.h"
+#import "RCDLoginManager.h"
+#import "RCDCountry.h"
+#import "RCDCommonString.h"
+#import "RCDUserInfoManager.h"
+#import "RCDGroupManager.h"
+#import "RCDGroupNotificationMessage.h"
+#import "RCDContactNotificationMessage.h"
 
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
-#import "RCDCountry.h"
-
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // offline key
 
-#define BUGLY_APPID @"84247f1866"
-
+#define BUGLY_APPID @"Yourself BuglyId"
 #define LOG_EXPIRE_TIME -7 * 24 * 60 * 60
-
-#define iPhone6                                                                                                        \
-    ([UIScreen instancesRespondToSelector:@selector(currentMode)]                                                      \
-         ? CGSizeEqualToSize(CGSizeMake(750, 1334), [[UIScreen mainScreen] currentMode].size)                          \
-         : NO)
-#define iPhone6Plus                                                                                                    \
-    ([UIScreen instancesRespondToSelector:@selector(currentMode)]                                                      \
-         ? CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size)                         \
-         : NO)
 
 @interface AppDelegate () <RCWKAppInfoProvider>
 
@@ -53,298 +43,169 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentCountry"];
-    RCDCountry *currentCountry;
-    if (!dic) {
-        currentCountry = [[RCDCountry alloc] initWithDict:@{@"region": @"86",
-                                                            @"locale": @{@"en":@"China",@"zh":@"中国"}}];
-        [[NSUserDefaults standardUserDefaults] setObject:[currentCountry getModelJson] forKey:@"currentCountry"];
-    }
-    //重定向log到本地问题
-    //在info.plist中打开Application supports iTunes file sharing
-    //    if (![[[UIDevice currentDevice] model] isEqualToString:@"iPhone
-    //    Simulator"]) {
-            [self redirectNSlogToDocumentFolder];
-    //    }
-    //启动页停留1秒钟。
-    [NSThread sleepForTimeInterval:1.0];
+    
+    [self configSealTalkWithApp:application andOptions:launchOptions];
+    [self configRongIM];
+    [self loginAndEnterMainPage];
+    return YES;
+}
 
-    //为了在启动页面不显示statusBar，所以在工程设置里面把statusBar隐藏了，在启动页面过后，显示statusBar。
-    application.statusBarHidden = NO;
-
-    [RCDBuglyManager startWithAppId:BUGLY_APPID];
-    /**
-     *  推送说明：
-     *
-     我们在知识库里还有推送调试页面加了很多说明，当遇到推送问题时可以去知识库里搜索还有查看推送测试页面的说明。
-     *
-     首先必须设置deviceToken，可以搜索本文件关键字“推送处理”。模拟器是无法获取devicetoken，也就没有推送功能。
-     *
-     当使用"开发／测试环境"的appkey测试推送时，必须用Development的证书打包，并且在后台上传"开发／测试环境"的推送证书，证书必须是development的。
-        当使用"生产／线上环境"的appkey测试推送时，必须用Distribution的证书打包，并且在后台上传"生产／线上环境"的推送证书，证书必须是distribution的。
-     */
-
-    BOOL debugMode = NO;
-#if RCDPrivateCloudManualMode
-    debugMode = YES;
-#endif
-    // debugMode是为了动态切换导航server地址和文件server地址，公有云用户可以忽略
-    if (debugMode) {
-        //初始化融云SDK
-        NSString *appKey = [RCDSettingUserDefaults getRCAppKey];
-        if (appKey) {
-            // debug模式初始化sdk
-            [[RCIM sharedRCIM] initWithAppKey:appKey];
-            NSString *navServer = [RCDSettingUserDefaults getRCNaviServer];
-            NSString *fileUrlver = [RCDSettingUserDefaults getRCFileServer];
-            //设置导航server和文件server地址
-            [[RCIMClient sharedRCIMClient] setServerInfo:navServer fileServer:fileUrlver];
-            RCDLoginViewController *settingVC = [[RCDLoginViewController alloc] init];
-            RCDNavigationViewController *_navi =
-                [[RCDNavigationViewController alloc] initWithRootViewController:settingVC];
-            self.window.rootViewController = _navi;
-        } else {
-            RCDSettingServerUrlViewController *settingVC = [[RCDSettingServerUrlViewController alloc] init];
-            RCDNavigationViewController *_navi =
-                [[RCDNavigationViewController alloc] initWithRootViewController:settingVC];
-            self.window.rootViewController = _navi;
-        }
-
-    } else {
-
-        //非debug模式初始化sdk
-        [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY];
-        [RCDSettingUserDefaults setRCAppKey:RONGCLOUD_IM_APPKEY];
-    }
-
+- (void)configRongIM {
+    [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY];
+    [DEFAULTS setObject:RONGCLOUD_IM_APPKEY forKey:RCDAppKeyKey];
+    
     /* RedPacket_FTR  */
     //需要在info.plist加上您的红包的scheme，注意一定不能与其它应用重复
     //设置扩展Module的Url Scheme。
     [[RCIM sharedRCIM] setScheme:@"rongCloudRedPacket" forExtensionModule:@"JrmfPacketManager"];
-
+    
     // 注册自定义测试消息
     [[RCIM sharedRCIM] registerMessageType:[RCDTestMessage class]];
+    [[RCIM sharedRCIM] registerMessageType:[RCDGroupNotificationMessage class]];
+    [[RCIM sharedRCIM] registerMessageType:[RCDContactNotificationMessage class]];
     
     // 设置语音消息采样率为 16KHZ
     [RCIMClient sharedRCIMClient].sampleRate = RCSample_Rate_16000;
     
-    [RCIMClient sharedRCIMClient].voiceMsgType = RCVoiceMessageTypeHighQuality;
-    
     //设置会话列表头像和会话页面头像
-
     [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
-
-    [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
-    //    [RCIM sharedRCIM].portraitImageViewCornerRadius = 10;
-    //开启用户信息和群组信息的持久化
+    [RCIM sharedRCIM].receiveMessageDelegate = self;
     [RCIM sharedRCIM].enablePersistentUserInfoCache = YES;
-    //设置用户信息源和群组信息源
     [RCIM sharedRCIM].userInfoDataSource = RCDDataSource;
     [RCIM sharedRCIM].groupInfoDataSource = RCDDataSource;
-    //设置名片消息功能中联系人信息源和群组信息源
+    [RCIM sharedRCIM].groupMemberDataSource = RCDDataSource;
     [RCContactCardKit shareInstance].contactsDataSource = RCDDataSource;
     [RCContactCardKit shareInstance].groupDataSource = RCDDataSource;
-
-    //设置群组内用户信息源。如果不使用群名片功能，可以不设置
-    //  [RCIM sharedRCIM].groupUserInfoDataSource = RCDDataSource;
-    //  [RCIM sharedRCIM].enableMessageAttachUserInfo = YES;
-    //设置接收消息代理
-    [RCIM sharedRCIM].receiveMessageDelegate = self;
-    //    [RCIM sharedRCIM].globalMessagePortraitSize = CGSizeMake(46, 46);
-    //开启输入状态监听
+    [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
     [RCIM sharedRCIM].enableTypingStatus = YES;
-
-    //开启发送已读回执
     [RCIM sharedRCIM].enabledReadReceiptConversationTypeList =
-        @[ @(ConversationType_PRIVATE), @(ConversationType_DISCUSSION), @(ConversationType_GROUP) ];
-
-    //开启多端未读状态同步
+    @[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ];
     [RCIM sharedRCIM].enableSyncReadStatus = YES;
-
-    //设置显示未注册的消息
-    //如：新版本增加了某种自定义消息，但是老版本不能识别，开发者可以在旧版本中预先自定义这种未识别的消息的显示
     [RCIM sharedRCIM].showUnkownMessage = YES;
     [RCIM sharedRCIM].showUnkownMessageNotificaiton = YES;
-
-    //群成员数据源
-    [RCIM sharedRCIM].groupMemberDataSource = RCDDataSource;
-
-    //开启消息@功能（只支持群聊和讨论组, App需要实现群成员数据源groupMemberDataSource）
     [RCIM sharedRCIM].enableMessageMentioned = YES;
-
-    //开启消息撤回功能
     [RCIM sharedRCIM].enableMessageRecall = YES;
-    //选择媒体资源时，包含视频文件
     [RCIM sharedRCIM].isMediaSelectorContainVideo = YES;
+    [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;
+    
     //  设置头像为圆形
     //  [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
     //  [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
     //   设置优先使用WebView打开URL
     //  [RCIM sharedRCIM].embeddedWebViewPreferred = YES;
+}
 
-    //  设置通话视频分辨率
-    //  [[RCCallClient sharedRCCallClient] setVideoProfile:RC_VIDEO_PROFILE_480P];
-
-    //设置Log级别，开发阶段打印详细log
-    [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;
+- (void)configSealTalkWithApp:(UIApplication *)application andOptions:(NSDictionary *)launchOptions {
+    [self saveCountryInfoIfNeed];
+#ifndef DEBUG
+    [self redirectNSlogToDocumentFolder];
+#endif
+    [NSThread sleepForTimeInterval:1.0];
+    application.statusBarHidden = NO;
+    [RCDBuglyManager startWithAppId:BUGLY_APPID];
+    [self setNavigationBarAppearance];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveMessageNotification:)
+                                                 name:RCKitDispatchMessageNotification
+                                               object:nil];
     
-    [[RCIMClient sharedRCIMClient] setReconnectKickEnable:YES];
+    /**
+     * 推送处理 1
+     */
+    [self registerRemoteNotification:application];
+    
+    /**
+     * 统计推送，并获取融云推送服务扩展字段
+     */
+    [self recordLaunchOptions:launchOptions];
+}
 
-    //登录
-    NSString *token = [DEFAULTS objectForKey:@"userToken"];
-    NSString *userId = [DEFAULTS objectForKey:@"userId"];
-    NSString *userName = [DEFAULTS objectForKey:@"userName"];
-    NSString *password = [DEFAULTS objectForKey:@"userPwd"];
-    NSString *userNickName = [DEFAULTS objectForKey:@"userNickName"];
-    NSString *userPortraitUri = [DEFAULTS objectForKey:@"userPortraitUri"];
+- (void)loginAndEnterMainPage {
+    NSString *token = [DEFAULTS objectForKey:RCDIMTokenKey];
+    NSString *userId = [DEFAULTS objectForKey:RCDUserIdKey];
+    NSString *userName = [DEFAULTS objectForKey:RCDUserNameKey];
+    NSString *password = [DEFAULTS objectForKey:RCDUserPasswordKey];
+    NSString *userNickName = [DEFAULTS objectForKey:RCDUserNickNameKey];
+    NSString *userPortraitUri = [DEFAULTS objectForKey:RCDUserPortraitUriKey];
+    RCDCountry *currentCountry = [[RCDCountry alloc] initWithDict:[DEFAULTS objectForKey:RCDCurrentCountryKey]];
+    NSString *regionCode = @"86";
+    if(currentCountry.phoneCode.length > 0) {
+        regionCode = currentCountry.phoneCode;
+    }
     if (token.length && userId.length && password.length) {
+        [RCDLoginManager openDB:userId];
         RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
         RCDNavigationViewController *rootNavi =
-            [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
+        [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
         self.window.rootViewController = rootNavi;
+        
         [self insertSharedMessageIfNeed];
+        
         RCUserInfo *_currentUserInfo =
-            [[RCUserInfo alloc] initWithUserId:userId name:userNickName portrait:userPortraitUri];
+        [[RCUserInfo alloc] initWithUserId:userId name:userNickName portrait:userPortraitUri];
         [RCIM sharedRCIM].currentUserInfo = _currentUserInfo;
+        
         [[RCIM sharedRCIM] connectWithToken:token
-            success:^(NSString *userId) {
-                [AFHttpTool
-                    loginWithPhone:userName
-                          password:password
-                            region:@"86"
-                           success:^(id response) {
-                               if ([response[@"code"] intValue] == 200) {
-                                   [RCDHTTPTOOL
-                                       getUserInfoByUserID:userId
-                                                completion:^(RCUserInfo *user) {
-                                                    [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
-                                                    [DEFAULTS setObject:user.name forKey:@"userNickName"];
-                                                    [DEFAULTS synchronize];
-                                                    [RCIMClient sharedRCIMClient].currentUserInfo = user;
-                                                    [RCDBuglyManager setUserIdentifier:[NSString stringWithFormat:@"%@ - %@", user.userId,user.name]];
-                                                }];
-                                   //登录demoserver成功之后才能调demo 的接口
-                                   [RCDDataSource syncGroups];
-                                   [RCDDataSource syncFriendList:userId
-                                                        complete:^(NSMutableArray *result){
-                                                        }];
-                               }
-                           }
-                           failure:^(NSError *err){
-                           }];
-            }
-            error:^(RCConnectErrorCode status) {
-                [RCDDataSource syncGroups];
-                NSLog(@"connect error %ld", (long)status);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
-                    RCDNavigationViewController *rootNavi =
-                        [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
-                    self.window.rootViewController = rootNavi;
-                });
-            }
-            tokenIncorrect:^{
-                [AFHttpTool loginWithPhone:userName
-                                  password:password
-                                    region:@"86"
-                                   success:^(id response) {
-                                       if ([response[@"code"] intValue] == 200) {
-                                           NSString *newToken = response[@"result"][@"token"];
-                                           NSString *newUserId = response[@"result"][@"id"];
-                                           [[RCIM sharedRCIM] connectWithToken:newToken
-                                               success:^(NSString *userId) {
-                                                   [self loginSuccess:userName
-                                                               userId:newUserId
-                                                                token:newToken
-                                                             password:password];
-                                               }
-                                               error:^(RCConnectErrorCode status) {
-                                                   [self gotoLoginViewAndDisplayReasonInfo:RCDLocalizedString(@"Login_is_invalid_please_login_again")
-];
-                                               }
-                                               tokenIncorrect:^{
-                                                   [self gotoLoginViewAndDisplayReasonInfo:@"无法连接到服务器"];
-                                                   NSLog(@"Token无效");
-                                               }];
-                                       } else {
-                                           [self gotoLoginViewAndDisplayReasonInfo:@"手机号或密码错误"];
-                                       }
-                                   }
-                                   failure:^(NSError *err){
-
-                                   }];
-            }];
-
+                                    success:^(NSString *userId) {
+                                        [self loginAppServer:userName password:password region:regionCode userId:userId];
+                                    }
+                                      error:^(RCConnectErrorCode status) {
+                                          NSLog(@"connect error %ld", (long)status);
+                                          [self loginAppServer:userName password:password region:regionCode userId:userId];
+                                      }
+                             tokenIncorrect:^{
+                                 [self refreshIMTokenAndReconnect:userName password:password region:regionCode];
+                             }];
+        
     } else {
         RCDLoginViewController *vc = [[RCDLoginViewController alloc] init];
         RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc] initWithRootViewController:vc];
         self.window.rootViewController = _navi;
     }
+}
 
-    /**
-     * 推送处理1
-     */
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        //注册推送, 用于iOS8以及iOS8之后的系统
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings
-            settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)
-                  categories:nil];
-        [application registerUserNotificationSettings:settings];
-    } else {
-        //注册推送，用于iOS8之前的系统
-        UIRemoteNotificationType myTypes =
-            UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
-        [application registerForRemoteNotificationTypes:myTypes];
-    }
-    /**
-     * 统计推送打开率1
-     */
-    [[RCIMClient sharedRCIMClient] recordLaunchOptionsEvent:launchOptions];
-    /**
-     * 获取融云推送服务扩展字段1
-     */
-    NSDictionary *pushServiceData = [[RCIMClient sharedRCIMClient] getPushExtraFromLaunchOptions:launchOptions];
-    if (pushServiceData) {
-        NSLog(@"该启动事件包含来自融云的推送服务");
-        for (id key in [pushServiceData allKeys]) {
-            NSLog(@"%@", pushServiceData[key]);
-        }
-    } else {
-        NSLog(@"该启动事件不包含来自融云的推送服务");
-    }
+- (void)loginAppServer:(NSString *)userName
+              password:(NSString *)password
+                region:(NSString *)regionCode
+                userId:(NSString *)userId {
+    [RCDLoginManager loginWithPhone:userName
+                           password:password
+                             region:regionCode
+                            success:^(NSString * _Nonnull token, NSString * _Nonnull userId) {
+                                [self saveLoginData:userName
+                                            userId:userId
+                                             token:token
+                                          password:password];
+                            } error:^(RCDLoginErrorCode errorCode) {
+                        
+                            }];
+}
 
-    //统一导航条样式
-    UIFont *font = [UIFont systemFontOfSize:19.f];
-    NSDictionary *textAttributes = @{NSFontAttributeName : font, NSForegroundColorAttributeName : [UIColor whiteColor]};
-    [[UINavigationBar appearance] setTitleTextAttributes:textAttributes];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:@"0099ff" alpha:1.0f]];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didReceiveMessageNotification:)
-                                                 name:RCKitDispatchMessageNotification
-                                               object:nil];
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-1.5, 0)
-                                                         forBarMetrics:UIBarMetricsDefault];
-    UIImage *tmpImage = [UIImage imageNamed:@"back"];
-
-    CGSize newSize = CGSizeMake(12, 20);
-    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0f);
-    [tmpImage drawInRect:CGRectMake(2, -2, newSize.width, newSize.height)];
-    UIImage *backButtonImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    [[UINavigationBar appearance] setBackIndicatorImage:backButtonImage];
-    [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:backButtonImage];
-    if (IOS_FSystenVersion >= 8.0) {
-        [UINavigationBar appearance].translucent = NO;
-    }
-
-    //    NSArray *groups = [self getAllGroupInfo];
-    //    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:groups];
-    //    NSArray *loadedContents = [NSKeyedUnarchiver
-    //                               unarchiveObjectWithData:data];
-    //    NSLog(@"loadedContents size is %d", loadedContents.count);
-    return YES;
+- (void)refreshIMTokenAndReconnect:(NSString *)userName password:(NSString *)password region:(NSString *)regionCode {
+    [RCDLoginManager loginWithPhone:userName
+                           password:password
+                             region:regionCode
+                            success:^(NSString * _Nonnull newToken, NSString * _Nonnull newUserId) {
+                                [[RCIM sharedRCIM] connectWithToken:newToken
+                                                            success:^(NSString *userId) {
+                                                                [self saveLoginData:userName
+                                                                            userId:newUserId
+                                                                             token:newToken
+                                                                          password:password];
+                                                            }
+                                                              error:^(RCConnectErrorCode status) {
+                                                                  [self gotoLoginViewAndDisplayReasonInfo:RCDLocalizedString(@"Login_is_invalid_please_login_again")
+                                                                   ];
+                                                              }
+                                                     tokenIncorrect:^{
+                                                         [self gotoLoginViewAndDisplayReasonInfo:@"无法连接到服务器"];
+                                                         NSLog(@"Token无效");
+                                                     }];
+                            } error:^(RCDLoginErrorCode errorCode) {
+                                if (errorCode == RCDLoginErrorCodeWrongPassword) {
+                                    [self gotoLoginViewAndDisplayReasonInfo:@"手机号或密码错误"];
+                                }
+                            }];
 }
 
 /**
@@ -353,7 +214,6 @@
 //注册用户通知设置
 - (void)application:(UIApplication *)application
     didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
-    // register to receive notifications
     [application registerForRemoteNotifications];
 }
 
@@ -379,11 +239,6 @@
     NSLog(@"获取DeviceToken失败！！！");
     NSLog(@"ERROR：%@", error);
 #endif
-}
-
-- (void)onlineConfigCallBack:(NSNotification *)note {
-
-    NSLog(@"online config has fininshed and note = %@", note.userInfo);
 }
 
 /**
@@ -414,23 +269,13 @@
      * 统计推送打开率3
      */
     [[RCIMClient sharedRCIMClient] recordLocalNotificationEvent:notification];
-
-    //  //震动
-    //  AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    //  AudioServicesPlaySystemSound(1007);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state.
-    // This can occur for certain types of temporary interruptions (such as an
-    // incoming phone call or SMS message) or when the user quits the application
-    // and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down
-    // OpenGL ES frame rates. Games should use this method to pause the game.
     RCConnectionStatus status = [[RCIMClient sharedRCIMClient] getConnectionStatus];
     if (status != ConnectionStatus_SignUp) {
         int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
-            @(ConversationType_PRIVATE), @(ConversationType_DISCUSSION), @(ConversationType_APPSERVICE),
+            @(ConversationType_PRIVATE), @(ConversationType_APPSERVICE),
             @(ConversationType_PUBLICSERVICE), @(ConversationType_GROUP)
         ]];
         application.applicationIconBadgeNumber = unreadMsgCount;
@@ -438,20 +283,6 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate
-    // timers, and store enough application state information to restore your
-    // application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called
-    // instead of applicationWillTerminate: when the user quits.
-    //  int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
-    //    @(ConversationType_PRIVATE),
-    //    @(ConversationType_DISCUSSION),
-    //    @(ConversationType_APPSERVICE),
-    //    @(ConversationType_PUBLICSERVICE),
-    //    @(ConversationType_GROUP)
-    //  ]];
-    //  application.applicationIconBadgeNumber = unreadMsgCount;
-
     // 登陆状态下为消息分享保存会话信息
     if([RCIMClient sharedRCIMClient].getConnectionStatus == ConnectionStatus_Connected){
        [self saveConversationInfoForMessageShare];
@@ -459,112 +290,17 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the inactive state;
-    // here you can undo many of the changes made on entering the background.
     if ([[RCIMClient sharedRCIMClient] getConnectionStatus] == ConnectionStatus_Connected) {
         // 插入分享消息
         [self insertSharedMessageIfNeed];
     }
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the
-    // application was inactive. If the application was previously in the
-    // background, optionally refresh the user interface.
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if
-    // appropriate. See also applicationDidEnterBackground:.
-}
-
-//插入分享消息
-- (void)insertSharedMessageIfNeed {
-    NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.cn.rongcloud.im.share"];
-
-    NSArray *sharedMessages = [shareUserDefaults valueForKey:@"sharedMessages"];
-    if (sharedMessages.count > 0) {
-        for (NSDictionary *sharedInfo in sharedMessages) {
-            RCRichContentMessage *richMsg = [[RCRichContentMessage alloc] init];
-            richMsg.title = [sharedInfo objectForKey:@"title"];
-            richMsg.digest = [sharedInfo objectForKey:@"content"];
-            richMsg.url = [sharedInfo objectForKey:@"url"];
-            richMsg.imageURL = [sharedInfo objectForKey:@"imageURL"];
-            richMsg.extra = [sharedInfo objectForKey:@"extra"];
-            //      long long sendTime = [[sharedInfo objectForKey:@"sharedTime"] longLongValue];
-            //      RCMessage *message = [[RCIMClient sharedRCIMClient] insertOutgoingMessage:[[sharedInfo
-            //      objectForKey:@"conversationType"] intValue] targetId:[sharedInfo objectForKey:@"targetId"]
-            //      sentStatus:SentStatus_SENT content:richMsg sentTime:sendTime];
-            RCMessage *message = [[RCIMClient sharedRCIMClient]
-                insertOutgoingMessage:[[sharedInfo objectForKey:@"conversationType"] intValue]
-                             targetId:[sharedInfo objectForKey:@"targetId"]
-                           sentStatus:SentStatus_SENT
-                              content:richMsg];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"RCDSharedMessageInsertSuccess" object:message];
-        }
-        [shareUserDefaults removeObjectForKey:@"sharedMessages"];
-        [shareUserDefaults synchronize];
-    }
-}
-
-//为消息分享保存会话信息
-- (void)saveConversationInfoForMessageShare {
-    NSArray *conversationList =
-        [[RCIMClient sharedRCIMClient] getConversationList:@[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ]];
-
-    NSMutableArray *conversationInfoList = [[NSMutableArray alloc] init];
-    if (conversationList.count > 0) {
-        for (RCConversation *conversation in conversationList) {
-            NSMutableDictionary *conversationInfo = [NSMutableDictionary dictionary];
-            [conversationInfo setValue:conversation.targetId forKey:@"targetId"];
-            [conversationInfo setValue:@(conversation.conversationType) forKey:@"conversationType"];
-            if (conversation.conversationType == ConversationType_PRIVATE) {
-                RCUserInfo *user = [[RCIM sharedRCIM] getUserInfoCache:conversation.targetId];
-                [conversationInfo setValue:user.name forKey:@"name"];
-                [conversationInfo setValue:user.portraitUri forKey:@"portraitUri"];
-            } else if (conversation.conversationType == ConversationType_GROUP) {
-                RCGroup *group = [[RCIM sharedRCIM] getGroupInfoCache:conversation.targetId];
-                [conversationInfo setValue:group.groupName forKey:@"name"];
-                [conversationInfo setValue:group.portraitUri forKey:@"portraitUri"];
-            }
-            [conversationInfoList addObject:conversationInfo];
-        }
-    }
-    NSURL *sharedURL = [[NSFileManager defaultManager]
-        containerURLForSecurityApplicationGroupIdentifier:@"group.cn.rongcloud.im.share"];
-    NSURL *fileURL = [sharedURL URLByAppendingPathComponent:@"rongcloudShare.plist"];
-    [conversationInfoList writeToURL:fileURL atomically:YES];
-
-    NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.cn.rongcloud.im.share"];
-    [shareUserDefaults setValue:[RCIM sharedRCIM].currentUserInfo.userId forKey:@"currentUserId"];
-    [shareUserDefaults setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserCookies"] forKey:@"Cookie"];
-    [shareUserDefaults synchronize];
-}
-
-- (void)redirectNSlogToDocumentFolder {
-    NSLog(@"Log重定向到本地，如果您需要控制台Log，注释掉重定向逻辑即可。");
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentDirectory = [paths objectAtIndex:0];
-
-    [self removeExpireLogFiles:documentDirectory];
-
-    NSDate *currentDate = [NSDate date];
-    NSDateFormatter *dateformatter = [[NSDateFormatter alloc] init];
-    [dateformatter setDateFormat:@"MMddHHmmss"];
-    NSString *formattedDate = [dateformatter stringFromDate:currentDate];
-
-    NSString *fileName = [NSString stringWithFormat:@"rc%@.log", formattedDate];
-    NSString *logFilePath = [documentDirectory stringByAppendingPathComponent:fileName];
-
-    freopen([logFilePath cStringUsingEncoding:NSASCIIStringEncoding], "a+", stdout);
-    freopen([logFilePath cStringUsingEncoding:NSASCIIStringEncoding], "a+", stderr);
-}
-
 - (void)didReceiveMessageNotification:(NSNotification *)notification {
     NSNumber *left = [notification.userInfo objectForKey:@"left"];
     if ([RCIMClient sharedRCIMClient].sdkRunningMode == RCSDKRunningMode_Background && 0 == left.integerValue) {
         int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
-            @(ConversationType_PRIVATE), @(ConversationType_DISCUSSION), @(ConversationType_APPSERVICE),
+            @(ConversationType_PRIVATE), @(ConversationType_APPSERVICE),
             @(ConversationType_PUBLICSERVICE), @(ConversationType_GROUP)
         ]];
         dispatch_async(dispatch_get_main_queue(),^{
@@ -584,48 +320,6 @@
         NSLog(@"not handled the request: %@", userInfo);
     }
 }
-#pragma mark - RCWKAppInfoProvider
-- (NSString *)getAppName {
-    return @"融云";
-}
-
-- (NSString *)getAppGroups {
-    return @"group.cn.rongcloud.im.WKShare";
-}
-
-- (NSArray *)getAllUserInfo {
-    return [RCDDataSource getAllUserInfo:^{
-        [[RCWKNotifier sharedWKNotifier] notifyWatchKitUserInfoChanged];
-    }];
-}
-- (NSArray *)getAllGroupInfo {
-    return [RCDDataSource getAllGroupInfo:^{
-        [[RCWKNotifier sharedWKNotifier] notifyWatchKitGroupChanged];
-    }];
-}
-- (NSArray *)getAllFriends {
-    return [RCDDataSource getAllFriends:^{
-        [[RCWKNotifier sharedWKNotifier] notifyWatchKitFriendChanged];
-    }];
-}
-- (void)openParentApp {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"rongcloud://connect"]];
-}
-- (BOOL)getNewMessageNotificationSound {
-    return ![RCIM sharedRCIM].disableMessageAlertSound;
-}
-- (void)setNewMessageNotificationSound:(BOOL)on {
-    [RCIM sharedRCIM].disableMessageAlertSound = !on;
-}
-
-- (BOOL)getLoginStatus {
-    NSString *token = [DEFAULTS stringForKey:@"userToken"];
-    if (token.length) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
 
 #pragma mark - RCIMConnectionStatusDelegate
 
@@ -636,43 +330,23 @@
  */
 - (void)onRCIMConnectionStatusChanged:(RCConnectionStatus)status {
     if (status == ConnectionStatus_KICKED_OFFLINE_BY_OTHER_CLIENT) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"alert")
-                                                        message:RCDLocalizedString(@"accout_kicked")
-                                                       delegate:nil
-                                              cancelButtonTitle:RCDLocalizedString(@"i_know")
-
-                                              otherButtonTitles:nil, nil];
-        [alert show];
+        [self showAlert:RCDLocalizedString(@"alert") message:RCDLocalizedString(@"accout_kicked") cancelBtnTitle:RCDLocalizedString(@"i_know")];
         RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
         RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc] initWithRootViewController:loginVC];
         self.window.rootViewController = _navi;
     } else if (status == ConnectionStatus_TOKEN_INCORRECT) {
-        [AFHttpTool getTokenSuccess:^(id response) {
-            NSString *token = response[@"result"][@"token"];
-            [[RCIM sharedRCIM] connectWithToken:token
-                success:^(NSString *userId) {
-
-                }
-                error:^(RCConnectErrorCode status) {
-
-                }
-                tokenIncorrect:^{
-
+        [RCDLoginManager getToken:^(BOOL success, NSString * _Nonnull token, NSString * _Nonnull userId) {
+            if (success) {
+                [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
+                } error:^(RCConnectErrorCode status) {
+                } tokenIncorrect:^{
                 }];
-        }
-                            failure:^(NSError *err){
-
-                            }];
+                
+            }
+        }];
     } else if (status == ConnectionStatus_DISCONN_EXCEPTION) {
+        [self showAlert:RCDLocalizedString(@"alert") message:RCDLocalizedString(@"Your_account_has_been_banned") cancelBtnTitle:RCDLocalizedString(@"i_know")];
         [[RCIMClient sharedRCIMClient] disconnect];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"alert")
-                                                        message:RCDLocalizedString(@"Your_account_has_been_banned")
-
-                                                       delegate:nil
-                                              cancelButtonTitle:RCDLocalizedString(@"i_know")
-
-                                              otherButtonTitles:nil, nil];
-        [alert show];
         RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
         RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc] initWithRootViewController:loginVC];
         self.window.rootViewController = _navi;
@@ -685,60 +359,25 @@
         return YES;
     }
     if ([[message.content.class getObjectName] isEqualToString:@"RCJrmf:RpOpendMsg"]) {
-    return YES;
+        return YES;
     }
     return NO;
 }
 
 - (void)onRCIMReceiveMessage:(RCMessage *)message left:(int)left {
-    if ([message.content isMemberOfClass:[RCInformationNotificationMessage class]]) {
-        RCInformationNotificationMessage *msg = (RCInformationNotificationMessage *)message.content;
-        // NSString *str = [NSString stringWithFormat:@"%@",msg.message];
-        if ([msg.message rangeOfString:@"你已添加了"].location != NSNotFound) {
-            [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
-                                 complete:^(NSMutableArray *friends){
-                                 }];
-        }
-    } else if ([message.content isMemberOfClass:[RCContactNotificationMessage class]]) {
-        RCContactNotificationMessage *msg = (RCContactNotificationMessage *)message.content;
-        if ([msg.operation isEqualToString:ContactNotificationMessage_ContactOperationAcceptResponse]) {
-            [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
-                                 complete:^(NSMutableArray *friends){
-                                 }];
-        }
-    } else if ([message.content isMemberOfClass:[RCGroupNotificationMessage class]]) {
-        RCGroupNotificationMessage *msg = (RCGroupNotificationMessage *)message.content;
-        if ([msg.operation isEqualToString:@"Dismiss"] &&
-            [msg.operatorUserId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-            [[RCIMClient sharedRCIMClient]clearRemoteHistoryMessages:ConversationType_GROUP
-                                                            targetId:message.targetId
-                                                          recordTime:message.sentTime
-                                                             success:^{
-                                                                 [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP targetId:message.targetId];
-                                                             }
-                                                               error:nil
-             ];
-            [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_GROUP targetId:message.targetId];
-        } else if ([msg.operation isEqualToString:@"Quit"] || [msg.operation isEqualToString:@"Add"] ||
-                   [msg.operation isEqualToString:@"Kicked"] || [msg.operation isEqualToString:@"Rename"]) {
-            if (![msg.operation isEqualToString:@"Rename"]) {
-                [RCDHTTPTOOL getGroupMembersWithGroupId:message.targetId
-                                                  Block:^(NSMutableArray *result) {
-                                                      [[RCDataBaseManager shareInstance]
-                                                          insertGroupMemberToDB:result
-                                                                        groupId:message.targetId
-                                                                       complete:^(BOOL results){
-
-                                                                       }];
-                                                  }];
+    if (![RCDGroupManager isHoldGroupNotificationMessage:message]) {
+        if ([message.content isMemberOfClass:[RCInformationNotificationMessage class]]) {
+            RCInformationNotificationMessage *msg = (RCInformationNotificationMessage *)message.content;
+            // NSString *str = [NSString stringWithFormat:@"%@",msg.message];
+            if ([msg.message rangeOfString:@"你已添加了"].location != NSNotFound) {
+                [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
+                                     complete:^(NSArray *friends){
+                                     }];
             }
-            [RCDHTTPTOOL getGroupByID:message.targetId
-                    successCompletion:^(RCDGroupInfo *group) {
-                        [[RCDataBaseManager shareInstance] insertGroupToDB:group];
-                        [[RCIM sharedRCIM] refreshGroupInfoCache:group withGroupId:group.groupId];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdeteGroupInfo"
-                                                                            object:message.targetId];
-                    }];
+        } else if ([message.content isMemberOfClass:[RCDContactNotificationMessage class]] || [message.content isMemberOfClass:[RCContactNotificationMessage class]]) {
+            [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
+                                 complete:^(NSArray *friends){
+                                 }];
         }
     }
 }
@@ -775,73 +414,245 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RCKitDispatchMessageNotification object:nil];
 }
 
-- (void)loginSuccess:(NSString *)userName
+- (void)saveLoginData:(NSString *)userName
               userId:(NSString *)userId
                token:(NSString *)token
             password:(NSString *)password {
     //保存默认用户
-    [DEFAULTS setObject:userName forKey:@"userName"];
-    [DEFAULTS setObject:password forKey:@"userPwd"];
-    [DEFAULTS setObject:token forKey:@"userToken"];
-    [DEFAULTS setObject:userId forKey:@"userId"];
+    [DEFAULTS setObject:userName forKey:RCDUserNameKey];
+    [DEFAULTS setObject:password forKey:RCDUserPasswordKey];
+    [DEFAULTS setObject:token forKey:RCDIMTokenKey];
+    [DEFAULTS setObject:userId forKey:RCDUserIdKey];
     [DEFAULTS synchronize];
-    //保存“发现”的信息
-    [RCDHTTPTOOL getSquareInfoCompletion:^(NSMutableArray *result) {
-        [DEFAULTS setObject:result forKey:@"SquareInfoList"];
-        [DEFAULTS synchronize];
-    }];
-
-    [AFHttpTool getUserInfo:userId
-                    success:^(id response) {
-                        if ([response[@"code"] intValue] == 200) {
-                            NSDictionary *result = response[@"result"];
-                            NSString *nickname = result[@"nickname"];
-                            NSString *portraitUri = result[@"portraitUri"];
-                            RCUserInfo *user =
-                                [[RCUserInfo alloc] initWithUserId:userId name:nickname portrait:portraitUri];
-                            if (!user.portraitUri || user.portraitUri.length <= 0) {
-                                user.portraitUri = [RCDUtilities defaultUserPortrait:user];
-                            }
-                            [[RCDataBaseManager shareInstance] insertUserToDB:user];
-                            [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:userId];
-                            [RCIM sharedRCIM].currentUserInfo = user;
-                            [DEFAULTS setObject:user.portraitUri forKey:@"userPortraitUri"];
-                            [DEFAULTS setObject:user.name forKey:@"userNickName"];
-                            [DEFAULTS synchronize];
-                        }
-                    }
-                    failure:^(NSError *err){
-
-                    }];
+    
+    [RCDUserInfoManager getUserInfoFromServer:userId
+                                     complete:^(RCUserInfo *userInfo) {
+                                         [RCIM sharedRCIM].currentUserInfo = userInfo;
+                                         [DEFAULTS setObject:userInfo.portraitUri forKey:RCDUserPortraitUriKey];
+                                         [DEFAULTS setObject:userInfo.name forKey:RCDUserNickNameKey];
+                                         [DEFAULTS synchronize];
+                                     }];
     //同步群组
     [RCDDataSource syncGroups];
     [RCDDataSource syncFriendList:userId
-                         complete:^(NSMutableArray *friends){
+                         complete:^(NSArray *friends){
                          }];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
-        RCDNavigationViewController *rootNavi =
-            [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
-        self.window.rootViewController = rootNavi;
-
-    });
 }
 
 - (void)gotoLoginViewAndDisplayReasonInfo:(NSString *)reason {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:reason
-                                                           delegate:nil
-                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
-
-                                                  otherButtonTitles:nil, nil];
-        ;
-        [alertView show];
+        [self showAlert:nil message:reason cancelBtnTitle:RCDLocalizedString(@"confirm")];
         RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
         RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc] initWithRootViewController:loginVC];
         self.window.rootViewController = _navi;
 
     });
+}
+#pragma mark - ShareExtension
+//插入分享消息
+- (void)insertSharedMessageIfNeed {
+    NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.cn.rongcloud.im.share"];
+    
+    NSArray *sharedMessages = [shareUserDefaults valueForKey:@"sharedMessages"];
+    if (sharedMessages.count > 0) {
+        for (NSDictionary *sharedInfo in sharedMessages) {
+            RCRichContentMessage *richMsg = [[RCRichContentMessage alloc] init];
+            richMsg.title = [sharedInfo objectForKey:@"title"];
+            richMsg.digest = [sharedInfo objectForKey:@"content"];
+            richMsg.url = [sharedInfo objectForKey:@"url"];
+            richMsg.imageURL = [sharedInfo objectForKey:@"imageURL"];
+            richMsg.extra = [sharedInfo objectForKey:@"extra"];
+            RCMessage *message = [[RCIMClient sharedRCIMClient]
+                                  insertOutgoingMessage:[[sharedInfo objectForKey:@"conversationType"] intValue]
+                                  targetId:[sharedInfo objectForKey:@"targetId"]
+                                  sentStatus:SentStatus_SENT
+                                  content:richMsg];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"RCDSharedMessageInsertSuccess" object:message];
+        }
+        [shareUserDefaults removeObjectForKey:@"sharedMessages"];
+        [shareUserDefaults synchronize];
+    }
+}
+
+//为消息分享保存会话信息
+- (void)saveConversationInfoForMessageShare {
+    NSArray *conversationList =
+    [[RCIMClient sharedRCIMClient] getConversationList:@[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ]];
+    
+    NSMutableArray *conversationInfoList = [[NSMutableArray alloc] init];
+    if (conversationList.count > 0) {
+        for (RCConversation *conversation in conversationList) {
+            NSMutableDictionary *conversationInfo = [NSMutableDictionary dictionary];
+            [conversationInfo setValue:conversation.targetId forKey:@"targetId"];
+            [conversationInfo setValue:@(conversation.conversationType) forKey:@"conversationType"];
+            if (conversation.conversationType == ConversationType_PRIVATE) {
+                RCUserInfo *user = [RCDUserInfoManager getUserInfo:conversation.targetId];
+                [conversationInfo setValue:user.name forKey:@"name"];
+                [conversationInfo setValue:user.portraitUri forKey:@"portraitUri"];
+            } else if (conversation.conversationType == ConversationType_GROUP) {
+                RCGroup *group = [[RCIM sharedRCIM] getGroupInfoCache:conversation.targetId];
+                [conversationInfo setValue:group.groupName forKey:@"name"];
+                [conversationInfo setValue:group.portraitUri forKey:@"portraitUri"];
+            }
+            [conversationInfoList addObject:conversationInfo];
+        }
+    }
+    NSURL *sharedURL = [[NSFileManager defaultManager]
+                        containerURLForSecurityApplicationGroupIdentifier:@"group.cn.rongcloud.im.share"];
+    NSURL *fileURL = [sharedURL URLByAppendingPathComponent:@"rongcloudShare.plist"];
+    [conversationInfoList writeToURL:fileURL atomically:YES];
+    
+    NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.cn.rongcloud.im.share"];
+    [shareUserDefaults setValue:[RCIM sharedRCIM].currentUserInfo.userId forKey:@"currentUserId"];
+    [shareUserDefaults setValue:[DEFAULTS objectForKey:RCDUserCookiesKey] forKey:RCDCookieKey];
+    [shareUserDefaults synchronize];
+}
+
+#pragma mark - RCWKAppInfoProvider
+- (NSString *)getAppName {
+    return @"融云";
+}
+
+- (NSString *)getAppGroups {
+    return @"group.cn.rongcloud.im.WKShare";
+}
+
+- (NSArray *)getAllGroupInfo {
+    return [RCDDataSource getAllGroupInfo:^{
+        [[RCWKNotifier sharedWKNotifier] notifyWatchKitGroupChanged];
+    }];
+}
+
+- (NSArray *)getAllFriends {
+    return [RCDDataSource getAllFriends:^{
+        [[RCWKNotifier sharedWKNotifier] notifyWatchKitFriendChanged];
+    }];
+}
+
+- (void)openParentApp {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"rongcloud://connect"]];
+}
+
+- (BOOL)getNewMessageNotificationSound {
+    return ![RCIM sharedRCIM].disableMessageAlertSound;
+}
+
+- (void)setNewMessageNotificationSound:(BOOL)on {
+    [RCIM sharedRCIM].disableMessageAlertSound = !on;
+}
+
+- (BOOL)getLoginStatus {
+    NSString *token = [DEFAULTS stringForKey:RCDIMTokenKey];
+    if (token.length) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (void)logout {
+    
+}
+
+#pragma mark - private method
+- (void)registerRemoteNotification:(UIApplication *)application {
+    /**
+     *  推送说明：
+     *
+     我们在知识库里还有推送调试页面加了很多说明，当遇到推送问题时可以去知识库里搜索还有查看推送测试页面的说明。
+     *
+     首先必须设置deviceToken，可以搜索本文件关键字“推送处理”。模拟器是无法获取devicetoken，也就没有推送功能。
+     *
+     当使用"开发／测试环境"的appkey测试推送时，必须用Development的证书打包，并且在后台上传"开发／测试环境"的推送证书，证书必须是development的。
+     当使用"生产／线上环境"的appkey测试推送时，必须用Distribution的证书打包，并且在后台上传"生产／线上环境"的推送证书，证书必须是distribution的。
+     */
+    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        //注册推送, 用于iOS8以及iOS8之后的系统
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings
+                                                settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)
+                                                categories:nil];
+        [application registerUserNotificationSettings:settings];
+    } else {
+        //注册推送，用于iOS8之前的系统
+        UIRemoteNotificationType myTypes =
+        UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
+        [application registerForRemoteNotificationTypes:myTypes];
+    }
+}
+
+- (void)recordLaunchOptions:(NSDictionary *)launchOptions {
+    /**
+     * 统计推送打开率1
+     */
+    [[RCIMClient sharedRCIMClient] recordLaunchOptionsEvent:launchOptions];
+    /**
+     * 获取融云推送服务扩展字段1
+     */
+    NSDictionary *pushServiceData = [[RCIMClient sharedRCIMClient] getPushExtraFromLaunchOptions:launchOptions];
+    if (pushServiceData) {
+        NSLog(@"该启动事件包含来自融云的推送服务");
+        for (id key in [pushServiceData allKeys]) {
+            NSLog(@"%@", pushServiceData[key]);
+        }
+    } else {
+        NSLog(@"该启动事件不包含来自融云的推送服务");
+    }
+}
+
+- (void)saveCountryInfoIfNeed {
+    NSDictionary *dic = [DEFAULTS objectForKey:RCDCurrentCountryKey];
+    RCDCountry *currentCountry;
+    if (!dic) {
+        currentCountry = [[RCDCountry alloc] initWithDict:@{@"region": @"86",
+                                                            @"locale": @{@"en":@"China",@"zh":@"中国"}}];
+        [DEFAULTS setObject:[currentCountry getModelJson] forKey:RCDCurrentCountryKey];
+    }
+}
+
+- (void)setNavigationBarAppearance {
+    //统一导航条样式
+    UIFont *font = [UIFont systemFontOfSize:19.f];
+    NSDictionary *textAttributes = @{NSFontAttributeName : font, NSForegroundColorAttributeName : [UIColor whiteColor]};
+    [[UINavigationBar appearance] setTitleTextAttributes:textAttributes];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:@"0099ff" alpha:1.0f]];
+    
+    
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-1.5, 0)
+                                                         forBarMetrics:UIBarMetricsDefault];
+    UIImage *tmpImage = [UIImage imageNamed:@"back"];
+    
+    CGSize newSize = CGSizeMake(12, 20);
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0f);
+    [tmpImage drawInRect:CGRectMake(2, -2, newSize.width, newSize.height)];
+    UIImage *backButtonImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [[UINavigationBar appearance] setBackIndicatorImage:backButtonImage];
+    [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:backButtonImage];
+    if (IOS_FSystenVersion >= 8.0) {
+        [UINavigationBar appearance].translucent = NO;
+    }
+}
+
+//重定向 log 到本地文件
+//在 info.plist 中打开 Application supports iTunes file sharing
+- (void)redirectNSlogToDocumentFolder {
+    NSLog(@"Log重定向到本地，如果您需要控制台Log，注释掉重定向逻辑即可。");
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = [paths objectAtIndex:0];
+    
+    [self removeExpireLogFiles:documentDirectory];
+    
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *dateformatter = [[NSDateFormatter alloc] init];
+    [dateformatter setDateFormat:@"MMddHHmmss"];
+    NSString *formattedDate = [dateformatter stringFromDate:currentDate];
+    
+    NSString *fileName = [NSString stringWithFormat:@"rc%@.log", formattedDate];
+    NSString *logFilePath = [documentDirectory stringByAppendingPathComponent:fileName];
+    
+    freopen([logFilePath cStringUsingEncoding:NSASCIIStringEncoding], "a+", stdout);
+    freopen([logFilePath cStringUsingEncoding:NSASCIIStringEncoding], "a+", stderr);
 }
 
 - (void)removeExpireLogFiles:(NSString *)logPath {
@@ -884,4 +695,12 @@
     }
 }
 
+- (void)showAlert:(NSString *)title message:(NSString *)msg cancelBtnTitle:(NSString *)cBtnTitle {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:msg
+                                                   delegate:nil
+                                          cancelButtonTitle:cBtnTitle
+                                          otherButtonTitles:nil, nil];
+    [alert show];
+}
 @end

@@ -1,6 +1,0 @@
-framework module RongSticker {
-  umbrella header "RongSticker.h"
-
-  export *
-  module * { export * }
-}

@@ -12,9 +12,9 @@
 #import <AVFoundation/AVFoundation.h>
 
 @interface VoiceInputController()
-@property (weak, nonatomic) IBOutlet WKInterfaceButton *recordButton;
-@property (weak, nonatomic) IBOutlet WKInterfaceButton *sendButton;
-@property (weak, nonatomic) IBOutlet WKInterfaceImage *recordImage;
+@property (weak, nonatomic) WKInterfaceButton *recordButton;
+@property (weak, nonatomic) WKInterfaceButton *sendButton;
+@property (weak, nonatomic) WKInterfaceImage *recordImage;
 @property (strong, nonatomic)RCConversation *conversation;
 @property (nonatomic)BOOL isRecording;
 @property (strong, nonatomic)AVAudioRecorder *recorder;

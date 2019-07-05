@@ -14,7 +14,6 @@
 @protocol RCWKAppInfoProvider
 - (NSString *)getAppName;
 - (NSString *)getAppGroups;
-- (NSArray *)getAllUserInfo;
 - (NSArray *)getAllGroupInfo;
 - (NSArray *)getAllFriends;
 - (void)openParentApp;

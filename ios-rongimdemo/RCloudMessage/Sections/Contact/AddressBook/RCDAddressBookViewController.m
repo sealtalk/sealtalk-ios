@@ -1,0 +1,155 @@
+//
+//  RCDAddressBookViewController.m
+//  RongCloud
+//
+//  Created by Liv on 14/11/11.
+//  Copyright (c) 2014年 RongCloud. All rights reserved.
+//
+
+#import "RCDAddressBookViewController.h"
+#import <MBProgressHUD/MBProgressHUD.h>
+#import "RCDAddressBookTableViewCell.h"
+#import "RCDChatViewController.h"
+#import "RCDCommonDefine.h"
+#import "RCDNoFriendView.h"
+#import "RCDRCIMDataSource.h"
+#import "UIColor+RCColor.h"
+#import "RCDUserInfoManager.h"
+
+@interface RCDAddressBookViewController ()
+
+//#字符索引对应的user object
+@property (nonatomic, strong) NSArray *friends;
+@property (nonatomic, strong) RCDNoFriendView *noFriendView;
+@property (nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, assign) BOOL isSyncFriends;
+
+@end
+
+@implementation RCDAddressBookViewController
+
+#pragma mark - Life Cycle
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setupViews];
+    [self setupNavi];
+    [self getAllData];
+}
+
+- (void)viewDidLayoutSubviews {
+    self.noFriendView.frame = self.view.bounds;
+}
+
+#pragma mark - UITableViewDataSource
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *reusableCellWithIdentifier = @"RCDAddressBookCell";
+    RCDAddressBookTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
+    if (!cell) {
+        cell = [[RCDAddressBookTableViewCell alloc] init];
+    }
+    __weak typeof(self) weakSelf = self;
+    cell.acceptBlock = ^(NSString *userId) {
+        [weakSelf acceptInvite:userId];
+    };
+
+    RCDFriendInfo *user = self.friends[indexPath.row];
+    [cell setModel:user];
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.friends count];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [RCDAddressBookTableViewCell cellHeight];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    RCDFriendInfo *user = self.friends[indexPath.row];
+    if (user.status == RCDFriendStatusRequest || user.status == RCDFriendStatusRequested) {
+        return;
+    }
+
+    RCDChatViewController *chatViewController = [[RCDChatViewController alloc] init];
+    chatViewController.conversationType = ConversationType_PRIVATE;
+    chatViewController.targetId = user.userId;
+    chatViewController.title = user.name;
+    chatViewController.displayUserNameInCell = NO;
+    chatViewController.needPopToRootView = YES;
+    [self.navigationController pushViewController:chatViewController animated:YES];
+}
+
+#pragma mark - Private Method
+- (void)setupViews {
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.tableFooterView = [UIView new];
+    if ([self.tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
+        self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    }
+    [self.tableView addSubview:self.noFriendView];
+}
+
+- (void)setupNavi {
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationItem.title = RCDLocalizedString(@"new_friend");
+}
+
+- (void)getAllData {
+    self.friends = [NSMutableArray arrayWithArray:[RCDUserInfoManager getAllFriendRequests]];
+    if (self.friends.count > 0) {
+        self.noFriendView.hidden = YES;
+        [self.tableView reloadData];
+    } else {
+        self.noFriendView.hidden = NO;
+    }
+    if (self.isSyncFriends == NO) {
+        [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId complete:^(NSArray *result) {
+            self.isSyncFriends = YES;
+            if (result > 0) {
+                rcd_dispatch_main_async_safe(^{
+                    self.noFriendView.hidden = YES;
+                    [self getAllData];
+                });
+            }
+        }];
+    }
+}
+
+- (void)acceptInvite:(NSString *)userId {
+    [self.hud show:YES];
+    [RCDUserInfoManager acceptFriendRequest:userId complete:^(BOOL success) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (success) {
+                self.friends = [RCDUserInfoManager getAllFriendRequests];
+                [self.tableView reloadData];
+                [self.hud hide:YES];
+            } else {
+                [self.hud hide:YES];
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"add_fail") message:nil delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil, nil];
+                [failAlert show];
+            }
+        });
+    }];
+}
+
+#pragma mark - Setter && Getter
+- (RCDNoFriendView *)noFriendView {
+    if (!_noFriendView) {
+        CGRect frame = CGRectMake(0, 0, RCDScreenWidth, RCDScreenHeight - 64);
+        _noFriendView = [[RCDNoFriendView alloc] initWithFrame:frame];
+        _noFriendView.displayLabel.text = RCDLocalizedString(@"no_invite");
+    }
+    return _noFriendView;
+}
+
+- (MBProgressHUD *)hud {
+    if (!_hud) {
+        _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        _hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
+        _hud.labelText = RCDLocalizedString(@"adding_friend");
+    }
+    return _hud;
+}
+@end

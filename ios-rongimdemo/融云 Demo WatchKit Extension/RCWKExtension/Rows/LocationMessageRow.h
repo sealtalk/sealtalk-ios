@@ -9,6 +9,6 @@
 #import "ConversationRowBase.h"
 
 @interface LocationMessageRow : ConversationRowBase
-@property(weak, nonatomic) IBOutlet WKInterfaceImage *locationThumbnail;
+@property(weak, nonatomic) WKInterfaceImage *locationThumbnail;
 
 @end

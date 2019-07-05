@@ -10,6 +10,6 @@
 
 
 @interface ImageViewController : WKInterfaceController
-@property (weak, nonatomic) IBOutlet WKInterfaceImage *image;
-@property (weak, nonatomic) IBOutlet WKInterfaceLabel *loadingLabel;
+@property (weak, nonatomic) WKInterfaceImage *image;
+@property (weak, nonatomic) WKInterfaceLabel *loadingLabel;
 @end

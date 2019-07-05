@@ -1,6 +1,0 @@
-framework module RongSight {
-  umbrella header "RongSight.h"
-
-  export *
-  module * { export * }
-}

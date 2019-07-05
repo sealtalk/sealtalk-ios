@@ -9,7 +9,7 @@
 #import "ConversationRowBase.h"
 
 @interface VoiceMessageRow : ConversationRowBase
-@property(weak, nonatomic) IBOutlet WKInterfaceImage *voiceIcon;
+@property(weak, nonatomic) WKInterfaceImage *voiceIcon;
 - (void)updateUIPlaying;
 - (void)updateUIStop;
 @end

@@ -15,7 +15,7 @@
 #import "RCWKNotificationCenter.h"
 
 @interface ConversationController () <RCWKNotificationObserver>
-@property (weak, nonatomic) IBOutlet WKInterfaceTable *tableView;
+@property (weak, nonatomic) WKInterfaceTable *tableView;
 @property (nonatomic, strong)NSMutableArray *contents; //of RCMessage
 @property (nonatomic, strong)RCConversation *conversation;
 @property (nonatomic)BOOL needLoadAtWillActivity;

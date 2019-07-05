@@ -15,7 +15,7 @@
 #import "RCWKUtility.h"
 
 @interface ConversationListController () <RCWKNotificationObserver>
-@property (weak, nonatomic) IBOutlet WKInterfaceTable *tableView;
+@property (weak, nonatomic) WKInterfaceTable *tableView;
 @property (strong, nonatomic)NSArray *conversations;
 @property (nonatomic)BOOL needLoadAtWillActivity;
 @end
@@ -46,7 +46,7 @@
 
 - (void)loadDataFromApp
 {
-    NSArray *conversationTypes = @[@(ConversationType_PRIVATE),@(ConversationType_DISCUSSION), @(ConversationType_APPSERVICE), @(ConversationType_PUBLICSERVICE),@(ConversationType_GROUP)];
+    NSArray *conversationTypes = @[@(ConversationType_PRIVATE), @(ConversationType_APPSERVICE), @(ConversationType_PUBLICSERVICE),@(ConversationType_GROUP)];
     [RCAppQueryHelper queryParentAppConversationListByType:conversationTypes reply:^(NSArray *conversationList) {
         if (conversationList) {
             self.conversations = conversationList;
@@ -186,8 +186,6 @@
                 [row.headIcon setImageNamed:@"watchd_efault_portrait"];
                 [RCAppQueryHelper requestParentAppCacheHeadIcon:conversation.conversationType targetId:conversation.targetId];
             }
-        } else if (conversation.conversationType == ConversationType_DISCUSSION) {
-            [row.headIcon setImageNamed:@"watch_default_discussion_portrait"];
         } else if (conversation.conversationType == ConversationType_GROUP) {
             [row.headIcon setImageNamed:@"watch_default_group_portrait"];
         } else {
@@ -223,7 +221,6 @@
     
     NSDate *messageDate = [NSDate dateWithTimeIntervalSince1970:secs/1000];
     
-    //    DebugLog(@"messageDate==>%@",messageDate);
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MM:dd"];
     

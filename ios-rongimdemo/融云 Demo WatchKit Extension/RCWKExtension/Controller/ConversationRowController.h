@@ -10,9 +10,9 @@
 @import WatchKit;
 
 @interface ConversationRowController : NSObject
-@property (weak, nonatomic) IBOutlet WKInterfaceImage *headIcon;
-@property (weak, nonatomic) IBOutlet WKInterfaceLabel *name;
-@property (weak, nonatomic) IBOutlet WKInterfaceLabel *lastMsg;
-@property (weak, nonatomic) IBOutlet WKInterfaceLabel *dateLable;
+@property (weak, nonatomic) WKInterfaceImage *headIcon;
+@property (weak, nonatomic) WKInterfaceLabel *name;
+@property (weak, nonatomic) WKInterfaceLabel *lastMsg;
+@property (weak, nonatomic) WKInterfaceLabel *dateLable;
 
 @end

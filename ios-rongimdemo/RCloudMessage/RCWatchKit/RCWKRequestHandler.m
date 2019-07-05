@@ -36,7 +36,7 @@
 
     if ([query isEqualToString:WK_APP_COMMUNICATE_QUERY_UNREAD_COUNT]) {
         int count = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
-            @(ConversationType_PRIVATE), @(ConversationType_DISCUSSION), @(ConversationType_APPSERVICE),
+            @(ConversationType_PRIVATE), @(ConversationType_APPSERVICE),
             @(ConversationType_PUBLICSERVICE), @(ConversationType_GROUP)
         ]];
         [self replyWKApp:[NSNumber numberWithInt:count]];
@@ -72,7 +72,7 @@
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:messages];
         [self replyWKApp:data];
     } else if ([query isEqualToString:WK_APP_COMMUNICATE_REQUEST_CACHE_ALL_HEAD_ICON]) {
-        NSArray *array = [self.provider getAllUserInfo];
+        NSArray *array = [self.provider getAllFriends];
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSURL *containerUrl =
             [fileManager containerURLForSecurityApplicationGroupIdentifier:[self.provider getAppGroups]];
@@ -188,7 +188,7 @@
             [[RCIMClient sharedRCIMClient] clearMessagesUnreadStatus:[conversationType intValue] targetId:targetID];
         [self replyWKApp:[NSNumber numberWithBool:result]];
     } else if ([query isEqualToString:WK_APP_COMMUNICATE_QUERY_CONTACT_LIST]) {
-        NSArray *contacts = [self.provider getAllUserInfo];
+        NSArray *contacts = [self.provider getAllFriends];
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:contacts];
         [self replyWKApp:data];
     } else if ([query isEqualToString:WK_APP_COMMUNICATE_QUERY_GROUP_LIST]) {

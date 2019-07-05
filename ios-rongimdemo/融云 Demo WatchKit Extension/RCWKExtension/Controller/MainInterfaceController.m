@@ -12,11 +12,11 @@
 #import "RCWKNotificationCenter.h"
 
 @interface MainInterfaceController() <RCWKNotificationObserver>
-@property (weak, nonatomic) IBOutlet WKInterfaceImage *appIcon;
-@property (weak, nonatomic) IBOutlet WKInterfaceLabel *newmsgcount;
-@property (weak, nonatomic) IBOutlet WKInterfaceButton *conversation;
-@property (weak, nonatomic) IBOutlet WKInterfaceButton *discussion;
-@property (weak, nonatomic) IBOutlet WKInterfaceButton *settings;
+@property (weak, nonatomic) WKInterfaceImage *appIcon;
+@property (weak, nonatomic) WKInterfaceLabel *newmsgcount;
+@property (weak, nonatomic) WKInterfaceButton *conversation;
+@property (weak, nonatomic) WKInterfaceButton *discussion;
+@property (weak, nonatomic) WKInterfaceButton *settings;
 @property (nonatomic)BOOL needLoadAtWillActivity;
 @end
 

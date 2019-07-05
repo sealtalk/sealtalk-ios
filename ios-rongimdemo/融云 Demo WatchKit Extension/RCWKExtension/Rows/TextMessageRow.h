@@ -9,6 +9,6 @@
 #import "ConversationRowBase.h"
 
 @interface TextMessageRow : ConversationRowBase
-@property(weak, nonatomic) IBOutlet WKInterfaceLabel *contentLabel;
+@property(weak, nonatomic) WKInterfaceLabel *contentLabel;
 
 @end

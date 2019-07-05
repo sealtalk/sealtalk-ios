@@ -10,7 +10,7 @@
 #import <WatchKit/WatchKit.h>
 
 @interface FriendRowController : NSObject
-@property (weak, nonatomic) IBOutlet WKInterfaceImage *header;
-@property (weak, nonatomic) IBOutlet WKInterfaceLabel *name;
+@property (weak, nonatomic) WKInterfaceImage *header;
+@property (weak, nonatomic) WKInterfaceLabel *name;
 
 @end

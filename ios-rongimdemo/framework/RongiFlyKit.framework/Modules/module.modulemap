@@ -1,6 +1,0 @@
-framework module RongiFlyKit {
-  umbrella header "RongiFlyKit.h"
-
-  export *
-  module * { export * }
-}

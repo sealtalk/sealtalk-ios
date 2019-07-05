@@ -1,0 +1,22 @@
+//
+//  RCDGroupMemberCell.h
+//  SealTalk
+//
+//  Created by 张改红 on 2019/6/18.
+//  Copyright © 2019 RongCloud. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+@class RCUserInfo;
+NS_ASSUME_NONNULL_BEGIN
+static NSString *RCDGroupMemberCellIdentifier = @"RCDGroupMemberCellIdentifier";
+
+@interface RCDGroupMemberCell : UITableViewCell
+@property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UIImageView *portraitImageView;
++ (instancetype)cellWithTableView:(UITableView *)tableView;
+- (void)setDataModel:(NSString *)userId;
+- (void)setUserRole:(NSString *)role;
+@end
+
+NS_ASSUME_NONNULL_END

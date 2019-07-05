@@ -13,5 +13,5 @@
 @interface DiscussionNotificationRow : NSObject
 - (void)setMessage:(RCMessage *)message;
 - (void)rowSelected:(RCMessage *)message;
-@property(weak, nonatomic) IBOutlet WKInterfaceLabel *notifationLabel;
+@property(weak, nonatomic) WKInterfaceLabel *notifationLabel;
 @end

@@ -14,7 +14,7 @@
 #import "RCAppInfoModel.h"
 
 @interface FriendListController () <RCWKNotificationObserver>
-@property (weak, nonatomic) IBOutlet WKInterfaceTable *tableView;
+@property (weak, nonatomic) WKInterfaceTable *tableView;
 @property (strong, nonatomic)NSArray *contacts;
 @end
 

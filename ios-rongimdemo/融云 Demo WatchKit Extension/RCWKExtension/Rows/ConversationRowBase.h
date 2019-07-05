@@ -10,9 +10,9 @@
 #import <RongIMLib/RongIMLib.h>
 
 @interface ConversationRowBase : NSObject
-@property(weak, nonatomic) IBOutlet WKInterfaceImage *header;
-@property(weak, nonatomic) IBOutlet WKInterfaceGroup *bgGroup;
-@property(weak, nonatomic) IBOutlet WKInterfaceLabel *name;
+@property(weak, nonatomic) WKInterfaceImage *header;
+@property(weak, nonatomic) WKInterfaceGroup *bgGroup;
+@property(weak, nonatomic) WKInterfaceLabel *name;
 - (void)setMessage:(RCMessage *)message;
 - (void)rowSelected:(RCMessage *)message;
 @end
