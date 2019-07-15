@@ -43,26 +43,32 @@
     self.model = model;
     __block NSString *userName = nil;
     __block NSString *portraitUri = nil;
-    RCDContactNotificationMessage *_contactNotificationMsg = nil;
     //此处需要添加根据userid来获取用户信息的逻辑，extend字段不存在于DB中，当数据来自db时没有extend字段内容，只有userid
     if (nil == model.extend) {
         // Not finished yet, To Be Continue...
-        if (model.conversationType == ConversationType_SYSTEM &&
-            [model.lastestMessage isMemberOfClass:[RCDContactNotificationMessage class]]) {
-            _contactNotificationMsg = (RCDContactNotificationMessage*)model.lastestMessage;
-            if (_contactNotificationMsg.sourceUserId == nil) {
+        if (model.conversationType == ConversationType_SYSTEM) {
+            NSString *sourceUserId;
+            if ([model.lastestMessage isMemberOfClass:[RCDContactNotificationMessage class]]) {
+                RCDContactNotificationMessage *_contactNotificationMsg = (RCDContactNotificationMessage*)model.lastestMessage;
+                sourceUserId = _contactNotificationMsg.sourceUserId;
+            }else if([model.lastestMessage isMemberOfClass:[RCContactNotificationMessage class]]){
+                RCContactNotificationMessage *_contactNotificationMsg = (RCContactNotificationMessage*)model.lastestMessage;
+                sourceUserId = _contactNotificationMsg.sourceUserId;
+            }
+            
+            if (sourceUserId == nil) {
                 self.lblDetail.text = RCDLocalizedString(@"friend_request");
                 [self.ivAva sd_setImageWithURL:[NSURL URLWithString:portraitUri]
                               placeholderImage:[UIImage imageNamed:@"system_notice"]];
                 return;
             }
-            NSDictionary *_cache_userinfo = [DEFAULTS objectForKey:_contactNotificationMsg.sourceUserId];
+            NSDictionary *_cache_userinfo = [DEFAULTS objectForKey:sourceUserId];
             if (_cache_userinfo) {
                 userName = _cache_userinfo[@"username"];
                 portraitUri = _cache_userinfo[@"portraitUri"];
             } else {
                 __weak typeof(self) weakSelf = self;
-                [RCDUserInfoManager getUserInfoFromServer:_contactNotificationMsg.sourceUserId
+                [RCDUserInfoManager getUserInfoFromServer:sourceUserId
                                                  complete:^(RCUserInfo *user) {
                                                      if (user == nil) {
                                                          return;
@@ -85,8 +91,14 @@
 }
 
 - (void)setDataInfo:(NSString *)userName portraitUri:(NSString *)portraitUri{
-    RCDContactNotificationMessage *msg = (RCDContactNotificationMessage *)(self.model.lastestMessage);
-    NSString *operation = msg.operation;
+    NSString *operation;
+    if ([(self.model.lastestMessage) isMemberOfClass:[RCDContactNotificationMessage class]]) {
+        RCDContactNotificationMessage *_contactNotificationMsg = (RCDContactNotificationMessage*)(self.model.lastestMessage);
+        operation = _contactNotificationMsg.operation;
+    }else if([(self.model.lastestMessage) isMemberOfClass:[RCContactNotificationMessage class]]){
+        RCContactNotificationMessage *_contactNotificationMsg = (RCContactNotificationMessage*)(self.model.lastestMessage);
+        operation = _contactNotificationMsg.operation;
+    }
     NSString *operationContent;
     if ([operation isEqualToString:RCDContactNotificationMessage_ContactOperationRequest]) {
         operationContent = [NSString stringWithFormat:RCDLocalizedString(@"from_someone_friend_request"), userName];

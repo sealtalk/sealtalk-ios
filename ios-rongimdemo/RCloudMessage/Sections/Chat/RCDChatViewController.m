@@ -857,9 +857,9 @@
 }
 
 - (void)forwardMessage {
+    [RCDForwardManager sharedInstance].selectedMessages = self.selectedMessages;
     if ([[RCDForwardManager sharedInstance] allSelectedMessagesAreLegal]) {
         [RCDForwardManager sharedInstance].isForward = YES;
-        [RCDForwardManager sharedInstance].selectedMessages = self.selectedMessages;
         RCDForwardSelectedViewController *forwardSelectedVC = [[RCDForwardSelectedViewController alloc] init];
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:forwardSelectedVC];
         [self.navigationController presentViewController:navi animated:YES completion:nil];

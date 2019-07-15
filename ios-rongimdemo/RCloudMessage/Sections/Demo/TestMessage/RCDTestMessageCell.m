@@ -130,13 +130,13 @@
 + (CGSize)getTextLabelSize:(RCDTestMessage *)message {
     if ([message.content length] > 0) {
         float maxWidth = RCDScreenWidth -
-                         (10 + [RCIM sharedRCIM].globalMessagePortraitSize.width + 10) * 2 - 5 - 35;
+        (10 + [RCIM sharedRCIM].globalMessagePortraitSize.width + 10) * 2 - 5 - 35;
         CGRect textRect = [message.content
-            boundingRectWithSize:CGSizeMake(maxWidth, 8000)
-                         options:(NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin |
-                                  NSStringDrawingUsesFontLeading)
-                      attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:Test_Message_Font_Size]}
-                         context:nil];
+                           boundingRectWithSize:CGSizeMake(maxWidth, 8000)
+                           options:(NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin |
+                                    NSStringDrawingUsesFontLeading)
+                           attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:Test_Message_Font_Size]}
+                           context:nil];
         textRect.size.height = ceilf(textRect.size.height);
         textRect.size.width = ceilf(textRect.size.width);
         return CGSizeMake(textRect.size.width + 5, textRect.size.height + 5);

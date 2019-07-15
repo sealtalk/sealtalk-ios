@@ -126,7 +126,7 @@
 
         //自定义会话类型
         if (conversationModelType == RC_CONVERSATION_MODEL_TYPE_CUSTOMIZATION) {
-            if ([model.objectName isEqualToString:@"ST:ContactNtf"]) {
+            if ([model.objectName isEqualToString:@"ST:ContactNtf"] || [model.objectName isEqualToString:RCContactNotificationMessageIdentifier]) {
                 [self pushAddressBook];
             }
         }
@@ -140,7 +140,7 @@
         RCConversationModel *model = dataSource[i];
         //筛选请求添加好友的系统消息，用于生成自定义会话类型的cell
         if (model.conversationType == ConversationType_SYSTEM &&
-            [model.lastestMessage isMemberOfClass:[RCDContactNotificationMessage class]]) {
+            ([model.lastestMessage isMemberOfClass:[RCDContactNotificationMessage class]] || [model.lastestMessage isMemberOfClass:[RCContactNotificationMessage class]])) {
             model.conversationModelType = RC_CONVERSATION_MODEL_TYPE_CUSTOMIZATION;
         }
         if ([model.lastestMessage isKindOfClass:[RCGroupNotificationMessage class]]) {
@@ -216,19 +216,27 @@
     __weak typeof(self) blockSelf_ = self;
     //处理好友请求
     RCMessage *message = notification.object;
-    if ([message.content isMemberOfClass:[RCDContactNotificationMessage class]]) {
+    if ([message.content isMemberOfClass:[RCDContactNotificationMessage class]] || [message.content isMemberOfClass:[RCContactNotificationMessage class]]) {
         if (message.conversationType != ConversationType_SYSTEM) {
             NSLog(@"好友消息要发系统消息！！！");
 #if DEBUG
             @throw [[NSException alloc] initWithName:@"error" reason:@"好友消息要发系统消息！！！" userInfo:nil];
 #endif
         }
-        RCDContactNotificationMessage *_contactNotificationMsg = (RCDContactNotificationMessage *)message.content;
-        if (_contactNotificationMsg.sourceUserId == nil || _contactNotificationMsg.sourceUserId.length == 0) {
+        NSString *sourceUserId;
+        if ([message.content isMemberOfClass:[RCDContactNotificationMessage class]]) {
+            RCDContactNotificationMessage *_contactNotificationMsg = (RCDContactNotificationMessage*)message.content;
+            sourceUserId = _contactNotificationMsg.sourceUserId;
+        }else if([message.content isMemberOfClass:[RCContactNotificationMessage class]]){
+            RCContactNotificationMessage *_contactNotificationMsg = (RCContactNotificationMessage*)message.content;
+            sourceUserId = _contactNotificationMsg.sourceUserId;
+        }
+
+        if (sourceUserId == nil || sourceUserId.length == 0) {
             return;
         }
         //该接口需要替换为从消息体获取好友请求的用户信息
-        [RCDUserInfoManager getUserInfoFromServer:_contactNotificationMsg.sourceUserId
+        [RCDUserInfoManager getUserInfoFromServer:sourceUserId
                                          complete:^(RCUserInfo *user) {
                                              RCDFriendInfo *rcduserinfo_ = [RCDFriendInfo new];
                                              rcduserinfo_.name = user.name;
@@ -243,14 +251,14 @@
                                              customModel.sentTime = message.sentTime;
                                              customModel.receivedTime = message.receivedTime;
                                              customModel.senderUserId = message.senderUserId;
-                                             customModel.lastestMessage = _contactNotificationMsg;
+                                             customModel.lastestMessage = message.content;
                                              //[_myDataSource insertObject:customModel atIndex:0];
                                              
                                              // local cache for userInfo
                                              NSDictionary *userinfoDic =
                                              @{@"username" : rcduserinfo_.name, @"portraitUri" : rcduserinfo_.portraitUri};
                                              [DEFAULTS setObject:userinfoDic
-                                              forKey:_contactNotificationMsg.sourceUserId];
+                                              forKey:sourceUserId];
                                              [DEFAULTS synchronize];
                                              
                                              dispatch_async(dispatch_get_main_queue(), ^{
@@ -379,6 +387,12 @@
                                              selector:@selector(refreshCell:)
                                                  name:@"RefreshConversationList"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateBadgeValueForTabBarItem)
+                                                 name:RCKitDispatchRecallMessageNotification
+                                               object:nil];
+    
 }
 
 - (void)updateBadgeValueForTabBarItem {

@@ -9,7 +9,7 @@
 #ifndef RCloudMessage_RCDCommonDefine_h
 #define RCloudMessage_RCDCommonDefine_h
 
-#define RCDQRCodeContentInfoUrl @"http://imqa.rongcloud.net/download"
+#define RCDQRCodeContentInfoUrl @"http://web.sealtalk.im/download"
 
 #define SealTalkLog(s,...) \
 NSLog((@"[SealTalkLog]%s [Line %d] " s), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);

@@ -30,7 +30,8 @@
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // offline key
 
-#define BUGLY_APPID @"Yourself BuglyId"
+#define RONGCLOUD_STATUS_SERVER @""
+#define BUGLY_APPID @""
 #define LOG_EXPIRE_TIME -7 * 24 * 60 * 60
 
 @interface AppDelegate () <RCWKAppInfoProvider>
@@ -52,6 +53,9 @@
 
 - (void)configRongIM {
     [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY];
+    if(RONGCLOUD_STATUS_SERVER.length > 0){
+        [[RCIMClient sharedRCIMClient] setStatisticServer:RONGCLOUD_STATUS_SERVER];
+    }
     [DEFAULTS setObject:RONGCLOUD_IM_APPKEY forKey:RCDAppKeyKey];
     
     /* RedPacket_FTR  */
@@ -66,6 +70,8 @@
     
     // 设置语音消息采样率为 16KHZ
     [RCIMClient sharedRCIMClient].sampleRate = RCSample_Rate_16000;
+    
+    [RCIMClient sharedRCIMClient].voiceMsgType = RCVoiceMessageTypeHighQuality;
     
     //设置会话列表头像和会话页面头像
     [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
@@ -102,7 +108,9 @@
 #endif
     [NSThread sleepForTimeInterval:1.0];
     application.statusBarHidden = NO;
-    [RCDBuglyManager startWithAppId:BUGLY_APPID];
+    if(BUGLY_APPID.length > 0) {    
+        [RCDBuglyManager startWithAppId:BUGLY_APPID];
+    }
     [self setNavigationBarAppearance];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveMessageNotification:)

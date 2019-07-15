@@ -23,10 +23,13 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self loadData];
     [self setupTableView];
     [self setupNavi];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self loadData];
 }
 
 #pragma mark - Private Method

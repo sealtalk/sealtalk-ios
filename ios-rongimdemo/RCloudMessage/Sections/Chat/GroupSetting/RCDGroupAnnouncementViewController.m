@@ -45,14 +45,14 @@
 
 #pragma mark - UITextViewDelegate
 - (void)textViewDidChange:(UITextView *)textView {
+    if (textView.text.length > AnnouncementMaxCount) {
+        textView.text = [textView.text substringToIndex:AnnouncementMaxCount];
+        [self.view showHUDMessage:RCDLocalizedString(@"AnnouncementOverMaxCount")];
+    }
     if ([textView.text isEqualToString:self.announce.content]) {
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }else{
         self.navigationItem.rightBarButtonItem.enabled = YES;
-    }
-    if (textView.text.length > AnnouncementMaxCount) {
-        textView.text = [textView.text substringToIndex:AnnouncementMaxCount];
-        [self.view showHUDMessage:RCDLocalizedString(@"AnnouncementOverMaxCount")];
     }
 }
 
