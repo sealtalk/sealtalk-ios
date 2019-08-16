@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 
 @interface RCDMeInfoTableViewController
-    : UITableViewController <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+    : RCDTableViewController <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @end

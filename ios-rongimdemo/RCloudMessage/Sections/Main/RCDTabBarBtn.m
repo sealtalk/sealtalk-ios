@@ -13,7 +13,7 @@
 #import "RCDMainTabBarViewController.h"
 #import "UIColor+RCColor.h"
 #import <RongIMKit/RongIMKit.h>
-
+#import "RCDUtilities.h"
 @interface RCDTabBarBtn ()
 
 @property(nonatomic, strong) NSString *tabBarIndex;

@@ -14,20 +14,22 @@
 #import "RCDIMService.h"
 #import "RCDCommonString.h"
 #import "RCDGroupNotificationMessage.h"
+#import "RCDGroupNoticeUpdateMessage.h"
+#import "RCDEnum.h"
 @implementation RCDGroupManager
 
 #pragma mark - Group
 
-+ (void)createGroup:(NSString *)groupName memberIds:(NSArray *)memberIds complete:(void (^)(NSString *))complete{
-    [RCDGroupAPI createGroup:groupName memberIds:memberIds complete:^(NSString * _Nonnull groupId) {
++ (void)createGroup:(NSString *)groupName portraitUri:(NSString *)portraitUri memberIds:(NSArray *)memberIds complete:(void (^)(NSString *, RCDGroupAddMemberStatus status))complete{
+    [RCDGroupAPI createGroup:groupName portraitUri:portraitUri memberIds:memberIds complete:^(NSString * _Nonnull groupId, RCDGroupAddMemberStatus status) {
         if (groupId) {
-            RCDGroupInfo *group = [[RCDGroupInfo alloc] initWithGroupId:groupId groupName:groupName portraitUri:nil];
+            RCDGroupInfo *group = [[RCDGroupInfo alloc] initWithGroupId:groupId groupName:groupName portraitUri:portraitUri];
             [RCDDBManager saveGroups:@[group]];
             group = [self generateDefaultPortraitIfNeed:group];
             [[RCIM sharedRCIM] refreshGroupInfoCache:group withGroupId:groupId];
         }
         if (complete) {
-            complete(groupId);
+            complete(groupId,status);
         }
     }];
 }
@@ -72,7 +74,6 @@
             [RCDDBManager saveGroups:@[groupInfo]];
             groupInfo = [self generateDefaultPortraitIfNeed:groupInfo];
             [[RCIM sharedRCIM] refreshGroupInfoCache:groupInfo withGroupId:groupId];
-            
         }
         if (complete) {
             complete(groupInfo);
@@ -122,6 +123,86 @@
 + (void)getGroupAnnouncement:(NSString *)groupId complete:(void (^)(RCDGroupAnnouncement *))complete{
     [RCDGroupAPI getGroupAnnouncement:groupId complete:complete];
 }
+
++ (void)setGroupAllMute:(BOOL)mute
+                groupId:(NSString *)groupId
+               complete:(void (^)(BOOL success))complete{
+    [RCDGroupAPI setGroupAllMute:mute groupId:groupId complete:^(BOOL success) {
+        if (success) {
+            RCDGroupInfo *group = [self getGroupInfo:groupId];
+            if(group){
+                group.mute = mute;
+                [RCDDBManager saveGroups:@[group]];
+            }else{
+                [self getGroupInfoFromServer:groupId complete:nil];
+            }
+        }
+        if (complete) {
+            complete(success);
+        }
+    }];
+}
+
++ (void)setGroupCertification:(BOOL)open
+                      groupId:(NSString *)groupId
+                     complete:(void (^)(BOOL success))complete{
+    [RCDGroupAPI setGroupCertification:open groupId:groupId complete:^(BOOL success) {
+        if (success) {
+            RCDGroupInfo *group = [self getGroupInfo:groupId];
+            if(group){
+                group.needCertification = open;
+                [RCDDBManager saveGroups:@[group]];
+            }else{
+                [self getGroupInfoFromServer:groupId complete:nil];
+            }
+        }
+        if (complete) {
+            complete(success);
+        }
+    }];
+}
+
++ (NSInteger)getGroupNoticeUnreadCount{
+    return [RCDDBManager getGroupNoticeUnreadCount];
+}
+
++ (NSArray<RCDGroupNotice *> *)getGroupNoticeList{
+    return [RCDDBManager getGroupNoticeList];
+}
+
++ (void)getGroupNoticeListFromServer:(void (^)(NSArray<RCDGroupNotice *> *))complete{
+    [RCDGroupAPI getGroupNoticeList:^(NSArray<RCDGroupNotice *> * _Nonnull noticeList) {
+        if (noticeList) {
+            [RCDDBManager clearGroupNoticeList];
+            [RCDDBManager saveGroupNoticeList:noticeList];
+        }
+        if (complete) {
+            complete(noticeList);
+        }
+    }];
+}
+
++ (void)clearGroupNoticeList:(void (^)(BOOL success))complete{
+    [RCDGroupAPI clearGroupNoticeList:^(BOOL success) {
+        if (success) {
+            [RCDDBManager clearGroupNoticeList];
+        }
+        if (complete) {
+            complete(success);
+        }
+    }];
+}
+
++ (void)setGroupApproveAction:(RCDGroupInviteActionType)type targetId:(NSString *)targetId groupId:(NSString *)groupId complete:(void (^)(BOOL))complete{
+    [RCDGroupAPI setGroupApproveAction:type targetId:targetId groupId:groupId complete:^(BOOL success) {
+        if (success) {
+            [self getGroupNoticeListFromServer:nil];
+        }
+        if (complete) {
+            complete(success);
+        }
+    }];
+}
 #pragma mark - Group Member
 +(NSArray<NSString *> *)getGroupMembers:(NSString *)groupId{
     return [RCDDBManager getGroupMembers:groupId];
@@ -140,6 +221,13 @@
             }
             if (complete) {
                 complete([RCDDBManager getGroupMembers:groupId]);
+            }
+        }
+    }error:^(RCDGroupErrorCode errorCode) {
+        if (errorCode == RCDGroupErrorCodeNotInGroup) {
+            [RCDDBManager clearGroupMembers:groupId];
+            if (complete) {
+                complete(nil);
             }
         }else{
             if (complete) {
@@ -162,6 +250,14 @@
     return [RCDDBManager getGroupManagers:groupId];
 }
 
++ (BOOL)currentUserIsGroupCreatorOrManager:(NSString *)groupId{
+    RCDGroupMember *member = [self getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:groupId];
+    if (member.role != RCDGroupMemberRoleMember) {
+        return YES;
+    }
+    return NO;
+}
+
 +(void)joinGroup:(NSString *)groupId complete:(void (^)(BOOL))complete{
     [RCDGroupAPI joinGroup:groupId complete:^(BOOL success) {
         if (success) {
@@ -176,13 +272,13 @@
 //添加群组成员
 + (void)addUsers:(NSArray *)userIds
          groupId:(NSString *)groupId
-        complete:(void (^)(BOOL success))complete{
-    [RCDGroupAPI addUsers:userIds groupId:groupId complete:^(BOOL success) {
+        complete:(void (^)(BOOL success, RCDGroupAddMemberStatus status))complete{
+    [RCDGroupAPI addUsers:userIds groupId:groupId complete:^(BOOL success,RCDGroupAddMemberStatus status) {
         if (success) {
             [self syncGroup:groupId];
         }
         if (complete) {
-            complete(success);
+            complete(success,status);
         }
     }];
 }
@@ -293,32 +389,9 @@
 #pragma mark - Group Notification
 + (BOOL)isHoldGroupNotificationMessage:(RCMessage *)message{
     if ([message.content isMemberOfClass:[RCDGroupNotificationMessage class]] || [message.content isMemberOfClass:[RCGroupNotificationMessage class]]) {
-        RCDGroupNotificationMessage *msg = (RCDGroupNotificationMessage *)message.content;
-        if ([msg.operation isEqualToString:RCDGroupDismiss] && [msg.operatorUserId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-            //自己操作解散的群组清理消息和会话
-            [[RCDIMService sharedService] clearHistoryMessage:ConversationType_GROUP targetId:message.targetId successBlock:^{
-                
-            } errorBlock:^(RCErrorCode status) {
-                
-            }];
-            [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_GROUP targetId:message.targetId];
-        }else if ([msg.operation isEqualToString:RCDGroupMemberManagerRemove]){
-            [[RCIMClient sharedRCIMClient] deleteMessages:@[@(message.messageId)]];
-        }
-        if (![msg.operation isEqualToString:RCDGroupRename] && ![msg.operation isEqualToString:RCDGroupBulletin]){
-            [RCDGroupManager getGroupMembersFromServer:message.targetId complete:^(NSArray<NSString *> * _Nonnull memberIdList) {
-                rcd_dispatch_main_async_safe((^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:RCDGroupMemberUpdateKey object:@{@"targetId":message.targetId,@"operation":msg.operation}];
-                }));
-            }];
-        }
-        //同步群信息
-        [RCDGroupManager getGroupInfoFromServer:message.targetId complete:^(RCDGroupInfo * _Nonnull groupInfo) {
-            rcd_dispatch_main_async_safe(^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:RCDGroupInfoUpdateKey object:message.targetId];
-            });
-        }];
-        return YES;
+        return [self isReceiveGroupNotificationMessage:message];
+    }else if ([message.content isMemberOfClass:[RCDGroupNoticeUpdateMessage class]]){
+        return [self isReceiveGroupNoticeUpdateMessage:message];
     }
     return NO;
 }
@@ -336,5 +409,49 @@
         }
     }
     return group;
+}
+
++ (BOOL)isReceiveGroupNotificationMessage:(RCMessage *)message{
+    RCDGroupNotificationMessage *msg = (RCDGroupNotificationMessage *)message.content;
+    if ([msg.operation isEqualToString:RCDGroupDismiss] && [msg.operatorUserId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+        //自己操作解散的群组清理消息和会话
+        [[RCDIMService sharedService] clearHistoryMessage:ConversationType_GROUP targetId:message.targetId successBlock:^{
+            
+        } errorBlock:^(RCErrorCode status) {
+            
+        }];
+        [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_GROUP targetId:message.targetId];
+    }else if ([msg.operation isEqualToString:RCDGroupMemberManagerRemove]){
+        [[RCIMClient sharedRCIMClient] deleteMessages:@[@(message.messageId)]];
+    }
+    if ([msg.operation isEqualToString:RCDGroupDismiss] || [msg.operation isEqualToString:RCDGroupMemberQuit] || [msg.operation isEqualToString:RCDGroupMemberKicked]) {
+        [RCDDBManager clearGroupMembers:message.targetId];
+    }
+    if (msg.operation && ![msg.operation isEqualToString:RCDGroupRename] && ![msg.operation isEqualToString:RCDGroupBulletin]){
+        [RCDGroupManager getGroupMembersFromServer:message.targetId complete:^(NSArray<NSString *> * _Nonnull memberIdList) {
+            rcd_dispatch_main_async_safe((^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:RCDGroupMemberUpdateKey object:@{@"targetId":message.targetId,@"operation":msg.operation}];
+            }));
+        }];
+    }
+    //同步群信息
+    [RCDGroupManager getGroupInfoFromServer:message.targetId complete:^(RCDGroupInfo * _Nonnull groupInfo) {
+        rcd_dispatch_main_async_safe(^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:RCDGroupInfoUpdateKey object:message.targetId];
+        });
+    }];
+    return YES;
+}
+
++ (BOOL)isReceiveGroupNoticeUpdateMessage:(RCMessage *)message{
+    RCDGroupNoticeUpdateMessage *msg = (RCDGroupNoticeUpdateMessage *)message.content;
+    if ([msg.operation isEqualToString:RCDGroupMemberInvite]) {
+        [RCDGroupManager getGroupNoticeListFromServer:^(NSArray<RCDGroupNotice *> *noticeList) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:RCDGroupNoticeUpdateKey object:nil];
+            });
+        }];
+    }
+    return YES;
 }
 @end

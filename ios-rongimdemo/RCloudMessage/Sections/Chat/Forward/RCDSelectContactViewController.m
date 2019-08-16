@@ -280,9 +280,9 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 - (NSArray *)getAllFriendList {
     NSMutableArray *userInfoList = [NSMutableArray arrayWithArray:[RCDUserInfoManager getAllFriends]];
     if (userInfoList.count <= 0 && !self.hasSyncFriendList) {
-        [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId complete:^(NSArray *result) {
+        [RCDUserInfoManager getFriendListFromServer:^(NSArray<RCDFriendInfo *> *friendList) {
             self.hasSyncFriendList = YES;
-            [self sortAndRefreshWithList:result];
+            [self sortAndRefreshWithList:friendList];
         }];
     }
     return userInfoList;
@@ -334,11 +334,6 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         UIImage *searchBarBg = [RCDUtilities getImageWithColor:[UIColor clearColor] andHeight:32.0f];
         _searchFriendsBar.backgroundImage = searchBarBg;
         _searchFriendsBar.backgroundColor = HEXCOLOR(0xf0f0f6);
-        
-        UITextField *searchField = [_searchFriendsBar valueForKey:@"_searchField"];
-        searchField.layer.borderWidth = 0.5f;
-        searchField.layer.borderColor = [HEXCOLOR(0xdfdfdf) CGColor];
-        searchField.layer.cornerRadius = 5.f;
     }
     return _searchFriendsBar;
 }

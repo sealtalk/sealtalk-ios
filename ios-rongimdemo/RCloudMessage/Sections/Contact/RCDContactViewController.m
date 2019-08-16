@@ -14,15 +14,18 @@
 #import "RCDPersonDetailViewController.h"
 #import "RCDPublicServiceListViewController.h"
 #import "RCDRCIMDataSource.h"
-#import "RCDSearchFriendController.h"
+#import "RCDAddFriendListViewController.h"
 #import "RCDUIBarButtonItem.h"
 #import "RCDUserInfoManager.h"
 #import "RCDUtilities.h"
 #import <Masonry/Masonry.h>
+#import "UITabBar+badge.h"
+#import "RCDCommonString.h"
 
 @interface RCDContactViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate>
 @property (nonatomic, strong) RCDTableView *friendsTabelView;
 @property (nonatomic, strong) UISearchBar *searchFriendsBar;
+@property (nonatomic, strong) UILabel *emptyLabel;
 
 @property (nonatomic, strong) NSArray *allFriendArray;
 @property (nonatomic, strong) NSArray *resultKeys;
@@ -45,6 +48,7 @@
     
     [self setupView];
     [self initData];
+    [self addObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,6 +64,10 @@
         [self sortAndRefreshWithList:self.allFriendArray];
         [self resetSearchBarAndMatchFriendList];
     }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UITableViewDelegate & UITableViewDataSource
@@ -125,6 +133,12 @@
         } else {
             cell.nicknameLabel.text = [_defaultCellsTitle objectAtIndex:indexPath.row];
             [cell.portraitView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@", [_defaultCellsPortrait objectAtIndex:indexPath.row]]]];
+            if (indexPath.row == 0) {
+                int allRequesteds = [RCDUserInfoManager getFriendRequesteds];
+                if (allRequesteds > 0) {
+                    [cell showNoticeLabel:allRequesteds];
+                }
+            }
         }
     } else {
         NSString *letter = self.resultKeys[indexPath.section - 1];
@@ -134,6 +148,7 @@
             [cell setModel:userInfo];
         }
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -208,13 +223,13 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [self resetSearchBarAndMatchFriendList];
     [self sortAndRefreshWithList:self.allFriendArray];
-    [self.friendsTabelView reloadData];
+    [self reloadView];
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     if (_isBeginSearch == NO) {
         _isBeginSearch = YES;
-        [self.friendsTabelView reloadData];
+        [self reloadView];
     }
     self.searchFriendsBar.showsCancelButton = YES;
     for(UIView *view in [[[self.searchFriendsBar subviews] objectAtIndex:0] subviews]) {
@@ -237,20 +252,28 @@
     self.view.backgroundColor = [UIColor colorWithRed:235 / 255.0 green:235 / 255.0 blue:235 / 255.0 alpha:1];
     [self.view addSubview:self.friendsTabelView];
     [self.view addSubview:self.searchFriendsBar];
+    [self.friendsTabelView addSubview:self.emptyLabel];
     
     [self.friendsTabelView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchFriendsBar.mas_bottom);
         make.left.right.bottom.equalTo(self.view);
     }];
     
+    [self.emptyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.width.height.equalTo(self.friendsTabelView);
+        make.centerY.equalTo(self.friendsTabelView).offset(-30);
+    }];
+    
     [self.searchFriendsBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);
     }];
+    [self updateBadgeForTabBarItem];
 }
 
 - (void)setupNavi {
     self.navigationController.navigationBar.translucent = NO;
     self.tabBarController.navigationItem.title = RCDLocalizedString(@"contacts");
+    self.title = RCDLocalizedString(@"contacts");
     RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"add_friend"] imageViewFrame:CGRectMake(0, 0, 18, 20) buttonTitle:nil titleColor:nil titleFrame:CGRectZero buttonFrame:CGRectMake(0, 0, 18, 20) target:self action:@selector(pushAddFriendVC:)];
     self.tabBarController.navigationItem.rightBarButtonItems = [rightBtn setTranslation:rightBtn translation:-6];
 }
@@ -265,13 +288,25 @@
     self.allFriendArray = [self getAllFriendList];
 }
 
+- (void)addObserver {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateBadgeForTabBarItem) name:RCDContactsRequestKey object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContents) name:RCDContactsUpdateUIKey object:nil];
+}
+
 - (void)extracted {
-    [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId complete:^(NSArray *result) {
-        if(result){
-            self.hasSyncFriendList = YES;
-            [self sortAndRefreshWithList:result];
+    [RCDUserInfoManager getFriendListFromServer:^(NSArray<RCDFriendInfo *> *friendList) {
+        self.hasSyncFriendList = YES;
+        if(friendList){
+            self.allFriendArray = [self getAllFriendList];
+            [self sortAndRefreshWithList:self.allFriendArray];
         }
     }];
+}
+
+- (void)reloadContents {
+    self.allFriendArray = [self getAllFriendList];
+   [self sortAndRefreshWithList:self.allFriendArray];
 }
 
 // 获取好友并且排序
@@ -289,7 +324,7 @@
         dispatch_sync(dispatch_get_main_queue(), ^{
             self.resultKeys = resultDic[@"allKeys"];
             self.resultSectionDict = resultDic[@"infoDic"];
-            [self.friendsTabelView reloadData];
+            [self reloadView];
         });
     });
 }
@@ -308,10 +343,26 @@
     [self.navigationController pushViewController:personDetailVC animated:YES];
 }
 
+- (void)updateBadgeForTabBarItem {
+    __weak typeof(self) __weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [__weakSelf reloadView];
+    });
+}
+
+- (void)reloadView {
+    if (self.isBeginSearch) {
+        self.emptyLabel.hidden = self.resultKeys.count != 0;
+    } else {
+        self.emptyLabel.hidden = YES;
+    }
+    [self.friendsTabelView reloadData];
+}
+
 #pragma mark - Target Action
 - (void)pushAddFriendVC:(id)sender {
-    RCDSearchFriendController *searchFirendVC = [[RCDSearchFriendController alloc] init];
-    [self.navigationController pushViewController:searchFirendVC animated:YES];
+    RCDAddFriendListViewController *addFriendListVC = [[RCDAddFriendListViewController alloc] init];
+    [self.navigationController pushViewController:addFriendListVC animated:YES];
 }
 
 - (void)forwardCancel {
@@ -328,11 +379,6 @@
         UIImage *searchBarBg = [RCDUtilities getImageWithColor:[UIColor clearColor] andHeight:32.0f];
         _searchFriendsBar.backgroundImage = searchBarBg;
         _searchFriendsBar.backgroundColor = HEXCOLOR(0xf0f0f6);
-        
-        UITextField *searchField = [_searchFriendsBar valueForKey:@"_searchField"];
-        searchField.layer.borderWidth = 0.5f;
-        searchField.layer.borderColor = [HEXCOLOR(0xdfdfdf) CGColor];
-        searchField.layer.cornerRadius = 5.f;
     }
     return _searchFriendsBar;
 }
@@ -351,6 +397,18 @@
         _friendsTabelView.sectionIndexColor = HEXCOLOR(0x555555);
     }
     return _friendsTabelView;
+}
+
+- (UILabel *)emptyLabel {
+    if (!_emptyLabel) {
+        _emptyLabel = [[UILabel alloc] init];
+        _emptyLabel.text = RCDLocalizedString(@"NoFriendsWereFound");
+        _emptyLabel.textColor = HEXCOLOR(0x939393);
+        _emptyLabel.font = [UIFont systemFontOfSize:17];
+        _emptyLabel.textAlignment = NSTextAlignmentCenter;
+        _emptyLabel.hidden = YES;
+    }
+    return _emptyLabel;
 }
 
 @end

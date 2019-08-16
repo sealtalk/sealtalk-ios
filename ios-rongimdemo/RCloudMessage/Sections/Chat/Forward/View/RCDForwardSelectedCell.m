@@ -61,10 +61,17 @@
 
 - (void)setModel:(RCDForwardCellModel *)model {
     if (model.conversationType == ConversationType_GROUP) {
-        RCDGroupInfo *groupInfo = [RCDGroupManager getGroupInfo:model.targetId];
-        if (groupInfo) {
-            [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:groupInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"default_group_portrait"]];
-            self.conversationTitleLabel.text = groupInfo.groupName;
+        RCDGroupInfo *group = [RCDGroupManager getGroupInfo:model.targetId];
+        if (group) {
+            [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:group.portraitUri] placeholderImage:[UIImage imageNamed:@"default_group_portrait"]];
+            self.conversationTitleLabel.text = group.groupName;
+        } else {
+            [RCDGroupManager getGroupInfoFromServer:model.targetId complete:^(RCDGroupInfo *groupInfo) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:groupInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"default_group_portrait"]];
+                    self.conversationTitleLabel.text = groupInfo.groupName;
+                });
+            }];
         }
     } else if (model.conversationType == ConversationType_PRIVATE) {
         RCUserInfo *currentUserInfo = [RCIM sharedRCIM].currentUserInfo;
@@ -78,8 +85,16 @@
                 self.conversationTitleLabel.text = currentUserInfo.name;
             }
         } else {
-            RCDFriendInfo *friendInfo = [RCDUserInfoManager getFriendInfo:model.targetId];
-            [self setFriendInfo:friendInfo];
+            RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:model.targetId];
+            if (friend) {
+                [self setFriendInfo:friend];
+            } else {
+                [RCDUserInfoManager getFriendInfoFromServer:model.targetId complete:^(RCDFriendInfo *friendInfo) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self setFriendInfo:friendInfo];
+                    });
+                }];
+            }
         }
     }
 }

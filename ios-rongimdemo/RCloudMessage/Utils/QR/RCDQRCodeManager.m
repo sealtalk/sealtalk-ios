@@ -7,7 +7,9 @@
 //
 
 #import "RCDQRCodeManager.h"
+#import <Photos/PHPhotoLibrary.h>
 #import <ZXingObjC/ZXingObjC.h>
+
 @implementation RCDQRCodeManager
 + (UIImage *)getQRCodeImage:(NSString *)content{
     NSError *error = nil;
@@ -51,11 +53,106 @@
         // The coded result as a string. The raw data can be accessed with
         // result.rawBytes and result.length.
         contents = result.text;
-
     } else {
-        // Use error to determine why we didn't get a result, such as a barcode
-        // not being found, an invalid checksum, or a format inconsistency.
+        //ZXingObjC bug：有的图片识别不出，这时在用系统识别一次
+        UIImage *pickImage = image;
+        CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{CIDetectorAccuracy: CIDetectorAccuracyHigh}];
+        // 获取选择图片中识别结果
+        NSArray *features = [detector featuresInImage:[CIImage imageWithData:UIImagePNGRepresentation(pickImage)]];
+        if (features.count > 0) {
+            CIQRCodeFeature *feature = features[0];
+            NSString *stringValue = feature.messageString;
+            contents = stringValue;
+        }
     }
     return contents;
 }
+
+/** 校验是否有相机权限 */
++ (void)rcd_checkCameraAuthorizationStatusWithGrand:(void(^)(BOOL granted))permissionGranted
+{
+    AVAuthorizationStatus videoAuthStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    
+    switch (videoAuthStatus) {
+        // 已授权
+        case AVAuthorizationStatusAuthorized:
+        {
+            permissionGranted(YES);
+        }
+            break;
+        // 未询问用户是否授权
+        case AVAuthorizationStatusNotDetermined:
+        {
+            // 提示用户授权
+            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+                permissionGranted(granted);
+            }];
+        }
+            break;
+        // 用户拒绝授权或权限受限
+        case AVAuthorizationStatusRestricted:
+        case AVAuthorizationStatusDenied:
+        {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedStringFromTable(@"cameraAccessRight", @"RongCloudKit", nil) message:nil delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil];
+            [alert show];
+            permissionGranted(NO);
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+/** 校验是否有相册权限 */
++ (void)rcd_checkAlbumAuthorizationStatusWithGrand:(void(^)(BOOL granted))permissionGranted {
+    
+    PHAuthorizationStatus photoAuthStatus = [PHPhotoLibrary authorizationStatus];
+    switch (photoAuthStatus) {
+        // 已授权
+        case PHAuthorizationStatusAuthorized:
+        {
+            permissionGranted(YES);
+        }
+            break;
+        // 未询问用户是否授权
+        case PHAuthorizationStatusNotDetermined:
+        {
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                permissionGranted(status == PHAuthorizationStatusAuthorized);
+            }];
+        }
+            break;
+        // 用户拒绝授权或权限受限
+        case PHAuthorizationStatusRestricted:
+        case PHAuthorizationStatusDenied:
+        {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"请在”设置-隐私-相片”选项中，允许访问你的相册" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [alert show];
+            permissionGranted(NO);
+        }
+            break;
+        default:
+            break;
+    }
+    
+}
+
+/** 手电筒开关 */
++ (void)rcd_FlashlightOn:(BOOL)on {
+    AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    if ([captureDevice hasTorch] && [captureDevice hasFlash]) {
+        [captureDevice lockForConfiguration:nil];
+        if (on) {
+            [captureDevice setTorchMode:AVCaptureTorchModeOn];
+            [captureDevice setFlashMode:AVCaptureFlashModeOn];
+        }else
+        {
+            [captureDevice setTorchMode:AVCaptureTorchModeOff];
+            [captureDevice setFlashMode:AVCaptureFlashModeOff];
+        }
+        [captureDevice unlockForConfiguration];
+    }
+}
+
+
 @end

@@ -15,19 +15,24 @@ static NSString *const MY_GROUP_TABLE = @"t_my_group";
 static NSString *const GROUP_MEMBER_TABLE = @"t_group_member";
 static NSString *const FRIEND_TABLE = @"t_friend";
 static NSString *const BLACKLIST_TABLE = @"t_blacklist";
+static NSString *const CHATCONFIG_TABLE = @"t_chat_config";
+static NSString *const GROUP_NOTICE_TABLE =@"t_group_notice";
+static NSString *const USER_SETTING_TABLE =@"t_user_setting";
 
-static int USER_TABLE_VERSION = 1;
-static int GROUP_TABLE_VERSION = 1;
+static int USER_TABLE_VERSION = 2;
+static int GROUP_TABLE_VERSION = 2;
 static int MY_GROUP_TABLE_VERSION = 1;
 static int GROUP_MEMBER_TABLE_VERSION = 1;
 static int FRIEND_TABLE_VERSION =1;
 static int BLACKLIST_TABLE_VERSION = 1;
-
+static int CHATCONFIG_TABLE_VERSION = 1;
+static int GROUP_NOTICE_TABLE_VERSION = 1;
+static int USER_SETTING_TABLE_VERSION = 1;
 @implementation RCDDBManager
-
 + (BOOL)openDB:(NSString *)path {
     BOOL result = [RCDDBHelper openDB:path];
     if (result) {
+        [self upgradeTableIfNeed];
         [self createTableIfNeed];
     }
     return result;
@@ -37,25 +42,27 @@ static int BLACKLIST_TABLE_VERSION = 1;
     [RCDDBHelper closeDB];
 }
 
-+ (void)saveUsers:(NSArray<RCUserInfo *>*)userList {
++ (void)saveUsers:(NSArray<RCDUserInfo *>*)userList {
     if (![RCDDBHelper isDBOpened]) {
         NSLog(@"saveUsers, db is not open");
         return;
     }
     [RCDDBHelper executeTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
-        NSString *sql = @"REPLACE INTO t_user (user_id, name, portrait_uri) VALUES (?, ?, ?)";
-        for (RCUserInfo *user in userList) {
+        NSString *sql = @"REPLACE INTO t_user (user_id, name, portrait_uri, st_account, gender) VALUES (?, ?, ?, ?, ?)";
+        for (RCDUserInfo *user in userList) {
             if (user.userId.length > 0) {
                 NSString *name = user.name ?: @"";
                 NSString *portrait = user.portraitUri ?: @"";
-                NSArray *arr = @[user.userId, name, portrait];
+                NSString *stAccount = user.stAccount ?: @"";
+                NSString *gender = user.gender ?: @"";
+                NSArray *arr = @[user.userId, name, portrait, stAccount, gender];
                 [db executeUpdate:sql withArgumentsInArray:arr];
             }
         }
     }];
 }
 
-+ (RCUserInfo *)getUser:(NSString *)userId {
++ (RCDUserInfo *)getUser:(NSString *)userId {
     if (![RCDDBHelper isDBOpened]) {
         NSLog(@"getUser, db is not open");
         return nil;
@@ -64,7 +71,7 @@ static int BLACKLIST_TABLE_VERSION = 1;
         NSLog(@"getUser, userId length is zero");
         return nil;
     }
-    __block RCUserInfo *userInfo = nil;
+    __block RCDUserInfo *userInfo = nil;
     NSString *sql = @"SELECT * FROM t_user WHERE user_id = ?";
     [RCDDBHelper executeQuery:sql
          withArgumentsInArray:@[userId]
@@ -82,13 +89,15 @@ static int BLACKLIST_TABLE_VERSION = 1;
         return;
     }
     [RCDDBHelper executeTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
-        NSString *userSql = @"REPLACE INTO t_user (user_id, name, portrait_uri) VALUES (?, ?, ?)";
+        NSString *userSql = @"REPLACE INTO t_user (user_id, name, portrait_uri, st_account, gender) VALUES (?, ?, ?, ?, ?)";
         NSString *friendSql = @"REPLACE INTO t_friend (user_id, status, display_name, phone_number, update_dt) VALUES (?, ?, ?, ?, ?)";
         for (RCDFriendInfo *friend in friendList) {
             if (friend.userId.length > 0) {
                 NSString *name = friend.name ?: @"";
                 NSString *portrait = friend.portraitUri ?: @"";
-                NSArray *userArr = @[friend.userId, name, portrait];
+                NSString *stAccount = friend.stAccount ?: @"";
+                NSString *gender = friend.gender ?: @"";
+                NSArray *userArr = @[friend.userId, name, portrait, stAccount, gender];
                 [db executeUpdate:userSql withArgumentsInArray:userArr];
                 
                 NSString *displayName = friend.displayName ?: @"";
@@ -126,7 +135,7 @@ static int BLACKLIST_TABLE_VERSION = 1;
         return nil;
     }
     __block RCDFriendInfo *friendInfo = nil;
-    NSString *sql = @"SELECT u.user_id AS user_id, u.name AS name, u.portrait_uri AS portrait_uri, f.status AS status, f.display_name AS display_name, f.phone_number AS phone_number, f.update_dt AS update_dt FROM (t_friend AS f LEFT JOIN t_user AS u ON f.user_id = u.user_id) WHERE f.user_id = ?";
+    NSString *sql = @"SELECT u.user_id AS user_id, u.name AS name, u.portrait_uri AS portrait_uri, u.st_account AS st_account, u.gender AS gender, f.status AS status, f.display_name AS display_name, f.phone_number AS phone_number, f.update_dt AS update_dt FROM (t_friend AS f LEFT JOIN t_user AS u ON f.user_id = u.user_id) WHERE f.user_id = ?";
     [RCDDBHelper executeQuery:sql
          withArgumentsInArray:@[userId]
                    syncResult:^(FMResultSet * _Nonnull resultSet) {
@@ -146,13 +155,30 @@ static int BLACKLIST_TABLE_VERSION = 1;
     [RCDDBHelper executeUpdate:sql withArgumentsInArray:nil];
 }
 
++ (int)getFriendRequesteds {
+    if (![RCDDBHelper isDBOpened]) {
+        NSLog(@"getAllFriends, db is not open");
+        return 0;
+    }
+    __block int requestCount = 0;
+    NSString *sql = @"SELECT u.user_id AS user_id, u.name AS name, u.portrait_uri AS portrait_uri, u.st_account AS st_account, u.gender AS gender, f.status AS status, f.display_name AS display_name, f.phone_number AS phone_number, f.update_dt AS update_dt FROM (t_friend AS f LEFT JOIN t_user AS u ON f.user_id = u.user_id) WHERE f.status = 11";
+    [RCDDBHelper executeQuery:sql
+         withArgumentsInArray:nil
+                   syncResult:^(FMResultSet * _Nonnull resultSet) {
+                       while ([resultSet next]) {
+                           requestCount ++;
+                       }
+                   }];
+    return requestCount;
+}
+
 + (NSArray<RCDFriendInfo *> *)getAllFriends {
     if (![RCDDBHelper isDBOpened]) {
         NSLog(@"getAllFriends, db is not open");
         return nil;
     }
     __block NSMutableArray *friendList = [[NSMutableArray alloc] init];
-    NSString *sql = @"SELECT u.user_id AS user_id, u.name AS name, u.portrait_uri AS portrait_uri, f.status AS status, f.display_name AS display_name, f.phone_number AS phone_number, f.update_dt AS update_dt FROM (t_friend AS f LEFT JOIN t_user AS u ON f.user_id = u.user_id) WHERE f.status = 20";
+    NSString *sql = @"SELECT u.user_id AS user_id, u.name AS name, u.portrait_uri AS portrait_uri, u.st_account AS st_account, u.gender AS gender, f.status AS status, f.display_name AS display_name, f.phone_number AS phone_number, f.update_dt AS update_dt FROM (t_friend AS f LEFT JOIN t_user AS u ON f.user_id = u.user_id) WHERE f.status = 20 ORDER BY f.update_dt";
     [RCDDBHelper executeQuery:sql
          withArgumentsInArray:nil
                    syncResult:^(FMResultSet * _Nonnull resultSet) {
@@ -170,7 +196,7 @@ static int BLACKLIST_TABLE_VERSION = 1;
         return nil;
     }
     __block NSMutableArray *friendList = [[NSMutableArray alloc] init];
-    NSString *sql = @"SELECT u.user_id AS user_id, u.name AS name, u.portrait_uri AS portrait_uri, f.status AS status, f.display_name AS display_name, f.phone_number AS phone_number, f.update_dt AS update_dt FROM (t_friend AS f LEFT JOIN t_user AS u ON f.user_id = u.user_id) ORDER BY f.update_dt DESC";
+    NSString *sql = @"SELECT u.user_id AS user_id, u.name AS name, u.portrait_uri AS portrait_uri, u.st_account AS st_account, u.gender AS gender, f.status AS status, f.display_name AS display_name, f.phone_number AS phone_number, f.update_dt AS update_dt FROM (t_friend AS f LEFT JOIN t_user AS u ON f.user_id = u.user_id) ORDER BY f.update_dt DESC";
     [RCDDBHelper executeQuery:sql
          withArgumentsInArray:nil
                    syncResult:^(FMResultSet * _Nonnull resultSet) {
@@ -246,10 +272,10 @@ static int BLACKLIST_TABLE_VERSION = 1;
         NSLog(@"saveGroups, userIdList count is zero");
         return;
     }
-    NSString *sql = @"REPLACE INTO t_group (group_id, name, portrait_uri, member_count, max_count, introduce, creator_id, is_dismiss) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    NSString *sql = @"REPLACE INTO t_group (group_id, name, portrait_uri, member_count, max_count, introduce, creator_id, is_dismiss, mute, need_certification) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     [RCDDBHelper executeTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
         for (RCDGroupInfo *groupInfo in groupList) {
-            [db executeUpdate:sql withArgumentsInArray:@[groupInfo.groupId?:@"", groupInfo.groupName?:@"", groupInfo.portraitUri?:@"", @([groupInfo.number intValue]), @([groupInfo.maxNumber intValue]), groupInfo.introduce?:@"", groupInfo.creatorId?:@"", @(groupInfo.isDismiss)]];
+            [db executeUpdate:sql withArgumentsInArray:@[groupInfo.groupId?:@"", groupInfo.groupName?:@"", groupInfo.portraitUri?:@"", @([groupInfo.number intValue]), @([groupInfo.maxNumber intValue]), groupInfo.introduce?:@"", groupInfo.creatorId?:@"", @(groupInfo.isDismiss), @(groupInfo.mute), @(groupInfo.needCertification)]];
         }
     }];
 }
@@ -471,12 +497,149 @@ static int BLACKLIST_TABLE_VERSION = 1;
     return owner;
 }
 
++ (void)saveChatConfig:(RCDChatConfig *)chatConfig {
+    if (![RCDDBHelper isDBOpened]) {
+        NSLog(@"saveChatConfig, db is not open");
+        return;
+    }
+    [RCDDBHelper executeTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+        NSString *sql = @"REPLACE INTO t_chat_config (conversation_type, target_id, is_screen_capture_notification, message_clear_status) VALUES (?, ?, ?, ?)";
+        [db executeUpdate:sql withArgumentsInArray:@[@(chatConfig.conversationType), chatConfig.targetId, @(chatConfig.screenCaptureNotification), @(chatConfig.messageClearStatus)]];
+    }];
+}
 
-+ (RCUserInfo *)generateUserInfoFromFMResultSet:(FMResultSet *)resultSet {
-    RCUserInfo *userInfo = [[RCUserInfo alloc] init];
++ (RCDChatConfig *)getChatConfigWithConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId {
+    if (![RCDDBHelper isDBOpened]) {
+        NSLog(@"getChatConfig, db is not open");
+        return nil;
+    }
+    if (targetId.length == 0) {
+        NSLog(@"getChatConfig, target length is zero");
+        return nil;
+    }
+    NSString *sql = @"SELECT * FROM t_chat_config WHERE target_id = ? AND conversation_type = ?";
+    __block RCDChatConfig *chatConfig = nil;
+    [RCDDBHelper executeQuery:sql
+         withArgumentsInArray:@[targetId, @(conversationType)]
+                   syncResult:^(FMResultSet * _Nonnull resultSet) {
+                       if ([resultSet next]) {
+                           chatConfig = [self generateChatConfigFromFMResultSet:resultSet];
+                       }
+                   }];
+    return chatConfig;
+}
+
++ (BOOL)getScreenCaptureNotification:(RCConversationType)type targetId:(NSString *)targetId {
+    return [[self class] getChatConfigWithConversationType:type targetId:targetId].screenCaptureNotification;
+}
+
++ (RCDGroupMessageClearStatus)getMessageClearStatus:(RCConversationType)type targetId:(NSString *)targetId {
+    return [[self class] getChatConfigWithConversationType:type targetId:targetId].messageClearStatus;
+}
+
++ (void)saveGroupNoticeList:(NSArray<RCDGroupNotice *> *)noticeList{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return;
+    }
+    NSString *sql = @"REPLACE INTO t_group_notice (group_id, operator_id, target_id, notice_type, invite_status, update_dt) VALUES (?, ?, ?, ?, ?, ?)";
+    [RCDDBHelper executeTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+        for (RCDGroupNotice *notice in noticeList) {
+            [db executeUpdate:sql withArgumentsInArray:@[notice.groupId?:@"",notice.operatorId?:@"",notice.targetId?:@"",@(notice.noticeType),@(notice.status),@(notice.createTime)]];
+        }
+    }];
+}
+
++ (NSArray<RCDGroupNotice *> *)getGroupNoticeList{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return nil;
+    }
+    __block NSMutableArray *noticeList = [[NSMutableArray alloc] init];
+    NSString *sql = @"SELECT * FROM t_group_notice ORDER BY update_dt DESC";
+    [RCDDBHelper executeQuery:sql
+         withArgumentsInArray:nil
+                   syncResult:^(FMResultSet * _Nonnull resultSet) {
+                       while ([resultSet next]) {
+                           RCDGroupNotice *userInfo = [self generateGroupNoticeFromFMResultSet:resultSet];
+                           [noticeList addObject:userInfo];
+                       }
+                   }];
+    return noticeList;
+}
+
++ (NSInteger)getGroupNoticeUnreadCount{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return 0;
+    }
+    __block NSInteger count;
+    NSString *sql = @"SELECT COUNT(*) AS count FROM t_group_notice WHERE invite_status = ?";
+    [RCDDBHelper executeQuery:sql
+         withArgumentsInArray:@[@(RCDGroupInviteStatusApproving)]
+                   syncResult:^(FMResultSet * _Nonnull resultSet) {
+                       while ([resultSet next]) {
+                           count = [resultSet intForColumn:@"count"];
+                       }
+                   }];
+    return count;
+}
+
++ (void)clearGroupNoticeList{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return;
+    }
+    NSString *sql = @"DELETE FROM t_group_notice";
+    [RCDDBHelper executeUpdate:sql
+          withArgumentsInArray:nil];
+}
+
++ (void)saveUserSetting:(RCDUserSetting *)setting{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return;
+    }
+    NSString *sql = @"REPLACE INTO t_user_setting (user_id, allow_mobile_search, allow_st_search, need_add_friend_verify, need_join_group_verify) VALUES ( ?, ?, ?, ?, ?)";
+    [RCDDBHelper executeTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+        [db executeUpdate:sql withArgumentsInArray:@[setting.userId?:@"",@(setting.allowMobileSearch),@(setting   .allowSTAccountSearch),@(setting.needAddFriendVerify),@(setting.needJoinGroupVerify)]];
+    }];
+}
+
++(RCDUserSetting *)getUserSetting{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return nil;
+    }
+    __block RCDUserSetting *userSetting;
+    NSString *sql = @"SELECT * FROM t_user_setting WHERE user_id = ?";
+    [RCDDBHelper executeQuery:sql
+         withArgumentsInArray:@[[RCIMClient sharedRCIMClient].currentUserInfo.userId]
+                   syncResult:^(FMResultSet * _Nonnull resultSet) {
+                       while ([resultSet next]) {
+                           userSetting = [self generateUserSettingFromFMResultSet:resultSet];
+                       }
+                   }];
+    return userSetting;
+}
+
++(RCDUserSetting *)generateUserSettingFromFMResultSet:(FMResultSet *)resultSet {
+    RCDUserSetting *userSetting = [[RCDUserSetting alloc] init];
+    userSetting.userId = [resultSet  stringForColumn:@"user_id"];
+    userSetting.allowMobileSearch = [resultSet boolForColumn:@"allow_mobile_search"];
+    userSetting.allowSTAccountSearch = [resultSet boolForColumn:@"allow_st_search"];
+    userSetting.needAddFriendVerify = [resultSet boolForColumn:@"need_add_friend_verify"];
+    userSetting.needJoinGroupVerify = [resultSet boolForColumn:@"need_join_group_verify"];
+    return userSetting;
+}
+
++ (RCDUserInfo *)generateUserInfoFromFMResultSet:(FMResultSet *)resultSet {
+    RCDUserInfo *userInfo = [[RCDUserInfo alloc] init];
     userInfo.userId = [resultSet stringForColumn:@"user_id"];
     userInfo.name = [resultSet stringForColumn:@"name"];
     userInfo.portraitUri = [resultSet stringForColumn:@"portrait_uri"];
+    userInfo.stAccount = [resultSet stringForColumn:@"st_account"];
+    userInfo.gender = [resultSet stringForColumn:@"gender"];
     return userInfo;
 }
 
@@ -489,6 +652,8 @@ static int BLACKLIST_TABLE_VERSION = 1;
     friendInfo.displayName = [resultSet stringForColumn:@"display_name"];
     friendInfo.phoneNumber = [resultSet stringForColumn:@"phone_number"];
     friendInfo.updateDt = [resultSet longLongIntForColumn:@"update_dt"];
+    friendInfo.stAccount = [resultSet stringForColumn:@"st_account"];
+    friendInfo.gender = [resultSet stringForColumn:@"gender"];
     return friendInfo;
 }
 
@@ -502,7 +667,29 @@ static int BLACKLIST_TABLE_VERSION = 1;
     group.introduce = [resultSet stringForColumn:@"introduce"];
     group.creatorId = [resultSet stringForColumn:@"creator_id"];
     group.isDismiss = [resultSet boolForColumn:@"is_dismiss"];
+    group.mute = [resultSet boolForColumn:@"mute"];
+    group.needCertification = [resultSet boolForColumn:@"need_certification"];
     return group;
+}
+
++ (RCDGroupNotice *)generateGroupNoticeFromFMResultSet:(FMResultSet *)resultSet{
+    RCDGroupNotice *notice = [[RCDGroupNotice alloc] init];
+    notice.groupId = [resultSet stringForColumn:@"group_id"];
+    notice.operatorId = [resultSet stringForColumn:@"operator_id"];
+    notice.targetId = [resultSet stringForColumn:@"target_id"];
+    notice.noticeType = [resultSet intForColumn:@"notice_type"];
+    notice.status = [resultSet intForColumn:@"invite_status"];
+    notice.createTime = [resultSet longLongIntForColumn:@"update_dt"];
+    return notice;
+}
+
++ (RCDChatConfig *)generateChatConfigFromFMResultSet:(FMResultSet *)resultSet {
+    RCDChatConfig *chatConfig = [[RCDChatConfig alloc] init];
+    chatConfig.screenCaptureNotification = [resultSet boolForColumn:@"is_screen_capture_notification"];
+    chatConfig.messageClearStatus = [resultSet intForColumn:@"message_clear_status"];
+    chatConfig.conversationType = [resultSet intForColumn:@"conversation_type"];
+    chatConfig.targetId = [resultSet stringForColumn:@"target_id"];
+    return chatConfig;
 }
 
 + (void)createTableIfNeed {
@@ -517,7 +704,9 @@ static int BLACKLIST_TABLE_VERSION = 1;
                      "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                      "user_id TEXT NOT NULL UNIQUE,"
                      "name TEXT,"
-                     "portrait_uri TEXT"
+                     "portrait_uri TEXT,"
+                     "st_account TEXT,"
+                     "gender TEXT"
                      ")";
                      BOOL result = [db executeUpdate:sql];
                      if (result) {
@@ -556,7 +745,9 @@ static int BLACKLIST_TABLE_VERSION = 1;
                      "max_count INTEGER,"
                      "introduce TEXT,"
                      "creator_id TEXT,"
-                     "is_dismiss INTEGER"
+                     "is_dismiss INTEGER,"
+                     "mute INTEGER,"
+                     "need_certification INTEGER"
                      ")";
                      BOOL result = [db executeUpdate:sql];
                      if (result) {
@@ -602,5 +793,90 @@ static int BLACKLIST_TABLE_VERSION = 1;
                      }
                      return result;
      }];
+    
+    [RCDDBHelper updateTable:CHATCONFIG_TABLE
+                     version:CHATCONFIG_TABLE_VERSION
+                 transaction:^BOOL(FMDatabase * _Nonnull db) {
+                     NSString *sql = @"CREATE TABLE IF NOT EXISTS t_chat_config ("
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                     "target_id TEXT NOT NULL UNIQUE,"
+                     "conversation_type INTEGER,"
+                     "is_screen_capture_notification INTEGER,"
+                     "message_clear_status"
+                     ")";
+                     return [db executeUpdate:sql];
+                 }];
+    [RCDDBHelper updateTable:GROUP_NOTICE_TABLE
+                     version:GROUP_NOTICE_TABLE_VERSION
+                 transaction:^BOOL(FMDatabase * _Nonnull db) {
+                     NSString *sql = @"CREATE TABLE IF NOT EXISTS t_group_notice ("
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                     "group_id TEXT,"
+                     "operator_id TEXT,"
+                     "target_id TEXT,"
+                     "notice_type INTEGER,"
+                     "invite_status INTEGER,"
+                     "update_dt INTEGER"
+                     ")";
+                     BOOL result = [db executeUpdate:sql];
+                     return result;
+                 }];
+    [RCDDBHelper updateTable:USER_SETTING_TABLE
+                     version:USER_SETTING_TABLE_VERSION
+                 transaction:^BOOL(FMDatabase * _Nonnull db) {
+                     NSString *sql = @"CREATE TABLE IF NOT EXISTS t_user_setting ("
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                     "user_id TEXT NOT NULL UNIQUE,"
+                     "allow_mobile_search INTEGER,"
+                     "allow_st_search INTEGER,"
+                     "need_add_friend_verify INTEGER,"
+                     "need_join_group_verify INTEGER"
+                     ")";
+                     BOOL result = [db executeUpdate:sql];
+                     return result;
+                 }];
+}
+
++ (void)upgradeTableIfNeed {
+    if (![RCDDBHelper isDBOpened]) {
+        NSLog(@"createTableIfNeed, db is not open");
+        return;
+    }
+    int oldVersion = [RCDDBHelper versionOfTable:USER_TABLE];
+    if (oldVersion < USER_TABLE_VERSION) {
+        [RCDDBHelper dropTable:USER_TABLE];
+    }
+    oldVersion = [RCDDBHelper versionOfTable:GROUP_TABLE];
+    if (oldVersion < GROUP_TABLE_VERSION) {
+        [RCDDBHelper dropTable:GROUP_TABLE];
+    }
+    oldVersion = [RCDDBHelper versionOfTable:MY_GROUP_TABLE];
+    if (oldVersion < MY_GROUP_TABLE_VERSION) {
+        [RCDDBHelper dropTable:MY_GROUP_TABLE];
+    }
+    oldVersion = [RCDDBHelper versionOfTable:GROUP_MEMBER_TABLE];
+    if (oldVersion < GROUP_MEMBER_TABLE_VERSION) {
+        [RCDDBHelper dropTable:GROUP_MEMBER_TABLE];
+    }
+    oldVersion = [RCDDBHelper versionOfTable:FRIEND_TABLE];
+    if (oldVersion < FRIEND_TABLE_VERSION) {
+        [RCDDBHelper dropTable:FRIEND_TABLE];
+    }
+    oldVersion = [RCDDBHelper versionOfTable:BLACKLIST_TABLE];
+    if (oldVersion < BLACKLIST_TABLE_VERSION) {
+        [RCDDBHelper dropTable:BLACKLIST_TABLE];
+    }
+    oldVersion = [RCDDBHelper versionOfTable:CHATCONFIG_TABLE];
+    if (oldVersion < CHATCONFIG_TABLE_VERSION) {
+        [RCDDBHelper dropTable:CHATCONFIG_TABLE];
+    }
+    oldVersion = [RCDDBHelper versionOfTable:GROUP_NOTICE_TABLE];
+    if (oldVersion < GROUP_NOTICE_TABLE_VERSION) {
+        [RCDDBHelper dropTable:GROUP_NOTICE_TABLE];
+    }
+    oldVersion = [RCDDBHelper versionOfTable:USER_SETTING_TABLE];
+    if (oldVersion < USER_SETTING_TABLE_VERSION) {
+        [RCDDBHelper dropTable:USER_SETTING_TABLE];
+    }
 }
 @end

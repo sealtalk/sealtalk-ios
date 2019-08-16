@@ -46,10 +46,10 @@
 }
 
 - (void)saveUserName:(id)sender {
-    [self.hud show:YES];
     if([self checkUserName]) {
         __weak __typeof(self) weakSelf = self;
         NSString *name = self.userNameTextField.text;
+        [self.hud show:YES];
         [RCDUserInfoManager setCurrentUserName:name
                            complete:^(BOOL success) {
                                dispatch_async(dispatch_get_main_queue(), ^{
@@ -88,13 +88,7 @@
     [self.userNameTextField becomeFirstResponder];
 }
 
-- (void)showAlert:(NSString *)message cancelBtnTitle:(NSString *)cBtnTitle {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:cBtnTitle otherButtonTitles:nil, nil];
-    [alert show];
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    
+- (void)textFieldDidChange:(UITextField *)textField {
     NSString *toBeString = textField.text;
     if (![toBeString isEqualToString:self.originNickName]) {
         [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
@@ -103,7 +97,11 @@
                             buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
                           barButtonItem:self.rightBtn];
     }
-    return YES;
+}
+
+- (void)showAlert:(NSString *)message cancelBtnTitle:(NSString *)cBtnTitle {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:cBtnTitle otherButtonTitles:nil, nil];
+    [alert show];
 }
 
 - (void)initUI {
@@ -132,8 +130,7 @@
     self.bgView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.bgView];
     
-    UITapGestureRecognizer *clickbgView =
-    [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(beginEditNickname)];
+    UITapGestureRecognizer *clickbgView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(beginEditNickname)];
     [self.bgView addGestureRecognizer:clickbgView];
     
     self.userNameTextField = [UITextField new];
@@ -141,8 +138,8 @@
     self.userNameTextField.clearButtonMode = UITextFieldViewModeAlways;
     self.userNameTextField.font = [UIFont systemFontOfSize:16.f];
     self.userNameTextField.textColor = [UIColor colorWithHexString:@"000000" alpha:1.f];
-    self.userNameTextField.delegate = self;
     self.userNameTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.userNameTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self.bgView addSubview:self.userNameTextField];
     
     self.subViews = NSDictionaryOfVariableBindings(_bgView, _userNameTextField);

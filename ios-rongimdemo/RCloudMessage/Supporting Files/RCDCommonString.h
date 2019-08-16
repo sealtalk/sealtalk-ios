@@ -28,5 +28,14 @@ NSString * const RCDDisplayOnlineStatusKey = @"isDisplayOnlineStatus";
 NSString * const RCDCookieKey = @"Cookie";
 NSString * const RCDGroupInfoUpdateKey = @"UpdateGroupInfo";
 NSString * const RCDGroupMemberUpdateKey = @"UpdateGroupMember";
-
+NSString * const RCDGroupNoticeUpdateKey = @"UpdateGroupNotice";
+NSString * const RCDSealTalkNumberKey = @"RCDSealTalkNumber";
+NSString * const RCDUserGenderKey = @"RCDUserGender";
+NSString * const RCDUserPrivacyMobileSearchKey = @"RCDUserPrivacyMobileSearchKey";
+NSString * const RCDUserPrivacySTAccountSearchKey = @"RCDUserPrivacySTAccountSearchKey";
+NSString * const RCDUserPrivacyFriendVerifyKey = @"RCDUserPrivacyFriendVerifyKey";
+NSString * const RCDUserPrivacyGroupVerifyKey = @"RCDUserPrivacyFriendVerifyKey";
+NSString * const RCDContactsAuthStateChangeKey = @"RCDContactsAuthStateChangeKey";
+NSString * const RCDContactsRequestKey = @"RCDContactsRequestKey";
+NSString * const RCDContactsUpdateUIKey = @"RCDContactsUpdateUIKey";
 #endif /* RCDCommonString_h */

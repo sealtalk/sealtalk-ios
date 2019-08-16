@@ -10,7 +10,8 @@
 #import "DefaultPortraitView.h"
 #import "RCDFriendInfo.h"
 #import "pinyin.h"
-
+#import "RCDContactsInfo.h"
+#import "RCDGroupManager.h"
 @implementation RCDUtilities
 + (UIImage *)imageNamed:(NSString *)name ofBundle:(NSString *)bundleName {
     UIImage *image = nil;
@@ -152,6 +153,15 @@
                 RCUserInfo *userInfo = (RCUserInfo *)user;
                 firstLetter = [self getFirstUpperLetter:userInfo.name];
             }
+            if ([user isMemberOfClass:[RCDContactsInfo class]]) {
+                RCDContactsInfo *contacts = (RCDContactsInfo *)user;
+                firstLetter = [self getFirstUpperLetter:contacts.name];
+            }
+            if ([user isMemberOfClass:[RCDUserInfo class]]) {
+                RCDUserInfo *userInfo = (RCDUserInfo *)user;
+                firstLetter = [self getFirstUpperLetter:userInfo.name];
+            }
+            
             if ([firstLetter isEqualToString:key]) {
                 [tempArr addObject:user];
             }
@@ -218,4 +228,48 @@
     NSString* dateString = [fmt stringFromDate:date];
     return dateString;
 }
+
++ (CGFloat)getStringHeight:(NSString *)text font:(UIFont *)font viewWidth:(CGFloat)width {
+    // 设置文字属性 要和label的一致
+    NSDictionary *attrs = @{NSFontAttributeName :font};
+    CGSize maxSize = CGSizeMake(width, MAXFLOAT);
+    
+    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
+    
+    // 计算文字占据的宽高
+    CGSize size = [text boundingRectWithSize:maxSize options:options attributes:attrs context:nil].size;
+    
+    // 当你是把获得的高度来布局控件的View的高度的时候.size转化为ceilf(size.height)。
+    return  ceilf(size.height);
+}
+
++ (BOOL)isLowerLetter:(NSString *)string {
+    NSString *firstString = @"";
+    if (string.length > 0) {
+        firstString = [string substringToIndex:1];
+    } else {
+        return NO;
+    }
+    NSString *regex = @"[A-Za-z]+";
+    NSPredicate*predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    if ([predicate evaluateWithObject:firstString]) {
+        return YES;
+    }
+    return NO;
+}
+
++ (BOOL)judgeSealTalkAccount:(NSString *)string {
+    NSString *regex = @"^[A-Za-z0-9_-]+$";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    if ([predicate evaluateWithObject:string]) {
+        return YES;
+    }
+    return NO;
+}
+
++ (int)getTotalUnreadCount{
+    int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[@(ConversationType_PRIVATE), @(ConversationType_APPSERVICE),@(ConversationType_PUBLICSERVICE), @(ConversationType_GROUP), @(ConversationType_SYSTEM)]];
+    return unreadMsgCount + (int)[RCDGroupManager getGroupNoticeUnreadCount];
+}
+
 @end

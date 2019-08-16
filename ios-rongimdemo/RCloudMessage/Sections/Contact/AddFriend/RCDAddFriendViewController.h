@@ -8,9 +8,10 @@
 
 #import <RongIMLib/RCUserInfo.h>
 #import <UIKit/UIKit.h>
+#import "RCDUserInfo.h"
 
 @interface RCDAddFriendViewController : UITableViewController
 
-@property(nonatomic, strong) RCUserInfo *targetUserInfo;
+@property(nonatomic, strong) RCDUserInfo *targetUserInfo;
 
 @end

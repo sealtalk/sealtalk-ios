@@ -18,11 +18,19 @@
 #import "RCDPersonDetailViewController.h"
 #import "RCDAddFriendViewController.h"
 #import "RCDContactSelectedTableViewController.h"
+#import "RCDTipFooterView.h"
+#import "RCDDBManager.h"
+#import "RCDChatManager.h"
+#import "UIView+MBProgressHUD.h"
+
 static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 @interface RCDPrivateSettingsTableViewController ()<RCDUserListCollectionViewDelegate>
+
 @property (nonatomic, strong) RCDUserListCollectionView *headerView;
 @property (nonatomic, strong) RCDFriendInfo *userInfo;
+@property (nonatomic, strong) RCDTipFooterView *tipFooterView;
+
 @end
 
 @implementation RCDPrivateSettingsTableViewController
@@ -39,7 +47,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -49,7 +57,13 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         rows = 1;
         break;
     case 1:
-        rows = 3;
+        rows = 2;
+        break;
+    case 2:
+        rows = 1;
+        break;
+    case 3:
+        rows = 1;
         break;
     default:
         break;
@@ -95,18 +109,28 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                   action:@selector(clickIsTopBtn:)
                         forControlEvents:UIControlEventValueChanged];
         } break;
-
-        case 2: {
-            [cell setCellStyle:SwitchStyle];
-            cell.leftLabel.text = RCDLocalizedString(@"clear_chat_history");
-            cell.switchButton.hidden = YES;
-        } break;
-
         default:
             break;
         }
-
         return cell;
+    }
+    if (indexPath.section == 2) {
+        if (indexPath.row == 0) {
+            [cell setCellStyle:SwitchStyle];
+            cell.leftLabel.text = RCDLocalizedString(@"ScreenCaptureNotification");
+            cell.switchButton.hidden = NO;
+            [self setSwitchStatusWithTableViewCell:cell];
+            [cell.switchButton addTarget:self action:@selector(screenCaptureSwitchButtonDidPressed:) forControlEvents:UIControlEventValueChanged];
+            return cell;
+        }
+    }
+    if (indexPath.section == 3) {
+        if (indexPath.row == 0) {
+            [cell setCellStyle:DefaultStyle];
+            cell.leftLabel.text = RCDLocalizedString(@"clear_chat_history");
+            cell.switchButton.hidden = YES;
+            return cell;
+        }
     }
     return nil;
 }
@@ -115,7 +139,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     if (indexPath.section == 0) {
         [self pushSearchHistoryVC];
     }
-    if (indexPath.section == 1 && indexPath.row == 2) {
+    if (indexPath.section == 3 && indexPath.row == 0) {
         //清理历史消息
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:RCDLocalizedString(@"clear_chat_history_alert") delegate:self cancelButtonTitle:RCDLocalizedString(@"cancel") destructiveButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil];
         [actionSheet showInView:self.view];
@@ -124,7 +148,25 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 3) {
+        return 0;
+    }
     return 15;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == 2) {
+        return [self.tipFooterView heightForTipFooterViewWithTip:RCDLocalizedString(@"ScreenCaptureNotificationInfo") font:[UIFont fontWithName:@"PingFangSC-Regular" size:14] constrainedSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 27, MAXFLOAT)];
+    }
+    return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (section == 2) {
+        [self.tipFooterView renderWithTip:RCDLocalizedString(@"ScreenCaptureNotificationInfo") font:[UIFont fontWithName:@"PingFangSC-Regular" size:14]];
+        return self.tipFooterView;
+    }
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -134,12 +176,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 #pragma mark - RCDUserListCollectionViewDelegate
 - (void)didTipHeaderClicked:(NSString *)userId{
     RCDFriendInfo *friendInfo = [RCDUserInfoManager getFriendInfo:userId];
-    if ((friendInfo != nil && friendInfo.status == RCDFriendStatusAgree) || [userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
+    if ((friendInfo != nil && (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) || [userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
         RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
         detailViewController.userId = userId;
         [self.navigationController pushViewController:detailViewController animated:YES];
     } else {
-        RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
+        RCDUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
         RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
         addViewController.targetUserInfo = user;
         [self.navigationController pushViewController:addViewController animated:YES];
@@ -242,6 +284,37 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
 
+- (void)screenCaptureSwitchButtonDidPressed:(id)sender {
+    UISwitch *screenCaptureSwitch = (UISwitch *)sender;
+    BOOL switchStatus = screenCaptureSwitch.on;
+    [RCDChatManager setScreenCaptureNotification:switchStatus conversationType:ConversationType_PRIVATE targetId:self.userId complete:^(BOOL result) {
+        if (!result) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                screenCaptureSwitch.on = [RCDDBManager getScreenCaptureNotification:ConversationType_PRIVATE targetId:self.userId];;
+            });
+        } else {
+            [self showHUDMessage:RCDLocalizedString(@"setting_success")];
+        }
+    }];
+}
+
+- (void)showHUDMessage:(NSString *)message {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view showHUDMessage:message];
+    });
+}
+
+- (void)setSwitchStatusWithTableViewCell:(RCDBaseSettingTableViewCell *)cell {
+    cell.switchButton.on = [RCDDBManager getScreenCaptureNotification:ConversationType_PRIVATE targetId:self.userId];
+    [RCDChatManager getScreenCaptureNotification:ConversationType_PRIVATE targetId:self.userId complete:^(BOOL result) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            cell.switchButton.on = result;
+        });
+    } error:^{
+        
+    }];
+}
+
 #pragma mark - getter & setter
 - (RCDUserListCollectionView *)headerView{
     if (!_headerView) {
@@ -252,4 +325,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     }
     return _headerView;
 }
+
+- (RCDTipFooterView *)tipFooterView {
+    if (!_tipFooterView) {
+        _tipFooterView = [[RCDTipFooterView alloc] init];
+    }
+    return _tipFooterView;
+}
+
 @end

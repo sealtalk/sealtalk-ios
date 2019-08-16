@@ -12,18 +12,16 @@
 #import "RCDAddFriendViewController.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDRCIMDataSource.h"
-#import "RCDSearchResultTableViewCell.h"
 #import "RCDUserInfoManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "RCDCountryListController.h"
 #import "RCDCountry.h"
 #import "RCDCommonString.h"
-@interface RCDSearchFriendController ()<UITableViewDataSource, UITableViewDelegate, RCDCountryListControllerDelegate>
-@property (nonatomic, strong) UITableView *resultTableView;
+#import "RCDUtilities.h"
+@interface RCDSearchFriendController ()<RCDCountryListControllerDelegate>
 @property (nonatomic, strong) UIView *searchInfoView;
 @property (nonatomic, strong) RCDIndicateTextField *countryTextField;
 @property (nonatomic, strong) RCDIndicateTextField *phoneTextField;
-@property (nonatomic, strong) NSMutableArray *searchResult;
 @property (nonatomic, strong) RCDCountry *currentRegion;
 @end
 
@@ -35,11 +33,6 @@
     self.currentRegion = [[RCDCountry alloc] initWithDict:[DEFAULTS objectForKey:RCDCurrentCountryKey]];
     [self addSubviews];
     self.navigationItem.title = RCDLocalizedString(@"add_contacts");
-    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"cancel")
-                                                             style:(UIBarButtonItemStylePlain) target:self action:@selector(onCancelAction)];
-    self.navigationItem.rightBarButtonItem = right;
-    self.navigationItem.rightBarButtonItem.enabled = NO;;
-
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -48,70 +41,7 @@
 }
 
 - (void)viewDidLayoutSubviews {
-    self.resultTableView.frame = self.view.bounds;
     self.searchInfoView.frame = CGRectMake(0, 0, self.view.frame.size.width, 200);
-}
-
-#pragma mark - UITableViewDataSource & UITableViewDelegate
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.searchResult.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 80.f;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *reusableCellWithIdentifier = @"RCDSearchResultTableViewCell";
-    RCDSearchResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
-    if (cell == nil) {
-        cell = [[RCDSearchResultTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reusableCellWithIdentifier];
-    }
-    
-    RCUserInfo *user = self.searchResult[indexPath.row];
-    if (user) {
-        RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:user.userId];
-        if (friend && friend.displayName.length > 0) {
-            cell.lblName.text = friend.displayName;
-        }else{
-             cell.lblName.text = user.name;
-        }
-        if ([user.portraitUri isEqualToString:@""]) {
-            UIImage *portrait = [DefaultPortraitView portraitView:user.userId name:user.name];;
-            cell.ivAva.image = portrait;
-        } else {
-            [cell.ivAva sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
-                          placeholderImage:[UIImage imageNamed:@"icon_person"]];
-        }
-    }
-    cell.ivAva.contentMode = UIViewContentModeScaleAspectFill;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    RCUserInfo *user = _searchResult[indexPath.row];
-    
-    if ([user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:RCDLocalizedString(@"can_not_add_self_to_address_book")
-                                                       delegate:nil
-                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
-                              
-                                              otherButtonTitles:nil];
-        [alert show];
-    } else{
-        RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:user.userId];
-        if (friend != nil && friend.status == RCDFriendStatusAgree) {
-            RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
-            detailViewController.userId = user.userId;
-            [self.navigationController pushViewController:detailViewController animated:YES];
-        } else {
-            RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
-            addViewController.targetUserInfo = user;
-            [self.navigationController pushViewController:addViewController animated:YES];
-        }
-    }
 }
 
 #pragma mark - RCDCountryListControllerDelegate
@@ -130,59 +60,66 @@
 }
 
 - (void)didSearchFriend{
-    [self.searchResult removeAllObjects];
     NSString *searchText = self.phoneTextField.textField.text;
     if ([searchText length] > 0) {
-        __weak typeof(self) weakSelf = self;
-        [RCDUserInfoManager findUserByPhone:searchText
-                                     region:self.currentRegion.phoneCode
-                                   complete:^(RCUserInfo *userInfo) {
-                                       dispatch_async(dispatch_get_main_queue(), ^{
-                                           if (userInfo) {
-                                               [weakSelf.searchResult addObject:userInfo];
-                                               [weakSelf showAndReloadResultTableView];
-                                           } else {
-                                               UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                                               message:RCDLocalizedString(@"no_search_Friend")
-                                                                                              delegate:nil
-                                                                                     cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                                                     
-                                                                                     otherButtonTitles:nil];
-                                               [alert show];
-                                           }
-                                       });
-                                   }];
+        
+        NSString *currentPhoneNumber = [DEFAULTS objectForKey:RCDUserNameKey];
+        NSString *currentSTAccount = [DEFAULTS objectForKey:RCDSealTalkNumberKey];
+        
+        if ([searchText isEqualToString:currentPhoneNumber] || [searchText isEqualToString:currentSTAccount]) {
+            [self showAlertWithMessage:RCDLocalizedString(@"SearchUserIsCurrentUser")];
+        } else {
+            __weak typeof(self) weakSelf = self;
+            if ([RCDUtilities isLowerLetter:searchText]) {
+                [RCDUserInfoManager findUserByPhone:nil region:nil orStAccount:searchText complete:^(RCDUserInfo *userInfo) {
+                    [weakSelf pushVCWithUser:userInfo];
+                }];
+            } else {
+                [RCDUserInfoManager findUserByPhone:searchText region:self.currentRegion.phoneCode orStAccount:nil complete:^(RCDUserInfo *userInfo) {
+                    [weakSelf pushVCWithUser:userInfo];
+                }];
+            }
+        }
+    } else {
+        [self showAlertWithMessage:RCDLocalizedString(@"SearchEmptyHint")];
     }
 }
 
-- (void)onCancelAction{
-    [self hidenAndReloadResultTableView];
+- (void)pushVCWithUser:(RCDUserInfo *)userInfo {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (userInfo) {
+            RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userInfo.userId];
+            if (friend != nil && (friend.status == RCDFriendStatusAgree || friend.status == RCDFriendStatusBlock)) {
+                RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
+                detailViewController.userId = userInfo.userId;
+                [self.navigationController pushViewController:detailViewController animated:YES];
+            } else {
+                [self pushAddFriendVC:userInfo];
+            }
+        } else {
+            [self showAlertWithMessage:RCDLocalizedString(@"no_search_Friend")];
+        }
+    });
 }
 
-- (void)showAndReloadResultTableView{
-    [self.phoneTextField.textField resignFirstResponder];
-    self.navigationItem.rightBarButtonItem.enabled = YES;;
-    [UIView animateWithDuration:0.2 animations:^{
-        self.resultTableView.hidden = NO;
-        self.searchInfoView.hidden = YES;
-        [self.searchInfoView sendSubviewToBack:self.resultTableView];
-        [self.resultTableView reloadData];
-    }];
+- (void)showAlertWithMessage:(NSString *)message {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil];
+    [alert show];
 }
 
-- (void)hidenAndReloadResultTableView{
-    self.navigationItem.rightBarButtonItem.enabled = NO;;
-    [UIView animateWithDuration:0.2 animations:^{
-        self.resultTableView.hidden = YES;
-        self.searchInfoView.hidden = NO;
-        [self.searchInfoView bringSubviewToFront:self.resultTableView];
-        [self.resultTableView reloadData];
-    }];
+- (void)pushAddFriendVC:(RCDUserInfo *)user {
+    if ([user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:RCDLocalizedString(@"can_not_add_self_to_address_book") delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil];
+        [alert show];
+    } else {
+        RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
+        addViewController.targetUserInfo = user;
+        [self.navigationController pushViewController:addViewController animated:YES];
+    }
 }
 
 #pragma mark - Subviews
 - (void)addSubviews{
-    [self.view addSubview:self.resultTableView];
     [self.view addSubview:self.searchInfoView];
     
     [self.searchInfoView addSubview:self.countryTextField];
@@ -210,18 +147,6 @@
 }
 
 #pragma mark - Getters and setters
-- (UITableView *)resultTableView{
-    if (!_resultTableView) {
-        _resultTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:(UITableViewStylePlain)];
-        _resultTableView.backgroundColor= [UIColor whiteColor];
-        _resultTableView.tableFooterView = [UIView new];
-        _resultTableView.delegate = self;
-        _resultTableView.dataSource = self;
-        _resultTableView.hidden = YES;
-    }
-    return _resultTableView;
-}
-
 - (UIView *)searchInfoView{
     if (!_searchInfoView) {
         _searchInfoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 200)];
@@ -257,15 +182,10 @@
         _phoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
         _phoneTextField.textField.adjustsFontSizeToFitWidth = YES;
         _phoneTextField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        _phoneTextField.textField.keyboardType = UIKeyboardTypeNumberPad;
+        _phoneTextField.textField.textAlignment = NSTextAlignmentLeft;
+        _phoneTextField.textField.placeholder = RCDLocalizedString(@"PhoneOrSealTalkNumber");
     }
     return _phoneTextField;
 }
 
--(NSMutableArray *)searchResult{
-    if (!_searchResult) {
-        _searchResult = [NSMutableArray array];
-    }
-    return _searchResult;
-}
 @end

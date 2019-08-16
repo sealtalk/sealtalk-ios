@@ -64,11 +64,13 @@
         } else {
             if ([self.newsPwdTextField.text isEqualToString:self.confirmPwdTextField.text]) {
                 [RCDLoginManager changePassword:self.oldPwdTextField.text newPwd:self.newsPwdTextField.text complete:^(BOOL success) {
-                    if (success) {
-                        [DEFAULTS setObject:self.newsPwdTextField.text forKey:RCDUserPasswordKey];
-                        [DEFAULTS synchronize];
-                        [weakSelf.navigationController popViewControllerAnimated:YES];
-                    }
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (success) {
+                            [DEFAULTS setObject:self.newsPwdTextField.text forKey:RCDUserPasswordKey];
+                            [DEFAULTS synchronize];
+                            [weakSelf.navigationController popViewControllerAnimated:YES];
+                        }
+                    });
                 }];
             } else {
                 [self AlertShow:RCDLocalizedString(@"old_and_new_friend_different")
@@ -205,10 +207,10 @@
                                                                               views:self.subViews]];
 
     [self.oldPwdView addConstraint:[NSLayoutConstraint constraintWithItem:_oldPwdTextField
-                                                                attribute:NSLayoutAttributeCenterY
+                                                                attribute:NSLayoutAttributeHeight
                                                                 relatedBy:NSLayoutRelationEqual
                                                                    toItem:self.oldPwdView
-                                                                attribute:NSLayoutAttributeCenterY
+                                                                attribute:NSLayoutAttributeHeight
                                                                multiplier:1
                                                                  constant:0]];
 
@@ -218,10 +220,10 @@
                                                                                views:self.subViews]];
 
     [self.newsPwdView addConstraint:[NSLayoutConstraint constraintWithItem:_newsPwdTextField
-                                                                 attribute:NSLayoutAttributeCenterY
+                                                                 attribute:NSLayoutAttributeHeight
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:self.newsPwdView
-                                                                 attribute:NSLayoutAttributeCenterY
+                                                                 attribute:NSLayoutAttributeHeight
                                                                 multiplier:1
                                                                   constant:0]];
 
@@ -232,10 +234,10 @@
                                                                  views:self.subViews]];
 
     [self.confirmPwdView addConstraint:[NSLayoutConstraint constraintWithItem:_confirmPwdTextField
-                                                                    attribute:NSLayoutAttributeCenterY
+                                                                    attribute:NSLayoutAttributeHeight
                                                                     relatedBy:NSLayoutRelationEqual
                                                                        toItem:self.confirmPwdView
-                                                                    attribute:NSLayoutAttributeCenterY
+                                                                    attribute:NSLayoutAttributeHeight
                                                                    multiplier:1
                                                                      constant:0]];
 }

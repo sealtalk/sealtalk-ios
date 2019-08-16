@@ -15,5 +15,5 @@
 #define SwitchButtonTag 1111
 
 @interface RCDGroupSettingsTableViewCell : RCDBaseSettingTableViewCell
-- (instancetype)initWithIndexPath:(NSIndexPath *)indexPath andGroupInfo:(RCDGroupInfo *)groupInfo;
+- (instancetype)initWithTitle:(NSString *)title andGroupInfo:(RCDGroupInfo *)groupInfo;
 @end

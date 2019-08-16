@@ -236,11 +236,6 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
         UIImage *searchBarBg = [RCDUtilities getImageWithColor:[UIColor clearColor] andHeight:32.0f];
         _searchBar.backgroundImage = searchBarBg;
         _searchBar.backgroundColor = HEXCOLOR(0xf0f0f6);
-        
-        UITextField *searchField = [_searchBar valueForKey:@"_searchField"];
-        searchField.layer.borderWidth = 0.5f;
-        searchField.layer.borderColor = [HEXCOLOR(0xdfdfdf) CGColor];
-        searchField.layer.cornerRadius = 5.f;
     }
     return _searchBar;
 }

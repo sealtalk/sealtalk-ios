@@ -10,6 +10,7 @@
 #import "RCDUserInfoManager.h"
 #import "RCDUtilities.h"
 #import "RCDGroupManager.h"
+#import "RCDCommonString.h"
 
 @interface RCDRCIMDataSource ()
 
@@ -27,6 +28,12 @@
     return instance;
 }
 
+- (void)syncAllData{
+    [RCDDataSource syncGroups];
+    [RCDDataSource syncGroupNoticeList];
+    [RCDDataSource syncFriendList];
+}
+
 - (void)syncGroups {
     //开发者调用自己的服务器接口获取所属群组信息
     [RCDGroupManager getMyGroupListFromServer:^(NSArray<RCDGroupInfo *> * _Nonnull groupList) {
@@ -36,9 +43,18 @@
     }];
 }
 
-- (void)syncFriendList:(NSString *)userId complete:(void (^)(NSArray *friends))completion {
+- (void)syncGroupNoticeList{
+    [RCDGroupManager getGroupNoticeListFromServer:^(NSArray<RCDGroupNotice *> *noticeList) {
+        
+    }];
+}
+
+- (void)syncFriendList{
     [RCDUserInfoManager getFriendListFromServer:^(NSArray<RCDFriendInfo *> *friendList) {
-        completion(friendList);
+        rcd_dispatch_main_async_safe(^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsRequestKey object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsUpdateUIKey object:nil];
+        });
     }];
 }
 
@@ -55,6 +71,9 @@
 #pragma mark - RCIMUserInfoDataSource
 - (void)getUserInfoWithUserId:(NSString *)userId completion:(void (^)(RCUserInfo *))completion {
     NSLog(@"getUserInfoWithUserId ----- %@", userId);
+    if ([userId isEqualToString:RCDGroupNoticeTargetId]) {//群通知的用户信息直接在自定义的 RCDGroupConversationCell 里面处理了
+        return;
+    }
     //开发者调自己的服务器接口根据userID异步请求数据
     [RCDUserInfoManager getUserInfoFromServer:userId complete:^(RCUserInfo *userInfo) {
         if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
@@ -90,20 +109,13 @@
     }
 }
 
-- (void)getAllMembersOfGroup:(NSString *)groupId result:(void (^)(NSArray *userIdList))resultBlock {
+#pragma mark - RCIMGroupMemberDataSource
+- (void)getAllMembersOfGroup:(NSString *)groupId result:(void (^)(NSArray<NSString *> *))resultBlock {
     [RCDGroupManager getGroupMembersFromServer:groupId complete:^(NSArray<NSString *> * _Nonnull memberIdList) {
         if (resultBlock) {
             resultBlock(memberIdList);
         }
     }];
-}
-
-- (NSArray *)getAllGroupInfo:(void (^)(void))completion {
-    return [RCDGroupManager getMyGroupList];
-}
-
-- (NSArray *)getAllFriends:(void (^)(void))completion {
-    return [RCDUserInfoManager getAllFriends];
 }
 
 #pragma mark - 名片消息

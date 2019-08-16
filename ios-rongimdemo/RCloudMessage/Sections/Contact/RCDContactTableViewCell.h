@@ -16,6 +16,10 @@
 
 @property(nonatomic, strong) UILabel *userIdLabel;
 
+@property(nonatomic, strong) UILabel *noticeLabel;
+
+- (void)showNoticeLabel:(int)noticeCount;
+
 - (void)setModel:(RCUserInfo *)userInfo;
 
 @end

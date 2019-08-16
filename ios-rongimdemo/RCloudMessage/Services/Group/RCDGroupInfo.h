@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import <RongIMLib/RCGroup.h>
+typedef NS_ENUM(NSInteger, RCDGroupMessageClearStatus) {
+    RCDGroupMessageClearStatusClose = 0,
+    RCDGroupMessageClearStatusBefore3d = 3,
+    RCDGroupMessageClearStatusBefore7d = 7,
+    RCDGroupMessageClearStatusBefore36h = 36,
+    RCDGroupMessageClearStatusUnknown = -1,//获取失败
+};
 
 @interface RCDGroupInfo : RCGroup <NSCoding>
 /** 人数 */
@@ -21,5 +28,10 @@
 @property(nonatomic, strong) NSString *creatorId;
 /** 是否解散 */
 @property(nonatomic, assign) BOOL isDismiss;
+/** 群禁言 */
+@property(nonatomic, assign) BOOL mute;
+/** 群认证，默认是NO */ 
+@property(nonatomic, assign) BOOL needCertification;
 
+- (instancetype)initWithJson:(NSDictionary *)json;
 @end

@@ -63,7 +63,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCUserInfo *user = [RCDUserInfoManager getUserInfo:self.groupMembers[indexPath.row]];
     RCDFriendInfo *friendInfo = [RCDUserInfoManager getFriendInfo:self.groupMembers[indexPath.row]];
-    if ((friendInfo != nil && friendInfo.status == RCDFriendStatusAgree) || [user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
+    if ((friendInfo != nil && (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) || [user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
         RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
         [self.navigationController pushViewController:detailViewController animated:YES];
         RCUserInfo *user = [RCDUserInfoManager getUserInfo:self.groupMembers[indexPath.row]];

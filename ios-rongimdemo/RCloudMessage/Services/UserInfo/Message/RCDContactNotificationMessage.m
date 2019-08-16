@@ -48,6 +48,8 @@
     } else if ([self.operation isEqualToString:RCDContactNotificationMessage_ContactOperationRejectResponse]) {
         operationContent = [NSString stringWithFormat:RCDLocalizedString(@"RejectFriendRequest"),
                 name];
+    }else {
+        operationContent = NSLocalizedStringFromTable(@"unknown_message_cell_tip", @"RongCloudKit", nil);
     }
     return operationContent;
 }

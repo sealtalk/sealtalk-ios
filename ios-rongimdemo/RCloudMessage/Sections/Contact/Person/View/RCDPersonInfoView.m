@@ -20,10 +20,11 @@
 @property (nonatomic, strong) UIView *infoBgView;
 @property (nonatomic, strong) UIImageView *portraitImgView;
 @property (nonatomic, strong) UILabel *remarksLabel;
-@property (nonatomic, strong) UILabel *phoneNumberLabel;
+@property (nonatomic, strong) UILabel *stAccountLabel;
 @property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UIImageView *genderImgView;
 
-@property (nonatomic, copy) NSString *phoneNumber;
+@property (nonatomic, strong) RCDFriendInfo *friendInfo;
 
 @end
 
@@ -38,16 +39,10 @@
 
 #pragma mark - Public Method
 - (void)setUserInfo:(RCDFriendInfo *)userInfo {
+    self.friendInfo = userInfo;
+    // todo：设置头像
     if ([userInfo.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-        self.remarksLabel.hidden = YES;
-        self.phoneNumberLabel.hidden = YES;
-        
-        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.infoBgView);
-            make.left.equalTo(self.portraitImgView.mas_right).offset(10);
-            make.height.offset(16);
-            make.right.equalTo(self.infoBgView).offset(-10);
-        }];
+        [self updateSubviewsWithHaveRemarks:NO];
         self.nameLabel.text = userInfo.name;
     } else {
         if (userInfo.displayName != nil && ![userInfo.displayName isEqualToString:@""]) {
@@ -59,21 +54,19 @@
             self.nameLabel.text = userInfo.name;
         }
     }
+    if (userInfo.stAccount.length > 0 && ![userInfo.stAccount isEqualToString:@""]) {
+        self.stAccountLabel.text = [NSString stringWithFormat:@"%@：%@",RCDLocalizedString(@"SealTalkNumber"), userInfo.stAccount];
+    }
     if (!userInfo.portraitUri || userInfo.portraitUri.length <= 0) {
         self.portraitImgView.image = [DefaultPortraitView portraitView:userInfo.userId name:userInfo.name];
     }else{
         [self.portraitImgView sd_setImageWithURL:[NSURL URLWithString:userInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"icon_person"]];
     }
-}
-
-- (void)setUserPhoneNumer:(NSString *)phoneNumber {
-    self.phoneNumberLabel.text = [NSString stringWithFormat:@"%@: %@", RCDLocalizedString(@"mobile_number"), phoneNumber];
-    NSUInteger textLength = RCDLocalizedString(@"mobile_number").length + 1;
-    NSMutableAttributedString *attributedStr =
-    [[NSMutableAttributedString alloc] initWithString:self.phoneNumberLabel.text];
-    [attributedStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"0099ff" alpha:1.f] range:NSMakeRange(textLength, self.phoneNumberLabel.text.length-textLength)];
-    self.phoneNumberLabel.attributedText = attributedStr;
-    self.phoneNumber = phoneNumber;
+    if (userInfo.gender.length > 0) {
+        self.genderImgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"gender_%@",userInfo.gender]];
+    } else {
+        self.genderImgView.image = [UIImage imageNamed:@"gender_male"];
+    }
 }
 
 #pragma mark - Private Method
@@ -85,32 +78,71 @@
         [self.remarksLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.infoBgView).offset(14);
             make.left.equalTo(self.portraitImgView.mas_right).offset(10);
-            make.height.offset(16);
-            make.right.equalTo(self.infoBgView).offset(-10);
+            make.height.offset(18);
+            make.right.equalTo(self.genderImgView.mas_left).offset(-5);
         }];
-        [self.phoneNumberLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.remarksLabel.mas_bottom).offset(5);
-            make.left.right.equalTo(self.remarksLabel);
-            make.height.offset(14);
+        [self.genderImgView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.remarksLabel);
+            make.left.equalTo(self.remarksLabel.mas_right).offset(5);
+            make.height.width.equalTo(@15);
+            make.right.lessThanOrEqualTo(self.infoBgView);
         }];
+        
+        if (self.friendInfo.stAccount.length > 0 && ![self.friendInfo.stAccount isEqualToString:@""]) {
+            [self.stAccountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.remarksLabel.mas_bottom).offset(5);
+                make.left.equalTo(self.remarksLabel);
+                make.right.equalTo(self.infoBgView);
+                make.height.offset(14);
+            }];
+        } else {
+            [self.stAccountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.remarksLabel.mas_bottom).offset(5);
+                make.left.equalTo(self.remarksLabel);
+                make.right.equalTo(self.infoBgView);
+                make.height.offset(0.1);
+            }];
+        }
         [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.phoneNumberLabel.mas_bottom).offset(5);
-            make.left.right.equalTo(self.remarksLabel);
+            make.top.equalTo(self.stAccountLabel.mas_bottom).offset(5);
+            make.left.equalTo(self.remarksLabel);
+            make.right.equalTo(self.infoBgView);
             make.height.offset(16);
         }];
     } else {
         self.nameLabel.font = [UIFont systemFontOfSize:16];
         self.nameLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1];
-        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.infoBgView).offset(20);
-            make.left.equalTo(self.portraitImgView.mas_right).offset(10);
-            make.height.offset(16);
-            make.right.equalTo(self.infoBgView).offset(-10);
-        }];
-        [self.phoneNumberLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(8);
-            make.left.right.equalTo(self.remarksLabel);
-            make.height.offset(14);
+        
+        if (self.friendInfo.stAccount.length > 0 && ![self.friendInfo.stAccount isEqualToString:@""]) {
+            self.stAccountLabel.hidden = NO;
+            [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.infoBgView).offset(20);
+                make.left.equalTo(self.portraitImgView.mas_right).offset(10);
+                make.height.offset(16);
+                make.right.equalTo(self.genderImgView.mas_left).offset(-5);
+            }];
+            
+            [self.stAccountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.nameLabel.mas_bottom).offset(8);
+                make.left.equalTo(self.remarksLabel);
+                make.right.equalTo(self.infoBgView);
+                make.height.offset(14);
+            }];
+        } else {
+            self.stAccountLabel.hidden = YES;
+            [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(self.infoBgView);
+                make.left.equalTo(self.portraitImgView.mas_right).offset(10);
+                make.height.offset(16);
+                make.right.equalTo(self.genderImgView.mas_left).offset(-5);
+            }];
+        }
+        
+        [self.genderImgView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.nameLabel);
+            make.left.equalTo(self.nameLabel.mas_right).offset(5);
+            make.height.width.equalTo(@15);
+            make.right.lessThanOrEqualTo(self.infoBgView);
         }];
     }
 }
@@ -119,8 +151,9 @@
     [self addSubview:self.infoBgView];
     [self.infoBgView addSubview:self.portraitImgView];
     [self.infoBgView addSubview:self.remarksLabel];
-    [self.infoBgView addSubview:self.phoneNumberLabel];
+    [self.infoBgView addSubview:self.stAccountLabel];
     [self.infoBgView addSubview:self.nameLabel];
+    [self.infoBgView addSubview:self.genderImgView];
     
     [self.infoBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.left.right.equalTo(self);
@@ -136,32 +169,27 @@
         make.top.equalTo(self.infoBgView).offset(14);
         make.left.equalTo(self.portraitImgView.mas_right).offset(10);
         make.height.offset(16);
-        make.right.equalTo(self.infoBgView).offset(-10);
     }];
     
-    [self.phoneNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.stAccountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.remarksLabel.mas_bottom).offset(5);
-        make.left.right.equalTo(self.remarksLabel);
+        make.left.equalTo(self.remarksLabel);
+        make.right.equalTo(self.infoBgView);
         make.height.offset(14);
     }];
     
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.phoneNumberLabel.mas_bottom).offset(3);
-        make.left.right.equalTo(self.remarksLabel);
+        make.top.equalTo(self.stAccountLabel.mas_bottom).offset(3);
+        make.left.equalTo(self.remarksLabel);
+        make.right.equalTo(self.infoBgView);
         make.height.offset(16);
     }];
-}
-
-- (void)tapPhoneNumber:(UIButton *)sender {
-    self.phoneNumberLabel.userInteractionEnabled = NO;
-    [self performSelector:@selector(changePhoneNumberLabelInteractionEnabled) withObject:sender afterDelay:1];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(personInfoViewDidTapPhoneNumber:)]) {
-        [self.delegate personInfoViewDidTapPhoneNumber:self.phoneNumber];
-    }
-}
-
-- (void)changePhoneNumberLabelInteractionEnabled {
-    self.phoneNumberLabel.userInteractionEnabled = YES;
+    
+    [self.genderImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.remarksLabel);
+        make.left.equalTo(self.remarksLabel.mas_right).offset(5);
+        make.height.width.equalTo(@15);
+    }];
 }
 
 #pragma mark - Getter && Setter
@@ -197,18 +225,13 @@
     return _remarksLabel;
 }
 
-- (UILabel *)phoneNumberLabel {
-    if (!_phoneNumberLabel) {
-        _phoneNumberLabel = [[UILabel alloc] init];
-        _phoneNumberLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1];
-        _phoneNumberLabel.font = [UIFont systemFontOfSize:14];
-        _phoneNumberLabel.text = [NSString stringWithFormat:@"%@: --", RCDLocalizedString(@"mobile_number")];
-        _phoneNumberLabel.userInteractionEnabled = YES;
-        UITapGestureRecognizer *tap =
-        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPhoneNumber:)];
-        [_phoneNumberLabel addGestureRecognizer:tap];
+- (UILabel *)stAccountLabel {
+    if (!_stAccountLabel) {
+        _stAccountLabel = [[UILabel alloc] init];
+        _stAccountLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1];
+        _stAccountLabel.font = [UIFont systemFontOfSize:14];
     }
-    return _phoneNumberLabel;
+    return _stAccountLabel;
 }
 
 - (UILabel *)nameLabel {
@@ -218,6 +241,15 @@
         _nameLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1];
     }
     return _nameLabel;
+}
+
+- (UIImageView *)genderImgView {
+    if (!_genderImgView) {
+        _genderImgView = [[UIImageView alloc] init];
+        _genderImgView.layer.cornerRadius = 15 / 2;
+        _genderImgView.layer.masksToBounds = YES;
+    }
+    return _genderImgView;
 }
 
 @end

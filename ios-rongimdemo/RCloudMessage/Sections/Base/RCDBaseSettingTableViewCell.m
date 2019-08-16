@@ -170,7 +170,7 @@
 
     case DefaultStyle_RightLabel: {
         self.switchButton.hidden = YES;
-        constraints = @"H:|-10-[_leftLabel]-(>=10)-[_rightLabel]-13-[_rightArrow(8)]-10-|";
+        constraints = @"H:|-10-[_leftLabel]-(>=5)-[_rightLabel]-8-[_rightArrow(8)]-10-|";
     } break;
 
     case OnlyDisplayLeftLabelStyle: {
@@ -184,7 +184,7 @@
         self.rightLabel.hidden = YES;
         self.rightArrow.hidden = YES;
         self.switchButton.hidden = NO;
-        constraints = @"H:|-10-[_leftLabel]-(>=10)-[_switchButton]-10-|";
+        constraints = @"H:|-10-[_leftLabel]-(>=10)-[_switchButton(50)]-10-|";
     } break;
     default:
         break;

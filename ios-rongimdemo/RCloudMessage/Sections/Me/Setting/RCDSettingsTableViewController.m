@@ -70,7 +70,7 @@
         if(0 == indexPath.row) {
             text = RCDLocalizedString(@"change_password");
         }else if(1 == indexPath.row) {
-            text = RCDLocalizedString(@"privacy");
+            text = RCDLocalizedString(@"SecurityAndprivacy");
         }else if(2 == indexPath.row) {
             text = RCDLocalizedString(@"new_message_notification");
         }else if (3 == indexPath.row) {

@@ -8,16 +8,17 @@
 
 #import "RCDFriendInfo.h"
 #import <Foundation/Foundation.h>
-
+#import "RCDUserInfoAPI.h"
+#import "RCDUserSetting.h"
 @interface RCDUserInfoManager : NSObject
 
 #pragma mark - User
 //从本地数据库获取用户信息
-+ (RCUserInfo *)getUserInfo:(NSString *)userId;
++ (RCDUserInfo *)getUserInfo:(NSString *)userId;
 
 //从 server 拉取用户信息
 + (void)getUserInfoFromServer:(NSString *)userId
-                     complete:(void (^)(RCUserInfo *userInfo))completeBlock;
+                     complete:(void (^)(RCDUserInfo *userInfo))completeBlock;
 
 //设置当前用户昵称
 + (void)setCurrentUserName:(NSString *)name
@@ -29,7 +30,12 @@
 
 + (void)findUserByPhone:(NSString *)phone
                  region:(NSString *)region
-               complete:(void (^)(RCUserInfo *userInfo))completeBlock;
+            orStAccount:(NSString *)stAccount
+               complete:(void (^)(RCDUserInfo *userInfo))completeBlock;
+
++ (void)findUserByPhone:(NSString *)phone
+                 region:(NSString *)region
+               complete:(void (^)(RCDUserInfo *userInfo))completeBlock;
 
 #pragma mark - blacklist
 //将某个用户加入黑名单
@@ -58,6 +64,9 @@
 + (void)getFriendInfoFromServer:(NSString *)userId
                        complete:(void (^)(RCDFriendInfo *friendInfo))completeBlock;
 
+//从本地数据库获取接收的好友请求
++ (int)getFriendRequesteds;
+
 //从本地数据库获取所有好友信息（已经成功添加好友）
 + (NSArray<RCDFriendInfo *>*)getAllFriends;
 
@@ -77,12 +86,38 @@
 
 + (void)inviteFriend:(NSString *)userId
          withMessage:(NSString *)message
-            complete:(void (^)(BOOL success))completeBlock;
+            complete:(void (^)(BOOL success, NSString *action))completeBlock;
 
 + (void)acceptFriendRequest:(NSString *)userId
+                   complete:(void (^)(BOOL success))completeBlock;
+
++ (void)ignoreFriendRequest:(NSString *)userId
                    complete:(void (^)(BOOL success))completeBlock;
 
 + (void)deleteFriend:(NSString *)userId
             complete:(void (^)(BOOL success))completeBlock;
 
++ (void)setSTAccount:(NSString *)stAccount
+            complete:(void (^)(BOOL success))completeBlock
+               error:(void (^)(RCDUserErrorCode errorCode))errorBlock;
+
++ (void)setGender:(NSString *)gender
+         complete:(void (^)(BOOL success))completeBlock;
+
+#pragma mark - user setting
++ (void)setSearchMeByMobile:(BOOL)allow
+                   complete:(void (^)(BOOL success))completeBlock;
+
++ (void)setSearchMeBySTAccount:(BOOL)allow
+                      complete:(void (^)(BOOL success))completeBlock;
+
++ (void)setAddFriendVerify:(BOOL)needVerify
+                  complete:(void (^)(BOOL success))completeBlock;
+
++ (void)setJoinGroupVerify:(BOOL)needVerify
+                  complete:(void (^)(BOOL success))completeBlock;
+
++ (RCDUserSetting *)getUserPrivacy;
+
++ (void)getUserPrivacyFromServer:(void (^)(RCDUserSetting *setting))completeBlock;
 @end

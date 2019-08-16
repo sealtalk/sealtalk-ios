@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCDFriendInfo.h"
 
 @interface RCDSearchResultTableViewCell : UITableViewCell
 
-@property(nonatomic, strong) UIImageView *ivAva;
-@property(nonatomic, strong) UILabel *lblName;
+- (void)setModel:(RCDFriendInfo *)friendInfo;
 
 @end

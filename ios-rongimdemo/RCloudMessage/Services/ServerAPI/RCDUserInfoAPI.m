@@ -8,11 +8,11 @@
 
 #import "RCDUserInfoAPI.h"
 #import "RCDHTTPUtility.h"
-
+#import "RCDCommonString.h"
 @implementation RCDUserInfoAPI
 
 + (void)getUserInfo:(NSString *)userId
-           complete:(void (^)(RCUserInfo *))completeBlock {
+           complete:(void (^)(RCDUserInfo *))completeBlock {
     if (!userId) {
         SealTalkLog(@"userId is nil");
         if (completeBlock) {
@@ -25,10 +25,12 @@
                                parameters:nil
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
-                                         RCUserInfo *userInfo = [[RCUserInfo alloc] init];
+                                         RCDUserInfo *userInfo = [[RCDUserInfo alloc] init];
                                          userInfo.userId = userId;
                                          userInfo.name = result.content[@"nickname"];
                                          userInfo.portraitUri = result.content[@"portraitUri"];
+                                         userInfo.stAccount = result.content[@"stAccount"];
+                                         userInfo.gender = result.content[@"gender"];
                                          if (completeBlock) {
                                              completeBlock(userInfo);
                                          }
@@ -62,7 +64,9 @@
                                          friendInfo.portraitUri = userDic[@"portraitUri"];
                                          friendInfo.status = RCDFriendStatusAgree;
                                          friendInfo.phoneNumber = userDic[@"phone"];
-                                         friendInfo.updateDt = [result.content[@"updatedTime"] longLongValue];
+                                         friendInfo.updateDt = [userDic[@"updatedTime"] longLongValue];
+                                         friendInfo.stAccount = userDic[@"stAccount"];
+                                         friendInfo.gender = userDic[@"gender"];
                                          if (completeBlock) {
                                              completeBlock(friendInfo);
                                          }
@@ -148,6 +152,55 @@
                                  }];
 }
 
++ (void)setSTAccount:(NSString *)stAccount
+            complete:(void (^)(BOOL success))completeBlock
+               error:(void (^)(RCDUserErrorCode errorCode))errorBlock {
+    if (!stAccount) {
+        SealTalkLog(@"stAccount is nil");
+        if (completeBlock) {
+            completeBlock(NO);
+        }
+        return;
+    }
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"user/set_st_account"
+                               parameters:@{ @"stAccount":stAccount }
+                                 response:^(RCDHTTPResult *result) {
+                                     if (result.success) {
+                                         if (completeBlock) {
+                                             completeBlock(YES);
+                                         }
+                                     } else {
+                                         if (result.httpCode == 400) {
+                                             errorBlock(RCDUserErrorCodeInvalidFormat);
+                                         } else if (result.errorCode == 1000) {
+                                             errorBlock(RCDUserErrorCodeStAccountIsExist);
+                                         } else {
+                                             errorBlock(RCDUserErrorCodeUnknown);
+                                         }
+                                     }
+                                 }];
+}
+
++ (void)setGender:(NSString *)gender
+         complete:(void (^)(BOOL success))completeBlock {
+    if (!gender) {
+        SealTalkLog(@"stAccount is nil");
+        if (completeBlock) {
+            completeBlock(NO);
+        }
+        return;
+    }
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"user/set_gender"
+                               parameters:@{ @"gender":gender }
+                                 response:^(RCDHTTPResult *result) {
+                                     if (completeBlock) {
+                                         completeBlock(result.success);
+                                     }
+                                 }];
+}
+
 + (void)getFriendList:(void (^)(NSArray<RCDFriendInfo *> *))completeBlock {
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodGet
                                 URLString:@"friendship/all"
@@ -165,6 +218,8 @@
                                              friendInfo.displayName = respFriend[@"displayName"];
                                              friendInfo.status = [respFriend[@"status"] integerValue];
                                              friendInfo.phoneNumber = userDic[@"phone"];
+                                             friendInfo.stAccount = userDic[@"stAccount"];
+                                             friendInfo.gender = userDic[@"gender"];
                                              friendInfo.updateDt = [respFriend[@"updatedTime"] longLongValue];
                                              [friendList addObject:friendInfo];
                                          }
@@ -177,11 +232,11 @@
 
 + (void)inviteFriend:(NSString *)userId
          withMessage:(NSString *)message
-            complete:(void (^)(BOOL))completeBlock {
+            complete:(void (^)(BOOL, NSString*))completeBlock {
     if (!userId || !message) {
         SealTalkLog(@"userId or message is nil");
         if (completeBlock) {
-            completeBlock(NO);
+            completeBlock(NO,@"");
         }
         return;
     }
@@ -189,14 +244,9 @@
                                 URLString:@"friendship/invite"
                                parameters:@{@"friendId":userId, @"message":message}
                                  response:^(RCDHTTPResult *result) {
-                                     if (result.success) {
-                                         if (completeBlock) {
-                                             completeBlock(YES);
-                                         }
-                                     } else {
-                                         if (completeBlock) {
-                                             completeBlock(NO);
-                                         }
+                                     NSString *action = result.content[@"action"];
+                                     if (completeBlock) {
+                                         completeBlock(result.success, action);
                                      }
                                  }];
 }
@@ -222,6 +272,25 @@
                                          if (completeBlock) {
                                              completeBlock(NO);
                                          }
+                                     }
+                                 }];
+}
+
++ (void)ignoreFriendRequest:(NSString *)userId
+                   complete:(void (^)(BOOL success))completeBlock {
+    if (!userId) {
+        SealTalkLog(@"userId is nil");
+        if (completeBlock) {
+            completeBlock(NO);
+        }
+        return;
+    }
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"friendship/ignore"
+                               parameters:@{@"friendId":userId}
+                                 response:^(RCDHTTPResult *result) {
+                                     if (completeBlock) {
+                                         completeBlock(result.success);
                                      }
                                  }];
 }
@@ -252,7 +321,47 @@
 
 + (void)findUserByPhone:(NSString *)phone
                  region:(NSString *)region
-               complete:(void (^)(RCUserInfo *))completeBlock {
+            orStAccount:(NSString *)stAccount
+               complete:(void (^)(RCDUserInfo *))completeBlock {
+    if (!phone && !region && !stAccount) {
+        SealTalkLog(@"phone region and stAccount is nil");
+        if (completeBlock) {
+            completeBlock(nil);
+        }
+        return;
+    }
+    NSString *params = @"";
+    if (stAccount) {
+        params = [NSString stringWithFormat:@"st_account=%@",stAccount];
+    } else {
+        params = [NSString stringWithFormat:@"region=%@&phone=%@", region, phone];
+    }
+    
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodGet
+                                URLString:[NSString stringWithFormat:@"user/find_user?%@",params]
+                               parameters:nil
+                                 response:^(RCDHTTPResult *result) {
+                                     if (result.success) {
+                                         RCDUserInfo *userInfo = [[RCDUserInfo alloc] init];
+                                         userInfo.userId = result.content[@"id"];
+                                         userInfo.name = result.content[@"nickname"];
+                                         userInfo.portraitUri = result.content[@"portraitUri"];
+                                         userInfo.stAccount = result.content[@"stAccount"];
+                                         userInfo.gender = result.content[@"gender"];
+                                         if (completeBlock) {
+                                             completeBlock(userInfo);
+                                         }
+                                     } else {
+                                         if (completeBlock) {
+                                             completeBlock(nil);
+                                         }
+                                     }
+                                 }];
+}
+
++ (void)findUserByPhone:(NSString *)phone
+                 region:(NSString *)region
+               complete:(void (^)(RCDUserInfo *))completeBlock {
     if (!phone || !region) {
         SealTalkLog(@"phone or region is nil");
         if (completeBlock) {
@@ -265,10 +374,12 @@
                                parameters:nil
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
-                                         RCUserInfo *userInfo = [[RCUserInfo alloc] init];
+                                         RCDUserInfo *userInfo = [[RCDUserInfo alloc] init];
                                          userInfo.userId = result.content[@"id"];
                                          userInfo.name = result.content[@"nickname"];
                                          userInfo.portraitUri = result.content[@"portraitUri"];
+                                         userInfo.stAccount = result.content[@"stAccount"];
+                                         userInfo.gender = result.content[@"gender"];
                                          if (completeBlock) {
                                              completeBlock(userInfo);
                                          }
@@ -321,7 +432,7 @@
 }
 
 // 查询已经设置的黑名单列表
-+ (void)getBlacklist:(void (^)(NSArray <RCUserInfo *> *blackUsers))completeBlock{
++ (void)getBlacklist:(void (^)(NSArray <RCDUserInfo *> *blackUsers))completeBlock{
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodGet
                                 URLString:@"user/blacklist"
                                parameters:nil
@@ -331,10 +442,12 @@
                                          NSMutableArray *users = [NSMutableArray array];
                                          for (NSDictionary *userJson in list) {
                                              NSDictionary *dic = userJson[@"user"];
-                                             RCUserInfo *userInfo = [[RCUserInfo alloc] init];
+                                             RCDUserInfo *userInfo = [[RCDUserInfo alloc] init];
                                              userInfo.userId = dic[@"id"];
                                              userInfo.name = dic[@"nickname"];
                                              userInfo.portraitUri = dic[@"portraitUri"];
+                                             userInfo.stAccount = dic[@"stAccount"];
+                                             userInfo.gender = dic[@"gender"];
                                              [users addObject:userInfo];
                                          }
                                          if (completeBlock) {
@@ -347,5 +460,72 @@
                                      }
                                  }];
     
+}
+
++ (void)getContactsInfo:(NSArray *)phoneNumberList
+               complete:(void (^)(NSArray *contactsList))completeBlock {
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"friendship/get_contacts_info"
+                               parameters:@{@"contactList": phoneNumberList}
+                                 response:^(RCDHTTPResult *result) {
+                                     if (result.success) {
+                                         NSArray *list = result.content;
+                                         if (completeBlock) {
+                                             completeBlock(list);
+                                         }
+                                     } else {
+                                         if (completeBlock) {
+                                             completeBlock(nil);
+                                         }
+                                     }
+                                 }];
+}
+
+#pragma mark - user setting
++ (void)setSearchMeByMobile:(BOOL)allow complete:(void (^)(BOOL))completeBlock{
+    [self setUserPrivacy:@{@"phoneVerify":@(allow?1:0)} complete:completeBlock];
+}
+
++ (void)setSearchMeBySTAccount:(BOOL)allow complete:(void (^)(BOOL))completeBlock{
+    [self setUserPrivacy:@{@"stSearchVerify":@(allow?1:0)} complete:completeBlock];
+}
+
++ (void)setAddFriendVerify:(BOOL)needVerify complete:(void (^)(BOOL))completeBlock{
+    [self setUserPrivacy:@{@"friVerify":@(needVerify?1:0)} complete:completeBlock];
+}
+
++ (void)setJoinGroupVerify:(BOOL)needVerify complete:(void (^)(BOOL))completeBlock{
+    [self setUserPrivacy:@{@"groupVerify":@(needVerify?1:0)} complete:completeBlock];
+}
+
++(void)getUserPrivacy:(void (^)(RCDUserSetting *))completeBlock{
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodGet
+                                URLString:@"user/get_privacy"
+                               parameters:nil
+                                 response:^(RCDHTTPResult *result) {
+                                     if (result.success) {
+                                         NSDictionary *dic = result.content;
+                                         RCDUserSetting *setting = [[RCDUserSetting alloc] initWithJson:dic];
+                                         if (completeBlock) {
+                                             completeBlock(setting);
+                                         }
+                                     }else{
+                                         if (completeBlock) {
+                                             completeBlock(nil);
+                                         }
+                                     }
+                                 }];
+
+}
+#pragma mark - private
++ (void)setUserPrivacy:(NSDictionary *)param complete:(void (^)(BOOL success))completeBlock{
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"user/set_privacy"
+                               parameters:param
+                                 response:^(RCDHTTPResult *result) {
+                                     if (completeBlock) {
+                                         completeBlock(result.success);
+                                     }
+                                 }];
 }
 @end

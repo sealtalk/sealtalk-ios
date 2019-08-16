@@ -60,13 +60,18 @@
 }
 
 - (void)forwardWithConversationType:(RCConversationType)type targetId:(NSString *)targetId message:(RCMessageModel *)message {
-    __weak typeof(self) weakSelf = self;
-    [[RCIM sharedRCIM] sendMessage:type targetId:targetId content:message.content pushContent:nil pushData:nil success:^(long messageId) {
-        [weakSelf dismiss];
-    } error:^(RCErrorCode nErrorCode, long messageId) {
-        [weakSelf dismiss];
-    }];
-    [NSThread sleepForTimeInterval:0.4];
+    if (self.willForwardMessageBlock) {
+        self.willForwardMessageBlock(type,targetId);
+        [self dismiss];
+    }else{
+        __weak typeof(self) weakSelf = self;
+        [[RCIM sharedRCIM] sendMessage:type targetId:targetId content:message.content pushContent:nil pushData:nil success:^(long messageId) {
+            [weakSelf dismiss];
+        } error:^(RCErrorCode nErrorCode, long messageId) {
+            [weakSelf dismiss];
+        }];
+        [NSThread sleepForTimeInterval:0.4];
+    }
 }
 
 - (void)forwardEnd {

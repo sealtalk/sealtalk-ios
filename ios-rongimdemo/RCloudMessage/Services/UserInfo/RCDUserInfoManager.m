@@ -9,7 +9,6 @@
 #import "RCDUserInfoManager.h"
 #import "RCDGroupInfo.h"
 #import "RCDUtilities.h"
-#import "RCDUserInfoAPI.h"
 #import "RCDDBManager.h"
 #import <RongIMKit/RongIMKit.h>
 
@@ -17,24 +16,28 @@
 
 #pragma mark - User
 
-+ (RCUserInfo *)getUserInfo:(NSString *)userId {
-    RCUserInfo *userInfo = [RCDDBManager getUser:userId];
++ (RCDUserInfo *)getUserInfo:(NSString *)userId {
+    RCDUserInfo *userInfo = [RCDDBManager getUser:userId];
     userInfo = [self generateDefaultPortraitIfNeed:userInfo];
     return userInfo;
 }
 
 + (void)getUserInfoFromServer:(NSString *)userId
-                     complete:(void (^)(RCUserInfo *))completeBlock {
+                     complete:(void (^)(RCDUserInfo *))completeBlock {
     [RCDUserInfoAPI getUserInfo:userId
-                       complete:^(RCUserInfo *userInfo) {
+                       complete:^(RCDUserInfo *userInfo) {
                            if (!userInfo) {
-                               userInfo = [[RCUserInfo alloc] init];
-                               userInfo.userId = userId;
-                               userInfo.name = [self generateDefaultName:userId];
+                               userInfo = [RCDDBManager getUser:userId];
+                               if (!userInfo) {
+                                   userInfo = [[RCDUserInfo alloc] init];
+                                   userInfo.userId = userId;
+                                   userInfo.name = [self generateDefaultName:userId];
+                               }
+                           }else{
+                               userInfo = [self generateDefaultPortraitIfNeed:userInfo];
+                               [self refreshIMUserInfo:userInfo];
+                               [RCDDBManager saveUsers:@[userInfo]];
                            }
-                           [RCDDBManager saveUsers:@[userInfo]];
-                           userInfo = [self generateDefaultPortraitIfNeed:userInfo];
-                           [self refreshIMUserInfo:userInfo];
                            if (completeBlock) {
                                completeBlock(userInfo);
                            }
@@ -44,7 +47,7 @@
 + (void)setCurrentUserName:(NSString *)name complete:(void (^)(BOOL))completeBlock {
     [RCDUserInfoAPI setCurrentUserName:name complete:^(BOOL success) {
         if (success) {
-            RCUserInfo *currentUser = [RCIM sharedRCIM].currentUserInfo;
+            RCDUserInfo *currentUser = [self getUserInfo:[RCIM sharedRCIM].currentUserInfo.userId];
             currentUser.name = name;
             [RCDDBManager saveUsers:@[currentUser]];
             [RCIM sharedRCIM].currentUserInfo = currentUser;
@@ -59,7 +62,7 @@
 + (void)setCurrentUserPortrait:(NSString *)portraitUri complete:(void (^)(BOOL))completeBlock {
     [RCDUserInfoAPI setCurrentUserPortrait:portraitUri complete:^(BOOL success) {
         if (success) {
-            RCUserInfo *currentUser = [RCIM sharedRCIM].currentUserInfo;
+            RCDUserInfo *currentUser = [self getUserInfo:[RCIM sharedRCIM].currentUserInfo.userId];
             currentUser.portraitUri = portraitUri;
             [RCDDBManager saveUsers:@[currentUser]];
             [RCIM sharedRCIM].currentUserInfo = currentUser;
@@ -71,15 +74,22 @@
     }];
 }
 
++ (void)findUserByPhone:(NSString *)phone region:(NSString *)region orStAccount:(NSString *)stAccount complete:(void (^)(RCDUserInfo *))completeBlock {
+    [RCDUserInfoAPI findUserByPhone:phone
+                             region:region
+                        orStAccount:stAccount
+                           complete:completeBlock];
+}
+
 + (void)findUserByPhone:(NSString *)phone
                  region:(NSString *)region
-               complete:(void (^)(RCUserInfo *userInfo))completeBlock {
+               complete:(void (^)(RCDUserInfo *userInfo))completeBlock {
     [RCDUserInfoAPI findUserByPhone:phone
                              region:region
                            complete:completeBlock];
 }
 
-+ (RCUserInfo *)generateDefaultPortraitIfNeed:(RCUserInfo *)userInfo {
++ (RCDUserInfo *)generateDefaultPortraitIfNeed:(RCDUserInfo *)userInfo {
     if (userInfo) {
         if (userInfo.portraitUri.length <= 0) {
             userInfo.portraitUri = [RCDUtilities defaultUserPortrait:userInfo];
@@ -112,7 +122,6 @@
               complete:(void (^)(BOOL success))completeBlock{
     [RCDUserInfoAPI addToBlacklist:userId complete:^(BOOL success) {
         [RCDDBManager addBlacklist:@[userId]];
-        [RCDDBManager deleteFriends:@[userId]];
         if (completeBlock) {
             completeBlock(success);
         }
@@ -145,11 +154,11 @@
 
 // 从 server 获取黑名单列表
 + (void)getBlacklistFromServer:(void (^)(NSArray <NSString *> *blackUserIds))completeBlock{
-    [RCDUserInfoAPI getBlacklist:^(NSArray<RCUserInfo *> *blackUsers) {
+    [RCDUserInfoAPI getBlacklist:^(NSArray<RCDUserInfo *> *blackUsers) {
         if (blackUsers) {
             [RCDDBManager clearBlacklist];
             NSMutableArray *list = [NSMutableArray array];
-            for (RCUserInfo *user in blackUsers) {
+            for (RCDUserInfo *user in blackUsers) {
                 [list addObject:user.userId];
             }
             if (blackUsers) {
@@ -179,15 +188,17 @@
                          complete:^(RCDFriendInfo *friendInfo) {
                              if (friendInfo) {
                                  [RCDDBManager saveFriends:@[friendInfo]];
-                             }else{
-                                 friendInfo = [self getFriendInfo:userId];
+                                 RCUserInfo *user = [self getUserInfoFromFriendInfo:friendInfo];
+                                 [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:userId];
                              }
-                             RCUserInfo *user = [self getUserInfoFromFriendInfo:friendInfo];
-                             [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:userId];
                              if (completeBlock) {
                                  completeBlock(friendInfo);
                              }
                          }];
+}
+
++ (int)getFriendRequesteds {
+    return [RCDDBManager getFriendRequesteds];
 }
 
 + (NSArray<RCDFriendInfo *> *)getAllFriends {
@@ -233,21 +244,40 @@
 
 + (void)inviteFriend:(NSString *)userId
          withMessage:(NSString *)message
-            complete:(void (^)(BOOL))completeBlock {
+            complete:(void (^)(BOOL, NSString*))completeBlock {
     [RCDUserInfoAPI inviteFriend:userId
                      withMessage:message
-                        complete:^(BOOL success) {
+                        complete:^(BOOL success, NSString *action) {
                             if (success) {
-                                [self getFriendListFromServer:nil];
-                            }
-                            if (completeBlock) {
-                                completeBlock(success);
+                                [self getFriendListFromServer:^(NSArray<RCDFriendInfo *> *friendList) {
+                                    if (completeBlock) {
+                                        completeBlock(success,action);
+                                    }
+                                }];
                             }
                         }];
 }
 
 + (void)acceptFriendRequest:(NSString *)userId complete:(void (^)(BOOL))completeBlock {
     [RCDUserInfoAPI acceptFriendRequest:userId
+                               complete:^(BOOL success) {
+                                   if (success) {
+                                       [self getFriendListFromServer:^(NSArray<RCDFriendInfo *> *friendList) {
+                                           if (completeBlock) {
+                                               completeBlock(YES);
+                                           }
+                                       }];
+                                   } else {
+                                       if (completeBlock) {
+                                           completeBlock(NO);
+                                       }
+                                   }
+                               }];
+}
+
++ (void)ignoreFriendRequest:(NSString *)userId
+                   complete:(void (^)(BOOL success))completeBlock {
+    [RCDUserInfoAPI ignoreFriendRequest:userId
                                complete:^(BOOL success) {
                                    if (success) {
                                        [self getFriendListFromServer:^(NSArray<RCDFriendInfo *> *friendList) {
@@ -285,6 +315,113 @@
         }
         if (completeBlock) {
             completeBlock(success);
+        }
+    }];
+}
+
++ (void)setSTAccount:(NSString *)stAccount
+            complete:(void (^)(BOOL success))completeBlock
+               error:(void (^)(RCDUserErrorCode errorCode))errorBlock {
+    
+    [RCDUserInfoAPI setSTAccount:stAccount complete:^(BOOL success) {
+        if (success) {
+            RCDUserInfo *currentUser = [self getUserInfo:[RCIM sharedRCIM].currentUserInfo.userId];
+            currentUser.stAccount = stAccount;
+            [RCDDBManager saveUsers:@[currentUser]];
+        }
+        if (completeBlock) {
+            completeBlock(success);
+        }
+    } error:errorBlock];
+}
+
++ (void)setGender:(NSString *)gender
+         complete:(void (^)(BOOL success))completeBlock {
+    [RCDUserInfoAPI setGender:gender complete:^(BOOL success) {
+        if (success) {
+            RCDUserInfo *currentUser = [self getUserInfo:[RCIM sharedRCIM].currentUserInfo.userId];
+            currentUser.gender = gender;
+            [RCDDBManager saveUsers:@[currentUser]];
+        }
+        if (completeBlock) {
+            completeBlock(success);
+        }
+    }];
+}
+
+#pragma mark - user setting
++ (void)setSearchMeByMobile:(BOOL)allow complete:(void (^)(BOOL))completeBlock{
+    [RCDUserInfoAPI setSearchMeByMobile:allow complete:^(BOOL success) {
+        if (success) {
+            RCDUserSetting *setting = [self getUserPrivacy];
+            setting.allowMobileSearch = allow;
+            [RCDDBManager saveUserSetting:setting];
+        }
+        if (completeBlock) {
+            completeBlock(success);
+        }
+    }];
+}
+
++ (void)setSearchMeBySTAccount:(BOOL)allow complete:(void (^)(BOOL))completeBlock{
+    [RCDUserInfoAPI setSearchMeBySTAccount:allow complete:^(BOOL success) {
+        if (success) {
+            RCDUserSetting *setting = [self getUserPrivacy];
+            setting.allowSTAccountSearch = allow;
+            [RCDDBManager saveUserSetting:setting];
+        }
+        if (completeBlock) {
+            completeBlock(success);
+        }
+    }];
+}
+
++ (void)setAddFriendVerify:(BOOL)needVerify complete:(void (^)(BOOL))completeBlock{
+    [RCDUserInfoAPI setAddFriendVerify:needVerify complete:^(BOOL success) {
+        if (success) {
+            RCDUserSetting *setting = [self getUserPrivacy];
+            setting.needAddFriendVerify = needVerify;
+            [RCDDBManager saveUserSetting:setting];
+        }
+        if (completeBlock) {
+            completeBlock(success);
+        }
+    }];
+}
+
++ (void)setJoinGroupVerify:(BOOL)needVerify complete:(void (^)(BOOL))completeBlock{
+    [RCDUserInfoAPI setJoinGroupVerify:needVerify complete:^(BOOL success) {
+        if (success) {
+            RCDUserSetting *setting = [self getUserPrivacy];
+            setting.needJoinGroupVerify = needVerify;
+            [RCDDBManager saveUserSetting:setting];
+        }
+        if (completeBlock) {
+            completeBlock(success);
+        }
+    }];
+}
+
++ (RCDUserSetting *)getUserPrivacy{
+    RCDUserSetting *userSetting = [RCDDBManager getUserSetting];
+    if (!userSetting) {
+        userSetting = [[RCDUserSetting alloc] init];
+        userSetting.userId = [RCIM sharedRCIM].currentUserInfo.userId;
+        userSetting.allowMobileSearch = YES;
+        userSetting.allowSTAccountSearch = YES;
+        userSetting.needAddFriendVerify = YES;
+        userSetting.needJoinGroupVerify = YES;
+    }
+    return userSetting;
+}
+
++ (void)getUserPrivacyFromServer:(void (^)(RCDUserSetting *))completeBlock{
+    [RCDUserInfoAPI getUserPrivacy:^(RCDUserSetting *setting) {
+        if (setting) {
+            [RCDDBManager saveUserSetting:setting];
+        }
+        if (completeBlock) {
+            completeBlock(setting);
         }
     }];
 }

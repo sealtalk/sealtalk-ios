@@ -11,18 +11,9 @@
 @class RCDFriendInfo;
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol RCDPersonInfoViewDelegate <NSObject>
-
-- (void)personInfoViewDidTapPhoneNumber:(NSString *)phoneNumber;
-
-@end
-
 @interface RCDPersonInfoView : UIView
 
-@property (nonatomic, weak) id<RCDPersonInfoViewDelegate> delegate;
-
 - (void)setUserInfo:(RCDFriendInfo *)userInfo;
-- (void)setUserPhoneNumer:(NSString *)phoneNumber;
 
 @end
 

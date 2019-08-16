@@ -55,6 +55,7 @@
     [self.contentView addSubview:self.portraitView];
     [self.contentView addSubview:self.nicknameLabel];
     [self.contentView addSubview:self.userIdLabel];
+    [self.contentView addSubview:self.noticeLabel];
 
     [self.portraitView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(14);
@@ -81,6 +82,21 @@
             make.centerY.height.equalTo(self.portraitView);
             make.right.equalTo(self.contentView).offset(-20);
         }];
+    }
+    
+    [self.noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.contentView).offset(-27.5);
+        make.centerY.equalTo(self.contentView);
+        make.height.width.equalTo(@18);
+    }];
+}
+
+- (void)showNoticeLabel:(int)noticeCount {
+    if (noticeCount > 0) {
+        self.noticeLabel.hidden = NO;
+        self.noticeLabel.text = [NSString stringWithFormat:@"%d", noticeCount];
+    } else {
+        self.noticeLabel.hidden = YES;
     }
 }
 
@@ -118,6 +134,20 @@
         _userIdLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];
     }
     return _userIdLabel;
+}
+
+- (UILabel *)noticeLabel {
+    if (!_noticeLabel) {
+        _noticeLabel = [[UILabel alloc] init];
+        _noticeLabel.backgroundColor = [UIColor colorWithHexString:@"FF0000" alpha:1];
+        _noticeLabel.font = [UIFont systemFontOfSize:15];
+        _noticeLabel.textColor = [UIColor whiteColor];
+        _noticeLabel.layer.cornerRadius = 9;
+        _noticeLabel.layer.masksToBounds = YES;
+        _noticeLabel.hidden = YES;
+        _noticeLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    return _noticeLabel;
 }
 
 @end

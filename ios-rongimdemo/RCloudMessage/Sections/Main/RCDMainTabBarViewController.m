@@ -81,8 +81,7 @@
                 obj.tabBarItem.selectedImage =
                     [[UIImage imageNamed:@"square_hover"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
             } else if ([obj isKindOfClass:[RCDMeTableViewController class]]) {
-                obj.tabBarItem.title = RCDLocalizedString(@"me")
-;
+                obj.tabBarItem.title = RCDLocalizedString(@"me");
                 obj.tabBarItem.image =
                     [[UIImage imageNamed:@"icon_me"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
                 obj.tabBarItem.selectedImage =

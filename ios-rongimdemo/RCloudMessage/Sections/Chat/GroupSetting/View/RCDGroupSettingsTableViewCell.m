@@ -10,12 +10,12 @@
 #import "RCDGroupInfo.h"
 #import "RCDUtilities.h"
 #import "RCDGroupManager.h"
-@implementation RCDGroupSettingsTableViewCell
+#import "RCDDBManager.h"
 
-- (instancetype)initWithIndexPath:(NSIndexPath *)indexPath andGroupInfo:(RCDGroupInfo *)groupInfo {
+@implementation RCDGroupSettingsTableViewCell
+- (instancetype)initWithTitle:(NSString *)title andGroupInfo:(RCDGroupInfo *)groupInfo{
     groupInfo = [RCDGroupManager getGroupInfo:groupInfo.groupId];
-    //带右边图片的cell
-    if (indexPath.section == 1 && indexPath.row == 0) {
+    if ([title isEqualToString:RCDLocalizedString(@"group_portrait")]) {
         NSString *groupPortrait;
         if ([groupInfo.portraitUri isEqualToString:@""]) {
             groupPortrait = [RCDUtilities defaultGroupPortrait:groupInfo];
@@ -26,81 +26,92 @@
                              leftImageSize:CGSizeZero
                               rightImaeStr:groupPortrait
                             rightImageSize:CGSizeMake(25, 25)];
-    }else if (indexPath.section == 1 && indexPath.row == 2){
+    }else if ([title isEqualToString:RCDLocalizedString(@"GroupQR")]){
         self = [super initWithLeftImageStr:nil
                              leftImageSize:CGSizeZero
                               rightImaeStr:@"qr"
                             rightImageSize:CGSizeMake(22, 22)];
     }
     //一般cell
-    else {
+    else{
         self = [super init];
     }
-    [self initSubviewsWithIndexPath:indexPath andGroupInfo:groupInfo];
+    [self initSubviewsWithTitle:title andGroupInfo:groupInfo];
     return self;
 }
 
-- (void)initSubviewsWithIndexPath:(NSIndexPath *)indexPath andGroupInfo:(RCDGroupInfo *)groupInfo {
-    if (indexPath.section == 0) {
+- (void)initSubviewsWithTitle:(NSString *)title andGroupInfo:(RCDGroupInfo *)groupInfo {
+    self.leftLabel.text = title;
+    if ([title isEqualToString:[NSString stringWithFormat:RCDLocalizedString(@"all_group_member_z"), groupInfo.number]]) {
         [self setCellStyle:DefaultStyle];
         self.tag = RCDGroupSettingsTableViewCellGroupNameTag;
-        self.leftLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"all_group_member_z"), groupInfo.number];
-    } else if (indexPath.section == 1) {
-        switch (indexPath.row) {
-            case 0: {
-                [self setCellStyle:DefaultStyle];
-                self.tag = RCDGroupSettingsTableViewCellGroupPortraitTag;
-                self.leftLabel.text = RCDLocalizedString(@"group_portrait");
-            } break;
-            case 1:
-                [self setCellStyle:DefaultStyle_RightLabel];
-                self.leftLabel.text = RCDLocalizedString(@"group_name");
-                self.rightLabel.text = groupInfo.groupName;
-                break;
-            case 2: {
-                [self setCellStyle:DefaultStyle];
-                self.leftLabel.text = RCDLocalizedString(@"GroupQR");
-            } break;
-            case 3:
-                [self setCellStyle:DefaultStyle];
-                self.leftLabel.text = RCDLocalizedString(@"group_announcement");
-                break;
-            case 4:
-                [self setCellStyle:DefaultStyle];
-                self.leftLabel.text = RCDLocalizedString(@"GroupManage");
-                break;
-            default:
-                break;
-        }
-    } else if (indexPath.section == 2) {
+    } else if ([title isEqualToString:RCDLocalizedString(@"group_portrait")]) {
         [self setCellStyle:DefaultStyle];
-        self.leftLabel.text = RCDLocalizedString(@"search_chat_history");
-    } else {
-        switch (indexPath.row) {
-            case 0:
-                [self setCellStyle:SwitchStyle];
-                self.leftLabel.text = RCDLocalizedString(@"mute_notifications");
-                self.switchButton.tag = SwitchButtonTag;
-                break;
-            case 1:
-                [self setCellStyle:SwitchStyle];
-                self.leftLabel.text = RCDLocalizedString(@"stick_on_top");
-                self.switchButton.tag = SwitchButtonTag + 1;
-                break;
-            case 2:
-                [self setCellStyle:SwitchStyle];
-                self.leftLabel.text = RCDLocalizedString(@"SaveToAddress");
-                self.switchButton.tag = SwitchButtonTag + 2;
-                self.switchButton.on = [RCDGroupManager isInMyGroups:groupInfo.groupId];
-                break;
-            case 3:
-                [self setCellStyle:DefaultStyle];
-                self.leftLabel.text = RCDLocalizedString(@"clear_chat_history");
-                break;
-            default:
-                break;
-        }
+        self.tag = RCDGroupSettingsTableViewCellGroupPortraitTag;
+    } else if ([title isEqualToString:RCDLocalizedString(@"group_name")]) {
+        [self setCellStyle:DefaultStyle_RightLabel];
+        self.rightLabel.text = groupInfo.groupName;
+    } else if ([title isEqualToString:RCDLocalizedString(@"GroupQR")]) {
+        [self setCellStyle:DefaultStyle];
+    } else if ([title isEqualToString:RCDLocalizedString(@"group_announcement")]) {
+        [self setCellStyle:DefaultStyle];
+    } else if ([title isEqualToString:RCDLocalizedString(@"GroupManage")]) {
+        [self setCellStyle:DefaultStyle];
+    } else if ([title isEqualToString:RCDLocalizedString(@"search_chat_history")]) {
+        [self setCellStyle:DefaultStyle];
+    } else if ([title isEqualToString:RCDLocalizedString(@"mute_notifications")]) {
+        [self setCellStyle:SwitchStyle];
+        self.switchButton.tag = SwitchButtonTag;
+    } else if ([title isEqualToString:RCDLocalizedString(@"stick_on_top")]) {
+        [self setCellStyle:SwitchStyle];
+        self.switchButton.tag = SwitchButtonTag + 1;
+    }else if ([title isEqualToString:RCDLocalizedString(@"SaveToAddress")]) {
+        [self setCellStyle:SwitchStyle];
+        self.switchButton.tag = SwitchButtonTag + 2;
+        self.switchButton.on = [RCDGroupManager isInMyGroups:groupInfo.groupId];
+    } else if ([title isEqualToString:RCDLocalizedString(@"ScreenCaptureNotification")]) {
+        [self setCellStyle:SwitchStyle];
+        self.switchButton.tag = SwitchButtonTag + 3;
+    } else if ([title isEqualToString:RCDLocalizedString(@"CleanUpGroupMessagesRegularly")]) {
+        [self setCleanUpGroupMessagesRegularly:groupInfo];
+    } else if ([title isEqualToString:RCDLocalizedString(@"clear_chat_history")]) {
+        [self setClearChatHistory];
     }
+}
+
+- (void)setClearChatHistory {
+    [self setCellStyle:DefaultStyle];
+    self.leftLabel.text = RCDLocalizedString(@"clear_chat_history");
+}
+
+- (void)setCleanUpGroupMessagesRegularly:(RCDGroupInfo *)groupInfo {
+    [self setCellStyle:DefaultStyle_RightLabel];
+    self.leftLabel.text = RCDLocalizedString(@"CleanUpGroupMessagesRegularly");
+    RCDGroupMessageClearStatus status = [RCDDBManager getMessageClearStatus:ConversationType_GROUP targetId:groupInfo.groupId];
+    [self changeGroupMessageStatus:status];
+}
+
+- (void)changeGroupMessageStatus:(RCDGroupMessageClearStatus)status {
+    NSString *content = nil;
+    switch (status) {
+        case RCDGroupMessageClearStatusClose:
+            content = RCDLocalizedString(@"PleaseSetTime");
+            break;
+        case RCDGroupMessageClearStatusBefore3d:
+            content = RCDLocalizedString(@"CleanUpGroupMessages3DaysAgo");
+            break;
+        case RCDGroupMessageClearStatusBefore7d:
+            content = RCDLocalizedString(@"CleanUpGroupMessages7DaysAgo");
+            break;
+        case RCDGroupMessageClearStatusBefore36h:
+            content = RCDLocalizedString(@"CleanUpGroupMessages36HoursAgo");
+            break;
+        case RCDGroupMessageClearStatusUnknown:
+            content = RCDLocalizedString(@"PleaseSetTime");
+        default:
+            break;
+    }
+    self.rightLabel.text = content;
 }
 
 @end

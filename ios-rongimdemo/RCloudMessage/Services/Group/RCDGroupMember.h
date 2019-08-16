@@ -8,14 +8,21 @@
 
 #import <Foundation/Foundation.h>
 #import <RongIMLib/RCUserInfo.h>
+#import "RCDUserInfo.h"
 typedef enum : NSUInteger {
     RCDGroupMemberRoleOwner,
     RCDGroupMemberRoleMember,
     RCDGroupMemberRoleManager,
 } RCDGroupMemberRole;
+
+typedef enum : NSUInteger {
+    RCDGroupAddMembersStatusAllJoined = 1,//所有成员已加入
+    RCDGroupAddMemberStatusInviteeApproving,//部分需要被邀请者审批
+    RCDGroupAddMemberStatusOnlyManagerApproving,//仅包含需要管理者审批
+} RCDGroupAddMemberStatus;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDGroupMember : RCUserInfo
+@interface RCDGroupMember : RCDUserInfo
 @property (nonatomic, copy) NSString *groupId;
 @property (nonatomic, assign) RCDGroupMemberRole role;
 @property(nonatomic, assign) long long createDt;

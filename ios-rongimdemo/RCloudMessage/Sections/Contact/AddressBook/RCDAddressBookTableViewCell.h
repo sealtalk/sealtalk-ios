@@ -11,7 +11,9 @@
 
 @interface RCDAddressBookTableViewCell : UITableViewCell
 
-@property (nonatomic, copy) void (^acceptBlock)(NSString *);
+@property (nonatomic, copy) void (^acceptBlock)(NSString *userId);
+
+@property (nonatomic, copy) void (^ignoreBlock)(NSString *userId);
 
 /**
  *  cell高度

@@ -43,6 +43,11 @@
     [self.view addGestureRecognizer:tap];
 }
 
+- (void)dealloc {
+    NSLog(@"%s",__func__);
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - UITextViewDelegate
 - (void)textViewDidChange:(UITextView *)textView {
     if (textView.text.length > AnnouncementMaxCount) {
@@ -134,7 +139,7 @@
 
 - (void)clickLeftBtn:(id)sender {
     [self.announcementContent resignFirstResponder];
-    if (![self.announcementContent.text isEqualToString:self.announce.content]) {
+    if (self.announce && ![self.announcementContent.text isEqualToString:self.announce.content]) {
         [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"Exit_this_edit") highlightText:nil leftTitle:RCDLocalizedString(@"Continue_editing") rightTitle:RCDLocalizedString(@"quit") cancel:^{
             
         } confirm:^{

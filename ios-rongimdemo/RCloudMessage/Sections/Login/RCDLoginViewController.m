@@ -31,7 +31,7 @@
 #define UserTextFieldTag 1000
 #define PassWordFieldTag 1001
 
-@interface RCDLoginViewController () <UITextFieldDelegate, RCIMConnectionStatusDelegate, UIAlertViewDelegate, RCDCountryListControllerDelegate>
+@interface RCDLoginViewController () <UITextFieldDelegate, UIAlertViewDelegate, RCDCountryListControllerDelegate>
 
 @property(nonatomic, strong) RCAnimatedImagesView *animatedImagesView;
 @property(nonatomic, strong) RCDIndicateTextField *countryTextField;
@@ -157,18 +157,17 @@
     [DEFAULTS synchronize];
     
     [RCDUserInfoManager getUserInfoFromServer:userId
-                                     complete:^(RCUserInfo *userInfo) {
+                                     complete:^(RCDUserInfo *userInfo) {
                                          [RCIM sharedRCIM].currentUserInfo = userInfo;
                                          [RCDBuglyManager setUserIdentifier:[NSString stringWithFormat:@"%@ - %@", userInfo.userId,userInfo.name]];
                                          [DEFAULTS setObject:userInfo.portraitUri forKey:RCDUserPortraitUriKey];
                                          [DEFAULTS setObject:userInfo.name forKey:RCDUserNickNameKey];
+                                         [DEFAULTS setObject:userInfo.stAccount forKey:RCDSealTalkNumberKey];
+                                         [DEFAULTS setObject:userInfo.gender forKey:RCDUserGenderKey];
                                          [DEFAULTS synchronize];
                                      }];
     
-    [RCDDataSource syncGroups];
-    [RCDDataSource syncFriendList:userId
-                         complete:^(NSArray *friends){
-                         }];
+    [RCDDataSource syncAllData];
     dispatch_async(dispatch_get_main_queue(), ^{
         RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
         RCDNavigationViewController *rootNavi =
@@ -186,7 +185,9 @@
     self.loginToken = token;
     self.loginPassword = password;
     
-    [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
+    [[RCIM sharedRCIM] connectWithToken:token dbOpened:^(RCDBErrorCode code){
+        NSLog(@"RCDBOpened %@", code?@"failed":@"success");
+    } success:^(NSString *userId) {
         NSLog([NSString stringWithFormat:@"token is %@  userId is %@", token, userId], nil);
         self.loginUserId = userId;
         [self loginSuccess:self.loginUserName
@@ -199,9 +200,6 @@
             NSLog(@"RCConnectErrorCode is %ld", (long)status);
             _errorMsgLb.text = [NSString stringWithFormat:@"%@ Status: %zd",RCDLocalizedString(@"Login_fail"), status];
             [_pwdTextField shake];
-            
-            // SDK会自动重连登录，这时候需要监听连接状态
-            [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
         });
     } tokenIncorrect:^{
         NSLog(@"IncorrectToken");
@@ -221,45 +219,6 @@
             }];
         }
     }];
-}
-
-- (void)onRCIMConnectionStatusChanged:(RCConnectionStatus)status {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (status == ConnectionStatus_Connected) {
-            [RCIM sharedRCIM].connectionStatusDelegate =
-            (id<RCIMConnectionStatusDelegate>)[UIApplication sharedApplication].delegate;
-            [self loginSuccess:self.loginUserName
-                        userId:self.loginUserId
-                         token:self.loginToken
-                      password:self.loginPassword];
-        } else if (status == ConnectionStatus_NETWORK_UNAVAILABLE) {
-            self.errorMsgLb.text = RCDLocalizedString(@"network_can_not_use_please_check");
-        } else if (status == ConnectionStatus_KICKED_OFFLINE_BY_OTHER_CLIENT) {
-            self.errorMsgLb.text = RCDLocalizedString(@"accout_kicked");
-        } else if (status == ConnectionStatus_TOKEN_INCORRECT) {
-            NSLog(@"Token无效");
-            self.errorMsgLb.text = RCDLocalizedString(@"can_not_connect_server");
-            if (self.loginFailureTimes < 1) {
-                self.loginFailureTimes++;
-                [RCDLoginManager getToken:^(BOOL success, NSString * _Nonnull token, NSString * _Nonnull userId) {
-                    if (success) {
-                        [self loginRongCloud:self.loginUserName
-                                      userId:userId
-                                       token:token
-                                    password:self.loginPassword];
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.hud hide:YES];
-                            NSLog(@"Token无效");
-                            self.errorMsgLb.text = RCDLocalizedString(@"can_not_connect_server");
-                        });
-                    }
-                }];
-            }
-        } else {
-            NSLog(@"RCConnectErrorCode is %zd", status);
-        }
-    });
 }
 
 /*阅读用户协议*/
@@ -419,6 +378,46 @@
                      completion:nil];
 }
 
+- (void)didConnectStatusUpdate:(NSNotification *)notifi{
+    RCConnectionStatus status = [notifi.object integerValue];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (status == ConnectionStatus_Connected) {
+            [RCIM sharedRCIM].connectionStatusDelegate =
+            (id<RCIMConnectionStatusDelegate>)[UIApplication sharedApplication].delegate;
+            [self loginSuccess:self.loginUserName
+                        userId:self.loginUserId
+                         token:self.loginToken
+                      password:self.loginPassword];
+        } else if (status == ConnectionStatus_NETWORK_UNAVAILABLE) {
+            self.errorMsgLb.text = RCDLocalizedString(@"network_can_not_use_please_check");
+        } else if (status == ConnectionStatus_KICKED_OFFLINE_BY_OTHER_CLIENT) {
+            self.errorMsgLb.text = RCDLocalizedString(@"accout_kicked");
+        } else if (status == ConnectionStatus_TOKEN_INCORRECT) {
+            NSLog(@"Token无效");
+            self.errorMsgLb.text = RCDLocalizedString(@"can_not_connect_server");
+            if (self.loginFailureTimes < 1) {
+                self.loginFailureTimes++;
+                [RCDLoginManager getToken:^(BOOL success, NSString * _Nonnull token, NSString * _Nonnull userId) {
+                    if (success) {
+                        [self loginRongCloud:self.loginUserName
+                                      userId:userId
+                                       token:token
+                                    password:self.loginPassword];
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.hud hide:YES];
+                            NSLog(@"Token无效");
+                            self.errorMsgLb.text = RCDLocalizedString(@"can_not_connect_server");
+                        });
+                    }
+                }];
+            }
+        } else {
+            NSLog(@"RCConnectErrorCode is %zd", status);
+        }
+    });
+}
+
 #pragma mark - private method
 
 - (void)addNotifications {
@@ -431,6 +430,10 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:self.view.window];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didConnectStatusUpdate:)
+                                                 name:RCKitDispatchConnectionStatusChangedNotification
+                                               object:nil];
 }
 
 - (void)initSubviews {

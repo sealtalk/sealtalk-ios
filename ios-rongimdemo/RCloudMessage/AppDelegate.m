@@ -24,8 +24,11 @@
 #import "RCDUserInfoManager.h"
 #import "RCDGroupManager.h"
 #import "RCDGroupNotificationMessage.h"
+#import "RCDGroupNoticeUpdateMessage.h"
 #import "RCDContactNotificationMessage.h"
-
+#import "RCDChatNotificationMessage.h"
+#import "RCDWeChatManager.h"
+#import "RCDChatManager.h"
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // offline key
@@ -33,6 +36,8 @@
 #define RONGCLOUD_STATUS_SERVER @""
 #define BUGLY_APPID @""
 #define LOG_EXPIRE_TIME -7 * 24 * 60 * 60
+
+#define WECHAT_APPID @"wxe3d4d4ec21b00104"
 
 @interface AppDelegate () <RCWKAppInfoProvider>
 
@@ -47,6 +52,7 @@
     
     [self configSealTalkWithApp:application andOptions:launchOptions];
     [self configRongIM];
+    [self configWeChatShare];
     [self loginAndEnterMainPage];
     return YES;
 }
@@ -66,7 +72,9 @@
     // 注册自定义测试消息
     [[RCIM sharedRCIM] registerMessageType:[RCDTestMessage class]];
     [[RCIM sharedRCIM] registerMessageType:[RCDGroupNotificationMessage class]];
+    [[RCIM sharedRCIM] registerMessageType:[RCDGroupNoticeUpdateMessage class]];
     [[RCIM sharedRCIM] registerMessageType:[RCDContactNotificationMessage class]];
+    [[RCIM sharedRCIM] registerMessageType:[RCDChatNotificationMessage class]];
     
     // 设置语音消息采样率为 16KHZ
     [RCIMClient sharedRCIMClient].sampleRate = RCSample_Rate_16000;
@@ -99,6 +107,15 @@
     //  [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
     //   设置优先使用WebView打开URL
     //  [RCIM sharedRCIM].embeddedWebViewPreferred = YES;
+}
+
+- (void)configWeChatShare {
+    [RCDWeChatManager registerApp:WECHAT_APPID];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    
+    return [[RCDWeChatManager sharedManager] handleOpenURL:url];
 }
 
 - (void)configSealTalkWithApp:(UIApplication *)application andOptions:(NSDictionary *)launchOptions {
@@ -152,18 +169,16 @@
         RCUserInfo *_currentUserInfo =
         [[RCUserInfo alloc] initWithUserId:userId name:userNickName portrait:userPortraitUri];
         [RCIM sharedRCIM].currentUserInfo = _currentUserInfo;
-        
-        [[RCIM sharedRCIM] connectWithToken:token
-                                    success:^(NSString *userId) {
-                                        [self loginAppServer:userName password:password region:regionCode userId:userId];
-                                    }
-                                      error:^(RCConnectErrorCode status) {
-                                          NSLog(@"connect error %ld", (long)status);
-                                          [self loginAppServer:userName password:password region:regionCode userId:userId];
-                                      }
-                             tokenIncorrect:^{
-                                 [self refreshIMTokenAndReconnect:userName password:password region:regionCode];
-                             }];
+        [[RCIM sharedRCIM] connectWithToken:token dbOpened:^(RCDBErrorCode code) {
+            NSLog(@"RCDBOpened %@", code?@"failed":@"success");
+        } success:^(NSString *userId) {
+            [self loginAppServer:userName password:password region:regionCode userId:userId];
+        } error:^(RCConnectErrorCode status) {
+            NSLog(@"connect error %ld", (long)status);
+            [self loginAppServer:userName password:password region:regionCode userId:userId];
+        } tokenIncorrect:^{
+            [self refreshIMTokenAndReconnect:userName password:password region:regionCode];
+        }];
         
     } else {
         RCDLoginViewController *vc = [[RCDLoginViewController alloc] init];
@@ -194,21 +209,20 @@
                            password:password
                              region:regionCode
                             success:^(NSString * _Nonnull newToken, NSString * _Nonnull newUserId) {
-                                [[RCIM sharedRCIM] connectWithToken:newToken
-                                                            success:^(NSString *userId) {
-                                                                [self saveLoginData:userName
-                                                                            userId:newUserId
-                                                                             token:newToken
-                                                                          password:password];
-                                                            }
-                                                              error:^(RCConnectErrorCode status) {
-                                                                  [self gotoLoginViewAndDisplayReasonInfo:RCDLocalizedString(@"Login_is_invalid_please_login_again")
-                                                                   ];
-                                                              }
-                                                     tokenIncorrect:^{
-                                                         [self gotoLoginViewAndDisplayReasonInfo:@"无法连接到服务器"];
-                                                         NSLog(@"Token无效");
-                                                     }];
+                                [[RCIM sharedRCIM] connectWithToken:newToken dbOpened:^(RCDBErrorCode code) {
+                                    NSLog(@"RCDBOpened %@", code?@"failed":@"success");
+                                } success:^(NSString *userId) {
+                                    [self saveLoginData:userName
+                                                 userId:newUserId
+                                                  token:newToken
+                                               password:password];
+                                } error:^(RCConnectErrorCode status) {
+                                    [self gotoLoginViewAndDisplayReasonInfo:RCDLocalizedString(@"Login_is_invalid_please_login_again")
+                                     ];
+                                } tokenIncorrect:^{
+                                    [self gotoLoginViewAndDisplayReasonInfo:@"无法连接到服务器"];
+                                    NSLog(@"Token无效");
+                                }];
                             } error:^(RCDLoginErrorCode errorCode) {
                                 if (errorCode == RCDLoginErrorCodeWrongPassword) {
                                     [self gotoLoginViewAndDisplayReasonInfo:@"手机号或密码错误"];
@@ -282,10 +296,7 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     RCConnectionStatus status = [[RCIMClient sharedRCIMClient] getConnectionStatus];
     if (status != ConnectionStatus_SignUp) {
-        int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
-            @(ConversationType_PRIVATE), @(ConversationType_APPSERVICE),
-            @(ConversationType_PUBLICSERVICE), @(ConversationType_GROUP)
-        ]];
+        int unreadMsgCount = [RCDUtilities getTotalUnreadCount];
         application.applicationIconBadgeNumber = unreadMsgCount;
     }
 }
@@ -307,10 +318,7 @@
 - (void)didReceiveMessageNotification:(NSNotification *)notification {
     NSNumber *left = [notification.userInfo objectForKey:@"left"];
     if ([RCIMClient sharedRCIMClient].sdkRunningMode == RCSDKRunningMode_Background && 0 == left.integerValue) {
-        int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
-            @(ConversationType_PRIVATE), @(ConversationType_APPSERVICE),
-            @(ConversationType_PUBLICSERVICE), @(ConversationType_GROUP)
-        ]];
+        int unreadMsgCount = [RCDUtilities getTotalUnreadCount];
         dispatch_async(dispatch_get_main_queue(),^{
             [UIApplication sharedApplication].applicationIconBadgeNumber = unreadMsgCount;
         });
@@ -345,11 +353,15 @@
     } else if (status == ConnectionStatus_TOKEN_INCORRECT) {
         [RCDLoginManager getToken:^(BOOL success, NSString * _Nonnull token, NSString * _Nonnull userId) {
             if (success) {
-                [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
+                [[RCIM sharedRCIM] connectWithToken:token dbOpened:^(RCDBErrorCode code) {
+                    NSLog(@"RCDBOpened %@", code?@"failed":@"success");
+                } success:^(NSString *userId) {
+                    
                 } error:^(RCConnectErrorCode status) {
+                    
                 } tokenIncorrect:^{
-                }];
-                
+                    
+                }];                
             }
         }];
     } else if (status == ConnectionStatus_DISCONN_EXCEPTION) {
@@ -373,19 +385,15 @@
 }
 
 - (void)onRCIMReceiveMessage:(RCMessage *)message left:(int)left {
-    if (![RCDGroupManager isHoldGroupNotificationMessage:message]) {
+    if (![RCDGroupManager isHoldGroupNotificationMessage:message] && ![RCDChatManager isHoldChatNotificationMessage:message]) {
         if ([message.content isMemberOfClass:[RCInformationNotificationMessage class]]) {
             RCInformationNotificationMessage *msg = (RCInformationNotificationMessage *)message.content;
             // NSString *str = [NSString stringWithFormat:@"%@",msg.message];
             if ([msg.message rangeOfString:@"你已添加了"].location != NSNotFound) {
-                [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
-                                     complete:^(NSArray *friends){
-                                     }];
+                [RCDDataSource syncFriendList];
             }
         } else if ([message.content isMemberOfClass:[RCDContactNotificationMessage class]] || [message.content isMemberOfClass:[RCContactNotificationMessage class]]) {
-            [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId
-                                 complete:^(NSArray *friends){
-                                 }];
+            [RCDDataSource syncFriendList];
         }
     }
 }
@@ -393,8 +401,15 @@
 /* RedPacket_FTR  */
 //如果您使用了红包等融云的第三方扩展，请实现下面两个openURL方法
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options {
+    
+    if ([url.absoluteString containsString:@"wechat"] || [url.absoluteString containsString:@"weixin"]) {
+        return [[RCDWeChatManager sharedManager] handleOpenURL:url];
+    }
+    
     if ([[RCIM sharedRCIM] openExtensionModuleUrl:url]) {
         return YES;
+    }else if ([url.absoluteString containsString:@"sealtalk:"]){
+        [[NSNotificationCenter defaultCenter] postNotificationName:RCDOpenQRCodeUrlNotification object:url];
     }
     return YES;
 }
@@ -403,6 +418,10 @@
               openURL:(NSURL *)url
     sourceApplication:(NSString *)sourceApplication
            annotation:(id)annotation {
+    if ([url.absoluteString containsString:@"wechat"] || [url.absoluteString containsString:@"weixin"]) {
+        return [[RCDWeChatManager sharedManager] handleOpenURL:url];
+    }
+    
     if ([[RCIM sharedRCIM] openExtensionModuleUrl:url]) {
         return YES;
     }
@@ -434,17 +453,16 @@
     [DEFAULTS synchronize];
     
     [RCDUserInfoManager getUserInfoFromServer:userId
-                                     complete:^(RCUserInfo *userInfo) {
+                                     complete:^(RCDUserInfo *userInfo) {
                                          [RCIM sharedRCIM].currentUserInfo = userInfo;
                                          [DEFAULTS setObject:userInfo.portraitUri forKey:RCDUserPortraitUriKey];
                                          [DEFAULTS setObject:userInfo.name forKey:RCDUserNickNameKey];
+                                         [DEFAULTS setObject:userInfo.stAccount forKey:RCDSealTalkNumberKey];
+                                         [DEFAULTS setObject:userInfo.gender forKey:RCDUserGenderKey];
                                          [DEFAULTS synchronize];
                                      }];
     //同步群组
-    [RCDDataSource syncGroups];
-    [RCDDataSource syncFriendList:userId
-                         complete:^(NSArray *friends){
-                         }];
+    [RCDDataSource syncAllData];
 }
 
 - (void)gotoLoginViewAndDisplayReasonInfo:(NSString *)reason {
@@ -526,15 +544,11 @@
 }
 
 - (NSArray *)getAllGroupInfo {
-    return [RCDDataSource getAllGroupInfo:^{
-        [[RCWKNotifier sharedWKNotifier] notifyWatchKitGroupChanged];
-    }];
+    return [RCDGroupManager getMyGroupList];
 }
 
 - (NSArray *)getAllFriends {
-    return [RCDDataSource getAllFriends:^{
-        [[RCWKNotifier sharedWKNotifier] notifyWatchKitFriendChanged];
-    }];
+    return [RCDUserInfoManager getAllFriends];
 }
 
 - (void)openParentApp {

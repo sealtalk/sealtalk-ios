@@ -15,6 +15,7 @@
 #import "RCDRCIMDataSource.h"
 #import "UIColor+RCColor.h"
 #import "RCDUserInfoManager.h"
+#import "RCDCommonString.h"
 
 @interface RCDAddressBookViewController ()
 
@@ -51,6 +52,10 @@
     cell.acceptBlock = ^(NSString *userId) {
         [weakSelf acceptInvite:userId];
     };
+    
+    cell.ignoreBlock = ^(NSString *userId) {
+        [weakSelf ignoreInvite:userId];
+    };
 
     RCDFriendInfo *user = self.friends[indexPath.row];
     [cell setModel:user];
@@ -67,7 +72,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCDFriendInfo *user = self.friends[indexPath.row];
-    if (user.status == RCDFriendStatusRequest || user.status == RCDFriendStatusRequested) {
+    if (user.status == RCDFriendStatusRequest || user.status == RCDFriendStatusRequested || user.status == RCDFriendStatusDelete || user.status == RCDFriendStatusIgnore) {
         return;
     }
 
@@ -105,9 +110,9 @@
         self.noFriendView.hidden = NO;
     }
     if (self.isSyncFriends == NO) {
-        [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId complete:^(NSArray *result) {
+        [RCDUserInfoManager getFriendListFromServer:^(NSArray<RCDFriendInfo *> *friendList) {
             self.isSyncFriends = YES;
-            if (result > 0) {
+            if (friendList > 0) {
                 rcd_dispatch_main_async_safe(^{
                     self.noFriendView.hidden = YES;
                     [self getAllData];
@@ -118,16 +123,36 @@
 }
 
 - (void)acceptInvite:(NSString *)userId {
+    self.hud.labelText = RCDLocalizedString(@"adding_friend");
     [self.hud show:YES];
     [RCDUserInfoManager acceptFriendRequest:userId complete:^(BOOL success) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsRequestKey object:nil];
                 self.friends = [RCDUserInfoManager getAllFriendRequests];
                 [self.tableView reloadData];
                 [self.hud hide:YES];
             } else {
                 [self.hud hide:YES];
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"add_fail") message:nil delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil, nil];
+                [failAlert show];
+            }
+        });
+    }];
+}
+
+- (void)ignoreInvite:(NSString *)userId {
+    self.hud.labelText = RCDLocalizedString(@"IgnoreFriendRequest");
+    [self.hud show:YES];
+    [RCDUserInfoManager ignoreFriendRequest:userId complete:^(BOOL success) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.hud hide:YES];
+            if (success) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsRequestKey object:nil];
+                self.friends = [RCDUserInfoManager getAllFriendRequests];
+                [self.tableView reloadData];
+            } else {
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"IgnoreFailure") message:nil delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil, nil];
                 [failAlert show];
             }
         });
@@ -148,7 +173,6 @@
     if (!_hud) {
         _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         _hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
-        _hud.labelText = RCDLocalizedString(@"adding_friend");
     }
     return _hud;
 }

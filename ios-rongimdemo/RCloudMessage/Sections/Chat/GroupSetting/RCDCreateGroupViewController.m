@@ -8,7 +8,7 @@
 
 #import "RCDCreateGroupViewController.h"
 #import "DefaultPortraitView.h"
-#import <MBProgressHUD/MBProgressHUD.h>
+#import "UIView+MBProgressHUD.h"
 #import "RCDChatViewController.h"
 #import "UIColor+RCColor.h"
 #import "UIImage+RCImage.h"
@@ -32,6 +32,10 @@
     [self registerNotification];
 }
 
+- (void)dealloc {
+    NSLog(@"%s",__func__);
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
@@ -105,13 +109,12 @@
 - (void)clickDoneBtn{
     self.navigationItem.rightBarButtonItem.enabled = NO;
     [self.groupName resignFirstResponder];
-    
     NSString *nameStr = [self.groupName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([self groupNameIsAvailable:nameStr]) {
         if (![self.groupMemberIdList containsObject:[RCIM sharedRCIM].currentUserInfo.userId]) {
              [self.groupMemberIdList addObject:[RCIM sharedRCIM].currentUserInfo.userId];
         }
-        [self createGroup:nameStr];
+        [self createGroup];
     }
 }
 
@@ -215,31 +218,6 @@
     [actionSheet showInView:self.view];
 }
 
-- (NSString *)createDefaultPortrait:(NSString *)groupId groupName:(NSString *)groupName {
-    UIImage *portrait = [DefaultPortraitView portraitView:groupId name:groupName];
-    NSString *filePath = [self getIconCachePath:[NSString stringWithFormat:@"group%@.png", groupId]];
-    BOOL result = [UIImagePNGRepresentation(portrait) writeToFile:filePath atomically:YES];
-    if (result == YES) {
-        NSURL *portraitPath = [NSURL fileURLWithPath:filePath];
-        return [portraitPath absoluteString];
-    }
-    return nil;
-}
-
-- (NSString *)getIconCachePath:(NSString *)fileName {
-    NSString *cachPath =
-    [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *filePath =
-    [cachPath stringByAppendingPathComponent:[NSString stringWithFormat:@"CachedIcons/%@",
-                                              fileName]]; // 保存文件的名称
-    NSString *dirPath = [cachPath stringByAppendingPathComponent:[NSString stringWithFormat:@"CachedIcons"]];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if (![fileManager fileExistsAtPath:dirPath]) {
-        [fileManager createDirectoryAtPath:dirPath withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-    return filePath;
-}
-
 - (BOOL)groupNameIsAvailable:(NSString *)nameStr{
     if ([nameStr length] == 0) {
         //群组名称不存在
@@ -260,7 +238,7 @@
     return YES;
 }
 
-- (void)createGroup:(NSString *)nameStr{
+- (void)createGroup{
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
     if ([RCDForwardManager sharedInstance].isForward) {
@@ -269,57 +247,41 @@
         hud.labelText = RCDLocalizedString(@"creating_group");
     }
     [hud show:YES];
-    [RCDGroupManager createGroup:nameStr memberIds:self.groupMemberIdList complete:^(NSString * groupId) {
-        if (groupId) {
-            if (self.imageData) {
-                [RCDUploadManager uploadImage:self.imageData complete:^(NSString *url) {
-                    if (url.length > 0) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [RCDGroupManager setGroupPortrait:url groupId:groupId complete:^(BOOL success) {
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                    if (success == YES) {
-                                        if ([RCDForwardManager sharedInstance].isForward) {
-                                            [self sendForwardMessage:groupId];
-                                        } else {
-                                            [self gotoChatView:groupId groupName:nameStr];
-                                        }
-                                        //关闭HUD
-                                        [hud hide:YES];
-                                    }else{
-                                        self.navigationItem.rightBarButtonItem.enabled = YES; //关闭HUD
-                                        [hud hide:YES];
-                                        [self showAlert:RCDLocalizedString(@"create_group_fail")];
-                                    }
-                                });
-                            }];
-                        });
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            self.navigationItem.rightBarButtonItem.enabled = YES;
-                            //关闭HUD
-                            [hud hide:YES];
-                            [self showAlert:RCDLocalizedString(@"create_group_fail")];
-                        });
-                    }
-                }];
-            } else {
+    if (self.imageData) {
+        [RCDUploadManager uploadImage:self.imageData complete:^(NSString *url) {
+            [self createGroupWithPortraitUri:url];
+        }];
+    }else{
+        [self createGroupWithPortraitUri:nil];
+    }
+}
+
+- (void)createGroupWithPortraitUri:(NSString *)portraitUri{
+    NSString *nameStr = [self.groupName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    [RCDGroupManager createGroup:nameStr portraitUri:portraitUri memberIds:self.groupMemberIdList complete:^(NSString * groupId, RCDGroupAddMemberStatus status) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (groupId) {
+                if (status == RCDGroupAddMemberStatusInviteeApproving) {
+                    [self.view showHUDMessage:RCDLocalizedString(@"MemberInviteNeedConfirm")];
+                }
+
+                if ([RCDForwardManager sharedInstance].isForward) {
+                    [self sendForwardMessage:groupId];
+                } else {
+                    [self gotoChatView:groupId groupName:nameStr];
+                }
+                //关闭HUD
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            }else{
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [hud hide:YES];
-                    if ([RCDForwardManager sharedInstance].isForward) {
-                        [self sendForwardMessage:groupId];
-                    } else {
-                        [self gotoChatView:groupId groupName:nameStr];
-                    }
+                    self.navigationItem.rightBarButtonItem.enabled = YES;
+                    //关闭HUD
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    [self showAlert:RCDLocalizedString(@"create_group_fail")];
                 });
             }
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [hud hide:YES];
-                self.navigationItem.rightBarButtonItem.enabled = YES;
-                [self showAlert:RCDLocalizedString(@"create_group_fail")];
-            });
-        }
-    }];
+        });
+     }];
 }
 
 #pragma mark - geter & setter
@@ -347,6 +309,7 @@
         _groupName.textAlignment = NSTextAlignmentCenter;
         _groupName.delegate = self;
         _groupName.returnKeyType = UIReturnKeyDone;
+        _groupName.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     }
     return _groupName;
 }

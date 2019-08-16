@@ -8,6 +8,7 @@
 
 #import "RCDTipMessageCell.h"
 #import "RCDGroupNotificationMessage.h"
+#import "RCDChatNotificationMessage.h"
 @interface RCDTipMessageCell ()<RCAttributedLabelDelegate>
 
 @end
@@ -73,7 +74,7 @@
 
 + (NSString*)generateTipsStringForModel:(RCMessageModel*)model {
     NSString* text;
-    if ([model.content isMemberOfClass:[RCDGroupNotificationMessage class]]) {
+    if ([model.content isMemberOfClass:[RCDGroupNotificationMessage class]] || [model.content isMemberOfClass:RCDChatNotificationMessage.class]) {
         text = model.content.conversationDigest;
     }
     return text;

@@ -17,4 +17,14 @@ typedef NS_ENUM(NSInteger, RCDLoginErrorCode) {
     RCDLoginErrorCodeUnknown
 };
 
+typedef NS_ENUM(NSInteger, RCDUserErrorCode) {
+    RCDUserErrorCodeStAccountIsExist = 1000,
+    RCDUserErrorCodeInvalidFormat,
+    RCDUserErrorCodeUnknown
+};
+
+typedef NS_ENUM(NSInteger, RCDGroupErrorCode) {
+    RCDGroupErrorCodeNotInGroup = 403,
+    RCDGroupErrorCodeUnknown
+};
 #endif /* RCDEnum_h */

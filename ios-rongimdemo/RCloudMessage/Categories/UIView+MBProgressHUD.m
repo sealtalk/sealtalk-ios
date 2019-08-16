@@ -40,6 +40,7 @@ CGFloat const MBPHUDShowTime = 2.0f;
         HUD.label.text = message;
         HUD.removeFromSuperViewOnHide = YES;
         [HUD showAnimated:YES];
+        HUD.userInteractionEnabled = NO;
         [HUD hideAnimated:YES afterDelay:MBPHUDShowTime];
     })
 }

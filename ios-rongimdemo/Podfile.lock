@@ -29,6 +29,7 @@ PODS:
     - SDWebImage/Core (= 5.0.6)
   - SDWebImage/Core (5.0.6)
   - SSZipArchive (2.2.2)
+  - WechatOpenSDK (1.8.4)
   - ZXingObjC (3.6.5):
     - ZXingObjC/All (= 3.6.5)
   - ZXingObjC/All (3.6.5)
@@ -44,6 +45,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.1.0)
   - SDWebImage (~> 5.0.6)
   - SSZipArchive (~> 2.2.2)
+  - WechatOpenSDK
   - ZXingObjC (~> 3.6.5)
 
 SPEC REPOS:
@@ -56,6 +58,7 @@ SPEC REPOS:
     - MBProgressHUD
     - SDWebImage
     - SSZipArchive
+    - WechatOpenSDK
     - ZXingObjC
 
 SPEC CHECKSUMS:
@@ -67,8 +70,9 @@ SPEC CHECKSUMS:
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
+  WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: b84d7d2c1f211d5fdbb285738c3f1ab7cb9c96f8
+PODFILE CHECKSUM: fec968646442d6d64e676a9fece5e92dd1830c8f
 
 COCOAPODS: 1.7.0.beta.3

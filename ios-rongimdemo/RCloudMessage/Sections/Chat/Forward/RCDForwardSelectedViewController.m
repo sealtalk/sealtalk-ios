@@ -237,7 +237,14 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 #pragma mark - Private Method
 - (void)setupData {
-    self.conversationList = [[RCIMClient sharedRCIMClient] getConversationList:@[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ]];
+    NSArray *conversations = [[RCIMClient sharedRCIMClient] getConversationList:@[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ]];
+    NSMutableArray *dealWithArray = [NSMutableArray array];
+    for (RCConversation *conversation in conversations) {
+        if (![conversation.targetId isEqualToString:RCDGroupNoticeTargetId]) {
+            [dealWithArray addObject:conversation];
+        }
+    }
+    self.conversationList = [dealWithArray copy];
 }
 
 - (void)setupViews {

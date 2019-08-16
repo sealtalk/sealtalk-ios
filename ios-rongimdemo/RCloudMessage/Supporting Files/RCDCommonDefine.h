@@ -8,7 +8,8 @@
 
 #ifndef RCloudMessage_RCDCommonDefine_h
 #define RCloudMessage_RCDCommonDefine_h
-
+#define RCDGroupNoticeTargetId @"__group_apply__"
+#define RCDOpenQRCodeUrlNotification @"RCDOpenQRCodeUrlNotification"
 #define RCDQRCodeContentInfoUrl @"http://web.sealtalk.im/download"
 
 #define SealTalkLog(s,...) \

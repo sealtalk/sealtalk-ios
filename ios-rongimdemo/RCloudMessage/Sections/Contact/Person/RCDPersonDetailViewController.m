@@ -21,6 +21,8 @@
 #import "RCDUserInfoManager.h"
 #import "RCDPersonDetailCell.h"
 #import "NormalAlertView.h"
+#import "RCDCommonString.h"
+#import "RCDRCIMDataSource.h"
 
 typedef NS_ENUM(NSInteger, RCDPersonOperation) {
     RCDPersonOperationDelete = 0,
@@ -28,7 +30,7 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
     RCDPersonOperationRemoveFromBlacklist,
 };
 
-@interface RCDPersonDetailViewController ()<RCDPersonInfoViewDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface RCDPersonDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) RCDPersonInfoView *infoView;
 @property (nonatomic, strong) RCDRemarksView *remarksView;
@@ -43,6 +45,7 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
 @property (nonatomic, assign) BOOL inBlacklist;
 
 @property (nonatomic, assign) RCDPersonOperation operation;
+@property (nonatomic, strong) MBProgressHUD *hud;
 
 @end
 
@@ -84,7 +87,7 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
         [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.remarksView.mas_bottom).offset(15);
             make.left.right.equalTo(self.view);
-            make.height.offset(44);
+            make.height.offset(88);
         }];
         lastView = self.tableView;
     }
@@ -110,26 +113,33 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
 
 - (void)getUserInfoData {
     if ([self isCurrentUser]) {
-        RCUserInfo *currentUserInfo = [RCIM sharedRCIM].currentUserInfo;
+        NSString *currentUserId = [RCIM sharedRCIM].currentUserInfo.userId;
+        RCDUserInfo *currentUserInfo = [RCDUserInfoManager getUserInfo:currentUserId];
         self.userInfo = [[RCDFriendInfo alloc] initWithUserId:currentUserInfo.userId name:currentUserInfo.name portrait:currentUserInfo.portraitUri];
+        self.userInfo.stAccount = currentUserInfo.stAccount;
+        self.userInfo.gender = currentUserInfo.gender;
+        [self.infoView setUserInfo:self.userInfo];
     } else {
-        self.userInfo = [RCDUserInfoManager getFriendInfo:self.userId];
-        self.inBlacklist = [RCDUserInfoManager isInBlacklist:self.userId];
-        [self getFriendPhoneNumber:self.userInfo.userId];
-    }
-    [self.infoView setUserInfo:self.userInfo];
-}
-
-- (void)getFriendPhoneNumber:(NSString *)userId {
-    __weak typeof(self) weakSelf = self;
-    [RCDUserInfoManager getFriendInfoFromServer:userId complete:^(RCDFriendInfo *friendInfo) {
-        if (friendInfo) {
-            weakSelf.phoneNumber = friendInfo.phoneNumber;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.infoView setUserPhoneNumer:friendInfo.phoneNumber];
+        [self.hud showAnimated:YES];
+        [RCDUserInfoManager getFriendInfoFromServer:self.userId complete:^(RCDFriendInfo *friendInfo) {
+            rcd_dispatch_main_async_safe(^{
+                if (friendInfo) {
+                    self.userInfo = friendInfo;
+                    if (friendInfo.status == RCDFriendStatusAgree) {
+                        self.inBlacklist = NO;
+                    } else if (friendInfo.status == RCDFriendStatusBlock) {
+                        self.inBlacklist = YES;
+                    }
+                } else {
+                    self.userInfo = [RCDUserInfoManager getFriendInfo:self.userId];
+                    self.inBlacklist = [RCDUserInfoManager isInBlacklist:self.userId];
+                }
+                [self.tableView reloadData];
+                [self.hud hideAnimated:YES];
+                [self.infoView setUserInfo:self.userInfo];
             });
-        }
-    }];
+        }];
+    }
 }
 
 - (BOOL)isCurrentUser {
@@ -175,6 +185,7 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
                 [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_PRIVATE targetId:weakSelf.userId];
                 [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_PRIVATE targetId:weakSelf.userId];
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [RCDDataSource syncFriendList];
                     [weakSelf.tableView reloadData];
                     [hud hide:YES];
                     [self.view showHUDMessage:RCDLocalizedString(@"HasAddBlacklist")];
@@ -193,6 +204,7 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
             if (success) {
                 weakSelf.inBlacklist = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [RCDDataSource syncFriendList];
                     [weakSelf.tableView reloadData];
                     [hud hide:YES];
                     [weakSelf.view showHUDMessage:RCDLocalizedString(@"HasRemoveBlacklist")];
@@ -212,7 +224,13 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
     [RCDUserInfoManager deleteFriend:self.userId complete:^(BOOL success) {
         rcd_dispatch_main_async_safe(^{
             [hud hideAnimated:YES];
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            if (success) {
+                [self.view showHUDMessage:RCDLocalizedString(@"DeleteSuccess")];
+                [RCDDataSource syncFriendList];
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            } else {
+                [self.view showHUDMessage:RCDLocalizedString(@"DeleteFailure")];
+            }
         });
     }];
 }
@@ -248,17 +266,9 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
     [[RCCall sharedRCCall] startSingleCall:self.userInfo.userId mediaType:RCCallMediaVideo];
 }
 
-#pragma mark - RCDPersonInfoViewDelegate
-- (void)personInfoViewDidTapPhoneNumber:(nonnull NSString *)phoneNumber {
-    NSMutableString *callString = [[NSMutableString alloc] initWithFormat:@"tel:%@", phoneNumber];
-    UIWebView *callWebview = [[UIWebView alloc] init];
-    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:callString]]];
-    [self.view addSubview:callWebview];
-}
-
 #pragma mark - UITableViewDelegate && UITableViewDataSource
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -296,7 +306,6 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
 - (RCDPersonInfoView *)infoView {
     if (!_infoView) {
         _infoView = [[RCDPersonInfoView alloc] init];
-        _infoView.delegate = self;
     }
     return _infoView;
 }
@@ -365,6 +374,14 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
         _videoCallButton.layer.cornerRadius = 5.f;
     }
     return _videoCallButton;
+}
+
+- (MBProgressHUD *)hud {
+    if(!_hud) {
+        _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        _hud.color = [UIColor colorWithHexString:@"343637" alpha:0.8];
+    }
+    return _hud;
 }
 
 @end

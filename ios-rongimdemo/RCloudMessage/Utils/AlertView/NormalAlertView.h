@@ -26,5 +26,14 @@ typedef void (^ButtonBlock)(void);
                       cancel:(ButtonBlock)cancel
                      confirm:(ButtonBlock)confirm;
 
++ (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+             highlightText:(NSString *)highlightText
+             describeTitle:(NSString *)describeTitle
+                 leftTitle:(NSString *)leftTitle
+                rightTitle:(NSString *)rightTitle
+                    cancel:(ButtonBlock)cancel
+                   confirm:(ButtonBlock)confirm;
+
 @end
 

@@ -10,14 +10,16 @@
 #import "RCDGroupInfo.h"
 #import "RCDGroupMember.h"
 #import "RCDGroupAnnouncement.h"
+#import "RCDGroupNotice.h"
 @class RCMessage;
 
 @interface RCDGroupManager : NSObject
 #pragma mark - Group
 //创建群组
 + (void)createGroup:(NSString *)groupName
+        portraitUri:(NSString *)portraitUri
           memberIds:(NSArray *)memberIds
-           complete:(void (^)(NSString *))complete;
+           complete:(void (^)(NSString *groupId, RCDGroupAddMemberStatus status))complete;
 
 //设置群组头像
 + (void)setGroupPortrait:(NSString *)portraitUri
@@ -53,6 +55,26 @@
 + (void)getGroupAnnouncement:(NSString *)groupId
                     complete:(void (^)(RCDGroupAnnouncement *))complete;
 
++ (void)setGroupAllMute:(BOOL)mute
+                groupId:(NSString *)groupId
+               complete:(void (^)(BOOL success))complete;
+
++ (void)setGroupCertification:(BOOL)open
+                      groupId:(NSString *)groupId
+                     complete:(void (^)(BOOL success))complete;
+
++ (NSInteger)getGroupNoticeUnreadCount;
+
++ (NSArray<RCDGroupNotice *>*)getGroupNoticeList;
+
++ (void)getGroupNoticeListFromServer:(void (^)(NSArray <RCDGroupNotice *> *noticeList))complete;
+
++ (void)clearGroupNoticeList:(void (^)(BOOL success))complete;
+
++ (void)setGroupApproveAction:(RCDGroupInviteActionType)type
+                     targetId:(NSString *)targetId
+                      groupId:(NSString *)groupId
+                     complete:(void (^)(BOOL success))complete;
 #pragma mark - Group Member
 //从本地数据库获取群成员 idList
 + (NSArray<NSString *> *)getGroupMembers:(NSString *)groupId;
@@ -70,6 +92,8 @@
 //获取群主
 + (NSString *)getGroupOwner:(NSString *)groupId;
 
++ (BOOL)currentUserIsGroupCreatorOrManager:(NSString *)groupId;
+
 //加入群组
 + (void)joinGroup:(NSString *)groupId
          complete:(void (^)(BOOL success))complete;
@@ -77,7 +101,7 @@
 //添加群组成员
 + (void)addUsers:(NSArray *)userIds
          groupId:(NSString *)groupId
-        complete:(void (^)(BOOL success))complete;
+        complete:(void (^)(BOOL success,RCDGroupAddMemberStatus status))complete;
 
 //将用户踢出群组
 + (void)kickUsers:(NSArray *)userIds

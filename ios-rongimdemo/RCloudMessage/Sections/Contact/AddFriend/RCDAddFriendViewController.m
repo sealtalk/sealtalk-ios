@@ -13,12 +13,19 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <Masonry/Masonry.h>
 #import "RCDUserInfoManager.h"
+#import "RCDCommonString.h"
+#import <MBProgressHUD/MBProgressHUD.h>
+#import "RCDRCIMDataSource.h"
 
 @interface RCDAddFriendViewController ()
 @property(nonatomic, strong) UILabel *nameLabel;
 @property(nonatomic, strong) UIImageView *portraitImgView;
+@property(nonatomic, strong) UIImageView *genderImgView;
+@property(nonatomic, strong) UILabel *stAccountLabel;
 @property(nonatomic, strong) UIButton *addFriendBtn;
 @property(nonatomic, strong) UIButton *startChatBtn;
+
+@property(nonatomic, strong) MBProgressHUD *hud;
 @end
 
 @implementation RCDAddFriendViewController
@@ -51,6 +58,8 @@
     
     [headerView addSubview:self.portraitImgView];
     [headerView addSubview:self.nameLabel];
+    [headerView addSubview:self.genderImgView];
+    [headerView addSubview:self.stAccountLabel];
     
     [self.portraitImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(headerView);
@@ -59,10 +68,22 @@
     }];
     
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.portraitImgView);
+        make.top.equalTo(self.portraitImgView).offset(7);
         make.left.equalTo(self.portraitImgView.mas_right).offset(8);
-        make.right.equalTo(headerView).offset(-8);
         make.height.offset(20);
+    }];
+    
+    [self.genderImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.nameLabel);
+        make.left.equalTo(self.nameLabel.mas_right).offset(5);
+        make.height.width.equalTo(@15);
+    }];
+    
+    [self.stAccountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.nameLabel.mas_bottom).offset(7);
+        make.left.equalTo(self.nameLabel);
+        make.right.equalTo(headerView);
+        make.height.offset(14);
     }];
 }
 
@@ -73,6 +94,27 @@
         self.portraitImgView.image = portrait;
     } else {
         [self.portraitImgView sd_setImageWithURL:[NSURL URLWithString:self.targetUserInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"icon_person"]];
+    }
+    if (self.targetUserInfo.gender.length > 0) {
+        self.genderImgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"gender_%@",self.targetUserInfo.gender]];
+    } else {
+        self.genderImgView.image = [UIImage imageNamed:@"gender_male"];
+    }
+    if (self.targetUserInfo.stAccount.length > 0 && ![self.targetUserInfo.stAccount isEqualToString:@""]) {
+        self.stAccountLabel.hidden = NO;
+        self.stAccountLabel.text = [NSString stringWithFormat:@"%@：%@",RCDLocalizedString(@"SealTalkNumber"), self.targetUserInfo.stAccount];
+        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.portraitImgView).offset(7);
+            make.left.equalTo(self.portraitImgView.mas_right).offset(8);
+            make.height.offset(20);
+        }];
+    } else {
+        self.stAccountLabel.hidden = YES;
+        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.portraitImgView);
+            make.left.equalTo(self.portraitImgView.mas_right).offset(8);
+            make.height.offset(20);
+        }];
     }
 }
 
@@ -92,6 +134,10 @@
         make.top.height.left.right.equalTo(self.addFriendBtn);
     }];
     
+    [self updateFooterView];
+}
+
+- (void)updateFooterView {
     NSMutableArray *cacheList = [[NSMutableArray alloc] initWithArray:[RCDUserInfoManager getAllFriends]];
     BOOL isFriend = NO;
     for (RCDFriendInfo *user in cacheList) {
@@ -102,7 +148,9 @@
     }
     if (isFriend == YES) {
         self.addFriendBtn.hidden = YES;
+        self.startChatBtn.hidden = NO;
     } else {
+        self.addFriendBtn.hidden = NO;
         self.startChatBtn.hidden = YES;
     }
 }
@@ -115,29 +163,30 @@
 #pragma mark - Target Action
 - (void)addFriendAction:(id)sender {
     if (_targetUserInfo) {
-        RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:_targetUserInfo.userId];
-        
-        if (friend && friend.status == RCDFriendStatusRequest) {
-            [self showAlertViewWith:RCDLocalizedString(@"friend_invite_had_send")];
-        } else {
-            [RCDUserInfoManager inviteFriend:_targetUserInfo.userId
-                                 withMessage:[NSString stringWithFormat:@"我是%@", [RCIM sharedRCIM].currentUserInfo.name]
-                                    complete:^(BOOL success) {
-                                        dispatch_async(dispatch_get_main_queue(), ^{
-                                            if (success) {
-                                                [self showAlertViewWith:RCDLocalizedString(@"request_had_send")];
-                                                [RCDUserInfoManager getFriendListFromServer:nil];
-                                            } else {
-                                                [self showAlertViewWith:RCDLocalizedString(@"request_fail_retry")];
-                                            }
-                                        });
-                                    }];
-        }
+        [self.hud showAnimated:YES];
+        [RCDUserInfoManager inviteFriend:_targetUserInfo.userId withMessage:[NSString stringWithFormat:@"我是%@", [RCIM sharedRCIM].currentUserInfo.name] complete:^(BOOL success, NSString *action) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.hud hideAnimated:YES];
+                if (success) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsRequestKey object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsUpdateUIKey object:nil];
+                    if ([action isEqualToString:@"AddDirectly"]) {
+                        [self showAlertViewWith:RCDLocalizedString(@"AddSuccess")];
+                    } else {
+                        [self showAlertViewWith:RCDLocalizedString(@"request_had_send")];
+                    }
+                    [self updateFooterView];
+                } else {
+                    [self showAlertViewWith:RCDLocalizedString(@"request_fail_retry")];
+                }
+            });
+        }];
     };
 }
 
 - (void)startChatAction:(id)sender {
     RCDChatViewController *conversationVC = [[RCDChatViewController alloc] init];
+    conversationVC.needPopToRootView = YES;
     conversationVC.conversationType = ConversationType_PRIVATE;
     conversationVC.targetId = self.targetUserInfo.userId;
     conversationVC.title = self.targetUserInfo.name;
@@ -168,6 +217,24 @@
     return _portraitImgView;
 }
 
+- (UIImageView *)genderImgView {
+    if (!_genderImgView) {
+        _genderImgView = [[UIImageView alloc] init];
+        _genderImgView.layer.cornerRadius = 15 / 2;
+        _genderImgView.layer.masksToBounds = YES;
+    }
+    return _genderImgView;
+}
+
+- (UILabel *)stAccountLabel {
+    if (!_stAccountLabel) {
+        _stAccountLabel = [[UILabel alloc] init];
+        _stAccountLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1];
+        _stAccountLabel.font = [UIFont systemFontOfSize:14];
+    }
+    return _stAccountLabel;
+}
+
 - (UIButton *)addFriendBtn {
     if (!_addFriendBtn) {
         _addFriendBtn = [[UIButton alloc] init];
@@ -192,6 +259,14 @@
         [_startChatBtn addTarget:self action:@selector(startChatAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _startChatBtn;
+}
+
+- (MBProgressHUD *)hud {
+    if(!_hud) {
+        _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        _hud.color = [UIColor colorWithHexString:@"343637" alpha:0.8];
+    }
+    return _hud;
 }
 
 @end

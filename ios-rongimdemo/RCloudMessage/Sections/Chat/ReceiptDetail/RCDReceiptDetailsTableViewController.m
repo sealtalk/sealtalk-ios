@@ -88,7 +88,7 @@
 #pragma mark - RCDUserListCollectionViewDelegate
 - (void)didTipHeaderClicked:(NSString *)userId{
     RCDFriendInfo *friend = [RCDDBManager getFriend:userId];
-    if (friend != nil && friend.status == RCDFriendStatusAgree) {
+    if (friend != nil && (friend.status == RCDFriendStatusAgree || friend.status == RCDFriendStatusBlock)) {
         RCDPersonDetailViewController *vc = [[RCDPersonDetailViewController alloc] init];
         vc.userId = userId;
         [self.navigationController pushViewController:vc animated:YES];

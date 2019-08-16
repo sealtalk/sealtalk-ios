@@ -11,6 +11,10 @@
 #import "RCDGroupInfo.h"
 #import "RCDFriendInfo.h"
 #import "RCDGroupMember.h"
+#import "RCDGroupNotice.h"
+#import "RCDUserSetting.h"
+#import "RCDChatConfig.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RCDDBManager : NSObject
@@ -21,9 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - User
 
-+ (void)saveUsers:(NSArray<RCUserInfo *>*)userList;
++ (void)saveUsers:(NSArray<RCDUserInfo *>*)userList;
 
-+ (RCUserInfo *)getUser:(NSString *)userId;
++ (RCDUserInfo *)getUser:(NSString *)userId;
 
 #pragma mark - Friend
 + (void)saveFriends:(NSArray<RCDFriendInfo *>*)friendList;
@@ -33,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (RCDFriendInfo *)getFriend:(NSString *)userId;
 
 + (void)clearFriends;
+
+// 获取接收的好友请求
++ (int)getFriendRequesteds;
 
 // 获取所有好友信息（已经成功添加好友）
 + (NSArray<RCDFriendInfo *>*)getAllFriends;
@@ -79,6 +86,28 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSArray<NSString *>*)getGroupManagers:(NSString *)groupId;
 
 + (NSString *)getGroupOwner:(NSString *)groupId;
+
++ (void)saveChatConfig:(RCDChatConfig *)chatConfig;
+
++ (RCDChatConfig *)getChatConfigWithConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId;
+
++ (BOOL)getScreenCaptureNotification:(RCConversationType)type targetId:(NSString *)targetId;
+
++ (RCDGroupMessageClearStatus)getMessageClearStatus:(RCConversationType)type targetId:(NSString *)targetId;
+
+#pragma mark - groupNotice
++ (void)saveGroupNoticeList:(NSArray<RCDGroupNotice *>*)noticeList;
+
++ (NSArray<RCDGroupNotice *>*)getGroupNoticeList;
+
++ (NSInteger)getGroupNoticeUnreadCount;
+
++ (void)clearGroupNoticeList;
+
+#pragma mark - userSetting
++ (void)saveUserSetting:(RCDUserSetting *)setting;
+
++ (RCDUserSetting *)getUserSetting;
 @end
 
 NS_ASSUME_NONNULL_END

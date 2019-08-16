@@ -12,10 +12,14 @@
 #import "RCDUtilities.h"
 #import "RCDDBManager.h"
 #import <Masonry/Masonry.h>
+#import "RCDCommonString.h"
+#import "RCDRCIMDataSource.h"
 @interface RCDBlackListViewController ()
 
 @property(nonatomic, strong) NSMutableDictionary *mDictData;
 @property(nonatomic, strong) NSMutableArray *keys;
+
+@property(nonatomic, strong) UILabel *emptyLabel;
 @end
 
 @implementation RCDBlackListViewController
@@ -44,13 +48,7 @@
     self.tableView.tableFooterView = [UIView new];
 
     self.title = RCDLocalizedString(@"blacklist");
-}
-
-#pragma mark - db
-
-- (void)saveBlacklistToDB:(NSArray <NSString *>*)blacklist {
-    [RCDDBManager clearBlacklist];
-    [RCDDBManager addBlacklist:blacklist];
+    [self addEmptyLabel];
 }
 
 #pragma mark - private
@@ -78,25 +76,9 @@
     }];
 }
 
-- (void)reloadView{
-    if (self.keys.count == 0) {
-        [self showEmptyView];
-    }else{
-        for (UIView *view in self.tableView.subviews) {
-            [view removeFromSuperview];
-        }
-    }
-    [self.tableView reloadData];
-}
-
-- (void)showEmptyView{
-    UILabel *label = [[UILabel alloc] init];
-    label.text = RCDLocalizedString(@"Blacklist_empty");
-    label.textColor = HEXCOLOR(0x939393);
-    label.font = [UIFont systemFontOfSize:17];
-    label.textAlignment = NSTextAlignmentCenter;
-    [self.tableView addSubview:label];
-    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+- (void)addEmptyLabel {
+    [self.tableView addSubview:self.emptyLabel];
+    [self.emptyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.tableView).offset(-84);
         make.left.equalTo(self.tableView);
         make.bottom.offset([UIScreen mainScreen].bounds.size.height);
@@ -104,29 +86,9 @@
     }];
 }
 
-//
-- (void)removeFromBlackList:(NSIndexPath *)indexPath {
-    NSString *key = [self.keys objectAtIndex:indexPath.section];
-    NSMutableArray *marray = [NSMutableArray arrayWithArray:[self.mDictData objectForKey:key]];
-    [marray removeObjectAtIndex:indexPath.row];
-
-    if (marray.count == 0) {
-        [self.mDictData removeObjectForKey:key];
-        [self.keys removeObject:key];
-
-        [self.tableView reloadSectionIndexTitles];
-        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section]
-                      withRowAnimation:UITableViewRowAnimationFade];
-    } else {
-        if (marray.count < 20) {
-            [self.mDictData setObject:marray forKey:key];
-            [self reloadView];
-
-        } else {
-            [self.mDictData setObject:marray forKey:key];
-            [self.tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
-        }
-    }
+- (void)reloadView{
+    self.emptyLabel.hidden = self.keys.count != 0;
+    [self.tableView reloadData];
 }
 
 #pragma mark - UITableViewDataSource
@@ -192,7 +154,8 @@
         [RCDUserInfoManager removeFromBlacklist:info.userId complete:^(BOOL success) {
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf removeFromBlackList:indexPath];
+                    [RCDDataSource syncFriendList];
+                    [weakSelf getAllData];
                 });
             }else{
                 NSLog(@" ... 解除黑名单失败 ... ");
@@ -204,5 +167,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (UILabel *)emptyLabel {
+    if (!_emptyLabel) {
+        _emptyLabel = [[UILabel alloc] init];
+        _emptyLabel.text = RCDLocalizedString(@"Blacklist_empty");
+        _emptyLabel.textColor = HEXCOLOR(0x939393);
+        _emptyLabel.font = [UIFont systemFontOfSize:17];
+        _emptyLabel.textAlignment = NSTextAlignmentCenter;
+        _emptyLabel.hidden = YES;
+    }
+    return _emptyLabel;
 }
 @end

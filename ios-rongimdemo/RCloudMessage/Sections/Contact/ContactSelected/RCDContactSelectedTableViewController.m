@@ -20,7 +20,7 @@
 #import "RCDUtilities.h"
 #import "UIColor+RCColor.h"
 #import "RCDForwardManager.h"
-
+#import "UIView+MBProgressHUD.h"
 @interface RCDContactSelectedTableViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary *allFriendsDict;
@@ -142,19 +142,15 @@
 }
 
 - (void)getUserInfoFromServer {
-    [RCDDataSource syncFriendList:[RCIM sharedRCIM].currentUserInfo.userId complete:^(NSArray *result) {
-        NSMutableArray *friends = nil;
-        if (result.count > 0) {
+    [RCDUserInfoManager getFriendListFromServer:^(NSArray<RCDFriendInfo *> *friendList) {
+        NSMutableArray *friends;
+        if (friendList.count > 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self.noFriendView != nil) {
                     [self.noFriendView removeFromSuperview];
                 }
             });
-            for (RCDFriendInfo *friendInfo in result) {
-                if (friendInfo.status == RCDFriendStatusAgree) {
-                    [friends addObject:friendInfo];
-                }
-            }
+            friends = [[RCDUserInfoManager getAllFriends] mutableCopy];
         }
         [self dealWithFriendList:friends];
     }];
@@ -217,7 +213,7 @@
         self.selectedUsersCollectionView.frame = frame;
         self.searchBar.frame = [self getSearchBarFrame:frame];
         self.searchField.leftView = self.searchFieldLeftView;
-        self.searchBar.text = RCDLocalizedString(@"search");
+        self.searchBar.placeholder = RCDLocalizedString(@"search");
     } else if (count == 1) {
         frame = CGRectMake(0, 0, 46, 54);
         self.selectedUsersCollectionView.frame = frame;
@@ -255,7 +251,7 @@
     if (self.collectionViewResource.count < 1) {
         self.searchField.leftView = self.searchFieldLeftView;
     }
-    self.searchBar.text = RCDLocalizedString(@"search");
+    self.searchBar.placeholder = RCDLocalizedString(@"search");
     self.searchContent = @"";
     [self.searchBar resignFirstResponder];
 }
@@ -311,7 +307,7 @@
         self.searchField.leftView = self.searchFieldLeftView;
     }
     if (self.searchContent.length < 1) {
-        self.searchBar.text = RCDLocalizedString(@"search");
+        self.searchBar.placeholder = RCDLocalizedString(@"search");
     }
     if (self.isSearchResult == YES) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -343,7 +339,7 @@
         }
         
         if (seletedUsersId.count > 0 && self.groupOptionType == RCDContactSelectedGroupOptionTypeAdd) {
-            [RCDGroupManager addUsers:seletedUsersId groupId:self.groupId complete:^(BOOL success) {
+            [RCDGroupManager addUsers:seletedUsersId groupId:self.groupId complete:^(BOOL success, RCDGroupAddMemberStatus status) {
                 rcd_dispatch_main_async_safe(^{
                     [self.hud hide:YES];
                     if (success == YES) {
@@ -351,6 +347,11 @@
                     } else {
                         [self showAlertViewWithMessage:RCDLocalizedString(@"add_member_fail")];
                         [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
+                    }
+                    if (status == RCDGroupAddMemberStatusInviteeApproving) {
+                        [self.view showHUDMessage:RCDLocalizedString(@"MemberInviteNeedConfirm")];
+                    }else if(status == RCDGroupAddMemberStatusOnlyManagerApproving){
+                        [self.view showHUDMessage:RCDLocalizedString(@"MemberInviteNeedManagerConfirm")];
                     }
                 })
             }];
@@ -757,18 +758,11 @@
 - (UISearchBar *)searchBar {
     if (!_searchBar) {
         _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth, 54)];
-        [_searchBar setText:NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil)];
-        _searchField = [_searchBar valueForKey:@"_searchField"];
-        _searchField.clearButtonMode = UITextFieldViewModeNever;
-        _searchField.textColor = [UIColor colorWithHexString:@"999999" alpha:1.0];
-        _searchFieldLeftView = _searchField.leftView;
+        _searchBar.placeholder = NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil);
+        _searchBar.backgroundColor = [UIColor whiteColor];
+        _searchBar.backgroundImage = [UIColor imageWithColor:[UIColor whiteColor]];
         [_searchBar setDelegate:self];
         [_searchBar setKeyboardType:UIKeyboardTypeDefault];
-        for (UIView *subview in [[_searchBar.subviews firstObject] subviews]) {
-            if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
-                [subview removeFromSuperview];
-            }
-        }
     }
     return _searchBar;
 }

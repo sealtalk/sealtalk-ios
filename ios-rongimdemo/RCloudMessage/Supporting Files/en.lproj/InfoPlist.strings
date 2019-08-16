@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  RCloudMessage
+
+  Created by 孙浩 on 2019/7/15.
+  Copyright © 2019 RongCloud. All rights reserved.
+*/
+
+"NSContactsUsageDescription"="请允许SealTalk获取您的通讯录，完成手机通讯录至服务器匹配朋友，Sealtalk不会保存您的通讯录";

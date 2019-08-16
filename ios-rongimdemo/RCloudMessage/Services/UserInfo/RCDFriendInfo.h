@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <RongIMLib/RCUserInfo.h>
+#import "RCDUserInfo.h"
 
 typedef NS_ENUM(NSInteger, RCDFriendStatus) {
     RCDFriendStatusRequest = 10,
@@ -15,9 +16,10 @@ typedef NS_ENUM(NSInteger, RCDFriendStatus) {
     RCDFriendStatusAgree = 20,
     RCDFriendStatusIgnore = 21,
     RCDFriendStatusDelete = 30,
+    RCDFriendStatusBlock = 31,
 };
 
-@interface RCDFriendInfo : RCUserInfo
+@interface RCDFriendInfo : RCDUserInfo
 
 /**
  status: 与好友的关系。下面是好友关系的对照表，上面数据得到的status 值是20，表示和这个用户已经是好友了。
@@ -27,6 +29,7 @@ typedef NS_ENUM(NSInteger, RCDFriendStatus) {
         | 已是好友       | 20   | 20  | 已是好友
         | 已是好友       | 20   | 30  | 删除了好友关系
         | 删除了好友关系  | 30   | 30  | 删除了好友关系
+        | 拉黑          | 31   | 31  | 拉黑
  */
 @property(nonatomic, assign) RCDFriendStatus status;
 

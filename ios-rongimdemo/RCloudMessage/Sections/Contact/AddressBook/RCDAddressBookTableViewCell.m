@@ -42,6 +42,8 @@
  */
 @property (nonatomic, strong) UIButton *acceptBtn;
 
+@property (nonatomic, strong) UIButton *ignoreButton;
+
 @property (nonatomic, strong) RCDFriendInfo *currentUserInfo;
 
 @end
@@ -75,14 +77,27 @@
         self.selected = NO;
         self.arrowImgView.hidden = YES;
         self.acceptBtn.hidden = YES;
+        self.ignoreButton.hidden = YES;
     } else if (user.status == RCDFriendStatusRequested) {
         self.selected = NO;
         self.acceptBtn.hidden = NO;
+        self.ignoreButton.hidden = NO;
         self.arrowImgView.hidden = YES;
     } else if (user.status == RCDFriendStatusAgree) {
         self.rightLabel.text = RCDLocalizedString(@"had_accept");
         self.acceptBtn.hidden = YES;
+        self.ignoreButton.hidden = YES;
         self.arrowImgView.hidden = NO;
+    } else if (user.status == RCDFriendStatusIgnore) {
+        self.rightLabel.text = RCDLocalizedString(@"Ignored");
+        self.acceptBtn.hidden = YES;
+        self.ignoreButton.hidden = YES;
+        self.arrowImgView.hidden = YES;
+    } else {
+        self.rightLabel.text = RCDLocalizedString(@"had_accept");
+        self.acceptBtn.hidden = YES;
+        self.ignoreButton.hidden = YES;
+        self.arrowImgView.hidden = YES;
     }
     self.accessoryType = UITableViewCellAccessoryNone;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -99,6 +114,7 @@
     [self.contentView addSubview:self.rightLabel];
     [self.contentView addSubview:self.arrowImgView];
     [self.contentView addSubview:self.acceptBtn];
+    [self.contentView addSubview:self.ignoreButton];
     
     [self.portraitImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
@@ -127,10 +143,15 @@
         make.height.offset(CellHeight - 16.5 - 16);
     }];
     
+    [self.ignoreButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView);
+        make.right.equalTo(self.acceptBtn.mas_left).offset(-10);
+        make.height.offset(CellHeight - 16.5 - 16 - 8);
+    }];
+    
     [self.acceptBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.right.equalTo(self.contentView).offset(-8);
-        make.width.offset(65);
         make.height.offset(CellHeight - 16.5 - 16 - 8);
     }];
 }
@@ -138,6 +159,12 @@
 - (void)doAccept {
     if (self.acceptBlock) {
         self.acceptBlock(self.currentUserInfo.userId);
+    }
+}
+
+- (void)doIgnore {
+    if (self.ignoreBlock) {
+        self.ignoreBlock(self.currentUserInfo.userId);
     }
 }
 
@@ -185,14 +212,23 @@
 - (UIButton *)acceptBtn {
     if (!_acceptBtn) {
         _acceptBtn = [[UIButton alloc] init];
-        _acceptBtn.tag = self.tag;
-        [_acceptBtn setTitle:RCDLocalizedString(@"accept") forState:UIControlStateNormal];
-        [_acceptBtn setTintColor:[UIColor whiteColor]];
-        [_acceptBtn setBackgroundColor:[[UIColor alloc] initWithRed:23 / 255.f green:136 / 255.f blue:213 / 255.f alpha:1]];
-        _acceptBtn.translatesAutoresizingMaskIntoConstraints = NO;
-        [_acceptBtn.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
-        [_acceptBtn addTarget:self action:@selector(doAccept) forControlEvents:UIControlEventTouchUpInside];
+        [_acceptBtn setTitle:RCDLocalizedString(@"Agree") forState:(UIControlStateNormal)];
+        [_acceptBtn setTitleColor:HEXCOLOR(0x3098fc) forState:(UIControlStateNormal)];
+        [_acceptBtn addTarget:self action:@selector(doAccept) forControlEvents:(UIControlEventTouchUpInside)];
+        _acceptBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     }
     return _acceptBtn;
 }
+
+- (UIButton *)ignoreButton {
+    if (!_ignoreButton) {
+        _ignoreButton = [[UIButton alloc] init];
+        [_ignoreButton setTitle:RCDLocalizedString(@"Ignore") forState:(UIControlStateNormal)];
+        [_ignoreButton setTitleColor:HEXCOLOR(0x333333) forState:(UIControlStateNormal)];
+        [_ignoreButton addTarget:self action:@selector(doIgnore) forControlEvents:(UIControlEventTouchUpInside)];
+        _ignoreButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    }
+    return _ignoreButton;
+}
+
 @end

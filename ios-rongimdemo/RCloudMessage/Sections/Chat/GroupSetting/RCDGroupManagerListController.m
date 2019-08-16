@@ -38,6 +38,11 @@
     [self refreshData];
 }
 
+- (void)dealloc {
+    NSLog(@"%s",__func__);
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;

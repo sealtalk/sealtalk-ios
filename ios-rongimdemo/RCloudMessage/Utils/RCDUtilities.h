@@ -21,4 +21,8 @@
 + (BOOL)isContains:(NSString *)firstString withString:(NSString *)secondString;
 + (UIImage *)getImageWithColor:(UIColor *)color andHeight:(CGFloat)height;
 + (NSString *)getDataString:(long long)time;
++ (CGFloat)getStringHeight:(NSString *)text font:(UIFont *)font viewWidth:(CGFloat)width;
++ (BOOL)isLowerLetter:(NSString *)string;
++ (BOOL)judgeSealTalkAccount:(NSString *)string;
++ (int)getTotalUnreadCount;
 @end

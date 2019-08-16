@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UILabel *infoLabel;
 @property (nonatomic, strong) UIButton *joinButton;
+@property (nonatomic, strong) RCDGroupInfo *group;
 @end
 
 @implementation RCDGroupJoinController
@@ -26,37 +27,37 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = HEXCOLOR(0xf2f2f3);
-    [self getGroupInfo];
+    self.group = [RCDGroupManager getGroupInfo:self.groupId];
     [self setNaviItem];
     [self addSubViews];
+    [self setGroupInfo];
 }
 
 #pragma mark - helper
-- (void)getGroupInfo{
-    __weak typeof(self) weakSelf = self;
-    [RCDGroupManager getGroupInfoFromServer:self.groupId complete:^(RCDGroupInfo * _Nonnull groupInfo) {
-        rcd_dispatch_main_async_safe((^{
-            if (groupInfo) {
-                if (groupInfo.isDismiss) {
-                    weakSelf.joinButton.enabled = NO;
-                    [weakSelf.joinButton setTitle:RCDLocalizedString(@"GroupDidDismiss") forState:(UIControlStateNormal)];
-                }
-                weakSelf.infoLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"GroupDetailCount"),groupInfo.number];
-                
-                weakSelf.nameLabel.text = groupInfo.groupName;
-                if ([groupInfo.portraitUri isEqualToString:@""]) {
-                    [weakSelf.portraitImageView sd_setImageWithURL:[NSURL URLWithString:groupInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
-                }
-                if (!weakSelf.portraitImageView.image) {
-                    weakSelf.portraitImageView.image = [DefaultPortraitView portraitView:groupInfo.groupId name:groupInfo.groupName];
-                }
-            }
-        }));
-    }];
+- (void)setGroupInfo{
+    if (self.group.isDismiss) {
+        self.joinButton.enabled = NO;
+        [self.joinButton setTitle:RCDLocalizedString(@"GroupDidDismiss") forState:(UIControlStateNormal)];
+        self.joinButton.backgroundColor = [HEXCOLOR(0x999999) colorWithAlphaComponent:0.6];
+    }
+    self.infoLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"GroupDetailCount"),self.group.number];
+    
+    self.nameLabel.text = self.group.groupName;
+    if ([self.group.portraitUri isEqualToString:@""]) {
+        [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:self.group.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
+    }
+    if (!self.portraitImageView.image) {
+        self.portraitImageView.image = [DefaultPortraitView portraitView:self.group.groupId name:self.group.groupName];
+    }
 }
 
 - (void)setNaviItem{
-    self.navigationItem.title = RCDLocalizedString(@"JoinGroup");
+    if (self.group.needCertification) {
+        self.navigationItem.title = RCDLocalizedString(@"alert");
+        return;
+    }else{
+        self.navigationItem.title = RCDLocalizedString(@"JoinGroup");
+    }
     RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
@@ -95,6 +96,10 @@
 }
 
 - (void)addSubViews{
+    if (self.group.needCertification) {
+        [self showTipAlertView];
+        return;
+    }
     [self.view addSubview:self.bgView];
     [self.view addSubview:self.joinButton];
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -133,6 +138,15 @@
         make.height.offset(20);
         make.width.equalTo(self.bgView);
     }];
+}
+
+- (void)showTipAlertView{
+    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height/2-100, self.view.frame.size.width, 28)];
+    tipLabel.text = RCDLocalizedString(@"GroupAuthTipInfo");
+    tipLabel.textColor = HEXCOLOR(0x939393);
+    tipLabel.font = [UIFont systemFontOfSize:20];
+    tipLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:tipLabel];
 }
 
 #pragma mark - getter
@@ -184,5 +198,4 @@
     }
     return _joinButton;
 }
-
 @end

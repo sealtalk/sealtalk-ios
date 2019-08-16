@@ -106,6 +106,8 @@ NSString *const RCDGroupMemberManagerRemove = @"RemoveManager";
         content = [NSString stringWithFormat:RCDLocalizedString(@"GroupHasNewOwner"), [self getTargetNames]];
     }else if ([self.operation isEqualToString:RCDGroupMemberManagerSet]) {
         content = [NSString stringWithFormat:RCDLocalizedString(@"GroupSetManagerMessage"), [self getTargetNames]];
+    }else {
+        content = NSLocalizedStringFromTable(@"unknown_message_cell_tip", @"RongCloudKit", nil);
     }
     return content;
 }

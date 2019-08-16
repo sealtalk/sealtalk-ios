@@ -19,6 +19,8 @@
 #import "RCDUserInfoManager.h"
 #import "RCDUploadManager.h"
 #import <RongIMKit/RongIMKit.h>
+#import "RCDSettingGenderViewController.h"
+#import "RCDSetSealTalkNumViewController.h"
 
 @interface RCDMeInfoTableViewController ()
 @property(nonatomic, strong) NSData *data;
@@ -76,8 +78,15 @@
 }
 
 #pragma mark - UITableViewDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    if (section == 0) {
+        return 4;
+    }
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -86,47 +95,93 @@
     if (cell == nil) {
         cell = [[RCDBaseSettingTableViewCell alloc] init];
     }
-    if(0 == indexPath.row) {
-        NSString *portraitUrl = [DEFAULTS stringForKey:RCDUserPortraitUriKey];
-        [cell setImageView:cell.rightImageView ImageStr:portraitUrl imageSize:CGSizeMake(65, 65) LeftOrRight:1];
-        cell.rightImageCornerRadius = 5.f;
-        cell.leftLabel.text = RCDLocalizedString(@"portrait");
-    }else if (1 == indexPath.row) {
-        [cell setCellStyle:DefaultStyle_RightLabel];
-        cell.leftLabel.text = RCDLocalizedString(@"nickname")
-        ;
-        cell.rightLabel.text = [DEFAULTS stringForKey:RCDUserNickNameKey];
-    }else if (2 == indexPath.row) {
-        [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
-        cell.leftLabel.text = RCDLocalizedString(@"mobile_number")
-        ;
-        cell.rightLabel.text = [DEFAULTS stringForKey:RCDUserNameKey];
+    
+    if (indexPath.section == 0) {
+        switch (indexPath.row) {
+            case 0: {
+                NSString *portraitUrl = [DEFAULTS stringForKey:RCDUserPortraitUriKey];
+                [cell setImageView:cell.rightImageView ImageStr:portraitUrl imageSize:CGSizeMake(65, 65) LeftOrRight:1];
+                cell.rightImageCornerRadius = 5.f;
+                cell.leftLabel.text = RCDLocalizedString(@"portrait");
+            }
+                break;
+            case 1: {
+                [cell setCellStyle:DefaultStyle_RightLabel];
+                cell.leftLabel.text = RCDLocalizedString(@"nickname");
+                cell.rightLabel.text = [DEFAULTS stringForKey:RCDUserNickNameKey];
+            }
+                break;
+            case 2: {
+                NSString *sealTalkNumber = [DEFAULTS stringForKey:RCDSealTalkNumberKey];
+                cell.leftLabel.text = RCDLocalizedString(@"SealTalkNumber");
+                if (sealTalkNumber.length > 0) {
+                    [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
+                    cell.rightLabel.text = sealTalkNumber;
+                } else {
+                    [cell setCellStyle:DefaultStyle_RightLabel];
+                    cell.rightLabel.text = RCDLocalizedString(@"NotSetting");
+                }
+            }
+                break;
+            case 3: {
+                [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
+                cell.leftLabel.text = RCDLocalizedString(@"mobile_number");
+                cell.rightLabel.text = [DEFAULTS stringForKey:RCDUserNameKey];
+            }
+                break;
+            default:
+                break;
+        }
+    } else {
+        if (indexPath.row == 0) {
+            NSString *gender = [DEFAULTS stringForKey:RCDUserGenderKey];
+            [cell setCellStyle:DefaultStyle_RightLabel];
+            cell.leftLabel.text = RCDLocalizedString(@"Gender");
+            if (gender.length > 0) {
+                cell.rightLabel.text = RCDLocalizedString(gender);
+            } else {
+                cell.rightLabel.text = RCDLocalizedString(@"male");
+            }
+        }
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat height = 44.f;;
-    if(0 == indexPath.row) {
+    CGFloat height = 44.f;
+    if(indexPath.section == 0 && indexPath.row == 0) {
         height = 88.f;
     }
     return height;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 15.f;
+    return 13.5;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(0 == indexPath.row) {
-        if ([self dealWithNetworkStatus]) {
-            [self changePortrait];
+    if (indexPath.section == 0) {
+        if(indexPath.row == 0) {
+            if ([self dealWithNetworkStatus]) {
+                [self changePortrait];
+            }
+        } else if (indexPath.row == 1) {
+            if ([self dealWithNetworkStatus]) {
+                RCDEditUserNameViewController *vc = [[RCDEditUserNameViewController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+        } else if (indexPath.row == 2) {
+            // 设置 SealTalk 号
+            if ([DEFAULTS stringForKey:RCDSealTalkNumberKey].length <= 0) {
+                RCDSetSealTalkNumViewController *setSealTalkNumVC = [[RCDSetSealTalkNumViewController alloc] init];
+                [self.navigationController pushViewController:setSealTalkNumVC animated:YES];
+            }
         }
-    }else if(1 == indexPath.row) {
-        if ([self dealWithNetworkStatus]) {
-            RCDEditUserNameViewController *vc = [[RCDEditUserNameViewController alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        if (indexPath.row == 0) {
+            RCDSettingGenderViewController *settingGenderVC = [[RCDSettingGenderViewController alloc] init];
+            [self.navigationController pushViewController:settingGenderVC animated:YES];
         }
     }
 }
