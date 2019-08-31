@@ -27,6 +27,7 @@
 #import "RCDLoginManager.h"
 #import "RCDCommonString.h"
 #import "RCDUserInfoManager.h"
+#import "RCDIMService.h"
 
 #define UserTextFieldTag 1000
 #define PassWordFieldTag 1001
@@ -185,7 +186,7 @@
     self.loginToken = token;
     self.loginPassword = password;
     
-    [[RCIM sharedRCIM] connectWithToken:token dbOpened:^(RCDBErrorCode code){
+    [[RCDIMService sharedService] connectWithToken:token dbOpened:^(RCDBErrorCode code){
         NSLog(@"RCDBOpened %@", code?@"failed":@"success");
     } success:^(NSString *userId) {
         NSLog([NSString stringWithFormat:@"token is %@  userId is %@", token, userId], nil);

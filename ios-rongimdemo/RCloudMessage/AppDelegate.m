@@ -29,6 +29,8 @@
 #import "RCDChatNotificationMessage.h"
 #import "RCDWeChatManager.h"
 #import "RCDChatManager.h"
+#import "RCDIMService.h"
+
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // offline key
@@ -169,7 +171,7 @@
         RCUserInfo *_currentUserInfo =
         [[RCUserInfo alloc] initWithUserId:userId name:userNickName portrait:userPortraitUri];
         [RCIM sharedRCIM].currentUserInfo = _currentUserInfo;
-        [[RCIM sharedRCIM] connectWithToken:token dbOpened:^(RCDBErrorCode code) {
+        [[RCDIMService sharedService] connectWithToken:token dbOpened:^(RCDBErrorCode code) {
             NSLog(@"RCDBOpened %@", code?@"failed":@"success");
         } success:^(NSString *userId) {
             [self loginAppServer:userName password:password region:regionCode userId:userId];
@@ -209,7 +211,7 @@
                            password:password
                              region:regionCode
                             success:^(NSString * _Nonnull newToken, NSString * _Nonnull newUserId) {
-                                [[RCIM sharedRCIM] connectWithToken:newToken dbOpened:^(RCDBErrorCode code) {
+                                [[RCDIMService sharedService] connectWithToken:newToken dbOpened:^(RCDBErrorCode code) {
                                     NSLog(@"RCDBOpened %@", code?@"failed":@"success");
                                 } success:^(NSString *userId) {
                                     [self saveLoginData:userName
@@ -353,7 +355,7 @@
     } else if (status == ConnectionStatus_TOKEN_INCORRECT) {
         [RCDLoginManager getToken:^(BOOL success, NSString * _Nonnull token, NSString * _Nonnull userId) {
             if (success) {
-                [[RCIM sharedRCIM] connectWithToken:token dbOpened:^(RCDBErrorCode code) {
+                [[RCDIMService sharedService] connectWithToken:token dbOpened:^(RCDBErrorCode code) {
                     NSLog(@"RCDBOpened %@", code?@"failed":@"success");
                 } success:^(NSString *userId) {
                     

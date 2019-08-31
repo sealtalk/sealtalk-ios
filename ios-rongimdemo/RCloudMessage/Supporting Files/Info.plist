@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.9.22 Dev</string>
+	<string>2.9.23 Dev</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -60,7 +60,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>201908161705</string>
+	<string>201908301959</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>weixin</string>
@@ -85,7 +85,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>访问相册</string>
 	<key>SealTalk Version</key>
-	<string>2.1.0</string>
+	<string>2.1.1</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

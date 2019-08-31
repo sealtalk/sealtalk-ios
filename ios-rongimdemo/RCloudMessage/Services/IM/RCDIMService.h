@@ -15,6 +15,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSMutableDictionary *userInputStatus;
 
 + (instancetype)sharedService;
+
+//IM connect
+- (void)connectWithToken:(NSString *)token
+                dbOpened:(void (^)(RCDBErrorCode))dbOpenedBlock
+                 success:(void (^)(NSString *userId))successBlock
+                   error:(void (^)(RCConnectErrorCode status))errorBlock
+          tokenIncorrect:(void (^)(void))tokenIncorrectBlock;
+
 //清理历史消息
 - (void)clearHistoryMessage:(RCConversationType)conversationType
                    targetId:(NSString *)targetId
