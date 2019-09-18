@@ -33,6 +33,7 @@
                                    userInfo.userId = userId;
                                    userInfo.name = [self generateDefaultName:userId];
                                }
+                               userInfo = [self generateDefaultPortraitIfNeed:userInfo];
                            }else{
                                userInfo = [self generateDefaultPortraitIfNeed:userInfo];
                                [self refreshIMUserInfo:userInfo];

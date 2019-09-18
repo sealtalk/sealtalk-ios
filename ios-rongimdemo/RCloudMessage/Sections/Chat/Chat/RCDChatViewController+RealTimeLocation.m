@@ -148,6 +148,7 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     } else if ([self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_IDLE) {
         [self.realTimeLocation startRealTimeLocation];
     }
+    lsvc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController presentViewController:lsvc
                                             animated:YES
                                           completion:^{

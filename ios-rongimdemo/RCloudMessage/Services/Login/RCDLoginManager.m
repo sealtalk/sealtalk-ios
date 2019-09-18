@@ -25,7 +25,9 @@ static NSString * const DBName = @"SealTalkDB";
                        password:password
                          region:region
                         success:^(NSString * _Nonnull token, NSString * _Nonnull userId) {
-                            [self openDB:userId];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [self openDB:userId];
+                            });
                             if (successBlock) {
                                 successBlock(token, userId);
                             }
@@ -35,7 +37,9 @@ static NSString * const DBName = @"SealTalkDB";
 + (void)logout:(void (^)(BOOL))completeBlock {
     [RCDLoginAPI logout:^(BOOL success) {
         if (success) {
-            [RCDDBManager closeDB];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [RCDDBManager closeDB];
+            });
         }
         if (completeBlock) {
             completeBlock(success);

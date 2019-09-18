@@ -279,7 +279,7 @@
                                              
                                              // local cache for userInfo
                                              NSDictionary *userinfoDic =
-                                             @{@"username" : rcduserinfo_.name, @"portraitUri" : rcduserinfo_.portraitUri};
+                                             @{@"username" : rcduserinfo_.name?:@"", @"portraitUri" : rcduserinfo_.portraitUri?:@""};
                                              [DEFAULTS setObject:userinfoDic
                                               forKey:sourceUserId];
                                              [DEFAULTS synchronize];
