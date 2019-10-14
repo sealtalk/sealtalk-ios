@@ -63,7 +63,9 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    return nil;
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    return view;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

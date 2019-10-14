@@ -22,6 +22,8 @@ typedef NS_ENUM(NSInteger, RCDForwardSelectedStatus) {
 
 @property (nonatomic, assign) RCDForwardSelectedStatus selectStatus;
 
+@property (nonatomic, assign) BOOL canSelect;
+
 - (void)setModel:(RCDForwardCellModel *)model;
 
 - (void)setFriendInfo:(RCDFriendInfo *)friendInfo;

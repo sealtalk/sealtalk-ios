@@ -156,6 +156,13 @@
     }
     subTextField.delegate = self;
     subTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    if (subTextField.placeholder) {
+        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:subTextField.placeholder attributes:
+        @{NSForegroundColorAttributeName:HEXCOLOR(0x999999),
+                     NSFontAttributeName:subTextField.font
+             }];
+        subTextField.attributedPlaceholder = attrString;
+    }
     return subTextField;
 }
 
@@ -206,40 +213,30 @@
                                                                             metrics:nil
                                                                               views:self.subViews]];
 
-    [self.oldPwdView addConstraint:[NSLayoutConstraint constraintWithItem:_oldPwdTextField
-                                                                attribute:NSLayoutAttributeHeight
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:self.oldPwdView
-                                                                attribute:NSLayoutAttributeHeight
-                                                               multiplier:1
-                                                                 constant:0]];
-
+    [self.oldPwdView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_oldPwdTextField]-0-|"
+                                                                            options:0
+                                                                            metrics:nil
+                                                                              views:self.subViews]];
+    
     [self.newsPwdView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-9-[_newsPwdTextField]-3-|"
                                                                              options:0
                                                                              metrics:nil
                                                                                views:self.subViews]];
-
-    [self.newsPwdView addConstraint:[NSLayoutConstraint constraintWithItem:_newsPwdTextField
-                                                                 attribute:NSLayoutAttributeHeight
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.newsPwdView
-                                                                 attribute:NSLayoutAttributeHeight
-                                                                multiplier:1
-                                                                  constant:0]];
-
+    [self.newsPwdView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_newsPwdTextField]-0-|"
+                                                                             options:0
+                                                                             metrics:nil
+                                                                               views:self.subViews]];
+    
     [self.confirmPwdView
-        addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-9-[_confirmPwdTextField]-3-|"
-                                                               options:0
-                                                               metrics:nil
-                                                                 views:self.subViews]];
-
-    [self.confirmPwdView addConstraint:[NSLayoutConstraint constraintWithItem:_confirmPwdTextField
-                                                                    attribute:NSLayoutAttributeHeight
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:self.confirmPwdView
-                                                                    attribute:NSLayoutAttributeHeight
-                                                                   multiplier:1
-                                                                     constant:0]];
+     addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-9-[_confirmPwdTextField]-3-|"
+                                                            options:0
+                                                            metrics:nil
+                                                              views:self.subViews]];
+    [self.confirmPwdView
+     addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_confirmPwdTextField]-0-|"
+                                                            options:0
+                                                            metrics:nil
+                                                              views:self.subViews]];
 }
 
 - (void)AlertShow:(NSString *)content {

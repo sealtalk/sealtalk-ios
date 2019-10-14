@@ -32,6 +32,8 @@ typedef NS_ENUM(NSInteger, RCDGroupMessageClearStatus) {
 @property(nonatomic, assign) BOOL mute;
 /** 群认证，默认是NO */ 
 @property(nonatomic, assign) BOOL needCertification;
+/** 群成员保护，默认是NO */
+@property(nonatomic, assign) BOOL memberProtection;
 
 - (instancetype)initWithJson:(NSDictionary *)json;
 @end

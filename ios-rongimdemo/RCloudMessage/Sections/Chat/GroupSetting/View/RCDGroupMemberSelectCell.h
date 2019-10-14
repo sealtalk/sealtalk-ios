@@ -17,7 +17,7 @@ typedef NS_ENUM(NSUInteger, RCDGroupMemberSelectCellState) {
 };
 @interface RCDGroupMemberSelectCell : UITableViewCell
 + (instancetype)cellWithTableView:(UITableView *)tableView;
-- (void)setDataModel:(NSString *)userId;
+- (void)setDataModel:(NSString *)userId groupId:(NSString *)groupId;
 - (void)setCellSelectState:(RCDGroupMemberSelectCellState)state;
 @end
 

@@ -20,8 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL showNavigationBarWhenBack;
 
-@property(nonatomic, weak) id<RCDCountryListControllerDelegate> delegate;
+@property (nonatomic, weak) id<RCDCountryListControllerDelegate> delegate;
 
+@property (nonatomic, copy) void (^SelectCountryResult)(RCDCountry *country);
 @end
 
 NS_ASSUME_NONNULL_END

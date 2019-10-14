@@ -48,6 +48,8 @@
 
 @property(weak, nonatomic) id<RCDBaseSettingTableViewCellDelegate> baseSettingTableViewDelegate;
 
+@property(nonatomic, assign) BOOL rightLabelIsEnabled;
+
 //两边如果有图片，使用该方法初始化Cell。
 - (id)initWithLeftImageStr:(NSString *)leftImageStr
              leftImageSize:(CGSize)leftImageSize

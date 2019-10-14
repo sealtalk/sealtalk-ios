@@ -21,6 +21,7 @@
 #import <Masonry/Masonry.h>
 #import "UITabBar+badge.h"
 #import "RCDCommonString.h"
+#import "RCDSelectContactViewController.h"
 
 @interface RCDContactViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate>
 @property (nonatomic, strong) RCDTableView *friendsTabelView;
@@ -100,13 +101,13 @@
 //如果没有该方法，tableView会默认显示footerView，其高度与headerView等高
 //另外如果return 0或者0.0f是没有效果的
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.1f;
+    return 0.01f;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     view.frame = CGRectMake(0, 0, self.view.frame.size.width, 21);
-    view.backgroundColor = [UIColor clearColor];
+    view.backgroundColor = HEXCOLOR(0xf0f0f6);
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
     title.frame = CGRectMake(13, 3, 15, 15);
     title.font = [UIFont systemFontOfSize:15.f];
@@ -149,6 +150,11 @@
         }
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    __weak typeof(self) weakSelf = self;
+    cell.longPressBlock = ^(NSString *userId) {
+        RCDSelectContactViewController *selectContactVC = [[RCDSelectContactViewController alloc] initWithContactSelectType:RCDContactSelectTypeDelete];
+        [weakSelf.navigationController pushViewController:selectContactVC animated:YES];
+    };
     return cell;
 }
 
@@ -273,7 +279,6 @@
 - (void)setupNavi {
     self.navigationController.navigationBar.translucent = NO;
     self.tabBarController.navigationItem.title = RCDLocalizedString(@"contacts");
-    self.title = RCDLocalizedString(@"contacts");
     RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"add_friend"] imageViewFrame:CGRectMake(0, 0, 18, 20) buttonTitle:nil titleColor:nil titleFrame:CGRectZero buttonFrame:CGRectMake(0, 0, 18, 20) target:self action:@selector(pushAddFriendVC:)];
     self.tabBarController.navigationItem.rightBarButtonItems = [rightBtn setTranslation:rightBtn translation:-6];
 }

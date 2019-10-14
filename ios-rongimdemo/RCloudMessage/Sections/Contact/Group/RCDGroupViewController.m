@@ -52,6 +52,7 @@
     //设置tableView样式
     self.tableView.separatorColor = [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
     self.tableView.tableFooterView = [UIView new];
+    self.tableView.backgroundColor = [UIColor whiteColor];
     if ([self.tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }

@@ -60,13 +60,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RCDGroupManagerCell *cell = [RCDGroupManagerCell cellWithTableView:tableView];
     if (indexPath.section == 0) {
-       [cell setDataModel:[RCDGroupManager getGroupOwner:self.groupId]];
+       [cell setDataModel:[RCDGroupManager getGroupOwner:self.groupId] groupId:self.groupId];
     }else if (indexPath.section == 1 && indexPath.row < self.managers.count) {
-        [cell setDataModel:self.managers[indexPath.row]];
+        [cell setDataModel:self.managers[indexPath.row] groupId:self.groupId];
         [cell deleteButtonShow];
         cell.delegate = self;
     }else{
-        [cell setDataModel:@""];
+        [cell setDataModel:@"" groupId:self.groupId];
     }
     return cell;
 }
@@ -139,7 +139,7 @@
 }
 
 - (void)pushSelectManagerVC{
-    RCDGroupMemberSelectController *selectVC = [[RCDGroupMemberSelectController alloc] initWithGroupId:self.groupId];
+    RCDGroupMemberSelectController *selectVC = [[RCDGroupMemberSelectController alloc] initWithGroupId:self.groupId type:(RCDGroupMemberSelectTypeAddManager)];
     [self.navigationController pushViewController:selectVC animated:YES];
 }
 

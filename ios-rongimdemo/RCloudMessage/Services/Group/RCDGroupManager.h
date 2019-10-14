@@ -11,6 +11,9 @@
 #import "RCDGroupMember.h"
 #import "RCDGroupAnnouncement.h"
 #import "RCDGroupNotice.h"
+#import "RCDGroupLeftMember.h"
+#import "RCDGroupMemberDetailInfo.h"
+#import "RCDEnum.h"
 @class RCMessage;
 
 @interface RCDGroupManager : NSObject
@@ -20,6 +23,12 @@
         portraitUri:(NSString *)portraitUri
           memberIds:(NSArray *)memberIds
            complete:(void (^)(NSString *groupId, RCDGroupAddMemberStatus status))complete;
+
++ (void)copyGroup:(NSString *)groupId
+        groupName:(NSString *)groupName
+      portraitUri:(NSString *)portraitUri
+         complete:(void (^)(NSString *groupId, RCDGroupAddMemberStatus status))complete
+            error:(void (^)(RCDGroupErrorCode errorCode))error;
 
 //设置群组头像
 + (void)setGroupPortrait:(NSString *)portraitUri
@@ -75,6 +84,10 @@
                      targetId:(NSString *)targetId
                       groupId:(NSString *)groupId
                      complete:(void (^)(BOOL success))complete;
+
++ (void)setGroupMemberProtection:(BOOL)open
+                         groupId:(NSString *)groupId
+                        complete:(void (^)(BOOL success))complete;
 #pragma mark - Group Member
 //从本地数据库获取群成员 idList
 + (NSArray<NSString *> *)getGroupMembers:(NSString *)groupId;
@@ -122,6 +135,21 @@
                    complete:(void (^)(BOOL success))complete;
 
 + (NSArray<RCDGroupInfo *>*)getAllGroupList;
+
++ (void)setGroupMemberDetailInfo:(RCDGroupMemberDetailInfo *)memberInfo
+                         groupId:(NSString *)groupId
+                        complete:(void (^)(BOOL success))complete;
+
++ (RCDGroupMemberDetailInfo *)getGroupMemberDetailInfo:(NSString *)userId groupId:(NSString *)groupId;
+
++ (void)getGroupMemberDetailInfoFromServer:(NSString *)userId
+                                   groupId:(NSString *)groupId
+                                  complete:(void (^)(RCDGroupMemberDetailInfo *member))complete;
+
++ (NSArray <RCDGroupLeftMember *> *)getGroupLeftMemberList:(NSString *)groupId;
+
++ (void)getGroupLeftMemberListFromServer:(NSString *)groupId
+                      complete:(void (^)(NSArray <RCDGroupLeftMember *> *list))complete;
 #pragma mark - My Group
 //从本地数据库获取群列表
 + (NSArray<RCDGroupInfo *> *)getMyGroupList;

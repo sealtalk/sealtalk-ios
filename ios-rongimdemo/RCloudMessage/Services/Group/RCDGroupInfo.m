@@ -46,6 +46,7 @@
         }
         self.mute = [[json objectForKey:@"isMute"] boolValue];
         self.needCertification = ![[json objectForKey:@"certiStatus"] boolValue];
+        self.memberProtection = [[json objectForKey:@"memberProtection"] boolValue];
     }
     return self;
 }

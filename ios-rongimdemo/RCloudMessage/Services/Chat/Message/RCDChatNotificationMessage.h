@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *operation;
 
 @property (nonatomic, copy) NSString *operatorUserId;
+- (NSString *)getDigest:(NSString *)groupId;
 @end
 
 NS_ASSUME_NONNULL_END

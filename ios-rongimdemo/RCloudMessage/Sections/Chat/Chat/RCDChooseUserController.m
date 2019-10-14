@@ -75,7 +75,7 @@
         NSString *key = self.resultKeys[indexPath.section-1];
         NSArray *array = self.resultSectionDict[key];
         RCUserInfo *user = array[indexPath.row];
-        [cell setDataModel:user.userId];
+        [cell setDataModel:user.userId groupId:self.groupId];
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
     return cell;
@@ -128,9 +128,7 @@
         user = [RCDUserInfoManager getUserInfo:user.userId];
     }
     self.selectedBlock(user);
-    [self.navigationController dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+    [self dismissVC];
 }
 
 #pragma mark - UISearchController Delegate -
@@ -147,7 +145,8 @@
         for (RCUserInfo *userInfo in self.allMembers) {
             RCUserInfo *user = [RCDUserInfoManager getUserInfo:userInfo.userId];
             RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userInfo.userId];
-            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString]) {
+            RCDGroupMember *member = [RCDGroupManager getGroupMember:userInfo.userId groupId:self.groupId];
+            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] || [member.groupNickname containsString:searchString]) {
                 [array addObject:userInfo];
             }
         }
@@ -158,8 +157,7 @@
 #pragma mark - target action
 - (void)clickBackBtn {
     self.cancelBlock();
-    [self.navigationController dismissViewControllerAnimated:YES completion:^{
-    }];
+    [self dismissVC];
 }
 
 #pragma mark - helper
@@ -178,6 +176,14 @@
         [self handleData:array];
     }
     
+}
+
+- (void)dismissVC{
+    if ([self.searchController.searchBar isFirstResponder]) {
+        [self.searchController.searchBar resignFirstResponder];
+    }
+    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+    }];
 }
 
 - (void)handleData:(NSMutableArray *)array{

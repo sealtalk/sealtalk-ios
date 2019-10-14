@@ -11,7 +11,7 @@
 #import "RCDUserInfo.h"
 
 @interface RCDAddFriendViewController : UITableViewController
-
-@property(nonatomic, strong) RCDUserInfo *targetUserInfo;
+@property (nonatomic, strong) NSString *groupId;
+@property (nonatomic, strong) RCDUserInfo *targetUserInfo;
 
 @end

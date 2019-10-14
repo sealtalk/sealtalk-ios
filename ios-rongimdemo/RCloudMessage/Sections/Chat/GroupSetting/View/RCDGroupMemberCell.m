@@ -11,6 +11,7 @@
 #import "RCDUserInfoManager.h"
 #import "DefaultPortraitView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "RCDUtilities.h"
 @interface RCDGroupMemberCell()
 @property (nonatomic, strong) UILabel *rightLabel;
 
@@ -21,6 +22,7 @@
     (RCDGroupMemberCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupMemberCellIdentifier];
     if (!cell) {
         cell = [[RCDGroupMemberCell alloc] init];
+        cell.backgroundColor = [UIColor whiteColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -35,20 +37,13 @@
     return self;
 }
 
-- (void)setDataModel:(NSString *)userId{
-    RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
-    if ([user.portraitUri isEqualToString:@""]) {
-        self.portraitImageView.image = [DefaultPortraitView portraitView:user.userId name:user.name];
-    } else {
-        [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
-                             placeholderImage:[UIImage imageNamed:@"contact"]];
-    }
-    RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:user.userId];
-    if (friend.displayName.length > 0) {
-        self.nameLabel.text = friend.displayName;
-    }else{
-        self.nameLabel.text = user.name;
-    }
+- (void)setDataModel:(NSString *)userId groupId:(nonnull NSString *)groupId{
+    __weak typeof(self) weakSelf = self;
+    [RCDUtilities getGroupUserDisplayInfo:userId groupId:groupId result:^(RCUserInfo *user) {
+        [weakSelf.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                                  placeholderImage:[UIImage imageNamed:@"contact"]];
+        weakSelf.nameLabel.text = user.name;
+    }];
 }
 
 - (void)setUserRole:(NSString *)role{

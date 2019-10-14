@@ -38,4 +38,7 @@ NSString * const RCDUserPrivacyGroupVerifyKey = @"RCDUserPrivacyFriendVerifyKey"
 NSString * const RCDContactsAuthStateChangeKey = @"RCDContactsAuthStateChangeKey";
 NSString * const RCDContactsRequestKey = @"RCDContactsRequestKey";
 NSString * const RCDContactsUpdateUIKey = @"RCDContactsUpdateUIKey";
+NSString * const RCDChatBackgroundKey = @"RCDChatBackgroundKey";
+NSString * const RCDChatBackgroundFromAlbum = @"RCDChatBackgroundFromAlbum";
+NSString * const RCDChatBackgroundImageDataKey = @"RCDChatBackgroundImageDataKey";
 #endif /* RCDCommonString_h */

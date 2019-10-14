@@ -45,7 +45,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.1.0)
   - SDWebImage (~> 5.0.6)
   - SSZipArchive (~> 2.2.2)
-  - WechatOpenSDK
+  - WechatOpenSDK (= 1.8.4)
   - ZXingObjC (~> 3.6.5)
 
 SPEC REPOS:
@@ -73,6 +73,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: fec968646442d6d64e676a9fece5e92dd1830c8f
+PODFILE CHECKSUM: 97db4e2c97ce79babb678fc8558bb61aeb60e566
 
-COCOAPODS: 1.7.0.beta.3
+COCOAPODS: 1.7.5

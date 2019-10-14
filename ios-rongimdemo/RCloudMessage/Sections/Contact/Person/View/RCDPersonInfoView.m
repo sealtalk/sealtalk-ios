@@ -22,6 +22,7 @@
 @property (nonatomic, strong) UILabel *remarksLabel;
 @property (nonatomic, strong) UILabel *stAccountLabel;
 @property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UILabel *groupNicknameLabel;
 @property (nonatomic, strong) UIImageView *genderImgView;
 
 @property (nonatomic, strong) RCDFriendInfo *friendInfo;
@@ -67,9 +68,68 @@
     } else {
         self.genderImgView.image = [UIImage imageNamed:@"gender_male"];
     }
+    [self updateInfoViewLayout];
+}
+
+- (void)setGroupNickname:(NSString *)groupNickname{
+    if (groupNickname.length > 0) {
+        self.groupNicknameLabel.hidden = NO;
+        self.groupNicknameLabel.text = [NSString stringWithFormat:@"%@：%@",RCDLocalizedString(@"GroupNickname"), groupNickname];
+        [self updateInfoViewLayout];
+    }
 }
 
 #pragma mark - Private Method
+- (void)updateInfoViewLayout{
+    if (!self.groupNicknameLabel.hidden) {
+        if (self.remarksLabel.hidden) {
+            if (self.stAccountLabel.hidden) {
+                [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.infoBgView).offset(20);
+                    make.left.equalTo(self.portraitImgView.mas_right).offset(10);
+                    make.height.offset(16);
+                    make.right.equalTo(self.genderImgView.mas_left).offset(-5);
+                }];
+            } else {
+                [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.infoBgView).offset(14);
+                    make.left.equalTo(self.portraitImgView.mas_right).offset(10);
+                    make.height.offset(16);
+                    make.right.equalTo(self.genderImgView.mas_left).offset(-5);
+                }];
+            }
+            [self.groupNicknameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.stAccountLabel.mas_bottom).offset(5);
+                make.left.equalTo(self.remarksLabel);
+                make.right.equalTo(self.infoBgView);
+                make.height.offset(16);
+            }];
+        }else{
+            if (self.stAccountLabel.hidden) {
+                [self.remarksLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.infoBgView).offset(14);
+                    make.left.equalTo(self.portraitImgView.mas_right).offset(10);
+                    make.height.offset(18);
+                    make.right.equalTo(self.genderImgView.mas_left).offset(-5);
+                }];
+            } else {
+                [self.remarksLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.infoBgView).offset(7);
+                    make.left.equalTo(self.portraitImgView.mas_right).offset(10);
+                    make.height.offset(18);
+                    make.right.equalTo(self.genderImgView.mas_left).offset(-5);
+                }];
+            }
+            [self.groupNicknameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+                make.left.equalTo(self.remarksLabel);
+                make.right.equalTo(self.infoBgView);
+                make.height.offset(16);
+            }];
+        }
+    }
+}
+
 - (void)updateSubviewsWithHaveRemarks:(BOOL)haveRemarks {
     self.remarksLabel.hidden = !haveRemarks;
     if (haveRemarks == YES) {
@@ -154,6 +214,7 @@
     [self.infoBgView addSubview:self.stAccountLabel];
     [self.infoBgView addSubview:self.nameLabel];
     [self.infoBgView addSubview:self.genderImgView];
+    [self.infoBgView addSubview:self.groupNicknameLabel];
     
     [self.infoBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.left.right.equalTo(self);
@@ -180,6 +241,13 @@
     
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.stAccountLabel.mas_bottom).offset(3);
+        make.left.equalTo(self.remarksLabel);
+        make.right.equalTo(self.infoBgView);
+        make.height.offset(16);
+    }];
+    
+    [self.groupNicknameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
         make.left.equalTo(self.remarksLabel);
         make.right.equalTo(self.infoBgView);
         make.height.offset(16);
@@ -252,4 +320,13 @@
     return _genderImgView;
 }
 
+- (UILabel *)groupNicknameLabel{
+    if (!_groupNicknameLabel) {
+        _groupNicknameLabel = [[UILabel alloc] init];
+        _groupNicknameLabel.font = [UIFont systemFontOfSize:14];
+        _groupNicknameLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1];
+        _groupNicknameLabel.hidden = YES;
+    }
+    return _groupNicknameLabel;
+}
 @end

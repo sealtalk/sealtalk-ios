@@ -213,6 +213,7 @@
 
 #pragma mark - RCDCountryListControllerDelegate
 - (void)fetchCountryPhoneCode:(RCDCountry *)country{
+     [DEFAULTS setObject:[country getModelJson] forKey:RCDCurrentCountryKey];
     self.countryTextField.textField.text = country.countryName;
     self.currentRegion = country;
     self.phoneTextField.indicateInfoLabel.text = [NSString stringWithFormat:@"+%@",self.currentRegion.phoneCode];

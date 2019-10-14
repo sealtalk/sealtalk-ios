@@ -29,6 +29,7 @@
 }
 
 - (void)syncAllData{
+    [RCDUserInfoManager getReceivePokeMessageStatusFromServer:nil error:nil];
     [RCDDataSource syncGroups];
     [RCDDataSource syncGroupNoticeList];
     [RCDDataSource syncFriendList];
@@ -66,6 +67,7 @@
     //开发者调自己的服务器接口根据userID异步请求数据
     [RCDGroupManager getGroupInfoFromServer:groupId complete:^(RCDGroupInfo * _Nonnull groupInfo) {
         completion(groupInfo);
+        [RCDGroupManager getGroupMembersFromServer:groupId complete:^(NSArray<NSString *> * _Nonnull memberIdList) {}];
     }];
 }
 #pragma mark - RCIMUserInfoDataSource
@@ -105,7 +107,17 @@
     if ([groupId isEqualToString:@"22"] && [userId isEqualToString:@"30806"]) {
         completion([[RCUserInfo alloc] initWithUserId:@"30806" name:@"我在22群中的名片" portrait:nil]);
     } else {
-        completion(nil); //融云demo中暂时没有实现，以后会添加上该功能。app也可以自己实现该功能。
+        [RCDGroupManager getGroupMemberDetailInfoFromServer:userId groupId:groupId complete:^(RCDGroupMemberDetailInfo *member) {
+            [self getUserInfoWithUserId:userId completion:^(RCUserInfo *userInfo) {
+                RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
+                if (friend.displayName.length > 0) {
+                    userInfo.name = friend.displayName;
+                }else if (member.groupNickname.length > 0) {
+                    userInfo.name = member.groupNickname;
+                }
+                return completion(userInfo);
+            }];
+        }];
     }
 }
 

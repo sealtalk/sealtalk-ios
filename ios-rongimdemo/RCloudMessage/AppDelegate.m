@@ -32,6 +32,9 @@
 #import "RCDIMService.h"
 
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
+#import "RCDPokeMessage.h"
+#import "RCDPokeManager.h"
+#import "RCDClearMessage.h"
 //#define RONGCLOUD_IM_APPKEY @"c9kqb3rdkbb8j" // pre key
 //#define RONGCLOUD_IM_APPKEY @"e0x9wycfx7flq" // offline key
 
@@ -77,7 +80,8 @@
     [[RCIM sharedRCIM] registerMessageType:[RCDGroupNoticeUpdateMessage class]];
     [[RCIM sharedRCIM] registerMessageType:[RCDContactNotificationMessage class]];
     [[RCIM sharedRCIM] registerMessageType:[RCDChatNotificationMessage class]];
-    
+    [[RCIM sharedRCIM] registerMessageType:[RCDPokeMessage class]];
+    [[RCIM sharedRCIM] registerMessageType:[RCDClearMessage class]];
     // 设置语音消息采样率为 16KHZ
     [RCIMClient sharedRCIMClient].sampleRate = RCSample_Rate_16000;
     
@@ -88,6 +92,7 @@
     [RCIM sharedRCIM].receiveMessageDelegate = self;
     [RCIM sharedRCIM].enablePersistentUserInfoCache = YES;
     [RCIM sharedRCIM].userInfoDataSource = RCDDataSource;
+    [RCIM sharedRCIM].groupUserInfoDataSource = RCDDataSource;
     [RCIM sharedRCIM].groupInfoDataSource = RCDDataSource;
     [RCIM sharedRCIM].groupMemberDataSource = RCDDataSource;
     [RCContactCardKit shareInstance].contactsDataSource = RCDDataSource;
@@ -103,6 +108,8 @@
     [RCIM sharedRCIM].enableMessageRecall = YES;
     [RCIM sharedRCIM].isMediaSelectorContainVideo = YES;
     [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;
+    [RCIM sharedRCIM].enableSendCombineMessage = YES;
+//    [RCIM sharedRCIM].enableBurnMessage = YES;
     
     //  设置头像为圆形
     //  [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
@@ -246,13 +253,34 @@
  */
 - (void)application:(UIApplication *)application
     didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    NSString *token = [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<" withString:@""]
-        stringByReplacingOccurrencesOfString:@">"
-                                  withString:@""] stringByReplacingOccurrencesOfString:@" "
-                                                                            withString:@""];
+    
+    /*
+     设置 deviceToken（已兼容 iOS 13），推荐使用，需升级 SDK 版本至 2.9.25
+     不需要开发者对 deviceToken 进行处理，可直接传入。
+     */
+    [[RCIMClient sharedRCIMClient] setDeviceTokenData:deviceToken];
+}
 
+// 推送处理 3（如不升级 SDK，需要按照下面代码进行处理）
+/*
+- (void)application:(UIApplication *)application
+    didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+
+    NSString *token = [self getHexStringForData:deviceToken];
     [[RCIMClient sharedRCIMClient] setDeviceToken:token];
 }
+
+// Data 转换成 NSString（NSData ——> NSString）
+- (NSString *)getHexStringForData:(NSData *)data {
+    NSUInteger len = [data length];
+    char *chars = (char *)[data bytes];
+    NSMutableString *hexString = [[NSMutableString alloc] init];
+    for (NSUInteger i = 0; i < len; i ++) {
+        [hexString appendString:[NSString stringWithFormat:@"%0.2hhx", chars[i]]];
+    }
+    return hexString;
+}
+*/
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
 #if TARGET_IPHONE_SIMULATOR
@@ -387,7 +415,7 @@
 }
 
 - (void)onRCIMReceiveMessage:(RCMessage *)message left:(int)left {
-    if (![RCDGroupManager isHoldGroupNotificationMessage:message] && ![RCDChatManager isHoldChatNotificationMessage:message]) {
+    if (![RCDGroupManager isHoldGroupNotificationMessage:message] && ![RCDChatManager isHoldChatNotificationMessage:message] && ![[RCDPokeManager sharedInstance] isHoldReceivePokeManager:message]) {
         if ([message.content isMemberOfClass:[RCInformationNotificationMessage class]]) {
             RCInformationNotificationMessage *msg = (RCInformationNotificationMessage *)message.content;
             // NSString *str = [NSString stringWithFormat:@"%@",msg.message];
@@ -456,6 +484,7 @@
     
     [RCDUserInfoManager getUserInfoFromServer:userId
                                      complete:^(RCDUserInfo *userInfo) {
+                                         [RCDBuglyManager setUserIdentifier:[NSString stringWithFormat:@"%@ - %@", userInfo.userId,userInfo.name]];
                                          [RCIM sharedRCIM].currentUserInfo = userInfo;
                                          [DEFAULTS setObject:userInfo.portraitUri forKey:RCDUserPortraitUriKey];
                                          [DEFAULTS setObject:userInfo.name forKey:RCDUserNickNameKey];

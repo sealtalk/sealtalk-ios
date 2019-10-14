@@ -9,6 +9,8 @@
 #import "RCDTipMessageCell.h"
 #import "RCDGroupNotificationMessage.h"
 #import "RCDChatNotificationMessage.h"
+#import "RCDGroupManager.h"
+#import "RCDUserInfoManager.h"
 @interface RCDTipMessageCell ()<RCAttributedLabelDelegate>
 
 @end
@@ -30,7 +32,7 @@
                                                     font:[UIFont systemFontOfSize:14.f]
                                          constrainedSize:CGSizeMake(maxMessageLabelWidth, MAXFLOAT)];
     __textSize = CGSizeMake(ceilf(__textSize.width), ceilf(__textSize.height));
-    CGSize __labelSize = CGSizeMake(__textSize.width + 10, __textSize.height + 6);
+    CGSize __labelSize = CGSizeMake(__textSize.width + 8, __textSize.height + 6);
     
     CGFloat __height = __labelSize.height;
     
@@ -53,8 +55,6 @@
 
 - (void)setDataModel:(RCMessageModel *)model {
     [super setDataModel:model];
-    
-    
     self.tipMessageLabel.text = [RCDTipMessageCell generateTipsStringForModel:model];
     CGFloat maxMessageLabelWidth = self.baseContentView.bounds.size.width - 30 * 2;
     NSString *__text = self.tipMessageLabel.text;
@@ -65,7 +65,7 @@
                                                         font:[UIFont systemFontOfSize:14.0f]
                                              constrainedSize:CGSizeMake(maxMessageLabelWidth, MAXFLOAT)];
         __textSize = CGSizeMake(ceilf(__textSize.width), ceilf(__textSize.height));
-        CGSize __labelSize = CGSizeMake(__textSize.width + 10, __textSize.height + 6);
+        CGSize __labelSize = CGSizeMake(__textSize.width + 8, __textSize.height + 6);
         CGFloat width = __labelSize.width;
         self.tipMessageLabel.frame =
         CGRectMake((self.baseContentView.bounds.size.width - width) / 2.0f, 0, width, __labelSize.height);
@@ -74,10 +74,17 @@
 
 + (NSString*)generateTipsStringForModel:(RCMessageModel*)model {
     NSString* text;
-    if ([model.content isMemberOfClass:[RCDGroupNotificationMessage class]] || [model.content isMemberOfClass:RCDChatNotificationMessage.class]) {
-        text = model.content.conversationDigest;
+    NSString *groupId;
+    if (model.conversationType == ConversationType_GROUP) {
+        groupId = model.targetId;
+    }
+    if ([model.content isMemberOfClass:[RCDGroupNotificationMessage class]]) {
+        RCDGroupNotificationMessage *message = (RCDGroupNotificationMessage *)model.content;
+        text = [message getDigest:groupId];
+    }else if ([model.content isMemberOfClass:RCDChatNotificationMessage.class]){
+        RCDChatNotificationMessage *message = (RCDChatNotificationMessage *)model.content;
+        text = [message getDigest:groupId];
     }
     return text;
 }
-
 @end

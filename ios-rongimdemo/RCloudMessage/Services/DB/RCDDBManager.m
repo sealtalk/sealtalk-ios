@@ -18,16 +18,24 @@ static NSString *const BLACKLIST_TABLE = @"t_blacklist";
 static NSString *const CHATCONFIG_TABLE = @"t_chat_config";
 static NSString *const GROUP_NOTICE_TABLE =@"t_group_notice";
 static NSString *const USER_SETTING_TABLE =@"t_user_setting";
-
+static NSString *const FRIEND_DESCRIPTION_TABLE =@"t_friend_description";
+static NSString *const GROUP_LEFT_MEMBER_TABLE = @"t_group_left_member";
+static NSString *const GROUP_MEMBER_DETAIL_TABLE = @"t_group_member_detail";
 static int USER_TABLE_VERSION = 2;
-static int GROUP_TABLE_VERSION = 2;
+static int GROUP_TABLE_VERSION = 3;
 static int MY_GROUP_TABLE_VERSION = 1;
-static int GROUP_MEMBER_TABLE_VERSION = 1;
+static int GROUP_MEMBER_TABLE_VERSION = 2;
 static int FRIEND_TABLE_VERSION =1;
 static int BLACKLIST_TABLE_VERSION = 1;
 static int CHATCONFIG_TABLE_VERSION = 1;
 static int GROUP_NOTICE_TABLE_VERSION = 1;
 static int USER_SETTING_TABLE_VERSION = 1;
+static int FRIEND_DESCRIPTION_TABLE_VERSION = 1;
+static int GROUP_LEFT_MEMBER_TABLE_VERSION = 1;
+static int GROUP_MEMBER_DETAIL_TABLE_VERSION = 1;
+@interface RCDGroupMemberDetailInfo ()
+@property (nonatomic, strong) NSString *describeStr;
+@end
 @implementation RCDDBManager
 + (BOOL)openDB:(NSString *)path {
     BOOL result = [RCDDBHelper openDB:path];
@@ -272,10 +280,10 @@ static int USER_SETTING_TABLE_VERSION = 1;
         NSLog(@"saveGroups, userIdList count is zero");
         return;
     }
-    NSString *sql = @"REPLACE INTO t_group (group_id, name, portrait_uri, member_count, max_count, introduce, creator_id, is_dismiss, mute, need_certification) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    NSString *sql = @"REPLACE INTO t_group (group_id, name, portrait_uri, member_count, max_count, introduce, creator_id, is_dismiss, mute, need_certification, member_protection) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     [RCDDBHelper executeTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
         for (RCDGroupInfo *groupInfo in groupList) {
-            [db executeUpdate:sql withArgumentsInArray:@[groupInfo.groupId?:@"", groupInfo.groupName?:@"", groupInfo.portraitUri?:@"", @([groupInfo.number intValue]), @([groupInfo.maxNumber intValue]), groupInfo.introduce?:@"", groupInfo.creatorId?:@"", @(groupInfo.isDismiss), @(groupInfo.mute), @(groupInfo.needCertification)]];
+            [db executeUpdate:sql withArgumentsInArray:@[groupInfo.groupId?:@"", groupInfo.groupName?:@"", groupInfo.portraitUri?:@"", @([groupInfo.number intValue]), @([groupInfo.maxNumber intValue]), groupInfo.introduce?:@"", groupInfo.creatorId?:@"", @(groupInfo.isDismiss), @(groupInfo.mute), @(groupInfo.needCertification), @(groupInfo.memberProtection)]];
         }
     }];
 }
@@ -386,10 +394,10 @@ static int USER_SETTING_TABLE_VERSION = 1;
         return;
     }
     [RCDDBManager saveUsers:memberList];
-    NSString *sql = @"REPLACE INTO t_group_member (group_id, user_id, role, create_dt, update_dt) VALUES (?, ?, ?, ?, ?)";
+    NSString *sql = @"REPLACE INTO t_group_member (group_id, user_id, group_nickname, role, create_dt, update_dt) VALUES (?, ?, ?, ?, ?, ?)";
     [RCDDBHelper executeTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
         for (RCDGroupMember *member in memberList) {
-            [db executeUpdate:sql withArgumentsInArray:@[groupId, member.userId, @(member.role), @(member.createDt),@(member.updateDt)]];
+            [db executeUpdate:sql withArgumentsInArray:@[groupId, member.userId?:@"", member.groupNickname?member.groupNickname:@"", @(member.role), @(member.createDt),@(member.updateDt)]];
         }
     }];
 }
@@ -438,17 +446,13 @@ static int USER_SETTING_TABLE_VERSION = 1;
         NSLog(@"getGroupMember:inGroup:, groupId or userId length is zero");
         return nil;
     }
-    NSString *sql = @"SELECT gm.user_id, gm.group_id, gm.role, u.name, u.portrait_uri, gm.create_dt, gm.update_dt FROM t_group_member gm LEFT JOIN t_user u On gm.user_id = u.user_id WHERE gm.user_id = ? AND gm.group_id = ?";
-    __block RCDGroupMember *member = [[RCDGroupMember alloc] init];
+    NSString *sql = @"SELECT gm.user_id, gm.group_id, gm.group_nickname, gm.role, gm.create_dt, gm.update_dt, u.name, u.portrait_uri, u.st_account, u.gender FROM t_group_member gm LEFT JOIN t_user u On gm.user_id = u.user_id WHERE gm.user_id = ? AND gm.group_id = ?";
+    __block RCDGroupMember *member = nil;
     [RCDDBHelper executeQuery:sql
          withArgumentsInArray:@[userId,groupId]
                    syncResult:^(FMResultSet * _Nonnull resultSet) {
                        while ([resultSet next]) {
-                           member.userId = [resultSet stringForColumn:@"user_id"];
-                           member.name = [resultSet stringForColumn:@"name"];
-                           member.portraitUri = [resultSet stringForColumn:@"portrait_uri"];
-                           member.groupId = groupId;
-                           member.role = [resultSet intForColumn:@"role"];
+                           member = [self generateGroupMemberFromFMResultSet:resultSet];
                        }
                    }];
     return member;
@@ -595,6 +599,96 @@ static int USER_SETTING_TABLE_VERSION = 1;
           withArgumentsInArray:nil];
 }
 
++ (void)saveGroupLeftMemberList:(NSArray<RCDGroupLeftMember *> *)list groupId:(NSString *)groupId{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return;
+    }
+    NSString *sql = @"REPLACE INTO t_group_left_member (group_id, user_id, reason, operator_id, time) VALUES (?, ?, ?, ?, ?)";
+    [RCDDBHelper executeTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+        for (RCDGroupLeftMember *member in list) {
+            [db executeUpdate:sql withArgumentsInArray:@[groupId?:@"",member.userId?:@"",@(member.reason),member.operatorId?:@"",@(member.time)]];
+        }
+    }];
+}
+
++ (void)clearGroupLeftMemberList:(NSString *)groupId{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return;
+    }
+    NSString *sql = @"DELETE FROM t_group_left_member WHERE group_id = ?";
+    [RCDDBHelper executeUpdate:sql withArgumentsInArray:@[groupId?:@""]];
+}
+
++ (NSArray<RCDGroupLeftMember *> *)getGroupLeftMemberList:(NSString *)groupId{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return nil;
+    }
+    __block NSMutableArray *list = [[NSMutableArray alloc] init];
+    NSString *sql = @"SELECT * FROM t_group_left_member WHERE group_id = ?";
+    [RCDDBHelper executeQuery:sql
+         withArgumentsInArray:@[groupId?:@""]
+                   syncResult:^(FMResultSet * _Nonnull resultSet) {
+                       while ([resultSet next]) {
+                           RCDGroupLeftMember *member = [self generateGroupLeftMemberFromFMResultSet:resultSet];
+                           [list addObject:member];
+                       }
+    }];
+    return list;
+}
+
++ (void)saveGroupMemberDetailInfo:(RCDGroupMemberDetailInfo *)memberDetail groupId:(NSString *)groupId{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return;
+    }
+    RCDGroupMember *member = [self getGroupMember:memberDetail.userId inGroup:groupId];
+    if (!member) {
+        member = [[RCDGroupMember alloc] init];
+    }
+    member.groupNickname = memberDetail.groupNickname;
+    [self saveGroupMembers:@[member] inGroup:groupId];
+    NSString *sql = @"REPLACE INTO t_group_member_detail (user_id, group_id, region, phone, wechat_account, alipay_account, description) VALUES (? ,? ,? ,? ,? ,? ,? )";
+    [RCDDBHelper executeUpdate:sql withArgumentsInArray:@[memberDetail.userId?:@"", groupId?:@"", memberDetail.region?:@"", memberDetail.phone?:@"", memberDetail.weChatAccount?:@"", memberDetail.alipayAccount?:@"", memberDetail.describeStr?:@""]];
+}
+
++ (void)clearGroupMemberDetailInfo:(NSString *)userId groupId:(NSString *)groupId{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return;
+    }
+    NSString *sql = @"DELETE FROM t_group_member_detail WHERE group_id = ? AND user_id = ?";
+    [RCDDBHelper executeUpdate:sql withArgumentsInArray:@[groupId?:@"",userId?:@""]];
+}
+
++ (void)clearGroupMemberDetailInfo:(NSString *)groupId{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return;
+    }
+    NSString *sql = @"DELETE FROM t_group_member_detail WHERE group_id = ?";
+    [RCDDBHelper executeUpdate:sql withArgumentsInArray:@[groupId?:@""]];
+}
+
++ (RCDGroupMemberDetailInfo *)getGroupMemberDetailInfo:(NSString *)userId groupId:(NSString *)groupId{
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return nil;
+    }
+    __block RCDGroupMemberDetailInfo *memberDetail;
+    NSString *sql = @"SELECT gmd.user_id, gm.group_nickname, gmd.region, gmd.phone, gmd.wechat_account, gmd.alipay_account,gmd.description FROM t_group_member_detail gmd LEFT JOIN t_group_member gm On (gm.user_id = gmd.user_id AND gm.group_id = gmd.group_id) WHERE gmd.user_id = ? AND gmd.group_id = ?";
+    [RCDDBHelper executeQuery:sql
+         withArgumentsInArray:@[userId?:@"",groupId?:@""]
+                   syncResult:^(FMResultSet * _Nonnull resultSet) {
+                       while ([resultSet next]) {
+                           memberDetail = [self generateGroupMemberDetailFromFMResultSet:resultSet];
+                       }
+                   }];
+    return memberDetail;
+}
+
 + (void)saveUserSetting:(RCDUserSetting *)setting{
     if (![RCDDBHelper isDBOpened]) {
         SealTalkLog(@"db is not open");
@@ -621,6 +715,94 @@ static int USER_SETTING_TABLE_VERSION = 1;
                        }
                    }];
     return userSetting;
+}
+
+
++ (void)saveFriendDescription:(RCDFriendDescription *)description {
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return;
+    }
+    NSString *sql = @"REPLACE INTO t_friend_description (user_id, display_name, region, phone, desc, imageUrl) VALUES ( ?, ?, ?, ?, ?, ?)";
+    [RCDDBHelper executeTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+        [db executeUpdate:sql withArgumentsInArray:@[description.userId?:@"",description.displayName?:@"",description.region?:@"",description.phone?:@"",description.desc?:@"",description.imageUrl?:@""]];
+    }];
+}
+
++ (RCDFriendDescription *)getFriendDescription:(NSString *)userId {
+    if (![RCDDBHelper isDBOpened]) {
+        SealTalkLog(@"db is not open");
+        return nil;
+    }
+    if (userId.length == 0) {
+        NSLog(@"getUser, userId length is zero");
+        return nil;
+    }
+    
+    __block RCDFriendDescription *friendDescription;
+    NSString *sql = @"SELECT * FROM t_friend_description WHERE user_id = ?";
+    [RCDDBHelper executeQuery:sql
+         withArgumentsInArray:@[userId]
+                   syncResult:^(FMResultSet * _Nonnull resultSet) {
+                       while ([resultSet next]) {
+                           friendDescription = [self generateFriendDescriptionFromFMResultSet:resultSet];
+                       }
+                   }];
+    return friendDescription;
+}
+
++ (RCDFriendDescription *)generateFriendDescriptionFromFMResultSet:(FMResultSet *)resultSet {
+    RCDFriendDescription *friendDescription = [[RCDFriendDescription alloc] init];
+    friendDescription.userId = [resultSet stringForColumn:@"user_id"];
+    friendDescription.displayName = [resultSet stringForColumn:@"display_name"];
+    friendDescription.region = [resultSet stringForColumn:@"region"];
+    friendDescription.phone = [resultSet stringForColumn:@"phone"];
+    friendDescription.desc = [resultSet stringForColumn:@"desc"];
+    friendDescription.imageUrl = [resultSet stringForColumn:@"imageUrl"];
+    return friendDescription;
+}
+
++(RCDGroupMember *)generateGroupMemberFromFMResultSet:(FMResultSet *)resultSet {
+    RCDGroupMember *member = [[RCDGroupMember alloc] init];
+    member.userId = [resultSet stringForColumn:@"user_id"];
+    member.name = [resultSet stringForColumn:@"name"];
+    member.portraitUri = [resultSet stringForColumn:@"portrait_uri"];
+    member.groupId = [resultSet stringForColumn:@"group_id"];
+    member.role = [resultSet intForColumn:@"role"];
+    member.stAccount = [resultSet stringForColumn:@"st_account"];
+    member.gender = [resultSet stringForColumn:@"gender"];
+    member.groupNickname = [resultSet stringForColumn:@"group_nickname"];
+    member.createDt = [resultSet longLongIntForColumn:@"create_dt"];
+    member.updateDt = [resultSet longLongIntForColumn:@"update_dt"];
+    return member;
+}
+
++(RCDGroupLeftMember *)generateGroupLeftMemberFromFMResultSet:(FMResultSet *)resultSet {
+    RCDGroupLeftMember *member = [[RCDGroupLeftMember alloc] init];
+    member.userId = [resultSet  stringForColumn:@"user_id"];
+    member.operatorId = [resultSet stringForColumn:@"operator_id"];
+    member.reason = [resultSet intForColumn:@"reason"];
+    member.time = [resultSet longLongIntForColumn:@"time"];
+    return member;
+}
+
++(RCDGroupMemberDetailInfo *)generateGroupMemberDetailFromFMResultSet:(FMResultSet *)resultSet {
+    RCDGroupMemberDetailInfo *member = [[RCDGroupMemberDetailInfo alloc] init];
+    member.userId = [resultSet stringForColumn:@"user_id"];
+    member.groupNickname = [resultSet stringForColumn:@"group_nickname"];
+    member.region = [resultSet stringForColumn:@"region"];
+    member.phone = [resultSet stringForColumn:@"phone"];
+    member.weChatAccount = [resultSet stringForColumn:@"wechat_account"];
+    member.alipayAccount = [resultSet stringForColumn:@"alipay_account"];
+    NSString *string = [resultSet stringForColumn:@"description"];
+    NSData *jsonData = [string dataUsingEncoding:NSUTF8StringEncoding];
+    if (jsonData) {
+        NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:nil];
+        if (array && array.count) {
+            member.describeArray = array;
+        }
+    }
+    return member;
 }
 
 +(RCDUserSetting *)generateUserSettingFromFMResultSet:(FMResultSet *)resultSet {
@@ -669,6 +851,7 @@ static int USER_SETTING_TABLE_VERSION = 1;
     group.isDismiss = [resultSet boolForColumn:@"is_dismiss"];
     group.mute = [resultSet boolForColumn:@"mute"];
     group.needCertification = [resultSet boolForColumn:@"need_certification"];
+    group.memberProtection = [resultSet boolForColumn:@"member_protection"];
     return group;
 }
 
@@ -697,6 +880,7 @@ static int USER_SETTING_TABLE_VERSION = 1;
         NSLog(@"createTableIfNeed, db is not open");
         return;
     }
+    
     [RCDDBHelper updateTable:USER_TABLE
                      version:USER_TABLE_VERSION
                  transaction:^BOOL(FMDatabase * _Nonnull db) {
@@ -747,7 +931,8 @@ static int USER_SETTING_TABLE_VERSION = 1;
                      "creator_id TEXT,"
                      "is_dismiss INTEGER,"
                      "mute INTEGER,"
-                     "need_certification INTEGER"
+                     "need_certification INTEGER,"
+                     "member_protection INTEGER"
                      ")";
                      BOOL result = [db executeUpdate:sql];
                      if (result) {
@@ -783,6 +968,7 @@ static int USER_SETTING_TABLE_VERSION = 1;
                      "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                      "group_id TEXT,"
                      "user_id TEXT,"
+                     "group_nickname TEXT,"
                      "role INTEGER,"
                      "create_dt INTEGER,"
                      "update_dt INTEGER"
@@ -835,6 +1021,73 @@ static int USER_SETTING_TABLE_VERSION = 1;
                      BOOL result = [db executeUpdate:sql];
                      return result;
                  }];
+    [RCDDBHelper updateTable:FRIEND_DESCRIPTION_TABLE
+                     version:FRIEND_DESCRIPTION_TABLE_VERSION
+                 transaction:^BOOL(FMDatabase * _Nonnull db) {
+                     NSString *sql = @"CREATE TABLE IF NOT EXISTS t_friend_description ("
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                     "user_id TEXT NOT NULL UNIQUE,"
+                     "display_name TEXT,"
+                     "region TEXT,"
+                     "phone TEXT,"
+                     "desc TEXT,"
+                     "imageUrl TEXT"
+                     ")";
+                     BOOL result = [db executeUpdate:sql];
+                     return result;
+                 }];
+    [RCDDBHelper updateTable:GROUP_LEFT_MEMBER_TABLE
+                     version:GROUP_LEFT_MEMBER_TABLE_VERSION
+                 transaction:^BOOL(FMDatabase * _Nonnull db) {
+                     NSString *sql = @"CREATE TABLE IF NOT EXISTS t_group_left_member ("
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                     "user_id TEXT NOT NULL,"
+                     "group_id TEXT NOT NULL,"
+                     "operator_id TEXT,"
+                     "reason INTEGER,"
+                     "time INTEGER"
+                     ")";
+                     BOOL result = [db executeUpdate:sql];
+                     if (result) {
+                         result = [db executeUpdate:@"CREATE UNIQUE INDEX IF NOT EXISTS idx_group_left_member ON t_group_left_member (group_id, user_id)"];
+                     }
+                     return result;
+                 }];
+    [RCDDBHelper updateTable:GROUP_LEFT_MEMBER_TABLE
+                     version:GROUP_LEFT_MEMBER_TABLE_VERSION
+                 transaction:^BOOL(FMDatabase * _Nonnull db) {
+                     NSString *sql = @"CREATE TABLE IF NOT EXISTS t_group_left_member ("
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                     "user_id TEXT NOT NULL,"
+                     "group_id TEXT NOT NULL,"
+                     "operator_id TEXT,"
+                     "reason INTEGER,"
+                     "time INTEGER"
+                     ")";
+                     BOOL result = [db executeUpdate:sql];
+                     if (result) {
+                         result = [db executeUpdate:@"CREATE UNIQUE INDEX IF NOT EXISTS idx_group_left_member ON t_group_left_member (group_id, user_id)"];
+                     }
+                     return result;
+                 }];
+    [RCDDBHelper updateTable:GROUP_MEMBER_DETAIL_TABLE
+                     version:GROUP_MEMBER_DETAIL_TABLE_VERSION
+                 transaction:^BOOL(FMDatabase * _Nonnull db) {
+                     NSString *sql = @"CREATE TABLE IF NOT EXISTS t_group_member_detail ("
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                     "user_id TEXT NOT NULL,"
+                     "group_id TEXT NOT NULL,"
+                     "region TEXT,"
+                     "phone TEXT,"
+                     "wechat_account TEXT,"
+                     "alipay_account TEXT,"
+                     "description  TEXT)";
+                     BOOL result = [db executeUpdate:sql];
+                     if (result) {
+                         result = [db executeUpdate:@"CREATE UNIQUE INDEX IF NOT EXISTS idx_group_member_detail ON t_group_member_detail (group_id, user_id)"];
+                     }
+                     return result;
+                 }];
 }
 
 + (void)upgradeTableIfNeed {
@@ -877,6 +1130,14 @@ static int USER_SETTING_TABLE_VERSION = 1;
     oldVersion = [RCDDBHelper versionOfTable:USER_SETTING_TABLE];
     if (oldVersion < USER_SETTING_TABLE_VERSION) {
         [RCDDBHelper dropTable:USER_SETTING_TABLE];
+    }
+    oldVersion = [RCDDBHelper versionOfTable:FRIEND_DESCRIPTION_TABLE];
+    if (oldVersion < FRIEND_DESCRIPTION_TABLE_VERSION) {
+        [RCDDBHelper dropTable:FRIEND_DESCRIPTION_TABLE];
+    }
+    oldVersion = [RCDDBHelper versionOfTable:GROUP_LEFT_MEMBER_TABLE];
+    if (oldVersion < GROUP_LEFT_MEMBER_TABLE_VERSION) {
+        [RCDDBHelper dropTable:GROUP_LEFT_MEMBER_TABLE];
     }
 }
 @end

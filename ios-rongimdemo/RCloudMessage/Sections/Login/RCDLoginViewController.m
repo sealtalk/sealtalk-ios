@@ -268,6 +268,7 @@
 
 #pragma mark - RCDCountryListControllerDelegate
 - (void)fetchCountryPhoneCode:(RCDCountry *)country{
+    [DEFAULTS setObject:[country getModelJson] forKey:RCDCurrentCountryKey];
     self.currentRegion = country;
     self.countryTextField.textField.text = country.countryName;
     self.phoneTextField.indicateInfoLabel.text = [NSString stringWithFormat:@"+%@",self.currentRegion.phoneCode];
@@ -765,7 +766,9 @@
 
 - (MBProgressHUD *)hud {
     if(!_hud) {
-        _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        _hud = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:_hud];
+        [self.view bringSubviewToFront:_hud];
         _hud.color = [UIColor colorWithHexString:@"343637" alpha:0.8];
     }
     return _hud;

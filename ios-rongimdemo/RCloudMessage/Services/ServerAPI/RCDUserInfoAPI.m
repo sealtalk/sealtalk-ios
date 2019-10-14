@@ -391,6 +391,45 @@
                                  }];
 }
 
++ (void)getContactsInfo:(NSArray *)phoneNumberList
+               complete:(void (^)(NSArray *contactsList))completeBlock {
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"friendship/get_contacts_info"
+                               parameters:@{@"contactList": phoneNumberList}
+                                 response:^(RCDHTTPResult *result) {
+                                     if (result.success) {
+                                         NSArray *list = result.content;
+                                         if (completeBlock) {
+                                             completeBlock(list);
+                                         }
+                                     } else {
+                                         if (completeBlock) {
+                                             completeBlock(nil);
+                                         }
+                                     }
+                                 }];
+}
+
+// 批量删除好友
++ (void)batchFriendDelete:(NSArray *)friendIds
+                 complete:(void (^)(BOOL success))completeBlock {
+    if (!friendIds) {
+        SealTalkLog(@"friendIds is nil");
+        if (completeBlock) {
+            completeBlock(NO);
+        }
+        return;
+    }
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"friendship/batch_delete"
+                               parameters:@{@"friendIds": friendIds}
+                                 response:^(RCDHTTPResult *result) {
+                                     if (completeBlock) {
+                                         completeBlock(result.success);
+                                     }
+                                 }];
+}
+
 //将某个用户加入黑名单
 + (void)addToBlacklist:(NSString *)userId
               complete:(void (^)(BOOL success))completeBlock{
@@ -462,25 +501,6 @@
     
 }
 
-+ (void)getContactsInfo:(NSArray *)phoneNumberList
-               complete:(void (^)(NSArray *contactsList))completeBlock {
-    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
-                                URLString:@"friendship/get_contacts_info"
-                               parameters:@{@"contactList": phoneNumberList}
-                                 response:^(RCDHTTPResult *result) {
-                                     if (result.success) {
-                                         NSArray *list = result.content;
-                                         if (completeBlock) {
-                                             completeBlock(list);
-                                         }
-                                     } else {
-                                         if (completeBlock) {
-                                             completeBlock(nil);
-                                         }
-                                     }
-                                 }];
-}
-
 #pragma mark - user setting
 + (void)setSearchMeByMobile:(BOOL)allow complete:(void (^)(BOOL))completeBlock{
     [self setUserPrivacy:@{@"phoneVerify":@(allow?1:0)} complete:completeBlock];
@@ -496,6 +516,36 @@
 
 + (void)setJoinGroupVerify:(BOOL)needVerify complete:(void (^)(BOOL))completeBlock{
     [self setUserPrivacy:@{@"groupVerify":@(needVerify?1:0)} complete:completeBlock];
+}
+
++ (void)setReceivePokeMessage:(BOOL)allowReceive complete:(void (^)(BOOL))completeBlock{
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"user/set_poke"
+                               parameters:@{@"pokeStatus":@(allowReceive?1:0)}
+                                 response:^(RCDHTTPResult *result) {
+                                     if (completeBlock) {
+                                         completeBlock(result.success);
+                                     }
+                                 }];
+}
+
++ (void)getReceivePokeMessageStatus:(void (^)(BOOL))success error:(void (^)())error{
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodGet
+                                URLString:@"user/get_poke"
+                               parameters:nil
+                                 response:^(RCDHTTPResult *result) {
+                                     if(result.success){
+                                         NSDictionary *dic = result.content;
+                                         BOOL allow = [dic[@"pokeStatus"] boolValue];
+                                         if (success) {
+                                             success(allow);
+                                         }
+                                     }else{
+                                         if (error) {
+                                             error();
+                                         }
+                                     }
+                                 }];
 }
 
 +(void)getUserPrivacy:(void (^)(RCDUserSetting *))completeBlock{
@@ -517,6 +567,64 @@
                                  }];
 
 }
+
+#pragma mark - Friend Description
++ (void)setDescriptionWithUserId:(NSString *)friendId
+                          remark:(NSString *)remark
+                          region:(NSString *)region
+                           phone:(NSString *)phone
+                            desc:(NSString *)desc
+                        imageUrl:(NSString *)imageUrl
+                        complete:(void (^)(BOOL success))completeBlock {
+    if (!friendId) {
+        SealTalkLog(@"friendId is nil");
+        if (completeBlock) {
+            completeBlock(NO);
+        }
+        return;
+    }
+    
+    NSDictionary *params = @{@"friendId": friendId, @"displayName": remark, @"region": region, @"phone": phone, @"description": desc, @"imageUri": imageUrl};
+    
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"friendship/set_friend_description"
+                               parameters:params
+                                 response:^(RCDHTTPResult *result) {
+                                     if (completeBlock) {
+                                         completeBlock(result.success);
+                                     }
+                                 }];
+}
+
++ (void)getDescriptionWithUserId:(NSString *)friendId
+                        complete:(void (^)(RCDFriendDescription *friendDescription))completeBlock {
+    if (!friendId) {
+        SealTalkLog(@"friendId is nil");
+        if (completeBlock) {
+            completeBlock(nil);
+        }
+        return;
+    }
+    
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"friendship/get_friend_description"
+                               parameters:@{@"friendId": friendId}
+                                 response:^(RCDHTTPResult *result) {
+                                     if (result.success) {
+                                         NSDictionary *dict = result.content;
+                                         RCDFriendDescription *description = [[RCDFriendDescription alloc] initWithJson:dict];
+                                         description.userId = friendId;
+                                         if (completeBlock) {
+                                             completeBlock(description);
+                                         }
+                                     } else {
+                                         if (completeBlock) {
+                                             completeBlock(nil);
+                                         }
+                                     }
+                                 }];
+}
+
 #pragma mark - private
 + (void)setUserPrivacy:(NSDictionary *)param complete:(void (^)(BOOL success))completeBlock{
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost

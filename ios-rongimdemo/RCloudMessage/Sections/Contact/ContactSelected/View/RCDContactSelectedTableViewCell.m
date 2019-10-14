@@ -7,12 +7,12 @@
 //
 
 #import "RCDContactSelectedTableViewCell.h"
-#import "DefaultPortraitView.h"
 #import "RCDFriendInfo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <RongIMKit/RongIMKit.h>
 #import <Masonry/Masonry.h>
 #import "RCDUserInfoManager.h"
+#import "RCDUtilities.h"
 #define CellHeight 70.0f
 
 @implementation RCDContactSelectedTableViewCell
@@ -22,6 +22,7 @@
     self = [super init];
     if (self) {
         [self initSubviews];
+        self.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }
@@ -60,17 +61,19 @@
 
 - (void)setModel:(RCDFriendInfo *)user {
     if (user) {
-        RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:user.userId];
-        if (friend.displayName.length > 0) {
-            self.nicknameLabel.text = user.displayName;
-        } else {
-            self.nicknameLabel.text = user.name;
-        }
-        if ([user.portraitUri isEqualToString:@""]) {
-            UIImage *portrait = [DefaultPortraitView portraitView:user.userId name:user.name];
-            self.portraitImageView.image = portrait;
-        } else {
-            [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@"icon_person"]];
+        if (self.groupId.length > 0) {
+            __weak typeof(self) weakSelf = self;
+            [RCDUtilities getGroupUserDisplayInfo:user.userId groupId:self.groupId result:^(RCUserInfo *user) {
+                weakSelf.nicknameLabel.text = user.name;
+                [weakSelf.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
+            }];
+        }else{
+            __weak typeof(self) weakSelf = self;
+            [RCDUtilities getUserDisplayInfo:user.userId complete:^(RCUserInfo *user) {
+                weakSelf.nicknameLabel.text = user.name;
+                [weakSelf.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
+            }];
+
         }
     }
 }
@@ -114,6 +117,7 @@
     if (!_nicknameLabel) {
         _nicknameLabel = [[UILabel alloc] init];
         _nicknameLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0];
+        _nicknameLabel.textColor = [UIColor blackColor];
     }
     return _nicknameLabel;
 }

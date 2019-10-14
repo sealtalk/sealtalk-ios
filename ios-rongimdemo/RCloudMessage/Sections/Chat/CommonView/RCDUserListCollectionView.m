@@ -85,7 +85,7 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section {
         RCDUserListCollectionItem *settingCell =
         [collectionView dequeueReusableCellWithReuseIdentifier:@"RCDUserListCollectionItem"
                                                   forIndexPath:indexPath];
-        
+        settingCell.groupId = self.groupId;
         [settingCell setUserModel:self.userList[indexPath.row]];
         
         settingCell.ivAva.contentMode = UIViewContentModeScaleAspectFill;

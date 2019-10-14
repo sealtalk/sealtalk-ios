@@ -11,7 +11,10 @@
 #import "RCDMessageNoDisturbSettingController.h"
 #import "UIColor+RCColor.h"
 #import <RongIMKit/RongIMKit.h>
-
+#import "RCDUserInfoManager.h"
+#import "UIView+MBProgressHUD.h"
+#define RCDReceiveNotification  200
+#define RCDReceivePokeMessage   201
 @interface RCDMessageNotifySettingTableViewController ()
 
 @property(nonatomic, assign) BOOL isReceiveNotification;
@@ -52,48 +55,24 @@
 }
 
 - (void)onClickSwitchButton:(id)sender {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = RCDLocalizedString(@"setting");
-    UISwitch *switchBtn = (UISwitch *)sender;
-    if (!switchBtn.on) {
-        [[RCIMClient sharedRCIMClient] setNotificationQuietHours:@"00:00:00" spanMins:1439 success:^{
-             NSLog(@"setNotificationQuietHours succeed");
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 [hud hide:YES];
-                 self.isReceiveNotification = NO;
-                 [self.tableView reloadData];
-             });
-         }
-       error:^(RCErrorCode status) {
-           dispatch_async(dispatch_get_main_queue(), ^{
-               [hud hide:YES];
-               [self showAlert:RCDLocalizedString(@"alert") message:RCDLocalizedString(@"set_fail") cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:nil tag:-1];
-               self.isReceiveNotification = YES;
-               [self.tableView reloadData];
-           });
-       }];
-    } else {
-        [[RCIMClient sharedRCIMClient] removeNotificationQuietHours:^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [hud hide:YES];
-                self.isReceiveNotification = YES;
-                [self.tableView reloadData];
-            });
-        }
-          error:^(RCErrorCode status) {
-              dispatch_async(dispatch_get_main_queue(), ^{
-                  [hud hide:YES];
-                  [self showAlert:RCDLocalizedString(@"alert") message:@"取消失败" cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:nil tag:-1];
-                  self.isReceiveNotification = NO;
-                  [self.tableView reloadData];
-              });
-          }];
+    UISwitch *swit = (UISwitch *)sender;
+    if (swit.tag == RCDReceiveNotification) {
+        [self setReceiveNotification:swit];
+    }else if (swit.tag == RCDReceivePokeMessage){
+        [self setReceivePokeMessage:swit];
     }
 }
 
 #pragma mark - Table view Delegate
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        return 2;
+    }
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -103,19 +82,32 @@
         cell = [[RCDBaseSettingTableViewCell alloc] init];
     }
     cell.baseSettingTableViewDelegate = self;
-    if(0 == indexPath.row) {
-        [cell setCellStyle:SwitchStyle];
-        cell.leftLabel.text = RCDLocalizedString(@"Receive_new_message_notifications")
-        ;
-        cell.switchButton.on = self.isReceiveNotification;
-    }else if(1 == indexPath.row) {
-        [cell setCellStyle:DefaultStyle];
-        cell.leftLabel.text = RCDLocalizedString(@"mute_notifications");
-        if (self.isReceiveNotification == YES) {
-            cell.backgroundColor = [UIColor whiteColor];
-        } else {
-            cell.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.1];
+    if(indexPath.section == 0){
+        if(0 == indexPath.row) {
+            [cell setCellStyle:SwitchStyle];
+            cell.leftLabel.text = RCDLocalizedString(@"Receive_new_message_notifications");
+            cell.switchButton.on = self.isReceiveNotification;
+            cell.switchButton.tag = RCDReceiveNotification;
+        }else if(1 == indexPath.row) {
+            [cell setCellStyle:DefaultStyle];
+            cell.leftLabel.text = RCDLocalizedString(@"mute_notifications");
+            if (self.isReceiveNotification == YES) {
+                cell.backgroundColor = [UIColor whiteColor];
+            } else {
+                cell.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.1];
+            }
         }
+    }else{
+        cell.switchButton.tag = RCDReceivePokeMessage;
+        [cell setCellStyle:SwitchStyle];
+        cell.leftLabel.text = RCDLocalizedString(@"ReceivePokeMessage");
+        cell.switchButton.on = [RCDUserInfoManager getReceivePokeMessageStatus];
+        [RCDUserInfoManager getReceivePokeMessageStatusFromServer:^(BOOL allowReceive) {
+            cell.switchButton.on = allowReceive;
+        } error:^{
+            
+        }];
+        
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -131,7 +123,68 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 15.f;
+    if (section != 0) {
+        return 15.f;
+    }
+    return 0.01f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    return view;
+}
+
+#pragma mark - private
+- (void)setReceiveNotification:(UISwitch *)switchBtn{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = RCDLocalizedString(@"setting");
+    if (!switchBtn.on) {
+        [[RCIMClient sharedRCIMClient] setNotificationQuietHours:@"00:00:00" spanMins:1439 success:^{
+            NSLog(@"setNotificationQuietHours succeed");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hide:YES];
+                self.isReceiveNotification = NO;
+                [self.tableView reloadData];
+            });
+        }error:^(RCErrorCode status) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hide:YES];
+                [self showAlert:RCDLocalizedString(@"alert") message:RCDLocalizedString(@"set_fail") cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:nil tag:-1];
+                self.isReceiveNotification = YES;
+                [self.tableView reloadData];
+            });
+        }];
+    } else {
+        [[RCIMClient sharedRCIMClient] removeNotificationQuietHours:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hide:YES];
+                self.isReceiveNotification = YES;
+                [self.tableView reloadData];
+            });
+        }error:^(RCErrorCode status) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hide:YES];
+                [self showAlert:RCDLocalizedString(@"alert") message:@"取消失败" cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:nil tag:-1];
+                self.isReceiveNotification = NO;
+                [self.tableView reloadData];
+            });
+        }];
+    }
+}
+
+- (void)setReceivePokeMessage:(UISwitch *)switchButton{
+    __weak typeof(self) weakSelf = self;
+    [RCDUserInfoManager setReceivePokeMessage:switchButton.on complete:^(BOOL success) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (success) {
+                [weakSelf.view showHUDMessage:RCDLocalizedString(@"setting_success")];
+            }else{
+                switchButton.on = !switchButton.on;
+                [weakSelf.view showHUDMessage:RCDLocalizedString(@"SetFailure")];
+            }
+        });
+    }];
 }
 
 - (void)showAlert:(NSString *)title message:(NSString *)message cancelBtnTitle:(NSString *)cBtnTitle otherBtnTitle:(NSString *)oBtnTitle tag:(int)tag {

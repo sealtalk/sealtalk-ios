@@ -13,6 +13,7 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "UIColor+RCColor.h"
 #import "RCDChatNotificationMessage.h"
+#import "RCDClearMessage.h"
 @implementation RCDChatManager
 
 //设置会话截屏通知
@@ -84,6 +85,13 @@
             }];
         }
         return YES;
+    }else if ([message.content isMemberOfClass:[RCDClearMessage class]]){
+        RCDClearMessage *msg = (RCDClearMessage *)message.content;
+        [[RCIMClient sharedRCIMClient] clearHistoryMessages:message.conversationType targetId:message.targetId recordTime:msg.clearTime clearRemote:YES success:^{
+            
+        } error:^(RCErrorCode status) {
+            
+        }];
     }
     return NO;
 }

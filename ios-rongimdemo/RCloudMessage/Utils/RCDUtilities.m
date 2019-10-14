@@ -12,6 +12,8 @@
 #import "pinyin.h"
 #import "RCDContactsInfo.h"
 #import "RCDGroupManager.h"
+#import "RCDUserInfoManager.h"
+#import <RongIMKit/RongIMKit.h>
 @implementation RCDUtilities
 + (UIImage *)imageNamed:(NSString *)name ofBundle:(NSString *)bundleName {
     UIImage *image = nil;
@@ -272,4 +274,104 @@
     return unreadMsgCount + (int)[RCDGroupManager getGroupNoticeUnreadCount];
 }
 
++ (void)getGroupUserDisplayInfo:(NSString *)userId groupId:(NSString *)groupId result:(void (^)(RCUserInfo *))result{
+    RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
+    if (friend && friend.displayName.length > 0) {
+        if (friend.portraitUri.length == 0) {
+            friend.portraitUri = [self defaultUserPortrait:friend];
+        }
+        RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:userId name:friend.displayName portrait:friend.portraitUri];
+        result(user);
+        [[RCIM sharedRCIM] refreshGroupUserInfoCache:friend withUserId:userId withGroupId:groupId];
+    }else{
+        [self getUserDisplayInfo:userId complete:^(RCUserInfo *user) {
+            RCDGroupMember *memberDetail = [RCDGroupManager getGroupMember:userId groupId:groupId];
+            if (groupId.length > 0 && memberDetail.groupNickname.length > 0){
+                user.name = memberDetail.groupNickname;
+            }
+            result(user);
+            [[RCIM sharedRCIM] refreshGroupUserInfoCache:user withUserId:userId withGroupId:groupId];
+        }];
+    }
+}
+
++ (void)getUserDisplayInfo:(NSString *)userId complete:(void (^)(RCUserInfo *))completeBlock {
+    RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
+    if (friend && friend.displayName.length > 0) {
+        if (friend.portraitUri.length == 0) {
+            friend.portraitUri = [self defaultUserPortrait:friend];
+        }
+        RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:userId name:friend.displayName portrait:friend.portraitUri];
+        completeBlock(user);
+    }else{
+        RCDUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
+        if (user) {
+            if (user.portraitUri.length == 0) {
+                user.portraitUri = [self defaultUserPortrait:user];
+            }
+            completeBlock(user);
+        }else{
+            [RCDUserInfoManager getUserInfoFromServer:userId complete:^(RCDUserInfo *userInfo) {
+                if (user.portraitUri.length == 0) {
+                    user.portraitUri = [self defaultUserPortrait:user];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completeBlock(userInfo);
+                });
+            }];
+        }
+    }
+}
+
+/**
+ 判断字符串是否包含 emoji 表情
+
+ @param string 需要判断的字符串
+ @return 是否包含 emoji
+ */
++ (BOOL)stringContainsEmoji:(NSString *)string {
+    __block BOOL returnValue = NO;
+    [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock: ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+        
+        const unichar hs = [substring characterAtIndex:0];
+        // surrogate pair
+        if (0xd800 <= hs && hs <= 0xdbff) {
+            if (substring.length > 1) {
+                const unichar ls = [substring characterAtIndex:1];
+                const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+                if (0x1d000 <= uc && uc <= 0x1f77f) {
+                    returnValue = YES;
+                }
+            }
+        } else if (substring.length > 1) {
+            const unichar ls = [substring characterAtIndex:1];
+            if (ls == 0x20e3) {
+                returnValue = YES;
+            }
+        } else {
+            // non surrogate
+            if (0x2100 <= hs && hs <= 0x27ff) {
+                // 区分九宫格输入 U+278b u'➋' -  U+2792 u'➒'
+                if (0x278b <= hs && hs <= 0x2792) {
+                    returnValue = NO;
+                    // 九宫格键盘上 “^-^” 键所对应的为符号 ☻
+                } else if (0x263b == hs) {
+                    returnValue = NO;
+                } else {
+                    returnValue = YES;
+                }
+            } else if (0x2B05 <= hs && hs <= 0x2b07) {
+                returnValue = YES;
+            } else if (0x2934 <= hs && hs <= 0x2935) {
+                returnValue = YES;
+            } else if (0x3297 <= hs && hs <= 0x3299) {
+                returnValue = YES;
+            } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
+                returnValue = YES;
+            }
+        }
+    }];
+    
+    return returnValue;
+}
 @end

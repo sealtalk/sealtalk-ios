@@ -16,8 +16,11 @@
 #import "UIView+MBProgressHUD.h"
 #import <RongIMKit/RongIMKit.h>
 #import "NormalAlertView.h"
+#import "RCDCopyGroupController.h"
+#import "RCDGroupLeftUserListController.h"
 #define AllMuteTag  300
 #define GroupAuthTag 301
+#define GroupMemberProtect 302
 @interface RCDGroupManageController ()<RCDBaseSettingTableViewCellDelegate>
 @property (nonatomic, strong) NSArray *managers;
 @property (nonatomic, strong) NSArray *sectionData;
@@ -67,6 +70,14 @@
     }else if ([title isEqualToString:RCDLocalizedString(@"GroupTransferOwner")]){
         [cell setCellStyle:DefaultStyle];
         
+    }else if ([title isEqualToString:RCDLocalizedString(@"CopyGroup")]){
+        [cell setCellStyle:DefaultStyle];
+    }else if ([title isEqualToString:RCDLocalizedString(@"LeaveMembers")]){
+        [cell setCellStyle:DefaultStyle];
+    }else if ([title isEqualToString:RCDLocalizedString(@"ProtectMembers")]){
+        [cell setCellStyle:SwitchStyle];
+        cell.switchButton.tag = GroupMemberProtect;
+        cell.switchButton.on = self.group.memberProtection;
     }else if ([title isEqualToString:RCDLocalizedString(@"AllMute")]){
         [cell setCellStyle:SwitchStyle];
         cell.switchButton.tag = AllMuteTag;
@@ -130,8 +141,15 @@
     }else if ([title isEqualToString:RCDLocalizedString(@"GroupTransferOwner")]){
         [self pushSelectNewOwnerVC];
         
+    }else if ([title isEqualToString:RCDLocalizedString(@"CopyGroup")]){
+        [self pushCopyGroupVC];
+        
+    }else if ([title isEqualToString:RCDLocalizedString(@"LeaveMembers")]){
+        [self pushGroupLeftUserListVC];
+        
     }
 }
+
 #pragma mark - RCDBaseSettingTableViewCellDelegate
 - (void)onClickSwitchButton:(id)sender{
     UISwitch *swit = (UISwitch *)sender;
@@ -146,6 +164,16 @@
             }];
         }else{
             [self setGroupAuth:swit];
+        }
+    }else if (swit.tag == GroupMemberProtect){
+        if (swit.on == NO) {
+            [NormalAlertView showAlertWithTitle:nil message:RCDLocalizedString(@"CloseProtectMembersTipInfo") highlightText:nil describeTitle:nil leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"confirm") cancel:^{
+                swit.on = YES;
+            } confirm:^{
+                [self setGroupMembersProtect:swit];
+            }];
+        }else{
+            [self setGroupMembersProtect:swit];
         }
     }
 }
@@ -179,6 +207,20 @@
     }];
 }
 
+- (void)setGroupMembersProtect:(UISwitch *)sender{
+    __weak typeof(self) weakSelf = self;
+    [RCDGroupManager setGroupMemberProtection:sender.on groupId:self.groupId complete:^(BOOL success) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (success) {
+                [weakSelf.view showHUDMessage:RCDLocalizedString(@"setting_success")];
+            }else{
+                sender.on = !sender.on;
+                [weakSelf.view showHUDMessage:RCDLocalizedString(@"SetFailure")];
+            }
+        });
+    }];
+}
+
 - (void)pushGroupManagerListVC{
     RCDGroupManagerListController *groupManagerListVC = [[RCDGroupManagerListController alloc] init];
     groupManagerListVC.groupId = self.groupId;
@@ -190,17 +232,35 @@
     [self.navigationController pushViewController:selectNewOwnerVC animated:YES];
 }
 
+- (void)pushCopyGroupVC{
+    RCDCopyGroupController *copyGroupVC = [[RCDCopyGroupController alloc] init];
+    copyGroupVC.groupId = self.groupId;
+    [self.navigationController pushViewController:copyGroupVC animated:YES];
+}
+
+- (void)pushGroupLeftUserListVC{
+    RCDGroupLeftUserListController *userListVC = [[RCDGroupLeftUserListController alloc] init];
+    userListVC.groupId = self.groupId;
+    [self.navigationController pushViewController:userListVC animated:YES];
+}
+
 - (void)refreshData{
     self.group = [RCDGroupManager getGroupInfo:self.groupId];
     self.managers = [RCDGroupManager getGroupManagers:self.groupId];
     if ([self.managers containsObject:[RCIM sharedRCIM].currentUserInfo.userId]) {
-        self.sectionData = @[@[RCDLocalizedString(@"AllMute")]];
-        self.footerTitles = @[RCDLocalizedString(@"AllMuteTip")];
+        self.sectionData = @[@[RCDLocalizedString(@"LeaveMembers")],
+                             @[RCDLocalizedString(@"ProtectMembers")],
+                             @[RCDLocalizedString(@"AllMute")]];
+        self.footerTitles = @[@"",
+                              RCDLocalizedString(@"ProtectMembersTip"),
+                              RCDLocalizedString(@"AllMuteTip")];
     }else{
-        self.sectionData = @[@[RCDLocalizedString(@"GroupSetManager"),RCDLocalizedString(@"GroupTransferOwner")],
+        self.sectionData = @[@[RCDLocalizedString(@"GroupSetManager"),RCDLocalizedString(@"GroupTransferOwner"),RCDLocalizedString(@"CopyGroup"),RCDLocalizedString(@"LeaveMembers")],
+                             @[RCDLocalizedString(@"ProtectMembers")],
                              @[RCDLocalizedString(@"AllMute")],
                              @[RCDLocalizedString(@"isOpenGroupAuth")]];
         self.footerTitles = @[@"",
+                              RCDLocalizedString(@"ProtectMembersTip"),
                               RCDLocalizedString(@"AllMuteTip"),
                               RCDLocalizedString(@"isOpenGroupAuthTip")];
     }

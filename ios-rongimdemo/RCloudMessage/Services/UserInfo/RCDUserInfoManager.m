@@ -11,7 +11,7 @@
 #import "RCDUtilities.h"
 #import "RCDDBManager.h"
 #import <RongIMKit/RongIMKit.h>
-
+#define RCDReceivePokeKey  [NSString stringWithFormat:@"RCDReceivePokeKey=%@",[RCIM sharedRCIM].currentUserInfo.userId]
 @implementation RCDUserInfoManager
 
 #pragma mark - User
@@ -227,6 +227,58 @@
     }];
 }
 
++ (void)setDescriptionWithUserId:(NSString *)friendId
+                          remark:(NSString *)remark
+                          region:(NSString *)region
+                           phone:(NSString *)phone
+                            desc:(NSString *)desc
+                        imageUrl:(NSString *)imageUrl
+                        complete:(void (^)(BOOL success))completeBlock {
+    
+    if (imageUrl == nil) {
+        imageUrl = @"";
+    }
+    if (region.length <= 0) {
+        region = @"86";
+    }
+    [RCDUserInfoAPI setDescriptionWithUserId:friendId remark:remark region:region phone:phone desc:desc imageUrl:imageUrl complete:^(BOOL success) {
+        if (success) {
+            RCDFriendInfo *friend = [RCDDBManager getFriend:friendId];
+            friend.displayName = remark;
+            [RCDDBManager saveFriends:@[friend]];
+            
+            RCDFriendDescription *friendDescription = [[RCDFriendDescription alloc] init];
+            friendDescription.userId = friendId;
+            friendDescription.displayName = remark;
+            friendDescription.region = region;
+            friendDescription.phone = phone;
+            friendDescription.desc = desc;
+            friendDescription.imageUrl = imageUrl;
+            [RCDDBManager saveFriendDescription:friendDescription];
+        }
+        if (completeBlock) {
+            completeBlock(success);
+        }
+    }];
+}
+
++ (void)getDescriptionFromServer:(NSString *)friendId complete:(void (^)(RCDFriendDescription *description))completeBlock {
+    [RCDUserInfoAPI getDescriptionWithUserId:friendId complete:^(RCDFriendDescription *friendDescription) {
+        if (friendDescription) {
+            friendDescription.userId = friendId;
+            [RCDDBManager saveFriendDescription:friendDescription
+             ];
+        }
+        if (completeBlock) {
+            completeBlock(friendDescription);
+        }
+    }];
+}
+
++ (RCDFriendDescription *)getFriendDescription:(NSString *)friendId {
+    return [RCDDBManager getFriendDescription:friendId];
+}
+
 + (void)getFriendListFromServer:(void (^)(NSArray<RCDFriendInfo *> *))completeBlock {
     [RCDUserInfoAPI getFriendList:^(NSArray<RCDFriendInfo *> *friendList) {
         [RCDDBManager clearFriends];
@@ -350,6 +402,29 @@
     }];
 }
 
+// 批量删除好友
++ (void)batchFriendDelete:(NSArray *)friendIds
+                 complete:(void (^)(BOOL success))completeBlock {
+    [RCDUserInfoAPI batchFriendDelete:friendIds complete:^(BOOL success) {
+        if (success) {
+            for (NSString *friendId in friendIds) {
+                [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_PRIVATE targetId:friendId];
+                [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_PRIVATE targetId:friendId];
+            }
+            [RCDDBManager deleteFriends:friendIds];
+            [self getFriendListFromServer:^(NSArray<RCDFriendInfo *> *friendList) {
+                if (completeBlock) {
+                    completeBlock(success);
+                }
+            }];
+        } else {
+            if (completeBlock) {
+                completeBlock(success);
+            }
+        }
+    }];
+}
+
 #pragma mark - user setting
 + (void)setSearchMeByMobile:(BOOL)allow complete:(void (^)(BOOL))completeBlock{
     [RCDUserInfoAPI setSearchMeByMobile:allow complete:^(BOOL success) {
@@ -401,6 +476,29 @@
             completeBlock(success);
         }
     }];
+}
+
++ (void)setReceivePokeMessage:(BOOL)allowReceive complete:(void (^)(BOOL))completeBlock{
+    [RCDUserInfoAPI setReceivePokeMessage:allowReceive complete:^(BOOL success) {
+        if (success) {
+            [[NSUserDefaults standardUserDefaults] setObject:@(!allowReceive) forKey:RCDReceivePokeKey];
+        }
+        if (completeBlock) {
+            completeBlock(success);
+        }
+    }];
+}
+
+
++ (BOOL)getReceivePokeMessageStatus{
+    BOOL allow = ![[NSUserDefaults standardUserDefaults] boolForKey:RCDReceivePokeKey];
+    return allow;
+}
+
++ (void)getReceivePokeMessageStatusFromServer:(void (^)(BOOL))success error:(void (^)())error{
+    [RCDUserInfoAPI getReceivePokeMessageStatus:^(BOOL allowReceive) {
+        [[NSUserDefaults standardUserDefaults] setObject:@(!allowReceive) forKey:RCDReceivePokeKey];
+    } error:error];
 }
 
 + (RCDUserSetting *)getUserPrivacy{

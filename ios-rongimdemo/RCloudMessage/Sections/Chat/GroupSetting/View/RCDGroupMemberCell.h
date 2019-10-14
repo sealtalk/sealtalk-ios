@@ -15,7 +15,7 @@ static NSString *RCDGroupMemberCellIdentifier = @"RCDGroupMemberCellIdentifier";
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIImageView *portraitImageView;
 + (instancetype)cellWithTableView:(UITableView *)tableView;
-- (void)setDataModel:(NSString *)userId;
+- (void)setDataModel:(NSString *)userId groupId:(NSString *)groupId;
 - (void)setUserRole:(NSString *)role;
 @end
 

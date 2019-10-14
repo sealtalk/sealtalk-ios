@@ -63,6 +63,21 @@
     return self;
 }
 
+- (void)setTextAlignment:(NSTextAlignment)textAlignment{
+    [super setTextAlignment:textAlignment];
+    self.placeholderLabel.textAlignment = textAlignment;
+}
+
+- (void)setFont:(UIFont *)font{
+    [super setFont:font];
+    self.placeholderLabel.font = font;
+}
+
+- (void)setContentOffset:(CGPoint)contentOffset{
+    contentOffset = CGPointMake(0, 0);
+    [super setContentOffset:contentOffset];
+}
+
 - (void)layoutSubviews {
 
     [super layoutSubviews];
@@ -78,7 +93,7 @@
                                          context:nil]
             .size.height;
 
-    CGRect frame = CGRectMake(5, 8, self.frame.size.width, height);
+    CGRect frame = CGRectMake(5, 8, self.frame.size.width-10, height);
 
     self.placeholderLabel.frame = frame;
 }

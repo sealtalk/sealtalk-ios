@@ -43,3 +43,5 @@ block();                                       \
 dispatch_async(dispatch_get_main_queue(), block);\
 }
 #endif
+
+//#define USE_SignalingKit true

@@ -18,7 +18,7 @@
 #import "RCDReceiptDetailHeader.h"
 #import "RCDUserListCollectionView.h"
 #import <RongIMKit/RongIMKit.h>
-
+#import "RCDGroupManager.h"
 #define CellHeight 44
 @interface RCDReceiptDetailsTableViewController () <RCDReceiptDetailsCellDelegate, RCDReceiptDetailHeaderDelegate, RCDUserListCollectionViewDelegate>
 
@@ -87,15 +87,12 @@
 
 #pragma mark - RCDUserListCollectionViewDelegate
 - (void)didTipHeaderClicked:(NSString *)userId{
-    RCDFriendInfo *friend = [RCDDBManager getFriend:userId];
-    if (friend != nil && (friend.status == RCDFriendStatusAgree || friend.status == RCDFriendStatusBlock)) {
-        RCDPersonDetailViewController *vc = [[RCDPersonDetailViewController alloc] init];
-        vc.userId = userId;
+    if (self.message.conversationType == ConversationType_GROUP) {
+        UIViewController *vc = [RCDPersonDetailViewController configVC:userId groupId:self.message.targetId];
         [self.navigationController pushViewController:vc animated:YES];
-    } else {
-        RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
-        addViewController.targetUserInfo = [RCDUserInfoManager getUserInfo:userId];
-        [self.navigationController pushViewController:addViewController animated:YES];
+    }else{
+        UIViewController *vc = [RCDPersonDetailViewController configVC:userId groupId:nil];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -163,6 +160,9 @@
         CGRect tempRect =
         CGRectMake(0, 0, RCDScreenWidth,height);
         _footerUserListView = [[RCDUserListCollectionView alloc] initWithFrame:tempRect isAllowAdd:NO isAllowDelete:NO];
+        if (self.message.conversationType == ConversationType_GROUP) {
+            _footerUserListView.groupId = self.message.targetId;
+        }
         _footerUserListView.userListCollectionViewDelegate = self;
         [_footerUserListView reloadData:self.hasReadUserList];
     }

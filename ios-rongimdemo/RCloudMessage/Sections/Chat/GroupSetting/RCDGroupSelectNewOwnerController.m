@@ -72,7 +72,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     NSString *key = self.resultKeys[indexPath.section];
     NSArray *array = self.resultSectionDict[key];
     RCUserInfo *user = array[indexPath.row];
-    [cell setDataModel:user.userId];
+    [cell setDataModel:user.userId groupId:self.groupId];
     cell.accessoryType = UITableViewCellAccessoryNone;
     return cell;
 }
@@ -131,7 +131,8 @@ UISearchControllerDelegate, UISearchResultsUpdating>
         for (RCUserInfo *userInfo in self.allMembers) {
             RCUserInfo *user = [RCDUserInfoManager getUserInfo:userInfo.userId];
             RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userInfo.userId];
-            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString]) {
+            RCDGroupMember *member = [RCDGroupManager getGroupMember:userInfo.userId groupId:self.groupId];
+            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] || [member.groupNickname containsString:searchString]) {
                 [array addObject:userInfo];
             }
         }

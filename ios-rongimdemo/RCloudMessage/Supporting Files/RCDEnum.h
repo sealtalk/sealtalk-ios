@@ -25,6 +25,11 @@ typedef NS_ENUM(NSInteger, RCDUserErrorCode) {
 
 typedef NS_ENUM(NSInteger, RCDGroupErrorCode) {
     RCDGroupErrorCodeNotInGroup = 403,
+    RCDGroupErrorCodeProtection = 20004,//群处于保护期
+    RCDGroupErrorCodeCopyOnceIn7D = 20005,//7 天内已被复制一次
+    RCDGroupErrorCodeNotExist = 20006,//群不存在或被解散
+    RCDGroupErrorCodeMemberOnlyOne = 20007,//群成员仅有一人，无法复制
     RCDGroupErrorCodeUnknown
 };
+
 #endif /* RCDEnum_h */

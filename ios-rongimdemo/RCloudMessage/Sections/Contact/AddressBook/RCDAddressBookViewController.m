@@ -87,6 +87,7 @@
 
 #pragma mark - Private Method
 - (void)setupViews {
+    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.tableFooterView = [UIView new];

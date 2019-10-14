@@ -22,6 +22,7 @@
 
 - (void)setupSubviews {
     
+    self.backgroundColor = [UIColor whiteColor];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     [self.contentView addSubview:self.leftLabel];
     [self.contentView addSubview:self.rightArrow];

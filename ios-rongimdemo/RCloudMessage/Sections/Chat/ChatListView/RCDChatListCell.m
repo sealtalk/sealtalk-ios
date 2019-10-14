@@ -26,6 +26,7 @@
     (RCDChatListCell *)[tableView dequeueReusableCellWithIdentifier:RCDChatListCellIdentifier];
     if (!cell) {
         cell = [[RCDChatListCell alloc] init];
+        cell.backgroundColor = [UIColor whiteColor];
     }
     return cell;
 }

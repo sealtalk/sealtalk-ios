@@ -303,6 +303,7 @@
         vc.body = RCDLocalizedString(@"SMSBody");
         vc.recipients = [phoneNumbers copy];
         vc.messageComposeDelegate = self;
+        vc.modalPresentationStyle = UIModalPresentationFullScreen;
         [self.navigationController presentViewController:vc animated:YES completion:nil];
     } else {
         [self.view showHUDMessage:RCDLocalizedString(@"DeviceNotSupportedSMS")];

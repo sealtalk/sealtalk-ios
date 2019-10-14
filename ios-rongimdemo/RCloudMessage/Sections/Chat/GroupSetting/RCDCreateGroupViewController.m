@@ -58,6 +58,7 @@
             break;
         case 1:
             picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            picker.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:picker animated:YES completion:nil];
             break;
         default:
@@ -310,6 +311,12 @@
         _groupName.delegate = self;
         _groupName.returnKeyType = UIReturnKeyDone;
         _groupName.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+        _groupName.textColor = [UIColor blackColor];
+        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:_groupName.placeholder attributes:
+        @{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"999999" alpha:1],
+                     NSFontAttributeName:_groupName.font
+             }];
+        _groupName.attributedPlaceholder = attrString;
     }
     return _groupName;
 }

@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 @class RCUserInfo;
+
+typedef void (^LongPressBlock)(NSString *userId);
+
 @interface RCDContactTableViewCell : UITableViewCell
+
+@property(nonatomic, copy) LongPressBlock longPressBlock;
 
 @property(nonatomic, strong) UIImageView *portraitView;
 

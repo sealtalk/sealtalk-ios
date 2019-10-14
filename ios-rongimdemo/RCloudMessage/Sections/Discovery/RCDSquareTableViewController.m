@@ -26,6 +26,7 @@
         self.navigationController.navigationBar.translucent = NO;
         self.tableView.tableFooterView = [UIView new];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.tableView.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }

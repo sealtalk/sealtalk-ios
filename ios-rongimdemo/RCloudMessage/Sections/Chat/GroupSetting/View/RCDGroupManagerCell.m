@@ -8,8 +8,7 @@
 
 #import "RCDGroupManagerCell.h"
 #import <Masonry/Masonry.h>
-#import "RCDUserInfoManager.h"
-#import "DefaultPortraitView.h"
+#import "RCDUtilities.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 @interface RCDGroupManagerCell()
 @property (nonatomic, strong) UILabel *nameLabel;
@@ -27,6 +26,7 @@
     if (!cell) {
         cell = [[RCDGroupManagerCell alloc] init];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = [UIColor whiteColor];
     }
     return cell;
 }
@@ -39,7 +39,7 @@
     return self;
 }
 
-- (void)setDataModel:(NSString *)userId{
+- (void)setDataModel:(NSString *)userId groupId:(NSString *)groupId{
     [self deleteButtonIsShow:NO];
     if(userId.length == 0){
         self.nameLabel.textColor = HEXCOLOR(0x939393);
@@ -48,19 +48,12 @@
     }else{
         self.userId = userId;
         self.nameLabel.textColor = HEXCOLOR(0x262626);
-        RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
-        if ([user.portraitUri isEqualToString:@""]) {
-            self.portraitImageView.image = [DefaultPortraitView portraitView:user.userId name:user.name];
-        } else {
-            [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
-                                      placeholderImage:[UIImage imageNamed:@"contact"]];
-        }
-        RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:user.userId];
-        if (friend.displayName.length > 0) {
-            self.nameLabel.text = friend.displayName;
-        }else{
-            self.nameLabel.text = user.name;
-        }
+        __weak typeof(self) weakSelf = self;
+        [RCDUtilities getGroupUserDisplayInfo:userId groupId:groupId result:^(RCUserInfo *user) {
+            [weakSelf.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                                          placeholderImage:[UIImage imageNamed:@"contact"]];
+            weakSelf.nameLabel.text = user.name;
+        }];
     }
 }
 

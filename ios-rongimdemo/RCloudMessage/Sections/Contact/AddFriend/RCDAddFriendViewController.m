@@ -13,10 +13,12 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <Masonry/Masonry.h>
 #import "RCDUserInfoManager.h"
+#import "RCDGroupManager.h"
 #import "RCDCommonString.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "RCDRCIMDataSource.h"
-
+#import "RCDBaseSettingTableViewCell.h"
+#import "RCDGroupMemberDetailController.h"
 @interface RCDAddFriendViewController ()
 @property(nonatomic, strong) UILabel *nameLabel;
 @property(nonatomic, strong) UIImageView *portraitImgView;
@@ -24,8 +26,10 @@
 @property(nonatomic, strong) UILabel *stAccountLabel;
 @property(nonatomic, strong) UIButton *addFriendBtn;
 @property(nonatomic, strong) UIButton *startChatBtn;
+@property (nonatomic, strong) UILabel *groupNicknameLabel;
 
 @property(nonatomic, strong) MBProgressHUD *hud;
+@property(nonatomic, strong) RCDGroupInfo *groupInfo;
 @end
 
 @implementation RCDAddFriendViewController
@@ -33,11 +37,53 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.groupInfo = [RCDGroupManager getGroupInfo:self.groupId];
     [self setupNavi];
     [self setupTableView];
     [self setHeaderData];
+    [self setGroupMemberInfo];
+    [self updateNameLayout];
 }
+
+#pragma mark - UITableViewDelegate && UITableViewDataSource
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (self.groupId.length > 0) {
+        return 1;
+    }
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 15;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth, 15)];
+    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    return view;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    RCDBaseSettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PersonDetailSettingReuseIdentifier"];
+    if (!cell) {
+        cell = [[RCDBaseSettingTableViewCell alloc] init];
+    }
+    [cell setCellStyle:DefaultStyle];
+    cell.leftLabel.text = RCDLocalizedString(@"Personal_information");
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    RCDGroupMemberDetailController *vc = [[RCDGroupMemberDetailController alloc] init];
+    vc.userId = self.targetUserInfo.userId;
+    vc.groupId = self.groupId;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 #pragma mark - Private Method
 - (void)setupNavi {
@@ -87,6 +133,47 @@
     }];
 }
 
+- (void)setGroupMemberInfo{
+    if (self.groupId.length > 0) {
+        RCDGroupMember *member = [RCDGroupManager getGroupMember:self.targetUserInfo.userId groupId:self.groupId];
+        if (member.groupNickname.length > 0) {
+            self.groupNicknameLabel.hidden = NO;
+            [self.tableView.tableHeaderView addSubview:self.groupNicknameLabel];
+            [self.groupNicknameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.stAccountLabel.hidden?self.nameLabel.mas_bottom:self.stAccountLabel.mas_bottom).offset(7);
+                make.left.equalTo(self.nameLabel);
+                make.right.equalTo(self.tableView.tableHeaderView);
+                make.height.offset(16);
+            }];
+            self.groupNicknameLabel.text = [NSString stringWithFormat:@"%@：%@",RCDLocalizedString(@"GroupNickname"), member.groupNickname];
+        }
+    }
+}
+
+- (void)updateNameLayout{
+    if (self.groupNicknameLabel.hidden && self.stAccountLabel.hidden) {
+        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.portraitImgView);
+            make.left.equalTo(self.portraitImgView.mas_right).offset(8);
+            make.height.offset(20);
+        }];
+    }
+    if ((self.groupNicknameLabel.hidden && !self.stAccountLabel.hidden) || (!self.groupNicknameLabel.hidden && self.stAccountLabel.hidden)) {
+        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.portraitImgView).offset(7);
+            make.left.equalTo(self.portraitImgView.mas_right).offset(8);
+            make.height.offset(20);
+        }];
+    }
+    if (!self.groupNicknameLabel.hidden && !self.stAccountLabel.hidden) {
+        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.portraitImgView);
+            make.left.equalTo(self.portraitImgView.mas_right).offset(8);
+            make.height.offset(20);
+        }];
+    }
+}
+
 - (void)setHeaderData {
     self.nameLabel.text = self.targetUserInfo.name;
     if ([self.targetUserInfo.portraitUri isEqualToString:@""]) {
@@ -100,41 +187,52 @@
     } else {
         self.genderImgView.image = [UIImage imageNamed:@"gender_male"];
     }
-    if (self.targetUserInfo.stAccount.length > 0 && ![self.targetUserInfo.stAccount isEqualToString:@""]) {
+    if (self.targetUserInfo.stAccount.length > 0 && ![self.targetUserInfo.stAccount isEqualToString:@""] && !self.groupInfo.memberProtection) {
         self.stAccountLabel.hidden = NO;
         self.stAccountLabel.text = [NSString stringWithFormat:@"%@：%@",RCDLocalizedString(@"SealTalkNumber"), self.targetUserInfo.stAccount];
-        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.portraitImgView).offset(7);
-            make.left.equalTo(self.portraitImgView.mas_right).offset(8);
-            make.height.offset(20);
-        }];
     } else {
         self.stAccountLabel.hidden = YES;
-        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.portraitImgView);
-            make.left.equalTo(self.portraitImgView.mas_right).offset(8);
-            make.height.offset(20);
-        }];
     }
 }
 
 - (void)setFooterView {
+    if (self.groupInfo.memberProtection) {
+        [self showProtectTipView];
+    }else{
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 500)];
+        self.tableView.tableFooterView = footerView;
+        [footerView addSubview:self.addFriendBtn];
+        [footerView addSubview:self.startChatBtn];
+        
+        [self.addFriendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(footerView).offset(15);
+            make.left.right.equalTo(footerView).inset(10);
+            make.height.offset(43);
+        }];
+        
+        [self.startChatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.height.left.right.equalTo(self.addFriendBtn);
+        }];
+        
+        [self updateFooterView];
+    }
+}
+
+- (void)showProtectTipView{
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 500)];
     self.tableView.tableFooterView = footerView;
-    [footerView addSubview:self.addFriendBtn];
-    [footerView addSubview:self.startChatBtn];
     
-    [self.addFriendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    UILabel *label = [[UILabel alloc] init];
+    label.text = RCDLocalizedString(@"AddFriendProtectTip");
+    label.textColor = HEXCOLOR(0x8b8b8b);
+    label.font = [UIFont systemFontOfSize:14];
+    label.numberOfLines = 0;
+    [footerView addSubview:label];
+    
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(footerView).offset(15);
-        make.left.right.equalTo(footerView).inset(10);
-        make.height.offset(43);
+        make.left.right.equalTo(footerView).inset(36);
     }];
-    
-    [self.startChatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.height.left.right.equalTo(self.addFriendBtn);
-    }];
-    
-    [self updateFooterView];
 }
 
 - (void)updateFooterView {
@@ -198,6 +296,7 @@
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
+        _nameLabel.textColor = [UIColor blackColor];
     }
     return _nameLabel;
 }
@@ -233,6 +332,16 @@
         _stAccountLabel.font = [UIFont systemFontOfSize:14];
     }
     return _stAccountLabel;
+}
+
+- (UILabel *)groupNicknameLabel{
+    if (!_groupNicknameLabel) {
+        _groupNicknameLabel = [[UILabel alloc] init];
+        _groupNicknameLabel.font = [UIFont systemFontOfSize:14];
+        _groupNicknameLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1];
+        _groupNicknameLabel.hidden = YES;
+    }
+    return _groupNicknameLabel;
 }
 
 - (UIButton *)addFriendBtn {

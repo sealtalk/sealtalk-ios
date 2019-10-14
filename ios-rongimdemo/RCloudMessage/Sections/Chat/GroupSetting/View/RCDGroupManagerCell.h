@@ -18,7 +18,7 @@ static NSString *RCDGroupManagerCellIdentifier = @"RCDGroupManagerCellIdentifier
 @interface RCDGroupManagerCell : UITableViewCell
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 @property (nonatomic, weak) id<RCDGroupManagerCellDelegate> delegate;
-- (void)setDataModel:(NSString *)userId;
+- (void)setDataModel:(NSString *)userId groupId:(NSString *)groupId;
 - (void)deleteButtonShow;
 @end
 

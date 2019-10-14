@@ -21,6 +21,7 @@
 }
 
 - (void)setupViews {
+    self.backgroundColor = [UIColor colorWithHexString:@"FAFAFA" alpha:1];
     [self.contentView addSubview:self.headerImgView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.detailLabel];

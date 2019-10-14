@@ -14,7 +14,9 @@
 #import "RCDGroupNotice.h"
 #import "RCDUserSetting.h"
 #import "RCDChatConfig.h"
-
+#import "RCDFriendDescription.h"
+#import "RCDGroupLeftMember.h"
+#import "RCDGroupMemberDetailInfo.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RCDDBManager : NSObject
@@ -95,6 +97,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (RCDGroupMessageClearStatus)getMessageClearStatus:(RCConversationType)type targetId:(NSString *)targetId;
 
++ (void)saveGroupLeftMemberList:(NSArray<RCDGroupLeftMember *> *)list groupId:(NSString *)groupId;
+
++ (void)clearGroupLeftMemberList:(NSString *)groupId;
+
++ (NSArray<RCDGroupLeftMember *> *)getGroupLeftMemberList:(NSString *)groupId;
+
++ (void)saveGroupMemberDetailInfo:(RCDGroupMemberDetailInfo *)memberDetail groupId:(NSString *)groupId;
+
++ (void)clearGroupMemberDetailInfo:(NSString *)userId groupId:(NSString *)groupId;
+
++ (void)clearGroupMemberDetailInfo:(NSString *)groupId;
+
++ (RCDGroupMemberDetailInfo *)getGroupMemberDetailInfo:(NSString *)userId groupId:(NSString *)groupId;
+
 #pragma mark - groupNotice
 + (void)saveGroupNoticeList:(NSArray<RCDGroupNotice *>*)noticeList;
 
@@ -108,6 +124,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)saveUserSetting:(RCDUserSetting *)setting;
 
 + (RCDUserSetting *)getUserSetting;
+
+#pragma mark - friendDescription
++ (void)saveFriendDescription:(RCDFriendDescription *)description;
+
++ (RCDFriendDescription *)getFriendDescription:(NSString *)userId;
 @end
 
 NS_ASSUME_NONNULL_END

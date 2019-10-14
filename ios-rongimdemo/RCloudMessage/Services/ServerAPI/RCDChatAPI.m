@@ -113,8 +113,14 @@
                                parameters:params
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
-                                         if (complete) {
-                                             complete([result.content[@"clearStatus"] integerValue]);
+                                         if ([result.content isKindOfClass:NSNumber.class]) {
+                                             if (complete) {
+                                                 complete([result.content integerValue]);
+                                             }
+                                         }else{
+                                             if (complete) {
+                                                 complete([result.content[@"clearStatus"] integerValue]);
+                                             }
                                          }
                                      }else{
                                          if (complete) {

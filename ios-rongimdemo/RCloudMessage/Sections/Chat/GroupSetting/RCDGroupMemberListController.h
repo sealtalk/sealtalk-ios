@@ -8,7 +8,7 @@
 
 #import "RCDTableViewController.h"
 
-@interface RCDGroupMembersTableViewController : RCDTableViewController
+@interface RCDGroupMemberListController : RCDTableViewController
 - (instancetype)initWithGroupId:(NSString *)groupId;
 @property(nonatomic, strong) NSArray *groupMembers;
 

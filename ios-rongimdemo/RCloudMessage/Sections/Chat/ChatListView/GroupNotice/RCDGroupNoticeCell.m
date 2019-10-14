@@ -32,6 +32,7 @@
     if (!cell) {
         cell = [[RCDGroupNoticeCell alloc] init];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = [UIColor whiteColor];
     }
     return cell;
 }

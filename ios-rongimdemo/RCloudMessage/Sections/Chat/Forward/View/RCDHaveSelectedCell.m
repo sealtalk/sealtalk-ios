@@ -71,7 +71,7 @@
 - (void)setupViews {
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    self.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.headerImageView];
     [self.contentView addSubview:self.conversationTitleLabel];
     [self.contentView addSubview:self.deleteButton];

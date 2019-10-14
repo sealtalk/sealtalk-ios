@@ -154,6 +154,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     return 15;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 15)];
+    view.backgroundColor = HEXCOLOR(0xf0f0f6);
+    return view;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (section == 2) {
         return [self.tipFooterView heightForTipFooterViewWithTip:RCDLocalizedString(@"ScreenCaptureNotificationInfo") font:[UIFont fontWithName:@"PingFangSC-Regular" size:14] constrainedSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 27, MAXFLOAT)];

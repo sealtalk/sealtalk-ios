@@ -16,7 +16,7 @@
 
 @interface RCDForwardSelectedCell ()
 
-@property (nonatomic, strong) UIImageView *selectedImageView;
+@property (nonatomic, strong) UIButton *selectedButton;
 @property (nonatomic, strong) UIImageView *headerImageView;
 @property (nonatomic, strong) UILabel *conversationTitleLabel;
 
@@ -34,12 +34,13 @@
 
 - (void)setupViews {
     
+    self.backgroundColor = [UIColor whiteColor];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    [self.contentView addSubview:self.selectedImageView];
+    [self.contentView addSubview:self.selectedButton];
     [self.contentView addSubview:self.headerImageView];
     [self.contentView addSubview:self.conversationTitleLabel];
     
-    [self.selectedImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.selectedButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).offset(12);
         make.height.width.offset(22);
@@ -125,38 +126,46 @@
     
     _selectStatus = selectStatus;
     if (selectStatus == RCDForwardSelectedStatusSingleSelect) {
-        self.selectedImageView.hidden = YES;
+        self.selectedButton.hidden = YES;
         [self.headerImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView).offset(12);
             make.top.equalTo(self.contentView).offset(7.5);
             make.height.width.offset(40);
         }];
     } else {
-        self.selectedImageView.hidden = NO;
+        self.selectedButton.hidden = NO;
         if (selectStatus == RCDForwardSelectedStatusMultiUnSelected) {
-            self.selectedImageView.image = [UIImage imageNamed:@"forward_unselected"];
+            self.selectedButton.selected = NO;
         } else {
-            self.selectedImageView.image = [UIImage imageNamed:@"forward_selected"];
+            self.selectedButton.selected = YES;
         }
-        [self.selectedImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        [self.selectedButton mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.contentView);
             make.left.equalTo(self.contentView).offset(12);
             make.height.width.offset(22);
         }];
         [self.headerImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.selectedImageView.mas_right).offset(12);
+            make.left.equalTo(self.selectedButton.mas_right).offset(12);
             make.top.equalTo(self.contentView).offset(7.5);
             make.height.width.offset(40);
         }];
     }
 }
 
-- (UIImageView *)selectedImageView {
-    if (!_selectedImageView) {
-        _selectedImageView = [[UIImageView alloc] init];
-        _selectedImageView.image = [UIImage imageNamed:@"forward_unselected"];
+- (void)setCanSelect:(BOOL)canSelect {
+    self.selectedButton.enabled = canSelect;
+    UIImage *normalImage = canSelect ? [UIImage imageNamed:@"forward_unselected"] : [UIImage imageNamed:@"not_selected"];
+    [_selectedButton setImage:normalImage forState:UIControlStateNormal];
+}
+
+- (UIButton *)selectedButton {
+    if (!_selectedButton) {
+        _selectedButton = [[UIButton alloc] init];
+        _selectedButton.userInteractionEnabled = NO;
+        [_selectedButton setImage:[UIImage imageNamed:@"forward_unselected"] forState:UIControlStateNormal];
+        [_selectedButton setImage:[UIImage imageNamed:@"forward_selected"] forState:UIControlStateSelected];
     }
-    return _selectedImageView;
+    return _selectedButton;
 }
 
 - (UIImageView *)headerImageView {

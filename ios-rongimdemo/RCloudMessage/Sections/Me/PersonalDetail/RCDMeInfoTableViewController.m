@@ -160,6 +160,12 @@
     return 13.5;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    return view;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         if(indexPath.row == 0) {
@@ -215,6 +221,7 @@
 
     case 1:
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        picker.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:picker animated:YES completion:nil];
         break;
 

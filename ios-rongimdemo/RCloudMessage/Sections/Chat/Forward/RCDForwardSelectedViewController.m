@@ -39,7 +39,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.tableView.backgroundColor = [UIColor whiteColor];
     [self setupData];
     [self setupViews];
     [self setupNavi];
@@ -168,7 +168,6 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
     if (self.isMultiSelectModel) {
         if (indexPath.section == 0) {
             RCDSelectContactViewController *contactVC = [[RCDSelectContactViewController alloc] init];
-            contactVC.title = RCDLocalizedString(@"select_contact");
             [self.navigationController pushViewController:contactVC animated:YES];
         } else {
             RCDForwardSelectedCell *cell = [tableView cellForRowAtIndexPath:indexPath];

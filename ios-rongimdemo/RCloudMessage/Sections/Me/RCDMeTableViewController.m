@@ -151,6 +151,12 @@
     return 15.f;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    return view;
+}
+
 - (void)chatWithCustomerService:(NSString *)kefuId {
     RCDCustomerServiceViewController *chatService = [[RCDCustomerServiceViewController alloc] init];
 

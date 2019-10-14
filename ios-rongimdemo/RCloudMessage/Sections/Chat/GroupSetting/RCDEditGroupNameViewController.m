@@ -69,6 +69,7 @@
     self.groupNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 10, groupNameTextFieldWidth, 44)];
     self.groupNameTextField.clearButtonMode = UITextFieldViewModeAlways;
     self.groupNameTextField.font = [UIFont systemFontOfSize:14];
+    self.groupNameTextField.textColor = [UIColor blackColor];
     [self.view addSubview:self.groupNameTextField];
     self.groupNameTextField.delegate = self;
 }

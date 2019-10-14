@@ -86,35 +86,26 @@
 }
 
 - (void)setUserModel:(NSString *)userId{
-    RCUserInfo *userInfo = [RCDUserInfoManager getUserInfo:userId];
-    if (userInfo) {
-        [self setUIInfo:userInfo];
+    if (self.groupId.length > 0) {
+        [RCDUtilities getGroupUserDisplayInfo:userId groupId:self.groupId result:^(RCUserInfo *user) {
+            [self setUIInfo:user];
+        }];
     }else{
-        [RCDUserInfoManager getUserInfoFromServer:userId complete:^(RCUserInfo *userInfo) {
-            rcd_dispatch_main_async_safe(^{
-                [self setUIInfo:userInfo];
-            });
+        [RCDUtilities getUserDisplayInfo:userId complete:^(RCUserInfo *user) {
+            [self setUIInfo:user];
         }];
     }
 }
 
-- (void)setUIInfo:(RCUserInfo *)userInfo{
-    if ([userInfo.userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
+- (void)setUIInfo:(RCUserInfo *)user{
+    if ([user.userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
         [self.btnImg setHidden:YES];
     }
-    RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userInfo.userId];
     self.ivAva.image = nil;
-    self.userId = userInfo.userId;
-    if (friend.displayName.length > 0) {
-        self.titleLabel.text = friend.displayName;
-    }else{
-        self.titleLabel.text = userInfo.name;
-    }
-    if ([userInfo.portraitUri isEqualToString:@""]) {
-        self.ivAva.image = [DefaultPortraitView portraitView:userInfo.userId name:userInfo.name];
-    } else {
-        [self.ivAva sd_setImageWithURL:[NSURL URLWithString:userInfo.portraitUri]
-                      placeholderImage:[UIImage imageNamed:@"icon_person"]];
-    }
+    self.userId = user.userId;
+    self.titleLabel.text = user.name;
+    [self.ivAva sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                  placeholderImage:[UIImage imageNamed:@"icon_person"]];
 }
+
 @end

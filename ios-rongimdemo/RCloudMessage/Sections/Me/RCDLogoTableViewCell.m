@@ -24,6 +24,7 @@
 - (id)init {
     self = [super init];
     if (self) {
+        self.backgroundColor = [UIColor whiteColor];
         UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"about_rong"]];
         logoImageView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:logoImageView];

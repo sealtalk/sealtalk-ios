@@ -44,6 +44,34 @@
                                  }];
 }
 
++ (void)copyGroup:(NSString *)groupId groupName:(NSString *)groupName portraitUri:(NSString *)portraitUri complete:(void (^)(NSString * , RCDGroupAddMemberStatus))complete error:(void (^)(RCDGroupErrorCode))error{
+    if (!groupName || !groupId) {
+        SealTalkLog(@"groupName or groupId is nil");
+        if (error) {
+            complete(nil,0);
+        }
+        return;
+    }
+    NSDictionary *params = @{@"name" : groupName, @"groupId" : groupId};
+    if (portraitUri.length > 0) {
+        params = @{@"name" : groupName, @"groupId" : groupId,@"portraitUri":portraitUri};
+    }
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"group/copy_group"
+                               parameters:params
+                                 response:^(RCDHTTPResult *result) {
+                                     if (result.success) {
+                                         if (complete) {
+                                             complete(result.content[@"id"],[self getGroupAddMemberStatus:result.content[@"userStatus"]]);
+                                         }
+                                     }else{
+                                         if (error) {
+                                             error(result.errorCode);
+                                         }
+                                     }
+                                 }];
+}
+
 + (void)setGroupPortrait:(NSString *)portraitUri
                  groupId:(NSString *)groupId
                 complete:(void (^)(BOOL success))complete{
@@ -302,9 +330,59 @@
                                  }];
 }
 
++ (void)setGroupMemberProtection:(BOOL)open groupId:(NSString *)groupId complete:(void (^)(BOOL))complete{
+    if (!groupId) {
+        SealTalkLog(@"groupId is nil");
+        if (complete) {
+            complete(NO);
+        }
+        return;
+    }
+    NSDictionary *params = @{@"groupId" : groupId,@"memberProtection":@(open?1:0)};
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"group/set_member_protection"
+                               parameters:params
+                                 response:^(RCDHTTPResult *result) {
+                                     if (complete) {
+                                         complete(result.success);
+                                     }
+                                 }];
+}
+
++ (void)getGroupLeftMemberList:(NSString *)groupId complete:(void (^)(NSArray<RCDGroupLeftMember *> *))complete{
+    if (!groupId) {
+        SealTalkLog(@"groupId is nil");
+        if (complete) {
+            complete(nil);
+        }
+        return;
+    }
+    NSDictionary *params = @{@"groupId" : groupId};
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"group/exited_list"
+                               parameters:params
+                                 response:^(RCDHTTPResult *result) {
+                                     if (result.success) {
+                                         NSArray *list = result.content;
+                                         NSMutableArray *array = [[NSMutableArray alloc] init];
+                                         for (NSDictionary *dic in list) {
+                                             RCDGroupLeftMember *member = [[RCDGroupLeftMember alloc] initWithJson:dic];
+                                             [array addObject:member];
+                                         }
+                                         if(complete){
+                                             complete(array.copy);
+                                         }
+                                     }else{
+                                         if(complete){
+                                             complete(nil);
+                                         }
+                                     }
+                                 }];
+}
+
 #pragma mark - Group member
 //获取群组成员列表
-+ (void)getGroupMembers:(NSString *)groupId complete:(void (^)(NSArray<RCDGroupMember *> * ))complete error:(void (^)(RCDGroupErrorCode))errorBlock{
++ (void)getGroupMembers:(NSString *)groupId complete:(void (^)(NSArray<RCDGroupMember *> * _Nonnull))complete error:(void (^)(RCDGroupErrorCode))errorBlock{
     if (!groupId) {
         SealTalkLog(@"groupId is nil");
         if (errorBlock) {
@@ -320,13 +398,8 @@
                                          NSArray *list = result.content;
                                          NSMutableArray *array = [[NSMutableArray alloc] init];
                                          for (NSDictionary *dic in list) {
-                                             NSDictionary *userDic = dic[@"user"];
-                                             RCDGroupMember *member = [[RCDGroupMember alloc] initWithUserId:userDic[@"id"] name:userDic[@"nickname"] portrait:userDic[@"portraitUri"]];
-                                             member.role = [dic[@"role"] integerValue];
-                                             member.createDt = [dic[@"timestamp"] longLongValue];
-                                             member.updateDt = [dic[@"updatedTime"] longLongValue];
-                                             member.stAccount = userDic[@"stAccount"];
-                                             member.gender = userDic[@"gender"];
+                                             RCDGroupMember *member = [[RCDGroupMember alloc] initWithJson:dic];
+                                             member.groupId = groupId;
                                              [array addObject:member];
                                          }
                                          if(complete){
@@ -494,6 +567,52 @@
                                  }];
 }
 
++ (void)setGroupMemberDetailInfo:(RCDGroupMemberDetailInfo *)memberInfo groupId:(NSString *)groupId complete:(void (^)(BOOL))complete{
+    if (!groupId || !memberInfo.userId) {
+        SealTalkLog(@"groupId or userId is nil");
+        if (complete) {
+            complete(NO);
+        }
+        return;
+    }
+    NSMutableDictionary *params = [memberInfo decode].mutableCopy;
+    [params setObject:groupId forKey:@"groupId"];
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"group/set_member_info"
+                               parameters:params
+                                 response:^(RCDHTTPResult *result) {
+                                     if (complete) {
+                                         complete(result.success);
+                                     }
+                                 }];
+}
+
++ (void)getGroupMemberDetailInfo:(NSString *)userId groupId:(NSString *)groupId complete:(void (^)(RCDGroupMemberDetailInfo * ))complete{
+    if (!groupId || !userId) {
+        SealTalkLog(@"groupId or userId is nil");
+        if (complete) {
+            complete(nil);
+        }
+        return;
+    }
+    NSDictionary *params = @{@"groupId" : groupId,@"memberId":userId};
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"group/get_member_info"
+                               parameters:params
+                                 response:^(RCDHTTPResult *result) {
+                                     if (result.success) {
+                                         RCDGroupMemberDetailInfo *member = [[RCDGroupMemberDetailInfo alloc] initWithJson:result.content];
+                                         member.userId = userId;
+                                         if (complete) {
+                                             complete(member);
+                                         }
+                                     }else{
+                                         if (complete) {
+                                             complete(nil);
+                                         }
+                                     }
+                                 }];
+}
 #pragma mark - My Group
 // 添加到我的群组
 + (void)addToMyGroups:(NSString *)groupId

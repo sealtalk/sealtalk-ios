@@ -19,6 +19,11 @@
 #import "RCDBottomResultView.h"
 #import "RCDHaveSelectedViewController.h"
 #import "RCDSelectGroupViewController.h"
+#import "NormalAlertView.h"
+#import "UIView+MBProgressHUD.h"
+
+// 批量删除最大限制：20
+#define RCDDeleteMaxNumber 20
 
 static NSString *rightArrowCellIdentifier = @"RCDRightArrowCellIdentifier";
 static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentifier";
@@ -39,9 +44,19 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 @property (nonatomic, strong) RCDBottomResultView *bottomResultView;
 
+@property (nonatomic, assign) RCDContactSelectType type;
+@property (nonatomic, strong) NSMutableArray *deleteIdArray;
+
 @end
 
 @implementation RCDSelectContactViewController
+
+- (instancetype)initWithContactSelectType:(RCDContactSelectType)type {
+    if (self = [super init]) {
+        self.type = type;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -66,7 +81,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger rows = 0;
     if (section == 0) {
-        if (self.isBeginSearch == YES) {
+        if (self.isBeginSearch == YES || self.type == RCDContactSelectTypeDelete) {
             rows = 0;
         } else {
             rows = 1;
@@ -134,8 +149,20 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
             [cell setFriendInfo:userInfo];
         }
         cell.selectStatus = RCDForwardSelectedStatusMultiUnSelected;
-        if ([[RCDForwardManager sharedInstance] modelIsContains:userInfo.userId]) {
-            cell.selectStatus = RCDForwardSelectedStatusMultiSelected;
+        if (self.type == RCDContactSelectTypeDelete) {
+            if (self.deleteIdArray.count >= RCDDeleteMaxNumber) {
+                cell.canSelect = NO;
+            } else {
+                cell.canSelect = YES;
+            }
+            if ([self.deleteIdArray containsObject:userInfo.userId]) {
+                cell.selectStatus = RCDForwardSelectedStatusMultiSelected;
+                cell.canSelect = YES;
+            }
+        } else {
+            if ([[RCDForwardManager sharedInstance] modelIsContains:userInfo.userId]) {
+                cell.selectStatus = RCDForwardSelectedStatusMultiSelected;
+            }
         }
         return cell;
     }
@@ -151,6 +178,34 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    // 多选删人处理
+    if (self.type == RCDContactSelectTypeDelete) {
+        NSString *letter = self.resultKeys[indexPath.section - 1];
+        NSArray *sectionUserInfoList = self.resultSectionDict[letter];
+        RCDFriendInfo *friend = sectionUserInfoList[indexPath.row];
+        if (friend == nil) {
+            return;
+        }
+        
+        RCDForwardSelectedCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if (cell.selectStatus == RCDForwardSelectedStatusMultiUnSelected) {
+            if (self.deleteIdArray.count >= RCDDeleteMaxNumber) {
+                SealTalkLog(@"批量删除好友选人超限");
+                return;
+            } else {
+                [self.deleteIdArray addObject:friend.userId];
+                cell.selectStatus = RCDForwardSelectedStatusMultiSelected;
+            }
+        } else {
+            [self.deleteIdArray removeObject:friend.userId];
+            cell.selectStatus = RCDForwardSelectedStatusMultiUnSelected;
+        }
+        [self.tableView reloadData];
+        return;
+    }
+    
+    // 转发处理
     if (indexPath.section == 0) {
         RCDSelectGroupViewController *selectGroupVC = [[RCDSelectGroupViewController alloc] init];
         [self.navigationController pushViewController:selectGroupVC animated:YES];
@@ -236,31 +291,43 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
     self.view.backgroundColor = [UIColor colorWithRed:235 / 255.0 green:235 / 255.0 blue:235 / 255.0 alpha:1];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.searchFriendsBar];
-    [self.view addSubview:self.bottomResultView];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchFriendsBar.mas_bottom);
         make.left.right.equalTo(self.view);
-        make.bottom.equalTo(self.bottomResultView.mas_top);
+        make.bottom.equalTo(self.view).offset(-RCDExtraBottomHeight);
     }];
     
     [self.searchFriendsBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);
     }];
     
-    [self.bottomResultView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
-        make.height.offset(50 + RCDExtraBottomHeight);
-    }];
-    
-    [self updateSelectedResult];
+    if (self.type == RCDContactSelectTypeForward) {
+        [self.view addSubview:self.bottomResultView];
+        [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.searchFriendsBar.mas_bottom);
+            make.left.right.equalTo(self.view);
+            make.bottom.equalTo(self.bottomResultView.mas_top);
+        }];
+        [self.bottomResultView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(self.view);
+            make.bottom.equalTo(self.view);
+            make.height.offset(50 + RCDExtraBottomHeight);
+        }];
+        [self updateSelectedResult];
+    }
 }
 
 - (void)setupNavi {
     self.navigationItem.leftBarButtonItem = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
     self.navigationController.navigationBar.translucent = NO;
-    self.tabBarController.navigationItem.title = RCDLocalizedString(@"contacts");
+    if (self.type == RCDContactSelectTypeDelete) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"Delete") style:UIBarButtonItemStylePlain target:self action:@selector(onRightButtonClick:)];
+        self.title = RCDLocalizedString(@"Batch_Friend_Deletion");
+    } else {
+        self.navigationItem.rightBarButtonItem = nil;
+        self.title = RCDLocalizedString(@"select_contact");
+    }
 }
 
 - (void)initData {
@@ -269,6 +336,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
     self.isBeginSearch = NO;
     self.queue = dispatch_queue_create("sealtalksearch", DISPATCH_QUEUE_SERIAL);
     self.allFriendArray = [self getAllFriendList];
+    self.deleteIdArray = [[NSMutableArray alloc] init];
 }
 
 - (void)addObserver {
@@ -319,9 +387,35 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
     [self.bottomResultView updateSelectResult];
 }
 
+- (void)deleteFriends {
+    [RCDUserInfoManager batchFriendDelete:[self.deleteIdArray copy] complete:^(BOOL success) {
+        rcd_dispatch_main_async_safe(^{
+            if (success) {
+                [self.view showHUDMessage:RCDLocalizedString(@"DeleteSuccess")];
+                [self clickBackBtn];
+            } else {
+                [self.view showHUDMessage:RCDLocalizedString(@"DeleteFailure")];
+            }
+        });
+    }];
+}
+
 #pragma mark - Target Action
 - (void)clickBackBtn {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)onRightButtonClick:(id)sender {
+    if (self.deleteIdArray.count == 0) {
+        [self.view showHUDMessage:RCDLocalizedString(@"UnselectedFriend")];
+        return;
+    }
+    
+    [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"Multi_Choice_Prompt") highlightText:nil leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"Delete_Confirm") cancel:^{
+        
+    } confirm:^{
+        [self deleteFriends];
+    }];
 }
 
 #pragma mark - Getter & Setter

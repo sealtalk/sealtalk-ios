@@ -34,6 +34,7 @@
 @interface RCDUserListCollectionView : UICollectionView
 @property (nonatomic, weak) id<RCDUserListCollectionViewDelegate> userListCollectionViewDelegate;
 
+@property (nonatomic, strong) NSString *groupId;
 - (instancetype)initWithFrame:(CGRect)frame
                    isAllowAdd:(BOOL)isAllowAdd
                 isAllowDelete:(BOOL)isAllowDelete;

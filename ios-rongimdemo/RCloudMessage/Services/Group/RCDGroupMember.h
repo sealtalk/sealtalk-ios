@@ -24,9 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RCDGroupMember : RCDUserInfo
 @property (nonatomic, copy) NSString *groupId;
+@property (nonatomic, copy) NSString *groupNickname;
 @property (nonatomic, assign) RCDGroupMemberRole role;
-@property(nonatomic, assign) long long createDt;
-@property(nonatomic, assign) long long updateDt;
+@property (nonatomic, assign) long long createDt;
+@property (nonatomic, assign) long long updateDt;
+- (instancetype)initWithJson:(NSDictionary *)json;
 @end
 
 NS_ASSUME_NONNULL_END

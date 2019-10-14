@@ -12,7 +12,7 @@
 #import "RCDContactSelectedTableViewController.h"
 #import "RCDEditGroupNameViewController.h"
 #import "RCDGroupAnnouncementViewController.h"
-#import "RCDGroupMembersTableViewController.h"
+#import "RCDGroupMemberListController.h"
 #import "RCDGroupSettingsTableViewCell.h"
 #import "RCDBaseSettingTableViewCell.h"
 #import "RCDPersonDetailViewController.h"
@@ -37,6 +37,7 @@
 #import "RCDChatManager.h"
 #import "RCDGroupManager.h"
 #import "UIView+MBProgressHUD.h"
+#import "RCDGroupMemberDetailController.h"
 static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 @interface RCDGroupSettingsTableViewController ()<UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, RCDBaseSettingTableViewCellDelegate, RCDUserListCollectionViewDelegate>
@@ -192,23 +193,15 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         }
     } else if ([title isEqualToString:RCDLocalizedString(@"clear_chat_history")]) {
         [self showActionSheet:RCDLocalizedString(@"clear_chat_history_alert") tag:100];
+    } else if ([title isEqualToString:RCDLocalizedString(@"MyInfoInGroup")]){
+        [self pushMyInfoInGroup];
     }
 }
 
 #pragma mark - RCDUserListCollectionViewDelegate
 - (void)didTipHeaderClicked:(NSString *)userId{
-    RCDFriendInfo *friendInfo = [RCDUserInfoManager getFriendInfo:userId];
-    if ((friendInfo != nil && (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) || [userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
-        RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
-        detailViewController.userId = userId;
-        [self.navigationController pushViewController:detailViewController animated:YES];
-    } else {
-        RCDUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
-        RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
-        addViewController.targetUserInfo = user;
-        [self.navigationController pushViewController:addViewController animated:YES];
-    }
-
+    UIViewController *vc = [RCDPersonDetailViewController configVC:userId groupId:self.group.groupId];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)addButtonDidClicked{
@@ -328,6 +321,20 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 #pragma mark - helper
+- (void)pushMyInfoInGroup{
+    if (self.group.isDismiss) {
+        [self.view showHUDMessage:RCDLocalizedString(@"GroupNoExist")];
+    }else{
+        RCDGroupMemberDetailController *myInfoVC = [[RCDGroupMemberDetailController alloc] init];
+        [myInfoVC setUpdateMemberDetail:^{
+            [self.headerView reloadData];
+        }];
+        myInfoVC.userId = [RCIMClient sharedRCIMClient].currentUserInfo.userId;
+        myInfoVC.groupId = self.group.groupId;
+        [self.navigationController pushViewController:myInfoVC animated:YES];
+    }
+}
+
 - (void)pushGroupManageVC{
     RCDGroupMember *member = [RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.group.groupId];
     if (member.role != RCDGroupMemberRoleMember) {
@@ -345,7 +352,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 - (void)pushGroupMemberVC{
-    RCDGroupMembersTableViewController *groupMembersVC = [[RCDGroupMembersTableViewController alloc] initWithGroupId:self.group.groupId];
+    RCDGroupMemberListController *groupMembersVC = [[RCDGroupMemberListController alloc] initWithGroupId:self.group.groupId];
     groupMembersVC.groupMembers = self.memberList;
     [self.navigationController pushViewController:groupMembersVC animated:YES];
 }
@@ -497,6 +504,14 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
      }];
 }
 
+- (void)refreshGroupClearStatus {
+    [RCDChatManager getGroupMessageClearStatus:self.group.groupId complete:^(RCDGroupMessageClearStatus status) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self changeGroupMessageStatus:status];
+        });
+    }];
+}
+
 - (NSArray *)getHeaderDisplayMemberData{
     NSMutableArray *mutableArray = [NSMutableArray array];
     if (self.memberList.count <= 18) {
@@ -524,7 +539,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 - (void)refreshTableViewInfo{
-    NSMutableArray *oneSectionArr = @[RCDLocalizedString(@"group_portrait"), RCDLocalizedString(@"group_name"), RCDLocalizedString(@"GroupQR"), RCDLocalizedString(@"group_announcement"), RCDLocalizedString(@"GroupManage")].mutableCopy;
+    NSMutableArray *oneSectionArr = @[RCDLocalizedString(@"group_portrait"), RCDLocalizedString(@"group_name"), RCDLocalizedString(@"GroupQR"), RCDLocalizedString(@"group_announcement"), RCDLocalizedString(@"MyInfoInGroup"), RCDLocalizedString(@"GroupManage")].mutableCopy;
     RCDGroupMember *member = [RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.group.groupId];
     if (member.role == RCDGroupMemberRoleMember){
         [oneSectionArr removeObject:RCDLocalizedString(@"GroupManage")];
@@ -536,7 +551,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                  @[RCDLocalizedString(@"search_chat_history")],
                                  @[RCDLocalizedString(@"mute_notifications"), RCDLocalizedString(@"stick_on_top"), RCDLocalizedString(@"SaveToAddress")],
                                  @[RCDLocalizedString(@"ScreenCaptureNotification")],
-                                 /*@[RCDLocalizedString(@"CleanUpGroupMessagesRegularly")],*/
+                                 @[RCDLocalizedString(@"CleanUpGroupMessagesRegularly")],
                                  @[RCDLocalizedString(@"clear_chat_history")]
                                  ];
     }else{
@@ -545,7 +560,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                  oneSectionArr.copy,
                                  @[RCDLocalizedString(@"search_chat_history")],
                                  @[RCDLocalizedString(@"mute_notifications"), RCDLocalizedString(@"stick_on_top"), RCDLocalizedString(@"SaveToAddress")],
-                                 /*@[RCDLocalizedString(@"CleanUpGroupMessagesRegularly")],*/
+                                 @[RCDLocalizedString(@"CleanUpGroupMessagesRegularly")],
                                  @[RCDLocalizedString(@"clear_chat_history")]
                                  ];
     }
@@ -676,6 +691,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     }
     [self refreshGroupMemberInfo];
     [self refreshGroupInfo];
+    [self refreshGroupClearStatus];
     /******************添加footerview*******************/
     [self setTableFooterView];
 }
@@ -707,6 +723,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         }else if (buttonIndex == 1){
             picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            picker.modalPresentationStyle = UIModalPresentationFullScreen;
         }
         [self presentViewController:picker animated:YES completion:nil];
     }
@@ -841,6 +858,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             isCreator = YES;
         }
         _headerView = [[RCDUserListCollectionView alloc] initWithFrame:tempRect isAllowAdd:YES isAllowDelete:isCreator];
+        _headerView.groupId = self.group.groupId;
         _headerView.userListCollectionViewDelegate = self;
     }
     return _headerView;

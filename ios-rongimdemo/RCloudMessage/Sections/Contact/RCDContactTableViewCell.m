@@ -14,17 +14,27 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "RCDFriendInfo.h"
 #import "DefaultPortraitView.h"
+
+@interface RCDContactTableViewCell ()
+
+@property (nonatomic, copy) NSString *currentUserId;
+
+@end
+
 @implementation RCDContactTableViewCell
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [self initialize];
+        [self addLongPress];
     }
     return self;
 }
 
 - (void)setModel:(RCUserInfo *)userInfo {
+    self.currentUserId = userInfo.userId;
+    
     BOOL isDisplayID = [DEFAULTS boolForKey:RCDDisplayIDKey];
     if (isDisplayID == YES) {
         self.userIdLabel.text = userInfo.userId;
@@ -48,6 +58,7 @@
 }
 
 - (void)initialize {
+    self.backgroundColor = [UIColor whiteColor];
     self.selectionStyle = UITableViewCellSelectionStyleDefault;
     self.selectedBackgroundView = [[UIView alloc] initWithFrame:self.frame];
     self.selectedBackgroundView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5" alpha:1.0];
@@ -89,6 +100,18 @@
         make.centerY.equalTo(self.contentView);
         make.height.width.equalTo(@18);
     }];
+}
+
+- (void)addLongPress {
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
+    [self addGestureRecognizer:longPress];
+}
+
+- (void)longPressAction:(UIGestureRecognizer *)sender {
+    // 添加判断防止多次回调
+    if (sender.state == UIGestureRecognizerStateBegan && self.longPressBlock) {
+        self.longPressBlock(self.currentUserId);
+    }
 }
 
 - (void)showNoticeLabel:(int)noticeCount {

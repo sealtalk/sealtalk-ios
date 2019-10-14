@@ -84,6 +84,11 @@
         ;
         [_updateTimeTextField setFont:[UIFont systemFontOfSize:13]];
         _updateTimeTextField.borderStyle = UITextBorderStyleRoundedRect;
+        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:_updateTimeTextField.placeholder attributes:
+        @{NSForegroundColorAttributeName:HEXCOLOR(0x999999),
+                     NSFontAttributeName:_updateTimeTextField.font
+             }];
+        _updateTimeTextField.attributedPlaceholder = attrString;
     }
     return _updateTimeTextField;
 }

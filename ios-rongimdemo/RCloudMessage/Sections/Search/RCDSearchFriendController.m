@@ -18,7 +18,7 @@
 #import "RCDCountry.h"
 #import "RCDCommonString.h"
 #import "RCDUtilities.h"
-@interface RCDSearchFriendController ()<RCDCountryListControllerDelegate>
+@interface RCDSearchFriendController ()
 @property (nonatomic, strong) UIView *searchInfoView;
 @property (nonatomic, strong) RCDIndicateTextField *countryTextField;
 @property (nonatomic, strong) RCDIndicateTextField *phoneTextField;
@@ -44,18 +44,16 @@
     self.searchInfoView.frame = CGRectMake(0, 0, self.view.frame.size.width, 200);
 }
 
-#pragma mark - RCDCountryListControllerDelegate
-- (void)fetchCountryPhoneCode:(RCDCountry *)country{
-    self.currentRegion = country;
-    self.countryTextField.textField.text = country.countryName;
-    self.phoneTextField.indicateInfoLabel.text = [NSString stringWithFormat:@"+%@",self.currentRegion.phoneCode];
-}
-
 #pragma mark - Target action
 - (void)didTapCountryTextField{
     RCDCountryListController *countryListVC = [[RCDCountryListController alloc] init];
     countryListVC.showNavigationBarWhenBack = YES;
-    countryListVC.delegate = self;
+    __weak typeof(self) weakSelf = self;
+    [countryListVC setSelectCountryResult:^(RCDCountry * _Nonnull country) {
+        weakSelf.currentRegion = country;
+        weakSelf.countryTextField.textField.text = country.countryName;
+        weakSelf.phoneTextField.indicateInfoLabel.text = [NSString stringWithFormat:@"+%@",weakSelf.currentRegion.phoneCode];
+    }];
     [self.navigationController pushViewController:countryListVC animated:YES];
 }
 

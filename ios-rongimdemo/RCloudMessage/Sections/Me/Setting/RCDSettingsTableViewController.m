@@ -18,6 +18,8 @@
 #import "RCDLoginManager.h"
 #import <RongIMKit/RongIMKit.h>
 #import "RCDCommonString.h"
+#import "RCDCleanChatHistoryViewController.h"
+#import "RCDChatBackgroundViewController.h"
 
 @interface RCDSettingsTableViewController () <UIAlertViewDelegate>
 
@@ -46,7 +48,7 @@
     if(0 == section) {
         row = 4;
     }else if (1 == section) {
-        row = 1;
+        row = 3;
     }else if(2 == section) {
         row = 1;
     }
@@ -77,7 +79,13 @@
             text = RCDLocalizedString(@"push_setting");
         }
     }else {
-        text = RCDLocalizedString(@"clear_cache");
+        if (indexPath.row == 0) {
+            text = RCDLocalizedString(@"ChatBackground");
+        } else if (indexPath.row == 1) {
+            text = RCDLocalizedString(@"clear_cache");
+        } else {
+            text = RCDLocalizedString(@"CleanChatHistory");
+        }
     }
     cell.leftLabel.text = text;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -101,8 +109,16 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
     }else if(1 == indexPath.section) {
-        //清除缓存
-        [self showAlert:RCDLocalizedString(@"clear_cache_alert") cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:RCDLocalizedString(@"confirm") tag:1011];
+        if (indexPath.row == 0) {
+            RCDChatBackgroundViewController *chatBgVC = [[RCDChatBackgroundViewController alloc] init];
+            [self.navigationController pushViewController:chatBgVC animated:YES];
+        } else if (indexPath.row == 1) {
+            //清除缓存
+            [self showAlert:RCDLocalizedString(@"clear_cache_alert") cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:RCDLocalizedString(@"confirm") tag:1011];
+        } else {
+            RCDCleanChatHistoryViewController *cleanVC = [[RCDCleanChatHistoryViewController alloc] init];
+            [self.navigationController pushViewController:cleanVC animated:YES];
+        }
     }else if(2 == indexPath.section) {
         //退出登录
         [self showAlert:RCDLocalizedString(@"logout_alert") cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:RCDLocalizedString(@"confirm") tag:1010];
@@ -111,6 +127,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 15.f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    return view;
 }
 
 #pragma mark - UIAlertView Delegate
@@ -182,6 +204,8 @@
 
 - (UITableViewCell *)createQuitCell {
     UITableViewCell *quitCell = [[UITableViewCell alloc] init];
+    quitCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    quitCell.backgroundColor = [UIColor whiteColor];
     UILabel *label = [[UILabel alloc] init];
     label.font = [UIFont systemFontOfSize:16];
     label.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];

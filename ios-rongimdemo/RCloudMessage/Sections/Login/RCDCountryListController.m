@@ -33,6 +33,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.backgroundColor = [UIColor whiteColor];
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
 
@@ -139,6 +140,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:flag];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:flag];
+        cell.backgroundColor = [UIColor whiteColor];
     }
     
     NSArray *sectionUserInfoList = [self countriesInSection:indexPath.section];
@@ -146,6 +148,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     RCDCountry *countryInfo = sectionUserInfoList[indexPath.row];
     if (countryInfo) {
         [cell.textLabel setText:countryInfo.countryName];
+        cell.textLabel.textColor = [UIColor blackColor];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"+%@",countryInfo.phoneCode];
     }
     return cell;
@@ -155,9 +158,11 @@ UISearchControllerDelegate, UISearchResultsUpdating>
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSArray *sectionUserInfoList = [self countriesInSection:indexPath.section];
     RCDCountry *countryInfo = sectionUserInfoList[indexPath.row];
-    
+    if (self.SelectCountryResult) {
+        self.SelectCountryResult(countryInfo);
+    }
     if ([self.delegate respondsToSelector:@selector(fetchCountryPhoneCode:)]) {
-        [DEFAULTS setObject:[countryInfo getModelJson] forKey:RCDCurrentCountryKey];
+        
         [self.delegate fetchCountryPhoneCode:countryInfo];
     }
     [self.navigationController popViewControllerAnimated:NO];

@@ -251,12 +251,18 @@
 - (UITextField *)textField {
     if (!_textField) {
         _textField = [[UITextField alloc] init];
+        _textField.textColor = [UIColor blackColor];
         _textField.placeholder = RCDLocalizedString(@"SetSealTalkNumPlaceholder");
         _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _textField.font = [UIFont systemFontOfSize:12];
         _textField.adjustsFontSizeToFitWidth = YES;
         _textField.delegate = self;
         [_textField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:_textField.placeholder attributes:
+        @{NSForegroundColorAttributeName:HEXCOLOR(0x999999),
+                     NSFontAttributeName:_textField.font
+             }];
+        _textField.attributedPlaceholder = attrString;
     }
     return _textField;
 }

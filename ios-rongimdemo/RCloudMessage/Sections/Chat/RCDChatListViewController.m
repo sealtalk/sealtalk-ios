@@ -216,8 +216,7 @@
 
 
 -(void)willDisplayConversationTableCell:(RCConversationBaseCell *)cell
-                            atIndexPath:(NSIndexPath *)indexPath
-{
+                            atIndexPath:(NSIndexPath *)indexPath{
     RCConversationModel *model=
     self.conversationListDataSource[indexPath.row];
     /*
@@ -225,8 +224,40 @@
     if (model.conversationType == ConversationType_PRIVATE) {
         ((RCConversationCell *)cell).isShowNotificationNumber = NO;
     }*/
+
     if ([model.lastestMessage isKindOfClass:[RCDChatNotificationMessage class]] || [model.lastestMessage isKindOfClass:[RCDGroupNotificationMessage class]]) {
+        NSString *groupId;
+        if (cell.model.conversationType == ConversationType_GROUP) {
+            groupId = cell.model.targetId;
+        }
         ((RCConversationCell *)cell).hideSenderName = YES;
+        if ([cell.model.lastestMessage isMemberOfClass:[RCDGroupNotificationMessage class]]) {
+            RCDGroupNotificationMessage *message = (RCDGroupNotificationMessage *)cell.model.lastestMessage;
+            ((RCConversationCell *)cell).messageContentLabel.text = [message getDigest:groupId];
+        }else if ([cell.model.lastestMessage isMemberOfClass:RCDChatNotificationMessage.class]){
+            RCDChatNotificationMessage *message = (RCDChatNotificationMessage *)cell.model.lastestMessage;
+            ((RCConversationCell *)cell).messageContentLabel.text = [message getDigest:groupId];
+        }
+    }
+}
+
+- (void)updateCellAtIndexPath:(NSIndexPath *)indexPath{
+    RCConversationBaseCell *cell = (RCConversationBaseCell *)[self.conversationListTableView cellForRowAtIndexPath:indexPath];
+    if (cell) {
+        if ([cell.model.lastestMessage isKindOfClass:[RCDChatNotificationMessage class]] || [cell.model.lastestMessage isKindOfClass:[RCDGroupNotificationMessage class]]) {
+            NSString *groupId;
+            if (cell.model.conversationType == ConversationType_GROUP) {
+                groupId = cell.model.targetId;
+            }
+            ((RCConversationCell *)cell).hideSenderName = YES;
+            if ([cell.model.lastestMessage isMemberOfClass:[RCDGroupNotificationMessage class]]) {
+                RCDGroupNotificationMessage *message = (RCDGroupNotificationMessage *)cell.model.lastestMessage;
+                ((RCConversationCell *)cell).messageContentLabel.text = [message getDigest:groupId];
+            }else if ([cell.model.lastestMessage isMemberOfClass:RCDChatNotificationMessage.class]){
+                RCDChatNotificationMessage *message = (RCDChatNotificationMessage *)cell.model.lastestMessage;
+                ((RCConversationCell *)cell).messageContentLabel.text = [message getDigest:groupId];
+            }
+        }
     }
 }
 

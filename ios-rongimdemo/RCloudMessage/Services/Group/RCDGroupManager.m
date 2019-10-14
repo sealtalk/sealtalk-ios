@@ -15,7 +15,9 @@
 #import "RCDCommonString.h"
 #import "RCDGroupNotificationMessage.h"
 #import "RCDGroupNoticeUpdateMessage.h"
+#import "RCDUserInfoManager.h"
 #import "RCDEnum.h"
+
 @implementation RCDGroupManager
 
 #pragma mark - Group
@@ -32,6 +34,20 @@
             complete(groupId,status);
         }
     }];
+}
+
++ (void)copyGroup:(NSString *)groupId groupName:(NSString *)groupName portraitUri:(NSString *)portraitUri complete:(void (^)(NSString *, RCDGroupAddMemberStatus))complete error:(void (^)(RCDGroupErrorCode))error{
+    [RCDGroupAPI copyGroup:groupId groupName:groupName portraitUri:portraitUri complete:^(NSString * _Nonnull groupId, RCDGroupAddMemberStatus status) {
+        if (groupId) {
+            RCDGroupInfo *group = [[RCDGroupInfo alloc] initWithGroupId:groupId groupName:groupName portraitUri:portraitUri];
+            [RCDDBManager saveGroups:@[group]];
+            group = [self generateDefaultPortraitIfNeed:group];
+            [[RCIM sharedRCIM] refreshGroupInfoCache:group withGroupId:groupId];
+        }
+        if (complete) {
+            complete(groupId,status);
+        }
+    } error:error];
 }
 
 + (void)setGroupPortrait:(NSString *)portraitUri groupId:(NSString *)groupId complete:(void (^)(BOOL))complete{
@@ -203,6 +219,21 @@
         }
     }];
 }
+
++ (void)setGroupMemberProtection:(BOOL)open groupId:(NSString *)groupId complete:(void (^)(BOOL))complete{
+    [RCDGroupAPI setGroupMemberProtection:open groupId:groupId complete:^(BOOL success) {
+        if (success) {
+            RCDGroupInfo *group = [RCDDBManager getGroup:groupId];
+            if (open != group.memberProtection) {
+                group.memberProtection = open;
+                [RCDDBManager saveGroups:@[group]];
+            }
+        }
+        if (complete) {
+            complete(success);
+        }
+    }];
+}
 #pragma mark - Group Member
 +(NSArray<NSString *> *)getGroupMembers:(NSString *)groupId{
     return [RCDDBManager getGroupMembers:groupId];
@@ -214,6 +245,7 @@
             NSMutableArray *memberIdList = [NSMutableArray array];
             for (RCDGroupMember *user in memberList) {
                 [memberIdList addObject:user.userId];
+                [self refreshGroupMemberInfo:user.userId groupId:groupId];
             }
             [RCDDBManager clearGroupMembers:groupId];
             if (memberList) {
@@ -226,13 +258,9 @@
     }error:^(RCDGroupErrorCode errorCode) {
         if (errorCode == RCDGroupErrorCodeNotInGroup) {
             [RCDDBManager clearGroupMembers:groupId];
-            if (complete) {
-                complete(nil);
-            }
-        }else{
-            if (complete) {
-                complete(nil);
-            }
+        }
+        if (complete) {
+            complete(nil);
         }
     }];
 }
@@ -332,6 +360,49 @@
     return [RCDDBManager getAllGroupList];
 }
 
++ (void)setGroupMemberDetailInfo:(RCDGroupMemberDetailInfo *)memberInfo groupId:groupId complete:(void (^)(BOOL))complete{
+    [RCDGroupAPI setGroupMemberDetailInfo:memberInfo groupId:groupId complete:^(BOOL success) {
+        if (success) {
+            [RCDDBManager saveGroupMemberDetailInfo:memberInfo groupId:groupId];
+            [self refreshGroupMemberInfo:memberInfo.userId groupId:groupId];
+        }
+        if (complete) {
+            complete(success);
+        }
+    }];
+}
+
++ (RCDGroupMemberDetailInfo *)getGroupMemberDetailInfo:(NSString *)userId groupId:(NSString *)groupId{
+    return [RCDDBManager getGroupMemberDetailInfo:userId groupId:groupId];
+}
+
++ (void)getGroupMemberDetailInfoFromServer:(NSString *)userId groupId:(NSString *)groupId complete:(void (^)(RCDGroupMemberDetailInfo *))complete{
+    [RCDGroupAPI getGroupMemberDetailInfo:userId groupId:groupId complete:^(RCDGroupMemberDetailInfo * member) {
+        if (member) {
+            [RCDDBManager saveGroupMemberDetailInfo:member groupId:groupId];
+            [self refreshGroupMemberInfo:userId groupId:groupId];
+        }
+        if (complete) {
+            complete(member);
+        }
+    }];
+}
+
++ (NSArray<RCDGroupLeftMember *> *)getGroupLeftMemberList:(NSString *)groupId{
+    return [RCDDBManager getGroupLeftMemberList:groupId];
+}
+
++ (void)getGroupLeftMemberListFromServer:(NSString *)groupId complete:(void (^)(NSArray<RCDGroupLeftMember *> *))complete{
+    [RCDGroupAPI getGroupLeftMemberList:groupId complete:^(NSArray<RCDGroupLeftMember *> *list) {
+        if (list) {
+            [RCDDBManager clearGroupLeftMemberList:groupId];
+            [RCDDBManager saveGroupLeftMemberList:list groupId:groupId];
+        }
+        if (complete) {
+            complete(list);
+        }
+    }];
+}
 #pragma mark - My Group
 +(NSArray<RCDGroupInfo *> *)getMyGroupList{
     return [RCDDBManager getMyGroups];
@@ -402,6 +473,20 @@
     [self getGroupMembersFromServer:groupId complete:nil];
 }
 
++ (void)refreshGroupMemberInfo:(NSString *)userId groupId:(NSString *)groupId{
+    RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
+    if (user) {
+        RCDGroupMember *memberDetail = [self getGroupMember:userId groupId:groupId];
+        RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
+        if (friend.displayName.length > 0) {
+            user.name = friend.displayName;
+        }else if (memberDetail.groupNickname.length > 0){
+            user.name = memberDetail.groupNickname;
+        }
+        [[RCIM sharedRCIM] refreshGroupUserInfoCache:user withUserId:userId withGroupId:groupId];
+    }
+}
+
 + (RCDGroupInfo *)generateDefaultPortraitIfNeed:(RCDGroupInfo *)group {
     if (group) {
         if (group.portraitUri.length == 0) {
@@ -424,9 +509,12 @@
     }else if ([msg.operation isEqualToString:RCDGroupMemberManagerRemove]){
         [[RCIMClient sharedRCIMClient] deleteMessages:@[@(message.messageId)]];
     }
+    
     if ([msg.operation isEqualToString:RCDGroupDismiss] || [msg.operation isEqualToString:RCDGroupMemberQuit] || [msg.operation isEqualToString:RCDGroupMemberKicked]) {
         [RCDDBManager clearGroupMembers:message.targetId];
+        [RCDDBManager clearGroupMemberDetailInfo:message.targetId];
     }
+
     if (msg.operation && ![msg.operation isEqualToString:RCDGroupRename] && ![msg.operation isEqualToString:RCDGroupBulletin]){
         [RCDGroupManager getGroupMembersFromServer:message.targetId complete:^(NSArray<NSString *> * _Nonnull memberIdList) {
             rcd_dispatch_main_async_safe((^{

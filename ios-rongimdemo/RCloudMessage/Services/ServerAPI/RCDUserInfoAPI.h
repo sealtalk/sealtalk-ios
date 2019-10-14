@@ -12,6 +12,7 @@
 #import "RCDEnum.h"
 #import "RCDUserSetting.h"
 #import "RCDUserInfo.h"
+#import "RCDFriendDescription.h"
 
 @interface RCDUserInfoAPI : NSObject
 
@@ -64,6 +65,14 @@
                  region:(NSString *)region
                complete:(void (^)(RCDUserInfo *userInfo))completeBlock;
 
+// 获取通讯录朋友信息列表
++ (void)getContactsInfo:(NSArray *)phoneNumberList
+               complete:(void (^)(NSArray *contactsList))completeBlock;
+
+// 批量删除好友
++ (void)batchFriendDelete:(NSArray *)friendIds
+           complete:(void (^)(BOOL success))completeBlock;
+
 #pragma mark - blacklist
 //将某个用户加入黑名单
 + (void)addToBlacklist:(NSString *)userId
@@ -76,9 +85,6 @@
 // 查询已经设置的黑名单列表
 + (void)getBlacklist:(void (^)(NSArray <RCDUserInfo *> *blackUsers))completeBlock;
 
-// 获取通讯录朋友信息列表
-+ (void)getContactsInfo:(NSArray *)phoneNumberList
-               complete:(void (^)(NSArray *contactsList))completeBlock;
 #pragma mark - user setting
 + (void)setSearchMeByMobile:(BOOL)allow
                 complete:(void (^)(BOOL success))completeBlock;
@@ -92,6 +98,25 @@
 + (void)setJoinGroupVerify:(BOOL)needVerify
                complete:(void (^)(BOOL success))completeBlock;
 
++ (void)setReceivePokeMessage:(BOOL)allowReceive
+                     complete:(void (^)(BOOL success))completeBlock;
+
++ (void)getReceivePokeMessageStatus:(void (^)(BOOL allowReceive))success
+                              error:(void (^)())error;
+
 + (void)getUserPrivacy:(void (^)(RCDUserSetting *setting))completeBlock;
+
+#pragma mark - Friend Description
++ (void)setDescriptionWithUserId:(NSString *)friendId
+                          remark:(NSString *)remark
+                          region:(NSString *)region
+                           phone:(NSString *)phone
+                            desc:(NSString *)desc
+                        imageUrl:(NSString *)imageUrl
+                        complete:(void (^)(BOOL success))completeBlock;
+
++ (void)getDescriptionWithUserId:(NSString *)friendId
+                        complete:(void (^)(RCDFriendDescription *friendDescription))completeBlock;
+
 @end
 

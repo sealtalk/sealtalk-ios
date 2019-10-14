@@ -8,9 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, RCDContactSelectType) {
+    RCDContactSelectTypeForward = 0, // 转发
+    RCDContactSelectTypeDelete, // 多选删人
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RCDSelectContactViewController : UIViewController
+
+- (instancetype)initWithContactSelectType:(RCDContactSelectType)type;
 
 @end
 

@@ -26,6 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
  
+    self.tableView.backgroundColor = [UIColor whiteColor];
     NSString *gender = [DEFAULTS stringForKey:RCDUserGenderKey];
     if (!gender || [gender isEqualToString:@"male"]) {
         self.selectedGender = 0;
@@ -44,11 +45,19 @@
     return 15.f;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    return view;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:RCDSettingGenderCellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] init];
     }
+    cell.backgroundColor = [UIColor whiteColor];
+    cell.textLabel.textColor = [UIColor blackColor];
     cell.textLabel.text = indexPath.row == 0 ? RCDLocalizedString(@"male") : RCDLocalizedString(@"female");
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (self.selectedGender == indexPath.row) {

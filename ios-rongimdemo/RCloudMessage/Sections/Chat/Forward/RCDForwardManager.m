@@ -7,6 +7,7 @@
 //
 
 #import "RCDForwardManager.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 @interface RCDForwardManager ()
 @property (nonatomic, strong) UIViewController *viewController;
@@ -48,15 +49,29 @@
 }
 
 - (void)doForwardMessage:(RCDForwardAlertView *)alertView {
-    for (RCMessageModel *message in self.selectedMessages) {
-        if (self.isMultiSelect) {
-            for (RCDForwardCellModel *model in self.selectedContactArray) {
-                [self forwardWithConversationType:model.conversationType targetId:model.targetId message:message];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:window];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        hud.labelText = RCDLocalizedString(@"sending");
+        [window addSubview:hud];
+        [window bringSubviewToFront:hud];
+        [hud showAnimated:YES];
+    });
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        for (RCMessageModel *message in self.selectedMessages) {
+            if (self.isMultiSelect) {
+                for (RCDForwardCellModel *model in self.selectedContactArray) {
+                    [self forwardWithConversationType:model.conversationType targetId:model.targetId message:message];
+                }
+            } else {
+                [self forwardWithConversationType:self.toConversation.conversationType targetId:self.toConversation.targetId message:message];
             }
-        } else {
-            [self forwardWithConversationType:self.toConversation.conversationType targetId:self.toConversation.targetId message:message];
         }
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+            [self dismiss];
+        });
+    });
 }
 
 - (void)forwardWithConversationType:(RCConversationType)type targetId:(NSString *)targetId message:(RCMessageModel *)message {
@@ -64,11 +79,8 @@
         self.willForwardMessageBlock(type,targetId);
         [self dismiss];
     }else{
-        __weak typeof(self) weakSelf = self;
         [[RCIM sharedRCIM] sendMessage:type targetId:targetId content:message.content pushContent:nil pushData:nil success:^(long messageId) {
-            [weakSelf dismiss];
         } error:^(RCErrorCode nErrorCode, long messageId) {
-            [weakSelf dismiss];
         }];
         [NSThread sleepForTimeInterval:0.4];
     }

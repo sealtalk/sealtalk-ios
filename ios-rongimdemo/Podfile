@@ -11,7 +11,7 @@ target 'SealTalk' do
   pod 'SSZipArchive', '~> 2.2.2'
   pod 'SDWebImage', '~> 5.0.6'
   pod 'Bugly', '~> 2.5.0'
-  pod 'WechatOpenSDK'
+  pod 'WechatOpenSDK', '1.8.4'
   pod 'RongCloudIM/IMLib', '~> 2.9.18'
   pod 'RongCloudIM/IMKit', '~> 2.9.18'
   pod 'RongCloudIM/RedPacket', '~> 2.9.18'

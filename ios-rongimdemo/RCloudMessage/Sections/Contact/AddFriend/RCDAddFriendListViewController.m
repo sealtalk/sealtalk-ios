@@ -128,6 +128,7 @@
 - (void)myQRCodeViewShareSealTalk {
     RCDForwardSelectedViewController *forwardSelectedVC = [[RCDForwardSelectedViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:forwardSelectedVC];
+    navi.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController presentViewController:navi animated:YES completion:nil];
 }
 

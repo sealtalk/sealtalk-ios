@@ -12,6 +12,6 @@
 @interface RCDFriendRemarksViewController : UIViewController
 
 @property (nonatomic, copy) void (^setRemarksSuccess)();
-@property (nonatomic, strong) RCDFriendInfo *friendInfo;
+@property (nonatomic, copy) NSString *friendId;
 
 @end

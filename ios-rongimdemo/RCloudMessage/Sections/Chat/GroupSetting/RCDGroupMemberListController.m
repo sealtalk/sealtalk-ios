@@ -6,7 +6,7 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import "RCDGroupMembersTableViewController.h"
+#import "RCDGroupMemberListController.h"
 #import "DefaultPortraitView.h"
 #import "RCDAddFriendViewController.h"
 #import "RCDContactTableViewCell.h"
@@ -16,10 +16,10 @@
 #import "RCDUserInfoManager.h"
 #import "RCDGroupMemberCell.h"
 #import "RCDGroupManager.h"
-@interface RCDGroupMembersTableViewController()
+@interface RCDGroupMemberListController()
 @property (nonatomic, strong) NSString *groupId;
 @end
-@implementation RCDGroupMembersTableViewController
+@implementation RCDGroupMemberListController
 #pragma mark - life cycle
 - (instancetype)initWithGroupId:(NSString *)groupId{
     if (self = [super init]) {
@@ -31,7 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];    
     self.title = [NSString stringWithFormat:RCDLocalizedString(@"group_members_x"),(unsigned long)[self.groupMembers count]];
-    
+    self.tableView.backgroundColor = [UIColor whiteColor];
     RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
@@ -47,7 +47,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RCDGroupMemberCell *cell = [RCDGroupMemberCell cellWithTableView:tableView];
-    [cell setDataModel:self.groupMembers[indexPath.row]];
+    [cell setDataModel:self.groupMembers[indexPath.row] groupId:self.groupId];
     if ([self.groupMembers[indexPath.row] isEqualToString:[RCDGroupManager getGroupOwner:self.groupId]]) {
         [cell setUserRole:RCDLocalizedString(@"GroupOwner")];
     }else if([[RCDGroupManager getGroupManagers:self.groupId] containsObject:self.groupMembers[indexPath.row]]){
@@ -62,17 +62,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCUserInfo *user = [RCDUserInfoManager getUserInfo:self.groupMembers[indexPath.row]];
-    RCDFriendInfo *friendInfo = [RCDUserInfoManager getFriendInfo:self.groupMembers[indexPath.row]];
-    if ((friendInfo != nil && (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) || [user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
-        RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
-        [self.navigationController pushViewController:detailViewController animated:YES];
-        RCUserInfo *user = [RCDUserInfoManager getUserInfo:self.groupMembers[indexPath.row]];
-        detailViewController.userId = user.userId;
-    } else {
-        RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
-        addViewController.targetUserInfo = [RCDUserInfoManager getUserInfo:self.groupMembers[indexPath.row]];
-        [self.navigationController pushViewController:addViewController animated:YES];
-    }
+    UIViewController *vc = [RCDPersonDetailViewController configVC:user.userId groupId:self.groupId];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - target action

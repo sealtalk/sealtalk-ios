@@ -27,6 +27,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.contentView.backgroundColor = [UIColor whiteColor];
         [self initialize];
     }
     return self;
@@ -63,6 +64,7 @@
 }
 
 - (void)initialize {
+    self.contentView.backgroundColor = [UIColor whiteColor];
     self.leftLabel = [[UILabel alloc] init];
     self.leftLabel.font = [UIFont systemFontOfSize:16.f];
     self.leftLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];
@@ -307,6 +309,10 @@
 - (void)setRightImageCornerRadius:(CGFloat)rightImageCornerRadius {
     self.rightImageView.layer.masksToBounds = YES;
     self.rightImageView.layer.cornerRadius = rightImageCornerRadius;
+}
+
+- (void)setRightLabelIsEnabled:(BOOL)rightLabelIsEnabled {
+    self.rightLabel.userInteractionEnabled = rightLabelIsEnabled;
 }
 
 @end

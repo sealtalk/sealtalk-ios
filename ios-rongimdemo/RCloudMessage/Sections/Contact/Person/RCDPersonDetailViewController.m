@@ -8,7 +8,6 @@
 
 #import "RCDPersonDetailViewController.h"
 #import "RCDPersonInfoView.h"
-#import "RCDRemarksView.h"
 #import "UIColor+RCColor.h"
 #import <Masonry/Masonry.h>
 #import <RongIMKit/RongIMKit.h>
@@ -16,24 +15,43 @@
 #import "RCDUtilities.h"
 #import "RCDFriendRemarksViewController.h"
 #import "RCDChatViewController.h"
+
+#ifdef USE_SignalingKit
+#import <RongSignalingKit/RCSCallKit.h>
+#else
 #import <RongCallKit/RongCallKit.h>
+#endif
+
 #import "UIView+MBProgressHUD.h"
 #import "RCDUserInfoManager.h"
 #import "RCDPersonDetailCell.h"
 #import "NormalAlertView.h"
 #import "RCDCommonString.h"
 #import "RCDRCIMDataSource.h"
-
+#import "RCDBaseSettingTableViewCell.h"
+#import "RCDAddFriendViewController.h"
+#import "RCDGroupMemberDetailController.h"
+#import "RCDGroupManager.h"
 typedef NS_ENUM(NSInteger, RCDPersonOperation) {
     RCDPersonOperationDelete = 0,
     RCDPersonOperationAddToBlacklist,
     RCDPersonOperationRemoveFromBlacklist,
 };
 
+typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
+    RCDFriendDescriptionTypeDefault = 0,
+    RCDFriendDescriptionTypeAll,
+    RCDFriendDescriptionTypePhone,
+    RCDFriendDescriptionTypeDesc,
+};
+
 @interface RCDPersonDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic, strong) NSString *groupId;
+
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) RCDPersonInfoView *infoView;
-@property (nonatomic, strong) RCDRemarksView *remarksView;
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) UIButton *conversationButton;
@@ -45,11 +63,27 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
 @property (nonatomic, assign) BOOL inBlacklist;
 
 @property (nonatomic, assign) RCDPersonOperation operation;
-@property (nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, strong) RCDFriendDescription *friendDescription;
+@property (nonatomic, assign) BOOL isLoadFriendDescription;
+@property (nonatomic, assign) RCDFriendDescriptionType descriptionType;
 
 @end
 
 @implementation RCDPersonDetailViewController
++ (UIViewController *)configVC:(NSString *)userId groupId:(NSString *)groupId{
+    RCDFriendInfo *friendInfo = [RCDUserInfoManager getFriendInfo:userId];
+    if ((friendInfo != nil && (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) || [userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
+        RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
+        detailViewController.userId = userId;
+        detailViewController.groupId = groupId;
+        return detailViewController;
+    } else {
+        RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
+        addViewController.groupId = groupId;
+        addViewController.targetUserInfo = [RCDUserInfoManager getUserInfo:userId];
+        return addViewController;
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -62,13 +96,25 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
 - (void)setupSubviews {
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    [self.view addSubview:self.infoView];
-    [self.view addSubview:self.conversationButton];
-    [self.view addSubview:self.audioCallButton];
-    [self.view addSubview:self.videoCallButton];
+    
+    [self.view addSubview:self.scrollView];
+    [self.scrollView addSubview:self.contentView];
+    [self.contentView addSubview:self.infoView];
+    [self.contentView addSubview:self.conversationButton];
+    [self.contentView addSubview:self.audioCallButton];
+    [self.contentView addSubview:self.videoCallButton];
+    
+    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.width.height.equalTo(self.view);
+    }];
+    
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.scrollView);
+        make.width.equalTo(self.scrollView);
+    }];
     
     [self.infoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
+        make.top.left.right.equalTo(self.contentView);
         make.height.offset(85);
     }];
     
@@ -76,38 +122,32 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
     if ([self isCurrentUser]) {
         lastView = self.infoView;
     } else {
-        [self.view addSubview:self.remarksView];
-        [self.view addSubview:self.tableView];
-        [self.remarksView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.infoView.mas_bottom).offset(15);
-            make.left.right.equalTo(self.infoView);
-            make.height.offset(43);
-        }];
-        
+        [self.contentView addSubview:self.tableView];
         [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.remarksView.mas_bottom).offset(15);
-            make.left.right.equalTo(self.view);
-            make.height.offset(88);
+            make.top.equalTo(self.infoView.mas_bottom);
+            make.left.right.equalTo(self.contentView);
+            make.height.offset(self.tableView.contentSize.height - 30);
         }];
         lastView = self.tableView;
     }
     
     [self.conversationButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lastView.mas_bottom).offset(15);
-        make.left.right.equalTo(self.view).inset(10);
+        make.left.right.equalTo(self.contentView).inset(10);
         make.height.offset(43);
     }];
     
     [self.audioCallButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.conversationButton.mas_bottom).offset(15);
-        make.left.right.equalTo(self.view).inset(10);
+        make.left.right.equalTo(self.contentView).inset(10);
         make.height.offset(43);
     }];
     
     [self.videoCallButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.audioCallButton.mas_bottom).offset(15);
-        make.left.right.equalTo(self.view).inset(10);
+        make.left.right.equalTo(self.contentView).inset(10);
         make.height.offset(43);
+        make.bottom.equalTo(self.contentView).offset(-15);
     }];
 }
 
@@ -120,25 +160,76 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
         self.userInfo.gender = currentUserInfo.gender;
         [self.infoView setUserInfo:self.userInfo];
     } else {
-        [self.hud showAnimated:YES];
+        self.userInfo = [RCDUserInfoManager getFriendInfo:self.userId];
+        [self handleIsInBlockList];
+        [self.infoView setUserInfo:self.userInfo];
         [RCDUserInfoManager getFriendInfoFromServer:self.userId complete:^(RCDFriendInfo *friendInfo) {
             rcd_dispatch_main_async_safe(^{
                 if (friendInfo) {
                     self.userInfo = friendInfo;
-                    if (friendInfo.status == RCDFriendStatusAgree) {
-                        self.inBlacklist = NO;
-                    } else if (friendInfo.status == RCDFriendStatusBlock) {
-                        self.inBlacklist = YES;
-                    }
                 } else {
                     self.userInfo = [RCDUserInfoManager getFriendInfo:self.userId];
-                    self.inBlacklist = [RCDUserInfoManager isInBlacklist:self.userId];
                 }
+                [self handleIsInBlockList];
                 [self.tableView reloadData];
-                [self.hud hideAnimated:YES];
                 [self.infoView setUserInfo:self.userInfo];
             });
         }];
+        [self getFriendDescription];
+    }
+    if (self.groupId.length > 0) {
+        RCDGroupMember *member = [RCDGroupManager getGroupMember:self.userId groupId:self.groupId];
+        [self.infoView setGroupNickname:member.groupNickname];
+    }
+}
+
+- (void)handleIsInBlockList {
+    if (self.userInfo.status == RCDFriendStatusAgree) {
+        self.inBlacklist = NO;
+    } else if (self.userInfo.status == RCDFriendStatusBlock) {
+        self.inBlacklist = YES;
+    }
+}
+
+- (void)getFriendDescription {
+    self.friendDescription = [RCDUserInfoManager getFriendDescription:self.userId];
+    if (!self.friendDescription && !self.isLoadFriendDescription) {
+        self.isLoadFriendDescription = YES;
+        [RCDUserInfoManager getDescriptionFromServer:self.userId complete:^(RCDFriendDescription *description) {
+            rcd_dispatch_main_async_safe(^{
+                self.friendDescription = description;
+                [self setupDescriptionType];
+                [self.tableView reloadData];
+                [self updateTableView];
+            });
+        }];
+    } else {
+        [self setupDescriptionType];
+        [self.tableView reloadData];
+        [self updateTableView];
+    }
+}
+
+- (void)updateTableView {
+    [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.infoView.mas_bottom);
+        make.left.right.equalTo(self.contentView);
+        make.height.offset(self.tableView.contentSize.height - 30);
+    }];
+}
+
+- (void)setupDescriptionType {
+    if (!self.friendDescription) {
+        return;
+    }
+    if (self.friendDescription.phone.length > 0 && self.friendDescription.desc.length > 0) {
+        self.descriptionType = RCDFriendDescriptionTypeAll;
+    } else if (self.friendDescription.phone.length > 0) {
+        self.descriptionType = RCDFriendDescriptionTypePhone;
+    } else if (self.friendDescription.desc.length > 0) {
+        self.descriptionType = RCDFriendDescriptionTypeDesc;
+    } else {
+        self.descriptionType = RCDFriendDescriptionTypeDefault;
     }
 }
 
@@ -165,12 +256,19 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
     
 }
 
-- (void)tapRemarksView:(UIGestureRecognizer *)tap {
+- (void)pushGroupMemberInfoVC{
+    RCDGroupMemberDetailController *vc = [[RCDGroupMemberDetailController alloc] init];
+    vc.userId = self.userId;
+    vc.groupId = self.groupId;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushToRemarksVC {
     RCDFriendRemarksViewController *vc = [[RCDFriendRemarksViewController alloc] init];
     vc.setRemarksSuccess = ^{
         [self getUserInfoData];
     };
-    vc.friendInfo = self.userInfo;
+    vc.friendId = self.userId;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -258,65 +356,200 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
 
 - (void)audioCall:(UIButton *)sender {
     //语音通话
+#if USE_SignalingKit
+    [[RCSCall sharedRCSCall] startSingleCall:self.userInfo.userId mediaType:RCSCallMediaAudio];
+#else
     [[RCCall sharedRCCall] startSingleCall:self.userInfo.userId mediaType:RCCallMediaAudio];
+#endif
+    
 }
 
 - (void)videoCall:(UIButton *)sender {
     //视频通话
+#if USE_SignalingKit
+    [[RCSCall sharedRCSCall] startSingleCall:self.userInfo.userId mediaType:RCSCallMediaVideo];
+#else
     [[RCCall sharedRCCall] startSingleCall:self.userInfo.userId mediaType:RCCallMediaVideo];
+#endif
+    
+}
+
+- (void)presentActionSheet {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    
+    UIAlertAction *callAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"Call") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.friendDescription.phone) {
+                NSURL *phoneUrl = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", self.friendDescription.phone]];
+                if (IOS_FSystenVersion > 10) {
+                    [[UIApplication sharedApplication] openURL:phoneUrl options:@{} completionHandler:nil];
+                } else {
+                    [[UIApplication sharedApplication] openURL:phoneUrl];
+                }
+                
+            }
+        });
+    }];
+    
+    UIAlertAction *copyAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"CopyNumber") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (self.friendDescription.phone) {
+            UIPasteboard *pastboard = [UIPasteboard generalPasteboard];
+            [pastboard setString:self.friendDescription.phone];
+        }
+    }];
+    
+    [alertController addAction:cancelAction];
+    [alertController addAction:callAction];
+    [alertController addAction:copyAction];
+    
+    [self.navigationController presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDelegate && UITableViewDataSource
-- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        NSInteger row = 0;
+        if (self.descriptionType == RCDFriendDescriptionTypeDefault) {
+            row = 1;
+        } else {
+            row = 2;
+        }
+        if (self.groupId.length > 0) {
+            row = row + 1;
+        }
+        return row;
+    } else {
+        return 2;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 44;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 15;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth, 15)];
+    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    return view;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RCDPersonDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PersonDetailCellReuseIdentifier"];
+    RCDPersonDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PersonDetailSettingReuseIdentifier"];
     if (!cell) {
         cell = [[RCDPersonDetailCell alloc] init];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if (indexPath.row == 0) {
-        NSString *blackString = self.inBlacklist ? RCDLocalizedString(@"cancel_block") : RCDLocalizedString(@"add_to_blacklist");
-        cell.titleLabel.text = blackString;
-    } else{
-        cell.titleLabel.text = RCDLocalizedString(@"DeleteFriend");
+    
+    if (indexPath.section == 0) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        switch (self.descriptionType) {
+            case RCDFriendDescriptionTypeAll:
+            case RCDFriendDescriptionTypePhone:
+            case RCDFriendDescriptionTypeDesc: {
+                [cell setCellStyle:Style_Title_Detail];
+                if (indexPath.row == 0) {
+                    cell.detailLabel.textColor = [UIColor colorWithHexString:@"0099FF" alpha:1];
+                    cell.titleLabel.text = RCDLocalizedString(@"PhoneNumber");
+                    cell.detailLabel.text = self.friendDescription.phone;
+                    cell.detailLabel.userInteractionEnabled = YES;
+                    cell.tapDetailBlock = ^(NSString * _Nonnull detail) {
+                        rcd_dispatch_main_async_safe(^{
+                            [self presentActionSheet];
+                        });
+                    };
+                } else {
+                    cell.detailLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1];
+                    cell.titleLabel.text = RCDLocalizedString(@"Describe");
+                    cell.detailLabel.text = self.friendDescription.desc;
+                    cell.detailLabel.userInteractionEnabled = NO;
+                }
+            }
+                break;
+            case RCDFriendDescriptionTypeDefault:
+            default: {
+                [cell setCellStyle:Style_Default];
+                cell.titleLabel.text = RCDLocalizedString(@"SetRemarksAndDescription");
+            }
+                break;
+        }
+        if (self.groupId.length > 0) {
+            NSInteger count = [self tableView:tableView numberOfRowsInSection:0];
+            if (indexPath.row == count -1) {
+                [cell setCellStyle:Style_Default];
+                cell.titleLabel.text = RCDLocalizedString(@"Personal_information");
+            }
+        }
+        return cell;
+    } else {
+        [cell setCellStyle:Style_Default];
+        if (indexPath.row == 0) {
+            NSString *blackString = self.inBlacklist ? RCDLocalizedString(@"cancel_block") : RCDLocalizedString(@"add_to_blacklist");
+            cell.titleLabel.text = blackString;
+        } else {
+            cell.titleLabel.text = RCDLocalizedString(@"DeleteFriend");
+        }
+        return cell;
     }
-    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        self.operation = self.inBlacklist ? RCDPersonOperationRemoveFromBlacklist : RCDPersonOperationAddToBlacklist;
-        NSString *hintString = self.inBlacklist ? RCDLocalizedString(@"cancel_block") : RCDLocalizedString(@"AddToBlacklistHintMessage");
-        
-        [self showAlertWithMessage:hintString highlightText:nil leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"confirm")];
+    
+    if (indexPath.section == 0) {
+        if (self.groupId.length > 0) {
+            NSInteger count = [self tableView:tableView numberOfRowsInSection:0];
+            if (indexPath.row == count -1) {
+                [self pushGroupMemberInfoVC];
+            }else{
+                [self pushToRemarksVC];
+            }
+        }else{
+            [self pushToRemarksVC];
+        }
     } else {
-        self.operation = RCDPersonOperationDelete;
-        [self showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"DeleteFriendHindMessage"),self.userInfo.name] highlightText:self.userInfo.name leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"Delete")];
+        if (indexPath.row == 0) {
+            self.operation = self.inBlacklist ? RCDPersonOperationRemoveFromBlacklist : RCDPersonOperationAddToBlacklist;
+            NSString *hintString = self.inBlacklist ? RCDLocalizedString(@"cancel_block") : RCDLocalizedString(@"AddToBlacklistHintMessage");
+            
+            [self showAlertWithMessage:hintString highlightText:nil leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"confirm")];
+        } else {
+            self.operation = RCDPersonOperationDelete;
+            [self showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"DeleteFriendHindMessage"),self.userInfo.name] highlightText:self.userInfo.name leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"Delete")];
+        }
     }
 }
 
 #pragma mark - Setter && Getter
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] init];
+    }
+    return _scrollView;
+}
+
+- (UIView *)contentView {
+    if (!_contentView) {
+        _contentView = [[UIView alloc] init];
+        _contentView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    }
+    return _contentView;
+}
+
 - (RCDPersonInfoView *)infoView {
     if (!_infoView) {
         _infoView = [[RCDPersonInfoView alloc] init];
     }
     return _infoView;
-}
-
-- (RCDRemarksView *)remarksView {
-    if (!_remarksView) {
-        _remarksView = [[RCDRemarksView alloc] init];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRemarksView:)];
-        [_remarksView addGestureRecognizer:tap];
-    }
-    return _remarksView;
 }
 
 - (UITableView *)tableView {
@@ -374,14 +607,6 @@ typedef NS_ENUM(NSInteger, RCDPersonOperation) {
         _videoCallButton.layer.cornerRadius = 5.f;
     }
     return _videoCallButton;
-}
-
-- (MBProgressHUD *)hud {
-    if(!_hud) {
-        _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        _hud.color = [UIColor colorWithHexString:@"343637" alpha:0.8];
-    }
-    return _hud;
 }
 
 @end

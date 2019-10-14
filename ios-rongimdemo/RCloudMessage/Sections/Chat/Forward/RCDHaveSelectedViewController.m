@@ -96,6 +96,7 @@ static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] init];
+        _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.tableFooterView = [UIView new];

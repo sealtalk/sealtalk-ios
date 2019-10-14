@@ -76,6 +76,8 @@
         [self setCleanUpGroupMessagesRegularly:groupInfo];
     } else if ([title isEqualToString:RCDLocalizedString(@"clear_chat_history")]) {
         [self setClearChatHistory];
+    }else if ([title isEqualToString:RCDLocalizedString(@"MyInfoInGroup")]){
+        [self setCellStyle:DefaultStyle];
     }
 }
 

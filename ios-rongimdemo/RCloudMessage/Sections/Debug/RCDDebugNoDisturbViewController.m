@@ -74,6 +74,11 @@
     self.startTimeTextField = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(startTimeLabel.frame), 100, 160, 44)];
     [self.startTimeTextField setBackgroundColor:[UIColor whiteColor]];
     [self.startTimeTextField setPlaceholder:@"HH:mm:ss"];
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:self.startTimeTextField.placeholder attributes:
+    @{NSForegroundColorAttributeName:HEXCOLOR(0x999999),
+                 NSFontAttributeName:self.startTimeTextField.font
+         }];
+    self.startTimeTextField.attributedPlaceholder = attrString;
     [self.view addSubview:self.startTimeTextField];
     
     //end time label

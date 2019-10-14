@@ -237,11 +237,13 @@
             [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"MyCellReuseIdentifier"];
     }
     if (indexPath.section == 0) {
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = RCDLocalizedString(@"Turn_on_message_do_not_disturb");
-            [self.swch setFrame:CGRectMake(self.view.frame.size.width - self.swch.frame.size.width - 15, 6, 0, 0)];
-            [self.swch addTarget:self action:@selector(setSwitchState:) forControlEvents:UIControlEventValueChanged];
-            [cell.contentView addSubview:self.swch];
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.textLabel.textColor = [UIColor blackColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.text = RCDLocalizedString(@"Turn_on_message_do_not_disturb");
+        [self.swch setFrame:CGRectMake(self.view.frame.size.width - self.swch.frame.size.width - 15, 6, 0, 0)];
+        [self.swch addTarget:self action:@selector(setSwitchState:) forControlEvents:UIControlEventValueChanged];
+        [cell.contentView addSubview:self.swch];
     } else if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             cell.textLabel.text = RCDLocalizedString(@"Start_time");
@@ -338,6 +340,7 @@
 }
 
 - (void)configTableView {
+    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.scrollEnabled = NO;
     self.tableView.tableFooterView = [UIView new];
     [self.tableView selectRowAtIndexPath:self.startIndexPath

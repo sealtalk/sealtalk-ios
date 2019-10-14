@@ -68,7 +68,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    self.tableView.backgroundColor = [UIColor whiteColor];
     [self setupNavi];
     [self initData];
     [self setupSubviews];
@@ -438,6 +438,20 @@
     return nil;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 15)];
+    view.backgroundColor = HEXCOLOR(0xf0f0f6);
+    if (self.isSearchResult == NO) {
+        NSString *key = [self.allKeys objectAtIndex:section];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 8, [UIScreen mainScreen].bounds.size.width, 15)];
+        label.textColor = [UIColor blackColor];
+        label.font = [UIFont boldSystemFontOfSize:17];
+        label.text = key;
+        [view addSubview:label];
+    }
+    return view;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellReuseIdentifier = @"RCDContactSelectedTableViewCell";
     RCDContactSelectedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellReuseIdentifier];
@@ -456,9 +470,12 @@
             user = [self.matchSearchList objectAtIndex:indexPath.row];
         }
     }
-
+    
+    cell.groupId = self.groupId;
+    
     //给控件填充数据
     [cell setModel:user];
+
     //设置选中状态
     BOOL isSelected = NO;
     for (RCDFriendInfo *friendInfo in self.selectUserList) {
@@ -646,7 +663,13 @@
             if (userInfo.displayName.length > 0) {
                 name = userInfo.displayName;
             }
-            if ([name rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound || [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
+            
+            RCDGroupMember *member;
+            if (self.groupId.length > 0){
+                member = [RCDGroupManager getGroupMember:userInfo.userId groupId:self.groupId];
+            }
+            
+            if ([name rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound || [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound || [member.groupNickname containsString:searchText]) {
                 [self.matchSearchList addObject:userInfo];
             }
         }

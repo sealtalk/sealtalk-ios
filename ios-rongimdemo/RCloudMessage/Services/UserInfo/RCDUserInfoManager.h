@@ -81,6 +81,19 @@
                  byUserId:(NSString *)userId
                  complete:(void (^)(BOOL success))completeBlock;
 
+// 设置好友备注和描述
++ (void)setDescriptionWithUserId:(NSString *)friendId
+                          remark:(NSString *)remark
+                          region:(NSString *)region
+                           phone:(NSString *)phone
+                            desc:(NSString *)desc
+                        imageUrl:(NSString *)imageUrl
+                        complete:(void (^)(BOOL success))completeBlock;
+// 获取好友备注和描述
++ (void)getDescriptionFromServer:(NSString *)friendId complete:(void (^)(RCDFriendDescription *description))completeBlock;
+
++ (RCDFriendDescription *)getFriendDescription:(NSString *)friendId;
+
 //由 RCDFriendInfo 转换成 RCUserInfo，使用 RCDFriendInfo 的 displayName 替换 RCUserInfo 的 name
 + (RCUserInfo *)getUserInfoFromFriendInfo:(RCDFriendInfo *)friendInfo;
 
@@ -104,6 +117,10 @@
 + (void)setGender:(NSString *)gender
          complete:(void (^)(BOOL success))completeBlock;
 
+// 批量删除好友
++ (void)batchFriendDelete:(NSArray *)friendIds
+                 complete:(void (^)(BOOL success))completeBlock;
+
 #pragma mark - user setting
 + (void)setSearchMeByMobile:(BOOL)allow
                    complete:(void (^)(BOOL success))completeBlock;
@@ -116,6 +133,14 @@
 
 + (void)setJoinGroupVerify:(BOOL)needVerify
                   complete:(void (^)(BOOL success))completeBlock;
+
++ (void)setReceivePokeMessage:(BOOL)allowReceive
+                     complete:(void (^)(BOOL success))completeBlock;
+
++ (BOOL)getReceivePokeMessageStatus;
+
++ (void)getReceivePokeMessageStatusFromServer:(void (^)(BOOL allowReceive))success
+                              error:(void (^)())error;
 
 + (RCDUserSetting *)getUserPrivacy;
 

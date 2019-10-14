@@ -19,6 +19,8 @@
 
 - (void)setModel:(RCDFriendInfo *)user;
 
+@property(nonatomic, strong) NSString *groupId;
+
 /**
  *  选中图片
  */

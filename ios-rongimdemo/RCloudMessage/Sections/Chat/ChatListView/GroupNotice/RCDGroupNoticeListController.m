@@ -25,7 +25,7 @@
     [super viewDidLoad];
     self.title = RCDLocalizedString(@"GroupNoti");
     self.tableView.tableFooterView = [UIView new];
-    
+    self.tableView.backgroundColor = [UIColor whiteColor];
     [self regiterNotification];
     [self setNaviItem];
     [self getData];
@@ -114,11 +114,9 @@
 }
 
 - (void)getData{
+    self.noticeList = [RCDGroupManager getGroupNoticeList];
     __weak typeof(self) weakSelf = self;
     [RCDGroupManager getGroupNoticeListFromServer:^(NSArray<RCDGroupNotice *> *noticeList) {
-        if (!noticeList) {
-            noticeList = [RCDGroupManager getGroupNoticeList];
-        }
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.noticeList = noticeList;
             [weakSelf.tableView reloadData];

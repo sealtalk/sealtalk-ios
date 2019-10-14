@@ -189,7 +189,7 @@
     self.titleLabel.text = RCDLocalizedString(@"SendTo");
     if (self.messageArray.count == 1) {
         RCMessageModel *messageModel = [self.messageArray firstObject];
-        NSString *displayString = messageModel.content.conversationDigest;
+        NSString *displayString = [self getDigest:messageModel];
         if (displayString.length > 10) {
             displayString = [[displayString substringToIndex:10] stringByAppendingString:@"..."];
         }
@@ -201,6 +201,20 @@
     if (self.selectedContacts.count > 0) {
         [self refreshScrollView];
     }
+}
+
+- (NSString *)getDigest:(RCMessageModel *)messageModel {
+    NSString *displayString = @"";
+    if ([messageModel.content respondsToSelector:@selector(conversationDigest)]) {
+        displayString = messageModel.content.conversationDigest;
+    } else if ([messageModel.content isMemberOfClass:RCRichContentMessage.class]) {
+        RCRichContentMessage *richContentMessage = (RCRichContentMessage *)messageModel.content;
+        displayString = richContentMessage.digest;
+    } else {
+        displayString = RCDLocalizedString(@"UnknownMessage");
+    }
+    
+    return displayString;
 }
 
 - (void)refreshScrollView {

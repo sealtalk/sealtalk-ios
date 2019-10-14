@@ -57,6 +57,7 @@
 }
 
 - (void)setupViews {
+    self.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.headerImgView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.detailLabel];

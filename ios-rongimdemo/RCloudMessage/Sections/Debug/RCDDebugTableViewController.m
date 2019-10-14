@@ -87,6 +87,7 @@
     cell.textLabel.text = title;
     cell.backgroundColor = [UIColor whiteColor];
     cell.detailTextLabel.text = @"";
+    cell.textLabel.textColor = [UIColor blackColor];
     if ([title isEqualToString:RCDLocalizedString(@"show_ID")
 ]) {
         [self setSwitchButtonCell:cell tag:DISPLAY_ID_TAG];

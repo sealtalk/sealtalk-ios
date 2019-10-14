@@ -10,7 +10,10 @@
 #import "RCDGroupInfo.h"
 #import "RCDGroupMember.h"
 #import "RCDGroupNotice.h"
+#import "RCDGroupMemberDetailInfo.h"
+#import "RCDGroupLeftMember.h"
 #import "RCDEnum.h"
+
 @class RCUserInfo;
 @class RCDGroupAnnouncement;
 NS_ASSUME_NONNULL_BEGIN
@@ -20,6 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
         portraitUri:(NSString *)portraitUri
           memberIds:(NSArray *)memberIds
            complete:(void (^)(NSString *groupId, RCDGroupAddMemberStatus status))complete;
+
++ (void)copyGroup:(NSString *)groupId
+        groupName:(NSString *)groupName
+      portraitUri:(NSString *)portraitUri
+         complete:(void (^)(NSString *groupId, RCDGroupAddMemberStatus status))complete
+            error:(void (^)(RCDGroupErrorCode errorCode))error;
 
 + (void)setGroupPortrait:(NSString *)portraitUri
                  groupId:(NSString *)groupId
@@ -67,6 +76,12 @@ NS_ASSUME_NONNULL_BEGIN
                       groupId:(NSString *)groupId
                      complete:(void (^)(BOOL success))complete;
 
++ (void)setGroupMemberProtection:(BOOL)open
+                         groupId:(NSString *)groupId
+                        complete:(void (^)(BOOL success))complete;
+
++ (void)getGroupLeftMemberList:(NSString *)groupId
+                      complete:(void (^)(NSArray <RCDGroupLeftMember *> *list))complete;
 #pragma mark - Group member
 //获取群组成员列表
 + (void)getGroupMembers:(NSString *)groupId
@@ -103,6 +118,13 @@ NS_ASSUME_NONNULL_BEGIN
                     groupId:(NSString *)groupId
                    complete:(void (^)(BOOL success))complete;
 
++ (void)setGroupMemberDetailInfo:(RCDGroupMemberDetailInfo *)memberInfo
+                         groupId:(NSString *)groupId
+                        complete:(void (^)(BOOL success))complete;
+
++ (void)getGroupMemberDetailInfo:(NSString *)userId
+                         groupId:(NSString *)groupId
+                        complete:(void (^)(RCDGroupMemberDetailInfo *member))complete;
 #pragma mark - My Group
 // 添加到我的群组
 + (void)addToMyGroups:(NSString *)groupId

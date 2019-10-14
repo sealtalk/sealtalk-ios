@@ -109,6 +109,7 @@
 
 #pragma mark - Private Method
 - (void)initSubviews {
+    self.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.portraitImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.rightLabel];
@@ -188,6 +189,7 @@
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = [UIFont systemFontOfSize:17];
+        _nameLabel.textColor = [UIColor blackColor];
     }
     return _nameLabel;
 }
@@ -203,8 +205,9 @@
 - (UILabel *)rightLabel {
     if (!_rightLabel) {
         _rightLabel = [[UILabel alloc] init];
-        self.rightLabel.font = [UIFont systemFontOfSize:14];
-        self.rightLabel.textAlignment = NSTextAlignmentRight;
+        _rightLabel.font = [UIFont systemFontOfSize:14];
+        _rightLabel.textAlignment = NSTextAlignmentRight;
+        _rightLabel.textColor = [UIColor blackColor];
     }
     return _rightLabel;
 }
