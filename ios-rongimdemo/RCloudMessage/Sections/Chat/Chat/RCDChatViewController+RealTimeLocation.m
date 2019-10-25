@@ -19,7 +19,7 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
 @implementation RCDChatViewController (RCDChatViewController)
 - (void)initRealTimeLocationStatusView {
     self.realTimeLocationStatusView =
-    [[RealTimeLocationStatusView alloc] initWithFrame:CGRectMake(0, 62, self.view.frame.size.width, 0)];
+        [[RealTimeLocationStatusView alloc] initWithFrame:CGRectMake(0, 62, self.view.frame.size.width, 0)];
     self.realTimeLocationStatusView.delegate = self;
     [self.view addSubview:self.realTimeLocationStatusView];
 }
@@ -30,14 +30,16 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
 }
 - (void)getRealTimeLocationProxy {
     __weak typeof(self) weakSelf = self;
-    [[RCRealTimeLocationManager sharedManager] getRealTimeLocationProxy:self.conversationType targetId:self.targetId success:^(id<RCRealTimeLocationProxy> realTimeLocation) {
-        weakSelf.realTimeLocation = realTimeLocation;
-        [weakSelf.realTimeLocation addRealTimeLocationObserver:weakSelf];
-        [weakSelf updateRealTimeLocationStatus];
-    }
-      error:^(RCRealTimeLocationErrorCode status) {
-          NSLog(@"get location share failure with code %d", (int)status);
-      }];
+    [[RCRealTimeLocationManager sharedManager] getRealTimeLocationProxy:self.conversationType
+        targetId:self.targetId
+        success:^(id<RCRealTimeLocationProxy> realTimeLocation) {
+            weakSelf.realTimeLocation = realTimeLocation;
+            [weakSelf.realTimeLocation addRealTimeLocationObserver:weakSelf];
+            [weakSelf updateRealTimeLocationStatus];
+        }
+        error:^(RCRealTimeLocationErrorCode status) {
+            NSLog(@"get location share failure with code %d", (int)status);
+        }];
 }
 
 /******************消息多选功能:转发、删除**********************/
@@ -62,18 +64,23 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     if ([userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
         [self notifyParticipantChange:RCDLocalizedString(@"you_join_location_share")];
     } else {
-        [[RCIM sharedRCIM].userInfoDataSource
-         getUserInfoWithUserId:userId
-         completion:^(RCUserInfo *userInfo) {
-             if (userInfo.name.length) {
-                 [weakSelf notifyParticipantChange:[NSString stringWithFormat:RCDLocalizedString(@"someone_join_share_location"),
-                                                    userInfo.name]];
-             } else {
-                 [weakSelf notifyParticipantChange:[NSString stringWithFormat:RCDLocalizedString(@"user_join_share_location")
-                                                    ,
-                                                    userId]];
-             }
-         }];
+        [[RCIM sharedRCIM]
+                .userInfoDataSource
+            getUserInfoWithUserId:userId
+                       completion:^(RCUserInfo *userInfo) {
+                           if (userInfo.name.length) {
+                               [weakSelf
+                                   notifyParticipantChange:[NSString
+                                                               stringWithFormat:RCDLocalizedString(
+                                                                                    @"someone_join_share_location"),
+                                                                                userInfo.name]];
+                           } else {
+                               [weakSelf
+                                   notifyParticipantChange:[NSString stringWithFormat:RCDLocalizedString(
+                                                                                          @"user_join_share_location"),
+                                                                                      userId]];
+                           }
+                       }];
     }
 }
 
@@ -82,17 +89,23 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     if ([userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
         [self notifyParticipantChange:RCDLocalizedString(@"you_quit_location_share")];
     } else {
-        [[RCIM sharedRCIM].userInfoDataSource
-         getUserInfoWithUserId:userId
-         completion:^(RCUserInfo *userInfo) {
-             if (userInfo.name.length) {
-                 [weakSelf notifyParticipantChange:[NSString stringWithFormat:RCDLocalizedString(@"someone_quit_location_share"),
-                                                    userInfo.name]];
-             } else {
-                 [weakSelf notifyParticipantChange:[NSString stringWithFormat:RCDLocalizedString(@"user_quit_location_share"),
-                                                    userId]];
-             }
-         }];
+        [[RCIM sharedRCIM]
+                .userInfoDataSource
+            getUserInfoWithUserId:userId
+                       completion:^(RCUserInfo *userInfo) {
+                           if (userInfo.name.length) {
+                               [weakSelf
+                                   notifyParticipantChange:[NSString
+                                                               stringWithFormat:RCDLocalizedString(
+                                                                                    @"someone_quit_location_share"),
+                                                                                userInfo.name]];
+                           } else {
+                               [weakSelf
+                                   notifyParticipantChange:[NSString stringWithFormat:RCDLocalizedString(
+                                                                                          @"user_quit_location_share"),
+                                                                                      userId]];
+                           }
+                       }];
     }
 }
 
@@ -126,7 +139,6 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
 - (void)onFailUpdateLocation:(NSString *)description {
 }
 
-
 #pragma mark - RealTimeLocationStatusViewDelegate
 - (void)onJoin {
     [self showRealTimeLocationViewController];
@@ -152,7 +164,7 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     [self.navigationController presentViewController:lsvc
                                             animated:YES
                                           completion:^{
-                                              
+
                                           }];
 }
 
@@ -162,43 +174,46 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
         __weak typeof(self) weakSelf = self;
         NSArray *participants = nil;
         switch ([self.realTimeLocation getStatus]) {
-            case RC_REAL_TIME_LOCATION_STATUS_OUTGOING:
-                [self.realTimeLocationStatusView updateText:RCDLocalizedString(@"you_location_sharing")];
-                break;
-            case RC_REAL_TIME_LOCATION_STATUS_CONNECTED:
-            case RC_REAL_TIME_LOCATION_STATUS_INCOMING:
-                participants = [self.realTimeLocation getParticipants];
-                if (participants.count == 1) {
-                    NSString *userId = participants[0];
-                    [weakSelf.realTimeLocationStatusView
-                     updateText:[NSString stringWithFormat:RCDLocalizedString(@"user_location_sharing"), userId]];
-                    [[RCIM sharedRCIM].userInfoDataSource
-                     getUserInfoWithUserId:userId
-                     completion:^(RCUserInfo *userInfo) {
-                         if (userInfo.name.length) {
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 [weakSelf.realTimeLocationStatusView
-                                  updateText:[NSString stringWithFormat:RCDLocalizedString(@"someone_location_sharing"), userInfo.name]];
-                             });
-                         }
-                     }];
-                } else {
-                    if (participants.count < 1)
-                        [self.realTimeLocationStatusView removeFromSuperview];
-                    else
-                        [self.realTimeLocationStatusView
-                         updateText:[NSString stringWithFormat:@"%d人正在共享地理位置", (int)participants.count]];
-                }
-                break;
-            default:
-                break;
+        case RC_REAL_TIME_LOCATION_STATUS_OUTGOING:
+            [self.realTimeLocationStatusView updateText:RCDLocalizedString(@"you_location_sharing")];
+            break;
+        case RC_REAL_TIME_LOCATION_STATUS_CONNECTED:
+        case RC_REAL_TIME_LOCATION_STATUS_INCOMING:
+            participants = [self.realTimeLocation getParticipants];
+            if (participants.count == 1) {
+                NSString *userId = participants[0];
+                [weakSelf.realTimeLocationStatusView
+                    updateText:[NSString stringWithFormat:RCDLocalizedString(@"user_location_sharing"), userId]];
+                [[RCIM sharedRCIM]
+                        .userInfoDataSource
+                    getUserInfoWithUserId:userId
+                               completion:^(RCUserInfo *userInfo) {
+                                   if (userInfo.name.length) {
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           [weakSelf.realTimeLocationStatusView
+                                               updateText:[NSString stringWithFormat:RCDLocalizedString(
+                                                                                         @"someone_location_sharing"),
+                                                                                     userInfo.name]];
+                                       });
+                                   }
+                               }];
+            } else {
+                if (participants.count < 1)
+                    [self.realTimeLocationStatusView removeFromSuperview];
+                else
+                    [self.realTimeLocationStatusView
+                        updateText:[NSString stringWithFormat:@"%d人正在共享地理位置", (int)participants.count]];
+            }
+            break;
+        default:
+            break;
         }
     }
 }
 
 #pragma mark - getter
 - (void)setRealTimeLocation:(id<RCRealTimeLocationProxy>)realTimeLocation {
-    objc_setAssociatedObject(self,kRealTimeLocationKey, realTimeLocation,OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, kRealTimeLocationKey, realTimeLocation, OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (id<RCRealTimeLocationProxy>)realTimeLocation {
@@ -206,7 +221,8 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
 }
 
 - (void)setRealTimeLocationStatusView:(RealTimeLocationStatusView *)realTimeLocationStatusView {
-    objc_setAssociatedObject(self,kRealTimeLocationStatusViewKey, realTimeLocationStatusView,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, kRealTimeLocationStatusViewKey, realTimeLocationStatusView,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (RealTimeLocationStatusView *)realTimeLocationStatusView {

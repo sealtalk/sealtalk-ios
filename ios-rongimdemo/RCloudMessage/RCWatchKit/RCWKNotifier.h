@@ -15,7 +15,7 @@
 
 @interface RCWKNotifier : NSObject <RCWatchKitStatusDelegate>
 + (instancetype)sharedWKNotifier;
-@property(nonatomic, getter=isWatchAttached) BOOL watchAttached;
+@property (nonatomic, getter=isWatchAttached) BOOL watchAttached;
 // for App use
 - (void)notifyWatchKitEvent:(NSString *)appEvent;
 - (void)notifyWatchKitUserInfoChanged;

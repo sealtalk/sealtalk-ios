@@ -29,16 +29,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = RCDLocalizedString(@"language");
-    
-    self.languageDic = @{@"en":@"English", @"zh-Hans":@"简体中文"};
+
+    self.languageDic = @{ @"en" : @"English", @"zh-Hans" : @"简体中文" };
     self.language = [RCDLanguageManager sharedRCDLanguageManager].currentLanguage;
     self.currentLanguage = self.language;
-    
+
     [self setNavigationBar];
     [self.view addSubview:self.tableView];
 }
 
--(void)viewDidLayoutSubviews{
+- (void)viewDidLayoutSubviews {
     self.tableView.frame = self.view.bounds;
     [self.tableView reloadData];
 }
@@ -47,7 +47,7 @@
 - (void)save {
     //设置当前语言
     [[RCDLanguageManager sharedRCDLanguageManager] setLocalizableLanguage:self.language];
-    
+
     //重置vc堆栈
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
@@ -59,9 +59,9 @@
 #pragma mark - UITableView Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"current language %@", self.languageDic.allValues[indexPath.row]);
-    
+
     self.language = self.languageDic.allKeys[indexPath.row];
-    
+
     if ([self.language containsString:self.currentLanguage]) {
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"3A91F3" alpha:0.4]];
         self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -76,11 +76,12 @@
     return 15.f;
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
-    UITableViewHeaderFooterView *header = [[UITableViewHeaderFooterView alloc]init];
-    header.contentView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];;
-    
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+
+    UITableViewHeaderFooterView *header = [[UITableViewHeaderFooterView alloc] init];
+    header.contentView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    ;
+
     return header;
 }
 
@@ -91,18 +92,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *reusableCellWithIdentifier = @"RCELanguageSettingViewControllerCell";
-    RCDLanguageSettingTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
+    RCDLanguageSettingTableViewCell *cell =
+        [self.tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
     if (cell == nil) {
         cell = [[RCDLanguageSettingTableViewCell alloc] init];
     }
-    NSString * key = self.languageDic.allKeys[indexPath.row];
+    NSString *key = self.languageDic.allKeys[indexPath.row];
     cell.leftLabel.text = [self.languageDic valueForKey:key];
     cell.rightImageView.image = [key containsString:self.language] ? [UIImage imageNamed:@"select"] : nil;
     return cell;
 }
 
 - (void)setNavigationBar {
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:RCDLocalizedString(@"save") style:UIBarButtonItemStylePlain target:self action:@selector(save)];
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"save")
+                                                                           style:UIBarButtonItemStylePlain
+                                                                          target:self
+                                                                          action:@selector(save)];
     [rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"3A91F3" alpha:0.4]];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -115,7 +120,7 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.tableFooterView = [UIView new];
-        
+
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
         if ([_tableView respondsToSelector:@selector(setSeparatorInset:)]) {
             _tableView.separatorInset = UIEdgeInsetsMake(0, 10, 0, 0);

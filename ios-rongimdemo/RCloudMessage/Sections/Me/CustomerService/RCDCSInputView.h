@@ -10,5 +10,5 @@
 
 @interface RCDCSInputView : UIView
 @property (nonatomic, copy) NSString *placeHolderString;
-@property (nonatomic,strong) UITextView *suggestText;
+@property (nonatomic, strong) UITextView *suggestText;
 @end

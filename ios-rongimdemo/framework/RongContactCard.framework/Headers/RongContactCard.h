@@ -13,7 +13,8 @@ FOUNDATION_EXPORT double RongContactCardVersionNumber;
 //! Project version string for RongContactCard.
 FOUNDATION_EXPORT const unsigned char RongContactCardVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <RongContactCard/PublicHeader.h>
+// In this header, you should import all the public headers of your framework using statements like #import
+// <RongContactCard/PublicHeader.h>
 
 //名片消息核心类
 #import <RongContactCard/RCContactCardKit.h>

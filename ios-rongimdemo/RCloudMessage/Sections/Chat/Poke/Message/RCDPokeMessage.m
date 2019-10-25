@@ -35,7 +35,7 @@
 
 /// 会话列表中显示的摘要
 - (NSString *)conversationDigest {
-    return [NSString stringWithFormat:@"[%@]",RCDLocalizedString(@"Poke")];
+    return [NSString stringWithFormat:@"[%@]", RCDLocalizedString(@"Poke")];
 }
 
 ///消息的类型名

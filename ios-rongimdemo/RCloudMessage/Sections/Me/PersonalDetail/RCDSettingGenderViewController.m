@@ -25,7 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
- 
+
     self.tableView.backgroundColor = [UIColor whiteColor];
     NSString *gender = [DEFAULTS stringForKey:RCDUserGenderKey];
     if (!gender || [gender isEqualToString:@"male"]) {
@@ -74,23 +74,27 @@
 #pragma mark - Target Action
 - (void)save {
     NSString *gender = self.selectedGender == 0 ? @"male" : @"female";
-    [RCDUserInfoManager setGender:gender complete:^(BOOL success) {
-        rcd_dispatch_main_async_safe(^{
-            if (success) {
-                [DEFAULTS setObject:gender forKey:RCDUserGenderKey];
-                [self.navigationController popViewControllerAnimated:YES];
-                [self.view showHUDMessage:RCDLocalizedString(@"setting_success")];
-            } else {
-                [self.view showHUDMessage:RCDLocalizedString(@"set_fail")];
-            }
-        });
-    }];
+    [RCDUserInfoManager setGender:gender
+                         complete:^(BOOL success) {
+                             rcd_dispatch_main_async_safe(^{
+                                 if (success) {
+                                     [DEFAULTS setObject:gender forKey:RCDUserGenderKey];
+                                     [self.navigationController popViewControllerAnimated:YES];
+                                     [self.view showHUDMessage:RCDLocalizedString(@"setting_success")];
+                                 } else {
+                                     [self.view showHUDMessage:RCDLocalizedString(@"set_fail")];
+                                 }
+                             });
+                         }];
 }
 
 #pragma mark - Private Method
 - (void)setNavi {
     self.title = RCDLocalizedString(@"Gender");
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"save") style:UIBarButtonItemStylePlain target:self action:@selector(save)];
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"save")
+                                                                           style:UIBarButtonItemStylePlain
+                                                                          target:self
+                                                                          action:@selector(save)];
     [self.navigationItem.rightBarButtonItem setTintColor:[RCIM sharedRCIM].globalNavigationBarTintColor];
     self.navigationItem.rightBarButtonItem.enabled = YES;
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;

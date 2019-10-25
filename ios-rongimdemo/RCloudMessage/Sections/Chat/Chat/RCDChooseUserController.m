@@ -16,7 +16,7 @@
 #import "RCDUtilities.h"
 #import "UIColor+RCColor.h"
 #import "UIView+MBProgressHUD.h"
-@interface RCDChooseUserController ()<UISearchControllerDelegate, UISearchResultsUpdating>
+@interface RCDChooseUserController () <UISearchControllerDelegate, UISearchResultsUpdating>
 @property (nonatomic, strong) NSArray *allMembers;
 @property (nonatomic, strong) NSString *groupId;
 @property (nonatomic, strong) NSArray *resultKeys;
@@ -28,7 +28,7 @@
 
 @implementation RCDChooseUserController
 #pragma mark - life cycle
-- (instancetype)initWithGroupId:(NSString *)groupId{
+- (instancetype)initWithGroupId:(NSString *)groupId {
     if (self = [super init]) {
         self.groupId = groupId;
     }
@@ -45,23 +45,26 @@
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }
     self.tableView.backgroundColor = HEXCOLOR(0xf2f2f3);
-    
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"cancel") style:(UIBarButtonItemStylePlain) target:self action:@selector(clickBackBtn)];
+
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"cancel")
+                                                                      style:(UIBarButtonItemStylePlain)
+                                                                     target:self
+                                                                     action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = leftBtn;
-    
+
     [self getData];
 }
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.resultKeys.count+1;
+    return self.resultKeys.count + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
         return 1;
     }
-    NSString *key = self.resultKeys[section-1];
+    NSString *key = self.resultKeys[section - 1];
     NSArray *array = self.resultSectionDict[key];
     return array.count;
 }
@@ -71,8 +74,8 @@
     if (indexPath.section == 0) {
         cell.portraitImageView.image = [UIImage imageNamed:@"choose_all"];
         cell.nameLabel.text = RCDLocalizedString(@"mention_all");
-    }else{
-        NSString *key = self.resultKeys[indexPath.section-1];
+    } else {
+        NSString *key = self.resultKeys[indexPath.section - 1];
         NSArray *array = self.resultSectionDict[key];
         RCUserInfo *user = array[indexPath.row];
         [cell setDataModel:user.userId groupId:self.groupId];
@@ -104,7 +107,7 @@
     title.font = [UIFont systemFontOfSize:15.f];
     title.textColor = HEXCOLOR(0x999999);
     [view addSubview:title];
-    title.text = self.resultKeys[section-1];
+    title.text = self.resultKeys[section - 1];
     return view;
 }
 
@@ -121,8 +124,8 @@
     if (indexPath.section == 0) {
         user.userId = RCDMetionAllUsetId;
         user.name = RCDLocalizedString(@"all_users");
-    }else{
-        NSString *key = self.resultKeys[indexPath.section-1];
+    } else {
+        NSString *key = self.resultKeys[indexPath.section - 1];
         NSArray *array = self.resultSectionDict[key];
         user = array[indexPath.row];
         user = [RCDUserInfoManager getUserInfo:user.userId];
@@ -146,7 +149,8 @@
             RCUserInfo *user = [RCDUserInfoManager getUserInfo:userInfo.userId];
             RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userInfo.userId];
             RCDGroupMember *member = [RCDGroupManager getGroupMember:userInfo.userId groupId:self.groupId];
-            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] || [member.groupNickname containsString:searchString]) {
+            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] ||
+                [member.groupNickname containsString:searchString]) {
                 [array addObject:userInfo];
             }
         }
@@ -161,32 +165,33 @@
 }
 
 #pragma mark - helper
-- (void)getData{
+- (void)getData {
     NSMutableArray *array = [RCDGroupManager getGroupMembers:self.groupId].mutableCopy;
     if (array.count == 0) {
         __weak typeof(self) weakSelf = self;
-        [RCDGroupManager getGroupMembersFromServer:self.groupId complete:^(NSArray<NSString *> *memberIdList) {
-            if (memberIdList) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf handleData:memberIdList.mutableCopy];
-                });
-            }
-        }];
-    }else{
+        [RCDGroupManager getGroupMembersFromServer:self.groupId
+                                          complete:^(NSArray<NSString *> *memberIdList) {
+                                              if (memberIdList) {
+                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                      [weakSelf handleData:memberIdList.mutableCopy];
+                                                  });
+                                              }
+                                          }];
+    } else {
         [self handleData:array];
     }
-    
 }
 
-- (void)dismissVC{
+- (void)dismissVC {
     if ([self.searchController.searchBar isFirstResponder]) {
         [self.searchController.searchBar resignFirstResponder];
     }
-    [self.navigationController dismissViewControllerAnimated:YES completion:^{
-    }];
+    [self.navigationController dismissViewControllerAnimated:YES
+                                                  completion:^{
+                                                  }];
 }
 
-- (void)handleData:(NSMutableArray *)array{
+- (void)handleData:(NSMutableArray *)array {
     [array removeObject:[RCIM sharedRCIM].currentUserInfo.userId];
     NSMutableArray *list = [NSMutableArray array];
     for (NSString *userId in array) {
@@ -202,7 +207,7 @@
 }
 
 - (void)sortAndRefreshWithList:(NSArray *)friendList {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSDictionary *resultDic = [[RCDUtilities sortedArrayWithPinYinDic:friendList] copy];
         self.resultKeys = resultDic[@"allKeys"];
         self.resultSectionDict = resultDic[@"infoDic"];
@@ -214,7 +219,7 @@
 
 #pragma mark - getter
 - (UISearchController *)searchController {
-    if(!_searchController){
+    if (!_searchController) {
         _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
         _searchController.delegate = self;
         _searchController.searchResultsUpdater = self;

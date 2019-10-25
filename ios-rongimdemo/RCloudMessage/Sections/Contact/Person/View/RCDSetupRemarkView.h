@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void(^TapAreaCodeBlock)();
+typedef void (^TapAreaCodeBlock)();
 
 @interface RCDSetupRemarkView : UIView
 

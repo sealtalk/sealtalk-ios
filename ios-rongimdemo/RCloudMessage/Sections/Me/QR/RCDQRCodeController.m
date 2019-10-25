@@ -40,7 +40,7 @@
 
 @implementation RCDQRCodeController
 #pragma mark - life cycle
-- (instancetype)initWithTargetId:(NSString *)targetId conversationType:(RCConversationType)type{
+- (instancetype)initWithTargetId:(NSString *)targetId conversationType:(RCConversationType)type {
     if (self = [super init]) {
         self.targetId = targetId;
         self.type = type;
@@ -58,28 +58,31 @@
 }
 
 #pragma mark - helper
-- (void)setDataInfo{
+- (void)setDataInfo {
     NSString *portraitUri, *name, *countInfo, *info, *qrInfo;
     if (self.type == ConversationType_GROUP) {
         portraitUri = self.group.portraitUri;
         name = self.group.groupName;
-        if(!self.group.needCertification){
-            countInfo = [NSString stringWithFormat:@"%@ %@",self.group.number,RCDLocalizedString(@"Person")];
+        if (!self.group.needCertification) {
+            countInfo = [NSString stringWithFormat:@"%@ %@", self.group.number, RCDLocalizedString(@"Person")];
             info = RCDLocalizedString(@"GroupScanQRCodeInfo");
-            qrInfo = [NSString stringWithFormat:@"%@?key=sealtalk://group/join?g=%@&u=%@",RCDQRCodeContentInfoUrl,self.targetId,[RCIMClient sharedRCIMClient].currentUserInfo.userId];
+            qrInfo = [NSString stringWithFormat:@"%@?key=sealtalk://group/join?g=%@&u=%@", RCDQRCodeContentInfoUrl,
+                                                self.targetId, [RCIMClient sharedRCIMClient].currentUserInfo.userId];
             self.countLabel.text = countInfo;
             self.qrCodeImageView.image = [RCDQRCodeManager getQRCodeImage:qrInfo];
         }
-    }else{
+    } else {
         RCUserInfo *user = [RCDUserInfoManager getUserInfo:self.targetId];
         portraitUri = user.portraitUri;
         name = user.name;
         info = RCDLocalizedString(@"MyScanQRCodeInfo");
-        qrInfo = [NSString stringWithFormat:@"%@?key=sealtalk://user/info?u=%@",RCDQRCodeContentInfoUrl,[RCIMClient sharedRCIMClient].currentUserInfo.userId];
+        qrInfo = [NSString stringWithFormat:@"%@?key=sealtalk://user/info?u=%@", RCDQRCodeContentInfoUrl,
+                                            [RCIMClient sharedRCIMClient].currentUserInfo.userId];
         self.qrCodeImageView.image = [RCDQRCodeManager getQRCodeImage:qrInfo];
     }
     if (![portraitUri isEqualToString:@""]) {
-        [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
+        [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:portraitUri]
+                                  placeholderImage:[UIImage imageNamed:@"contact"]];
     }
     if (!self.portraitImageView.image) {
         self.portraitImageView.image = [DefaultPortraitView portraitView:self.targetId name:name];
@@ -88,67 +91,89 @@
     self.infoLabel.text = info;
 }
 
-- (void)setNaviItem{
+- (void)setNaviItem {
     if (self.type == ConversationType_GROUP) {
         self.navigationItem.title = RCDLocalizedString(@"GroupQR");
-    }else{
+    } else {
         self.navigationItem.title = RCDLocalizedString(@"My_QR");
     }
-    
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
-- (void)clickBackBtn{
+- (void)clickBackBtn {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)didClickSaveAction{
+- (void)didClickSaveAction {
     ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
-    if (status == ALAuthorizationStatusRestricted || status == ALAuthorizationStatusDenied){
+    if (status == ALAuthorizationStatusRestricted || status == ALAuthorizationStatusDenied) {
         UIAlertView *alertView =
-        [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil) message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil) delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil) otherButtonTitles:nil, nil];
+            [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil)
+                                       message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil)
+                                      delegate:nil
+                             cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)
+                             otherButtonTitles:nil, nil];
         [alertView show];
-    }else{
+    } else {
         [self saveImageToPhotos:[self captureCurrentView:self.qrBgView]];
     }
 }
 
-- (void)didShareSealTalkAction{
+- (void)didShareSealTalkAction {
     UIImage *image = [self captureCurrentView:self.qrBgView];
     RCImageMessage *msg = [RCImageMessage messageWithImage:image];
     msg.full = YES;
-    RCMessage *message = [[RCMessage alloc] initWithType:self.type targetId:self.targetId direction:(MessageDirection_SEND) messageId:-1 content:msg];
-    [[RCDForwardManager sharedInstance] setWillForwardMessageBlock:^(RCConversationType type, NSString * _Nonnull targetId) {
-        [[RCIM sharedRCIM] sendMediaMessage:type targetId:targetId content:msg pushContent:nil pushData:nil progress:^(int progress, long messageId) {
-            
-        } success:^(long messageId) {
-            
-        } error:^(RCErrorCode errorCode, long messageId) {
-            
-        } cancel:^(long messageId) {
-            
+    RCMessage *message = [[RCMessage alloc] initWithType:self.type
+                                                targetId:self.targetId
+                                               direction:(MessageDirection_SEND)
+                                               messageId:-1
+                                                 content:msg];
+    [[RCDForwardManager sharedInstance]
+        setWillForwardMessageBlock:^(RCConversationType type, NSString *_Nonnull targetId) {
+            [[RCIM sharedRCIM] sendMediaMessage:type
+                targetId:targetId
+                content:msg
+                pushContent:nil
+                pushData:nil
+                progress:^(int progress, long messageId) {
+
+                }
+                success:^(long messageId) {
+
+                }
+                error:^(RCErrorCode errorCode, long messageId) {
+
+                }
+                cancel:^(long messageId){
+
+                }];
         }];
-    }];
     [RCDForwardManager sharedInstance].isForward = YES;
     [RCDForwardManager sharedInstance].isMultiSelect = NO;
-    [RCDForwardManager sharedInstance].selectedMessages = @[[RCMessageModel modelWithMessage:message]];
+    [RCDForwardManager sharedInstance].selectedMessages = @[ [RCMessageModel modelWithMessage:message] ];
     RCDForwardSelectedViewController *forwardSelectedVC = [[RCDForwardSelectedViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:forwardSelectedVC];
     navi.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController presentViewController:navi animated:YES completion:nil];
-    
 }
 
-- (void)didShareWechatBtnAction{
+- (void)didShareWechatBtnAction {
     if ([RCDWeChatManager weChatCanShared]) {
         UIImage *image = [self captureCurrentView:self.qrBgView];
         [[RCDWeChatManager sharedManager] sendImage:image atScene:WXSceneSession];
     } else {
         // 提示用户安装微信
-        [NormalAlertView showAlertWithTitle:nil message:RCDLocalizedString(@"NotInstalledWeChat") describeTitle:nil confirmTitle:RCDLocalizedString(@"confirm") confirm:^{
-            
-        }];
+        [NormalAlertView showAlertWithTitle:nil
+                                    message:RCDLocalizedString(@"NotInstalledWeChat")
+                              describeTitle:nil
+                               confirmTitle:RCDLocalizedString(@"confirm")
+                                    confirm:^{
+
+                                    }];
     }
 }
 
@@ -163,10 +188,10 @@
 }
 
 - (void)saveImageToPhotos:(UIImage *)image {
-    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:),nil);
+    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 }
 
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
     if (error == nil) {
         [self.view showHUDMessage:NSLocalizedStringFromTable(@"SavePhotoSuccess", @"RongCloudKit", nil)];
     } else {
@@ -174,7 +199,7 @@
     }
 }
 
-- (void)addSubViews{
+- (void)addSubViews {
     [self.view addSubview:self.qrBgView];
     [self.view addSubview:self.shareBgView];
     UIView *lineView = [[UIView alloc] init];
@@ -198,8 +223,8 @@
         make.height.offset(50);
         make.top.equalTo(lineView.mas_bottom);
     }];
-    
-    if(self.type == ConversationType_GROUP && self.group.needCertification){
+
+    if (self.type == ConversationType_GROUP && self.group.needCertification) {
         UILabel *label = [[UILabel alloc] init];
         label.text = RCDLocalizedString(@"GroupQrCodeCerTip");
         label.textAlignment = NSTextAlignmentCenter;
@@ -212,12 +237,12 @@
             make.width.equalTo(self.qrBgView);
         }];
     }
-    
+
     [self addQrBgViewSubviews];
     [self addShareBgViewSubviews];
 }
 
-- (void)addShareBgViewSubviews{
+- (void)addShareBgViewSubviews {
     [self.shareBgView addSubview:self.saveButton];
     [self.shareBgView addSubview:self.shareSealTalkBtn];
     [self.shareBgView addSubview:self.shareWechatBtn];
@@ -227,10 +252,10 @@
     UIView *lineView2 = [[UIView alloc] init];
     lineView2.backgroundColor = HEXCOLOR(0xe5e5e5);
     [self.shareBgView addSubview:lineView2];
-    
+
     [self.saveButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.equalTo(self.shareBgView);
-        make.width.offset(320/3);
+        make.width.offset(320 / 3);
     }];
     [lineView1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(self.shareBgView);
@@ -249,32 +274,32 @@
     }];
     [self.shareWechatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.right.equalTo(self.shareBgView);
-        make.width.offset(320/3);
+        make.width.offset(320 / 3);
     }];
 }
 
-- (void)addQrBgViewSubviews{
+- (void)addQrBgViewSubviews {
     [self.qrBgView addSubview:self.portraitImageView];
     [self.qrBgView addSubview:self.nameLabel];
     UIView *lineView = [[UIView alloc] init];
     lineView.backgroundColor = HEXCOLOR(0xe5e5e5);
     [self.qrBgView addSubview:lineView];
-    
+
     [self.portraitImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.equalTo(self.qrBgView).offset(20);
         make.width.height.offset(50);
     }];
-    
+
     if (self.type == ConversationType_GROUP) {
-        if(self.group.needCertification){
+        if (self.group.needCertification) {
             [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.portraitImageView.mas_right).offset(15);
                 make.right.equalTo(self.qrBgView.mas_right).offset(-15);
                 make.centerY.equalTo(self.portraitImageView);
                 make.height.offset(28);
             }];
-            
-        }else{
+
+        } else {
             [self.qrBgView addSubview:self.qrCodeImageView];
             [self.qrBgView addSubview:self.countLabel];
             [self.qrBgView addSubview:self.infoLabel];
@@ -284,7 +309,7 @@
                 make.top.equalTo(self.qrBgView).offset(20);
                 make.height.offset(28);
             }];
-            
+
             [self.countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.portraitImageView.mas_right).offset(15);
                 make.right.equalTo(self.qrBgView.mas_right).offset(-15);
@@ -292,7 +317,7 @@
                 make.height.offset(20);
             }];
         }
-    }else{
+    } else {
         [self.qrBgView addSubview:self.qrCodeImageView];
         [self.qrBgView addSubview:self.infoLabel];
         [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -302,14 +327,14 @@
             make.height.offset(28);
         }];
     }
-    
+
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.qrBgView);
         make.top.equalTo(self.qrBgView).offset(90);
         make.width.offset(280);
         make.height.offset(0.5);
     }];
-    if(!self.group.needCertification){
+    if (!self.group.needCertification) {
         [self.qrCodeImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.qrBgView);
             make.top.equalTo(self.qrBgView).offset(70);
@@ -322,11 +347,10 @@
             make.width.equalTo(self.qrBgView);
         }];
     }
-    
 }
 
 #pragma mark - getter
-- (UIView *)qrBgView{
+- (UIView *)qrBgView {
     if (!_qrBgView) {
         _qrBgView = [[UIView alloc] init];
         _qrBgView.backgroundColor = [UIColor whiteColor];
@@ -334,7 +358,7 @@
     return _qrBgView;
 }
 
-- (UIImageView *)portraitImageView{
+- (UIImageView *)portraitImageView {
     if (!_portraitImageView) {
         _portraitImageView = [[UIImageView alloc] init];
         _portraitImageView.layer.masksToBounds = YES;
@@ -343,7 +367,7 @@
     return _portraitImageView;
 }
 
-- (UILabel *)nameLabel{
+- (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.textColor = HEXCOLOR(0x262626);
@@ -352,7 +376,7 @@
     return _nameLabel;
 }
 
-- (UILabel *)countLabel{
+- (UILabel *)countLabel {
     if (!_countLabel) {
         _countLabel = [[UILabel alloc] init];
         _countLabel.textColor = HEXCOLOR(0x939393);
@@ -361,14 +385,14 @@
     return _countLabel;
 }
 
-- (UIImageView *)qrCodeImageView{
+- (UIImageView *)qrCodeImageView {
     if (!_qrCodeImageView) {
         _qrCodeImageView = [[UIImageView alloc] init];
     }
     return _qrCodeImageView;
 }
 
-- (UILabel *)infoLabel{
+- (UILabel *)infoLabel {
     if (!_infoLabel) {
         _infoLabel = [[UILabel alloc] init];
         _infoLabel.textColor = HEXCOLOR(0x939393);
@@ -378,7 +402,7 @@
     return _infoLabel;
 }
 
-- (UIView *)shareBgView{
+- (UIView *)shareBgView {
     if (!_shareBgView) {
         _shareBgView = [[UIView alloc] init];
         _shareBgView.backgroundColor = [UIColor whiteColor];
@@ -386,35 +410,41 @@
     return _shareBgView;
 }
 
-- (UIButton *)saveButton{
+- (UIButton *)saveButton {
     if (!_saveButton) {
         _saveButton = [[UIButton alloc] init];
         [_saveButton setTitleColor:HEXCOLOR(0x0099ff) forState:(UIControlStateNormal)];
         _saveButton.titleLabel.font = [UIFont systemFontOfSize:13];
         [_saveButton setTitle:RCDLocalizedString(@"SaveImage") forState:(UIControlStateNormal)];
-        [_saveButton addTarget:self action:@selector(didClickSaveAction) forControlEvents:(UIControlEventTouchUpInside)];
+        [_saveButton addTarget:self
+                        action:@selector(didClickSaveAction)
+              forControlEvents:(UIControlEventTouchUpInside)];
     }
     return _saveButton;
 }
 
-- (UIButton *)shareSealTalkBtn{
+- (UIButton *)shareSealTalkBtn {
     if (!_shareSealTalkBtn) {
         _shareSealTalkBtn = [[UIButton alloc] init];
         [_shareSealTalkBtn setTitleColor:HEXCOLOR(0x0099ff) forState:(UIControlStateNormal)];
         _shareSealTalkBtn.titleLabel.font = [UIFont systemFontOfSize:13];
         [_shareSealTalkBtn setTitle:RCDLocalizedString(@"ShareToSealTalk") forState:(UIControlStateNormal)];
-        [_shareSealTalkBtn addTarget:self action:@selector(didShareSealTalkAction) forControlEvents:(UIControlEventTouchUpInside)];
+        [_shareSealTalkBtn addTarget:self
+                              action:@selector(didShareSealTalkAction)
+                    forControlEvents:(UIControlEventTouchUpInside)];
     }
     return _shareSealTalkBtn;
 }
 
-- (UIButton *)shareWechatBtn{
+- (UIButton *)shareWechatBtn {
     if (!_shareWechatBtn) {
         _shareWechatBtn = [[UIButton alloc] init];
         [_shareWechatBtn setTitleColor:HEXCOLOR(0x0099ff) forState:(UIControlStateNormal)];
         _shareWechatBtn.titleLabel.font = [UIFont systemFontOfSize:13];
         [_shareWechatBtn setTitle:RCDLocalizedString(@"ShareToWeChat") forState:(UIControlStateNormal)];
-        [_shareWechatBtn addTarget:self action:@selector(didShareWechatBtnAction) forControlEvents:(UIControlEventTouchUpInside)];
+        [_shareWechatBtn addTarget:self
+                            action:@selector(didShareWechatBtnAction)
+                  forControlEvents:(UIControlEventTouchUpInside)];
     }
     return _shareWechatBtn;
 }

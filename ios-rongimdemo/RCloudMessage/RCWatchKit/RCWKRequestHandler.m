@@ -10,9 +10,9 @@
 #import "RCWKNotifier.h"
 
 @interface RCWKRequestHandler ()
-@property(strong, nonatomic) NSDictionary *userInfo;
-@property(strong, nonatomic) void (^reply)(NSDictionary *);
-@property(weak, nonatomic) id<RCWKAppInfoProvider> provider;
+@property (strong, nonatomic) NSDictionary *userInfo;
+@property (strong, nonatomic) void (^reply)(NSDictionary *);
+@property (weak, nonatomic) id<RCWKAppInfoProvider> provider;
 @end
 
 @implementation RCWKRequestHandler
@@ -36,8 +36,10 @@
 
     if ([query isEqualToString:WK_APP_COMMUNICATE_QUERY_UNREAD_COUNT]) {
         int count = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
-            @(ConversationType_PRIVATE), @(ConversationType_APPSERVICE),
-            @(ConversationType_PUBLICSERVICE), @(ConversationType_GROUP)
+            @(ConversationType_PRIVATE),
+            @(ConversationType_APPSERVICE),
+            @(ConversationType_PUBLICSERVICE),
+            @(ConversationType_GROUP)
         ]];
         [self replyWKApp:[NSNumber numberWithInt:count]];
     } else if ([query isEqualToString:WK_APP_COMMUNICATE_QUERY_CONVERSATION_LIST]) {

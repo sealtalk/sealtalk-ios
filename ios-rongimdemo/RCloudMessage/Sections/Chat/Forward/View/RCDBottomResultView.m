@@ -34,19 +34,19 @@
 }
 
 - (void)setupSubviews {
-    
+
     self.backgroundColor = [UIColor colorWithHexString:@"FAFAFA" alpha:1];
-    
+
     [self addSubview:self.confirmButton];
     [self addSubview:self.resultButton];
-    
+
     [self.resultButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(12);
         make.height.offset(RCDBottomResultViewHeight);
         make.bottom.equalTo(self).offset(-RCDExtraBottomHeight);
         make.right.mas_lessThanOrEqualTo(self.confirmButton.mas_left);
     }];
-    
+
     [self.confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.resultButton);
         make.right.equalTo(self).offset(-12);
@@ -56,7 +56,7 @@
 }
 
 - (void)updateSelectResult {
-    
+
     RCDForwardManager *forwardManager = [RCDForwardManager sharedInstance];
     [self updateSelectResult:forwardManager.friendCount groupCount:forwardManager.groupCount];
 }
@@ -69,7 +69,6 @@
         [self.resultButton setTitleColor:[UIColor colorWithHexString:@"3A91F3" alpha:1] forState:UIControlStateNormal];
         [self.confirmButton setTitleColor:[UIColor colorWithHexString:@"3A91F3" alpha:1] forState:UIControlStateNormal];
     } else {
-        
     }
 }
 
@@ -87,10 +86,12 @@
         text = RCDLocalizedString(@"ChooseNoOne");
     }
     [self.resultButton setTitle:text forState:UIControlStateNormal];
-    UIColor *resultColor = result + groupCount > 0 ? [UIColor colorWithHexString:@"3A91F3" alpha:1] : [UIColor colorWithHexString:@"B2B2B2" alpha:1];
+    UIColor *resultColor = result + groupCount > 0 ? [UIColor colorWithHexString:@"3A91F3" alpha:1]
+                                                   : [UIColor colorWithHexString:@"B2B2B2" alpha:1];
     [self.resultButton setTitleColor:resultColor forState:UIControlStateNormal];
-    
-    UIColor *confirmColor = result + groupCount > 0 ? [UIColor colorWithHexString:@"3A91F3" alpha:1] : [UIColor colorWithHexString:@"B2B2B2" alpha:1];
+
+    UIColor *confirmColor = result + groupCount > 0 ? [UIColor colorWithHexString:@"3A91F3" alpha:1]
+                                                    : [UIColor colorWithHexString:@"B2B2B2" alpha:1];
     [self.confirmButton setTitleColor:confirmColor forState:UIControlStateNormal];
 }
 
@@ -112,7 +113,7 @@
     if (self.selectedResult < 1) {
         return;
     }
-    
+
     if (self.resultButtonBlock) {
         self.resultButtonBlock();
     } else {
@@ -160,7 +161,8 @@
         _confirmButton.titleLabel.textAlignment = NSTextAlignmentRight;
         [_confirmButton setTitle:RCDLocalizedString(@"ConfirmBtnTitle") forState:UIControlStateNormal];
         [_confirmButton setTitleColor:[UIColor colorWithHexString:@"3A91F3" alpha:1] forState:UIControlStateNormal];
-        [_confirmButton addTarget:self action:@selector(confirmButtonEvent)
+        [_confirmButton addTarget:self
+                           action:@selector(confirmButtonEvent)
                  forControlEvents:UIControlEventTouchUpInside];
     }
     return _confirmButton;

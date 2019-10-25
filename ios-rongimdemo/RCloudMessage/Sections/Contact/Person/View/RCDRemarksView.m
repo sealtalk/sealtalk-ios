@@ -25,19 +25,19 @@
 }
 
 - (void)setupViews {
-    
+
     self.userInteractionEnabled = YES;
     self.backgroundColor = [UIColor whiteColor];
-    
+
     [self addSubview:self.remarkLabel];
     [self addSubview:self.rightArrow];
-    
+
     [self.remarkLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(10);
         make.centerY.height.equalTo(self);
         make.right.equalTo(self.rightArrow.mas_left).offset(-10);
     }];
-    
+
     [self.rightArrow mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
         make.right.equalTo(self).offset(-10);

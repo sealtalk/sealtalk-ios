@@ -16,12 +16,12 @@
 #import "RCDUserInfoManager.h"
 #import "RCDGroupMemberCell.h"
 #import "RCDGroupManager.h"
-@interface RCDGroupMemberListController()
+@interface RCDGroupMemberListController ()
 @property (nonatomic, strong) NSString *groupId;
 @end
 @implementation RCDGroupMemberListController
 #pragma mark - life cycle
-- (instancetype)initWithGroupId:(NSString *)groupId{
+- (instancetype)initWithGroupId:(NSString *)groupId {
     if (self = [super init]) {
         self.groupId = groupId;
     }
@@ -29,10 +29,13 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];    
-    self.title = [NSString stringWithFormat:RCDLocalizedString(@"group_members_x"),(unsigned long)[self.groupMembers count]];
+    [super viewDidLoad];
+    self.title =
+        [NSString stringWithFormat:RCDLocalizedString(@"group_members_x"), (unsigned long)[self.groupMembers count]];
     self.tableView.backgroundColor = [UIColor whiteColor];
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
@@ -50,7 +53,7 @@
     [cell setDataModel:self.groupMembers[indexPath.row] groupId:self.groupId];
     if ([self.groupMembers[indexPath.row] isEqualToString:[RCDGroupManager getGroupOwner:self.groupId]]) {
         [cell setUserRole:RCDLocalizedString(@"GroupOwner")];
-    }else if([[RCDGroupManager getGroupManagers:self.groupId] containsObject:self.groupMembers[indexPath.row]]){
+    } else if ([[RCDGroupManager getGroupManagers:self.groupId] containsObject:self.groupMembers[indexPath.row]]) {
         [cell setUserRole:RCDLocalizedString(@"GroupManager")];
     }
     return cell;

@@ -14,7 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface RCDChatAPI : NSObject
 
 //设置会话截屏通知
-+ (void)setChatConfigWithConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId screenCaptureNotification:(BOOL)open complete:(void (^)(BOOL))complete;
++ (void)setChatConfigWithConversationType:(RCConversationType)conversationType
+                                 targetId:(NSString *)targetId
+                screenCaptureNotification:(BOOL)open
+                                 complete:(void (^)(BOOL))complete;
 
 //获取会话截屏通知状态
 + (void)getChatConfigWithConversationType:(RCConversationType)type
@@ -30,8 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
                            groupId:(NSString *)groupId
                           complete:(void (^)(BOOL success))complete;
 
-+ (void)getGroupMessageClearStatus:(NSString *)groupId
-                          complete:(void (^)(RCDGroupMessageClearStatus status))complete;
++ (void)getGroupMessageClearStatus:(NSString *)groupId complete:(void (^)(RCDGroupMessageClearStatus status))complete;
 @end
 
 NS_ASSUME_NONNULL_END

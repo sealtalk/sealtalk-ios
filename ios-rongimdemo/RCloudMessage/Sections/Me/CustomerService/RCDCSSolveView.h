@@ -10,7 +10,7 @@
 #import <RongIMKit/RongIMKit.h>
 @interface RCDCSSolveView : UIView
 
-@property (nonatomic, copy) void(^isSolveBlock)(RCCSResolveStatus solveStatus);
+@property (nonatomic, copy) void (^isSolveBlock)(RCCSResolveStatus solveStatus);
 
 - (void)setSubview;
 @end

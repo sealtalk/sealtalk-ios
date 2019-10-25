@@ -8,7 +8,7 @@
 
 #import "RCDGroupNoticeUpdateMessage.h"
 NSString *const RCDGroupMemberInvite = @"Invite";
-@interface RCDGroupNoticeUpdateMessage()
+@interface RCDGroupNoticeUpdateMessage ()
 @property (nonatomic, copy) NSString *targetGroupName;
 @property (nonatomic, copy) NSString *operationName;
 @end
@@ -36,13 +36,12 @@ NSString *const RCDGroupMemberInvite = @"Invite";
     }
 }
 
-- (NSString *)conversationDigest{
+- (NSString *)conversationDigest {
     return @"";
 }
 
 + (NSString *)getObjectName {
     return RCDGroupNoticeUpdateMessageIdentifier;
 }
-
 
 @end

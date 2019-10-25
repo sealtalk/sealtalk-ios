@@ -9,13 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "UITextViewAndPlaceholder.h"
 @class RCDGroupMemberDetailCell;
-static NSString * _Nullable RCDGroupMyInfoCellIdentifier = @"RCDGroupMyInfoCellIdentifier";
+static NSString *_Nullable RCDGroupMyInfoCellIdentifier = @"RCDGroupMyInfoCellIdentifier";
 
 NS_ASSUME_NONNULL_BEGIN
 @protocol RCDGroupMemberDetailCellDelegate <NSObject>
 - (void)textViewWillBeginEditing:(UITextView *)textView inCell:(RCDGroupMemberDetailCell *)cell;
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text inCell:(RCDGroupMemberDetailCell *)cell;
+- (BOOL)textView:(UITextView *)textView
+    shouldChangeTextInRange:(NSRange)range
+            replacementText:(NSString *)text
+                     inCell:(RCDGroupMemberDetailCell *)cell;
 
 - (void)textViewDidChange:(UITextView *)textView inCell:(RCDGroupMemberDetailCell *)cell;
 
@@ -27,9 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<RCDGroupMemberDetailCellDelegate> delegate;
 @property (nonatomic, strong) UITextViewAndPlaceholder *textView;
-+ (CGFloat)getCellHeight:(UITableView *)tableView
-               leftTitle:(NSString *)leftTitle
-                    text:(NSString *)text;
++ (CGFloat)getCellHeight:(UITableView *)tableView leftTitle:(NSString *)leftTitle text:(NSString *)text;
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 
 - (void)setLeftTitle:(NSString *)leftTitle placeholder:(NSString *)placeholder;

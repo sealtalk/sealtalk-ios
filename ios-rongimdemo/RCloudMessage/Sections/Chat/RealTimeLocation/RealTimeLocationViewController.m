@@ -14,7 +14,8 @@
 #import "RCLocationConvert.h"
 #import "UIColor+RCColor.h"
 
-@interface RealTimeLocationViewController () <RCRealTimeLocationObserver, MKMapViewDelegate, HeadCollectionTouchDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+@interface RealTimeLocationViewController () <RCRealTimeLocationObserver, MKMapViewDelegate,
+                                              HeadCollectionTouchDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) UIView *headBackgroundView;
@@ -33,7 +34,7 @@ MBProgressHUD *hud;
 
     _isFirstTimeToLoad = YES;
     [self addSubviews];
-    
+
     CLLocation *currentLocation =
         [self.realTimeLocationProxy getLocation:[RCIMClient sharedRCIMClient].currentUserInfo.userId];
     if (currentLocation) {
@@ -57,12 +58,13 @@ MBProgressHUD *hud;
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (status == kCLAuthorizationStatusDenied) {
         [hud hide:YES];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"Inaccessible")
-                                                            message:RCDLocalizedString(@"Location_access_without_permission")
-                                                           delegate:nil
-                                                  cancelButtonTitle:RCDLocalizedString(@"confirm")
+        UIAlertView *alertView =
+            [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"Inaccessible")
+                                       message:RCDLocalizedString(@"Location_access_without_permission")
+                                      delegate:nil
+                             cancelButtonTitle:RCDLocalizedString(@"confirm")
 
-                                                  otherButtonTitles:nil];
+                             otherButtonTitles:nil];
         [alertView show];
     }
 }
@@ -139,8 +141,7 @@ MBProgressHUD *hud;
         self.isFirstTimeToLoad = NO;
         CLLocation *cll = [self.realTimeLocationProxy getLocation:userId];
         if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-                [hud hide:YES];
-            
+            [hud hide:YES];
         }
         RCAnnotation *annotaton = [self.userAnnotationDic objectForKey:userId];
         if (annotaton == nil) {
@@ -155,33 +156,35 @@ MBProgressHUD *hud;
             RCAnnotation *ann = [[RCAnnotation alloc] initWithThumbnail:annotatonView];
             [self.mapView addAnnotation:ann];
             [self.userAnnotationDic setObject:ann forKey:userId];
-            
+
             if ([RCIM sharedRCIM].userInfoDataSource &&
-                [[RCIM sharedRCIM].userInfoDataSource respondsToSelector:@selector(getUserInfoWithUserId:completion:)]) {
-                [[RCIM sharedRCIM].userInfoDataSource
-                 getUserInfoWithUserId:userId
-                 completion:^(RCUserInfo *user) {
-                     dispatch_async(dispatch_get_main_queue(), ^{
-                         RCUserInfo *userInfo = user;
-                         if (!userInfo) {
-                             userInfo = [[RCUserInfo alloc]
-                                         initWithUserId:userId
-                                         name:[NSString stringWithFormat:@"user<%@>", userId]
-                                         portrait:nil];
-                         }
-                         
-                         RCAnnotation *annotaton =
-                         [__weakself.userAnnotationDic objectForKey:userInfo.userId];
-                         annotatonView.isMyLocation = NO;
-                         if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-                             annotatonView.isMyLocation = YES;
-                         }
-                         annotaton.thumbnail.imageurl = userInfo.portraitUri;
-                         [annotaton updateThumbnail:annotaton.thumbnail animated:YES];
-                     });
-                 }];
+                [[RCIM sharedRCIM]
+                        .userInfoDataSource respondsToSelector:@selector(getUserInfoWithUserId:completion:)]) {
+                [[RCIM sharedRCIM]
+                        .userInfoDataSource
+                    getUserInfoWithUserId:userId
+                               completion:^(RCUserInfo *user) {
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                       RCUserInfo *userInfo = user;
+                                       if (!userInfo) {
+                                           userInfo = [[RCUserInfo alloc]
+                                               initWithUserId:userId
+                                                         name:[NSString stringWithFormat:@"user<%@>", userId]
+                                                     portrait:nil];
+                                       }
+
+                                       RCAnnotation *annotaton =
+                                           [__weakself.userAnnotationDic objectForKey:userInfo.userId];
+                                       annotatonView.isMyLocation = NO;
+                                       if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+                                           annotatonView.isMyLocation = YES;
+                                       }
+                                       annotaton.thumbnail.imageurl = userInfo.portraitUri;
+                                       [annotaton updateThumbnail:annotaton.thumbnail animated:YES];
+                                   });
+                               }];
             }
-            
+
         } else {
             if (type == RCRealTimeLocationTypeWGS84) {
                 annotaton.coordinate = [RCLocationConvert wgs84ToGcj02:cll.coordinate];
@@ -197,7 +200,6 @@ MBProgressHUD *hud;
             [__weakself.mapView removeAnnotation:annotaton];
             [__weakself.mapView addAnnotation:annotaton];
             [annotaton updateThumbnail:annotaton.thumbnail animated:YES];
-
         }
     });
 }
@@ -218,8 +220,10 @@ MBProgressHUD *hud;
             [self.userAnnotationDic setObject:ann forKey:userId];
 
             if ([RCIM sharedRCIM].userInfoDataSource &&
-                [[RCIM sharedRCIM].userInfoDataSource respondsToSelector:@selector(getUserInfoWithUserId:completion:)]) {
-                [[RCIM sharedRCIM].userInfoDataSource
+                [[RCIM sharedRCIM]
+                        .userInfoDataSource respondsToSelector:@selector(getUserInfoWithUserId:completion:)]) {
+                [[RCIM sharedRCIM]
+                        .userInfoDataSource
                     getUserInfoWithUserId:userId
                                completion:^(RCUserInfo *userInfo) {
                                    if (!userInfo) {
@@ -240,7 +244,7 @@ MBProgressHUD *hud;
         }
 
         if (self.headCollectionView) {
-                [__weakself.headCollectionView participantJoin:userId];
+            [__weakself.headCollectionView participantJoin:userId];
         }
     });
 }
@@ -260,9 +264,9 @@ MBProgressHUD *hud;
 
         if ([self.realTimeLocationProxy getStatus] == RC_REAL_TIME_LOCATION_STATUS_INCOMING ||
             [self.realTimeLocationProxy getStatus] == RC_REAL_TIME_LOCATION_STATUS_IDLE) {
-                [__weakself dismissViewControllerAnimated:YES
-                                               completion:^{
-                                               }];
+            [__weakself dismissViewControllerAnimated:YES
+                                           completion:^{
+                                           }];
         }
     });
 }
@@ -355,28 +359,27 @@ MBProgressHUD *hud;
             [__weakself.mapView addAnnotation:annotaton];
             [__weakself.mapView setCenterCoordinate:annotaton.coordinate animated:YES];
             [__weakself.mapView selectAnnotation:annotaton animated:YES];
-            
+
         });
     }
 }
 
-- (void)addSubviews{
+- (void)addSubviews {
     [self.view addSubview:self.mapView];
     [self.view addSubview:self.headCollectionView];
-    UIImageView *gpsImg =
-    [[UIImageView alloc] initWithFrame:CGRectMake(18, RCDScreenHeight - 80, 50, 50)];
+    UIImageView *gpsImg = [[UIImageView alloc] initWithFrame:CGRectMake(18, RCDScreenHeight - 80, 50, 50)];
     gpsImg.image = [UIImage imageNamed:@"gps.png"];
     [self.view addSubview:gpsImg];
     gpsImg.userInteractionEnabled = YES;
     UITapGestureRecognizer *gpsImgTap =
-    [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGpsImgEvent:)];
-    
+        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGpsImgEvent:)];
+
     [gpsImg addGestureRecognizer:gpsImgTap];
 }
 #pragma mark - getter
-- (MKMapView *)mapView{
+- (MKMapView *)mapView {
     if (!_mapView) {
-        _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth,RCDScreenHeight)];
+        _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth, RCDScreenHeight)];
         [_mapView setMapType:MKMapTypeStandard];
         _mapView.showsUserLocation = YES;
         _mapView.delegate = self;
@@ -385,19 +388,19 @@ MBProgressHUD *hud;
     return _mapView;
 }
 
-- (NSMutableDictionary *)userAnnotationDic{
+- (NSMutableDictionary *)userAnnotationDic {
     if (!_userAnnotationDic) {
         _userAnnotationDic = [[NSMutableDictionary alloc] init];
     }
     return _userAnnotationDic;
 }
 
-- (HeadCollectionView *)headCollectionView{
+- (HeadCollectionView *)headCollectionView {
     if (!_headCollectionView) {
         _headCollectionView =
-        [[HeadCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 95)
-                                     participants:[self.realTimeLocationProxy getParticipants]
-                                    touchDelegate:self];
+            [[HeadCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 95)
+                                         participants:[self.realTimeLocationProxy getParticipants]
+                                        touchDelegate:self];
         _headCollectionView.touchDelegate = self;
     }
     return _headCollectionView;

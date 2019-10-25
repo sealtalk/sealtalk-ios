@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "RCDEnum.h"
 
-
-
 @interface RCDLoginAPI : NSObject
 
 + (void)loginWithPhone:(NSString *)phone
@@ -25,7 +23,7 @@
 
 + (void)checkPhoneNumberAvailable:(NSString *)phoneCode
                       phoneNumber:(NSString *)phoneNumber
-                          complete:(void (^)(BOOL success, BOOL numberAvailable))completeBlock;
+                         complete:(void (^)(BOOL success, BOOL numberAvailable))completeBlock;
 
 + (void)getVerificationCode:(NSString *)phoneCode
                 phoneNumber:(NSString *)phoneNumber
@@ -36,17 +34,14 @@
                    phoneNumber:(NSString *)phoneNumber
               verificationCode:(NSString *)verificationCode
                        success:(void (^)(BOOL success, NSString *codeToken))successBlock
-                         error:(void (^)(RCDLoginErrorCode  errorCode))errorBlock;
+                         error:(void (^)(RCDLoginErrorCode errorCode))errorBlock;
 
 + (void)registerWithNickname:(NSString *)nickname
                     password:(NSString *)password
             verficationToken:(NSString *)verficationToken
                     complete:(void (^)(BOOL success))completeBlock;
 
-
-+ (void)changePassword:(NSString *)oldPwd
-                newPwd:(NSString *)newPwd
-              complete:(void (^)(BOOL success))completeBlock;
++ (void)changePassword:(NSString *)oldPwd newPwd:(NSString *)newPwd complete:(void (^)(BOOL success))completeBlock;
 
 + (void)resetPassword:(NSString *)password
                vToken:(NSString *)verificationToken
@@ -57,4 +52,3 @@
 + (void)getToken:(void (^)(BOOL success, NSString *token, NSString *userId))completeBlock;
 
 @end
-

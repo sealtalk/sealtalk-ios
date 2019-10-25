@@ -17,12 +17,12 @@
 /*!
  文本内容的Label
 */
-@property(strong, nonatomic) UILabel *textLabel;
+@property (strong, nonatomic) UILabel *textLabel;
 
 /*!
  背景View
  */
-@property(nonatomic, strong) UIImageView *bubbleBackgroundView;
+@property (nonatomic, strong) UIImageView *bubbleBackgroundView;
 
 /*!
  根据消息内容获取显示的尺寸

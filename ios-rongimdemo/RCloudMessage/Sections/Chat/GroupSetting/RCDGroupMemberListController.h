@@ -10,6 +10,6 @@
 
 @interface RCDGroupMemberListController : RCDTableViewController
 - (instancetype)initWithGroupId:(NSString *)groupId;
-@property(nonatomic, strong) NSArray *groupMembers;
+@property (nonatomic, strong) NSArray *groupMembers;
 
 @end

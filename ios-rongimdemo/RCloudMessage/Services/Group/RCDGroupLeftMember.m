@@ -9,7 +9,7 @@
 #import "RCDGroupLeftMember.h"
 
 @implementation RCDGroupLeftMember
-- (instancetype)initWithJson:(NSDictionary *)json{
+- (instancetype)initWithJson:(NSDictionary *)json {
     if (self = [super init]) {
         self.operatorId = json[@"operatorId"];
         self.userId = json[@"quitUserId"];

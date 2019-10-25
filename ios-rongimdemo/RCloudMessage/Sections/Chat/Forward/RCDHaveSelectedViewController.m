@@ -14,10 +14,10 @@
 
 static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
 
-@interface RCDHaveSelectedViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface RCDHaveSelectedViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property(nonatomic, strong) UITableView *tableView;
-@property(nonatomic, strong) UIButton *confirmButton;
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIButton *confirmButton;
 @property (nonatomic, strong) NSArray *selectedModelArray;
 
 @end
@@ -26,7 +26,7 @@ static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupSubviews];
     [self setNavi];
     [self getData];
@@ -46,10 +46,11 @@ static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
     if (cell == nil) {
         cell = [[RCDHaveSelectedCell alloc] init];
     }
-    RCDForwardCellModel *model = self.selectedModelArray[indexPath.row];;
+    RCDForwardCellModel *model = self.selectedModelArray[indexPath.row];
+    ;
     cell.model = model;
     __weak typeof(self) weakSelf = self;
-    cell.deleteButtonBlock = ^(RCDForwardCellModel * _Nonnull model) {
+    cell.deleteButtonBlock = ^(RCDForwardCellModel *_Nonnull model) {
         rcd_dispatch_main_async_safe(^{
             [[RCDForwardManager sharedInstance] removeForwardModel:model];
             [weakSelf getData];
@@ -65,11 +66,11 @@ static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
 
 #pragma mark - Private Method
 - (void)setupSubviews {
-    
+
     self.title = RCDLocalizedString(@"SelectedContacts");
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
-    
+
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.left.right.equalTo(self.view);
     }];
@@ -111,10 +112,11 @@ static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
 - (UIButton *)confirmButton {
     if (!_confirmButton) {
         _confirmButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
-        [_confirmButton setTitle:RCDLocalizedString(@"ConfirmBtnTitle")  forState:UIControlStateNormal];
+        [_confirmButton setTitle:RCDLocalizedString(@"ConfirmBtnTitle") forState:UIControlStateNormal];
         [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_confirmButton setTitleColor:[UIColor colorWithHexString:@"939393" alpha:1] forState:UIControlStateDisabled];
-        [_confirmButton addTarget:self action:@selector(confirmButtonEvent)
+        [_confirmButton addTarget:self
+                           action:@selector(confirmButtonEvent)
                  forControlEvents:UIControlEventTouchUpInside];
     }
     return _confirmButton;

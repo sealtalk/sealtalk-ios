@@ -9,7 +9,7 @@
 #import "RCDGroupMember.h"
 
 @implementation RCDGroupMember
-- (instancetype)initWithJson:(NSDictionary *)json{
+- (instancetype)initWithJson:(NSDictionary *)json {
     if (self = [super init]) {
         NSDictionary *userDic = json[@"user"];
         self.userId = userDic[@"id"];

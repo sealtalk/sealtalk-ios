@@ -16,7 +16,7 @@
 #import "RCDUtilities.h"
 @interface RCDTabBarBtn ()
 
-@property(nonatomic, strong) NSString *tabBarIndex;
+@property (nonatomic, strong) NSString *tabBarIndex;
 
 @end
 
@@ -179,8 +179,11 @@
     [self.shapeLayer removeFromSuperlayer];
     [self removeFromSuperview];
     NSArray *conversationList = [[RCIMClient sharedRCIMClient] getConversationList:@[
-        @(ConversationType_PRIVATE), @(ConversationType_APPSERVICE),
-        @(ConversationType_PUBLICSERVICE), @(ConversationType_GROUP), @(ConversationType_SYSTEM)
+        @(ConversationType_PRIVATE),
+        @(ConversationType_APPSERVICE),
+        @(ConversationType_PUBLICSERVICE),
+        @(ConversationType_GROUP),
+        @(ConversationType_SYSTEM)
     ]];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSMutableArray *syncConversations = [[NSMutableArray alloc] init];

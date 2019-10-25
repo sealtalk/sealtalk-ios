@@ -33,19 +33,19 @@
     [self.contentView addSubview:self.selectedImageView];
     [self.contentView addSubview:self.portraitImageView];
     [self.contentView addSubview:self.nicknameLabel];
-    
+
     [self.selectedImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(27);
         make.centerY.equalTo(self.contentView);
         make.height.width.offset(21);
     }];
-    
+
     [self.portraitImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.selectedImageView.mas_right).offset(8);
         make.centerY.equalTo(self.contentView);
         make.height.width.offset(40);
     }];
-    
+
     [self.nicknameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.portraitImageView.mas_right).offset(8);
         make.centerY.equalTo(self.contentView);
@@ -63,17 +63,23 @@
     if (user) {
         if (self.groupId.length > 0) {
             __weak typeof(self) weakSelf = self;
-            [RCDUtilities getGroupUserDisplayInfo:user.userId groupId:self.groupId result:^(RCUserInfo *user) {
-                weakSelf.nicknameLabel.text = user.name;
-                [weakSelf.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
-            }];
-        }else{
+            [RCDUtilities getGroupUserDisplayInfo:user.userId
+                                          groupId:self.groupId
+                                           result:^(RCUserInfo *user) {
+                                               weakSelf.nicknameLabel.text = user.name;
+                                               [weakSelf.portraitImageView
+                                                   sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                                                     placeholderImage:[UIImage imageNamed:@"contact"]];
+                                           }];
+        } else {
             __weak typeof(self) weakSelf = self;
-            [RCDUtilities getUserDisplayInfo:user.userId complete:^(RCUserInfo *user) {
-                weakSelf.nicknameLabel.text = user.name;
-                [weakSelf.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
-            }];
-
+            [RCDUtilities getUserDisplayInfo:user.userId
+                                    complete:^(RCUserInfo *user) {
+                                        weakSelf.nicknameLabel.text = user.name;
+                                        [weakSelf.portraitImageView
+                                            sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                                              placeholderImage:[UIImage imageNamed:@"contact"]];
+                                    }];
         }
     }
 }

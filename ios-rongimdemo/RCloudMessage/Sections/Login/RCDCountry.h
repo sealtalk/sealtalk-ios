@@ -12,14 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RCDCountry : NSObject
 //国家中文名字
-@property(nonatomic, strong, readonly) NSString *countryName;
+@property (nonatomic, strong, readonly) NSString *countryName;
 
 //国家电话代码
-@property(nonatomic, strong) NSString *phoneCode;
+@property (nonatomic, strong) NSString *phoneCode;
 
 /**
  国家初始化方法
- 
+
  @param dict 传入的字典信息
  @return 国家信息对象
  */

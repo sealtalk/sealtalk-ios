@@ -18,7 +18,7 @@ float fromValue = 0.0f;
         self.canShowCallout = NO;
         [self setupSubviews];
     }
-    
+
     return self;
 }
 
@@ -57,7 +57,7 @@ float fromValue = 0.0f;
 }
 
 #pragma mark - private
-- (void)setupSubviews{
+- (void)setupSubviews {
     self.frame = CGRectMake(0, 0, 40, 40);
     self.backgroundColor = [UIColor clearColor];
     self.centerOffset = CGPointMake(0, 0);
@@ -75,7 +75,7 @@ float fromValue = 0.0f;
     [self addSubview:_locationImageView];
     [self addSubview:arrow];
     [self addSubview:_imageView];
-    
+
     //        CABasicAnimation* rotationAnimation = [CABasicAnimation
     //        animationWithKeyPath:@"transform.rotation.z"];
     //        rotationAnimation.delegate = self;

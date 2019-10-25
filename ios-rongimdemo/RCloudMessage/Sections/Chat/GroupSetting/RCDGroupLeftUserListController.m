@@ -40,36 +40,37 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 55;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCDGroupLeftMember *member = self.userlist[indexPath.row];
     UIViewController *vc = [RCDPersonDetailViewController configVC:member.userId groupId:self.groupId];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - helper
-- (void)getUserList{
+- (void)getUserList {
     self.userlist = [RCDGroupManager getGroupLeftMemberList:self.groupId];
     __weak typeof(self) weakSelf = self;
-    [RCDGroupManager getGroupLeftMemberListFromServer:self.groupId complete:^(NSArray<RCDGroupLeftMember *> *list) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if(list){
-                weakSelf.userlist = list;
-                [weakSelf reloadTableView];
-            }
-        });
-    }];
+    [RCDGroupManager getGroupLeftMemberListFromServer:self.groupId
+                                             complete:^(NSArray<RCDGroupLeftMember *> *list) {
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     if (list) {
+                                                         weakSelf.userlist = list;
+                                                         [weakSelf reloadTableView];
+                                                     }
+                                                 });
+                                             }];
 }
-     
-- (void)reloadTableView{
+
+- (void)reloadTableView {
     [self.tableView reloadData];
     [self reloadEmptyView];
 }
 
-- (void)reloadEmptyView{
+- (void)reloadEmptyView {
     [self.emptyLabel removeFromSuperview];
     if (self.userlist.count == 0) {
         [self.tableView addSubview:self.emptyLabel];
@@ -77,9 +78,10 @@
 }
 
 #pragma mark - getter
-- (UILabel *)emptyLabel{
+- (UILabel *)emptyLabel {
     if (!_emptyLabel) {
-        _emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2-60, self.tableView.frame.size.width, 28)];
+        _emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height / 2 - 60,
+                                                                self.tableView.frame.size.width, 28)];
         _emptyLabel.text = RCDLocalizedString(@"GroupNotLeftMember");
         _emptyLabel.textColor = HEXCOLOR(0x939393);
         _emptyLabel.font = [UIFont systemFontOfSize:20];

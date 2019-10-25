@@ -34,29 +34,29 @@
 
 @interface RCDLoginViewController () <UITextFieldDelegate, UIAlertViewDelegate, RCDCountryListControllerDelegate>
 
-@property(nonatomic, strong) RCAnimatedImagesView *animatedImagesView;
-@property(nonatomic, strong) RCDIndicateTextField *countryTextField;
-@property(nonatomic, strong) RCDIndicateTextField *phoneTextField;
-@property(nonatomic, strong) UITextField *pwdTextField;
-@property(nonatomic, strong) NSTimer *retryTimer;
-@property(nonatomic, strong) UIImageView *rongLogoView;
-@property(nonatomic, strong) UIView *inputBackground;
-@property(nonatomic, strong) UIView *bottomBackground;
-@property(nonatomic, strong) UILabel *errorMsgLb;
-@property(nonatomic, strong) UITextField *passwordTextField;
-@property(nonatomic, strong) UIButton *settingButton;
-@property(nonatomic, strong) UIButton *loginButton;
-@property(nonatomic, strong) UIButton *userProtocolButton;
-@property(nonatomic, strong) UIButton *registerButton;
-@property(nonatomic, strong) UIButton *forgetPswButton;
-@property(nonatomic, strong) UILabel *footerLabel;
-@property(nonatomic, assign) int loginFailureTimes;
-@property(nonatomic, strong) NSString *loginUserName;
-@property(nonatomic, strong) NSString *loginUserId;
-@property(nonatomic, strong) NSString *loginToken;
-@property(nonatomic, strong) NSString *loginPassword;
-@property(nonatomic, strong) RCDCountry *currentRegion;
-@property(nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, strong) RCAnimatedImagesView *animatedImagesView;
+@property (nonatomic, strong) RCDIndicateTextField *countryTextField;
+@property (nonatomic, strong) RCDIndicateTextField *phoneTextField;
+@property (nonatomic, strong) UITextField *pwdTextField;
+@property (nonatomic, strong) NSTimer *retryTimer;
+@property (nonatomic, strong) UIImageView *rongLogoView;
+@property (nonatomic, strong) UIView *inputBackground;
+@property (nonatomic, strong) UIView *bottomBackground;
+@property (nonatomic, strong) UILabel *errorMsgLb;
+@property (nonatomic, strong) UITextField *passwordTextField;
+@property (nonatomic, strong) UIButton *settingButton;
+@property (nonatomic, strong) UIButton *loginButton;
+@property (nonatomic, strong) UIButton *userProtocolButton;
+@property (nonatomic, strong) UIButton *registerButton;
+@property (nonatomic, strong) UIButton *forgetPswButton;
+@property (nonatomic, strong) UILabel *footerLabel;
+@property (nonatomic, assign) int loginFailureTimes;
+@property (nonatomic, strong) NSString *loginUserName;
+@property (nonatomic, strong) NSString *loginUserId;
+@property (nonatomic, strong) NSString *loginToken;
+@property (nonatomic, strong) NSString *loginPassword;
+@property (nonatomic, strong) RCDCountry *currentRegion;
+@property (nonatomic, strong) MBProgressHUD *hud;
 @end
 
 @implementation RCDLoginViewController
@@ -98,49 +98,47 @@
 #pragma mark - action
 - (void)loginEvent:(id)sender {
     [self startRetryTimer];
-    
+
     NSString *userName = self.phoneTextField.textField.text;
     NSString *userPwd = self.passwordTextField.text;
-    
+
     [self login:userName password:userPwd];
 }
 
 - (void)login:(NSString *)userName password:(NSString *)password {
-    
+
     RCNetworkStatus status = [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
-    
+
     if (RC_NotReachable == status) {
         self.errorMsgLb.text = RCDLocalizedString(@"network_can_not_use_please_check");
         return;
     } else {
         self.errorMsgLb.text = @"";
     }
-    
+
     if ([self validateUserName:userName userPwd:password]) {
         self.hud.labelText = RCDLocalizedString(@"logining");
         [self.hud show:YES];
         [DEFAULTS removeObjectForKey:RCDUserCookiesKey];
         [RCDLoginManager loginWithPhone:userName
-                               password:password
-                                 region:self.currentRegion.phoneCode
-                                success:^(NSString * _Nonnull token, NSString * _Nonnull userId) {
-                                    [self loginRongCloud:userName
-                                                  userId:userId
-                                                   token:token
-                                                password:password];
-                                } error:^(RCDLoginErrorCode errorCode) {
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                        [self.hud hide:YES];
-                                        if (errorCode == RCDLoginErrorCodeWrongPassword) {
-                                            self.errorMsgLb.text = RCDLocalizedString(@"mobile_number_or_password_error");
-                                            [self.pwdTextField shake];
-                                        } else if (errorCode == RCDLoginErrorCodeUserNotRegistered) {
-                                            self.errorMsgLb.text = RCDLocalizedString(@"UserNotRegistered");
-                                        } else {
-                                            self.errorMsgLb.text = RCDLocalizedString(@"Login_fail_please_check_network");
-                                        }
-                                    });
-                                }];
+            password:password
+            region:self.currentRegion.phoneCode
+            success:^(NSString *_Nonnull token, NSString *_Nonnull userId) {
+                [self loginRongCloud:userName userId:userId token:token password:password];
+            }
+            error:^(RCDLoginErrorCode errorCode) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.hud hide:YES];
+                    if (errorCode == RCDLoginErrorCodeWrongPassword) {
+                        self.errorMsgLb.text = RCDLocalizedString(@"mobile_number_or_password_error");
+                        [self.pwdTextField shake];
+                    } else if (errorCode == RCDLoginErrorCodeUserNotRegistered) {
+                        self.errorMsgLb.text = RCDLocalizedString(@"UserNotRegistered");
+                    } else {
+                        self.errorMsgLb.text = RCDLocalizedString(@"Login_fail_please_check_network");
+                    }
+                });
+            }];
     } else {
         self.errorMsgLb.text = RCDLocalizedString(@"please_check_mobile_number_and_password");
     }
@@ -156,23 +154,25 @@
     [DEFAULTS setObject:token forKey:RCDIMTokenKey];
     [DEFAULTS setObject:userId forKey:RCDUserIdKey];
     [DEFAULTS synchronize];
-    
-    [RCDUserInfoManager getUserInfoFromServer:userId
-                                     complete:^(RCDUserInfo *userInfo) {
-                                         [RCIM sharedRCIM].currentUserInfo = userInfo;
-                                         [RCDBuglyManager setUserIdentifier:[NSString stringWithFormat:@"%@ - %@", userInfo.userId,userInfo.name]];
-                                         [DEFAULTS setObject:userInfo.portraitUri forKey:RCDUserPortraitUriKey];
-                                         [DEFAULTS setObject:userInfo.name forKey:RCDUserNickNameKey];
-                                         [DEFAULTS setObject:userInfo.stAccount forKey:RCDSealTalkNumberKey];
-                                         [DEFAULTS setObject:userInfo.gender forKey:RCDUserGenderKey];
-                                         [DEFAULTS synchronize];
-                                     }];
-    
+
+    [RCDUserInfoManager
+        getUserInfoFromServer:userId
+                     complete:^(RCDUserInfo *userInfo) {
+                         [RCIM sharedRCIM].currentUserInfo = userInfo;
+                         [RCDBuglyManager
+                             setUserIdentifier:[NSString stringWithFormat:@"%@ - %@", userInfo.userId, userInfo.name]];
+                         [DEFAULTS setObject:userInfo.portraitUri forKey:RCDUserPortraitUriKey];
+                         [DEFAULTS setObject:userInfo.name forKey:RCDUserNickNameKey];
+                         [DEFAULTS setObject:userInfo.stAccount forKey:RCDSealTalkNumberKey];
+                         [DEFAULTS setObject:userInfo.gender forKey:RCDUserGenderKey];
+                         [DEFAULTS synchronize];
+                     }];
+
     [RCDDataSource syncAllData];
     dispatch_async(dispatch_get_main_queue(), ^{
         RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
         RCDNavigationViewController *rootNavi =
-        [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
+            [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
         [UIApplication sharedApplication].delegate.window.rootViewController = rootNavi;
     });
 }
@@ -185,41 +185,46 @@
     self.loginUserId = userId;
     self.loginToken = token;
     self.loginPassword = password;
-    
-    [[RCDIMService sharedService] connectWithToken:token dbOpened:^(RCDBErrorCode code){
-        NSLog(@"RCDBOpened %@", code?@"failed":@"success");
-    } success:^(NSString *userId) {
-        NSLog([NSString stringWithFormat:@"token is %@  userId is %@", token, userId], nil);
-        self.loginUserId = userId;
-        [self loginSuccess:self.loginUserName
-                    userId:self.loginUserId
-                     token:self.loginToken
-                  password:self.loginPassword];
-    } error:^(RCConnectErrorCode status) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.hud hide:YES];
-            NSLog(@"RCConnectErrorCode is %ld", (long)status);
-            _errorMsgLb.text = [NSString stringWithFormat:@"%@ Status: %zd",RCDLocalizedString(@"Login_fail"), status];
-            [_pwdTextField shake];
-        });
-    } tokenIncorrect:^{
-        NSLog(@"IncorrectToken");
-        
-        if (self.loginFailureTimes < 1) {
-            self.loginFailureTimes++;
-            [RCDLoginManager getToken:^(BOOL success, NSString * _Nonnull token, NSString * _Nonnull userId) {
-                if (success) {
-                    [self loginRongCloud:userName userId:userId token:token password:password];
-                } else {
-                    rcd_dispatch_main_async_safe(^{
-                        [self.hud hide:YES];
-                        NSLog(@"Token无效");
-                        _errorMsgLb.text = RCDLocalizedString(@"can_not_connect_server");
-                    });
-                }
-            }];
+
+    [[RCDIMService sharedService] connectWithToken:token
+        dbOpened:^(RCDBErrorCode code) {
+            NSLog(@"RCDBOpened %@", code ? @"failed" : @"success");
         }
-    }];
+        success:^(NSString *userId) {
+            NSLog([NSString stringWithFormat:@"token is %@  userId is %@", token, userId], nil);
+            self.loginUserId = userId;
+            [self loginSuccess:self.loginUserName
+                        userId:self.loginUserId
+                         token:self.loginToken
+                      password:self.loginPassword];
+        }
+        error:^(RCConnectErrorCode status) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.hud hide:YES];
+                NSLog(@"RCConnectErrorCode is %ld", (long)status);
+                _errorMsgLb.text =
+                    [NSString stringWithFormat:@"%@ Status: %zd", RCDLocalizedString(@"Login_fail"), status];
+                [_pwdTextField shake];
+            });
+        }
+        tokenIncorrect:^{
+            NSLog(@"IncorrectToken");
+
+            if (self.loginFailureTimes < 1) {
+                self.loginFailureTimes++;
+                [RCDLoginManager getToken:^(BOOL success, NSString *_Nonnull token, NSString *_Nonnull userId) {
+                    if (success) {
+                        [self loginRongCloud:userName userId:userId token:token password:password];
+                    } else {
+                        rcd_dispatch_main_async_safe(^{
+                            [self.hud hide:YES];
+                            NSLog(@"Token无效");
+                            _errorMsgLb.text = RCDLocalizedString(@"can_not_connect_server");
+                        });
+                    }
+                }];
+            }
+        }];
 }
 
 /*阅读用户协议*/
@@ -238,24 +243,24 @@
     [self.navigationController pushViewController:temp animated:YES];
 }
 
-//timer
+// timer
 - (void)retryConnectionFailed {
     [[RCIM sharedRCIM] disconnect];
     [self stopRetryTimerIfNeed];
     [self.hud hide:YES];
 }
 
-- (void)didTapCountryTextField{
+- (void)didTapCountryTextField {
     RCDCountryListController *countryListVC = [[RCDCountryListController alloc] init];
     countryListVC.delegate = self;
     [self.navigationController pushViewController:countryListVC animated:YES];
 }
 
-- (void)didTapSwitchLanguage:(UIButton *)button{
+- (void)didTapSwitchLanguage:(UIButton *)button {
     NSString *currentLanguage = [RCDLanguageManager sharedRCDLanguageManager].currentLanguage;
     if ([currentLanguage isEqualToString:@"en"]) {
         [[RCDLanguageManager sharedRCDLanguageManager] setLocalizableLanguage:@"zh-Hans"];
-    }else if ([currentLanguage isEqualToString:@"zh-Hans"]){
+    } else if ([currentLanguage isEqualToString:@"zh-Hans"]) {
         [[RCDLanguageManager sharedRCDLanguageManager] setLocalizableLanguage:@"en"];
     }
     RCDLoginViewController *temp = [[RCDLoginViewController alloc] init];
@@ -267,11 +272,11 @@
 }
 
 #pragma mark - RCDCountryListControllerDelegate
-- (void)fetchCountryPhoneCode:(RCDCountry *)country{
+- (void)fetchCountryPhoneCode:(RCDCountry *)country {
     [DEFAULTS setObject:[country getModelJson] forKey:RCDCurrentCountryKey];
     self.currentRegion = country;
     self.countryTextField.textField.text = country.countryName;
-    self.phoneTextField.indicateInfoLabel.text = [NSString stringWithFormat:@"+%@",self.currentRegion.phoneCode];
+    self.phoneTextField.indicateInfoLabel.text = [NSString stringWithFormat:@"+%@", self.currentRegion.phoneCode];
 }
 
 #pragma mark UITextFieldDelegate
@@ -339,15 +344,15 @@
     return defaultUserPwd;
 }
 
-//timer
+// timer
 - (void)stopRetryTimerIfNeed {
-    if(self.retryTimer && [self.retryTimer isValid]) {
+    if (self.retryTimer && [self.retryTimer isValid]) {
         [self.retryTimer invalidate];
         self.retryTimer = nil;
     }
 }
 
-- (void)startRetryTimer{
+- (void)startRetryTimer {
     [self stopRetryTimerIfNeed];
     self.retryTimer = [NSTimer scheduledTimerWithTimeInterval:60
                                                        target:self
@@ -359,12 +364,13 @@
 //键盘升起时动画
 - (void)keyboardWillShow:(NSNotification *)notif {
     CGRect keyboardBounds = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGFloat space = self.inputBackground.frame.origin.y + CGRectGetMaxY(self.passwordTextField.frame) - keyboardBounds.origin.y;
+    CGFloat space =
+        self.inputBackground.frame.origin.y + CGRectGetMaxY(self.passwordTextField.frame) - keyboardBounds.origin.y;
     if (space > 0) {
         [UIView animateWithDuration:0.25
                          animations:^{
                              self.view.frame =
-                             CGRectMake(0.f, -space, self.view.frame.size.width, self.view.frame.size.height);
+                                 CGRectMake(0.f, -space, self.view.frame.size.width, self.view.frame.size.height);
                          }
                          completion:nil];
     }
@@ -375,17 +381,17 @@
     [UIView animateWithDuration:0.25
                      animations:^{
                          self.view.frame =
-                         CGRectMake(0.f, 0.f, self.view.frame.size.width, self.view.frame.size.height);
+                             CGRectMake(0.f, 0.f, self.view.frame.size.width, self.view.frame.size.height);
                      }
                      completion:nil];
 }
 
-- (void)didConnectStatusUpdate:(NSNotification *)notifi{
+- (void)didConnectStatusUpdate:(NSNotification *)notifi {
     RCConnectionStatus status = [notifi.object integerValue];
     dispatch_async(dispatch_get_main_queue(), ^{
         if (status == ConnectionStatus_Connected) {
             [RCIM sharedRCIM].connectionStatusDelegate =
-            (id<RCIMConnectionStatusDelegate>)[UIApplication sharedApplication].delegate;
+                (id<RCIMConnectionStatusDelegate>)[UIApplication sharedApplication].delegate;
             [self loginSuccess:self.loginUserName
                         userId:self.loginUserId
                          token:self.loginToken
@@ -399,12 +405,9 @@
             self.errorMsgLb.text = RCDLocalizedString(@"can_not_connect_server");
             if (self.loginFailureTimes < 1) {
                 self.loginFailureTimes++;
-                [RCDLoginManager getToken:^(BOOL success, NSString * _Nonnull token, NSString * _Nonnull userId) {
+                [RCDLoginManager getToken:^(BOOL success, NSString *_Nonnull token, NSString *_Nonnull userId) {
                     if (success) {
-                        [self loginRongCloud:self.loginUserName
-                                      userId:userId
-                                       token:token
-                                    password:self.loginPassword];
+                        [self loginRongCloud:self.loginUserName userId:userId token:token password:self.loginPassword];
                     } else {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self.hud hide:YES];
@@ -427,7 +430,7 @@
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:self.view.window];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
@@ -440,7 +443,7 @@
 
 - (void)initSubviews {
     [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
+
     //添加动态图
     [self.view addSubview:self.animatedImagesView];
     [self.animatedImagesView addSubview:[self getSwitchLanguageBtn]];
@@ -475,7 +478,7 @@
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0
                                                            constant:20]];
-    
+
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_rongLogoView
                                                           attribute:NSLayoutAttributeCenterX
                                                           relatedBy:NSLayoutRelationEqual
@@ -483,40 +486,41 @@
                                                           attribute:NSLayoutAttributeCenterX
                                                          multiplier:1.0
                                                            constant:0]];
-    
-    NSDictionary *views =
-    NSDictionaryOfVariableBindings(_errorMsgLb, _rongLogoView, _inputBackground, _userProtocolButton, _bottomBackground);
-    
+
+    NSDictionary *views = NSDictionaryOfVariableBindings(_errorMsgLb, _rongLogoView, _inputBackground,
+                                                         _userProtocolButton, _bottomBackground);
+
     NSArray *viewConstraints = [[[[[[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-41-[_inputBackground]-41-|"
                                                                             options:0
                                                                             metrics:nil
                                                                               views:views]
-                                    arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-70-[_rongLogoView(100)]-10-["
-                                                                   @"_errorMsgLb(==15)]-20-["
-                                                                   @"_inputBackground(380)]-20-["
-                                                                   @"_userProtocolButton(==20)]"
-                                                                                                          options:0
-                                                                                                          metrics:nil
-                                                                                                            views:views]]
-                                   arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_bottomBackground(==50)]"
-                                                                                                         options:0
-                                                                                                         metrics:nil
-                                                                                                           views:views]]
-                                  arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_bottomBackground]-10-|"
-                                                                                                        options:0
-                                                                                                        metrics:nil
-                                                                                                          views:views]]
-                                 arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-40-[_errorMsgLb]-10-|"
-                                                                                                       options:0
-                                                                                                       metrics:nil
-                                                                                                         views:views]]
-                                arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_rongLogoView(100)]"
-                                                                                                      options:0
-                                                                                                      metrics:nil
-                                                                                                        views:views]];
-    
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint
+                                          constraintsWithVisualFormat:@"V:|-70-[_rongLogoView(100)]-10-["
+                                                                      @"_errorMsgLb(==15)]-20-["
+                                                                      @"_inputBackground(380)]-20-["
+                                                                      @"_userProtocolButton(==20)]"
+                                                              options:0
+                                                              metrics:nil
+                                                                views:views]]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_bottomBackground(==50)]"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:views]]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_bottomBackground]-10-|"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:views]]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-40-[_errorMsgLb]-10-|"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:views]]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_rongLogoView(100)]"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:views]];
+
     [self.view addConstraints:viewConstraints];
-    
+
     NSLayoutConstraint *userProtocolLabelConstraint = [NSLayoutConstraint constraintWithItem:_userProtocolButton
                                                                                    attribute:NSLayoutAttributeCenterX
                                                                                    relatedBy:NSLayoutRelationEqual
@@ -525,72 +529,74 @@
                                                                                   multiplier:1.f
                                                                                     constant:0];
     [self.view addConstraint:userProtocolLabelConstraint];
-    NSDictionary *inputViews =
-    NSDictionaryOfVariableBindings(_countryTextField, _phoneTextField, _passwordTextField, _loginButton, _settingButton);
-    
-    NSArray *inputViewConstraints = [[[[[[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_phoneTextField]|"
-                                                                                 options:0
-                                                                                 metrics:nil
-                                                                                   views:inputViews]
-                                         arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_countryTextField]|"
-                                                                                                               options:0
-                                                                                                               metrics:nil
-                                                                                                                 views:inputViews]]
-                                        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_passwordTextField]|"
-                                                                                                              options:0
-                                                                                                              metrics:nil
-                                                                                                                views:inputViews]]
-                                       arrayByAddingObjectsFromArray:
-                                       [NSLayoutConstraint
-                                        constraintsWithVisualFormat:
-                                        @"V:|-[_countryTextField(60)]-[_phoneTextField(60)]-[_passwordTextField(60)]-[_loginButton(50)]-40-[_settingButton(50)]"
-                                        options:0
-                                        metrics:nil
-                                        views:inputViews]]
-                                      arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_loginButton]|"
-                                                                                                            options:0
-                                                                                                            metrics:nil
-                                                                                                              views:inputViews]]
-                                     arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_settingButton]|"
-                                                                                                           options:0
-                                                                                                           metrics:nil
-                                                                                                             views:inputViews]];
-    
+    NSDictionary *inputViews = NSDictionaryOfVariableBindings(_countryTextField, _phoneTextField, _passwordTextField,
+                                                              _loginButton, _settingButton);
+
+    NSArray *inputViewConstraints = [[[[[
+        [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_phoneTextField]|" options:0 metrics:nil views:inputViews]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_countryTextField]|"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:inputViews]]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_passwordTextField]|"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:inputViews]]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint
+                                          constraintsWithVisualFormat:@"V:|-[_countryTextField(60)]-[_phoneTextField("
+                                                                      @"60)]-[_passwordTextField(60)]-[_loginButton("
+                                                                      @"50)]-40-[_settingButton(50)]"
+                                                              options:0
+                                                              metrics:nil
+                                                                views:inputViews]]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_loginButton]|"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:inputViews]]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_settingButton]|"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:inputViews]];
+
     [_inputBackground addConstraints:inputViewConstraints];
 }
 
 #pragma mark - Getters and setters
 - (UIButton *)getSwitchLanguageBtn {
-    UIButton *switchLanguage = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 80,30, 70, 40)];
+    UIButton *switchLanguage =
+        [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 80, 30, 70, 40)];
     [switchLanguage setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
     switchLanguage.titleLabel.font = [UIFont systemFontOfSize:16.];
     NSString *currentlanguage = [RCDLanguageManager sharedRCDLanguageManager].currentLanguage;
     if ([currentlanguage isEqualToString:@"en"]) {
         [switchLanguage setTitle:@"简体中文" forState:(UIControlStateNormal)];
-    }else if ([currentlanguage isEqualToString:@"zh-Hans"]){
+    } else if ([currentlanguage isEqualToString:@"zh-Hans"]) {
         [switchLanguage setTitle:@"EN" forState:(UIControlStateNormal)];
     }
-    [switchLanguage addTarget:self action:@selector(didTapSwitchLanguage:) forControlEvents:(UIControlEventTouchUpInside)];
+    [switchLanguage addTarget:self
+                       action:@selector(didTapSwitchLanguage:)
+             forControlEvents:(UIControlEventTouchUpInside)];
     return switchLanguage;
 }
 
 - (RCAnimatedImagesView *)animatedImagesView {
-    if(!_animatedImagesView) {
+    if (!_animatedImagesView) {
         _animatedImagesView = [[RCAnimatedImagesView alloc]
-                                   initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+            initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
         _animatedImagesView.delegate = self;
     }
     return _animatedImagesView;
 }
 
--(RCDIndicateTextField *)countryTextField{
+- (RCDIndicateTextField *)countryTextField {
     if (!_countryTextField) {
         _countryTextField = [[RCDIndicateTextField alloc] init];
         _countryTextField.indicateInfoLabel.text = RCDLocalizedString(@"country");
         _countryTextField.textField.text = self.currentRegion.countryName;
         _countryTextField.textField.userInteractionEnabled = NO;
         [_countryTextField indicateIconShow:YES];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCountryTextField)];
+        UITapGestureRecognizer *tap =
+            [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCountryTextField)];
         [_countryTextField addGestureRecognizer:tap];
         _countryTextField.userInteractionEnabled = YES;
         _countryTextField.translatesAutoresizingMaskIntoConstraints = NO;
@@ -598,12 +604,12 @@
     return _countryTextField;
 }
 
-- (RCDIndicateTextField *)phoneTextField{
+- (RCDIndicateTextField *)phoneTextField {
     if (!_phoneTextField) {
         _phoneTextField = [[RCDIndicateTextField alloc] initWithFrame:CGRectZero];
         _phoneTextField.backgroundColor = [UIColor clearColor];
         _phoneTextField.tag = UserTextFieldTag;
-        _phoneTextField.indicateInfoLabel.text = [NSString stringWithFormat:@"+%@",self.currentRegion.phoneCode];
+        _phoneTextField.indicateInfoLabel.text = [NSString stringWithFormat:@"+%@", self.currentRegion.phoneCode];
         _phoneTextField.userInteractionEnabled = YES;
         _phoneTextField.textField.adjustsFontSizeToFitWidth = YES;
         _phoneTextField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -617,7 +623,7 @@
 }
 
 - (UITextField *)passwordTextField {
-    if(!_passwordTextField) {
+    if (!_passwordTextField) {
         RCUnderlineTextField *passwordTextField = [[RCUnderlineTextField alloc] initWithFrame:CGRectZero];
         passwordTextField.tag = PassWordFieldTag;
         passwordTextField.textColor = [UIColor whiteColor];
@@ -625,10 +631,11 @@
         passwordTextField.secureTextEntry = YES;
         passwordTextField.delegate = self;
         passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        
+
         passwordTextField.attributedPlaceholder =
-        [[NSAttributedString alloc] initWithString:RCDLocalizedString(@"password") attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-        
+            [[NSAttributedString alloc] initWithString:RCDLocalizedString(@"password")
+                                            attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+
         passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
         _passwordTextField = passwordTextField;
     }
@@ -636,7 +643,7 @@
 }
 
 - (UIImageView *)rongLogoView {
-    if(!_rongLogoView) {
+    if (!_rongLogoView) {
         UIImage *rongLogoImage = [UIImage imageNamed:@"login_logo"];
         _rongLogoView = [[UIImageView alloc] initWithImage:rongLogoImage];
         _rongLogoView.contentMode = UIViewContentModeScaleAspectFit;
@@ -646,7 +653,7 @@
 }
 
 - (UIView *)inputBackground {
-    if(!_inputBackground) {
+    if (!_inputBackground) {
         _inputBackground = [[UIView alloc] initWithFrame:CGRectZero];
         _inputBackground.translatesAutoresizingMaskIntoConstraints = NO;
         _inputBackground.userInteractionEnabled = YES;
@@ -655,7 +662,7 @@
 }
 
 - (UILabel *)errorMsgLb {
-    if(!_errorMsgLb) {
+    if (!_errorMsgLb) {
         _errorMsgLb = [[UILabel alloc] initWithFrame:CGRectZero];
         _errorMsgLb.text = @"";
         _errorMsgLb.font = [UIFont fontWithName:@"Heiti SC" size:12.0];
@@ -666,8 +673,8 @@
 }
 
 - (UIButton *)loginButton {
-    if(!_loginButton) {
-        
+    if (!_loginButton) {
+
         UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [loginButton addTarget:self action:@selector(loginEvent:) forControlEvents:UIControlEventTouchUpInside];
         //    [loginButton setBackgroundImage:[UIImage imageNamed:@"login_button"] forState:UIControlStateNormal];
@@ -683,7 +690,7 @@
 }
 
 - (UIButton *)settingButton {
-    if(!_settingButton) {
+    if (!_settingButton) {
         UIButton *settingButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [settingButton setTitle:RCDLocalizedString(@"private_cloud_setting") forState:UIControlStateNormal];
         [settingButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
@@ -696,13 +703,13 @@
 }
 
 - (UIButton *)userProtocolButton {
-    if(!_userProtocolButton) {
+    if (!_userProtocolButton) {
         UIButton *userProtocolButton = [[UIButton alloc] initWithFrame:CGRectZero];
         //    [userProtocolButton setTitle:@"阅读用户协议"
         //    forState:UIControlStateNormal];
         [userProtocolButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
                                  forState:UIControlStateNormal];
-        
+
         [userProtocolButton.titleLabel setFont:[UIFont fontWithName:@"Heiti SC" size:14.0]];
         [userProtocolButton addTarget:self
                                action:@selector(userProtocolEvent)
@@ -714,15 +721,15 @@
 }
 
 - (UIView *)bottomBackground {
-    if(!_bottomBackground) {
-            _bottomBackground = [[UIView alloc] initWithFrame:CGRectZero];
-            _bottomBackground.translatesAutoresizingMaskIntoConstraints = NO;
+    if (!_bottomBackground) {
+        _bottomBackground = [[UIView alloc] initWithFrame:CGRectZero];
+        _bottomBackground.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return _bottomBackground;
 }
 
 - (UIButton *)registerButton {
-    if(!_registerButton) {
+    if (!_registerButton) {
         UIButton *registerButton = [[UIButton alloc] initWithFrame:CGRectMake(0, -16, 120, 50)];
         [registerButton setTitle:RCDLocalizedString(@"forgot_password") forState:UIControlStateNormal];
         [registerButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
@@ -736,9 +743,9 @@
 }
 
 - (UIButton *)forgetPswButton {
-    if(!_forgetPswButton) {
+    if (!_forgetPswButton) {
         UIButton *forgetPswButton =
-        [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 100, -16, 80, 50)];
+            [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 100, -16, 80, 50)];
         [forgetPswButton setTitle:RCDLocalizedString(@"new_user") forState:UIControlStateNormal];
         [forgetPswButton setTitleColor:[[UIColor alloc] initWithRed:153 green:153 blue:153 alpha:0.5]
                               forState:UIControlStateNormal];
@@ -751,7 +758,7 @@
 }
 
 - (UILabel *)footerLabel {
-    if(!_footerLabel) {
+    if (!_footerLabel) {
         CGRect screenBounds = self.view.frame;
         UILabel *footerLabel = [[UILabel alloc] init];
         footerLabel.textAlignment = NSTextAlignmentCenter;
@@ -765,7 +772,7 @@
 }
 
 - (MBProgressHUD *)hud {
-    if(!_hud) {
+    if (!_hud) {
         _hud = [[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:_hud];
         [self.view bringSubviewToFront:_hud];

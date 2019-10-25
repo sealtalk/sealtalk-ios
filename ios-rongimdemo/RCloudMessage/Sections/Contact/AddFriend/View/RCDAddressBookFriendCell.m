@@ -27,7 +27,7 @@
 @implementation RCDAddressBookFriendCell
 
 - (instancetype)init {
-    
+
     if (self = [super init]) {
         [self setupViews];
     }
@@ -38,14 +38,15 @@
     self.userId = model.userId;
     self.titleLabel.text = model.name;
     self.detailLabel.text = model.nickname;
-    
+
     if ([model.portraitUri isEqualToString:@""]) {
         UIImage *portrait = [DefaultPortraitView portraitView:model.userId name:model.name];
         self.headerImgView.image = portrait;
     } else {
-        [self.headerImgView sd_setImageWithURL:[NSURL URLWithString:model.portraitUri] placeholderImage:[UIImage imageNamed:@"default_portrait_msg"]];
+        [self.headerImgView sd_setImageWithURL:[NSURL URLWithString:model.portraitUri]
+                              placeholderImage:[UIImage imageNamed:@"default_portrait_msg"]];
     }
-    
+
     self.addLabel.hidden = !model.isRelationship;
     self.addButton.hidden = model.isRelationship;
 }
@@ -63,13 +64,13 @@
     [self.contentView addSubview:self.detailLabel];
     [self.contentView addSubview:self.addLabel];
     [self.contentView addSubview:self.addButton];
-    
+
     [self.headerImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView).offset(7);
         make.left.equalTo(self.contentView).offset(8);
         make.height.width.offset(46);
     }];
-    
+
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.headerImgView.mas_right).offset(9);
         make.top.equalTo(self.headerImgView);

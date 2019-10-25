@@ -28,7 +28,7 @@
     return instance;
 }
 
-- (void)syncAllData{
+- (void)syncAllData {
     [RCDUserInfoManager getReceivePokeMessageStatusFromServer:nil error:nil];
     [RCDDataSource syncGroups];
     [RCDDataSource syncGroupNoticeList];
@@ -37,20 +37,22 @@
 
 - (void)syncGroups {
     //开发者调用自己的服务器接口获取所属群组信息
-    [RCDGroupManager getMyGroupListFromServer:^(NSArray<RCDGroupInfo *> * _Nonnull groupList) {
+    [RCDGroupManager getMyGroupListFromServer:^(NSArray<RCDGroupInfo *> *_Nonnull groupList) {
         for (RCDGroupInfo *group in groupList) {
-            [RCDGroupManager getGroupMembersFromServer:group.groupId complete:^(NSArray<NSString *> * _Nonnull memberIdList) {}];
+            [RCDGroupManager getGroupMembersFromServer:group.groupId
+                                              complete:^(NSArray<NSString *> *_Nonnull memberIdList){
+                                              }];
         }
     }];
 }
 
-- (void)syncGroupNoticeList{
-    [RCDGroupManager getGroupNoticeListFromServer:^(NSArray<RCDGroupNotice *> *noticeList) {
-        
+- (void)syncGroupNoticeList {
+    [RCDGroupManager getGroupNoticeListFromServer:^(NSArray<RCDGroupNotice *> *noticeList){
+
     }];
 }
 
-- (void)syncFriendList{
+- (void)syncFriendList {
     [RCDUserInfoManager getFriendListFromServer:^(NSArray<RCDFriendInfo *> *friendList) {
         rcd_dispatch_main_async_safe(^{
             [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsRequestKey object:nil];
@@ -65,30 +67,39 @@
         return;
 
     //开发者调自己的服务器接口根据userID异步请求数据
-    [RCDGroupManager getGroupInfoFromServer:groupId complete:^(RCDGroupInfo * _Nonnull groupInfo) {
-        completion(groupInfo);
-        [RCDGroupManager getGroupMembersFromServer:groupId complete:^(NSArray<NSString *> * _Nonnull memberIdList) {}];
-    }];
+    [RCDGroupManager getGroupInfoFromServer:groupId
+                                   complete:^(RCDGroupInfo *_Nonnull groupInfo) {
+                                       completion(groupInfo);
+                                       [RCDGroupManager
+                                           getGroupMembersFromServer:groupId
+                                                            complete:^(NSArray<NSString *> *_Nonnull memberIdList){
+                                                            }];
+                                   }];
 }
 #pragma mark - RCIMUserInfoDataSource
 - (void)getUserInfoWithUserId:(NSString *)userId completion:(void (^)(RCUserInfo *))completion {
     NSLog(@"getUserInfoWithUserId ----- %@", userId);
-    if ([userId isEqualToString:RCDGroupNoticeTargetId]) {//群通知的用户信息直接在自定义的 RCDGroupConversationCell 里面处理了
+    if ([userId isEqualToString:RCDGroupNoticeTargetId]) { //群通知的用户信息直接在自定义的 RCDGroupConversationCell
+                                                           //里面处理了
         return;
     }
     //开发者调自己的服务器接口根据userID异步请求数据
-    [RCDUserInfoManager getUserInfoFromServer:userId complete:^(RCUserInfo *userInfo) {
-        if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-            completion(userInfo);
-        }else{
-            [RCDUserInfoManager getFriendInfoFromServer:userId complete:^(RCDFriendInfo *friendInfo) {
-                if (friendInfo && friendInfo.displayName.length > 0) {
-                    userInfo.name = friendInfo.displayName;
-                }
-                completion(userInfo);
-            }];
-        }
-    }];
+    [RCDUserInfoManager
+        getUserInfoFromServer:userId
+                     complete:^(RCUserInfo *userInfo) {
+                         if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+                             completion(userInfo);
+                         } else {
+                             [RCDUserInfoManager
+                                 getFriendInfoFromServer:userId
+                                                complete:^(RCDFriendInfo *friendInfo) {
+                                                    if (friendInfo && friendInfo.displayName.length > 0) {
+                                                        userInfo.name = friendInfo.displayName;
+                                                    }
+                                                    completion(userInfo);
+                                                }];
+                         }
+                     }];
     return;
 }
 
@@ -107,27 +118,33 @@
     if ([groupId isEqualToString:@"22"] && [userId isEqualToString:@"30806"]) {
         completion([[RCUserInfo alloc] initWithUserId:@"30806" name:@"我在22群中的名片" portrait:nil]);
     } else {
-        [RCDGroupManager getGroupMemberDetailInfoFromServer:userId groupId:groupId complete:^(RCDGroupMemberDetailInfo *member) {
-            [self getUserInfoWithUserId:userId completion:^(RCUserInfo *userInfo) {
-                RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
-                if (friend.displayName.length > 0) {
-                    userInfo.name = friend.displayName;
-                }else if (member.groupNickname.length > 0) {
-                    userInfo.name = member.groupNickname;
-                }
-                return completion(userInfo);
-            }];
-        }];
+        [RCDGroupManager getGroupMemberDetailInfoFromServer:userId
+                                                    groupId:groupId
+                                                   complete:^(RCDGroupMemberDetailInfo *member) {
+                                                       [self
+                                                           getUserInfoWithUserId:userId
+                                                                      completion:^(RCUserInfo *userInfo) {
+                                                                          RCDFriendInfo *friend =
+                                                                              [RCDUserInfoManager getFriendInfo:userId];
+                                                                          if (friend.displayName.length > 0) {
+                                                                              userInfo.name = friend.displayName;
+                                                                          } else if (member.groupNickname.length > 0) {
+                                                                              userInfo.name = member.groupNickname;
+                                                                          }
+                                                                          return completion(userInfo);
+                                                                      }];
+                                                   }];
     }
 }
 
 #pragma mark - RCIMGroupMemberDataSource
 - (void)getAllMembersOfGroup:(NSString *)groupId result:(void (^)(NSArray<NSString *> *))resultBlock {
-    [RCDGroupManager getGroupMembersFromServer:groupId complete:^(NSArray<NSString *> * _Nonnull memberIdList) {
-        if (resultBlock) {
-            resultBlock(memberIdList);
-        }
-    }];
+    [RCDGroupManager getGroupMembersFromServer:groupId
+                                      complete:^(NSArray<NSString *> *_Nonnull memberIdList) {
+                                          if (resultBlock) {
+                                              resultBlock(memberIdList);
+                                          }
+                                      }];
 }
 
 #pragma mark - 名片消息

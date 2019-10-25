@@ -9,7 +9,7 @@
 #import "RCDGroupAnnouncement.h"
 
 @implementation RCDGroupAnnouncement
-- (instancetype)initWithJson:(NSDictionary *)json{
+- (instancetype)initWithJson:(NSDictionary *)json {
     if (self = [super init]) {
         self.publishId = json[@"id"];
         self.groupId = json[@"groupId"];

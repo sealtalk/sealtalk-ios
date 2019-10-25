@@ -11,27 +11,28 @@
 #import "RCDCommonString.h"
 #import "RCDCountry.h"
 
-static NSString * const RongCloud = @"RongCloud";
-static NSString * const DBName = @"SealTalkDB";
+static NSString *const RongCloud = @"RongCloud";
+static NSString *const DBName = @"SealTalkDB";
 
 @implementation RCDLoginManager
 
 + (void)loginWithPhone:(NSString *)phone
               password:(NSString *)password
                 region:(NSString *)region
-               success:(void (^)(NSString * _Nonnull, NSString * _Nonnull))successBlock
+               success:(void (^)(NSString *_Nonnull, NSString *_Nonnull))successBlock
                  error:(void (^)(RCDLoginErrorCode))errorBlock {
     [RCDLoginAPI loginWithPhone:phone
                        password:password
                          region:region
-                        success:^(NSString * _Nonnull token, NSString * _Nonnull userId) {
+                        success:^(NSString *_Nonnull token, NSString *_Nonnull userId) {
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 [self openDB:userId];
                             });
                             if (successBlock) {
                                 successBlock(token, userId);
                             }
-                        } error:errorBlock];
+                        }
+                          error:errorBlock];
 }
 
 + (void)logout:(void (^)(BOOL))completeBlock {
@@ -49,19 +50,20 @@ static NSString * const DBName = @"SealTalkDB";
 
 + (BOOL)openDB:(NSString *)currentUserId {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString *dbPath = [[[paths objectAtIndex:0] stringByAppendingPathComponent:RongCloud] stringByAppendingPathComponent:currentUserId];
+    NSString *dbPath = [[[paths objectAtIndex:0] stringByAppendingPathComponent:RongCloud]
+        stringByAppendingPathComponent:currentUserId];
     if (![[NSFileManager defaultManager] fileExistsAtPath:dbPath]) {
         [[NSFileManager defaultManager] createDirectoryAtPath:dbPath
                                   withIntermediateDirectories:YES
                                                    attributes:nil
                                                         error:nil];
     }
-    
+
     dbPath = [dbPath stringByAppendingPathComponent:DBName];
     return [RCDDBManager openDB:dbPath];
 }
 
-+ (void)getVersionInfo:(void (^)(BOOL, NSString *))completeBlock{
++ (void)getVersionInfo:(void (^)(BOOL, NSString *))completeBlock {
     [RCDLoginAPI getVersionInfo:^(NSDictionary *versionInfo) {
         if (versionInfo) {
             BOOL isNeedUpdate = [[versionInfo objectForKey:@"isNeedUpdate"] boolValue];
@@ -86,27 +88,22 @@ static NSString * const DBName = @"SealTalkDB";
 + (void)checkPhoneNumberAvailable:(NSString *)phoneCode
                       phoneNumber:(NSString *)phoneNumber
                          complete:(void (^)(BOOL, BOOL))completeBlock {
-    [RCDLoginAPI checkPhoneNumberAvailable:phoneCode
-                               phoneNumber:phoneNumber
-                                  complete:completeBlock];
+    [RCDLoginAPI checkPhoneNumberAvailable:phoneCode phoneNumber:phoneNumber complete:completeBlock];
 }
 
 + (void)getVerificationCode:(NSString *)phoneCode
                 phoneNumber:(NSString *)phoneNumber
                     success:(void (^)(BOOL))successBlock
                       error:(void (^)(RCDLoginErrorCode, NSString *))errorBlock {
-    [RCDLoginAPI getVerificationCode:phoneCode
-                         phoneNumber:phoneNumber
-                             success:successBlock
-                               error:errorBlock];
+    [RCDLoginAPI getVerificationCode:phoneCode phoneNumber:phoneNumber success:successBlock error:errorBlock];
 }
 
 + (void)verifyVerificationCode:(NSString *)phoneCode
                    phoneNumber:(NSString *)phoneNumber
               verificationCode:(NSString *)verificationCode
-                       success:(void (^)(BOOL, NSString * _Nonnull))successBlock
+                       success:(void (^)(BOOL, NSString *_Nonnull))successBlock
                          error:(void (^)(RCDLoginErrorCode))errorBlock {
-    
+
     [RCDLoginAPI verifyVerificationCode:phoneCode
                             phoneNumber:phoneNumber
                        verificationCode:verificationCode
@@ -124,23 +121,15 @@ static NSString * const DBName = @"SealTalkDB";
                              complete:completeBlock];
 }
 
-+ (void)changePassword:(NSString *)oldPwd
-                newPwd:(NSString *)newPwd
-              complete:(void (^)(BOOL))completeBlock {
-    [RCDLoginAPI changePassword:oldPwd
-                         newPwd:newPwd
-                       complete:completeBlock];
++ (void)changePassword:(NSString *)oldPwd newPwd:(NSString *)newPwd complete:(void (^)(BOOL))completeBlock {
+    [RCDLoginAPI changePassword:oldPwd newPwd:newPwd complete:completeBlock];
 }
 
-+ (void)resetPassword:(NSString *)password
-               vToken:(NSString *)verificationToken
-             complete:(void (^)(BOOL))completeBlock {
-    [RCDLoginAPI resetPassword:password
-                        vToken:verificationToken
-                      complete:completeBlock];
++ (void)resetPassword:(NSString *)password vToken:(NSString *)verificationToken complete:(void (^)(BOOL))completeBlock {
+    [RCDLoginAPI resetPassword:password vToken:verificationToken complete:completeBlock];
 }
 
-+ (void)getRegionlist:(void (^)(NSArray * _Nonnull))completeBlock {
++ (void)getRegionlist:(void (^)(NSArray *_Nonnull))completeBlock {
     [RCDLoginAPI getRegionlist:^(NSArray *regionArray) {
         if (completeBlock) {
             NSMutableArray *countryArray = [NSMutableArray arrayWithCapacity:regionArray.count];
@@ -153,7 +142,7 @@ static NSString * const DBName = @"SealTalkDB";
     }];
 }
 
-+ (void)getToken:(void (^)(BOOL, NSString * _Nonnull, NSString * _Nonnull))completeBlock {
++ (void)getToken:(void (^)(BOOL, NSString *_Nonnull, NSString *_Nonnull))completeBlock {
     [RCDLoginAPI getToken:completeBlock];
 }
 

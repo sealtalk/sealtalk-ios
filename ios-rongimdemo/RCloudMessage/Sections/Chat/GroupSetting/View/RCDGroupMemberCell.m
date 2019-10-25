@@ -12,14 +12,14 @@
 #import "DefaultPortraitView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "RCDUtilities.h"
-@interface RCDGroupMemberCell()
+@interface RCDGroupMemberCell ()
 @property (nonatomic, strong) UILabel *rightLabel;
 
 @end
 @implementation RCDGroupMemberCell
-+ (instancetype)cellWithTableView:(UITableView *)tableView{
++ (instancetype)cellWithTableView:(UITableView *)tableView {
     RCDGroupMemberCell *cell =
-    (RCDGroupMemberCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupMemberCellIdentifier];
+        (RCDGroupMemberCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupMemberCellIdentifier];
     if (!cell) {
         cell = [[RCDGroupMemberCell alloc] init];
         cell.backgroundColor = [UIColor whiteColor];
@@ -29,7 +29,7 @@
     return cell;
 }
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self addSubviews];
@@ -37,20 +37,23 @@
     return self;
 }
 
-- (void)setDataModel:(NSString *)userId groupId:(nonnull NSString *)groupId{
+- (void)setDataModel:(NSString *)userId groupId:(nonnull NSString *)groupId {
     __weak typeof(self) weakSelf = self;
-    [RCDUtilities getGroupUserDisplayInfo:userId groupId:groupId result:^(RCUserInfo *user) {
-        [weakSelf.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
-                                  placeholderImage:[UIImage imageNamed:@"contact"]];
-        weakSelf.nameLabel.text = user.name;
-    }];
+    [RCDUtilities getGroupUserDisplayInfo:userId
+                                  groupId:groupId
+                                   result:^(RCUserInfo *user) {
+                                       [weakSelf.portraitImageView
+                                           sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                                             placeholderImage:[UIImage imageNamed:@"contact"]];
+                                       weakSelf.nameLabel.text = user.name;
+                                   }];
 }
 
-- (void)setUserRole:(NSString *)role{
+- (void)setUserRole:(NSString *)role {
     self.rightLabel.text = role;
 }
 
-- (void)addSubviews{
+- (void)addSubviews {
     [self.contentView addSubview:self.portraitImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.rightLabel];
@@ -59,14 +62,14 @@
         make.left.equalTo(self.contentView).offset(12);
         make.height.width.offset(40);
     }];
-    
+
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.portraitImageView.mas_right).offset(9);
         make.width.offset(150);
         make.height.offset(24);
     }];
-    
+
     [self.rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView.mas_right);
         make.centerY.equalTo(self.contentView);

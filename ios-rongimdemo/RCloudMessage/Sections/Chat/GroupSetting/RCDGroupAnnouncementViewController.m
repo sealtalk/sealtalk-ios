@@ -33,18 +33,18 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = RCDLocalizedString(@"group_announcement");
-    
+
     [self setNaviItem];
     [self registerNotification];
     [self setData];
     [self setupView];
-    
+
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap)];
     [self.view addGestureRecognizer:tap];
 }
 
 - (void)dealloc {
-    NSLog(@"%s",__func__);
+    NSLog(@"%s", __func__);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -56,13 +56,13 @@
     }
     if ([textView.text isEqualToString:self.announce.content]) {
         self.navigationItem.rightBarButtonItem.enabled = NO;
-    }else{
+    } else {
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
 }
 
 #pragma mark - helper
-- (void)sendAnnouncement{
+- (void)sendAnnouncement {
     //发布中的时候显示转圈的进度
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.yOffset = -46.f;
@@ -76,25 +76,35 @@
     txt = [txt stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     //去除收尾的换行
     txt = [txt stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    [RCDGroupManager publishGroupAnnouncement:txt groupId:self.groupId complete:^(BOOL success) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (success) {
-                hud.mode = MBProgressHUDModeCustomView;
-                UIImageView *customView =
-                [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Complete"]];
-                customView.frame = CGRectMake(0, 0, 80, 80);
-                hud.customView = customView;
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)),dispatch_get_main_queue(), ^{
-                    //显示成功的图片后返回
-                    [self.navigationController popViewControllerAnimated:YES];
-                });
-            }else{
-                [hud hide:YES];
-                [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"Group_announcement_failed_to_be_sent") highlightText:nil leftTitle:nil rightTitle:RCDLocalizedString(@"confirm") cancel:nil confirm:nil];
-            }
-        });
-    }];
+
+    [RCDGroupManager
+        publishGroupAnnouncement:txt
+                         groupId:self.groupId
+                        complete:^(BOOL success) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                if (success) {
+                                    hud.mode = MBProgressHUDModeCustomView;
+                                    UIImageView *customView =
+                                        [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Complete"]];
+                                    customView.frame = CGRectMake(0, 0, 80, 80);
+                                    hud.customView = customView;
+                                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)),
+                                                   dispatch_get_main_queue(), ^{
+                                                       //显示成功的图片后返回
+                                                       [self.navigationController popViewControllerAnimated:YES];
+                                                   });
+                                } else {
+                                    [hud hide:YES];
+                                    [NormalAlertView
+                                        showAlertWithMessage:RCDLocalizedString(@"Group_announcement_failed_to_be_sent")
+                                               highlightText:nil
+                                                   leftTitle:nil
+                                                  rightTitle:RCDLocalizedString(@"confirm")
+                                                      cancel:nil
+                                                     confirm:nil];
+                                }
+                            });
+                        }];
 }
 
 - (void)registerNotification {
@@ -140,11 +150,16 @@
 - (void)clickLeftBtn:(id)sender {
     [self.announcementContent resignFirstResponder];
     if (self.announce && ![self.announcementContent.text isEqualToString:self.announce.content]) {
-        [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"Exit_this_edit") highlightText:nil leftTitle:RCDLocalizedString(@"Continue_editing") rightTitle:RCDLocalizedString(@"quit") cancel:^{
-            
-        } confirm:^{
-            [self.navigationController popViewControllerAnimated:YES];
-        }];
+        [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"Exit_this_edit")
+            highlightText:nil
+            leftTitle:RCDLocalizedString(@"Continue_editing")
+            rightTitle:RCDLocalizedString(@"quit")
+            cancel:^{
+
+            }
+            confirm:^{
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -153,50 +168,69 @@
 - (void)clickRightBtn:(id)sender {
     [self.announcementContent resignFirstResponder];
     if (self.announce && self.announce.content && self.announcementContent.text.length == 0) {
-        [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"AnnouncementClear") highlightText:@"" leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"confirm") cancel:^{
-            
-        } confirm:^{
-            [self sendAnnouncement];
-        }];
-    }else{
-        [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"The_announcement_will_notify_all_members_of_the_group") highlightText:@"" leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"Publish") cancel:^{
-            
-        } confirm:^{
-            [self sendAnnouncement];
-        }];
+        [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"AnnouncementClear")
+            highlightText:@""
+            leftTitle:RCDLocalizedString(@"cancel")
+            rightTitle:RCDLocalizedString(@"confirm")
+            cancel:^{
+
+            }
+            confirm:^{
+                [self sendAnnouncement];
+            }];
+    } else {
+        [NormalAlertView
+            showAlertWithMessage:RCDLocalizedString(@"The_announcement_will_notify_all_members_of_the_group")
+            highlightText:@""
+            leftTitle:RCDLocalizedString(@"cancel")
+            rightTitle:RCDLocalizedString(@"Publish")
+            cancel:^{
+
+            }
+            confirm:^{
+                [self sendAnnouncement];
+            }];
     }
 }
 
-- (void)setNaviItem{
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"done") style:(UIBarButtonItemStylePlain) target:self action:@selector(clickRightBtn:)];
+- (void)setNaviItem {
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"done")
+                                                                    style:(UIBarButtonItemStylePlain)
+                                                                   target:self
+                                                                   action:@selector(clickRightBtn:)];
     self.navigationItem.rightBarButtonItem = rightButton;
     self.navigationItem.rightBarButtonItem.enabled = NO;
-    
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"cancel") style:(UIBarButtonItemStylePlain) target:self action:@selector(clickLeftBtn:)];
+
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"cancel")
+                                                                   style:(UIBarButtonItemStylePlain)
+                                                                  target:self
+                                                                  action:@selector(clickLeftBtn:)];
     self.navigationItem.leftBarButtonItem = leftButton;
 }
 
-- (void)didTap{
+- (void)didTap {
     [self.announcementContent resignFirstResponder];
 }
 
-- (void)setData{
+- (void)setData {
     __weak typeof(self) weakSelf = self;
-    [RCDGroupManager getGroupAnnouncement:self.groupId complete:^(RCDGroupAnnouncement *announce) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.announce = announce;
-            if (announce) {
-                if (announce.content > 0) {
-                    weakSelf.announcementContent.text = announce.content;
-                }
-                
-            }
-            weakSelf.updateTime.text = [NSString stringWithFormat:RCDLocalizedString(@"AnnouncementTime"),[RCDUtilities getDataString:announce.publishTime]];
-        });
-    }];
+    [RCDGroupManager getGroupAnnouncement:self.groupId
+                                 complete:^(RCDGroupAnnouncement *announce) {
+                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                         weakSelf.announce = announce;
+                                         if (announce) {
+                                             if (announce.content > 0) {
+                                                 weakSelf.announcementContent.text = announce.content;
+                                             }
+                                         }
+                                         weakSelf.updateTime.text = [NSString
+                                             stringWithFormat:RCDLocalizedString(@"AnnouncementTime"),
+                                                              [RCDUtilities getDataString:announce.publishTime]];
+                                     });
+                                 }];
 }
 
-- (void)setupView{
+- (void)setupView {
     [self.view addSubview:self.guideLabel];
     [self.view addSubview:self.updateTime];
     [self.view addSubview:self.announcementContent];
@@ -226,7 +260,7 @@
 }
 
 #pragma mark - geter & setter
-- (UITextViewAndPlaceholder *)announcementContent{
+- (UITextViewAndPlaceholder *)announcementContent {
     if (!_announcementContent) {
         _announcementContent = [[UITextViewAndPlaceholder alloc] initWithFrame:CGRectZero];
         _announcementContent.delegate = self;
@@ -237,7 +271,7 @@
     return _announcementContent;
 }
 
-- (UILabel *)guideLabel{
+- (UILabel *)guideLabel {
     if (!_guideLabel) {
         _guideLabel = [[UILabel alloc] init];
         _guideLabel.textColor = HEXCOLOR(0x939393);
@@ -247,7 +281,7 @@
     return _guideLabel;
 }
 
-- (UILabel *)updateTime{
+- (UILabel *)updateTime {
     if (!_updateTime) {
         _updateTime = [[UILabel alloc] init];
         _updateTime.textColor = HEXCOLOR(0x939393);

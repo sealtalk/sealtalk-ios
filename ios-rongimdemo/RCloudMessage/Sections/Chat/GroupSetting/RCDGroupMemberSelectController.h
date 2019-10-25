@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 typedef NS_ENUM(NSUInteger, RCDGroupMemberSelectType) {
-    RCDGroupMemberSelectTypeAddManager,//选择管理员
-    RCDGroupMemberSelectTypePoke,//戳一下选人
+    RCDGroupMemberSelectTypeAddManager, //选择管理员
+    RCDGroupMemberSelectTypePoke,       //戳一下选人
 };
 NS_ASSUME_NONNULL_BEGIN
-typedef void(^SelectMembersResult)(NSArray <NSString *> *memberIds);
+typedef void (^SelectMembersResult)(NSArray<NSString *> *memberIds);
 @interface RCDGroupMemberSelectController : UITableViewController
 @property (nonatomic, copy) SelectMembersResult selectResult;
 - (instancetype)initWithGroupId:(NSString *)groupId type:(RCDGroupMemberSelectType)type;

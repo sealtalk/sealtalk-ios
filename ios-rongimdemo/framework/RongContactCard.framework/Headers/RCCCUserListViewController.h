@@ -11,8 +11,8 @@
 
 @interface RCCCUserListViewController : UIViewController
 
-@property(nonatomic) RCConversationType conversationType;
+@property (nonatomic) RCConversationType conversationType;
 
-@property(nonatomic, strong)NSString *targetId;
+@property (nonatomic, strong) NSString *targetId;
 
 @end

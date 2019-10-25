@@ -37,26 +37,26 @@
                                    isXML:(BOOL)isDataXML
                             withEncoding:(NSString *)theEncoding;
 
-@property(nonatomic, copy, readonly) NSString *raw;
+@property (nonatomic, copy, readonly) NSString *raw;
 // Returns this tag's innerHTML content.
-@property(nonatomic, copy, readonly) NSString *content;
+@property (nonatomic, copy, readonly) NSString *content;
 
 // Returns the name of the current tag, such as "h3".
-@property(nonatomic, copy, readonly) NSString *tagName;
+@property (nonatomic, copy, readonly) NSString *tagName;
 
 // Returns tag attributes with name as key and content as value.
 //   href  = 'http://peepcode.com'
 //   class = 'highlight'
-@property(nonatomic, strong, readonly) NSDictionary *attributes;
+@property (nonatomic, strong, readonly) NSDictionary *attributes;
 
 // Returns the children of a given node
-@property(nonatomic, strong, readonly) NSArray *children;
+@property (nonatomic, strong, readonly) NSArray *children;
 
 // Returns the first child of a given node
-@property(nonatomic, strong, readonly) TFHppleElement *firstChild;
+@property (nonatomic, strong, readonly) TFHppleElement *firstChild;
 
 // the parent of a node
-@property(nonatomic, weak, readonly) TFHppleElement *parent;
+@property (nonatomic, weak, readonly) TFHppleElement *parent;
 
 // Returns YES if the node has any child
 // This is more efficient than using the children property since no NSArray is constructed

@@ -21,32 +21,32 @@
 /**
  *  个人名片消息的id
  */
-@property (nonatomic,copy) NSString *userId;
+@property (nonatomic, copy) NSString *userId;
 
 /**
  *  个人名片的昵称
  */
-@property (nonatomic,copy) NSString *name;
+@property (nonatomic, copy) NSString *name;
 
 /**
  *  个人名片的头像
  */
-@property (nonatomic,copy) NSString *portraitUri;
+@property (nonatomic, copy) NSString *portraitUri;
 
 /**
  *  个人名片的附加信息
  */
-@property (nonatomic,copy) NSString *extra;
+@property (nonatomic, copy) NSString *extra;
 
 /**
  *  个人名片消息发送者的id
  */
-@property (nonatomic,copy) NSString *sendUserId;
+@property (nonatomic, copy) NSString *sendUserId;
 
 /**
  *  个人名片消息发送者的昵称
  */
-@property (nonatomic,copy) NSString *sendUserName;
+@property (nonatomic, copy) NSString *sendUserName;
 
 /**
  *  名片消息的初始化方法

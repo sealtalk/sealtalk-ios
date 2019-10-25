@@ -16,17 +16,17 @@
 
 /**
  校验是否有相机权限
- 
+
  @param permissionGranted 获取相机权限回调
  */
-+ (void)rcd_checkCameraAuthorizationStatusWithGrand:(void(^)(BOOL granted))permissionGranted;
++ (void)rcd_checkCameraAuthorizationStatusWithGrand:(void (^)(BOOL granted))permissionGranted;
 
 /**
  校验是否有相册权限
 
  @param permissionGranted 获取相机权限回调
  */
-+ (void)rcd_checkAlbumAuthorizationStatusWithGrand:(void(^)(BOOL granted))permissionGranted;
++ (void)rcd_checkAlbumAuthorizationStatusWithGrand:(void (^)(BOOL granted))permissionGranted;
 
 /**
  手电筒开关

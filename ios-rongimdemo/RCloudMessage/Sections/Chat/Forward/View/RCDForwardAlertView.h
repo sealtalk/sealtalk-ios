@@ -24,7 +24,7 @@
 
 #pragma mark - data
 //只有调用了alertViewWithModel:接口，下面的字段才有值
-@property (nonatomic, strong, readonly) RCConversation * model;
+@property (nonatomic, strong, readonly) RCConversation *model;
 
 @property (nonatomic, strong) NSArray *messageArray;
 

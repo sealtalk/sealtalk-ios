@@ -25,7 +25,7 @@
 
 static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
-@interface RCDPrivateSettingsTableViewController ()<RCDUserListCollectionViewDelegate>
+@interface RCDPrivateSettingsTableViewController () <RCDUserListCollectionViewDelegate>
 
 @property (nonatomic, strong) RCDUserListCollectionView *headerView;
 @property (nonatomic, strong) RCDFriendInfo *userInfo;
@@ -39,7 +39,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     [super viewDidLoad];
     self.tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
     [self setNaviItem];
     [self loadUserInfo];
     [self setTableHeader];
@@ -103,7 +103,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             [cell setCellStyle:SwitchStyle];
             cell.leftLabel.text = RCDLocalizedString(@"stick_on_top");
             cell.switchButton.hidden = NO;
-            RCConversation *currentConversation = [[RCIMClient sharedRCIMClient] getConversation:ConversationType_PRIVATE targetId:self.userId];
+            RCConversation *currentConversation =
+                [[RCIMClient sharedRCIMClient] getConversation:ConversationType_PRIVATE targetId:self.userId];
             cell.switchButton.on = currentConversation.isTop;
             [cell.switchButton addTarget:self
                                   action:@selector(clickIsTopBtn:)
@@ -120,7 +121,9 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             cell.leftLabel.text = RCDLocalizedString(@"ScreenCaptureNotification");
             cell.switchButton.hidden = NO;
             [self setSwitchStatusWithTableViewCell:cell];
-            [cell.switchButton addTarget:self action:@selector(screenCaptureSwitchButtonDidPressed:) forControlEvents:UIControlEventValueChanged];
+            [cell.switchButton addTarget:self
+                                  action:@selector(screenCaptureSwitchButtonDidPressed:)
+                        forControlEvents:UIControlEventValueChanged];
             return cell;
         }
     }
@@ -141,7 +144,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     }
     if (indexPath.section == 3 && indexPath.row == 0) {
         //清理历史消息
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:RCDLocalizedString(@"clear_chat_history_alert") delegate:self cancelButtonTitle:RCDLocalizedString(@"cancel") destructiveButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil];
+        UIActionSheet *actionSheet =
+            [[UIActionSheet alloc] initWithTitle:RCDLocalizedString(@"clear_chat_history_alert")
+                                        delegate:self
+                               cancelButtonTitle:RCDLocalizedString(@"cancel")
+                          destructiveButtonTitle:RCDLocalizedString(@"confirm")
+                               otherButtonTitles:nil];
         [actionSheet showInView:self.view];
         actionSheet.tag = 100;
     }
@@ -154,7 +162,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     return 15;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 15)];
     view.backgroundColor = HEXCOLOR(0xf0f0f6);
     return view;
@@ -162,14 +170,18 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (section == 2) {
-        return [self.tipFooterView heightForTipFooterViewWithTip:RCDLocalizedString(@"ScreenCaptureNotificationInfo") font:[UIFont fontWithName:@"PingFangSC-Regular" size:14] constrainedSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 27, MAXFLOAT)];
+        return [self.tipFooterView
+            heightForTipFooterViewWithTip:RCDLocalizedString(@"ScreenCaptureNotificationInfo")
+                                     font:[UIFont fontWithName:@"PingFangSC-Regular" size:14]
+                          constrainedSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 27, MAXFLOAT)];
     }
     return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     if (section == 2) {
-        [self.tipFooterView renderWithTip:RCDLocalizedString(@"ScreenCaptureNotificationInfo") font:[UIFont fontWithName:@"PingFangSC-Regular" size:14]];
+        [self.tipFooterView renderWithTip:RCDLocalizedString(@"ScreenCaptureNotificationInfo")
+                                     font:[UIFont fontWithName:@"PingFangSC-Regular" size:14]];
         return self.tipFooterView;
     }
     return nil;
@@ -180,9 +192,11 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 #pragma mark - RCDUserListCollectionViewDelegate
-- (void)didTipHeaderClicked:(NSString *)userId{
+- (void)didTipHeaderClicked:(NSString *)userId {
     RCDFriendInfo *friendInfo = [RCDUserInfoManager getFriendInfo:userId];
-    if ((friendInfo != nil && (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) || [userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
+    if ((friendInfo != nil &&
+         (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) ||
+        [userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
         RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
         detailViewController.userId = userId;
         [self.navigationController pushViewController:detailViewController animated:YES];
@@ -194,21 +208,22 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     }
 }
 
-- (void)addButtonDidClicked{
-    RCDContactSelectedTableViewController *contactSelectedVC = [[RCDContactSelectedTableViewController alloc] initWithTitle:RCDLocalizedString(@"select_contact") isAllowsMultipleSelection:YES];
-    contactSelectedVC.orignalGroupMembers = @[self.userInfo].mutableCopy;
+- (void)addButtonDidClicked {
+    RCDContactSelectedTableViewController *contactSelectedVC =
+        [[RCDContactSelectedTableViewController alloc] initWithTitle:RCDLocalizedString(@"select_contact")
+                                           isAllowsMultipleSelection:YES];
+    contactSelectedVC.orignalGroupMembers = @[ self.userInfo ].mutableCopy;
     contactSelectedVC.groupOptionType = RCDContactSelectedGroupOptionTypeCreate;
     [self.navigationController pushViewController:contactSelectedVC animated:YES];
 }
 
-
 #pragma mark -UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         RCDBaseSettingTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         UIActivityIndicatorView *activityIndicatorView =
-        [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         float cellWidth = cell.bounds.size.width;
         UIView *loadingView = [[UIView alloc] initWithFrame:CGRectMake(cellWidth - 50, 15, 40, 40)];
         [loadingView addSubview:activityIndicatorView];
@@ -217,36 +232,46 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             [cell addSubview:loadingView];
         });
         __weak typeof(self) weakSelf = self;
-        [[RCDIMService sharedService] clearHistoryMessage:ConversationType_PRIVATE targetId:weakSelf.userId successBlock:^{
-            [weakSelf showAlertMessage:RCDLocalizedString(@"clear_chat_history_success")];
-            weakSelf.clearMessageHistory();
-            [loadingView removeFromSuperview];
-            
-        } errorBlock:^(RCErrorCode status) {
-            [weakSelf showAlertMessage:RCDLocalizedString(@"clear_chat_history_fail")];
-            [loadingView removeFromSuperview];
-        }];
+        [[RCDIMService sharedService] clearHistoryMessage:ConversationType_PRIVATE
+            targetId:weakSelf.userId
+            successBlock:^{
+                [weakSelf showAlertMessage:RCDLocalizedString(@"clear_chat_history_success")];
+                weakSelf.clearMessageHistory();
+                [loadingView removeFromSuperview];
+
+            }
+            errorBlock:^(RCErrorCode status) {
+                [weakSelf showAlertMessage:RCDLocalizedString(@"clear_chat_history_fail")];
+                [loadingView removeFromSuperview];
+            }];
     }
 }
 
 #pragma mark - helper
-- (void)setTableHeader{
+- (void)setTableHeader {
     self.tableView.tableHeaderView = self.headerView;
-    [self.headerView reloadData:@[self.userId]];
+    [self.headerView reloadData:@[ self.userId ]];
 }
 
-- (void)setNaviItem{
+- (void)setNaviItem {
     self.title = RCDLocalizedString(@"chat_detail");
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self                action:@selector(leftBarButtonItemPressed)];
+    RCDUIBarButtonItem *leftButton =
+        [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                   target:self
+                                                   action:@selector(leftBarButtonItemPressed)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
-- (void)leftBarButtonItemPressed{
+- (void)leftBarButtonItemPressed {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)showAlertMessage:(NSString *)msg {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:msg
+                                                       delegate:nil
+                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+                                              otherButtonTitles:nil, nil];
     [alertView show];
 }
 
@@ -259,13 +284,14 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 - (void)clickNotificationBtn:(id)sender {
     UISwitch *swch = sender;
     [[RCIMClient sharedRCIMClient] setConversationNotificationStatus:ConversationType_PRIVATE
-                                                            targetId:self.userId
-                                                           isBlocked:swch.on
-                                                             success:^(RCConversationNotificationStatus nStatus) {
+        targetId:self.userId
+        isBlocked:swch.on
+        success:^(RCConversationNotificationStatus nStatus) {
 
-                                                             }error:^(RCErrorCode status){
+        }
+        error:^(RCErrorCode status){
 
-                                                             }];
+        }];
 }
 
 - (void)clickIsTopBtn:(id)sender {
@@ -273,17 +299,20 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     [[RCIMClient sharedRCIMClient] setConversationToTop:ConversationType_PRIVATE targetId:self.userId isTop:swch.on];
 }
 
-- (void)setCurrentNotificationStatus:(UISwitch *)switchButton{
-    [[RCIMClient sharedRCIMClient] getConversationNotificationStatus:ConversationType_PRIVATE targetId:self.userId success:^(RCConversationNotificationStatus nStatus) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            switchButton.on = !nStatus;
-        });
-    }error:^(RCErrorCode status){
-        
-    }];
+- (void)setCurrentNotificationStatus:(UISwitch *)switchButton {
+    [[RCIMClient sharedRCIMClient] getConversationNotificationStatus:ConversationType_PRIVATE
+        targetId:self.userId
+        success:^(RCConversationNotificationStatus nStatus) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                switchButton.on = !nStatus;
+            });
+        }
+        error:^(RCErrorCode status){
+
+        }];
 }
 
-- (void)pushSearchHistoryVC{
+- (void)pushSearchHistoryVC {
     RCDSearchHistoryMessageController *searchViewController = [[RCDSearchHistoryMessageController alloc] init];
     searchViewController.conversationType = ConversationType_PRIVATE;
     searchViewController.targetId = self.userId;
@@ -293,15 +322,21 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 - (void)screenCaptureSwitchButtonDidPressed:(id)sender {
     UISwitch *screenCaptureSwitch = (UISwitch *)sender;
     BOOL switchStatus = screenCaptureSwitch.on;
-    [RCDChatManager setScreenCaptureNotification:switchStatus conversationType:ConversationType_PRIVATE targetId:self.userId complete:^(BOOL result) {
-        if (!result) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                screenCaptureSwitch.on = [RCDDBManager getScreenCaptureNotification:ConversationType_PRIVATE targetId:self.userId];;
-            });
-        } else {
-            [self showHUDMessage:RCDLocalizedString(@"setting_success")];
-        }
-    }];
+    [RCDChatManager setScreenCaptureNotification:switchStatus
+                                conversationType:ConversationType_PRIVATE
+                                        targetId:self.userId
+                                        complete:^(BOOL result) {
+                                            if (!result) {
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    screenCaptureSwitch.on = [RCDDBManager
+                                                        getScreenCaptureNotification:ConversationType_PRIVATE
+                                                                            targetId:self.userId];
+                                                    ;
+                                                });
+                                            } else {
+                                                [self showHUDMessage:RCDLocalizedString(@"setting_success")];
+                                            }
+                                        }];
 }
 
 - (void)showHUDMessage:(NSString *)message {
@@ -312,20 +347,22 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 - (void)setSwitchStatusWithTableViewCell:(RCDBaseSettingTableViewCell *)cell {
     cell.switchButton.on = [RCDDBManager getScreenCaptureNotification:ConversationType_PRIVATE targetId:self.userId];
-    [RCDChatManager getScreenCaptureNotification:ConversationType_PRIVATE targetId:self.userId complete:^(BOOL result) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            cell.switchButton.on = result;
-        });
-    } error:^{
-        
-    }];
+    [RCDChatManager getScreenCaptureNotification:ConversationType_PRIVATE
+        targetId:self.userId
+        complete:^(BOOL result) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.switchButton.on = result;
+            });
+        }
+        error:^{
+
+        }];
 }
 
 #pragma mark - getter & setter
-- (RCDUserListCollectionView *)headerView{
+- (RCDUserListCollectionView *)headerView {
     if (!_headerView) {
-        CGRect tempRect =
-        CGRectMake(0, 0, RCDScreenWidth, 100);
+        CGRect tempRect = CGRectMake(0, 0, RCDScreenWidth, 100);
         _headerView = [[RCDUserListCollectionView alloc] initWithFrame:tempRect isAllowAdd:YES isAllowDelete:NO];
         _headerView.userListCollectionViewDelegate = self;
     }

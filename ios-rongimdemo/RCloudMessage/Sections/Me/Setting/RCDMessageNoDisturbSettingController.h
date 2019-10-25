@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDMessageNoDisturbSettingController : UITableViewController
-@property(nonatomic, strong) UISwitch *swch;
+@property (nonatomic, strong) UISwitch *swch;
 @end

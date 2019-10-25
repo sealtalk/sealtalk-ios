@@ -20,16 +20,16 @@
 #import "RCDBaseSettingTableViewCell.h"
 #import "RCDGroupMemberDetailController.h"
 @interface RCDAddFriendViewController ()
-@property(nonatomic, strong) UILabel *nameLabel;
-@property(nonatomic, strong) UIImageView *portraitImgView;
-@property(nonatomic, strong) UIImageView *genderImgView;
-@property(nonatomic, strong) UILabel *stAccountLabel;
-@property(nonatomic, strong) UIButton *addFriendBtn;
-@property(nonatomic, strong) UIButton *startChatBtn;
+@property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UIImageView *portraitImgView;
+@property (nonatomic, strong) UIImageView *genderImgView;
+@property (nonatomic, strong) UILabel *stAccountLabel;
+@property (nonatomic, strong) UIButton *addFriendBtn;
+@property (nonatomic, strong) UIButton *startChatBtn;
 @property (nonatomic, strong) UILabel *groupNicknameLabel;
 
-@property(nonatomic, strong) MBProgressHUD *hud;
-@property(nonatomic, strong) RCDGroupInfo *groupInfo;
+@property (nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, strong) RCDGroupInfo *groupInfo;
 @end
 
 @implementation RCDAddFriendViewController
@@ -68,7 +68,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RCDBaseSettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PersonDetailSettingReuseIdentifier"];
+    RCDBaseSettingTableViewCell *cell =
+        [tableView dequeueReusableCellWithIdentifier:@"PersonDetailSettingReuseIdentifier"];
     if (!cell) {
         cell = [[RCDBaseSettingTableViewCell alloc] init];
     }
@@ -83,7 +84,6 @@
     vc.groupId = self.groupId;
     [self.navigationController pushViewController:vc animated:YES];
 }
-
 
 #pragma mark - Private Method
 - (void)setupNavi {
@@ -101,30 +101,30 @@
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 86)];
     headerView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = headerView;
-    
+
     [headerView addSubview:self.portraitImgView];
     [headerView addSubview:self.nameLabel];
     [headerView addSubview:self.genderImgView];
     [headerView addSubview:self.stAccountLabel];
-    
+
     [self.portraitImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(headerView);
         make.left.equalTo(headerView).offset(10);
         make.height.width.offset(65);
     }];
-    
+
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.portraitImgView).offset(7);
         make.left.equalTo(self.portraitImgView.mas_right).offset(8);
         make.height.offset(20);
     }];
-    
+
     [self.genderImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.nameLabel);
         make.left.equalTo(self.nameLabel.mas_right).offset(5);
         make.height.width.equalTo(@15);
     }];
-    
+
     [self.stAccountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.nameLabel.mas_bottom).offset(7);
         make.left.equalTo(self.nameLabel);
@@ -133,24 +133,27 @@
     }];
 }
 
-- (void)setGroupMemberInfo{
+- (void)setGroupMemberInfo {
     if (self.groupId.length > 0) {
         RCDGroupMember *member = [RCDGroupManager getGroupMember:self.targetUserInfo.userId groupId:self.groupId];
         if (member.groupNickname.length > 0) {
             self.groupNicknameLabel.hidden = NO;
             [self.tableView.tableHeaderView addSubview:self.groupNicknameLabel];
             [self.groupNicknameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.stAccountLabel.hidden?self.nameLabel.mas_bottom:self.stAccountLabel.mas_bottom).offset(7);
+                make.top.equalTo(self.stAccountLabel.hidden ? self.nameLabel.mas_bottom
+                                                            : self.stAccountLabel.mas_bottom)
+                    .offset(7);
                 make.left.equalTo(self.nameLabel);
                 make.right.equalTo(self.tableView.tableHeaderView);
                 make.height.offset(16);
             }];
-            self.groupNicknameLabel.text = [NSString stringWithFormat:@"%@：%@",RCDLocalizedString(@"GroupNickname"), member.groupNickname];
+            self.groupNicknameLabel.text =
+                [NSString stringWithFormat:@"%@：%@", RCDLocalizedString(@"GroupNickname"), member.groupNickname];
         }
     }
 }
 
-- (void)updateNameLayout{
+- (void)updateNameLayout {
     if (self.groupNicknameLabel.hidden && self.stAccountLabel.hidden) {
         [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.portraitImgView);
@@ -158,7 +161,8 @@
             make.height.offset(20);
         }];
     }
-    if ((self.groupNicknameLabel.hidden && !self.stAccountLabel.hidden) || (!self.groupNicknameLabel.hidden && self.stAccountLabel.hidden)) {
+    if ((self.groupNicknameLabel.hidden && !self.stAccountLabel.hidden) ||
+        (!self.groupNicknameLabel.hidden && self.stAccountLabel.hidden)) {
         [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.portraitImgView).offset(7);
             make.left.equalTo(self.portraitImgView.mas_right).offset(8);
@@ -180,16 +184,20 @@
         UIImage *portrait = [DefaultPortraitView portraitView:self.targetUserInfo.userId name:self.targetUserInfo.name];
         self.portraitImgView.image = portrait;
     } else {
-        [self.portraitImgView sd_setImageWithURL:[NSURL URLWithString:self.targetUserInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"icon_person"]];
+        [self.portraitImgView sd_setImageWithURL:[NSURL URLWithString:self.targetUserInfo.portraitUri]
+                                placeholderImage:[UIImage imageNamed:@"icon_person"]];
     }
     if (self.targetUserInfo.gender.length > 0) {
-        self.genderImgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"gender_%@",self.targetUserInfo.gender]];
+        self.genderImgView.image =
+            [UIImage imageNamed:[NSString stringWithFormat:@"gender_%@", self.targetUserInfo.gender]];
     } else {
         self.genderImgView.image = [UIImage imageNamed:@"gender_male"];
     }
-    if (self.targetUserInfo.stAccount.length > 0 && ![self.targetUserInfo.stAccount isEqualToString:@""] && !self.groupInfo.memberProtection) {
+    if (self.targetUserInfo.stAccount.length > 0 && ![self.targetUserInfo.stAccount isEqualToString:@""] &&
+        !self.groupInfo.memberProtection) {
         self.stAccountLabel.hidden = NO;
-        self.stAccountLabel.text = [NSString stringWithFormat:@"%@：%@",RCDLocalizedString(@"SealTalkNumber"), self.targetUserInfo.stAccount];
+        self.stAccountLabel.text =
+            [NSString stringWithFormat:@"%@：%@", RCDLocalizedString(@"SealTalkNumber"), self.targetUserInfo.stAccount];
     } else {
         self.stAccountLabel.hidden = YES;
     }
@@ -198,37 +206,37 @@
 - (void)setFooterView {
     if (self.groupInfo.memberProtection) {
         [self showProtectTipView];
-    }else{
+    } else {
         UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 500)];
         self.tableView.tableFooterView = footerView;
         [footerView addSubview:self.addFriendBtn];
         [footerView addSubview:self.startChatBtn];
-        
+
         [self.addFriendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(footerView).offset(15);
             make.left.right.equalTo(footerView).inset(10);
             make.height.offset(43);
         }];
-        
+
         [self.startChatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.height.left.right.equalTo(self.addFriendBtn);
         }];
-        
+
         [self updateFooterView];
     }
 }
 
-- (void)showProtectTipView{
+- (void)showProtectTipView {
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 500)];
     self.tableView.tableFooterView = footerView;
-    
+
     UILabel *label = [[UILabel alloc] init];
     label.text = RCDLocalizedString(@"AddFriendProtectTip");
     label.textColor = HEXCOLOR(0x8b8b8b);
     label.font = [UIFont systemFontOfSize:14];
     label.numberOfLines = 0;
     [footerView addSubview:label];
-    
+
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(footerView).offset(15);
         make.left.right.equalTo(footerView).inset(36);
@@ -254,7 +262,11 @@
 }
 
 - (void)showAlertViewWith:(NSString *)message {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+                                              otherButtonTitles:nil, nil];
     [alertView show];
 }
 
@@ -262,23 +274,28 @@
 - (void)addFriendAction:(id)sender {
     if (_targetUserInfo) {
         [self.hud showAnimated:YES];
-        [RCDUserInfoManager inviteFriend:_targetUserInfo.userId withMessage:[NSString stringWithFormat:@"我是%@", [RCIM sharedRCIM].currentUserInfo.name] complete:^(BOOL success, NSString *action) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.hud hideAnimated:YES];
-                if (success) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsRequestKey object:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsUpdateUIKey object:nil];
-                    if ([action isEqualToString:@"AddDirectly"]) {
-                        [self showAlertViewWith:RCDLocalizedString(@"AddSuccess")];
-                    } else {
-                        [self showAlertViewWith:RCDLocalizedString(@"request_had_send")];
-                    }
-                    [self updateFooterView];
-                } else {
-                    [self showAlertViewWith:RCDLocalizedString(@"request_fail_retry")];
-                }
-            });
-        }];
+        [RCDUserInfoManager
+            inviteFriend:_targetUserInfo.userId
+             withMessage:[NSString stringWithFormat:@"我是%@", [RCIM sharedRCIM].currentUserInfo.name]
+                complete:^(BOOL success, NSString *action) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.hud hideAnimated:YES];
+                        if (success) {
+                            [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsRequestKey
+                                                                                object:nil];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsUpdateUIKey
+                                                                                object:nil];
+                            if ([action isEqualToString:@"AddDirectly"]) {
+                                [self showAlertViewWith:RCDLocalizedString(@"AddSuccess")];
+                            } else {
+                                [self showAlertViewWith:RCDLocalizedString(@"request_had_send")];
+                            }
+                            [self updateFooterView];
+                        } else {
+                            [self showAlertViewWith:RCDLocalizedString(@"request_fail_retry")];
+                        }
+                    });
+                }];
     };
 }
 
@@ -334,7 +351,7 @@
     return _stAccountLabel;
 }
 
-- (UILabel *)groupNicknameLabel{
+- (UILabel *)groupNicknameLabel {
     if (!_groupNicknameLabel) {
         _groupNicknameLabel = [[UILabel alloc] init];
         _groupNicknameLabel.font = [UIFont systemFontOfSize:14];
@@ -359,8 +376,7 @@
 - (UIButton *)startChatBtn {
     if (!_startChatBtn) {
         _startChatBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 30, self.view.bounds.size.width, 86)];
-        [_startChatBtn setTitle:RCDLocalizedString(@"start_chat")
-                       forState:UIControlStateNormal];
+        [_startChatBtn setTitle:RCDLocalizedString(@"start_chat") forState:UIControlStateNormal];
         [_startChatBtn setTintColor:[UIColor blackColor]];
         [_startChatBtn setBackgroundColor:[UIColor colorWithHexString:@"0099ff" alpha:1.0]];
         _startChatBtn.layer.masksToBounds = YES;
@@ -371,7 +387,7 @@
 }
 
 - (MBProgressHUD *)hud {
-    if(!_hud) {
+    if (!_hud) {
         _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         _hud.color = [UIColor colorWithHexString:@"343637" alpha:0.8];
     }

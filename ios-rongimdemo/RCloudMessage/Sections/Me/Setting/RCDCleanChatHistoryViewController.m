@@ -18,7 +18,7 @@
 
 static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIdentifier";
 
-@interface RCDCleanChatHistoryViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface RCDCleanChatHistoryViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *bottomView;
@@ -34,7 +34,7 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupData];
     [self setupViews];
     [self setupNavi];
@@ -58,7 +58,7 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
     if (cell == nil) {
         cell = [[RCDForwardSelectedCell alloc] init];
     }
-    RCConversation *conversation  = self.conversationList[indexPath.row];
+    RCConversation *conversation = self.conversationList[indexPath.row];
     RCDForwardCellModel *model = [RCDForwardCellModel createModelWith:conversation];
     [cell setModel:model];
     cell.selectStatus = RCDForwardSelectedStatusMultiUnSelected;
@@ -86,7 +86,8 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
 
 #pragma mark - Private Method
 - (void)setupData {
-    NSArray *conversations = [[RCIMClient sharedRCIMClient] getConversationList:@[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ]];
+    NSArray *conversations =
+        [[RCIMClient sharedRCIMClient] getConversationList:@[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ]];
     NSMutableArray *dealWithArray = [NSMutableArray array];
     for (RCConversation *conversation in conversations) {
         if (![conversation.targetId isEqualToString:RCDGroupNoticeTargetId]) {
@@ -102,35 +103,37 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
     [self.view addSubview:self.bottomView];
     [self.bottomView addSubview:self.allSelectBtn];
     [self.bottomView addSubview:self.deleteBtn];
-    
+
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.bottom.equalTo(self.bottomView.mas_top);
     }];
-    
+
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
         make.height.offset(49 + RCDExtraBottomHeight);
     }];
-    
+
     [self.allSelectBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.bottomView).offset(13);
         make.height.offset(25);
         make.left.equalTo(self.bottomView).offset(12);
     }];
-    
+
     [self.deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.height.equalTo(self.allSelectBtn);
         make.right.equalTo(self.bottomView).offset(-12);
     }];
-    
+
     self.allSelectBtn.enabled = self.conversationList.count > 0;
 }
 
 - (void)setupNavi {
     self.title = RCDLocalizedString(@"CleanChatHistory");
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn:)];
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                                target:self
+                                                                                action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftButton;
 }
 
@@ -139,19 +142,20 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
     hud.labelText = RCDLocalizedString(@"Deleting");
     [hud show:YES];
     for (RCConversation *conversation in self.deleteConversationArray) {
-        [[RCIMClient sharedRCIMClient] clearMessages:conversation.conversationType targetId: conversation.targetId];
+        [[RCIMClient sharedRCIMClient] clearMessages:conversation.conversationType targetId:conversation.targetId];
         [[RCIMClient sharedRCIMClient] removeConversation:conversation.conversationType targetId:conversation.targetId];
     }
     [hud hideAnimated:YES];
     [self.view showHUDMessage:RCDLocalizedString(@"DeleteSuccess")];
     [self setupData];
-    
+
     if (self.conversationList.count > 0) {
         self.allSelectBtn.enabled = YES;
         [self.allSelectBtn setTitleColor:[UIColor colorWithHexString:@"000000" alpha:1] forState:UIControlStateNormal];
     } else {
         self.allSelectBtn.enabled = NO;
-        [self.allSelectBtn setTitleColor:[[UIColor grayColor] colorWithAlphaComponent:0.6] forState:UIControlStateNormal];
+        [self.allSelectBtn setTitleColor:[[UIColor grayColor] colorWithAlphaComponent:0.6]
+                                forState:UIControlStateNormal];
     }
     self.deleteBtn.enabled = self.deleteConversationArray.count > 0;
     [self.tableView reloadData];
@@ -179,13 +183,18 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
 
 - (void)deleteAction {
     if (self.deleteConversationArray.count > 0) {
-        [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"clear_chat_history_alert") highlightText:nil leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"Delete_Confirm") cancel:^{
-            
-        } confirm:^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self deleteConversation];
-            });
-        }];
+        [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"clear_chat_history_alert")
+            highlightText:nil
+            leftTitle:RCDLocalizedString(@"cancel")
+            rightTitle:RCDLocalizedString(@"Delete_Confirm")
+            cancel:^{
+
+            }
+            confirm:^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self deleteConversation];
+                });
+            }];
     }
 }
 

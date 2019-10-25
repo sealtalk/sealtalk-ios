@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDCreateGroupViewController : UIViewController
-@property(nonatomic, strong) NSMutableArray *groupMemberIdList;
+@property (nonatomic, strong) NSMutableArray *groupMemberIdList;
 @end

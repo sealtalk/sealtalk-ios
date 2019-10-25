@@ -9,5 +9,5 @@
 #import <RongIMKit/RongIMKit.h>
 
 @interface RCDChatViewController : RCConversationViewController
-@property(nonatomic, assign) BOOL needPopToRootView;
+@property (nonatomic, assign) BOOL needPopToRootView;
 @end

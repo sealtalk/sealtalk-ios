@@ -45,22 +45,22 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSUInteger row = 0;
-    if(0 == section) {
+    if (0 == section) {
         row = 4;
-    }else if (1 == section) {
+    } else if (1 == section) {
         row = 3;
-    }else if(2 == section) {
+    } else if (2 == section) {
         row = 1;
     }
     return row;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if(2 == indexPath.section) {
+
+    if (2 == indexPath.section) {
         return [self createQuitCell];
     }
-    
+
     static NSString *reusableCellWithIdentifier = @"RCDBaseSettingTableViewCell";
     RCDBaseSettingTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
     if (cell == nil) {
@@ -68,17 +68,17 @@
     }
     [cell setCellStyle:DefaultStyle];
     NSString *text = @"";
-    if(0 == indexPath.section) {
-        if(0 == indexPath.row) {
+    if (0 == indexPath.section) {
+        if (0 == indexPath.row) {
             text = RCDLocalizedString(@"change_password");
-        }else if(1 == indexPath.row) {
+        } else if (1 == indexPath.row) {
             text = RCDLocalizedString(@"SecurityAndprivacy");
-        }else if(2 == indexPath.row) {
+        } else if (2 == indexPath.row) {
             text = RCDLocalizedString(@"new_message_notification");
-        }else if (3 == indexPath.row) {
+        } else if (3 == indexPath.row) {
             text = RCDLocalizedString(@"push_setting");
         }
-    }else {
+    } else {
         if (indexPath.row == 0) {
             text = RCDLocalizedString(@"ChatBackground");
         } else if (indexPath.row == 1) {
@@ -94,34 +94,40 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if(0 == indexPath.section) {
-        if(0 == indexPath.row) {
+    if (0 == indexPath.section) {
+        if (0 == indexPath.row) {
             RCDChangePasswordViewController *vc = [[RCDChangePasswordViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
-        }else if(1 == indexPath.row) {
+        } else if (1 == indexPath.row) {
             RCDPrivacyTableViewController *vc = [[RCDPrivacyTableViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
-        }else if (2 == indexPath.row) {
+        } else if (2 == indexPath.row) {
             RCDMessageNotifySettingTableViewController *vc = [[RCDMessageNotifySettingTableViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
-        }else if (3 == indexPath.row) {
+        } else if (3 == indexPath.row) {
             RCDPushSettingViewController *vc = [[RCDPushSettingViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         }
-    }else if(1 == indexPath.section) {
+    } else if (1 == indexPath.section) {
         if (indexPath.row == 0) {
             RCDChatBackgroundViewController *chatBgVC = [[RCDChatBackgroundViewController alloc] init];
             [self.navigationController pushViewController:chatBgVC animated:YES];
         } else if (indexPath.row == 1) {
             //清除缓存
-            [self showAlert:RCDLocalizedString(@"clear_cache_alert") cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:RCDLocalizedString(@"confirm") tag:1011];
+            [self showAlert:RCDLocalizedString(@"clear_cache_alert")
+                cancelBtnTitle:RCDLocalizedString(@"cancel")
+                 otherBtnTitle:RCDLocalizedString(@"confirm")
+                           tag:1011];
         } else {
             RCDCleanChatHistoryViewController *cleanVC = [[RCDCleanChatHistoryViewController alloc] init];
             [self.navigationController pushViewController:cleanVC animated:YES];
         }
-    }else if(2 == indexPath.section) {
+    } else if (2 == indexPath.section) {
         //退出登录
-        [self showAlert:RCDLocalizedString(@"logout_alert") cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:RCDLocalizedString(@"confirm") tag:1010];
+        [self showAlert:RCDLocalizedString(@"logout_alert")
+            cancelBtnTitle:RCDLocalizedString(@"cancel")
+             otherBtnTitle:RCDLocalizedString(@"confirm")
+                       tag:1010];
     }
 }
 
@@ -168,7 +174,10 @@
 }
 
 - (void)clearCacheSuccess {
-    [self showAlert:RCDLocalizedString(@"clear_cache_succrss") cancelBtnTitle:RCDLocalizedString(@"confirm") otherBtnTitle:nil tag:-1];
+    [self showAlert:RCDLocalizedString(@"clear_cache_succrss")
+        cancelBtnTitle:RCDLocalizedString(@"confirm")
+         otherBtnTitle:nil
+                   tag:-1];
 }
 
 //退出登录
@@ -177,22 +186,29 @@
     [DEFAULTS removeObjectForKey:RCDIMTokenKey];
     [DEFAULTS synchronize];
 
-    [RCDLoginManager logout:^(BOOL success) {
+    [RCDLoginManager logout:^(BOOL success){
     }];
 
     RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:loginVC];
     self.view.window.rootViewController = navi;
     [[RCIM sharedRCIM] logout];
-    
+
     NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.cn.rongcloud.im.share"];
     [userDefaults removeObjectForKey:RCDCookieKey];
     [userDefaults synchronize];
 }
 
-- (void)showAlert:(NSString *)message cancelBtnTitle:(NSString *)cBtnTitle otherBtnTitle:(NSString *)oBtnTitle tag:(int)tag {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:cBtnTitle otherButtonTitles:oBtnTitle, nil];
-    if(tag > 0){
+- (void)showAlert:(NSString *)message
+   cancelBtnTitle:(NSString *)cBtnTitle
+    otherBtnTitle:(NSString *)oBtnTitle
+              tag:(int)tag {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:cBtnTitle
+                                              otherButtonTitles:oBtnTitle, nil];
+    if (tag > 0) {
         alertView.tag = tag;
     }
     [alertView show];
@@ -238,11 +254,11 @@
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     self.tableView.tableFooterView = [UIView new];
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    
+
     self.navigationItem.title = RCDLocalizedString(@"account_setting");
-    RCDUIBarButtonItem *leftBtn =
-    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
-                                               target:self action:@selector(clickBackBtn:)];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftBtn;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }

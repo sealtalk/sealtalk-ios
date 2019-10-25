@@ -12,11 +12,11 @@
 
 @interface RCDBaseSettingTableViewCell ()
 
-@property(nonatomic, strong) NSDictionary *cellSubViews;
+@property (nonatomic, strong) NSDictionary *cellSubViews;
 
 //@property(nonatomic, strong) NSArray *leftLabelConstraints;
 
-@property(nonatomic, strong) NSArray *rightLabelConstraints;
+@property (nonatomic, strong) NSArray *rightLabelConstraints;
 
 @end
 

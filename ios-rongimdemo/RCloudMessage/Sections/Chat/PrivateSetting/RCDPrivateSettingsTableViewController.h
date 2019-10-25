@@ -11,5 +11,5 @@
 
 @interface RCDPrivateSettingsTableViewController : RCDTableViewController <UIActionSheetDelegate>
 @property (nonatomic, strong) NSString *userId;
-@property (nonatomic, copy) void(^clearMessageHistory)();
+@property (nonatomic, copy) void (^clearMessageHistory)();
 @end

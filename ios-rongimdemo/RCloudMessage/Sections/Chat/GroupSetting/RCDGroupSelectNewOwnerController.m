@@ -17,8 +17,7 @@
 #import "RCDUtilities.h"
 #import "UIColor+RCColor.h"
 #import "UIView+MBProgressHUD.h"
-@interface RCDGroupSelectNewOwnerController ()<
-UISearchControllerDelegate, UISearchResultsUpdating>
+@interface RCDGroupSelectNewOwnerController () <UISearchControllerDelegate, UISearchResultsUpdating>
 @property (nonatomic, strong) NSArray *allMembers;
 @property (nonatomic, strong) NSString *groupId;
 @property (nonatomic, strong) NSArray *resultKeys;
@@ -27,12 +26,11 @@ UISearchControllerDelegate, UISearchResultsUpdating>
 @property (nonatomic, strong) NSMutableDictionary *searchResultDic;
 @property (nonatomic, retain) UISearchController *searchController;
 
-
 @end
 
 @implementation RCDGroupSelectNewOwnerController
 #pragma mark - life cycle
-- (instancetype)initWithGroupId:(NSString *)groupId{
+- (instancetype)initWithGroupId:(NSString *)groupId {
     if (self = [super init]) {
         self.groupId = groupId;
     }
@@ -50,9 +48,11 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     }
     self.tableView.backgroundColor = HEXCOLOR(0xf2f2f3);
 
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = leftBtn;
-    
+
     [self getData];
 }
 
@@ -110,11 +110,17 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     NSString *key = self.resultKeys[indexPath.section];
     NSArray *array = self.resultSectionDict[key];
     RCUserInfo *user = array[indexPath.row];
-    [NormalAlertView showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"GroupSelectNewOwnerTitle"),user.name]  highlightText:user.name leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"confirm") cancel:^{
-        
-    } confirm:^{
-        [self setNewGroupOwer:user.userId];
-    }];
+    [NormalAlertView
+        showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"GroupSelectNewOwnerTitle"), user.name]
+        highlightText:user.name
+        leftTitle:RCDLocalizedString(@"cancel")
+        rightTitle:RCDLocalizedString(@"confirm")
+        cancel:^{
+
+        }
+        confirm:^{
+            [self setNewGroupOwer:user.userId];
+        }];
 }
 
 #pragma mark - UISearchController Delegate -
@@ -132,7 +138,8 @@ UISearchControllerDelegate, UISearchResultsUpdating>
             RCUserInfo *user = [RCDUserInfoManager getUserInfo:userInfo.userId];
             RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userInfo.userId];
             RCDGroupMember *member = [RCDGroupManager getGroupMember:userInfo.userId groupId:self.groupId];
-            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] || [member.groupNickname containsString:searchString]) {
+            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] ||
+                [member.groupNickname containsString:searchString]) {
                 [array addObject:userInfo];
             }
         }
@@ -146,7 +153,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
 }
 
 #pragma mark - helper
-- (void)getData{
+- (void)getData {
     NSMutableArray *array = [RCDGroupManager getGroupMembers:self.groupId].mutableCopy;
     [array removeObject:[RCIM sharedRCIM].currentUserInfo.userId];
     NSMutableArray *list = [NSMutableArray array];
@@ -162,30 +169,33 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     [self sortAndRefreshWithList:list.copy];
 }
 
-- (void)setNewGroupOwer:(NSString *)userId{
-    
+- (void)setNewGroupOwer:(NSString *)userId {
+
     RCNetworkStatus status = [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
     if (RC_NotReachable == status) {
         [self.view showHUDMessage:RCDLocalizedString(@"network_can_not_use_please_check")];
         return;
     }
-    
+
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [RCDGroupManager transferGroupOwner:userId groupId:self.groupId complete:^(BOOL success) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            if (success) {
-                NSArray *array = self.navigationController.viewControllers;
-                [self.navigationController popToViewController:array[array.count-1-2] animated:YES];
-            }else{
-                [self.view showHUDMessage:RCDLocalizedString(@"Failed")];
-            }
-        });
-    }];
+    [RCDGroupManager
+        transferGroupOwner:userId
+                   groupId:self.groupId
+                  complete:^(BOOL success) {
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          [MBProgressHUD hideHUDForView:self.view animated:YES];
+                          if (success) {
+                              NSArray *array = self.navigationController.viewControllers;
+                              [self.navigationController popToViewController:array[array.count - 1 - 2] animated:YES];
+                          } else {
+                              [self.view showHUDMessage:RCDLocalizedString(@"Failed")];
+                          }
+                      });
+                  }];
 }
 
 - (void)sortAndRefreshWithList:(NSArray *)friendList {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSDictionary *resultDic = [[RCDUtilities sortedArrayWithPinYinDic:friendList] copy];
         self.resultKeys = resultDic[@"allKeys"];
         self.resultSectionDict = resultDic[@"infoDic"];
@@ -197,7 +207,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
 
 #pragma mark - getter
 - (UISearchController *)searchController {
-    if(!_searchController){
+    if (!_searchController) {
         _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
         _searchController.delegate = self;
         _searchController.searchResultsUpdater = self;

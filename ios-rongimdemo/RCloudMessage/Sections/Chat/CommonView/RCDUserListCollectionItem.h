@@ -13,12 +13,12 @@
 
 @interface RCDUserListCollectionItem : UICollectionViewCell
 
-@property(nonatomic, strong) UIImageView *ivAva;
-@property(nonatomic, strong) UILabel *titleLabel;
-@property(nonatomic, strong) UIButton *btnImg;
-@property(nonatomic, copy) NSString *userId;
-@property(nonatomic, copy) NSString *groupId;
-@property(nonatomic, weak) id<RCDUserListCollectionItemDelegate> delegate;
+@property (nonatomic, strong) UIImageView *ivAva;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UIButton *btnImg;
+@property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy) NSString *groupId;
+@property (nonatomic, weak) id<RCDUserListCollectionItemDelegate> delegate;
 
 - (void)setUserModel:(NSString *)userId;
 @end

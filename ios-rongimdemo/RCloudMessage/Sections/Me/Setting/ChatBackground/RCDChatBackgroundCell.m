@@ -29,11 +29,11 @@
     self.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.imageView];
     [self.imageView addSubview:self.selectedImgView];
-    
+
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.width.height.equalTo(self.contentView);
     }];
-    
+
     [self.selectedImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.imageView).offset(-5);
         make.bottom.equalTo(self.imageView).offset(-5);

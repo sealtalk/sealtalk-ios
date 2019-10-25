@@ -27,7 +27,7 @@
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
-    
+
     if (self = [super initWithFrame:frame]) {
         [self setupViews];
     }
@@ -35,7 +35,7 @@
 }
 
 - (instancetype)init {
-    
+
     if (self = [super init]) {
         [self setupViews];
     }
@@ -56,21 +56,21 @@
 }
 
 - (void)setupViews {
-    
+
     [self addSubview:self.bgImageView];
     [self.bgImageView addSubview:self.titleLabel];
     [self.bgImageView addSubview:self.imageView];
-    
+
     [self.bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.width.height.equalTo(self);
     }];
-    
+
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.bgImageView).inset(10);
         make.top.equalTo(self.bgImageView).offset(5);
         make.height.offset(28);
     }];
-    
+
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).offset(5);
         make.height.width.offset(80);

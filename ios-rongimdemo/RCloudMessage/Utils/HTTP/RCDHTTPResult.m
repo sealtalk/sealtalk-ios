@@ -11,8 +11,8 @@
 @implementation RCDHTTPResult
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"success: %d, httpCode: %ld, errorCode: %ld, content: %@",
-            self.success, (long)self.httpCode, (long)self.errorCode, self.content];
+    return [NSString stringWithFormat:@"success: %d, httpCode: %ld, errorCode: %ld, content: %@", self.success,
+                                      (long)self.httpCode, (long)self.errorCode, self.content];
 }
 
 @end

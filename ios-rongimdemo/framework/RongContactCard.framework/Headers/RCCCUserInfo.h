@@ -13,6 +13,6 @@
 //父类RCUserInfo中有三个属性，用户ID、用户昵称和用户头像地址
 
 //用户备注名
-@property(nonatomic, strong) NSString *displayName;
+@property (nonatomic, strong) NSString *displayName;
 
 @end

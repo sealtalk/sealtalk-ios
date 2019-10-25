@@ -34,7 +34,6 @@ typedef NS_ENUM(NSInteger, RCDGroupNoticeType) {
 @property (nonatomic, assign) RCDGroupInviteStatus status;
 @property (nonatomic, assign) long long createTime;
 
-
 - (instancetype)initWithJson:(NSDictionary *)json;
 @end
 

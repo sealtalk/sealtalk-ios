@@ -30,7 +30,8 @@
 - (void)showForwardAlertViewInViewController:(UIViewController *)viewController {
     self.viewController = viewController;
     if (self.isMultiSelect) {
-        RCDForwardAlertView *alertView = [RCDForwardAlertView alertViewWithSelectedContacts:[self.selectedContactArray copy]];
+        RCDForwardAlertView *alertView =
+            [RCDForwardAlertView alertViewWithSelectedContacts:[self.selectedContactArray copy]];
         alertView.messageArray = self.selectedMessages;
         alertView.delegate = self;
         [alertView show];
@@ -64,7 +65,9 @@
                     [self forwardWithConversationType:model.conversationType targetId:model.targetId message:message];
                 }
             } else {
-                [self forwardWithConversationType:self.toConversation.conversationType targetId:self.toConversation.targetId message:message];
+                [self forwardWithConversationType:self.toConversation.conversationType
+                                         targetId:self.toConversation.targetId
+                                          message:message];
             }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -74,14 +77,21 @@
     });
 }
 
-- (void)forwardWithConversationType:(RCConversationType)type targetId:(NSString *)targetId message:(RCMessageModel *)message {
+- (void)forwardWithConversationType:(RCConversationType)type
+                           targetId:(NSString *)targetId
+                            message:(RCMessageModel *)message {
     if (self.willForwardMessageBlock) {
-        self.willForwardMessageBlock(type,targetId);
-        [self dismiss];
-    }else{
-        [[RCIM sharedRCIM] sendMessage:type targetId:targetId content:message.content pushContent:nil pushData:nil success:^(long messageId) {
-        } error:^(RCErrorCode nErrorCode, long messageId) {
-        }];
+        self.willForwardMessageBlock(type, targetId);
+    } else {
+        [[RCIM sharedRCIM] sendMessage:type
+            targetId:targetId
+            content:message.content
+            pushContent:nil
+            pushData:nil
+            success:^(long messageId) {
+            }
+            error:^(RCErrorCode nErrorCode, long messageId){
+            }];
         [NSThread sleepForTimeInterval:0.4];
     }
 }
@@ -105,9 +115,9 @@
 - (void)addForwardModel:(RCDForwardCellModel *)model {
     [self.selectedContactArray addObject:model];
     if (model.conversationType == ConversationType_GROUP) {
-        self.groupCount ++;
+        self.groupCount++;
     } else if (model.conversationType == ConversationType_PRIVATE) {
-        self.friendCount ++;
+        self.friendCount++;
     }
 }
 - (void)removeForwardModel:(RCDForwardCellModel *)model {
@@ -118,9 +128,9 @@
         }
     }
     if (model.conversationType == ConversationType_GROUP) {
-        self.groupCount --;
+        self.groupCount--;
     } else if (model.conversationType == ConversationType_PRIVATE) {
-        self.friendCount --;
+        self.friendCount--;
     }
 }
 
@@ -167,9 +177,21 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         blackList = @[
-                      @"RC:VCAccept", @"RC:VCHangup", @"RC:VCInvite", @"RC:VCModifyMedia", @"RC:VCModifyMem", @"RC:VCRinging",
-                      @"RC:VCSummary", @"RC:RLStart", @"RC:RLEnd", @"RC:RLJoin", @"RC:RLQuit", @"RCJrmf:RpMsg", @"RC:VcMsg"
-                      ];
+            @"RC:VCAccept",
+            @"RC:VCHangup",
+            @"RC:VCInvite",
+            @"RC:VCModifyMedia",
+            @"RC:VCModifyMem",
+            @"RC:VCRinging",
+            @"RC:VCSummary",
+            @"RC:RLStart",
+            @"RC:RLEnd",
+            @"RC:RLJoin",
+            @"RC:RLQuit",
+            @"RCJrmf:RpMsg",
+            @"RC:VcMsg",
+            @"ST:PokeMsg"
+        ];
     });
     return blackList;
 }

@@ -14,7 +14,7 @@
 #import "RCDPokeMessage.h"
 #import "UIView+MBProgressHUD.h"
 #import "RCDPokeManager.h"
-@interface RCDPokeAlertView()<UITextFieldDelegate>
+@interface RCDPokeAlertView () <UITextFieldDelegate>
 @property (nonatomic, strong) UIView *bgView;
 @property (nonatomic, strong) UIImageView *pokeIcon;
 @property (nonatomic, strong) UILabel *infolabel;
@@ -31,11 +31,13 @@
 @property (nonatomic, strong) NSArray *selectIds;
 @end
 @implementation RCDPokeAlertView
-+ (void)showPokeAlertView:(RCConversationType)type targetId:(NSString *)targetId inViewController:(UIViewController *)controller{
++ (void)showPokeAlertView:(RCConversationType)type
+                 targetId:(NSString *)targetId
+         inViewController:(UIViewController *)controller {
     NSInteger restTime = 60 - [[RCDPokeManager sharedInstance] getLastSendPokeTimeInterval:type targetId:targetId];
-    if(restTime > 0){
-        [controller.view showHUDMessage:[NSString stringWithFormat:RCDLocalizedString(@"PokeTime"),restTime]];
-    }else{
+    if (restTime > 0) {
+        [controller.view showHUDMessage:[NSString stringWithFormat:RCDLocalizedString(@"PokeTime"), restTime]];
+    } else {
         RCDPokeAlertView *pokeView = [[RCDPokeAlertView alloc] initWithFrame:controller.view.bounds];
         [pokeView registerNotification];
         pokeView.backgroundColor = [HEXCOLOR(0x000000) colorWithAlphaComponent:0.21];
@@ -47,10 +49,10 @@
     }
 }
 
-- (instancetype)initWithFrame:(CGRect)frame{
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         UITapGestureRecognizer *resetBottomTapGesture =
-        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
+            [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
         [self.bgView addGestureRecognizer:resetBottomTapGesture];
         [self addGestureRecognizer:resetBottomTapGesture];
     }
@@ -58,12 +60,14 @@
 }
 
 #pragma mark - UITextFieldDelegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self hideKeyboard];
     return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+- (BOOL)textField:(UITextField *)textField
+    shouldChangeCharactersInRange:(NSRange)range
+                replacementString:(NSString *)string {
     NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
     if (text.length > 20) {
         textField.text = [text substringWithRange:NSMakeRange(0, 20)];
@@ -74,11 +78,11 @@
 }
 
 #pragma mark - helper
-- (void)hideKeyboard{
+- (void)hideKeyboard {
     [self.inputTextField resignFirstResponder];
 }
 
-- (void)show{
+- (void)show {
     [self hideKeyboard];
     [self hiden];
     [RCDPokeManager sharedInstance].isShowPokeAlert = YES;
@@ -86,16 +90,17 @@
     [self registerNotification];
 }
 
-- (void)hiden{
+- (void)hiden {
     [RCDPokeManager sharedInstance].isShowPokeAlert = NO;
     [self removeFromSuperview];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)onSelectPressed{
-    RCDGroupMemberSelectController *selectVC = [[RCDGroupMemberSelectController alloc] initWithGroupId:self.targetId type:(RCDGroupMemberSelectTypePoke)];
+- (void)onSelectPressed {
+    RCDGroupMemberSelectController *selectVC =
+        [[RCDGroupMemberSelectController alloc] initWithGroupId:self.targetId type:(RCDGroupMemberSelectTypePoke)];
     __weak typeof(self) weakSelf = self;
-    [selectVC setSelectResult:^(NSArray<NSString *> * _Nonnull memberIds) {
+    [selectVC setSelectResult:^(NSArray<NSString *> *_Nonnull memberIds) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.selectIds = memberIds;
             [weakSelf setSelectUserInfo];
@@ -104,37 +109,50 @@
     [self.baseController.navigationController pushViewController:selectVC animated:YES];
 }
 
-- (void)onCanelPressed{
+- (void)onCanelPressed {
     [self hiden];
 }
 
-- (void)onConfirmPressed{
+- (void)onConfirmPressed {
     RCDPokeMessage *message = [[RCDPokeMessage alloc] init];
     message.content = self.inputTextField.text.length > 0 ? self.inputTextField.text : self.inputTextField.placeholder;
     if (self.selectIds.count > 0) {
-        [[RCIM sharedRCIM] sendDirectionalMessage:self.type targetId:self.targetId toUserIdList:self.selectIds content:message pushContent:nil pushData:nil success:^(long messageId) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[RCDPokeManager sharedInstance] saveSendPokeTime:self.type targetId:self.targetId];
-            });
-        } error:^(RCErrorCode nErrorCode, long messageId) {
-            
-        }];
-    }else{
-        [[RCIM sharedRCIM] sendMessage:self.type targetId:self.targetId content:message pushContent:nil pushData:nil success:^(long messageId) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[RCDPokeManager sharedInstance] saveSendPokeTime:self.type targetId:self.targetId];
-            });
-        } error:^(RCErrorCode nErrorCode, long messageId) {
-            
-        }];
+        [[RCIM sharedRCIM] sendDirectionalMessage:self.type
+            targetId:self.targetId
+            toUserIdList:self.selectIds
+            content:message
+            pushContent:nil
+            pushData:nil
+            success:^(long messageId) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[RCDPokeManager sharedInstance] saveSendPokeTime:self.type targetId:self.targetId];
+                });
+            }
+            error:^(RCErrorCode nErrorCode, long messageId){
+
+            }];
+    } else {
+        [[RCIM sharedRCIM] sendMessage:self.type
+            targetId:self.targetId
+            content:message
+            pushContent:nil
+            pushData:nil
+            success:^(long messageId) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[RCDPokeManager sharedInstance] saveSendPokeTime:self.type targetId:self.targetId];
+                });
+            }
+            error:^(RCErrorCode nErrorCode, long messageId){
+
+            }];
     }
     [self hiden];
 }
 
-- (void)setSelectUserInfo{
+- (void)setSelectUserInfo {
     NSString *names = @"";
     for (NSString *userId in self.selectIds) {
-        if (names.length >= 10){
+        if (names.length >= 10) {
             names = [names stringByAppendingString:@"..."];
             break;
         }
@@ -145,11 +163,11 @@
             str = friend.displayName;
         }
         names = [names stringByAppendingString:str];
-        if (names.length >= 10){
+        if (names.length >= 10) {
             names = [names substringWithRange:NSMakeRange(0, 10)];
             break;
         }
-        if (names.length > 0 && ![self.selectIds[self.selectIds.count-1] isEqual:userId]) {
+        if (names.length > 0 && ![self.selectIds[self.selectIds.count - 1] isEqual:userId]) {
             names = [names stringByAppendingString:@","];
         }
     }
@@ -159,8 +177,14 @@
 #pragma mark - Notification
 
 - (void)registerNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 //键盘升起时动画
@@ -168,7 +192,7 @@
     CGRect keyboardBounds = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat space = CGRectGetMaxY(self.bgView.frame) - keyboardBounds.origin.y;
     if (space > 0) {
-        CGFloat bgHeight = (self.type == ConversationType_PRIVATE? 300:335);
+        CGFloat bgHeight = (self.type == ConversationType_PRIVATE ? 300 : 335);
         [self.bgView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self).offset(-space);
             make.centerX.equalTo(self);
@@ -182,7 +206,7 @@
 
 //键盘关闭时动画
 - (void)keyboardWillHide:(NSNotification *)notif {
-    CGFloat bgHeight = (self.type == ConversationType_PRIVATE? 300:335);
+    CGFloat bgHeight = (self.type == ConversationType_PRIVATE ? 300 : 335);
     [self.bgView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
         make.centerX.equalTo(self);
@@ -194,16 +218,16 @@
 }
 
 #pragma mark - Subviews
-- (void)setupSubviews{
+- (void)setupSubviews {
     [self addSubview:self.bgView];
-    CGFloat bgHeight = (self.type == ConversationType_PRIVATE? 300:335);
+    CGFloat bgHeight = (self.type == ConversationType_PRIVATE ? 300 : 335);
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
         make.centerX.equalTo(self);
         make.height.offset(bgHeight);
         make.width.offset(310);
     }];
-    
+
     [self.bgView addSubview:self.pokeIcon];
     [self.bgView addSubview:self.infolabel];
     UIView *inputBgView = [[UIView alloc] init];
@@ -230,7 +254,7 @@
         make.centerX.equalTo(self.bgView);
         make.height.offset(24);
     }];
-    
+
     if (self.type == ConversationType_GROUP) {
         [self.bgView addSubview:self.sendLabel];
         [self.bgView addSubview:self.selectButton];
@@ -253,7 +277,7 @@
             make.width.offset(8);
         }];
     }
-    CGFloat inputTop = (self.type == ConversationType_PRIVATE? 200:236);
+    CGFloat inputTop = (self.type == ConversationType_PRIVATE ? 200 : 236);
     [inputBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.bgView).offset(inputTop);
         make.left.equalTo(self.bgView).offset(10);
@@ -264,13 +288,13 @@
         make.top.height.centerX.equalTo(inputBgView);
         make.left.equalTo(inputBgView).offset(10);
     }];
-    
+
     [hLineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.inputTextField.mas_bottom).offset(20);
         make.left.right.equalTo(self.bgView);
         make.height.offset(0.5);
     }];
-    
+
     [self.cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.left.equalTo(self.bgView);
         make.top.equalTo(hLineView.mas_bottom);
@@ -281,7 +305,7 @@
         make.top.equalTo(self.cancelButton);
         make.width.equalTo(self.cancelButton);
     }];
-    
+
     [vLineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.equalTo(self.confirmButton);
         make.width.equalTo(@0.5);
@@ -290,7 +314,7 @@
 }
 
 #pragma mark - getter
-- (UIView *)bgView{
+- (UIView *)bgView {
     if (!_bgView) {
         _bgView = [[UIView alloc] init];
         _bgView.backgroundColor = HEXCOLOR(0xf8f8f8);
@@ -300,14 +324,14 @@
     return _bgView;
 }
 
-- (UIImageView *)pokeIcon{
+- (UIImageView *)pokeIcon {
     if (!_pokeIcon) {
         _pokeIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"poke_alert"]];
     }
     return _pokeIcon;
 }
 
-- (UILabel *)infolabel{
+- (UILabel *)infolabel {
     if (!_infolabel) {
         _infolabel = [[UILabel alloc] init];
         _infolabel.font = [UIFont systemFontOfSize:17];
@@ -315,16 +339,16 @@
         _infolabel.textAlignment = NSTextAlignmentCenter;
         if (self.type == ConversationType_GROUP) {
             RCGroup *group = [[RCIM sharedRCIM] getGroupInfoCache:self.targetId];
-            _infolabel.text = [NSString stringWithFormat:RCDLocalizedString(@"SendToPokeNotice"),group.groupName];
-        }else{
+            _infolabel.text = [NSString stringWithFormat:RCDLocalizedString(@"SendToPokeNotice"), group.groupName];
+        } else {
             RCUserInfo *userInfo = [[RCIM sharedRCIM] getUserInfoCache:self.targetId];
-            _infolabel.text = [NSString stringWithFormat:RCDLocalizedString(@"SendToPokeNotice"),userInfo.name];
+            _infolabel.text = [NSString stringWithFormat:RCDLocalizedString(@"SendToPokeNotice"), userInfo.name];
         }
     }
     return _infolabel;
 }
 
-- (UILabel *)sendLabel{
+- (UILabel *)sendLabel {
     if (!_sendLabel) {
         _sendLabel = [[UILabel alloc] init];
         _sendLabel.font = [UIFont systemFontOfSize:17];
@@ -334,7 +358,7 @@
     return _sendLabel;
 }
 
--(UIButton *)selectButton{
+- (UIButton *)selectButton {
     if (!_selectButton) {
         _selectButton = [[UIButton alloc] init];
         [_selectButton setTitle:RCDLocalizedString(@"SendToGroupAllMembers") forState:UIControlStateNormal];
@@ -346,23 +370,25 @@
     return _selectButton;
 }
 
-- (UIImageView *)arrowIcon{
+- (UIImageView *)arrowIcon {
     if (!_arrowIcon) {
         _arrowIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"right_arrow"]];
     }
     return _arrowIcon;
 }
 
-- (UITextField *)inputTextField{
+- (UITextField *)inputTextField {
     if (!_inputTextField) {
         _inputTextField = [[UITextField alloc] init];
         _inputTextField.font = [UIFont systemFontOfSize:15];
         _inputTextField.textColor = HEXCOLOR(0x333333);
         _inputTextField.placeholder = RCDLocalizedString(@"PokeInputPlaceholder");
-        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString: _inputTextField.placeholder attributes:
-        @{NSForegroundColorAttributeName:HEXCOLOR(0x999999),
-                     NSFontAttributeName:_inputTextField.font
-             }];
+        NSAttributedString *attrString =
+            [[NSAttributedString alloc] initWithString:_inputTextField.placeholder
+                                            attributes:@{
+                                                NSForegroundColorAttributeName : HEXCOLOR(0x999999),
+                                                NSFontAttributeName : _inputTextField.font
+                                            }];
         _inputTextField.attributedPlaceholder = attrString;
         _inputTextField.delegate = self;
     }
@@ -391,7 +417,7 @@
     return _confirmButton;
 }
 
-- (UIView *)getLineView{
+- (UIView *)getLineView {
     UIView *view = [[UIView alloc] init];
     view.backgroundColor = HEXCOLOR(0xd8d8d8);
     return view;

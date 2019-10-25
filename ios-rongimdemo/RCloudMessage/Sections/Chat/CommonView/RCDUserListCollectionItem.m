@@ -85,19 +85,22 @@
     }
 }
 
-- (void)setUserModel:(NSString *)userId{
+- (void)setUserModel:(NSString *)userId {
     if (self.groupId.length > 0) {
-        [RCDUtilities getGroupUserDisplayInfo:userId groupId:self.groupId result:^(RCUserInfo *user) {
-            [self setUIInfo:user];
-        }];
-    }else{
-        [RCDUtilities getUserDisplayInfo:userId complete:^(RCUserInfo *user) {
-            [self setUIInfo:user];
-        }];
+        [RCDUtilities getGroupUserDisplayInfo:userId
+                                      groupId:self.groupId
+                                       result:^(RCUserInfo *user) {
+                                           [self setUIInfo:user];
+                                       }];
+    } else {
+        [RCDUtilities getUserDisplayInfo:userId
+                                complete:^(RCUserInfo *user) {
+                                    [self setUIInfo:user];
+                                }];
     }
 }
 
-- (void)setUIInfo:(RCUserInfo *)user{
+- (void)setUIInfo:(RCUserInfo *)user {
     if ([user.userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
         [self.btnImg setHidden:YES];
     }

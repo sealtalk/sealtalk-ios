@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, RCDContactsAuthState) {
     RCDContactsAuthStateNotDetermine = 0, // 未决定
-    RCDContactsAuthStateRefuse, // 拒绝
-    RCDContactsAuthStateApprove, // 通过
+    RCDContactsAuthStateRefuse,           // 拒绝
+    RCDContactsAuthStateApprove,          // 通过
 };
 
 @interface RCDAddressBookManager : NSObject
@@ -32,8 +32,7 @@ typedef NS_ENUM(NSUInteger, RCDContactsAuthState) {
 - (NSArray *)getAllContacts;
 
 // 获取通讯录朋友信息列表
-+ (void)getContactsInfo:(NSArray *)phoneNumberList
-               complete:(void (^)(NSArray *contactsList))completeBlock;
++ (void)getContactsInfo:(NSArray *)phoneNumberList complete:(void (^)(NSArray *contactsList))completeBlock;
 
 @end
 

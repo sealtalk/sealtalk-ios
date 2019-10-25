@@ -344,7 +344,7 @@
 "GroupNoneAnnounce"="No group announcement";
 "AnnouncementClear"="Confirm to clear the group announcement？";
 "PrepareGroup"="Group chat is preparing";
-"AddToBlacklistHintMessage"="You will not be able to receive t1048e message and delete the chat history with the contact after added the contacts to blacklist.";
+"AddToBlacklistHintMessage"="You will not be able to receive message and delete the chat history with the contact after added the contacts to blacklist.";
 "DeleteFriendHindMessage"="Remove %@ from the conatcts list and clear all the chat history at the same time";
 "Delete"="Delete";
 "DeleteFriend"="Delete the contacts";

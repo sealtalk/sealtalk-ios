@@ -13,8 +13,9 @@
 + (instancetype)sharedInstance;
 @property (nonatomic, assign) BOOL isShowPokeAlert;
 @property (nonatomic, assign) BOOL isShowPokeVC;
-@property (nonatomic, strong)  RCConversation *currentConversation;
+@property (nonatomic, strong) RCConversation *currentConversation;
 - (BOOL)isHoldReceivePokeManager:(RCMessage *)message;
 - (void)saveSendPokeTime:(RCConversationType)type targetId:(NSString *)targetId;
-- (NSInteger)getLastSendPokeTimeInterval:(RCConversationType)type targetId:(NSString *)targetId;;
+- (NSInteger)getLastSendPokeTimeInterval:(RCConversationType)type targetId:(NSString *)targetId;
+;
 @end

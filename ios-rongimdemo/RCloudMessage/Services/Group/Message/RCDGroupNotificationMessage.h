@@ -33,8 +33,7 @@ extern NSString *const RCDGroupMemberProtectionClose;
 
 @property (nonatomic, strong) NSArray<NSString *> *targetUserIds;
 
-@property(nonatomic, copy) NSString *message;
+@property (nonatomic, copy) NSString *message;
 
 - (NSString *)getDigest:(NSString *)groupId;
 @end
-

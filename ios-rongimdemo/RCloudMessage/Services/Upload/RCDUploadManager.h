@@ -10,7 +10,6 @@
 
 @interface RCDUploadManager : NSObject
 
-+ (void)uploadImage:(NSData *)image
-           complete:(void (^)(NSString *url))completeBlock;
++ (void)uploadImage:(NSData *)image complete:(void (^)(NSString *url))completeBlock;
 
 @end

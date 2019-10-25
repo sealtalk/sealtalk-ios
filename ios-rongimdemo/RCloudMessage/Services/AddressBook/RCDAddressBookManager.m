@@ -44,46 +44,53 @@
 
 - (void)requestAuth {
     CNContactStore *contact = [[CNContactStore alloc] init];
-    [contact requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
-        if (granted) {
-            self.state = RCDContactsAuthStateApprove;
-        } else {
-            self.state = RCDContactsAuthStateRefuse;
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsAuthStateChangeKey object:nil userInfo:nil];
-        });
-    }];
+    [contact requestAccessForEntityType:CNEntityTypeContacts
+                      completionHandler:^(BOOL granted, NSError *_Nullable error) {
+                          if (granted) {
+                              self.state = RCDContactsAuthStateApprove;
+                          } else {
+                              self.state = RCDContactsAuthStateRefuse;
+                          }
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                              [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsAuthStateChangeKey
+                                                                                  object:nil
+                                                                                userInfo:nil];
+                          });
+                      }];
 }
 
 - (NSArray *)getAllContactPhoneNumber {
-    
+
     if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] != CNAuthorizationStatusAuthorized) {
         return nil;
     }
-    
+
     self.dict = [[NSMutableDictionary alloc] init];
     NSMutableArray *phoneNumberArray = [NSMutableArray array];
-    
+
     CNContactStore *contactStore = [CNContactStore new];
-    NSArray *keys = @[CNContactFamilyNameKey,CNContactPhoneNumbersKey,CNContactGivenNameKey];
+    NSArray *keys = @[ CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactGivenNameKey ];
     CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:keys];
-    [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
-        
-        NSString *lastName = contact.familyName;
-        NSString *firstName = contact.givenName;
-        NSString *name = [NSString stringWithFormat:@"%@ %@", lastName, firstName];
-        
-        for (CNLabeledValue *labeledValue in contact.phoneNumbers){
-            CNPhoneNumber *phoneValue = labeledValue.value;
-            NSString *tempPhone = phoneValue.stringValue;
-            NSString *phoneNumber = [tempPhone stringByReplacingOccurrencesOfString:@" " withString:@""];
-            [phoneNumberArray addObject:phoneNumber];
-            if (phoneNumber.length > 0) {
-                [self.dict setValue:name forKey:phoneNumber];
-            }
-        }
-    }];
+    [contactStore
+        enumerateContactsWithFetchRequest:request
+                                    error:nil
+                               usingBlock:^(CNContact *_Nonnull contact, BOOL *_Nonnull stop) {
+
+                                   NSString *lastName = contact.familyName;
+                                   NSString *firstName = contact.givenName;
+                                   NSString *name = [NSString stringWithFormat:@"%@ %@", lastName, firstName];
+
+                                   for (CNLabeledValue *labeledValue in contact.phoneNumbers) {
+                                       CNPhoneNumber *phoneValue = labeledValue.value;
+                                       NSString *tempPhone = phoneValue.stringValue;
+                                       NSString *phoneNumber =
+                                           [tempPhone stringByReplacingOccurrencesOfString:@" " withString:@""];
+                                       [phoneNumberArray addObject:phoneNumber];
+                                       if (phoneNumber.length > 0) {
+                                           [self.dict setValue:name forKey:phoneNumber];
+                                       }
+                                   }
+                               }];
     return [phoneNumberArray copy];
 }
 
@@ -91,52 +98,57 @@
     if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] != CNAuthorizationStatusAuthorized) {
         return nil;
     }
-    
+
     NSMutableArray *contactsArray = [NSMutableArray array];
     CNContactStore *contactStore = [CNContactStore new];
-    NSArray *keys = @[CNContactFamilyNameKey,CNContactPhoneNumbersKey,CNContactGivenNameKey];
+    NSArray *keys = @[ CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactGivenNameKey ];
     CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:keys];
-    [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
-        
-        NSString *lastName = contact.familyName;
-        NSString *firstName = contact.givenName;
-        NSString *name = [NSString stringWithFormat:@"%@ %@", lastName, firstName];
-        
-        for (CNLabeledValue *labeledValue in contact.phoneNumbers){
-            RCDContactsInfo *contacts = [[RCDContactsInfo alloc] init];
-            CNPhoneNumber *phoneValue = labeledValue.value;
-            NSString *phoneNumber = phoneValue.stringValue;
-            contacts.name = name;
-            contacts.phoneNumber = phoneNumber;
-            [contactsArray addObject:contacts];
-        }
-    }];
+    [contactStore enumerateContactsWithFetchRequest:request
+                                              error:nil
+                                         usingBlock:^(CNContact *_Nonnull contact, BOOL *_Nonnull stop) {
+
+                                             NSString *lastName = contact.familyName;
+                                             NSString *firstName = contact.givenName;
+                                             NSString *name = [NSString stringWithFormat:@"%@ %@", lastName, firstName];
+
+                                             for (CNLabeledValue *labeledValue in contact.phoneNumbers) {
+                                                 RCDContactsInfo *contacts = [[RCDContactsInfo alloc] init];
+                                                 CNPhoneNumber *phoneValue = labeledValue.value;
+                                                 NSString *phoneNumber = phoneValue.stringValue;
+                                                 contacts.name = name;
+                                                 contacts.phoneNumber = phoneNumber;
+                                                 [contactsArray addObject:contacts];
+                                             }
+                                         }];
     return [contactsArray copy];
 }
 
 + (void)getContactsInfo:(NSArray *)phoneNumberList complete:(void (^)(NSArray *))completeBlock {
-    
-    [RCDUserInfoAPI getContactsInfo:phoneNumberList complete:^(NSArray *contactsList) {
-        NSMutableArray *contacstList = [NSMutableArray array];
-        NSString *currentPhone = [DEFAULTS stringForKey:RCDUserNameKey];
-        for (NSDictionary *userJson in contactsList) {
-            if ([userJson[@"registered"] boolValue] && ![userJson[@"phone"] isEqualToString:currentPhone]) {
-                RCDContactsInfo *contactsInfo = [[RCDContactsInfo alloc] init];
-                contactsInfo.isRegister = [userJson[@"registered"] boolValue];
-                contactsInfo.isRelationship = [userJson[@"relationship"] boolValue];
-                contactsInfo.userId = userJson[@"id"];
-                contactsInfo.stAccount = userJson[@"stAccount"];
-                contactsInfo.phoneNumber = userJson[@"phone"];
-                contactsInfo.nickname = userJson[@"nickname"];
-                contactsInfo.portraitUri = userJson[@"portraitUri"];
-                contactsInfo.name = [[RCDAddressBookManager sharedManager].dict objectForKey:contactsInfo.phoneNumber];
-                [contacstList addObject:contactsInfo];
-            }
-        }
-        if (completeBlock) {
-            completeBlock(contacstList);
-        }
-    }];
+
+    [RCDUserInfoAPI
+        getContactsInfo:phoneNumberList
+               complete:^(NSArray *contactsList) {
+                   NSMutableArray *contacstList = [NSMutableArray array];
+                   NSString *currentPhone = [DEFAULTS stringForKey:RCDUserNameKey];
+                   for (NSDictionary *userJson in contactsList) {
+                       if ([userJson[@"registered"] boolValue] && ![userJson[@"phone"] isEqualToString:currentPhone]) {
+                           RCDContactsInfo *contactsInfo = [[RCDContactsInfo alloc] init];
+                           contactsInfo.isRegister = [userJson[@"registered"] boolValue];
+                           contactsInfo.isRelationship = [userJson[@"relationship"] boolValue];
+                           contactsInfo.userId = userJson[@"id"];
+                           contactsInfo.stAccount = userJson[@"stAccount"];
+                           contactsInfo.phoneNumber = userJson[@"phone"];
+                           contactsInfo.nickname = userJson[@"nickname"];
+                           contactsInfo.portraitUri = userJson[@"portraitUri"];
+                           contactsInfo.name =
+                               [[RCDAddressBookManager sharedManager].dict objectForKey:contactsInfo.phoneNumber];
+                           [contacstList addObject:contactsInfo];
+                       }
+                   }
+                   if (completeBlock) {
+                       completeBlock(contacstList);
+                   }
+               }];
 }
 
 @end

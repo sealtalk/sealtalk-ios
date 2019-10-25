@@ -21,7 +21,7 @@
 @implementation RCDSelectAddressBookCell
 
 - (instancetype)init {
-    
+
     if (self = [super init]) {
         [self setupViews];
     }
@@ -52,20 +52,20 @@
     [self.contentView addSubview:self.headerImgView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.detailLabel];
-    
+
     [self.headerImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).offset(12);
         make.height.width.offset(22);
     }];
-    
+
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.headerImgView.mas_right).offset(10);
         make.top.equalTo(self.contentView).offset(5);
         make.right.equalTo(self.contentView).offset(-10);
         make.height.offset(20);
     }];
-    
+
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.titleLabel);
         make.top.equalTo(self.titleLabel.mas_bottom).offset(4);

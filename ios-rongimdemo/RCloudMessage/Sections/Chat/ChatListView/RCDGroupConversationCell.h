@@ -7,7 +7,7 @@
 //
 
 #import <RongIMKit/RongIMKit.h>
-static NSString * _Nullable RCDGroupConversationCellIdentifier = @"RCDGroupConversationCellIdentifier";
+static NSString *_Nullable RCDGroupConversationCellIdentifier = @"RCDGroupConversationCellIdentifier";
 
 NS_ASSUME_NONNULL_BEGIN
 

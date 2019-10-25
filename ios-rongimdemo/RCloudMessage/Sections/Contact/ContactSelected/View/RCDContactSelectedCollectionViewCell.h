@@ -11,7 +11,7 @@
 
 @interface RCDContactSelectedCollectionViewCell : UICollectionViewCell
 
-@property(nonatomic, strong) UIImageView *portraitImgView;
+@property (nonatomic, strong) UIImageView *portraitImgView;
 
 - (void)setUserModel:(RCUserInfo *)userModel;
 

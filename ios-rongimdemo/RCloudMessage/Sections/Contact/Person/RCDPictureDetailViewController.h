@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void(^DeleteImageBlock)();
+typedef void (^DeleteImageBlock)();
 
 @interface RCDPictureDetailViewController : UIViewController
 

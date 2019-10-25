@@ -8,14 +8,14 @@
 
 #import "RCDGroupMemberDetailCell.h"
 #import <Masonry/Masonry.h>
-@interface RCDGroupMemberDetailCell()<UITextViewDelegate>
+@interface RCDGroupMemberDetailCell () <UITextViewDelegate>
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *lineView;
 @property (nonatomic, strong) UIButton *regionButton;
 @property (nonatomic, strong) UIButton *clearButton;
 @end
 @implementation RCDGroupMemberDetailCell
-+ (CGFloat)getCellHeight:(UITableView *)tableView leftTitle:(NSString *)leftTitle text:(NSString *)text{
++ (CGFloat)getCellHeight:(UITableView *)tableView leftTitle:(NSString *)leftTitle text:(NSString *)text {
     CGFloat height = 44;
     RCDGroupMemberDetailCell *cell = [[RCDGroupMemberDetailCell alloc] init];
     CGRect rect = cell.contentView.frame;
@@ -24,7 +24,7 @@
     cell.titleLabel.text = leftTitle;
     [cell setDetailInfo:text];
     [cell showClearButton:NO];
-    if ([leftTitle isEqualToString:RCDLocalizedString(@"Describe")]){
+    if ([leftTitle isEqualToString:RCDLocalizedString(@"Describe")]) {
         [cell showClearButton:YES];
     }
     if (text && cell.textView.contentSize.height > 44) {
@@ -33,9 +33,9 @@
     return height;
 }
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView{
++ (instancetype)cellWithTableView:(UITableView *)tableView {
     RCDGroupMemberDetailCell *cell =
-    (RCDGroupMemberDetailCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupMyInfoCellIdentifier];
+        (RCDGroupMemberDetailCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupMyInfoCellIdentifier];
     if (!cell) {
         cell = [[RCDGroupMemberDetailCell alloc] init];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -44,7 +44,7 @@
     return cell;
 }
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self addSubviews];
@@ -52,42 +52,42 @@
     return self;
 }
 
-- (void)setLeftTitle:(NSString *)leftTitle placeholder:(nonnull NSString *)placeholder{
-    
+- (void)setLeftTitle:(NSString *)leftTitle placeholder:(nonnull NSString *)placeholder {
+
     [self setPhoneRegionCode:@""];
     self.titleLabel.text = leftTitle;
     if (placeholder.length > 0) {
         self.textView.userInteractionEnabled = YES;
         self.textView.myPlaceholder = placeholder;
-    }else{
+    } else {
         self.textView.userInteractionEnabled = NO;
     }
-    
+
     if ([leftTitle isEqualToString:RCDLocalizedString(@"Describe")]) {
         [self showSeparateLine:YES];
         self.textView.textAlignment = NSTextAlignmentLeft;
-    }else{
+    } else {
         [self showSeparateLine:NO];
         self.textView.textAlignment = NSTextAlignmentRight;
     }
 }
 
-- (void)setDetailInfo:(NSString *)detail{
+- (void)setDetailInfo:(NSString *)detail {
     self.textView.text = detail;
 }
 
-- (void)setPhoneRegionCode:(NSString *)code{
+- (void)setPhoneRegionCode:(NSString *)code {
     if (code.length > 0) {
         self.regionButton.enabled = YES;
         self.regionButton.hidden = NO;
-        [self.regionButton setTitle:[NSString stringWithFormat:@"+%@     ",code] forState:(UIControlStateNormal)];
-    }else{
+        [self.regionButton setTitle:[NSString stringWithFormat:@"+%@     ", code] forState:(UIControlStateNormal)];
+    } else {
         self.regionButton.hidden = YES;
         self.regionButton.enabled = NO;
     }
 }
 
-- (void)showClearButton:(BOOL)show{
+- (void)showClearButton:(BOOL)show {
     if (show) {
         [self.contentView addSubview:self.clearButton];
         [self.textView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -101,7 +101,7 @@
             make.centerY.equalTo(self.contentView);
             make.width.height.offset(32);
         }];
-    }else{
+    } else {
         [self.clearButton removeFromSuperview];
         [self.textView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.regionButton.mas_right);
@@ -115,19 +115,20 @@
 }
 
 #pragma mark - UITextViewDelegate
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
     if (self.delegate && [self.delegate respondsToSelector:@selector(textViewWillBeginEditing:inCell:)]) {
         [self.delegate textViewWillBeginEditing:textView inCell:self];
     }
     return YES;
 }
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     //在末尾输入，不拦截，textViewDidChange里面会截取处理
-    if(range.location == textView.text.length-1){
+    if (range.location == textView.text.length - 1) {
         return YES;
     }
-    if (self.delegate && [self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:inCell:)]) {
+    if (self.delegate &&
+        [self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:inCell:)]) {
         return [self.delegate textView:textView shouldChangeTextInRange:range replacementText:text inCell:self];
     }
     return YES;
@@ -139,20 +140,20 @@
     }
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView{
+- (void)textViewDidEndEditing:(UITextView *)textView {
     if (self.delegate && [self.delegate respondsToSelector:@selector(textViewDidEndEditing:inCell:)]) {
         [self.delegate textViewDidEndEditing:textView inCell:self];
     }
 }
 
 #pragma mark - helper
-- (void)didClickRegionAction{
+- (void)didClickRegionAction {
     if (self.delegate && [self.delegate respondsToSelector:@selector(onSelectPhoneRegionCode:)]) {
         [self.delegate onSelectPhoneRegionCode:self];
     }
 }
 
-- (void)didClickClearAction{
+- (void)didClickClearAction {
     self.textView.text = nil;
     if (self.delegate && [self.delegate respondsToSelector:@selector(textViewDidChange:inCell:)]) {
         [self.delegate textViewDidChange:self.textView inCell:self];
@@ -162,16 +163,16 @@
     }
 }
 
-- (void)showSeparateLine:(BOOL)show{
+- (void)showSeparateLine:(BOOL)show {
     self.lineView.hidden = !show;
 }
 
-- (void)addSubviews{
+- (void)addSubviews {
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.textView];
     [self.contentView addSubview:self.regionButton];
     [self.contentView addSubview:self.lineView];
-    
+
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).offset(10);
@@ -197,7 +198,7 @@
 }
 
 #pragma mark - getter
-- (UILabel *)titleLabel{
+- (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = [UIFont systemFontOfSize:15];
@@ -206,7 +207,7 @@
     return _titleLabel;
 }
 
-- (UITextViewAndPlaceholder *)textView{
+- (UITextViewAndPlaceholder *)textView {
     if (!_textView) {
         _textView = [[UITextViewAndPlaceholder alloc] init];
         _textView.delegate = self;
@@ -217,7 +218,7 @@
     return _textView;
 }
 
-- (UIView *)lineView{
+- (UIView *)lineView {
     if (!_lineView) {
         _lineView = [[UIView alloc] init];
         _lineView.backgroundColor = HEXCOLOR(0xd8d8d8);
@@ -225,12 +226,14 @@
     return _lineView;
 }
 
-- (UIButton *)regionButton{
+- (UIButton *)regionButton {
     if (!_regionButton) {
         _regionButton = [[UIButton alloc] init];
         [_regionButton setTitleColor:HEXCOLOR(0x999999) forState:(UIControlStateNormal)];
         _regionButton.titleLabel.font = [UIFont systemFontOfSize:15];
-        [_regionButton addTarget:self action:@selector(didClickRegionAction) forControlEvents:(UIControlEventTouchUpInside)];
+        [_regionButton addTarget:self
+                          action:@selector(didClickRegionAction)
+                forControlEvents:(UIControlEventTouchUpInside)];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"forward_arrow"]];
         [_regionButton addSubview:imageView];
         [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -242,10 +245,12 @@
     return _regionButton;
 }
 
-- (UIButton *)clearButton{
+- (UIButton *)clearButton {
     if (!_clearButton) {
         _clearButton = [[UIButton alloc] init];
-        [_clearButton addTarget:self action:@selector(didClickClearAction) forControlEvents:(UIControlEventTouchUpInside)];
+        [_clearButton addTarget:self
+                         action:@selector(didClickClearAction)
+               forControlEvents:(UIControlEventTouchUpInside)];
         _clearButton.titleLabel.font = [UIFont systemFontOfSize:10];
         [_clearButton setTitle:@"X" forState:(UIControlStateNormal)];
         [_clearButton setTitleColor:HEXCOLOR(0xffffff) forState:(UIControlStateNormal)];

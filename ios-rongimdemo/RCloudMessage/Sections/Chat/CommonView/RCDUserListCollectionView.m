@@ -11,13 +11,13 @@
 #import "RCDUserInfoManager.h"
 #import <RongIMKit/RongIMKit.h>
 
-@interface RCDUserListCollectionView()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface RCDUserListCollectionView () <UICollectionViewDelegate, UICollectionViewDataSource>
 @property (nonatomic, strong) NSArray *userList;
 @property (nonatomic, assign) BOOL isAllowAdd;
 @property (nonatomic, assign) BOOL isAllowDelete;
 @end
 @implementation RCDUserListCollectionView
-- (instancetype)initWithFrame:(CGRect)frame isAllowAdd:(BOOL)isAllowAdd isAllowDelete:(BOOL)isAllowDelete{
+- (instancetype)initWithFrame:(CGRect)frame isAllowAdd:(BOOL)isAllowAdd isAllowDelete:(BOOL)isAllowDelete {
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     self = [super initWithFrame:frame collectionViewLayout:flowLayout];
@@ -28,16 +28,15 @@
         self.dataSource = self;
         self.scrollEnabled = NO;
         self.backgroundColor = [UIColor whiteColor];
+        [self registerClass:[RCDUserListCollectionItem class] forCellWithReuseIdentifier:@"RCDUserListCollectionItem"];
         [self registerClass:[RCDUserListCollectionItem class]
- forCellWithReuseIdentifier:@"RCDUserListCollectionItem"];
-        [self registerClass:[RCDUserListCollectionItem class]
- forCellWithReuseIdentifier:@"RCDUserListCollectionItemForSigns"];
+            forCellWithReuseIdentifier:@"RCDUserListCollectionItemForSigns"];
     }
     return self;
 }
 
 #pragma mark - Api
-- (void)reloadData:(NSArray *)userList{
+- (void)reloadData:(NSArray *)userList {
     self.userList = userList;
     [self reloadData];
 }
@@ -52,8 +51,8 @@
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView
-                   layout:(UICollectionViewLayout *)collectionViewLayout
-minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+                                 layout:(UICollectionViewLayout *)collectionViewLayout
+    minimumLineSpacingForSectionAtIndex:(NSInteger)section {
     return 12;
 }
 
@@ -71,7 +70,7 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section {
     NSInteger row = self.userList.count;
     if (self.isAllowAdd) {
         row += 1;
-        if (self.isAllowDelete){
+        if (self.isAllowDelete) {
             row += 1;
         }
     }
@@ -83,21 +82,22 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section {
     UICollectionViewCell *cell;
     if (indexPath.row < self.userList.count) {
         RCDUserListCollectionItem *settingCell =
-        [collectionView dequeueReusableCellWithReuseIdentifier:@"RCDUserListCollectionItem"
-                                                  forIndexPath:indexPath];
+            [collectionView dequeueReusableCellWithReuseIdentifier:@"RCDUserListCollectionItem" forIndexPath:indexPath];
         settingCell.groupId = self.groupId;
         [settingCell setUserModel:self.userList[indexPath.row]];
-        
+
         settingCell.ivAva.contentMode = UIViewContentModeScaleAspectFill;
         cell = settingCell;
-    }else{
+    } else {
         UIImage *image = [UIImage imageNamed:@"add_member"];
         if (self.isAllowDelete) {
             if (indexPath.row == self.userList.count + 1) {
                 image = [UIImage imageNamed:@"delete_member"];
             }
         }
-        RCDUserListCollectionItem *cellForSigns = [collectionView dequeueReusableCellWithReuseIdentifier:@"RCDUserListCollectionItemForSigns" forIndexPath:indexPath];
+        RCDUserListCollectionItem *cellForSigns =
+            [collectionView dequeueReusableCellWithReuseIdentifier:@"RCDUserListCollectionItemForSigns"
+                                                      forIndexPath:indexPath];
         cellForSigns.ivAva.image = nil;
         cellForSigns.ivAva.image = image;
         cellForSigns.titleLabel.text = @"";
@@ -112,15 +112,18 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section {
         if ([self.userList[indexPath.row] isKindOfClass:[NSString class]]) {
             user = [RCDUserInfoManager getUserInfo:self.userList[indexPath.row]];
         }
-        if (self.userListCollectionViewDelegate && [self.userListCollectionViewDelegate respondsToSelector:@selector(didTipHeaderClicked:)]) {
+        if (self.userListCollectionViewDelegate &&
+            [self.userListCollectionViewDelegate respondsToSelector:@selector(didTipHeaderClicked:)]) {
             [self.userListCollectionViewDelegate didTipHeaderClicked:user.userId];
         }
-    }else if(self.isAllowAdd && indexPath.row == self.userList.count){
-        if (self.userListCollectionViewDelegate && [self.userListCollectionViewDelegate respondsToSelector:@selector(addButtonDidClicked)]) {
+    } else if (self.isAllowAdd && indexPath.row == self.userList.count) {
+        if (self.userListCollectionViewDelegate &&
+            [self.userListCollectionViewDelegate respondsToSelector:@selector(addButtonDidClicked)]) {
             [self.userListCollectionViewDelegate addButtonDidClicked];
         }
-    }else if(self.isAllowDelete && indexPath.row == self.userList.count+1){
-        if (self.userListCollectionViewDelegate && [self.userListCollectionViewDelegate respondsToSelector:@selector(deleteButtonDidClicked)]) {
+    } else if (self.isAllowDelete && indexPath.row == self.userList.count + 1) {
+        if (self.userListCollectionViewDelegate &&
+            [self.userListCollectionViewDelegate respondsToSelector:@selector(deleteButtonDidClicked)]) {
             [self.userListCollectionViewDelegate deleteButtonDidClicked];
         }
     }

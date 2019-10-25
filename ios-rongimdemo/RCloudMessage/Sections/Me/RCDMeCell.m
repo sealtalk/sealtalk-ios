@@ -18,7 +18,9 @@
 }
 */
 
-- (void)setCellWithImageName:(NSString *)imageName labelName:(NSString *)labelName rightLabelName:(NSString *)rightLabelName {
+- (void)setCellWithImageName:(NSString *)imageName
+                   labelName:(NSString *)labelName
+              rightLabelName:(NSString *)rightLabelName {
     [self setImageView:self.leftImageView ImageStr:imageName imageSize:CGSizeMake(18, 18) LeftOrRight:0];
     self.leftLabel.text = labelName;
     if (rightLabelName) {
@@ -49,7 +51,14 @@
     UIImageView *leftImageView = self.leftImageView;
     UIImageView *rightArrow = self.rightArrow;
     NSDictionary *views = NSDictionaryOfVariableBindings(leftLabel, leftImageView, rightLabel, rightArrow);
-    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-10-[leftImageView(width)]-8-[leftLabel]-(>=10)-[rightLabel]-13-[rightArrow(8)]-10-|" options:0 metrics:@{ @"width" : @(self.leftImageView.frame.size.width) } views:views]];
+    [self.contentView
+        addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[leftImageView(width)]-8-[leftLabel]-(>"
+                                                                       @"=10)-[rightLabel]-13-[rightArrow(8)]-10-|"
+                                                               options:0
+                                                               metrics:@{
+                                                                   @"width" : @(self.leftImageView.frame.size.width)
+                                                               }
+                                                                 views:views]];
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[rightLabel(21)]"
                                                                              options:0
                                                                              metrics:nil
@@ -62,7 +71,6 @@
                                                                 multiplier:1
                                                                   constant:0]];
 }
-    
 
 - (void)addRedpointImageView {
     if (self.leftLabelConstraints != nil) {
@@ -76,15 +84,14 @@
     UIImageView *rightArrow = self.rightArrow;
     NSDictionary *views = NSDictionaryOfVariableBindings(leftLabel, redpointImageView, leftImageView, rightArrow);
     [self.contentView
-        addConstraints:
-            [NSLayoutConstraint
-                constraintsWithVisualFormat:
-                    @"H:|-10-[leftImageView(width)]-8-[leftLabel]-10-[redpointImageView(12)]-(>=0)-[rightArrow(8)]-10-|"
-                                    options:0
-                                    metrics:@{
-                                        @"width" : @(self.leftImageView.frame.size.width)
-                                    }
-                                      views:views]];
+        addConstraints:[NSLayoutConstraint
+                           constraintsWithVisualFormat:@"H:|-10-[leftImageView(width)]-8-[leftLabel]-10-["
+                                                       @"redpointImageView(12)]-(>=0)-[rightArrow(8)]-10-|"
+                                               options:0
+                                               metrics:@{
+                                                   @"width" : @(self.leftImageView.frame.size.width)
+                                               }
+                                                 views:views]];
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[redpointImageView(12)]"
                                                                              options:0
                                                                              metrics:nil

@@ -21,7 +21,9 @@
 #import "UIColor+RCColor.h"
 #import "RCDForwardManager.h"
 #import "UIView+MBProgressHUD.h"
-@interface RCDContactSelectedTableViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UITextFieldDelegate>
+@interface RCDContactSelectedTableViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
+                                                     UICollectionViewDelegate, UITableViewDelegate,
+                                                     UITableViewDataSource, UISearchBarDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary *allFriendsDict;
 @property (nonatomic, strong) NSArray *allKeys;
@@ -83,7 +85,8 @@
 
 - (void)viewDidLayoutSubviews {
     self.noFriendView.frame = CGRectMake(0, 0, RCDScreenWidth, RCDScreenHeight - 64);
-    self.tableView.frame = CGRectMake(0, 54, RCDScreenWidth, RCDScreenHeight - 64 - 54 - RCDExtraTopHeight - RCDExtraBottomHeight);
+    self.tableView.frame =
+        CGRectMake(0, 54, RCDScreenWidth, RCDScreenHeight - 64 - 54 - RCDExtraTopHeight - RCDExtraBottomHeight);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -95,7 +98,10 @@
 #pragma mark - Private Method
 - (void)setupNavi {
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationItem.leftBarButtonItem = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+    self.navigationItem.leftBarButtonItem =
+        [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                   target:self
+                                                   action:@selector(clickBackBtn)];
     self.navigationItem.rightBarButtonItems = [self.rightBtn setTranslation:self.rightBtn translation:-11];
 }
 
@@ -115,7 +121,7 @@
     self.allKeys = [NSMutableArray new];
     self.friendArray = [NSMutableArray new];
     self.searchContent = @"";
-    
+
     if (RCDScreenWidth < 375) {
         self.maxCount = 5;
     } else if (RCDScreenWidth >= 375 && RCDScreenWidth < 414) {
@@ -123,7 +129,7 @@
     } else {
         self.maxCount = 7;
     }
-    
+
     if (self.groupOptionType == RCDContactSelectedGroupOptionTypeCreate && self.orignalGroupMembers.count > 0) {
         [self.collectionViewResource addObjectsFromArray:self.orignalGroupMembers];
         [self setCollectonViewAndSearchBarFrame:self.collectionViewResource.count];
@@ -177,7 +183,7 @@
 }
 
 - (void)deleteGroupMembers {
-    if (self.orignalGroupMembers.count > 0 &&  self.groupOptionType == RCDContactSelectedGroupOptionTypeDelete) {
+    if (self.orignalGroupMembers.count > 0 && self.groupOptionType == RCDContactSelectedGroupOptionTypeDelete) {
         self.friendArray = self.orignalGroupMembers;
     }
 }
@@ -193,7 +199,7 @@
         if ([member isKindOfClass:[RCUserInfo class]]) {
             RCUserInfo *user = (RCUserInfo *)member;
             memberId = user.userId;
-        }else{
+        } else {
             memberId = member;
         }
         if ([userId isEqualToString:memberId]) {
@@ -259,12 +265,16 @@
 - (void)setRightButton {
     NSString *titleStr;
     if (self.selectUserList.count > 0) {
-        titleStr = [NSString stringWithFormat:@"%@(%zd)",RCDLocalizedString(@"confirm"), [self.selectUserList count]];
-        [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor colorWithHexString:@"ffffff" alpha:1.0] barButtonItem:self.rightBtn];
+        titleStr = [NSString stringWithFormat:@"%@(%zd)", RCDLocalizedString(@"confirm"), [self.selectUserList count]];
+        [self.rightBtn buttonIsCanClick:YES
+                            buttonColor:[UIColor colorWithHexString:@"ffffff" alpha:1.0]
+                          barButtonItem:self.rightBtn];
     } else {
         titleStr = RCDLocalizedString(@"confirm");
-        
-        [self.rightBtn buttonIsCanClick:NO buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0] barButtonItem:self.rightBtn];
+
+        [self.rightBtn buttonIsCanClick:NO
+                            buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                          barButtonItem:self.rightBtn];
     }
     [self.rightBtn.button setTitle:titleStr forState:UIControlStateNormal];
 }
@@ -284,7 +294,11 @@
 }
 
 - (void)showAlertViewWithMessage:(NSString *)message {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:message message:nil delegate:self cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:message
+                                                    message:nil
+                                                   delegate:self
+                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
+                                          otherButtonTitles:nil, nil];
     [alert show];
 }
 
@@ -318,12 +332,14 @@
 
 #pragma mark - Target Action
 - (void)clickedDone:(id)sender {
-    
+
     if (self.searchBar.isFirstResponder) {
         [self.searchBar resignFirstResponder];
     }
-    
-    [self.rightBtn buttonIsCanClick:NO buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0] barButtonItem:self.rightBtn];
+
+    [self.rightBtn buttonIsCanClick:NO
+                        buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                      barButtonItem:self.rightBtn];
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
     [self.hud show:YES];
@@ -337,50 +353,57 @@
         for (RCDFriendInfo *user in self.collectionViewResource) {
             [seletedUsersId addObject:user.userId];
         }
-        
+
         if (seletedUsersId.count > 0 && self.groupOptionType == RCDContactSelectedGroupOptionTypeAdd) {
-            [RCDGroupManager addUsers:seletedUsersId groupId:self.groupId complete:^(BOOL success, RCDGroupAddMemberStatus status) {
-                rcd_dispatch_main_async_safe(^{
-                    [self.hud hide:YES];
-                    if (success == YES) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    } else {
-                        [self showAlertViewWithMessage:RCDLocalizedString(@"add_member_fail")];
-                        [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
-                    }
-                    if (status == RCDGroupAddMemberStatusInviteeApproving) {
-                        [self.view showHUDMessage:RCDLocalizedString(@"MemberInviteNeedConfirm")];
-                    }else if(status == RCDGroupAddMemberStatusOnlyManagerApproving){
-                        [self.view showHUDMessage:RCDLocalizedString(@"MemberInviteNeedManagerConfirm")];
-                    }
-                })
-            }];
+            [RCDGroupManager
+                addUsers:seletedUsersId
+                 groupId:self.groupId
+                complete:^(BOOL success, RCDGroupAddMemberStatus status){
+                    rcd_dispatch_main_async_safe(^{
+                        [self.hud hide:YES];
+                        if (success == YES) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        } else {
+                            [self showAlertViewWithMessage:RCDLocalizedString(@"add_member_fail")];
+                            [self.rightBtn buttonIsCanClick:YES
+                                                buttonColor:[UIColor whiteColor]
+                                              barButtonItem:self.rightBtn];
+                        }
+                        if (status == RCDGroupAddMemberStatusInviteeApproving) {
+                            [self.view showHUDMessage:RCDLocalizedString(@"MemberInviteNeedConfirm")];
+                        } else if (status == RCDGroupAddMemberStatusOnlyManagerApproving) {
+                            [self.view showHUDMessage:RCDLocalizedString(@"MemberInviteNeedManagerConfirm")];
+                        }
+                    })}];
             return;
         }
         if (seletedUsersId.count > 0 && self.groupOptionType == RCDContactSelectedGroupOptionTypeDelete) {
-            [RCDGroupManager kickUsers:seletedUsersId groupId:self.groupId complete:^(BOOL success) {
-                rcd_dispatch_main_async_safe(^{
-                    [self.hud hide:YES];
-                    if (success == YES) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    } else {
-                        [self showAlertViewWithMessage:RCDLocalizedString(@"delete_member_fail")];
-                        [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
-                    }
-                })
-            }];
+            [RCDGroupManager kickUsers:seletedUsersId
+                               groupId:self.groupId
+                              complete:^(BOOL success){
+                                  rcd_dispatch_main_async_safe(^{
+                                      [self.hud hide:YES];
+                                      if (success == YES) {
+                                          [self.navigationController popViewControllerAnimated:YES];
+                                      } else {
+                                          [self showAlertViewWithMessage:RCDLocalizedString(@"delete_member_fail")];
+                                          [self.rightBtn buttonIsCanClick:YES
+                                                              buttonColor:[UIColor whiteColor]
+                                                            barButtonItem:self.rightBtn];
+                                      }
+                                  })}];
             return;
         }
         if (self.groupOptionType == RCDContactSelectedGroupOptionTypeCreate) {
             [self.hud hide:YES];
             if (self.orignalGroupMembers.count > 0) {
                 for (RCDFriendInfo *friend in self.orignalGroupMembers) {
-                    if(![seletedUsersId containsObject:friend.userId]){
+                    if (![seletedUsersId containsObject:friend.userId]) {
                         [seletedUsersId addObject:friend.userId];
                     }
                 }
             }
-            
+
             if (seletedUsersId.count == 1 && [RCDForwardManager sharedInstance].isForward) {
                 [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
                 RCConversation *conversation = [[RCConversation alloc] init];
@@ -438,7 +461,7 @@
     return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 15)];
     view.backgroundColor = HEXCOLOR(0xf0f0f6);
     if (self.isSearchResult == NO) {
@@ -458,7 +481,7 @@
     if (!cell) {
         cell = [[RCDContactSelectedTableViewCell alloc] init];
     }
-    
+
     RCDFriendInfo *user;
     if (self.isSearchResult == NO) {
         NSString *key = [self.allKeys objectAtIndex:indexPath.section];
@@ -470,9 +493,9 @@
             user = [self.matchSearchList objectAtIndex:indexPath.row];
         }
     }
-    
+
     cell.groupId = self.groupId;
-    
+
     //给控件填充数据
     [cell setModel:user];
 
@@ -498,7 +521,8 @@
 
 // override delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    RCDContactSelectedTableViewCell *cell = (RCDContactSelectedTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    RCDContactSelectedTableViewCell *cell =
+        (RCDContactSelectedTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     if (self.isAllowsMultipleSelection == NO) {
         if (self.isSearchResult == YES) {
             RCDFriendInfo *user = [self.matchSearchList objectAtIndex:indexPath.row];
@@ -544,7 +568,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-    RCDContactSelectedTableViewCell *cell = (RCDContactSelectedTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    RCDContactSelectedTableViewCell *cell =
+        (RCDContactSelectedTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     if (self.isAllowsMultipleSelection == YES) {
         if (self.isSearchResult == YES) {
             [self setDefaultDisplay];
@@ -578,15 +603,21 @@
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return CGSizeMake(36, 36);
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                                 layout:(UICollectionViewLayout *)collectionViewLayout
+    minimumLineSpacingForSectionAtIndex:(NSInteger)section {
     return 10;
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+        insetForSectionAtIndex:(NSInteger)section {
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
     flowLayout.minimumInteritemSpacing = 10;
     flowLayout.minimumLineSpacing = 10;
@@ -598,8 +629,11 @@
     return [self.collectionViewResource count];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    RCDContactSelectedCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RCDContactSelectedCollectionViewCell" forIndexPath:indexPath];
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    RCDContactSelectedCollectionViewCell *cell =
+        [collectionView dequeueReusableCellWithReuseIdentifier:@"RCDContactSelectedCollectionViewCell"
+                                                  forIndexPath:indexPath];
 
     if (self.collectionViewResource.count > 0) {
         RCDFriendInfo *user = self.collectionViewResource[indexPath.row];
@@ -623,7 +657,8 @@
         if ([cell.nicknameLabel.text isEqualToString:name]) {
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil]
+                                      withRowAnimation:UITableViewRowAnimationNone];
             });
         }
     }
@@ -640,7 +675,9 @@
     }
 
     NSIndexPath *finalIndexPath = [NSIndexPath indexPathForItem:finalRow inSection:0];
-    [self.selectedUsersCollectionView scrollToItemAtIndexPath:finalIndexPath atScrollPosition:UICollectionViewScrollPositionRight animated:animated];
+    [self.selectedUsersCollectionView scrollToItemAtIndexPath:finalIndexPath
+                                             atScrollPosition:UICollectionViewScrollPositionRight
+                                                     animated:animated];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -663,13 +700,16 @@
             if (userInfo.displayName.length > 0) {
                 name = userInfo.displayName;
             }
-            
+
             RCDGroupMember *member;
-            if (self.groupId.length > 0){
+            if (self.groupId.length > 0) {
                 member = [RCDGroupManager getGroupMember:userInfo.userId groupId:self.groupId];
             }
-            
-            if ([name rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound || [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound || [member.groupNickname containsString:searchText]) {
+
+            if ([name rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound ||
+                [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch]
+                        .location != NSNotFound ||
+                [member.groupNickname containsString:searchText]) {
                 [self.matchSearchList addObject:userInfo];
             }
         }
@@ -681,7 +721,8 @@
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    if ([self.searchField.text isEqualToString:RCDLocalizedString(@"search")] || [self.searchField.text isEqualToString:@"Search"]) {
+    if ([self.searchField.text isEqualToString:RCDLocalizedString(@"search")] ||
+        [self.searchField.text isEqualToString:@"Search"]) {
         self.searchField.leftView = nil;
         self.searchField.text = @"";
     }
@@ -719,7 +760,9 @@
         for (RCDFriendInfo *userInfo in [self.friendArray copy]) {
             //忽略大小写去判断是否包含
             NSString *name = userInfo.displayName.length > 0 ? userInfo.displayName : userInfo.name;
-            if ([name rangeOfString:temp options:NSCaseInsensitiveSearch].location != NSNotFound || [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:temp options:NSCaseInsensitiveSearch].location != NSNotFound) {
+            if ([name rangeOfString:temp options:NSCaseInsensitiveSearch].location != NSNotFound ||
+                [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:temp options:NSCaseInsensitiveSearch]
+                        .location != NSNotFound) {
                 [self.matchSearchList addObject:userInfo];
             }
         }
@@ -734,10 +777,16 @@
 #pragma mark - Setter && Getter
 - (RCDUIBarButtonItem *)rightBtn {
     if (!_rightBtn) {
-        _rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"confirm") titleColor:[UIColor colorWithHexString:@"000000" alpha:1.0] buttonFrame:CGRectMake(0, 0, 90, 30) target:self action:@selector(clickedDone:)];
+        _rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"confirm")
+                                                         titleColor:[UIColor colorWithHexString:@"000000" alpha:1.0]
+                                                        buttonFrame:CGRectMake(0, 0, 90, 30)
+                                                             target:self
+                                                             action:@selector(clickedDone:)];
         _rightBtn.button.titleLabel.font = [UIFont systemFontOfSize:16];
         [_rightBtn.button setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, -10)];
-        [_rightBtn buttonIsCanClick:NO buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0] barButtonItem:_rightBtn];
+        [_rightBtn buttonIsCanClick:NO
+                        buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                      barButtonItem:_rightBtn];
     }
     return _rightBtn;
 }
@@ -749,7 +798,7 @@
         _tableView.dataSource = self;
         _tableView.translatesAutoresizingMaskIntoConstraints = NO;
         _tableView.frame =
-        CGRectMake(0, 54, RCDScreenWidth, RCDScreenHeight - 64 - 54 - RCDExtraTopHeight - RCDExtraBottomHeight);
+            CGRectMake(0, 54, RCDScreenWidth, RCDScreenHeight - 64 - 54 - RCDExtraTopHeight - RCDExtraBottomHeight);
         if ([_tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
             _tableView.cellLayoutMarginsFollowReadableWidth = NO;
         }
@@ -767,12 +816,14 @@
         CGRect tempRect = CGRectMake(0, 0, 0, 54);
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        _selectedUsersCollectionView = [[UICollectionView alloc] initWithFrame:tempRect collectionViewLayout:flowLayout];
+        _selectedUsersCollectionView =
+            [[UICollectionView alloc] initWithFrame:tempRect collectionViewLayout:flowLayout];
         _selectedUsersCollectionView.delegate = self;
         _selectedUsersCollectionView.dataSource = self;
         _selectedUsersCollectionView.scrollEnabled = YES;
         _selectedUsersCollectionView.backgroundColor = [UIColor whiteColor];
-        [_selectedUsersCollectionView registerClass:[RCDContactSelectedCollectionViewCell class] forCellWithReuseIdentifier:@"RCDContactSelectedCollectionViewCell"];
+        [_selectedUsersCollectionView registerClass:[RCDContactSelectedCollectionViewCell class]
+                         forCellWithReuseIdentifier:@"RCDContactSelectedCollectionViewCell"];
         _selectedUsersCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return _selectedUsersCollectionView;
@@ -789,7 +840,6 @@
     }
     return _searchBar;
 }
-
 
 - (RCDNoFriendView *)noFriendView {
     if (!_noFriendView) {

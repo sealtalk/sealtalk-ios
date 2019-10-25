@@ -46,7 +46,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupNavi];
     [self setupSubviews];
     [self setupData];
@@ -56,7 +56,10 @@
     if (self.type == RCDChatBgDetailTypeDefault) {
         self.title = RCDLocalizedString(@"ChatBackground");
     } else {
-        UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"settings") style:(UIBarButtonItemStylePlain) target:self action:@selector(settingAction)];
+        UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"settings")
+                                                                        style:(UIBarButtonItemStylePlain)
+                                                                       target:self
+                                                                       action:@selector(settingAction)];
         self.navigationItem.rightBarButtonItem = rightButton;
     }
 }
@@ -66,19 +69,19 @@
     if (self.type == RCDChatBgDetailTypeDefault) {
         [self.view addSubview:self.cancelButton];
         [self.view addSubview:self.settingButton];
-        
+
         [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.right.equalTo(self.view);
-            make.bottom.equalTo(self.view).offset(-50-RCDExtraBottomHeight);
+            make.bottom.equalTo(self.view).offset(-50 - RCDExtraBottomHeight);
         }];
-        
+
         [self.cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.view);
             make.height.offset(50);
             make.top.equalTo(self.imageView.mas_bottom);
             make.right.equalTo(self.settingButton.mas_left);
         }];
-        
+
         [self.settingButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.view);
             make.height.top.equalTo(self.cancelButton);
@@ -117,7 +120,7 @@
         [DEFAULTS removeObjectForKey:RCDChatBackgroundImageDataKey];
     }
     [DEFAULTS synchronize];
-    
+
     [self.view showHUDMessage:RCDLocalizedString(@"setting_success")];
     [self.navigationController popViewControllerAnimated:YES];
 }

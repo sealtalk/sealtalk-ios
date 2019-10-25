@@ -17,11 +17,11 @@
                                             UIPickerViewDataSource, UIActionSheetDelegate,
                                             RCDBaseSettingTableViewCellDelegate>
 
-@property(nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UITableView *tableView;
 
-@property(nonatomic, strong) UIPickerView *pickerView;
+@property (nonatomic, strong) UIPickerView *pickerView;
 
-@property(nonatomic, strong) UIActionSheet *actionSheet;
+@property (nonatomic, strong) UIActionSheet *actionSheet;
 
 @end
 
@@ -30,9 +30,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = RCDLocalizedString(@"push_setting");
-    
+
     [self initUI];
-    
 }
 
 - (void)viewDidLayoutSubviews {
@@ -40,16 +39,18 @@
 }
 
 - (void)updateShowPushContentStatus:(BOOL)show {
-    [[RCIMClient sharedRCIMClient].pushProfile updateShowPushContentStatus:show success:^{
-       dispatch_async(dispatch_get_main_queue(), ^{
-           [self AlertMessage:RCDLocalizedString(@"setting_success")];
-       });
-    }
-     error:^(RCErrorCode status) {
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [self AlertMessage:RCDLocalizedString(@"set_fail")];
-         });
-     }];
+    [[RCIMClient sharedRCIMClient]
+            .pushProfile updateShowPushContentStatus:show
+        success:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self AlertMessage:RCDLocalizedString(@"setting_success")];
+            });
+        }
+        error:^(RCErrorCode status) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self AlertMessage:RCDLocalizedString(@"set_fail")];
+            });
+        }];
 }
 
 #pragma mark - Table view Delegate
@@ -75,8 +76,7 @@
             [cell setCellStyle:SwitchStyle];
             cell.switchButton.tag = 101;
             cell.switchButton.on = [RCIMClient sharedRCIMClient].pushProfile.isShowPushContent;
-            cell.leftLabel.text = RCDLocalizedString(@"Display_remotely_pushed_content")
-;
+            cell.leftLabel.text = RCDLocalizedString(@"Display_remotely_pushed_content");
 
         } break;
 
@@ -290,16 +290,17 @@
 }
 
 - (void)initUI {
-    RCDUIBarButtonItem *leftBtn =
-    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me") target:self action:@selector(clickBackBtn:)];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftBtn;
-    
+
     self.tableView = [[UITableView alloc] init];
     [self setTableViewLayout];
-    
+
     self.pickerView = [[UIPickerView alloc] init];
     //[self setPickerViewLayout];
-    
+
     self.actionSheet = [[UIActionSheet alloc] init];
     [self setActionSheetLayout];
 }

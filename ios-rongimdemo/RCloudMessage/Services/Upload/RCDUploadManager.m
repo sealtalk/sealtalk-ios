@@ -13,9 +13,7 @@
 @implementation RCDUploadManager
 
 + (void)uploadImage:(NSData *)image complete:(void (^)(NSString *))completeBlock {
-    [RCDUploadAPI uploadImage:image
-                       byUser:[RCIM sharedRCIM].currentUserInfo.userId
-                     complete:completeBlock];
+    [RCDUploadAPI uploadImage:image byUser:[RCIM sharedRCIM].currentUserInfo.userId complete:completeBlock];
 }
 
 @end

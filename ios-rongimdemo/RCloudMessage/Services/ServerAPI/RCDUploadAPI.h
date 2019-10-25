@@ -10,8 +10,6 @@
 
 @interface RCDUploadAPI : NSObject
 
-+ (void)uploadImage:(NSData *)image
-             byUser:(NSString *)userId
-           complete:(void (^)(NSString *url))completeBlock;
++ (void)uploadImage:(NSData *)image byUser:(NSString *)userId complete:(void (^)(NSString *url))completeBlock;
 
 @end

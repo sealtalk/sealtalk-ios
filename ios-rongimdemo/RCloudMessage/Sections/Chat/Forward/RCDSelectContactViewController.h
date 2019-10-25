@@ -10,7 +10,7 @@
 
 typedef NS_ENUM(NSUInteger, RCDContactSelectType) {
     RCDContactSelectTypeForward = 0, // 转发
-    RCDContactSelectTypeDelete, // 多选删人
+    RCDContactSelectTypeDelete,      // 多选删人
 };
 
 NS_ASSUME_NONNULL_BEGIN

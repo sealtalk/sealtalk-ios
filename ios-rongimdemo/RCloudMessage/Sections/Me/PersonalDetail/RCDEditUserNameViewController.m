@@ -16,14 +16,14 @@
 #import "RCDCommonString.h"
 
 @interface RCDEditUserNameViewController ()
-@property(nonatomic, strong) UITextField *userNameTextField;
-@property(nonatomic, strong) UIView *bgView;
-@property(nonatomic, strong) NSDictionary *subViews;
-@property(nonatomic, strong) RCDUIBarButtonItem *rightBtn;
-@property(nonatomic, strong) RCDUIBarButtonItem *leftBtn;
-@property(nonatomic, strong) NSString *originNickName;
+@property (nonatomic, strong) UITextField *userNameTextField;
+@property (nonatomic, strong) UIView *bgView;
+@property (nonatomic, strong) NSDictionary *subViews;
+@property (nonatomic, strong) RCDUIBarButtonItem *rightBtn;
+@property (nonatomic, strong) RCDUIBarButtonItem *leftBtn;
+@property (nonatomic, strong) NSString *originNickName;
 
-@property(nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, strong) MBProgressHUD *hud;
 @end
 
 @implementation RCDEditUserNameViewController
@@ -32,12 +32,13 @@
     [super viewDidLoad];
     [self initUI];
     NSString *currentUserId = [RCIM sharedRCIM].currentUserInfo.userId;
-    [[RCDRCIMDataSource sharedInstance] getUserInfoWithUserId:currentUserId completion:^(RCUserInfo *userInfo) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.userNameTextField.text = userInfo.name;
-            self.originNickName = userInfo.name;
-        });
-    }];
+    [[RCDRCIMDataSource sharedInstance] getUserInfoWithUserId:currentUserId
+                                                   completion:^(RCUserInfo *userInfo) {
+                                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                                           self.userNameTextField.text = userInfo.name;
+                                                           self.originNickName = userInfo.name;
+                                                       });
+                                                   }];
 }
 
 - (void)updateCurrentUserInfo:(NSString *)name {
@@ -46,22 +47,23 @@
 }
 
 - (void)saveUserName:(id)sender {
-    if([self checkUserName]) {
+    if ([self checkUserName]) {
         __weak __typeof(self) weakSelf = self;
         NSString *name = self.userNameTextField.text;
         [self.hud show:YES];
         [RCDUserInfoManager setCurrentUserName:name
-                           complete:^(BOOL success) {
-                               dispatch_async(dispatch_get_main_queue(), ^{
-                                   if (success) {
-                                       [weakSelf updateCurrentUserInfo:name];
-                                       [weakSelf.navigationController popViewControllerAnimated:YES];
-                                   } else {
-                                       [weakSelf.hud hide:YES];
-                                       [weakSelf showAlert:RCDLocalizedString(@"modify_nickname_fail") cancelBtnTitle:RCDLocalizedString(@"confirm")];
-                                   }
-                               });
-                           }];
+                                      complete:^(BOOL success) {
+                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                              if (success) {
+                                                  [weakSelf updateCurrentUserInfo:name];
+                                                  [weakSelf.navigationController popViewControllerAnimated:YES];
+                                              } else {
+                                                  [weakSelf.hud hide:YES];
+                                                  [weakSelf showAlert:RCDLocalizedString(@"modify_nickname_fail")
+                                                       cancelBtnTitle:RCDLocalizedString(@"confirm")];
+                                              }
+                                          });
+                                      }];
     }
 }
 
@@ -100,7 +102,11 @@
 }
 
 - (void)showAlert:(NSString *)message cancelBtnTitle:(NSString *)cBtnTitle {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:cBtnTitle otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:cBtnTitle
+                                          otherButtonTitles:nil, nil];
     [alert show];
 }
 
@@ -112,10 +118,16 @@
 }
 
 - (void)setNavigationButton {
-    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                              target:self
+                                                              action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = self.leftBtn;
-    
-    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"save") titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0] buttonFrame:CGRectMake(0, 0, 50, 30) target:self action:@selector(saveUserName:)];
+
+    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"save")
+                                                         titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                                                        buttonFrame:CGRectMake(0, 0, 50, 30)
+                                                             target:self
+                                                             action:@selector(saveUserName:)];
     [self.rightBtn buttonIsCanClick:NO
                         buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
                       barButtonItem:self.rightBtn];
@@ -129,36 +141,39 @@
     self.bgView.layer.borderColor = [HEXCOLOR(0xdfdfdf) CGColor];
     self.bgView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.bgView];
-    
-    UITapGestureRecognizer *clickbgView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(beginEditNickname)];
+
+    UITapGestureRecognizer *clickbgView =
+        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(beginEditNickname)];
     [self.bgView addGestureRecognizer:clickbgView];
-    
+
     self.userNameTextField = [UITextField new];
     self.userNameTextField.borderStyle = UITextBorderStyleNone;
     self.userNameTextField.clearButtonMode = UITextFieldViewModeAlways;
     self.userNameTextField.font = [UIFont systemFontOfSize:16.f];
     self.userNameTextField.textColor = [UIColor colorWithHexString:@"000000" alpha:1.f];
     self.userNameTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.userNameTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [self.userNameTextField addTarget:self
+                               action:@selector(textFieldDidChange:)
+                     forControlEvents:UIControlEventEditingChanged];
     [self.bgView addSubview:self.userNameTextField];
-    
+
     self.subViews = NSDictionaryOfVariableBindings(_bgView, _userNameTextField);
-    
+
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-15-[_bgView(44)]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:self.subViews]];
-    
+
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_bgView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:self.subViews]];
-    
+
     [self.bgView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-9-[_userNameTextField]-3-|"
                                                                         options:0
                                                                         metrics:nil
                                                                           views:self.subViews]];
-    
+
     [self.bgView addConstraint:[NSLayoutConstraint constraintWithItem:_userNameTextField
                                                             attribute:NSLayoutAttributeCenterY
                                                             relatedBy:NSLayoutRelationEqual
@@ -169,7 +184,7 @@
 }
 
 - (MBProgressHUD *)hud {
-    if(!_hud) {
+    if (!_hud) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"修改中...";
         _hud = hud;

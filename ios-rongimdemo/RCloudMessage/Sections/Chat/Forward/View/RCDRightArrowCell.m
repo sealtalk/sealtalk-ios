@@ -13,7 +13,7 @@
 @implementation RCDRightArrowCell
 
 - (instancetype)init {
-    
+
     if (self = [super init]) {
         [self setupSubviews];
     }
@@ -21,18 +21,18 @@
 }
 
 - (void)setupSubviews {
-    
+
     self.backgroundColor = [UIColor whiteColor];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     [self.contentView addSubview:self.leftLabel];
     [self.contentView addSubview:self.rightArrow];
-    
+
     [self.leftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(self.contentView).inset(15);
         make.left.equalTo(self.contentView).offset(15);
         make.right.equalTo(self.rightArrow.mas_left).offset(-15);
     }];
-    
+
     [self.rightArrow mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView).offset(-12);
         make.centerY.equalTo(self.contentView);

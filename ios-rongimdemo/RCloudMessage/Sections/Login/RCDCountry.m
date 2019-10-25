@@ -9,7 +9,7 @@
 #import "RCDCountry.h"
 @interface RCDCountry ()
 @property (nonatomic, strong) NSDictionary *locale;
-@property(nonatomic, strong) NSString *countryName;
+@property (nonatomic, strong) NSString *countryName;
 @end
 @implementation RCDCountry
 - (instancetype)initWithDict:(NSDictionary *)dict {
@@ -22,19 +22,19 @@
     return self;
 }
 
-- (NSDictionary *)getModelJson{
+- (NSDictionary *)getModelJson {
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:self.phoneCode forKey:@"region"];
     [dic setObject:self.locale forKey:@"locale"];
     return dic.copy;
 }
 
-- (NSString *)countryName{
+- (NSString *)countryName {
     NSArray *languages = [NSLocale preferredLanguages];
     NSString *currentLanguage = [languages objectAtIndex:0];
     if ([currentLanguage containsString:@"zh-Hans"]) {
         return self.locale[@"zh"];
-    }else{
+    } else {
         return self.locale[@"en"];
     }
     return nil;

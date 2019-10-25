@@ -17,12 +17,12 @@
 @implementation NSBundle (RC)
 
 + (NSString *)currentLanguage {
-    
-    return [RCDLanguageManager sharedRCDLanguageManager].currentLanguage ? : [NSLocale preferredLanguages].firstObject;
+
+    return [RCDLanguageManager sharedRCDLanguageManager].currentLanguage ?: [NSLocale preferredLanguages].firstObject;
 }
 
 + (void)load {
-    
+
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         object_setClass([NSBundle mainBundle], [RCDBundle class]);
@@ -31,11 +31,10 @@
 
 @end
 
-
 @implementation RCDBundle
 
 - (NSString *)localizedStringForKey:(NSString *)key value:(NSString *)value table:(NSString *)tableName {
-    
+
     if ([RCDBundle rcd_mainBundle]) {
         return [[RCDBundle rcd_mainBundle] localizedStringForKey:key value:value table:tableName];
     } else {
@@ -44,7 +43,7 @@
 }
 
 + (NSBundle *)rcd_mainBundle {
-    
+
     if ([NSBundle currentLanguage].length) {
         NSString *path = [[NSBundle mainBundle] pathForResource:[NSBundle currentLanguage] ofType:@"lproj"];
         if (path.length) {

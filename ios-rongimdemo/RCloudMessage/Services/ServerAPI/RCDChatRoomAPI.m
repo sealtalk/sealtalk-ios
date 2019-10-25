@@ -9,7 +9,7 @@
 #import "RCDChatRoomAPI.h"
 #import "RCDHTTPUtility.h"
 @implementation RCDChatRoomAPI
-+ (void)getChatRoomList:(void (^)(NSArray<RCDChatRoom *> *))complete{
++ (void)getChatRoomList:(void (^)(NSArray<RCDChatRoom *> *))complete {
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodGet
                                 URLString:@"misc/demo_square"
                                parameters:nil
@@ -28,7 +28,7 @@
                                          if (complete) {
                                              complete(tempArray);
                                          }
-                                     }else{
+                                     } else {
                                          if (complete) {
                                              complete(nil);
                                          }

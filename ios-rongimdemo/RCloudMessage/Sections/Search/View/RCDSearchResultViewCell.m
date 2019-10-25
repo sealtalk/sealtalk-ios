@@ -15,8 +15,8 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface RCDSearchResultViewCell ()
-@property(nonatomic, strong) UILabel *otherLabel;
-@property(nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, strong) UILabel *otherLabel;
+@property (nonatomic, strong) UILabel *timeLabel;
 @end
 
 @implementation RCDSearchResultViewCell
@@ -63,17 +63,17 @@
             self.otherLabel.text = RCDLocalizedString(@"include");
             self.otherLabel.frame = CGRectMake(width, height, 40, 16);
             [self.otherLabel sizeToFit];
-            self.additionalLabel.frame =
-                CGRectMake(width + self.otherLabel.frame.size.width, height, additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
-            
+            self.additionalLabel.frame = CGRectMake(width + self.otherLabel.frame.size.width, height,
+                                                    additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
+
             [self.additionalLabel attributedText:model.otherInformation byHighlightedText:self.searchString];
             self.nameLabel.text = model.name;
         } else if (model.searchType == RCDSearchFriend) {
             self.otherLabel.text = RCDLocalizedString(@"nickname");
             self.otherLabel.frame = CGRectMake(width, height, 40, 16);
             [self.otherLabel sizeToFit];
-            self.additionalLabel.frame =
-                CGRectMake(width + self.otherLabel.frame.size.width, height, additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
+            self.additionalLabel.frame = CGRectMake(width + self.otherLabel.frame.size.width, height,
+                                                    additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
             [self.additionalLabel attributedText:model.name byHighlightedText:self.searchString];
             self.nameLabel.text = model.otherInformation;
         } else {
@@ -90,8 +90,8 @@
             }
             self.otherLabel.frame = CGRectMake(width, height, 40, 16);
             [self.otherLabel sizeToFit];
-            self.additionalLabel.frame =
-                CGRectMake(width + self.otherLabel.frame.size.width, height, additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
+            self.additionalLabel.frame = CGRectMake(width + self.otherLabel.frame.size.width, height,
+                                                    additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
             if (model.time) {
                 self.timeLabel.text = [RCKitUtility ConvertMessageTime:model.time / 1000];
             }

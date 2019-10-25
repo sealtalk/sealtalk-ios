@@ -28,7 +28,8 @@
 static NSString *rightArrowCellIdentifier = @"RCDRightArrowCellIdentifier";
 static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentifier";
 
-@interface RCDSelectContactViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate>
+@interface RCDSelectContactViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,
+                                              UISearchControllerDelegate>
 
 @property (nonatomic, strong) RCDTableView *tableView;
 @property (nonatomic, strong) UISearchBar *searchFriendsBar;
@@ -60,7 +61,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupView];
     [self initData];
     [self addObserver];
@@ -119,7 +120,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
     title.font = [UIFont systemFontOfSize:15.f];
     title.textColor = HEXCOLOR(0x999999);
     [view addSubview:title];
-    
+
     if (section == 0) {
         title.text = nil;
     } else {
@@ -141,7 +142,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         if (cell == nil) {
             cell = [[RCDForwardSelectedCell alloc] init];
         }
-        
+
         NSString *letter = self.resultKeys[indexPath.section - 1];
         NSArray *sectionUserInfoList = self.resultSectionDict[letter];
         RCDFriendInfo *userInfo = sectionUserInfoList[indexPath.row];
@@ -178,7 +179,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+
     // 多选删人处理
     if (self.type == RCDContactSelectTypeDelete) {
         NSString *letter = self.resultKeys[indexPath.section - 1];
@@ -187,7 +188,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         if (friend == nil) {
             return;
         }
-        
+
         RCDForwardSelectedCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         if (cell.selectStatus == RCDForwardSelectedStatusMultiUnSelected) {
             if (self.deleteIdArray.count >= RCDDeleteMaxNumber) {
@@ -204,7 +205,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         [self.tableView reloadData];
         return;
     }
-    
+
     // 转发处理
     if (indexPath.section == 0) {
         RCDSelectGroupViewController *selectGroupVC = [[RCDSelectGroupViewController alloc] init];
@@ -220,7 +221,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         RCDForwardCellModel *forwardCellmodel = [[RCDForwardCellModel alloc] init];
         forwardCellmodel.targetId = friend.userId;
         forwardCellmodel.conversationType = ConversationType_PRIVATE;
-        
+
         if (cell.selectStatus == RCDForwardSelectedStatusMultiUnSelected) {
             [[RCDForwardManager sharedInstance] addForwardModel:forwardCellmodel];
             cell.selectStatus = RCDForwardSelectedStatusMultiSelected;
@@ -251,7 +252,8 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
             }
             // //忽略大小写去判断是否包含
             if ([name rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound ||
-                [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch]
+                        .location != NSNotFound) {
                 [self.matchFriendList addObject:userInfo];
             }
         }
@@ -271,9 +273,9 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         [self.tableView reloadData];
     }
     self.searchFriendsBar.showsCancelButton = YES;
-    for(UIView *view in [[[self.searchFriendsBar subviews] objectAtIndex:0] subviews]) {
-        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
-            UIButton * cancel = (UIButton *)view;
+    for (UIView *view in [[[self.searchFriendsBar subviews] objectAtIndex:0] subviews]) {
+        if ([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
+            UIButton *cancel = (UIButton *)view;
             [cancel setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
             break;
         }
@@ -291,17 +293,17 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
     self.view.backgroundColor = [UIColor colorWithRed:235 / 255.0 green:235 / 255.0 blue:235 / 255.0 alpha:1];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.searchFriendsBar];
-    
+
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchFriendsBar.mas_bottom);
         make.left.right.equalTo(self.view);
         make.bottom.equalTo(self.view).offset(-RCDExtraBottomHeight);
     }];
-    
+
     [self.searchFriendsBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);
     }];
-    
+
     if (self.type == RCDContactSelectTypeForward) {
         [self.view addSubview:self.bottomResultView];
         [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -319,10 +321,16 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 }
 
 - (void)setupNavi {
-    self.navigationItem.leftBarButtonItem = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+    self.navigationItem.leftBarButtonItem =
+        [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                   target:self
+                                                   action:@selector(clickBackBtn)];
     self.navigationController.navigationBar.translucent = NO;
     if (self.type == RCDContactSelectTypeDelete) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"Delete") style:UIBarButtonItemStylePlain target:self action:@selector(onRightButtonClick:)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"Delete")
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(onRightButtonClick:)];
         self.title = RCDLocalizedString(@"Batch_Friend_Deletion");
     } else {
         self.navigationItem.rightBarButtonItem = nil;
@@ -340,8 +348,10 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 }
 
 - (void)addObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSelectedResult) name:@"ReloadBottomResultView" object:nil
-     ];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateSelectedResult)
+                                                 name:@"ReloadBottomResultView"
+                                               object:nil];
 }
 
 // 获取好友并且排序
@@ -388,16 +398,17 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 }
 
 - (void)deleteFriends {
-    [RCDUserInfoManager batchFriendDelete:[self.deleteIdArray copy] complete:^(BOOL success) {
-        rcd_dispatch_main_async_safe(^{
-            if (success) {
-                [self.view showHUDMessage:RCDLocalizedString(@"DeleteSuccess")];
-                [self clickBackBtn];
-            } else {
-                [self.view showHUDMessage:RCDLocalizedString(@"DeleteFailure")];
-            }
-        });
-    }];
+    [RCDUserInfoManager batchFriendDelete:[self.deleteIdArray copy]
+                                 complete:^(BOOL success) {
+                                     rcd_dispatch_main_async_safe(^{
+                                         if (success) {
+                                             [self.view showHUDMessage:RCDLocalizedString(@"DeleteSuccess")];
+                                             [self clickBackBtn];
+                                         } else {
+                                             [self.view showHUDMessage:RCDLocalizedString(@"DeleteFailure")];
+                                         }
+                                     });
+                                 }];
 }
 
 #pragma mark - Target Action
@@ -410,12 +421,17 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         [self.view showHUDMessage:RCDLocalizedString(@"UnselectedFriend")];
         return;
     }
-    
-    [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"Multi_Choice_Prompt") highlightText:nil leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"Delete_Confirm") cancel:^{
-        
-    } confirm:^{
-        [self deleteFriends];
-    }];
+
+    [NormalAlertView showAlertWithMessage:RCDLocalizedString(@"Multi_Choice_Prompt")
+        highlightText:nil
+        leftTitle:RCDLocalizedString(@"cancel")
+        rightTitle:RCDLocalizedString(@"Delete_Confirm")
+        cancel:^{
+
+        }
+        confirm:^{
+            [self deleteFriends];
+        }];
 }
 
 #pragma mark - Getter & Setter
@@ -440,7 +456,8 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         _tableView.tableFooterView = [UIView new];
         _tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
         _tableView.separatorColor = HEXCOLOR(0xdfdfdf);
-        _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
+        _tableView.tableHeaderView =
+            [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
         //设置右侧索引
         _tableView.sectionIndexBackgroundColor = [UIColor clearColor];
         _tableView.sectionIndexColor = HEXCOLOR(0x555555);

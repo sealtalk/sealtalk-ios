@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDChatViewController (RealTimeLocation) <RealTimeLocationStatusViewDelegate,RCRealTimeLocationObserver>
+@interface RCDChatViewController (RealTimeLocation) <RealTimeLocationStatusViewDelegate, RCRealTimeLocationObserver>
 @property (nonatomic, weak) id<RCRealTimeLocationProxy> realTimeLocation;
 @property (nonatomic, strong) RealTimeLocationStatusView *realTimeLocationStatusView;
 

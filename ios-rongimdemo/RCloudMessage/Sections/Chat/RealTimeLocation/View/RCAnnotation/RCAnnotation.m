@@ -31,7 +31,7 @@
     } else {
         _coordinate = thumbnail.coordinate;
     }
-    
+
     if (_view) {
         _view.coordinate = self.coordinate;
         _view.userId = thumbnail.userId;

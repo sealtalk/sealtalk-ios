@@ -11,4 +11,3 @@
 @interface RCDScanQRCodeController : UIViewController
 
 @end
-

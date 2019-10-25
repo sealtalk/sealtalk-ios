@@ -17,7 +17,7 @@
 @end
 
 @interface RealTimeLocationStatusView : UIView
-@property(nonatomic, weak) id<RealTimeLocationStatusViewDelegate> delegate;
+@property (nonatomic, weak) id<RealTimeLocationStatusViewDelegate> delegate;
 - (void)updateText:(NSString *)statusText;
 - (void)updateRealTimeLocationStatus;
 @end

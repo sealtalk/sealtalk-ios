@@ -59,7 +59,8 @@ static const NSInteger __RCDTipLabelBottomSpace = 10;
 }
 
 - (CGFloat)heightForTipFooterViewWithTip:(NSString *)tip font:(UIFont *)font constrainedSize:(CGSize)constrainedSize {
-    return [RCUtilities getTextDrawingSize:tip font:font constrainedSize:constrainedSize].height + __RCDTipLabelTopSpace + __RCDTipLabelBottomSpace;
+    return [RCUtilities getTextDrawingSize:tip font:font constrainedSize:constrainedSize].height +
+           __RCDTipLabelTopSpace + __RCDTipLabelBottomSpace;
 }
 
 @end

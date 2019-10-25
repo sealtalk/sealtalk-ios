@@ -13,22 +13,21 @@ NS_ASSUME_NONNULL_BEGIN
 @interface RCDLanguageManager : NSObject
 
 // 当前的国际化语言
-@property(nonatomic, copy, readonly) NSString *currentLanguage;
+@property (nonatomic, copy, readonly) NSString *currentLanguage;
 
 /**
  单例方法
- 
+
  @return 单例对象
  */
 + (instancetype)sharedRCDLanguageManager;
 
 /**
  设置当前的国际化语言
- 
+
  @param Language 当前的国际化语言，请参考上面的RCLocalizableLanguageDefault
  */
 - (void)setLocalizableLanguage:(NSString *)Language;
-
 
 @end
 

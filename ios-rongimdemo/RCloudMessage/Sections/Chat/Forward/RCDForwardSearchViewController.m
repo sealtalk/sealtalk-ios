@@ -22,9 +22,10 @@
 #import "RCDHaveSelectedViewController.h"
 #import "RCDForwardSearchMoreController.h"
 
-@interface RCDForwardSearchViewController ()<UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate>
+@interface RCDForwardSearchViewController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource,
+                                              UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 
-@property(nonatomic, strong) NSMutableDictionary *resultDictionary;
+@property (nonatomic, strong) NSMutableDictionary *resultDictionary;
 @property (nonatomic, strong) NSMutableArray *groupTypeArray;
 @property (nonatomic, strong) RCDSearchBar *searchBar;
 @property (nonatomic, strong) UIButton *cancelButton;
@@ -42,7 +43,7 @@
     [super viewDidLoad];
     self.groupTypeArray = [NSMutableArray array];
     self.resultDictionary = [NSMutableDictionary dictionary];
-    
+
     [self setupSubviews];
     [self addGestureRecognizer];
     [self addObserver];
@@ -84,7 +85,8 @@
             cell = [[RCDSearchMoreViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"moreCell"];
         }
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.moreLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"see_more"), self.groupTypeArray[indexPath.section]];
+        cell.moreLabel.text =
+            [NSString stringWithFormat:RCDLocalizedString(@"see_more"), self.groupTypeArray[indexPath.section]];
         return cell;
     } else {
         NSArray *array = self.resultDictionary[self.groupTypeArray[indexPath.section]];
@@ -131,7 +133,7 @@
     //添加与cell分割线等宽的session分割线
     CGRect viewFrame = view.frame;
     UIView *separatorLine =
-    [[UIView alloc] initWithFrame:CGRectMake(10, viewFrame.size.height - 1, viewFrame.size.width - 10, 1)];
+        [[UIView alloc] initWithFrame:CGRectMake(10, viewFrame.size.height - 1, viewFrame.size.width - 10, 1)];
     separatorLine.backgroundColor = [UIColor colorWithRed:230 / 255.0 green:230 / 255.0 blue:230 / 255.0 alpha:1];
     [view addSubview:separatorLine];
     return view;
@@ -190,13 +192,15 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     [self.resultDictionary removeAllObjects];
     [self.groupTypeArray removeAllObjects];
-    [[RCDSearchDataManager sharedInstance] searchDataWithSearchText:searchText bySearchType:RCDSearchAll complete:^(NSDictionary *dic, NSArray *array) {
-        [self.resultDictionary setDictionary:dic];
-        [self.groupTypeArray setArray:array];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self refreshSearchView:searchText];
-        });
-    }];
+    [[RCDSearchDataManager sharedInstance] searchDataWithSearchText:searchText
+                                                       bySearchType:RCDSearchAll
+                                                           complete:^(NSDictionary *dic, NSArray *array) {
+                                                               [self.resultDictionary setDictionary:dic];
+                                                               [self.groupTypeArray setArray:array];
+                                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                                   [self refreshSearchView:searchText];
+                                                               });
+                                                           }];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -224,7 +228,7 @@
     [self.resultTableView addSubview:self.emptyLabel];
     [self.searchView addSubview:self.searchBar];
     [self.searchView addSubview:self.cancelButton];
-    
+
     if (![RCDForwardManager sharedInstance].isMultiSelect) {
         [self.resultTableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.right.top.equalTo(self.view);
@@ -237,15 +241,15 @@
             make.bottom.equalTo(self.view);
             make.height.offset(50 + RCDExtraBottomHeight);
         }];
-        
+
         [self.resultTableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.right.top.equalTo(self.view);
             make.bottom.equalTo(self.bottomResultView.mas_top);
         }];
-        
+
         [self updateSelectedResult];
     }
-    
+
     [self.emptyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.resultTableView).offset(10);
         make.top.equalTo(self.resultTableView).offset(45);
@@ -255,12 +259,15 @@
 }
 
 - (void)addObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSelectedResult) name:@"ReloadBottomResultView" object:nil
-     ];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateSelectedResult)
+                                                 name:@"ReloadBottomResultView"
+                                               object:nil];
 }
 
 - (void)addGestureRecognizer {
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideSerchBarWhenTapBackground:)];
+    UITapGestureRecognizer *tap =
+        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideSerchBarWhenTapBackground:)];
     tap.delegate = self;
     [self.view addGestureRecognizer:tap];
 }
@@ -270,7 +277,7 @@
     [[RCDForwardManager sharedInstance] showForwardAlertViewInViewController:self];
 }
 
-- (void)pushToSearchMoreVC:(NSString *)type result:(NSArray *)results{
+- (void)pushToSearchMoreVC:(NSString *)type result:(NSArray *)results {
     RCDForwardSearchMoreController *viewController = [[RCDForwardSearchMoreController alloc] init];
     viewController.isShowSeachBar = YES;
     viewController.searchString = self.searchBar.text;
@@ -289,7 +296,11 @@
     RCDForwardSearchMoreController *viewController = [[RCDForwardSearchMoreController alloc] init];
     viewController.searchString = self.searchBar.text;
     viewController.type = [NSString stringWithFormat:RCDLocalizedString(@"total_related_message"), model.count];
-    NSArray *msgArray = [[RCIMClient sharedRCIMClient] searchMessages:model.conversationType targetId:model.targetId keyword:self.searchBar.text count:model.count startTime:0];
+    NSArray *msgArray = [[RCIMClient sharedRCIMClient] searchMessages:model.conversationType
+                                                             targetId:model.targetId
+                                                              keyword:self.searchBar.text
+                                                                count:model.count
+                                                            startTime:0];
     NSMutableArray *resultArray = [NSMutableArray array];
     for (RCMessage *message in msgArray) {
         RCDSearchResultModel *messegeModel = [RCDSearchResultModel modelForMessage:message];
@@ -320,10 +331,10 @@
         NSString *currentlanguage = [RCDLanguageManager sharedRCDLanguageManager].currentLanguage;
         if ([currentlanguage isEqualToString:@"en"]) {
             index = 24;
-        }else if ([currentlanguage isEqualToString:@"zh-Hans"]){
+        } else if ([currentlanguage isEqualToString:@"zh-Hans"]) {
             index = 6;
-        }else {
-            NSLog(@"%s 不支持当前语言的高亮显示",__func__);
+        } else {
+            NSLog(@"%s 不支持当前语言的高亮显示", __func__);
         }
         [attributedString addAttribute:NSForegroundColorAttributeName
                                  value:HEXCOLOR(0x0099ff)
@@ -342,7 +353,13 @@
 - (CGFloat)labelAdaptive:(NSString *)string {
     float maxWidth = self.view.frame.size.width - 20;
     CGRect textRect =
-    [string boundingRectWithSize:CGSizeMake(maxWidth, 8000) options:(NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading) attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0]} context:nil];
+        [string boundingRectWithSize:CGSizeMake(maxWidth, 8000)
+                             options:(NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin |
+                                      NSStringDrawingUsesFontLeading)
+                          attributes:@{
+                              NSFontAttributeName : [UIFont systemFontOfSize:14.0]
+                          }
+                             context:nil];
     textRect.size.height = ceilf(textRect.size.height);
     return textRect.size.height + 5;
 }
@@ -393,7 +410,7 @@
 }
 
 - (RCDSearchBar *)searchBar {
-    if(!_searchBar) {
+    if (!_searchBar) {
         _searchBar = [[RCDSearchBar alloc] initWithFrame:CGRectZero];
         _searchBar.delegate = self;
         _searchBar.tintColor = [UIColor blueColor];
@@ -404,12 +421,15 @@
 }
 
 - (UIButton *)cancelButton {
-    if(!_cancelButton) {
-        _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_searchBar.frame) - 3, CGRectGetMinY(self.searchBar.frame), 60, 44)];
+    if (!_cancelButton) {
+        _cancelButton = [[UIButton alloc]
+            initWithFrame:CGRectMake(CGRectGetMaxX(_searchBar.frame) - 3, CGRectGetMinY(self.searchBar.frame), 60, 44)];
         [_cancelButton setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
         [_cancelButton setTitleColor:HEXCOLOR(0x0099ff) forState:UIControlStateNormal];
         _cancelButton.titleLabel.font = [UIFont systemFontOfSize:18.];
-        [_cancelButton addTarget:self action:@selector(cancelButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_cancelButton addTarget:self
+                          action:@selector(cancelButtonClicked)
+                forControlEvents:UIControlEventTouchUpInside];
     }
     return _cancelButton;
 }

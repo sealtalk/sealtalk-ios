@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDForwardManager : NSObject<RCDForwardAlertViewDelegate>
+@interface RCDForwardManager : NSObject <RCDForwardAlertViewDelegate>
 + (RCDForwardManager *)sharedInstance;
 @property (nonatomic, assign) BOOL isForward;
 @property (nonatomic, assign) BOOL isMultiSelect;
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) NSInteger friendCount;
 @property (nonatomic, assign, readonly) NSInteger groupCount;
 
-@property(nonatomic, copy) void (^willForwardMessageBlock)(RCConversationType type,NSString *targetId);
+@property (nonatomic, copy) void (^willForwardMessageBlock)(RCConversationType type, NSString *targetId);
 
 - (void)showForwardAlertViewInViewController:(UIViewController *)viewController;
 - (BOOL)allSelectedMessagesAreLegal;

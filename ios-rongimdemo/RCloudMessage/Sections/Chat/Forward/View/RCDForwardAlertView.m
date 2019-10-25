@@ -90,7 +90,7 @@
     [self.contentView addSubview:self.scrollView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.forwardContentLabel];
-    
+
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self).inset(27);
         make.center.equalTo(self);
@@ -160,18 +160,18 @@
     imageView.layer.masksToBounds = YES;
     [self.scrollView addSubview:imageView];
     [self.scrollView addSubview:self.nameLabel];
-    
+
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imageView.mas_right).offset(10);
         make.centerY.height.equalTo(imageView);
         make.right.equalTo(self.scrollView).offset(-10);
     }];
-    
+
     if (model.conversationType == ConversationType_PRIVATE) {
         RCDFriendInfo *userInfo;
         if ([model.targetId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
             userInfo = (RCDFriendInfo *)[RCIM sharedRCIM].currentUserInfo;
-        }else{
+        } else {
             userInfo = [RCDDBManager getFriend:model.targetId];
         }
         self.nameLabel.text = userInfo.name;
@@ -195,9 +195,10 @@
         }
         self.forwardContentLabel.text = displayString;
     } else {
-        self.forwardContentLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"ForwardMessageCount"), self.messageArray.count];
+        self.forwardContentLabel.text =
+            [NSString stringWithFormat:RCDLocalizedString(@"ForwardMessageCount"), self.messageArray.count];
     }
-    
+
     if (self.selectedContacts.count > 0) {
         [self refreshScrollView];
     }
@@ -213,7 +214,7 @@
     } else {
         displayString = RCDLocalizedString(@"UnknownMessage");
     }
-    
+
     return displayString;
 }
 
@@ -221,7 +222,7 @@
     for (UIView *view in self.scrollView.subviews) {
         [view removeFromSuperview];
     }
-    
+
     for (int i = 0; i < self.selectedContacts.count; i++) {
         RCDForwardCellModel *model = self.selectedContacts[i];
         CGFloat originX = i * (itemHight + 5);
@@ -247,7 +248,8 @@
         name = groupInfo.groupName;
     }
     if (imageUrl.length > 0) {
-        [imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"default_portrait_msg"]];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]
+                     placeholderImage:[UIImage imageNamed:@"default_portrait_msg"]];
     } else {
         imageView.image = [DefaultPortraitView portraitView:model.targetId name:name];
     }
@@ -276,8 +278,7 @@
 - (UIButton *)cancelButton {
     if (!_cancelButton) {
         _cancelButton = [[UIButton alloc] init];
-        [_cancelButton setTitle:RCDLocalizedString(@"cancel")
-                forState:UIControlStateNormal];
+        [_cancelButton setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
         [_cancelButton setTitleColor:HEXCOLOR(0x262626) forState:UIControlStateNormal];
         _cancelButton.titleLabel.font = [UIFont systemFontOfSize:18];
         [_cancelButton addTarget:self action:@selector(cancelButtonEvent) forControlEvents:UIControlEventTouchUpInside];
@@ -291,7 +292,9 @@
         [_confirmButton setTitle:RCDLocalizedString(@"send") forState:UIControlStateNormal];
         [_confirmButton setTitleColor:[UIColor colorWithHexString:@"3A91F3" alpha:1] forState:UIControlStateNormal];
         _confirmButton.titleLabel.font = [UIFont systemFontOfSize:18];
-        [_confirmButton addTarget:self action:@selector(confirmButtonEvent) forControlEvents:UIControlEventTouchUpInside];
+        [_confirmButton addTarget:self
+                           action:@selector(confirmButtonEvent)
+                 forControlEvents:UIControlEventTouchUpInside];
     }
     return _confirmButton;
 }

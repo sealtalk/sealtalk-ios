@@ -20,9 +20,7 @@
  */
 + (UIImage *)image:(UIImage *)image byScalingToSize:(CGSize)targetSize;
 
-+ (UIImage *)getSubImage:(UIImage *)originImage
-                    Rect:(CGRect)rect
-        imageOrientation:(UIImageOrientation)imageOrientation;
++ (UIImage *)getSubImage:(UIImage *)originImage Rect:(CGRect)rect imageOrientation:(UIImageOrientation)imageOrientation;
 
 + (UIImage *)scaleImage:(UIImage *)Image toScale:(float)scaleSize;
 @end

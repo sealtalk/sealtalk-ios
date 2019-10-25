@@ -50,7 +50,7 @@
 - (NSArray *)searchWithXPathQuery:(NSString *)xPathOrCSS;
 - (TFHppleElement *)peekAtSearchWithXPathQuery:(NSString *)xPathOrCSS;
 
-@property(nonatomic, readonly) NSData *data;
-@property(nonatomic, readonly) NSString *encoding;
+@property (nonatomic, readonly) NSData *data;
+@property (nonatomic, readonly) NSString *encoding;
 
 @end

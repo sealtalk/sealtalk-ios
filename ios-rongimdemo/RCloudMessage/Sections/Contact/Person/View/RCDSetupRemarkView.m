@@ -11,7 +11,7 @@
 #import <Masonry/Masonry.h>
 #import "RCDUtilities.h"
 
-@interface RCDSetupRemarkView ()<UITextFieldDelegate>
+@interface RCDSetupRemarkView () <UITextFieldDelegate>
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UITextField *textField;
@@ -38,25 +38,25 @@
 
 - (void)setupViews {
     self.backgroundColor = [UIColor whiteColor];
-    
+
     UIView *titleBgView = [[UIView alloc] init];
     titleBgView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1];
     [self addSubview:titleBgView];
-    
+
     [titleBgView addSubview:self.titleLabel];
     [self addSubview:self.textField];
-    
+
     [titleBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self);
         make.height.offset(26.5);
     }];
-    
+
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.right.equalTo(self);
         make.left.equalTo(titleBgView).offset(10);
         make.height.offset(26.5);
     }];
-    
+
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom);
         make.left.equalTo(self).offset(10);
@@ -65,7 +65,10 @@
 }
 
 - (void)addObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldEditChanged:) name:@"UITextFieldTextDidChangeNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldEditChanged:)
+                                                 name:@"UITextFieldTextDidChangeNotification"
+                                               object:nil];
 }
 
 - (void)updateUI {
@@ -82,7 +85,7 @@
         make.width.height.offset(20);
         make.right.lessThanOrEqualTo(self.textField.mas_left);
     }];
-    
+
     [self.textField mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom);
         make.left.equalTo(self).offset(80);
@@ -114,7 +117,8 @@
             if (rangeIndex.length == 1) {
                 textField.text = [toBeString substringToIndex:self.charMaxCount];
             } else {
-                NSRange rangeRange = [toBeString rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, self.charMaxCount)];
+                NSRange rangeRange =
+                    [toBeString rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, self.charMaxCount)];
                 textField.text = [toBeString substringWithRange:rangeRange];
             }
         }
@@ -126,9 +130,12 @@
     return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (BOOL)textField:(UITextField *)textField
+    shouldChangeCharactersInRange:(NSRange)range
+                replacementString:(NSString *)string {
     //不支持系统表情的输入
-    if ([[[UITextInputMode currentInputMode] primaryLanguage] isEqualToString:@"emoji"] || [RCDUtilities stringContainsEmoji:string]) {
+    if ([[[UITextInputMode currentInputMode] primaryLanguage] isEqualToString:@"emoji"] ||
+        [RCDUtilities stringContainsEmoji:string]) {
         return NO;
     }
     return YES;
@@ -142,10 +149,12 @@
 - (void)setPlaceholder:(NSString *)placeholder {
     _placeholder = placeholder;
     self.textField.placeholder = placeholder;
-    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:self.textField.placeholder attributes:
-    @{NSForegroundColorAttributeName:HEXCOLOR(0x999999),
-                 NSFontAttributeName:self.textField.font
-         }];
+    NSAttributedString *attrString =
+        [[NSAttributedString alloc] initWithString:self.textField.placeholder
+                                        attributes:@{
+                                            NSForegroundColorAttributeName : HEXCOLOR(0x999999),
+                                            NSFontAttributeName : self.textField.font
+                                        }];
     self.textField.attributedPlaceholder = attrString;
 }
 
@@ -216,7 +225,8 @@
         _arrowImgView = [[UIImageView alloc] init];
         _arrowImgView.image = [UIImage imageNamed:@"forward_arrow"];
         _arrowImgView.userInteractionEnabled = YES;
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapButtonAction)];
+        UITapGestureRecognizer *tap =
+            [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapButtonAction)];
         [_arrowImgView addGestureRecognizer:tap];
     }
     return _arrowImgView;

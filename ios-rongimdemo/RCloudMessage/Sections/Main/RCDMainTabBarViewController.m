@@ -93,7 +93,7 @@
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController
-    didSelectViewController:(UIViewController *)viewController {
+ didSelectViewController:(UIViewController *)viewController {
     NSUInteger index = tabBarController.selectedIndex;
     [RCDMainTabBarViewController sharedInstance].selectedTabBarIndex = index;
     switch (index) {

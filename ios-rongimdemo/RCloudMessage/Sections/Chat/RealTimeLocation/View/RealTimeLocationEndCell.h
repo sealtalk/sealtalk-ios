@@ -15,7 +15,7 @@
 /**
  *  tipMessage显示Label
  */
-@property(strong, nonatomic) RCTipLabel *tipMessageLabel;
+@property (strong, nonatomic) RCTipLabel *tipMessageLabel;
 
 /**
  *  设置消息数据模型

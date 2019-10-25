@@ -24,31 +24,31 @@
 
 @interface RCDBaseSettingTableViewCell : UITableViewCell
 
-@property(nonatomic, strong) UIImageView *leftImageView;
+@property (nonatomic, strong) UIImageView *leftImageView;
 
-@property(nonatomic, assign) CGFloat leftImageCornerRadius;
+@property (nonatomic, assign) CGFloat leftImageCornerRadius;
 
-@property(nonatomic, strong) UILabel *leftLabel;
+@property (nonatomic, strong) UILabel *leftLabel;
 
-@property(nonatomic, strong) UILabel *rightLabel;
+@property (nonatomic, strong) UILabel *rightLabel;
 
-@property(nonatomic, strong) UISwitch *switchButton;
+@property (nonatomic, strong) UISwitch *switchButton;
 
-@property(nonatomic, strong) UIImageView *rightImageView;
+@property (nonatomic, strong) UIImageView *rightImageView;
 
-@property(nonatomic, assign) CGFloat rightImageCornerRadius;
+@property (nonatomic, assign) CGFloat rightImageCornerRadius;
 
-@property(nonatomic, strong) UIImageView *rightArrow;
+@property (nonatomic, strong) UIImageView *rightArrow;
 
-@property(nonatomic, strong) UIView *bottomLine;
+@property (nonatomic, strong) UIView *bottomLine;
 
-@property(nonatomic, assign) BOOL switchButtonStatus;
+@property (nonatomic, assign) BOOL switchButtonStatus;
 
-@property(nonatomic, strong) NSArray *leftLabelConstraints;
+@property (nonatomic, strong) NSArray *leftLabelConstraints;
 
-@property(weak, nonatomic) id<RCDBaseSettingTableViewCellDelegate> baseSettingTableViewDelegate;
+@property (weak, nonatomic) id<RCDBaseSettingTableViewCellDelegate> baseSettingTableViewDelegate;
 
-@property(nonatomic, assign) BOOL rightLabelIsEnabled;
+@property (nonatomic, assign) BOOL rightLabelIsEnabled;
 
 //两边如果有图片，使用该方法初始化Cell。
 - (id)initWithLeftImageStr:(NSString *)leftImageStr

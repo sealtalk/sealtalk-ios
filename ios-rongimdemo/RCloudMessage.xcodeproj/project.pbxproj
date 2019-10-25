@@ -27,6 +27,7 @@
 		270C242422A4C88E000F22A2 /* RCDLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C241F22A4C88E000F22A2 /* RCDLabel.m */; };
 		2724CCD71FF34411006FFC86 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724CCD61FF34411006FFC86 /* Contacts.framework */; };
 		274E2BFF22BB8C770016EE65 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 274E2BF222BB8C770016EE65 /* KxMenu.m */; };
+		27644ABC2355CEB8005A39F5 /* RCDDataStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 27644ABB2355CEB8005A39F5 /* RCDDataStatistics.m */; };
 		276599E0229E95250074FAB2 /* UIColor+RCColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 276599DB229E95250074FAB2 /* UIColor+RCColor.m */; };
 		276599E1229E95250074FAB2 /* UITextFiled+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = 276599DD229E95250074FAB2 /* UITextFiled+Shake.m */; };
 		276599E2229E95250074FAB2 /* UIImage+RCImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 276599DE229E95250074FAB2 /* UIImage+RCImage.m */; };
@@ -100,6 +101,9 @@
 		3B054E4922F439C6009A3C72 /* RCDSetupRemarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B054E4822F439C6009A3C72 /* RCDSetupRemarkView.m */; };
 		3B054E5722F43C7C009A3C72 /* RCDTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B054E5622F43C7C009A3C72 /* RCDTextView.m */; };
 		3B08F41022E6F90C009EB9E1 /* RCDMyQRCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B08F40F22E6F90C009EB9E1 /* RCDMyQRCodeView.m */; };
+		3B0D3867235EEADC006444F5 /* jrmf_o.cer in Resources */ = {isa = PBXBuildFile; fileRef = 3B0D3859235EEADC006444F5 /* jrmf_o.cer */; };
+		3B0D3868235EEADC006444F5 /* jrmf_n.cer in Resources */ = {isa = PBXBuildFile; fileRef = 3B0D3865235EEADC006444F5 /* jrmf_n.cer */; };
+		3B0D3869235EEADC006444F5 /* jrmf_p.cer in Resources */ = {isa = PBXBuildFile; fileRef = 3B0D3866235EEADC006444F5 /* jrmf_p.cer */; };
 		3B0E2A7522D329C8000E1BE6 /* RCDSettingGenderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E2A7422D329C8000E1BE6 /* RCDSettingGenderViewController.m */; };
 		3B0E2A8522D33307000E1BE6 /* RCDSetSealTalkNumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E2A8422D33307000E1BE6 /* RCDSetSealTalkNumViewController.m */; };
 		3B0E2A9522D48CED000E1BE6 /* RCDAddFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E2A9422D48CED000E1BE6 /* RCDAddFriendListViewController.m */; };
@@ -491,6 +495,8 @@
 		2724CCD61FF34411006FFC86 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		274E2BF222BB8C770016EE65 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
 		274E2BF322BB8C770016EE65 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
+		27644ABA2355CEB8005A39F5 /* RCDDataStatistics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDataStatistics.h; sourceTree = "<group>"; };
+		27644ABB2355CEB8005A39F5 /* RCDDataStatistics.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDataStatistics.m; sourceTree = "<group>"; };
 		276599A1229E87B20074FAB2 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		276599DA229E95240074FAB2 /* UIImage+RCImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RCImage.h"; sourceTree = "<group>"; };
 		276599DB229E95250074FAB2 /* UIColor+RCColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RCColor.m"; sourceTree = "<group>"; };
@@ -631,6 +637,9 @@
 		3B054E5622F43C7C009A3C72 /* RCDTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDTextView.m; sourceTree = "<group>"; };
 		3B08F40E22E6F90C009EB9E1 /* RCDMyQRCodeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDMyQRCodeView.h; sourceTree = "<group>"; };
 		3B08F40F22E6F90C009EB9E1 /* RCDMyQRCodeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDMyQRCodeView.m; sourceTree = "<group>"; };
+		3B0D3859235EEADC006444F5 /* jrmf_o.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = jrmf_o.cer; path = "../../../ios-3rd-vendor/jrmf/JrmfIMLib/jrmf_o.cer"; sourceTree = "<group>"; };
+		3B0D3865235EEADC006444F5 /* jrmf_n.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = jrmf_n.cer; path = "../../../ios-3rd-vendor/jrmf/JrmfIMLib/jrmf_n.cer"; sourceTree = "<group>"; };
+		3B0D3866235EEADC006444F5 /* jrmf_p.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = jrmf_p.cer; path = "../../../ios-3rd-vendor/jrmf/JrmfIMLib/jrmf_p.cer"; sourceTree = "<group>"; };
 		3B0E2A7322D329C8000E1BE6 /* RCDSettingGenderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDSettingGenderViewController.h; sourceTree = "<group>"; };
 		3B0E2A7422D329C8000E1BE6 /* RCDSettingGenderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDSettingGenderViewController.m; sourceTree = "<group>"; };
 		3B0E2A8322D33307000E1BE6 /* RCDSetSealTalkNumViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDSetSealTalkNumViewController.h; sourceTree = "<group>"; };
@@ -1286,6 +1295,8 @@
 				27AD2F6F229E721D003C2680 /* RCDDebugNoDisturbViewController.m */,
 				27AD2F6C229E721D003C2680 /* RCDDebugTableViewController.h */,
 				27AD2F6E229E721D003C2680 /* RCDDebugTableViewController.m */,
+				27644ABA2355CEB8005A39F5 /* RCDDataStatistics.h */,
+				27644ABB2355CEB8005A39F5 /* RCDDataStatistics.m */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -2876,9 +2887,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				178998221F6244FA00FC44D3 /* sms-received.caf in Resources */,
+				3B0D3867235EEADC006444F5 /* jrmf_o.cer in Resources */,
 				A28C439322E95818005BA7A0 /* InfoPlist.strings in Resources */,
 				E4BFAE251A121839007165B1 /* Images.xcassets in Resources */,
+				3B0D3868235EEADC006444F5 /* jrmf_n.cer in Resources */,
 				A28C439522E95818005BA7A0 /* SealTalk.strings in Resources */,
+				3B0D3869235EEADC006444F5 /* jrmf_p.cer in Resources */,
 				A2F0A96F22F9173000422802 /* poke.mp3 in Resources */,
 				987653631D796C5B008A6BF0 /* Launch Screen.storyboard in Resources */,
 			);
@@ -3180,6 +3194,7 @@
 				3B16DA1422F8181600AD2770 /* RCDPictureView.m in Sources */,
 				A2402F9622B2380200BF8F6A /* RCDChatRoomManager.m in Sources */,
 				27F0E3CC22A0E3E300C8B0B8 /* RCDVersionCell.m in Sources */,
+				27644ABC2355CEB8005A39F5 /* RCDDataStatistics.m in Sources */,
 				3B4788E822B780EF00D33F10 /* RCDForwardManager.m in Sources */,
 				A2E705D822BA31D20047DF47 /* RCDTipMessageCell.m in Sources */,
 				27F0E3D722A0E3E300C8B0B8 /* RCDMessageNotifySettingTableViewController.m in Sources */,

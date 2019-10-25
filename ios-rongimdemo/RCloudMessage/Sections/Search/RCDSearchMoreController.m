@@ -19,11 +19,11 @@
 #import "RCDLanguageManager.h"
 
 @interface RCDSearchMoreController () <UISearchBarDelegate>
-@property(nonatomic, strong) RCDSearchBar *searchBar;
-@property(nonatomic, strong) UIButton *cancelButton;
-@property(nonatomic, strong) UIView *searchView;
-@property(nonatomic, strong) UIView *headerView;
-@property(nonatomic, strong) RCDLabel *emptyLabel;
+@property (nonatomic, strong) RCDSearchBar *searchBar;
+@property (nonatomic, strong) UIButton *cancelButton;
+@property (nonatomic, strong) UIView *searchView;
+@property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) RCDLabel *emptyLabel;
 @end
 
 @implementation RCDSearchMoreController
@@ -49,8 +49,10 @@
     } else {
         imageStr = @"navigator_btn_back";
     }
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:imageStr] imageViewFrame:CGRectMake(0, 4, 10, 17) buttonTitle:nil
-                                                        titleColor:nil
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:imageStr]
+                                                                   imageViewFrame:CGRectMake(0, 4, 10, 17)
+                                                                      buttonTitle:nil
+                                                                       titleColor:nil
                                                                        titleFrame:CGRectZero
                                                                       buttonFrame:CGRectMake(-6, 0, 30, 23)
                                                                            target:self
@@ -92,9 +94,9 @@
 
 - (void)loadSearchView {
     self.searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth - 25, 44)];
-    
+
     [self.searchView addSubview:self.searchBar];
-    
+
     [self.searchView addSubview:self.cancelButton];
 }
 
@@ -131,7 +133,7 @@
     RCDSearchResultModel *model = self.resultArray[indexPath.row];
     if (model.count > 1) {
         [self pushToSearchMoreVC:model];
-    }else {
+    } else {
         [self pushToChatVC:model];
     }
 }
@@ -140,12 +142,11 @@
     RCDSearchMoreController *viewController = [[RCDSearchMoreController alloc] init];
     viewController.searchString = self.searchBar.text;
     viewController.type = [NSString stringWithFormat:RCDLocalizedString(@"total_related_message"), model.count];
-    NSArray *array = [[RCIMClient sharedRCIMClient]
-                      searchMessages:model.conversationType
-                      targetId:model.targetId
-                      keyword:self.searchBar.text
-                      count:model.count
-                      startTime:0];
+    NSArray *array = [[RCIMClient sharedRCIMClient] searchMessages:model.conversationType
+                                                          targetId:model.targetId
+                                                           keyword:self.searchBar.text
+                                                             count:model.count
+                                                         startTime:0];
     NSMutableArray *resultArray = [NSMutableArray array];
     for (RCMessage *message in array) {
         RCDSearchResultModel *messegeModel = [RCDSearchResultModel modelForMessage:message];
@@ -198,13 +199,13 @@
     }
     __weak typeof(self) weakSelf = self;
     [[RCDSearchDataManager sharedInstance] searchDataWithSearchText:searchText
-                                                      bySearchType:type
-                                                          complete:^(NSDictionary *dic, NSArray *array) {
-                                                              weakSelf.resultArray = [dic objectForKey:weakSelf.type];
-                                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                                  [weakSelf refreshSearchView:searchText];
-                                                              });
-                                                          }];
+                                                       bySearchType:type
+                                                           complete:^(NSDictionary *dic, NSArray *array) {
+                                                               weakSelf.resultArray = [dic objectForKey:weakSelf.type];
+                                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                                   [weakSelf refreshSearchView:searchText];
+                                                               });
+                                                           }];
 }
 
 - (void)searchBarearchButtonClicked:(UISearchBar *)searchBar {
@@ -223,10 +224,10 @@
         NSString *currentlanguage = [RCDLanguageManager sharedRCDLanguageManager].currentLanguage;
         if ([currentlanguage isEqualToString:@"en"]) {
             index = 24;
-        }else if ([currentlanguage isEqualToString:@"zh-Hans"]){
+        } else if ([currentlanguage isEqualToString:@"zh-Hans"]) {
             index = 6;
-        }else {
-            NSLog(@"%s 不支持当前语言的高亮显示",__func__);
+        } else {
+            NSLog(@"%s 不支持当前语言的高亮显示", __func__);
         }
         [attributedString addAttribute:NSForegroundColorAttributeName
                                  value:HEXCOLOR(0x0099ff)
@@ -254,7 +255,9 @@
         [string boundingRectWithSize:CGSizeMake(maxWidth, 8000)
                              options:(NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin |
                                       NSStringDrawingUsesFontLeading)
-                          attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0]}
+                          attributes:@{
+                              NSFontAttributeName : [UIFont systemFontOfSize:14.0]
+                          }
                              context:nil];
     textRect.size.height = ceilf(textRect.size.height);
     return textRect.size.height + 5;
@@ -262,24 +265,25 @@
 
 #pragma mark - getter
 - (RCDSearchBar *)searchBar {
-    if(!_searchBar) {
+    if (!_searchBar) {
         _searchBar = [[RCDSearchBar alloc] initWithFrame:CGRectZero];
         _searchBar.delegate = self;
         _searchBar.placeholder = nil;
         _searchBar.tintColor = [UIColor blueColor];
-        _searchBar.frame = CGRectMake(-17, 0, self.searchView.frame.size.width -75, 44);
+        _searchBar.frame = CGRectMake(-17, 0, self.searchView.frame.size.width - 75, 44);
     }
     return _searchBar;
 }
 - (UIButton *)cancelButton {
-    if(!_cancelButton) {
+    if (!_cancelButton) {
         _cancelButton = [[UIButton alloc]
-                         initWithFrame:CGRectMake(CGRectGetMaxX(_searchBar.frame) - 3, CGRectGetMinY(self.searchBar.frame),60, 44)];
-        [_cancelButton setTitle:RCDLocalizedString(@"cancel")
-                       forState:UIControlStateNormal];
+            initWithFrame:CGRectMake(CGRectGetMaxX(_searchBar.frame) - 3, CGRectGetMinY(self.searchBar.frame), 60, 44)];
+        [_cancelButton setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
         [_cancelButton setTitleColor:HEXCOLOR(0x0099ff) forState:UIControlStateNormal];
         _cancelButton.titleLabel.font = [UIFont systemFontOfSize:18.];
-        [_cancelButton addTarget:self action:@selector(cancelButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_cancelButton addTarget:self
+                          action:@selector(cancelButtonClicked)
+                forControlEvents:UIControlEventTouchUpInside];
     }
     return _cancelButton;
 }

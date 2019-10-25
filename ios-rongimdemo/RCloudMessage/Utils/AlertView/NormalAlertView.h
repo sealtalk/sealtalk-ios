@@ -10,7 +10,6 @@
 
 typedef void (^ButtonBlock)(void);
 
-
 @interface NormalAlertView : UIView
 
 + (void)showAlertWithTitle:(NSString *)title
@@ -36,4 +35,3 @@ typedef void (^ButtonBlock)(void);
                    confirm:(ButtonBlock)confirm;
 
 @end
-

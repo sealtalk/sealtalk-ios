@@ -7,6 +7,7 @@
 //
 
 #import "RCDDBHelper.h"
+#import <sqlite3.h>
 
 static FMDatabaseQueue *dbQueue;
 
@@ -15,7 +16,9 @@ static FMDatabaseQueue *dbQueue;
 + (BOOL)openDB:(NSString *)path {
     [self closeDB];
     if (path.length > 0) {
-        dbQueue = [FMDatabaseQueue databaseQueueWithPath:path];
+        dbQueue =
+            [FMDatabaseQueue databaseQueueWithPath:path
+                                             flags:SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE];
     }
     if (dbQueue) {
         [self configVersion];
@@ -72,14 +75,13 @@ withArgumentsInArray:(NSArray *)arguments
     return version;
 }
 
-+ (BOOL)updateTable:(NSString *)table
-            version:(int)version
-        transaction:(BOOL (^)(FMDatabase *db))updateTransaction {
++ (BOOL)updateTable:(NSString *)table version:(int)version transaction:(BOOL (^)(FMDatabase *db))updateTransaction {
     __block BOOL result = NO;
     [self executeTransaction:^(FMDatabase *db, BOOL *rollback) {
         result = updateTransaction(db);
         if (result) {
-            result = [db executeUpdate:@"REPLACE INTO table_version (table_name, version) VALUES (?, ?)", table, @(version)];
+            result =
+                [db executeUpdate:@"REPLACE INTO table_version (table_name, version) VALUES (?, ?)", table, @(version)];
         }
         *rollback = !result;
     }];
@@ -88,10 +90,10 @@ withArgumentsInArray:(NSArray *)arguments
 
 + (BOOL)configVersion {
     NSString *sql = @"CREATE TABLE IF NOT EXISTS table_version ("
-    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-    "table_name TEXT NOT NULL UNIQUE,"   //表名
-    "version INTEGER CHECK(version > 0)" //版本，必须大于0
-    ")";
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                     "table_name TEXT NOT NULL UNIQUE,"   //表名
+                     "version INTEGER CHECK(version > 0)" //版本，必须大于0
+                     ")";
     return [self executeUpdate:sql withArgumentsInArray:nil];
 }
 
@@ -100,14 +102,16 @@ withArgumentsInArray:(NSArray *)arguments
     return [self executeUpdate:sql withArgumentsInArray:nil];
 }
 
-+ (BOOL)existsTableWithName:(NSString *)tableName{
++ (BOOL)existsTableWithName:(NSString *)tableName {
     __block BOOL exists = NO;
     [dbQueue inDatabase:^(FMDatabase *db) {
-        NSString *sql = [NSString stringWithFormat:@"select count(*) as 'count' from sqlite_master where type = 'table' and name = %@",tableName];
+        NSString *sql = [NSString
+            stringWithFormat:@"select count(*) as 'count' from sqlite_master where type = 'table' and name = %@",
+                             tableName];
         FMResultSet *result = [db executeQuery:sql];
         while ([result next]) {
             NSInteger count = [result intForColumn:@"count"];
-            if (count == 0 ) {
+            if (count == 0) {
                 exists = NO;
             } else {
                 exists = YES;

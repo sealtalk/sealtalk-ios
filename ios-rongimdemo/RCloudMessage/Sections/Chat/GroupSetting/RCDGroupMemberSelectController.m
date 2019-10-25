@@ -21,8 +21,7 @@
 #import "RCDUtilities.h"
 #import "UIColor+RCColor.h"
 #import "UIView+MBProgressHUD.h"
-@interface RCDGroupMemberSelectController ()<
-UISearchControllerDelegate, UISearchResultsUpdating>
+@interface RCDGroupMemberSelectController () <UISearchControllerDelegate, UISearchResultsUpdating>
 @property (nonatomic, strong) NSArray *allMembers;
 @property (nonatomic, strong) NSMutableArray *selectUsers;
 @property (nonatomic, strong) NSString *groupId;
@@ -36,7 +35,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
 
 @implementation RCDGroupMemberSelectController
 #pragma mark - life cycle
-- (instancetype)initWithGroupId:(NSString *)groupId type:(RCDGroupMemberSelectType)type{
+- (instancetype)initWithGroupId:(NSString *)groupId type:(RCDGroupMemberSelectType)type {
     if (self = [super init]) {
         self.groupId = groupId;
         self.type = type;
@@ -53,7 +52,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }
     self.tableView.backgroundColor = HEXCOLOR(0xf2f2f3);
-    
+
     [self setNaviItem];
     [self getData];
 }
@@ -76,15 +75,16 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     RCUserInfo *user = array[indexPath.row];
     [cell setDataModel:user.userId groupId:self.groupId];
     if (self.type == RCDGroupMemberSelectTypePoke) {
-        if([user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
+        if ([user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
             [cell setCellSelectState:(RCDGroupMemberSelectCellStateDisable)];
         }
-    }else if (self.type == RCDGroupMemberSelectTypeAddManager){
-        if ([user.userId isEqualToString:[RCDGroupManager getGroupOwner:self.groupId]] || [self.managers containsObject:user.userId]) {
+    } else if (self.type == RCDGroupMemberSelectTypeAddManager) {
+        if ([user.userId isEqualToString:[RCDGroupManager getGroupOwner:self.groupId]] ||
+            [self.managers containsObject:user.userId]) {
             [cell setCellSelectState:(RCDGroupMemberSelectCellStateDisable)];
-        }else if ([self.selectUsers containsObject:user.userId]){
+        } else if ([self.selectUsers containsObject:user.userId]) {
             [cell setCellSelectState:(RCDGroupMemberSelectCellStateSelected)];
-        }else{
+        } else {
             [cell setCellSelectState:(RCDGroupMemberSelectCellStateUnselected)];
         }
     }
@@ -130,10 +130,10 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     NSArray *array = self.resultSectionDict[key];
     RCUserInfo *user = array[indexPath.row];
     RCDGroupMemberSelectCell *cell = (RCDGroupMemberSelectCell *)[tableView cellForRowAtIndexPath:indexPath];
-    if ([self.selectUsers containsObject:user.userId]){
+    if ([self.selectUsers containsObject:user.userId]) {
         [self.selectUsers removeObject:user.userId];
         [cell setCellSelectState:(RCDGroupMemberSelectCellStateUnselected)];
-    }else{
+    } else {
         [self.selectUsers addObject:user.userId];
         [cell setCellSelectState:(RCDGroupMemberSelectCellStateSelected)];
     }
@@ -155,7 +155,8 @@ UISearchControllerDelegate, UISearchResultsUpdating>
             RCUserInfo *user = [RCDUserInfoManager getUserInfo:userInfo.userId];
             RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userInfo.userId];
             RCDGroupMember *member = [RCDGroupManager getGroupMember:userInfo.userId groupId:self.groupId];
-            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] || [member.groupNickname containsString:searchString]) {
+            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] ||
+                [member.groupNickname containsString:searchString]) {
                 [array addObject:userInfo];
             }
         }
@@ -168,34 +169,40 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)confirmAction{
-    if(self.selectResult){
+- (void)confirmAction {
+    if (self.selectResult) {
         self.selectResult(self.selectUsers);
         [self.navigationController popViewControllerAnimated:YES];
-    }else if(self.type == RCDGroupMemberSelectTypeAddManager){
+    } else if (self.type == RCDGroupMemberSelectTypeAddManager) {
         NSString *names = [NSString string];
         for (NSString *userId in self.selectUsers) {
             RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
             RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
             if (friend.displayName.length > 0) {
                 names = [names stringByAppendingString:friend.displayName];
-            }else{
+            } else {
                 names = [names stringByAppendingString:user.name];
             }
-            if (![userId isEqualToString:self.selectUsers[self.selectUsers.count-1]]) {
+            if (![userId isEqualToString:self.selectUsers[self.selectUsers.count - 1]]) {
                 names = [names stringByAppendingString:@"、"];
             }
         }
-        [NormalAlertView showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"GroupSetManagerTitle"),names]  highlightText:names leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"confirm") cancel:^{
-            
-        } confirm:^{
-            [self setGroupManagers];
-        }];
+        [NormalAlertView
+            showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"GroupSetManagerTitle"), names]
+            highlightText:names
+            leftTitle:RCDLocalizedString(@"cancel")
+            rightTitle:RCDLocalizedString(@"confirm")
+            cancel:^{
+
+            }
+            confirm:^{
+                [self setGroupManagers];
+            }];
     }
 }
 
 #pragma mark - helper
-- (void)getData{
+- (void)getData {
     self.managers = [RCDGroupManager getGroupManagers:self.groupId];
     NSMutableArray *array = [RCDGroupManager getGroupMembers:self.groupId].mutableCopy;
     NSMutableArray *list = [NSMutableArray array];
@@ -211,28 +218,30 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     [self sortAndRefreshWithList:list.copy];
 }
 
-- (void)setGroupManagers{
+- (void)setGroupManagers {
     RCNetworkStatus status = [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
     if (RC_NotReachable == status) {
         [self.view showHUDMessage:RCDLocalizedString(@"network_can_not_use_please_check")];
         return;
     }
-    
+
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [RCDGroupManager addGroupManagers:self.selectUsers groupId:self.groupId complete:^(BOOL success) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            if (success) {
-                [self.navigationController popViewControllerAnimated:YES];
-            }else{
-                [self.view showHUDMessage:RCDLocalizedString(@"Failed")];
-            }
-        });
-    }];
+    [RCDGroupManager addGroupManagers:self.selectUsers
+                              groupId:self.groupId
+                             complete:^(BOOL success) {
+                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                     [MBProgressHUD hideHUDForView:self.view animated:YES];
+                                     if (success) {
+                                         [self.navigationController popViewControllerAnimated:YES];
+                                     } else {
+                                         [self.view showHUDMessage:RCDLocalizedString(@"Failed")];
+                                     }
+                                 });
+                             }];
 }
 
 - (void)sortAndRefreshWithList:(NSArray *)friendList {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSDictionary *resultDic = [[RCDUtilities sortedArrayWithPinYinDic:friendList] copy];
         self.resultKeys = resultDic[@"allKeys"];
         self.resultSectionDict = resultDic[@"infoDic"];
@@ -242,25 +251,31 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     });
 }
 
-- (void)setNaviItem{
+- (void)setNaviItem {
     if (self.type == RCDGroupMemberSelectTypePoke) {
         self.title = RCDLocalizedString(@"SelectMember");
-    }else if (self.type == RCDGroupMemberSelectTypeAddManager){
+    } else if (self.type == RCDGroupMemberSelectTypeAddManager) {
         self.title = RCDLocalizedString(@"GroupManagerTitle");
     }
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = leftBtn;
-    
-    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"confirm") style:(UIBarButtonItemStylePlain) target:self action:@selector(confirmAction)];
+
+    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"confirm")
+                                                        style:(UIBarButtonItemStylePlain)
+                                                       target:self
+                                                       action:@selector(confirmAction)];
     self.navigationItem.rightBarButtonItem = self.rightBtn;
     self.rightBtn.enabled = NO;
 }
 
-- (void)refreshNaviItem{
+- (void)refreshNaviItem {
     if (self.selectUsers.count > 0) {
-        self.rightBtn.title = [NSString stringWithFormat:@"%@(%ld)",RCDLocalizedString(@"confirm"),self.selectUsers.count];
+        self.rightBtn.title =
+            [NSString stringWithFormat:@"%@(%ld)", RCDLocalizedString(@"confirm"), self.selectUsers.count];
         self.rightBtn.enabled = YES;
-    }else{
+    } else {
         self.rightBtn.title = RCDLocalizedString(@"confirm");
         self.rightBtn.enabled = NO;
     }
@@ -268,7 +283,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
 
 #pragma mark - getter
 - (UISearchController *)searchController {
-    if(!_searchController){
+    if (!_searchController) {
         _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
         _searchController.delegate = self;
         _searchController.searchResultsUpdater = self;
@@ -281,7 +296,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     return _searchController;
 }
 
-- (NSMutableArray *)selectUsers{
+- (NSMutableArray *)selectUsers {
     if (!_selectUsers) {
         _selectUsers = [NSMutableArray array];
     }

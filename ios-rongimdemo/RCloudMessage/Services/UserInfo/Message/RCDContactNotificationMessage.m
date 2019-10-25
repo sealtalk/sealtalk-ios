@@ -16,7 +16,7 @@
                              targetUserId:(NSString *)targetUserId
                                   message:(NSString *)message
                                     extra:(NSString *)extra {
-    
+
     RCDContactNotificationMessage *notif = [[RCDContactNotificationMessage alloc] init];
     if (notif) {
         notif.operation = operation;
@@ -46,9 +46,8 @@
     } else if ([self.operation isEqualToString:RCDContactNotificationMessage_ContactOperationAcceptResponse]) {
         operationContent = [NSString stringWithFormat:RCDLocalizedString(@"someone_accept_you_friend_request"), @""];
     } else if ([self.operation isEqualToString:RCDContactNotificationMessage_ContactOperationRejectResponse]) {
-        operationContent = [NSString stringWithFormat:RCDLocalizedString(@"RejectFriendRequest"),
-                name];
-    }else {
+        operationContent = [NSString stringWithFormat:RCDLocalizedString(@"RejectFriendRequest"), name];
+    } else {
         operationContent = NSLocalizedStringFromTable(@"unknown_message_cell_tip", @"RongCloudKit", nil);
     }
     return operationContent;
@@ -61,24 +60,24 @@
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&__error];
     NSDictionary *dict = [[NSDictionary alloc] initWithDictionary:dictionary];
-    
+
     if (!__error && dict) {
         self.operation = [dict objectForKey:@"operation"];
         self.sourceUserId = [dict objectForKey:@"sourceUserId"];
         self.targetUserId = [dict objectForKey:@"targetUserId"];
         self.message = [dict objectForKey:@"message"];
         self.extra = [dict objectForKey:@"extra"];
-        
+
         NSDictionary *userinfoDict = [dict objectForKey:@"user"];
         [super decodeUserInfo:userinfoDict];
-        
+
     } else {
         self.rawJSONData = data;
     }
 }
 
 - (NSData *)encode {
-    
+
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     if (self.operation) {
         [dict setObject:self.operation forKey:@"operation"];
@@ -98,7 +97,7 @@
     if (self.senderUserInfo) {
         [dict setObject:[self encodeUserInfo:self.senderUserInfo] forKey:@"user"];
     }
-    
+
     // serialized to utf-8 encoded data
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:kNilOptions error:nil];
     return jsonData;

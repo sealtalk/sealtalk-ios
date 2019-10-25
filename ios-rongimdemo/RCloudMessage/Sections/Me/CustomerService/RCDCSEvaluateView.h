@@ -11,17 +11,18 @@
 @class RCDCSEvaluateModel;
 @protocol RCDCSEvaluateViewDelegate <NSObject>
 
-- (void)didSubmitEvaluate:(RCCSResolveStatus)solveStatus star:(int)star tagString:(NSString *)tagString suggest:(NSString *)suggest;
+- (void)didSubmitEvaluate:(RCCSResolveStatus)solveStatus
+                     star:(int)star
+                tagString:(NSString *)tagString
+                  suggest:(NSString *)suggest;
 
 - (void)dismissEvaluateView;
 
 @end
 
-
 @interface RCDCSEvaluateView : UIView
 
 @property (nonatomic, weak) id<RCDCSEvaluateViewDelegate> delegate;
-
 
 - (instancetype)initWithEvaStarDic:(NSDictionary *)evaStarDic;
 - (void)show;

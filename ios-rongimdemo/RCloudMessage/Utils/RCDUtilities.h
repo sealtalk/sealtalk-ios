@@ -25,8 +25,9 @@
 + (BOOL)isLowerLetter:(NSString *)string;
 + (BOOL)judgeSealTalkAccount:(NSString *)string;
 + (int)getTotalUnreadCount;
-+ (void)getGroupUserDisplayInfo:(NSString *)userId groupId:(NSString *)groupId result:(void (^)(RCUserInfo *user))result;
++ (void)getGroupUserDisplayInfo:(NSString *)userId
+                        groupId:(NSString *)groupId
+                         result:(void (^)(RCUserInfo *user))result;
 + (void)getUserDisplayInfo:(NSString *)userId complete:(void (^)(RCUserInfo *user))completeBlock;
 + (BOOL)stringContainsEmoji:(NSString *)string;
 @end
-

@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *phone;
 @property (nonatomic, strong) NSString *weChatAccount;
 @property (nonatomic, strong) NSString *alipayAccount;
-@property (nonatomic, strong) NSArray <NSString *> *describeArray;
+@property (nonatomic, strong) NSArray<NSString *> *describeArray;
 - (instancetype)initWithJson:(NSDictionary *)json;
 - (NSDictionary *)decode;
 @end

@@ -11,8 +11,8 @@
 #import "RCDUserInfoManager.h"
 
 @interface RCDBlackListCell ()
-@property(nonatomic, strong) UIImageView *iPhoto;
-@property(nonatomic, strong) UILabel *labelName;
+@property (nonatomic, strong) UIImageView *iPhoto;
+@property (nonatomic, strong) UILabel *labelName;
 @end
 
 @implementation RCDBlackListCell
@@ -62,7 +62,7 @@
                                              info.name = user.name;
                                              info.portraitUri = user.portraitUri;
                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                 
+
                                                  [self.iPhoto sd_setImageWithURL:[NSURL URLWithString:info.portraitUri]
                                                                 placeholderImage:[UIImage imageNamed:@"contact"]];
                                                  self.labelName.text = info.name;

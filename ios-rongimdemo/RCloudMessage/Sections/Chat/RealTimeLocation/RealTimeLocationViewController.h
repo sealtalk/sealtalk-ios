@@ -16,6 +16,6 @@
  */
 @interface RealTimeLocationViewController : UIViewController
 
-@property(nonatomic, weak) id<RCRealTimeLocationProxy> realTimeLocationProxy;
+@property (nonatomic, weak) id<RCRealTimeLocationProxy> realTimeLocationProxy;
 
 @end

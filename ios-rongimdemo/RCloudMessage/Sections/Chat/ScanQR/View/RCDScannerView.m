@@ -10,36 +10,35 @@
 #import "objc/runtime.h"
 #import "RCDQRCodeManager.h"
 #import <Masonry/Masonry.h>
-#define Scanner_Width 206 /** 扫描器宽度 */
-#define Scanner_X (self.frame.size.width - Scanner_Width)/2 /** 扫描器初始x值 */
-#define Scanner_Y 118   /** 扫描器初始y值 */
+#define Scanner_Width 206                                     /** 扫描器宽度 */
+#define Scanner_X (self.frame.size.width - Scanner_Width) / 2 /** 扫描器初始x值 */
+#define Scanner_Y 118                                         /** 扫描器初始y值 */
 
 NSString *const ScannerLineAnmationKey = @"ScannerLineAnmationKey"; /** 扫描线条动画Key值 */
-CGFloat const Scanner_BorderWidth = 1.0f;   /** 扫描器边框宽度 */
-CGFloat const Scanner_CornerWidth = 3.0f;   /** 扫描器棱角宽度 */
-CGFloat const Scanner_CornerLength = 20.0f; /** 扫描器棱角长度 */
-CGFloat const Scanner_LineHeight = 2.0f;   /** 扫描器线条高度 */
+CGFloat const Scanner_BorderWidth = 1.0f;                           /** 扫描器边框宽度 */
+CGFloat const Scanner_CornerWidth = 3.0f;                           /** 扫描器棱角宽度 */
+CGFloat const Scanner_CornerLength = 20.0f;                         /** 扫描器棱角长度 */
+CGFloat const Scanner_LineHeight = 2.0f;                            /** 扫描器线条高度 */
 
 CGFloat const FlashlightBtn_Width = 20.0f;  /** 手电筒按钮宽度 */
 CGFloat const FlashlightLab_Height = 15.0f; /** 手电筒提示文字高度 */
-CGFloat const TipLab_Height = 50.0f;    /** 扫描器下方提示文字高度 */
+CGFloat const TipLab_Height = 50.0f;        /** 扫描器下方提示文字高度 */
 
-static char FLASHLIGHT_ON;  /** 手电筒开关状态绑定标识符 */
+static char FLASHLIGHT_ON; /** 手电筒开关状态绑定标识符 */
 
-@interface RCDScannerView()
+@interface RCDScannerView ()
 
-@property (nonatomic, strong) UIImageView *scannerLine; /** 扫描线条 */
+@property (nonatomic, strong) UIImageView *scannerLine;                   /** 扫描线条 */
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator; /** 加载指示器 */
-@property (nonatomic, strong) UIButton *flashlightBtn;   /** 手电筒按钮 */
-@property (nonatomic, strong) UILabel *tipLab;  /** 扫描器下方提示文字 */
+@property (nonatomic, strong) UIButton *flashlightBtn;                    /** 手电筒按钮 */
+@property (nonatomic, strong) UILabel *tipLab;                            /** 扫描器下方提示文字 */
 @property (nonatomic, strong) UIButton *selectImageBtn;
-
 
 @end
 
 @implementation RCDScannerView
 
-- (instancetype)initWithFrame:(CGRect)frame{
+- (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [self _setupUI];
@@ -55,7 +54,7 @@ static char FLASHLIGHT_ON;  /** 手电筒开关状态绑定标识符 */
     [self addSubview:self.tipLab];
     [self addSubview:self.selectImageBtn];
     [self.flashlightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(Scanner_Y+Scanner_Width+14);
+        make.top.equalTo(self).offset(Scanner_Y + Scanner_Width + 14);
         make.left.width.equalTo(self);
         make.height.offset(24);
     }];
@@ -72,7 +71,7 @@ static char FLASHLIGHT_ON;  /** 手电筒开关状态绑定标识符 */
     }];
 }
 
-#pragma mark -- 手电筒点击事件
+#pragma mark-- 手电筒点击事件
 - (void)flashlightClicked:(UIButton *)button {
     button.selected = !button.selected;
     [self rcd_setFlashlightOn:self.flashlightBtn.selected];
@@ -80,12 +79,13 @@ static char FLASHLIGHT_ON;  /** 手电筒开关状态绑定标识符 */
 
 /** 添加扫描线条动画 */
 - (void)rcd_addScannerLineAnimation {
-    
+
     // 若已添加动画，则先移除动画再添加
     [self.scannerLine.layer removeAllAnimations];
-    
+
     CABasicAnimation *lineAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
-    lineAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(0, Scanner_Width - Scanner_LineHeight, 1)];
+    lineAnimation.toValue =
+        [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(0, Scanner_Width - Scanner_LineHeight, 1)];
     lineAnimation.duration = 4;
     lineAnimation.repeatCount = HUGE;
     [self.scannerLine.layer addAnimation:lineAnimation forKey:ScannerLineAnmationKey];
@@ -116,7 +116,8 @@ static char FLASHLIGHT_ON;  /** 手电筒开关状态绑定标识符 */
 /** 添加指示器 */
 - (void)rcd_addActivityIndicator {
     if (!self.activityIndicator) {
-        self.activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.activityIndicator =
+            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         self.activityIndicator.center = self.center;
         [self addSubview:self.activityIndicator];
     }
@@ -148,60 +149,55 @@ static char FLASHLIGHT_ON;  /** 手电筒开关状态绑定标识符 */
     // 半透明区域
     [[UIColor colorWithWhite:0 alpha:0.7] setFill];
     UIRectFill(rect);
-    
+
     // 透明区域
     CGRect scanner_rect = CGRectMake(Scanner_X, Scanner_Y, Scanner_Width, Scanner_Width);
     [[UIColor clearColor] setFill];
     UIRectFill(scanner_rect);
-    
+
     // 边框
-    UIBezierPath *borderPath = [UIBezierPath bezierPathWithRect:CGRectMake(Scanner_X, Scanner_Y, Scanner_Width, Scanner_Width)];
+    UIBezierPath *borderPath =
+        [UIBezierPath bezierPathWithRect:CGRectMake(Scanner_X, Scanner_Y, Scanner_Width, Scanner_Width)];
     borderPath.lineCapStyle = kCGLineCapRound;
     borderPath.lineWidth = Scanner_BorderWidth;
     [[UIColor clearColor] set];
     [borderPath stroke];
-    
+
     for (int index = 0; index < 4; ++index) {
-        
+
         UIBezierPath *tempPath = [UIBezierPath bezierPath];
         tempPath.lineWidth = Scanner_CornerWidth;
         [HEXCOLOR(0x0099ff) set];
-        
+
         switch (index) {
-                // 左上角棱角
-            case 0:
-            {
-                [tempPath moveToPoint:CGPointMake(Scanner_X + Scanner_CornerLength, Scanner_Y)];
-                [tempPath addLineToPoint:CGPointMake(Scanner_X, Scanner_Y)];
-                [tempPath addLineToPoint:CGPointMake(Scanner_X, Scanner_Y + Scanner_CornerLength)];
-            }
-                break;
-                // 右上角
-            case 1:
-            {
-                [tempPath moveToPoint:CGPointMake(Scanner_X + Scanner_Width - Scanner_CornerLength, Scanner_Y)];
-                [tempPath addLineToPoint:CGPointMake(Scanner_X + Scanner_Width, Scanner_Y)];
-                [tempPath addLineToPoint:CGPointMake(Scanner_X + Scanner_Width, Scanner_Y + Scanner_CornerLength)];
-            }
-                break;
-                // 左下角
-            case 2:
-            {
-                [tempPath moveToPoint:CGPointMake(Scanner_X, Scanner_Y + Scanner_Width - Scanner_CornerLength)];
-                [tempPath addLineToPoint:CGPointMake(Scanner_X, Scanner_Y + Scanner_Width)];
-                [tempPath addLineToPoint:CGPointMake(Scanner_X + Scanner_CornerLength, Scanner_Y + Scanner_Width)];
-            }
-                break;
-                // 右下角
-            case 3:
-            {
-                [tempPath moveToPoint:CGPointMake(Scanner_X + Scanner_Width - Scanner_CornerLength, Scanner_Y + Scanner_Width)];
-                [tempPath addLineToPoint:CGPointMake(Scanner_X + Scanner_Width, Scanner_Y + Scanner_Width)];
-                [tempPath addLineToPoint:CGPointMake(Scanner_X + Scanner_Width, Scanner_Y + Scanner_Width - Scanner_CornerLength)];
-            }
-                break;
-            default:
-                break;
+        // 左上角棱角
+        case 0: {
+            [tempPath moveToPoint:CGPointMake(Scanner_X + Scanner_CornerLength, Scanner_Y)];
+            [tempPath addLineToPoint:CGPointMake(Scanner_X, Scanner_Y)];
+            [tempPath addLineToPoint:CGPointMake(Scanner_X, Scanner_Y + Scanner_CornerLength)];
+        } break;
+        // 右上角
+        case 1: {
+            [tempPath moveToPoint:CGPointMake(Scanner_X + Scanner_Width - Scanner_CornerLength, Scanner_Y)];
+            [tempPath addLineToPoint:CGPointMake(Scanner_X + Scanner_Width, Scanner_Y)];
+            [tempPath addLineToPoint:CGPointMake(Scanner_X + Scanner_Width, Scanner_Y + Scanner_CornerLength)];
+        } break;
+        // 左下角
+        case 2: {
+            [tempPath moveToPoint:CGPointMake(Scanner_X, Scanner_Y + Scanner_Width - Scanner_CornerLength)];
+            [tempPath addLineToPoint:CGPointMake(Scanner_X, Scanner_Y + Scanner_Width)];
+            [tempPath addLineToPoint:CGPointMake(Scanner_X + Scanner_CornerLength, Scanner_Y + Scanner_Width)];
+        } break;
+        // 右下角
+        case 3: {
+            [tempPath
+                moveToPoint:CGPointMake(Scanner_X + Scanner_Width - Scanner_CornerLength, Scanner_Y + Scanner_Width)];
+            [tempPath addLineToPoint:CGPointMake(Scanner_X + Scanner_Width, Scanner_Y + Scanner_Width)];
+            [tempPath addLineToPoint:CGPointMake(Scanner_X + Scanner_Width,
+                                                 Scanner_Y + Scanner_Width - Scanner_CornerLength)];
+        } break;
+        default:
+            break;
         }
         [tempPath stroke];
     }
@@ -219,7 +215,7 @@ static char FLASHLIGHT_ON;  /** 手电筒开关状态绑定标识符 */
     return Scanner_Width;
 }
 
-- (void)didClickSelectImageBtn{
+- (void)didClickSelectImageBtn {
     if (self.delegate && [self.delegate respondsToSelector:@selector(didClickSelectImageButton)]) {
         [self.delegate didClickSelectImageButton];
     }
@@ -228,7 +224,8 @@ static char FLASHLIGHT_ON;  /** 手电筒开关状态绑定标识符 */
 /** 扫描线条 */
 - (UIImageView *)scannerLine {
     if (!_scannerLine) {
-        _scannerLine = [[UIImageView alloc]initWithFrame:CGRectMake(Scanner_X+20, Scanner_Y, Scanner_Width-40, Scanner_LineHeight)];
+        _scannerLine = [[UIImageView alloc]
+            initWithFrame:CGRectMake(Scanner_X + 20, Scanner_Y, Scanner_Width - 40, Scanner_LineHeight)];
         _scannerLine.image = [UIImage imageNamed:@"ScannerLine"];
     }
     return _scannerLine;
@@ -250,7 +247,9 @@ static char FLASHLIGHT_ON;  /** 手电筒开关状态绑定标识符 */
 - (UIButton *)flashlightBtn {
     if (!_flashlightBtn) {
         _flashlightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_flashlightBtn addTarget:self action:@selector(flashlightClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_flashlightBtn addTarget:self
+                           action:@selector(flashlightClicked:)
+                 forControlEvents:UIControlEventTouchUpInside];
         _flashlightBtn.titleLabel.font = [UIFont systemFontOfSize:17];
         [_flashlightBtn setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
         [_flashlightBtn setTitle:RCDLocalizedString(@"LightOn") forState:(UIControlStateNormal)];
@@ -259,7 +258,7 @@ static char FLASHLIGHT_ON;  /** 手电筒开关状态绑定标识符 */
     return _flashlightBtn;
 }
 
-- (UIButton *)selectImageBtn{
+- (UIButton *)selectImageBtn {
     if (!_selectImageBtn) {
         _selectImageBtn = [[UIButton alloc] init];
         _selectImageBtn.font = [UIFont systemFontOfSize:13];
@@ -268,7 +267,9 @@ static char FLASHLIGHT_ON;  /** 手电筒开关状态绑定标识符 */
         [_selectImageBtn setTitle:RCDLocalizedString(@"SelectImage") forState:(UIControlStateNormal)];
         _selectImageBtn.layer.masksToBounds = YES;
         _selectImageBtn.layer.cornerRadius = 4;
-        [_selectImageBtn addTarget:self action:@selector(didClickSelectImageBtn) forControlEvents:(UIControlEventTouchUpInside)];
+        [_selectImageBtn addTarget:self
+                            action:@selector(didClickSelectImageBtn)
+                  forControlEvents:(UIControlEventTouchUpInside)];
     }
     return _selectImageBtn;
 }

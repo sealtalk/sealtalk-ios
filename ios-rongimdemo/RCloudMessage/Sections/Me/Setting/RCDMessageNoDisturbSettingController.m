@@ -10,22 +10,22 @@
 #import <RongIMKit/RongIMKit.h>
 
 @interface RCDMessageNoDisturbSettingController ()
-@property(nonatomic, strong) NSIndexPath *indexPath;
-@property(nonatomic, copy) NSString *start;
-@property(nonatomic, copy) NSString *end;
-@property(nonatomic, assign) BOOL displaySetting;
-@property(nonatomic, strong) UIDatePicker *datePicker;
-@property(nonatomic, strong) NSIndexPath *startIndexPath;
-@property(nonatomic, strong) NSIndexPath *endIndexPath;
+@property (nonatomic, strong) NSIndexPath *indexPath;
+@property (nonatomic, copy) NSString *start;
+@property (nonatomic, copy) NSString *end;
+@property (nonatomic, assign) BOOL displaySetting;
+@property (nonatomic, strong) UIDatePicker *datePicker;
+@property (nonatomic, strong) NSIndexPath *startIndexPath;
+@property (nonatomic, strong) NSIndexPath *endIndexPath;
 @end
 
 @implementation RCDMessageNoDisturbSettingController
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = RCDLocalizedString(@"Do_not_disturb_setting");
-    
+
     [self configTableView];
-    
+
     self.startIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
     self.endIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
 }
@@ -54,21 +54,27 @@
             startDate = [NSDate dateWithTimeInterval:-24 * 60 * 60 sinceDate:startDate];
             timeDiff = [endDate timeIntervalSinceDate:startDate];
         }
-        
+
         int timeDif = timeDiff / 60;
-        [[RCIMClient sharedRCIMClient] setNotificationQuietHours:startTime spanMins:timeDif success:^{
-             [DEFAULTS
-              setObject:startTime
-              forKey:[NSString stringWithFormat:@"startTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
-             [DEFAULTS
-              setObject:endTime
-              forKey:[NSString stringWithFormat:@"endTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
-         }
-       error:^(RCErrorCode status) {
-           dispatch_async(dispatch_get_main_queue(), ^{
-               [self showAlert:RCDLocalizedString(@"alert") message:RCDLocalizedString(@"set_fail") cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:nil tag:-1];
-           });
-       }];
+        [[RCIMClient sharedRCIMClient] setNotificationQuietHours:startTime
+            spanMins:timeDif
+            success:^{
+                [DEFAULTS
+                    setObject:startTime
+                       forKey:[NSString stringWithFormat:@"startTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
+                [DEFAULTS
+                    setObject:endTime
+                       forKey:[NSString stringWithFormat:@"endTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
+            }
+            error:^(RCErrorCode status) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self showAlert:RCDLocalizedString(@"alert")
+                               message:RCDLocalizedString(@"set_fail")
+                        cancelBtnTitle:RCDLocalizedString(@"cancel")
+                         otherBtnTitle:nil
+                                   tag:-1];
+                });
+            }];
     }
 }
 
@@ -96,8 +102,8 @@
                 weakSelf.displaySetting = YES;
                 [weakSelf.tableView reloadData];
                 [weakSelf.tableView selectRowAtIndexPath:weakSelf.startIndexPath
-                                            animated:YES
-                                      scrollPosition:UITableViewScrollPositionMiddle];
+                                                animated:YES
+                                          scrollPosition:UITableViewScrollPositionMiddle];
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -121,7 +127,7 @@
     [formatterF setDateFormat:@"HH:mm:ss"];
     NSDate *startDate = [formatterF dateFromString:startTimeStr];
     NSDate *endDate = [formatterF dateFromString:endTimeStr];
-    
+
     double timeDiff = [endDate timeIntervalSinceDate:startDate];
     NSDate *laterTime = [startDate laterDate:endDate];
     //开始时间大于结束时间，跨天设置
@@ -132,35 +138,45 @@
         double timeDiff2 = [endDate timeIntervalSinceDate:dayBeginTime];
         timeDiff = timeDiff1 + timeDiff2;
     }
-    
+
     int timeDif = timeDiff / 60;
-    
+
     __weak typeof(self) blockSelf = self;
-    [[RCIMClient sharedRCIMClient] setNotificationQuietHours:startTimeStr spanMins:timeDif success:^{
-        
-    }
-    error:^(RCErrorCode status) {
-       dispatch_async(dispatch_get_main_queue(), ^{
-           [self showAlert:RCDLocalizedString(@"alert") message:RCDLocalizedString(@"set_fail") cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:nil tag:-1];
-           blockSelf.swch.on = NO;
-       });
-    }];
+    [[RCIMClient sharedRCIMClient] setNotificationQuietHours:startTimeStr
+        spanMins:timeDif
+        success:^{
+
+        }
+        error:^(RCErrorCode status) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showAlert:RCDLocalizedString(@"alert")
+                           message:RCDLocalizedString(@"set_fail")
+                    cancelBtnTitle:RCDLocalizedString(@"cancel")
+                     otherBtnTitle:nil
+                               tag:-1];
+                blockSelf.swch.on = NO;
+            });
+        }];
 }
 
 - (void)removeQuietHours {
     __weak typeof(self) blockSelf = self;
     [[RCIMClient sharedRCIMClient] removeNotificationQuietHours:^{
-        
+
     }
-    error:^(RCErrorCode status) {
-      dispatch_async(dispatch_get_main_queue(), ^{
-          [self showAlert:RCDLocalizedString(@"alert") message:RCDLocalizedString(@"shut_down_failed") cancelBtnTitle:RCDLocalizedString(@"cancel") otherBtnTitle:nil tag:-1];
-          blockSelf.swch.on = YES;
-      });
-    }];
+        error:^(RCErrorCode status) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showAlert:RCDLocalizedString(@"alert")
+                           message:RCDLocalizedString(@"shut_down_failed")
+                    cancelBtnTitle:RCDLocalizedString(@"cancel")
+                     otherBtnTitle:nil
+                               tag:-1];
+                blockSelf.swch.on = YES;
+            });
+        }];
 }
 
-- (void)updateQuietHoursIfNeed{
+- (void)updateQuietHoursIfNeed {
     if (self.swch.on) {
         [self setQuietHours];
     } else {
@@ -169,10 +185,10 @@
 }
 
 - (void)updateUIAtErrorStatus {
-    NSString *startT = [DEFAULTS
-                        objectForKey:[NSString stringWithFormat:@"startTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
-    NSString *endT = [DEFAULTS
-                      objectForKey:[NSString stringWithFormat:@"endTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
+    NSString *startT =
+        [DEFAULTS objectForKey:[NSString stringWithFormat:@"startTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
+    NSString *endT =
+        [DEFAULTS objectForKey:[NSString stringWithFormat:@"endTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
     UITableViewCell *startCell = [self.tableView cellForRowAtIndexPath:self.startIndexPath];
     UITableViewCell *endCell = [self.tableView cellForRowAtIndexPath:self.endIndexPath];
     if (startT && endT) {
@@ -207,7 +223,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
+
     if (section == 1) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0)];
         view.backgroundColor = self.tableView.backgroundColor;
@@ -284,9 +300,9 @@
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         // 点击 cell 时 datePicker 滚动到相应的位置
         NSString *dateString = cell.detailTextLabel.text;
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"HH:mm:ss"];
-        NSDate *date=[formatter dateFromString:dateString];
+        NSDate *date = [formatter dateFromString:dateString];
         [self.datePicker setDate:date];
     }
 }
@@ -351,9 +367,17 @@
     }
 }
 
-- (void)showAlert:(NSString *)title message:(NSString *)message cancelBtnTitle:(NSString *)cBtnTitle otherBtnTitle:(NSString *)oBtnTitle tag:(int)tag {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cBtnTitle otherButtonTitles:oBtnTitle, nil];
-    if(tag > 0){
+- (void)showAlert:(NSString *)title
+          message:(NSString *)message
+   cancelBtnTitle:(NSString *)cBtnTitle
+    otherBtnTitle:(NSString *)oBtnTitle
+              tag:(int)tag {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:cBtnTitle
+                                              otherButtonTitles:oBtnTitle, nil];
+    if (tag > 0) {
         alertView.tag = tag;
     }
     [alertView show];
@@ -362,30 +386,30 @@
 #pragma mark - getter
 
 - (UISwitch *)swch {
-    if(!_swch) {
+    if (!_swch) {
         _swch = [[UISwitch alloc] init];
     }
     return _swch;
 }
 
 - (UIDatePicker *)datePicker {
-    if(!_datePicker) {
-        
+    if (!_datePicker) {
+
         NSDateFormatter *formatterE = [[NSDateFormatter alloc] init];
         [formatterE setDateFormat:@"HH:mm:ss"];
         NSString *startTime = [DEFAULTS
-                               objectForKey:[NSString stringWithFormat:@"startTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
+            objectForKey:[NSString stringWithFormat:@"startTime_%@", [RCIM sharedRCIM].currentUserInfo.userId]];
         if (startTime == nil) {
             startTime = @"23:00:00";
         }
         NSDate *startDate = [formatterE dateFromString:startTime];
-        
+
         _datePicker = [[UIDatePicker alloc] init];
         _datePicker.datePickerMode = UIDatePickerModeCountDownTimer;
         [_datePicker setDate:startDate];
         [_datePicker addTarget:self
-                            action:@selector(datePickerValueChanged:)
-                  forControlEvents:UIControlEventValueChanged];
+                        action:@selector(datePickerValueChanged:)
+              forControlEvents:UIControlEventValueChanged];
     }
     return _datePicker;
 }

@@ -53,9 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
                     complete:(void (^)(BOOL success))completeBlock;
 
 // 当前登录用户通过旧密码设置新密码
-+ (void)changePassword:(NSString *)oldPwd
-                newPwd:(NSString *)newPwd
-              complete:(void (^)(BOOL success))completeBlock;
++ (void)changePassword:(NSString *)oldPwd newPwd:(NSString *)newPwd complete:(void (^)(BOOL success))completeBlock;
 
 // 通过手机验证码设置新密码
 + (void)resetPassword:(NSString *)password

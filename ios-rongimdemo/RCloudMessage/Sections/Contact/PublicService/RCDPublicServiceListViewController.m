@@ -14,9 +14,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupNavi];
-    
+
     if ([self.tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }

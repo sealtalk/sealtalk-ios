@@ -29,9 +29,7 @@ withArgumentsInArray:(nullable NSArray *)arguments
 
 + (int)versionOfTable:(NSString *)table;
 
-+ (BOOL)updateTable:(NSString *)table
-            version:(int)version
-        transaction:(BOOL (^)(FMDatabase *db))updateTransaction;
++ (BOOL)updateTable:(NSString *)table version:(int)version transaction:(BOOL (^)(FMDatabase *db))updateTransaction;
 
 + (BOOL)dropTable:(NSString *)table;
 

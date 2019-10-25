@@ -52,7 +52,7 @@
     cell.acceptBlock = ^(NSString *userId) {
         [weakSelf acceptInvite:userId];
     };
-    
+
     cell.ignoreBlock = ^(NSString *userId) {
         [weakSelf ignoreInvite:userId];
     };
@@ -72,7 +72,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCDFriendInfo *user = self.friends[indexPath.row];
-    if (user.status == RCDFriendStatusRequest || user.status == RCDFriendStatusRequested || user.status == RCDFriendStatusDelete || user.status == RCDFriendStatusIgnore) {
+    if (user.status == RCDFriendStatusRequest || user.status == RCDFriendStatusRequested ||
+        user.status == RCDFriendStatusDelete || user.status == RCDFriendStatusIgnore) {
         return;
     }
 
@@ -126,38 +127,54 @@
 - (void)acceptInvite:(NSString *)userId {
     self.hud.labelText = RCDLocalizedString(@"adding_friend");
     [self.hud show:YES];
-    [RCDUserInfoManager acceptFriendRequest:userId complete:^(BOOL success) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (success) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsRequestKey object:nil];
-                self.friends = [RCDUserInfoManager getAllFriendRequests];
-                [self.tableView reloadData];
-                [self.hud hide:YES];
-            } else {
-                [self.hud hide:YES];
-                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"add_fail") message:nil delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil, nil];
-                [failAlert show];
-            }
-        });
-    }];
+    [RCDUserInfoManager acceptFriendRequest:userId
+                                   complete:^(BOOL success) {
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           if (success) {
+                                               [[NSNotificationCenter defaultCenter]
+                                                   postNotificationName:RCDContactsRequestKey
+                                                                 object:nil];
+                                               self.friends = [RCDUserInfoManager getAllFriendRequests];
+                                               [self.tableView reloadData];
+                                               [self.hud hide:YES];
+                                           } else {
+                                               [self.hud hide:YES];
+                                               UIAlertView *failAlert =
+                                                   [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"add_fail")
+                                                                              message:nil
+                                                                             delegate:nil
+                                                                    cancelButtonTitle:RCDLocalizedString(@"confirm")
+                                                                    otherButtonTitles:nil, nil];
+                                               [failAlert show];
+                                           }
+                                       });
+                                   }];
 }
 
 - (void)ignoreInvite:(NSString *)userId {
     self.hud.labelText = RCDLocalizedString(@"IgnoreFriendRequest");
     [self.hud show:YES];
-    [RCDUserInfoManager ignoreFriendRequest:userId complete:^(BOOL success) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.hud hide:YES];
-            if (success) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsRequestKey object:nil];
-                self.friends = [RCDUserInfoManager getAllFriendRequests];
-                [self.tableView reloadData];
-            } else {
-                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"IgnoreFailure") message:nil delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil, nil];
-                [failAlert show];
-            }
-        });
-    }];
+    [RCDUserInfoManager
+        ignoreFriendRequest:userId
+                   complete:^(BOOL success) {
+                       dispatch_async(dispatch_get_main_queue(), ^{
+                           [self.hud hide:YES];
+                           if (success) {
+                               [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsRequestKey
+                                                                                   object:nil];
+                               self.friends = [RCDUserInfoManager getAllFriendRequests];
+                               [self.tableView reloadData];
+                           } else {
+                               UIAlertView *failAlert =
+                                   [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"IgnoreFailure")
+                                                              message:nil
+                                                             delegate:nil
+                                                    cancelButtonTitle:RCDLocalizedString(@"confirm")
+                                                    otherButtonTitles:nil, nil];
+                               [failAlert show];
+                           }
+                       });
+                   }];
 }
 
 #pragma mark - Setter && Getter

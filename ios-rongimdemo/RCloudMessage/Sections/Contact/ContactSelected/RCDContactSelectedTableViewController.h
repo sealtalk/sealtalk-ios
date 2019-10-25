@@ -15,13 +15,13 @@ typedef NS_ENUM(NSUInteger, RCDContactSelectedGroupOptionType) {
     RCDContactSelectedGroupOptionTypeDelete,
 };
 @class RCDFriendInfo;
-@interface RCDContactSelectedTableViewController : UIViewController 
+@interface RCDContactSelectedTableViewController : UIViewController
 
-@property(nonatomic, strong) NSString *groupId;
+@property (nonatomic, strong) NSString *groupId;
 
-@property(nonatomic, strong) NSMutableArray *orignalGroupMembers;
+@property (nonatomic, strong) NSMutableArray *orignalGroupMembers;
 
-@property(nonatomic, assign) RCDContactSelectedGroupOptionType groupOptionType;
+@property (nonatomic, assign) RCDContactSelectedGroupOptionType groupOptionType;
 
 - (instancetype)initWithTitle:(NSString *)title isAllowsMultipleSelection:(BOOL)isAllowsMultipleSelection;
 

@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RCDForwardSearchViewController : UIViewController
 
-@property(nonatomic, weak) id<RCDForwardSearchViewDelegate> delegate;
+@property (nonatomic, weak) id<RCDForwardSearchViewDelegate> delegate;
 @end
 
 NS_ASSUME_NONNULL_END

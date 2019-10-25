@@ -14,22 +14,22 @@
 #import "RCDLoginManager.h"
 
 @interface RCDChangePasswordViewController ()
-@property(nonatomic, strong) UILabel *oldPwdLabel;
-@property(nonatomic, strong) UILabel *newsPwdLabel;
-@property(nonatomic, strong) UILabel *confirmPwdLabel;
+@property (nonatomic, strong) UILabel *oldPwdLabel;
+@property (nonatomic, strong) UILabel *newsPwdLabel;
+@property (nonatomic, strong) UILabel *confirmPwdLabel;
 
-@property(nonatomic, strong) UITextField *oldPwdTextField;
-@property(nonatomic, strong) UITextField *newsPwdTextField;
-@property(nonatomic, strong) UITextField *confirmPwdTextField;
+@property (nonatomic, strong) UITextField *oldPwdTextField;
+@property (nonatomic, strong) UITextField *newsPwdTextField;
+@property (nonatomic, strong) UITextField *confirmPwdTextField;
 
-@property(nonatomic, strong) UIView *oldPwdView;
-@property(nonatomic, strong) UIView *newsPwdView;
-@property(nonatomic, strong) UIView *confirmPwdView;
+@property (nonatomic, strong) UIView *oldPwdView;
+@property (nonatomic, strong) UIView *newsPwdView;
+@property (nonatomic, strong) UIView *confirmPwdView;
 
-@property(nonatomic, strong) RCDUIBarButtonItem *leftBtn;
-@property(nonatomic, strong) RCDUIBarButtonItem *rightBtn;
+@property (nonatomic, strong) RCDUIBarButtonItem *leftBtn;
+@property (nonatomic, strong) RCDUIBarButtonItem *rightBtn;
 
-@property(nonatomic, strong) NSDictionary *subViews;
+@property (nonatomic, strong) NSDictionary *subViews;
 
 @end
 
@@ -39,8 +39,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    self.navigationItem.title = RCDLocalizedString(@"change_password")
-;
+    self.navigationItem.title = RCDLocalizedString(@"change_password");
 
     [self initialize];
     [self setNavigationButton];
@@ -59,27 +58,27 @@
     if ([userPwd isEqualToString:self.oldPwdTextField.text]) {
         NSInteger newPwdLength = self.newsPwdTextField.text.length;
         if (newPwdLength < 6 || newPwdLength > 20) {
-            [self AlertShow:RCDLocalizedString(@"password_alert")
-             ];
+            [self AlertShow:RCDLocalizedString(@"password_alert")];
         } else {
             if ([self.newsPwdTextField.text isEqualToString:self.confirmPwdTextField.text]) {
-                [RCDLoginManager changePassword:self.oldPwdTextField.text newPwd:self.newsPwdTextField.text complete:^(BOOL success) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (success) {
-                            [DEFAULTS setObject:self.newsPwdTextField.text forKey:RCDUserPasswordKey];
-                            [DEFAULTS synchronize];
-                            [weakSelf.navigationController popViewControllerAnimated:YES];
-                        }
-                    });
-                }];
+                [RCDLoginManager
+                    changePassword:self.oldPwdTextField.text
+                            newPwd:self.newsPwdTextField.text
+                          complete:^(BOOL success) {
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  if (success) {
+                                      [DEFAULTS setObject:self.newsPwdTextField.text forKey:RCDUserPasswordKey];
+                                      [DEFAULTS synchronize];
+                                      [weakSelf.navigationController popViewControllerAnimated:YES];
+                                  }
+                              });
+                          }];
             } else {
-                [self AlertShow:RCDLocalizedString(@"old_and_new_friend_different")
-                 ];
+                [self AlertShow:RCDLocalizedString(@"old_and_new_friend_different")];
             }
         }
     } else {
-        [self AlertShow:RCDLocalizedString(@"old_password_error")
-         ];
+        [self AlertShow:RCDLocalizedString(@"old_password_error")];
     }
 }
 
@@ -91,16 +90,14 @@
     [self.view addSubview:self.oldPwdView];
     [self.oldPwdView addSubview:self.oldPwdTextField];
 
-    self.newsPwdLabel = [self setLabel:RCDLocalizedString(@"new_password")
-];
+    self.newsPwdLabel = [self setLabel:RCDLocalizedString(@"new_password")];
     self.newsPwdView = [self setSubView];
     self.newsPwdTextField = [self setTextField:RCDLocalizedString(@"password_hint")];
     [self.view addSubview:self.newsPwdLabel];
     [self.view addSubview:self.newsPwdView];
     [self.newsPwdView addSubview:self.newsPwdTextField];
 
-    self.confirmPwdLabel = [self setLabel:RCDLocalizedString(@"confirm_new_password")
-];
+    self.confirmPwdLabel = [self setLabel:RCDLocalizedString(@"confirm_new_password")];
     self.confirmPwdView = [self setSubView];
     self.confirmPwdTextField = [self setTextField:RCDLocalizedString(@"password_hint")];
     [self.view addSubview:self.confirmPwdLabel];
@@ -111,7 +108,9 @@
 }
 
 - (void)setNavigationButton {
-    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"settings") target:self action:@selector(clickBackBtn)];
+    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"settings")
+                                                              target:self
+                                                              action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = self.leftBtn;
 
     self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"save")
@@ -157,10 +156,12 @@
     subTextField.delegate = self;
     subTextField.translatesAutoresizingMaskIntoConstraints = NO;
     if (subTextField.placeholder) {
-        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:subTextField.placeholder attributes:
-        @{NSForegroundColorAttributeName:HEXCOLOR(0x999999),
-                     NSFontAttributeName:subTextField.font
-             }];
+        NSAttributedString *attrString =
+            [[NSAttributedString alloc] initWithString:subTextField.placeholder
+                                            attributes:@{
+                                                NSForegroundColorAttributeName : HEXCOLOR(0x999999),
+                                                NSFontAttributeName : subTextField.font
+                                            }];
         subTextField.attributedPlaceholder = attrString;
     }
     return subTextField;
@@ -217,7 +218,7 @@
                                                                             options:0
                                                                             metrics:nil
                                                                               views:self.subViews]];
-    
+
     [self.newsPwdView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-9-[_newsPwdTextField]-3-|"
                                                                              options:0
                                                                              metrics:nil
@@ -226,17 +227,17 @@
                                                                              options:0
                                                                              metrics:nil
                                                                                views:self.subViews]];
-    
+
     [self.confirmPwdView
-     addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-9-[_confirmPwdTextField]-3-|"
-                                                            options:0
-                                                            metrics:nil
-                                                              views:self.subViews]];
+        addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-9-[_confirmPwdTextField]-3-|"
+                                                               options:0
+                                                               metrics:nil
+                                                                 views:self.subViews]];
     [self.confirmPwdView
-     addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_confirmPwdTextField]-0-|"
-                                                            options:0
-                                                            metrics:nil
-                                                              views:self.subViews]];
+        addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_confirmPwdTextField]-0-|"
+                                                               options:0
+                                                               metrics:nil
+                                                                 views:self.subViews]];
 }
 
 - (void)AlertShow:(NSString *)content {

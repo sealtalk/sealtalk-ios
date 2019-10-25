@@ -11,7 +11,7 @@
 #import "RCDBottomResultView.h"
 #import "UIColor+RCColor.h"
 
-@interface RCDForwardSelectedViewController ()<UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
+@interface RCDForwardSelectedViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) RCDBottomResultView *bottomResultView;
@@ -27,7 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupData];
     [self setupViews];
     [self setupNavi];
@@ -35,7 +35,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     [self.tableView reloadData];
     [self updateSelectedResult];
 }
@@ -47,17 +47,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-        case 0:
-            if (self.isMultiSelectModel) {
-                return 1;
-            }
-            return 2;
-            break;
-        case 1:
-            return self.conversationList.count;
-            break;
-        default:
-            break;
+    case 0:
+        if (self.isMultiSelectModel) {
+            return 1;
+        }
+        return 2;
+        break;
+    case 1:
+        return self.conversationList.count;
+        break;
+    default:
+        break;
     }
     return 0;
 }
@@ -100,89 +100,90 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.isMultiSelectModel) {
         if (indexPath.section == 0) {
-//            RCERightArrowCell *cell = [RCERightArrowCell cellWithTableView:tableView indexPath:indexPath];
-//            cell.leftLabel.text = RCEStringFor(@"choose_address_book");
-//            [cell setDataModel:nil];
-//            [self changeCellBackColor:cell];
-//            return cell;
+            //            RCERightArrowCell *cell = [RCERightArrowCell cellWithTableView:tableView indexPath:indexPath];
+            //            cell.leftLabel.text = RCEStringFor(@"choose_address_book");
+            //            [cell setDataModel:nil];
+            //            [self changeCellBackColor:cell];
+            //            return cell;
         } else {
-//            RCEBaseSelectCell *cell = nil;
-//            RCConversation *con = self.conversationList[indexPath.row];
-//            if (con.conversationType == ConversationType_GROUP) {
-//                cell = [RCEGroupSelectCell cellWithTableView:tableView];
-//                [cell setDataModel:con.targetId];
-//            } else {
-//                cell = [RCEContactSelectCell cellWithTableView:tableView];
-//                [cell setDataModel:con.targetId];
-//            }
-//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            [self changeCellBackColor:cell];
-//            return cell;
+            //            RCEBaseSelectCell *cell = nil;
+            //            RCConversation *con = self.conversationList[indexPath.row];
+            //            if (con.conversationType == ConversationType_GROUP) {
+            //                cell = [RCEGroupSelectCell cellWithTableView:tableView];
+            //                [cell setDataModel:con.targetId];
+            //            } else {
+            //                cell = [RCEContactSelectCell cellWithTableView:tableView];
+            //                [cell setDataModel:con.targetId];
+            //            }
+            //            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            //            [self changeCellBackColor:cell];
+            //            return cell;
         }
-        
+
     } else {
-//        RCEBaseTableViewCell *cell;
-//        switch (indexPath.section) {
-//            case 0:
-//                cell = [RCERightArrowCell cellWithTableView:tableView indexPath:indexPath];
-//                if (indexPath.row == 0) {
-//                    ((RCERightArrowCell *)cell).leftLabel.text = RCEStringFor(@"create_new_chat");
-//                } else {
-//                    ((RCERightArrowCell *)cell).leftLabel.text = RCEStringFor(@"choose_a_group");
-//                    cell.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
-//                }
-//                [cell setDataModel:nil];
-//                break;
-//            case 1: {
-//                cell = [RCERecentContactsCell cellWithTableView:tableView indexPath:indexPath];
-//                RCConversation *model = self.conversationList[indexPath.row];
-//
-//                [cell setDataModel:model];
-//            } break;
-//            default:
-//                cell = [RCEBaseTableViewCell new];
-//                break;
-//        }
-//        [self changeCellBackColor:cell];
-//        return cell;
+        //        RCEBaseTableViewCell *cell;
+        //        switch (indexPath.section) {
+        //            case 0:
+        //                cell = [RCERightArrowCell cellWithTableView:tableView indexPath:indexPath];
+        //                if (indexPath.row == 0) {
+        //                    ((RCERightArrowCell *)cell).leftLabel.text = RCEStringFor(@"create_new_chat");
+        //                } else {
+        //                    ((RCERightArrowCell *)cell).leftLabel.text = RCEStringFor(@"choose_a_group");
+        //                    cell.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+        //                }
+        //                [cell setDataModel:nil];
+        //                break;
+        //            case 1: {
+        //                cell = [RCERecentContactsCell cellWithTableView:tableView indexPath:indexPath];
+        //                RCConversation *model = self.conversationList[indexPath.row];
+        //
+        //                [cell setDataModel:model];
+        //            } break;
+        //            default:
+        //                cell = [RCEBaseTableViewCell new];
+        //                break;
+        //        }
+        //        [self changeCellBackColor:cell];
+        //        return cell;
     }
-        return nil;
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (self.isMultiSelectModel) {
         if (indexPath.section == 0) {
-//            [self pushToGroupMemberSelectViewControllerWithMyGroup:YES];
+            //            [self pushToGroupMemberSelectViewControllerWithMyGroup:YES];
         } else {
-//            RCEBaseSelectCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//            if (cell.selectStatus != RCEBaseSelectCellStatusAll) {
-//                [[RCEDepartmentDataManager sharedManager] addModel:cell.departModel];
-//            } else {
-//                [[RCEDepartmentDataManager sharedManager] removeModel:cell.departModel];
-//            }
-//            [cell updateSelectStatus];
+            //            RCEBaseSelectCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            //            if (cell.selectStatus != RCEBaseSelectCellStatusAll) {
+            //                [[RCEDepartmentDataManager sharedManager] addModel:cell.departModel];
+            //            } else {
+            //                [[RCEDepartmentDataManager sharedManager] removeModel:cell.departModel];
+            //            }
+            //            [cell updateSelectStatus];
         }
         [self updateSelectedResult];
     } else {
         if (indexPath.section == 0) {
             if (indexPath.row == 0) {
-//                [[RCEMultiFunctionManager sharedManager] createAConversation:YES];
-//                [[RCEDepartmentDataManager sharedManager] removeAllSelectedModel];
-//                [self pushToGroupMemberSelectViewControllerWithMyGroup:NO];
+                //                [[RCEMultiFunctionManager sharedManager] createAConversation:YES];
+                //                [[RCEDepartmentDataManager sharedManager] removeAllSelectedModel];
+                //                [self pushToGroupMemberSelectViewControllerWithMyGroup:NO];
             } else if (indexPath.row == 1) {
-//                [[RCEMultiFunctionManager sharedManager] createAConversation:NO];
-//                RCEMyGroupViewController *myGroupVC = [[RCEMyGroupViewController alloc] init];
-//                myGroupVC.isForwardMessage = YES;
-//                [self.navigationController pushViewController:myGroupVC animated:YES];
+                //                [[RCEMultiFunctionManager sharedManager] createAConversation:NO];
+                //                RCEMyGroupViewController *myGroupVC = [[RCEMyGroupViewController alloc] init];
+                //                myGroupVC.isForwardMessage = YES;
+                //                [self.navigationController pushViewController:myGroupVC animated:YES];
             }
         } else if (indexPath.section == 1) {
             if (!self.isMultiSelectModel) {
-//                [[RCEDepartmentDataManager sharedManager] removeAllSelectedModel];
-//                RCConversation *con = self.conversationList[indexPath.row];
-//                RCEDepartmentDataModel *model = [RCEDepartmentDataAdapter getModelWithConversation:con];
-//                [[RCEDepartmentDataManager sharedManager] addModel:model];
-//                [self doForwardMessage];
+                //                [[RCEDepartmentDataManager sharedManager] removeAllSelectedModel];
+                //                RCConversation *con = self.conversationList[indexPath.row];
+                //                RCEDepartmentDataModel *model = [RCEDepartmentDataAdapter
+                //                getModelWithConversation:con];
+                //                [[RCEDepartmentDataManager sharedManager] addModel:model];
+                //                [self doForwardMessage];
             } else {
             }
         }
@@ -192,54 +193,59 @@
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.isMultiSelectModel) {
         if (indexPath.section == 1) {
-//            RCEBaseSelectCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//            if (cell.selectStatus == RCEBaseSelectCellStatusAll) {
-//                [[RCEDepartmentDataManager sharedManager] removeModel:cell.departModel];
-//            } else {
-//                [[RCEDepartmentDataManager sharedManager] addModel:cell.departModel];
-//            }
-//            [cell updateSelectStatus];
+            //            RCEBaseSelectCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            //            if (cell.selectStatus == RCEBaseSelectCellStatusAll) {
+            //                [[RCEDepartmentDataManager sharedManager] removeModel:cell.departModel];
+            //            } else {
+            //                [[RCEDepartmentDataManager sharedManager] addModel:cell.departModel];
+            //            }
+            //            [cell updateSelectStatus];
             [self updateSelectedResult];
         }
     }
 }
 
 #pragma mark - UISearchBarDelegate
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     if (self.isMultiSelectModel) {
-//        [[RCESearchCoverProxy sharedProxy] searchDetailFrom:RCESearchCoverFromForwardMutli fromController:self searchResultBlock:nil];
+        //        [[RCESearchCoverProxy sharedProxy] searchDetailFrom:RCESearchCoverFromForwardMutli fromController:self
+        //        searchResultBlock:nil];
     } else {
-//        __weak typeof(self) weakSelf = self;
-//        [[RCESearchCoverProxy sharedProxy] searchDetailFrom:(RCESearchCoverFromForwardSingle) fromController:self searchResultBlock:^(id result) {
-//            if ([result isKindOfClass:[RCConversation class]]) {
-//                [[RCEDepartmentDataManager sharedManager] removeAllSelectedModel];
-//                RCConversation *con = result;
-//                RCEDepartmentDataModel *model = [RCEDepartmentDataAdapter getModelWithConversation:con];
-//                [[RCEDepartmentDataManager sharedManager] addModel:model];
-//                [weakSelf doForwardMessage];
-//            }
-//        }];
+        //        __weak typeof(self) weakSelf = self;
+        //        [[RCESearchCoverProxy sharedProxy] searchDetailFrom:(RCESearchCoverFromForwardSingle)
+        //        fromController:self searchResultBlock:^(id result) {
+        //            if ([result isKindOfClass:[RCConversation class]]) {
+        //                [[RCEDepartmentDataManager sharedManager] removeAllSelectedModel];
+        //                RCConversation *con = result;
+        //                RCEDepartmentDataModel *model = [RCEDepartmentDataAdapter getModelWithConversation:con];
+        //                [[RCEDepartmentDataManager sharedManager] addModel:model];
+        //                [weakSelf doForwardMessage];
+        //            }
+        //        }];
     }
     return NO;
 }
 
-
 #pragma mark - Private Method
 - (void)setupData {
-    self.conversationList = [[RCIMClient sharedRCIMClient] getConversationList:@[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ]];
+    self.conversationList =
+        [[RCIMClient sharedRCIMClient] getConversationList:@[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ]];
 }
 
 - (void)setupViews {
-    
-    [self.bottomResultView setConfirmButtonBlock:^(RCDBottomResultView *resultView) {
+
+    [self.bottomResultView setConfirmButtonBlock:^(RCDBottomResultView *resultView){
         //        [ws doForwardMessage];
     }];
 }
 
 - (void)setupNavi {
     self.navigationItem.rightBarButtonItem = self.rightBarItem;
-    
-    UIBarButtonItem *leftBarItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"cancel") style:UIBarButtonItemStylePlain target:self action:@selector(onLeftButtonClick:)];
+
+    UIBarButtonItem *leftBarItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"cancel")
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(onLeftButtonClick:)];
     leftBarItem.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
     self.navigationItem.leftBarButtonItem = leftBarItem;
 }
@@ -249,7 +255,6 @@
 }
 
 - (void)pushToGroupMemberSelectViewControllerWithMyGroup {
-    
 }
 
 - (void)doForwardMessage {
@@ -259,14 +264,14 @@
 - (void)onRightButtonClick:(id)sender {
     self.isMultiSelectModel = !self.isMultiSelectModel;
     if (self.isMultiSelectModel) {
-//        self.itemInfo.maxCount = RCEForwardMessageMaxCount;
-//        self.itemInfo.canSelectCurrentUser = YES;
-//        [[RCEMultiFunctionManager sharedManager] createAConversation:NO];
+        //        self.itemInfo.maxCount = RCEForwardMessageMaxCount;
+        //        self.itemInfo.canSelectCurrentUser = YES;
+        //        [[RCEMultiFunctionManager sharedManager] createAConversation:NO];
         self.rightBarItem.title = RCDLocalizedString(@"single_choice");
     } else {
-//        self.itemInfo.maxCount = RCEGroupMemberMaxCount;
-//        self.itemInfo.canSelectCurrentUser = YES;
-//        [[RCEDepartmentDataService sharedDataService] config:self.itemInfo];
+        //        self.itemInfo.maxCount = RCEGroupMemberMaxCount;
+        //        self.itemInfo.canSelectCurrentUser = YES;
+        //        [[RCEDepartmentDataService sharedDataService] config:self.itemInfo];
         self.rightBarItem.title = RCDLocalizedString(@"multi_choice");
     }
 }
@@ -303,7 +308,10 @@
 
 - (UIBarButtonItem *)rightBarItem {
     if (!_rightBarItem) {
-        _rightBarItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"multi_choice") style:UIBarButtonItemStylePlain target:self action:@selector(onRightButtonClick:)];
+        _rightBarItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"multi_choice")
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(onRightButtonClick:)];
         _rightBarItem.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
     }
     return _rightBarItem;

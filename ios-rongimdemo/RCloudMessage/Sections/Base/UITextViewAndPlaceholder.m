@@ -11,7 +11,7 @@
 
 @interface UITextViewAndPlaceholder ()
 
-@property(nonatomic, weak) UILabel *placeholderLabel;
+@property (nonatomic, weak) UILabel *placeholderLabel;
 
 @end
 
@@ -63,17 +63,17 @@
     return self;
 }
 
-- (void)setTextAlignment:(NSTextAlignment)textAlignment{
+- (void)setTextAlignment:(NSTextAlignment)textAlignment {
     [super setTextAlignment:textAlignment];
     self.placeholderLabel.textAlignment = textAlignment;
 }
 
-- (void)setFont:(UIFont *)font{
+- (void)setFont:(UIFont *)font {
     [super setFont:font];
     self.placeholderLabel.font = font;
 }
 
-- (void)setContentOffset:(CGPoint)contentOffset{
+- (void)setContentOffset:(CGPoint)contentOffset {
     contentOffset = CGPointMake(0, 0);
     [super setContentOffset:contentOffset];
 }
@@ -89,11 +89,13 @@
     CGFloat height =
         [self.myPlaceholder boundingRectWithSize:maxSize
                                          options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin
-                                      attributes:@{NSFontAttributeName : self.placeholderLabel.font}
+                                      attributes:@{
+                                          NSFontAttributeName : self.placeholderLabel.font
+                                      }
                                          context:nil]
             .size.height;
 
-    CGRect frame = CGRectMake(5, 8, self.frame.size.width-10, height);
+    CGRect frame = CGRectMake(5, 8, self.frame.size.width - 10, height);
 
     self.placeholderLabel.frame = frame;
 }

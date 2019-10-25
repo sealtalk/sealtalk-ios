@@ -9,8 +9,8 @@
 #import "RCDChatRoomManager.h"
 #import "RCDChatRoomAPI.h"
 @implementation RCDChatRoomManager
-+ (void)getChatRoomList:(void (^)(NSArray<RCDChatRoom *> *rooms))complete{
-    [RCDChatRoomAPI getChatRoomList:^(NSArray<RCDChatRoom *> * _Nonnull rooms) {
++ (void)getChatRoomList:(void (^)(NSArray<RCDChatRoom *> *rooms))complete {
+    [RCDChatRoomAPI getChatRoomList:^(NSArray<RCDChatRoom *> *_Nonnull rooms) {
         if (complete) {
             complete(rooms);
         }

@@ -10,9 +10,9 @@
 #import "RCDShareChatListCell.h"
 
 @interface RCDShareChatListController ()
-@property(nonatomic, strong) NSArray *dataArray;
-@property(nonatomic, strong) NSIndexPath *selectIndexPath;
-@property(nonatomic, strong) UIBarButtonItem *rightBarButton;
+@property (nonatomic, strong) NSArray *dataArray;
+@property (nonatomic, strong) NSIndexPath *selectIndexPath;
+@property (nonatomic, strong) UIBarButtonItem *rightBarButton;
 @end
 
 #define ReuseIdentifier @"cellReuseIdentifier"
@@ -25,8 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = RCDLocalizedString(@"choose")
-;
+    self.title = RCDLocalizedString(@"choose");
 
     self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"send")
                                                            style:UIBarButtonItemStylePlain
@@ -108,8 +107,7 @@
 
     [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:sendMessageDict options:0 error:nil]];
     [request setTimeoutInterval:10.0];
-    self.rightBarButton.title = RCDLocalizedString(@"sending")
-;
+    self.rightBarButton.title = RCDLocalizedString(@"sending");
     self.rightBarButton.enabled = NO;
 
     // 4.建立连接
@@ -125,11 +123,9 @@
                                    [array addObject:insertMessageDict];
                                    [shareUserDefaults setValue:array forKey:@"sharedMessages"];
                                    [shareUserDefaults synchronize];
-                                   notify = RCDLocalizedString(@"send_success")
-;
+                                   notify = RCDLocalizedString(@"send_success");
                                } else {
-                                   notify = RCDLocalizedString(@"send_fail")
-;
+                                   notify = RCDLocalizedString(@"send_fail");
                                }
                                dispatch_async(dispatch_get_main_queue(), ^{
                                    UIAlertController *alertController =

@@ -10,14 +10,14 @@
 #import "RCDCommonDefine.h"
 
 @interface RealTimeLocationStatusView ()
-@property(nonatomic) BOOL isExpended;
-@property(nonatomic, strong) UILabel *statusLabel;
-@property(nonatomic, strong) UIImageView *locationIcon;
-@property(nonatomic, strong) UIImageView *moreIcon;
+@property (nonatomic) BOOL isExpended;
+@property (nonatomic, strong) UILabel *statusLabel;
+@property (nonatomic, strong) UIImageView *locationIcon;
+@property (nonatomic, strong) UIImageView *moreIcon;
 
-@property(nonatomic, strong) UILabel *expendLabel;
-@property(nonatomic, strong) UIButton *cancelButton;
-@property(nonatomic, strong) UIButton *joinButton;
+@property (nonatomic, strong) UILabel *expendLabel;
+@property (nonatomic, strong) UIButton *cancelButton;
+@property (nonatomic, strong) UIButton *joinButton;
 @end
 
 #define RC_REAL_TIME_LOCATION_STATUS_FRAME CGRectMake(0, 62, self.frame.size.width, 38)
@@ -39,29 +39,29 @@
 
 - (void)updateRealTimeLocationStatus {
     switch ([self.delegate getStatus]) {
-        case RC_REAL_TIME_LOCATION_STATUS_IDLE:
-            self.hidden = YES;
-            self.isExpended = NO;
-            break;
-        case RC_REAL_TIME_LOCATION_STATUS_INCOMING:
-            self.hidden = NO;
-            self.isExpended = NO;
-            [self setBackgroundColor:[UIColor colorWithRed:((float)0x11) / 255
-                                                     green:((float)0x40) / 255
-                                                      blue:((float)0x60) / 255
-                                                     alpha:0.7]];
-            break;
-        case RC_REAL_TIME_LOCATION_STATUS_OUTGOING:
-        case RC_REAL_TIME_LOCATION_STATUS_CONNECTED:
-            self.hidden = NO;
-            self.isExpended = NO;
-            [self setBackgroundColor:[UIColor colorWithRed:((float)0x69) / 255
-                                                     green:((float)0xb8) / 255
-                                                      blue:((float)0xee) / 255
-                                                     alpha:0.7]];
-            break;
-        default:
-            break;
+    case RC_REAL_TIME_LOCATION_STATUS_IDLE:
+        self.hidden = YES;
+        self.isExpended = NO;
+        break;
+    case RC_REAL_TIME_LOCATION_STATUS_INCOMING:
+        self.hidden = NO;
+        self.isExpended = NO;
+        [self setBackgroundColor:[UIColor colorWithRed:((float)0x11) / 255
+                                                 green:((float)0x40) / 255
+                                                  blue:((float)0x60) / 255
+                                                 alpha:0.7]];
+        break;
+    case RC_REAL_TIME_LOCATION_STATUS_OUTGOING:
+    case RC_REAL_TIME_LOCATION_STATUS_CONNECTED:
+        self.hidden = NO;
+        self.isExpended = NO;
+        [self setBackgroundColor:[UIColor colorWithRed:((float)0x69) / 255
+                                                 green:((float)0xb8) / 255
+                                                  blue:((float)0xee) / 255
+                                                 alpha:0.7]];
+        break;
+    default:
+        break;
     }
 }
 
@@ -125,7 +125,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
+
     // iPad 位置共享提示横竖屏适配
     if (RCDIsIPad && [self.delegate getStatus] != RC_REAL_TIME_LOCATION_STATUS_IDLE) {
         CGRect statusFrame = self.statusLabel.frame;
@@ -201,8 +201,7 @@
 - (UIButton *)cancelButton {
     if (!_cancelButton) {
         _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(79, 52, 60, 25)];
-        [_cancelButton setTitle:RCDLocalizedString(@"cancel")
- forState:UIControlStateNormal];
+        [_cancelButton setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"location_share_button"] forState:UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"location_share_button_hover"]
                                  forState:UIControlStateHighlighted];

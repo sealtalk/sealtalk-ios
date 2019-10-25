@@ -9,9 +9,9 @@
 #import "RealTimeLocationStartCell.h"
 
 @interface RealTimeLocationStartCell ()
-@property(nonatomic, strong) UIImageView *bubbleBackgroundView;
-@property(nonatomic, strong) RCAttributedLabel *textLabel;
-@property(nonatomic, strong) UIImageView *locationView;
+@property (nonatomic, strong) UIImageView *bubbleBackgroundView;
+@property (nonatomic, strong) RCAttributedLabel *textLabel;
+@property (nonatomic, strong) UIImageView *locationView;
 @end
 
 #define RC_REAL_TIME_LOCATION_CELL_LOCATION_ICON_WIDTH 15
@@ -48,7 +48,9 @@
                                                  8000)
                               options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin |
                                       NSStringDrawingUsesFontLeading
-                           attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:Text_Message_Font_Size]}
+                           attributes:@{
+                               NSFontAttributeName : [UIFont systemFontOfSize:Text_Message_Font_Size]
+                           }
                               context:nil]
             .size;
     __textSize = CGSizeMake(ceilf(__textSize.width), ceilf(__textSize.height));
@@ -93,10 +95,10 @@
 
         self.textLabel.frame = CGRectMake(12, 20 - __labelSize.height / 2, __labelSize.width, __labelSize.height);
 
-        self.locationView.frame = CGRectMake(
-            12 + __labelSize.width + 4,
-            self.bubbleBackgroundView.frame.size.height / 2 - RC_REAL_TIME_LOCATION_CELL_LOCATION_ICON_HEIGHT / 2,
-            RC_REAL_TIME_LOCATION_CELL_LOCATION_ICON_WIDTH, RC_REAL_TIME_LOCATION_CELL_LOCATION_ICON_HEIGHT);
+        self.locationView.frame =
+            CGRectMake(12 + __labelSize.width + 4, self.bubbleBackgroundView.frame.size.height / 2 -
+                                                       RC_REAL_TIME_LOCATION_CELL_LOCATION_ICON_HEIGHT / 2,
+                       RC_REAL_TIME_LOCATION_CELL_LOCATION_ICON_WIDTH, RC_REAL_TIME_LOCATION_CELL_LOCATION_ICON_HEIGHT);
 
         self.bubbleBackgroundView.image = [RCKitUtility imageNamed:@"chat_to_bg_normal" ofBundle:@"RongCloud.bundle"];
         UIImage *image = self.bubbleBackgroundView.image;

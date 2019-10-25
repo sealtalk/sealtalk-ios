@@ -11,11 +11,11 @@
 #define Poke_Message_Font_Size 15
 
 #define PokeSize CGSizeMake(12, 14)
-@interface RCDPokeMessageCell()
+@interface RCDPokeMessageCell ()
 /*!
  背景View
  */
-@property(nonatomic, strong) UIImageView *bubbleBackgroundView;
+@property (nonatomic, strong) UIImageView *bubbleBackgroundView;
 
 @property (nonatomic, strong) UIImageView *pokeIcon;
 @property (nonatomic, strong) UILabel *contentLabel;
@@ -25,7 +25,7 @@
       withCollectionViewWidth:(CGFloat)collectionViewWidth
          referenceExtraHeight:(CGFloat)extraHeight {
     CGSize size = [RCDPokeMessageCell getBubbleBackgroundViewSize:(RCDPokeMessage *)model.content];
-    
+
     CGFloat __messagecontentview_height = size.height;
     __messagecontentview_height += extraHeight;
     return CGSizeMake(collectionViewWidth, __messagecontentview_height);
@@ -46,7 +46,7 @@
     [self.bubbleBackgroundView addSubview:self.contentLabel];
     self.bubbleBackgroundView.userInteractionEnabled = YES;
     UILongPressGestureRecognizer *longPress =
-    [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
+        [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
     [self.bubbleBackgroundView addGestureRecognizer:longPress];
 }
 
@@ -65,33 +65,34 @@
     if (MessageDirection_RECEIVE == self.messageDirection) {
         messageContentViewRect.size.width = bubbleBackgroundViewSize.width;
         self.messageContentView.frame = messageContentViewRect;
-        
+
         self.bubbleBackgroundView.frame =
-        CGRectMake(0, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
+            CGRectMake(0, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
         UIImage *image = [RCKitUtility imageNamed:@"chat_from_bg_normal" ofBundle:@"RongCloud.bundle"];
         self.bubbleBackgroundView.image =
-        [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height * 0.8, image.size.width * 0.8,
-                                                            image.size.height * 0.2, image.size.width * 0.2)];
+            [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height * 0.8, image.size.width * 0.8,
+                                                                image.size.height * 0.2, image.size.width * 0.2)];
     } else {
         pokeX = 12;
         messageContentViewRect.size.width = bubbleBackgroundViewSize.width;
         messageContentViewRect.size.height = bubbleBackgroundViewSize.height;
         messageContentViewRect.origin.x =
-        self.baseContentView.bounds.size.width - (messageContentViewRect.size.width + HeadAndContentSpacing +
-                                                  [RCIM sharedRCIM].globalMessagePortraitSize.width + 10);
+            self.baseContentView.bounds.size.width - (messageContentViewRect.size.width + HeadAndContentSpacing +
+                                                      [RCIM sharedRCIM].globalMessagePortraitSize.width + 10);
         self.messageContentView.frame = messageContentViewRect;
-        
+
         self.bubbleBackgroundView.frame =
-        CGRectMake(0, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
+            CGRectMake(0, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
         UIImage *image = [RCKitUtility imageNamed:@"chat_to_bg_normal" ofBundle:@"RongCloud.bundle"];
         self.bubbleBackgroundView.image =
-        [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height * 0.8, image.size.width * 0.2,
-                                                            image.size.height * 0.2, image.size.width * 0.8)];
+            [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height * 0.8, image.size.width * 0.2,
+                                                                image.size.height * 0.2, image.size.width * 0.8)];
     }
     self.pokeIcon.frame = CGRectMake(pokeX, 12, PokeSize.width, PokeSize.height);
-    self.contentLabel.frame = CGRectMake(CGRectGetMaxX(self.pokeIcon.frame)+6, 7, textLabelSize.width, textLabelSize.height);
+    self.contentLabel.frame =
+        CGRectMake(CGRectGetMaxX(self.pokeIcon.frame) + 6, 7, textLabelSize.width, textLabelSize.height);
 }
-                                  
+
 - (void)longPressed:(id)sender {
     UILongPressGestureRecognizer *press = (UILongPressGestureRecognizer *)sender;
     if (press.state == UIGestureRecognizerStateEnded) {
@@ -101,11 +102,11 @@
     }
 }
 
-+ (NSAttributedString *)getDisplayContent:(RCDPokeMessage *)pokeMessage{
++ (NSAttributedString *)getDisplayContent:(RCDPokeMessage *)pokeMessage {
     NSString *string;
     if (pokeMessage.content.length > 0) {
-        string = [NSString stringWithFormat:@"%@  %@",RCDLocalizedString(@"Poke"),pokeMessage.content];
-    }else{
+        string = [NSString stringWithFormat:@"%@  %@", RCDLocalizedString(@"Poke"), pokeMessage.content];
+    } else {
         string = RCDLocalizedString(@"Poke");
     }
     NSRange range = [string rangeOfString:RCDLocalizedString(@"Poke")];
@@ -119,14 +120,15 @@
 + (CGSize)getTextLabelSize:(RCDPokeMessage *)message {
     NSAttributedString *attr = [self getDisplayContent:message];
     if ([attr.string length] > 0) {
-        float maxWidth = RCDScreenWidth -
-        (10 + [RCIM sharedRCIM].globalMessagePortraitSize.width + 10) * 2 - 5 - 35;
-        CGRect textRect = [attr.string
-                           boundingRectWithSize:CGSizeMake(maxWidth, 8000)
-                           options:(NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin |
-                                    NSStringDrawingUsesFontLeading)
-                           attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:Poke_Message_Font_Size]}
-                           context:nil];
+        float maxWidth = RCDScreenWidth - (10 + [RCIM sharedRCIM].globalMessagePortraitSize.width + 10) * 2 - 5 - 35;
+        CGRect textRect =
+            [attr.string boundingRectWithSize:CGSizeMake(maxWidth, 8000)
+                                      options:(NSStringDrawingTruncatesLastVisibleLine |
+                                               NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
+                                   attributes:@{
+                                       NSFontAttributeName : [UIFont systemFontOfSize:Poke_Message_Font_Size]
+                                   }
+                                      context:nil];
         textRect.size.height = ceilf(textRect.size.height);
         textRect.size.width = ceilf(textRect.size.width);
         return CGSizeMake(textRect.size.width + 5, textRect.size.height + 5);
@@ -137,7 +139,7 @@
 
 + (CGSize)getBubbleSize:(CGSize)textLabelSize {
     CGSize bubbleSize = CGSizeMake(textLabelSize.width, textLabelSize.height);
-    
+
     if (bubbleSize.width + 12 + 20 > 50) {
         bubbleSize.width = bubbleSize.width + 12 + 20 + PokeSize.width;
     } else {
@@ -148,7 +150,7 @@
     } else {
         bubbleSize.height = 40;
     }
-    
+
     return bubbleSize;
 }
 
@@ -158,14 +160,14 @@
 }
 
 #pragma mark - getter
-- (UIImageView *)pokeIcon{
+- (UIImageView *)pokeIcon {
     if (!_pokeIcon) {
         _pokeIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"poke_msg"]];
     }
     return _pokeIcon;
 }
 
-- (UILabel *)contentLabel{
+- (UILabel *)contentLabel {
     if (!_contentLabel) {
         _contentLabel = [[UILabel alloc] init];
         _contentLabel.font = [UIFont systemFontOfSize:Poke_Message_Font_Size];

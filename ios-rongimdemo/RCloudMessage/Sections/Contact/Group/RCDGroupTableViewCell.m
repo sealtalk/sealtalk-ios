@@ -17,22 +17,22 @@
 
 @interface RCDGroupTableViewCell ()
 
-@property(nonatomic, copy) NSString *groupID;
+@property (nonatomic, copy) NSString *groupID;
 
 /**
  *  群组名称label
  */
-@property(nonatomic, strong) UILabel *groupNameLabel;
+@property (nonatomic, strong) UILabel *groupNameLabel;
 
 /**
  *  群组头像
  */
-@property(nonatomic, strong) UIImageView *groupPortImgView;
+@property (nonatomic, strong) UIImageView *groupPortImgView;
 
 /**
  *  群组id的label
  */
-@property(nonatomic, strong) UILabel *groupIdLabel;
+@property (nonatomic, strong) UILabel *groupIdLabel;
 
 @end
 
@@ -49,24 +49,24 @@
 #pragma mark - Private Method
 - (void)initSubviews {
     self.selectionStyle = UITableViewCellSelectionStyleDefault;
-    
+
     [self.contentView addSubview:self.groupPortImgView];
     [self.contentView addSubview:self.groupNameLabel];
     [self.contentView addSubview:self.groupIdLabel];
-    
+
     [self.groupPortImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.height.width.offset(36);
         make.left.equalTo(self.contentView).offset(10);
     }];
-    
+
     [self.groupNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.groupPortImgView.mas_right).offset(10);
         make.centerY.equalTo(self.contentView);
         make.height.offset(21);
         make.right.equalTo(self.contentView).offset(-10);
     }];
-    
+
     [self.groupIdLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.groupNameLabel).offset(50);
         make.top.equalTo(self.groupNameLabel.mas_bottom);
@@ -85,7 +85,9 @@
     if ([group.portraitUri isEqualToString:@""]) {
         group.portraitUri = [RCDUtilities defaultGroupPortrait:group];
     }
-    [self.groupPortImgView sd_setImageWithURL:[NSURL URLWithString:group.portraitUri] placeholderImage:[RCKitUtility imageNamed:@"default_group_portrait" ofBundle:@"RongCloud.bundle"]];
+    [self.groupPortImgView
+        sd_setImageWithURL:[NSURL URLWithString:group.portraitUri]
+          placeholderImage:[RCKitUtility imageNamed:@"default_group_portrait" ofBundle:@"RongCloud.bundle"]];
 }
 
 + (CGFloat)cellHeight {
@@ -104,7 +106,6 @@
         }
         _groupPortImgView.layer.masksToBounds = YES;
         _groupPortImgView.contentMode = UIViewContentModeScaleAspectFill;
-
     }
     return _groupPortImgView;
 }

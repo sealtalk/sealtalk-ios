@@ -22,20 +22,20 @@
 #define SERVICE_ID @"KEFU146001495753714"
 
 @interface RCDMeTableViewController ()
-@property(nonatomic, strong) NSDictionary *languageDic;
+@property (nonatomic, strong) NSDictionary *languageDic;
 @end
 
 @implementation RCDMeTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.languageDic = @{@"en":@"English", @"zh-Hans":@"简体中文"};
+    self.languageDic = @{ @"en" : @"English", @"zh-Hans" : @"简体中文" };
     [self initUI];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.tabBarController.navigationItem.title =RCDLocalizedString(@"me");
+    self.tabBarController.navigationItem.title = RCDLocalizedString(@"me");
     self.tabBarController.navigationItem.rightBarButtonItems = nil;
     [self.tableView reloadData];
 }
@@ -47,13 +47,13 @@
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger rows = 0;
-    if(0 == section) {
+    if (0 == section) {
         rows = 1;
-    }else if (1 == section) {
+    } else if (1 == section) {
         rows = 1;
-    }else if (2 == section){
+    } else if (2 == section) {
         rows = 3;
-    }else if (3 == section) {
+    } else if (3 == section) {
         rows = 2;
     }
     return rows;
@@ -64,7 +64,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(0 == indexPath.section) {
+    if (0 == indexPath.section) {
         static NSString *detailsCellWithIdentifier = @"RCDMeDetailsCell";
         RCDMeDetailsCell *detailsCell = [self.tableView dequeueReusableCellWithIdentifier:detailsCellWithIdentifier];
         if (detailsCell == nil) {
@@ -72,32 +72,38 @@
         }
         return detailsCell;
     }
-    
+
     static NSString *reusableCellWithIdentifier = @"RCDMeCell";
     RCDMeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
-    
+
     if (cell == nil) {
         cell = [[RCDMeCell alloc] init];
     }
-    if(1 == indexPath.section) {
+    if (1 == indexPath.section) {
         [cell setCellWithImageName:@"qr_setting" labelName:RCDLocalizedString(@"My_QR") rightLabelName:@""];
     }
-    if(2 == indexPath.section) {
-        if(0 == indexPath.row) {
-            [cell setCellWithImageName:@"setting_up" labelName:RCDLocalizedString(@"account_setting") rightLabelName:@""];
-        }else if (1 == indexPath.row) {
+    if (2 == indexPath.section) {
+        if (0 == indexPath.row) {
+            [cell setCellWithImageName:@"setting_up"
+                             labelName:RCDLocalizedString(@"account_setting")
+                        rightLabelName:@""];
+        } else if (1 == indexPath.row) {
             NSString *currentLanguage = [RCDLanguageManager sharedRCDLanguageManager].currentLanguage;
-            NSString *currentLanguageString =self.languageDic[currentLanguage];
+            NSString *currentLanguageString = self.languageDic[currentLanguage];
             NSString *rightString = currentLanguageString ? currentLanguageString : RCDLocalizedString(@"language");
-            [cell setCellWithImageName:@"icon_ multilingual" labelName:RCDLocalizedString(@"language") rightLabelName:rightString];
-        }else if(2 == indexPath.row) {
+            [cell setCellWithImageName:@"icon_ multilingual"
+                             labelName:RCDLocalizedString(@"language")
+                        rightLabelName:rightString];
+        } else if (2 == indexPath.row) {
             [cell setCellWithImageName:@"wallet" labelName:RCDLocalizedString(@"my_wallet") rightLabelName:@""];
         }
-    }else if(3 == indexPath.section) {
-        if(0 == indexPath.row) {
+    } else if (3 == indexPath.section) {
+        if (0 == indexPath.row) {
             [cell setCellWithImageName:@"sevre_inactive" labelName:RCDLocalizedString(@"feedback") rightLabelName:@""];
-        }else if (1 == indexPath.row) {
-            [cell setCellWithImageName:@"about_rongcloud" labelName:RCDLocalizedString(@"about_sealtalk") rightLabelName:@""];
+        } else if (1 == indexPath.row) {
+            [cell setCellWithImageName:@"about_rongcloud"
+                             labelName:RCDLocalizedString(@"about_sealtalk")
+                        rightLabelName:@""];
             BOOL isNeedUpdate = [[DEFAULTS objectForKey:RCDNeedUpdateKey] boolValue];
             if (isNeedUpdate) {
                 [cell addRedpointImageView];
@@ -108,27 +114,29 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.section == 0) {
+    if (indexPath.section == 0) {
         return 88.f;
     }
     return 44.f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(0 == indexPath.section) {
+    if (0 == indexPath.section) {
         RCDMeInfoTableViewController *vc = [[RCDMeInfoTableViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
-    }else if (1 == indexPath.section) {
-        RCDQRCodeController *qrCodeVC = [[RCDQRCodeController alloc] initWithTargetId:[RCIM sharedRCIM].currentUserInfo.userId conversationType:ConversationType_PRIVATE];
+    } else if (1 == indexPath.section) {
+        RCDQRCodeController *qrCodeVC =
+            [[RCDQRCodeController alloc] initWithTargetId:[RCIM sharedRCIM].currentUserInfo.userId
+                                         conversationType:ConversationType_PRIVATE];
         [self.navigationController pushViewController:qrCodeVC animated:YES];
-    }else if (2 == indexPath.section) {
-        if(0 == indexPath.row) {
+    } else if (2 == indexPath.section) {
+        if (0 == indexPath.row) {
             RCDSettingsTableViewController *vc = [[RCDSettingsTableViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
-        }else if(1 == indexPath.row) {
+        } else if (1 == indexPath.row) {
             RCDLanguageSettingViewController *vc = [[RCDLanguageSettingViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
-        }else if(2 == indexPath.row) {
+        } else if (2 == indexPath.row) {
             Class walletSDKClass = NSClassFromString(@"JrmfWalletSDK");
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
@@ -137,10 +145,10 @@
             }
 #pragma clang diagnostic pop
         }
-    }else if (3 == indexPath.section) {
-        if(0 == indexPath.row) {
+    } else if (3 == indexPath.section) {
+        if (0 == indexPath.row) {
             [self chatWithCustomerService:SERVICE_ID];
-        }else if (1 == indexPath.row) {
+        } else if (1 == indexPath.row) {
             RCDAboutRongCloudTableViewController *vc = [[RCDAboutRongCloudTableViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         }
@@ -208,7 +216,7 @@
     self.tableView.tableFooterView = [UIView new];
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
     self.tabBarController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }

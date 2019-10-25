@@ -12,7 +12,7 @@
 #import "DefaultPortraitView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "RCDUtilities.h"
-@interface RCDGroupMemberSelectCell()
+@interface RCDGroupMemberSelectCell ()
 @property (nonatomic, strong) UIImageView *selectIcon;
 
 @property (nonatomic, strong) UILabel *nameLabel;
@@ -20,9 +20,9 @@
 @property (nonatomic, strong) UIImageView *portraitImageView;
 @end
 @implementation RCDGroupMemberSelectCell
-+ (instancetype)cellWithTableView:(UITableView *)tableView{
++ (instancetype)cellWithTableView:(UITableView *)tableView {
     RCDGroupMemberSelectCell *cell =
-    (RCDGroupMemberSelectCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupMemberSelectCellIdentifier];
+        (RCDGroupMemberSelectCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupMemberSelectCellIdentifier];
     if (!cell) {
         cell = [[RCDGroupMemberSelectCell alloc] init];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -31,7 +31,7 @@
     return cell;
 }
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self addSubviews];
@@ -39,45 +39,47 @@
     return self;
 }
 
-- (void)setDataModel:(NSString *)userId groupId:(nonnull NSString *)groupId{
+- (void)setDataModel:(NSString *)userId groupId:(nonnull NSString *)groupId {
     __weak typeof(self) weakSelf = self;
-    [RCDUtilities getGroupUserDisplayInfo:userId groupId:groupId result:^(RCUserInfo *user) {
-        [weakSelf.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
-                                      placeholderImage:[UIImage imageNamed:@"contact"]];
-        weakSelf.nameLabel.text = user.name;
-    }];
+    [RCDUtilities getGroupUserDisplayInfo:userId
+                                  groupId:groupId
+                                   result:^(RCUserInfo *user) {
+                                       [weakSelf.portraitImageView
+                                           sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                                             placeholderImage:[UIImage imageNamed:@"contact"]];
+                                       weakSelf.nameLabel.text = user.name;
+                                   }];
 }
 
-- (void)setCellSelectState:(RCDGroupMemberSelectCellState)state{
+- (void)setCellSelectState:(RCDGroupMemberSelectCellState)state {
     self.userInteractionEnabled = YES;
     if (state == RCDGroupMemberSelectCellStateDisable) {
         self.userInteractionEnabled = NO;
         self.selectIcon.image = [UIImage imageNamed:@"disable_select"];
-    }else if(state == RCDGroupMemberSelectCellStateUnselected){
+    } else if (state == RCDGroupMemberSelectCellStateUnselected) {
         self.selectIcon.image = [UIImage imageNamed:@"forward_unselected"];
-    }else if(state == RCDGroupMemberSelectCellStateSelected){
+    } else if (state == RCDGroupMemberSelectCellStateSelected) {
         self.selectIcon.image = [UIImage imageNamed:@"forward_selected"];
     }
-    
 }
 
-- (void)addSubviews{
+- (void)addSubviews {
     [self.contentView addSubview:self.portraitImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.selectIcon];
-    
+
     [self.selectIcon mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).offset(12);
         make.height.width.offset(22);
     }];
-    
+
     [self.portraitImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.selectIcon.mas_right).offset(9);
         make.height.width.offset(40);
     }];
-    
+
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.portraitImageView.mas_right).offset(9);
@@ -106,7 +108,7 @@
     return _nameLabel;
 }
 
-- (UIImageView *)selectIcon{
+- (UIImageView *)selectIcon {
     if (!_selectIcon) {
         _selectIcon = [[UIImageView alloc] init];
         [self setCellSelectState:(RCDGroupMemberSelectCellStateUnselected)];

@@ -26,7 +26,7 @@
     [encoder encodeObject:self.number forKey:KEY_RCDGROUP_INFO_NUMBER];
 }
 
-- (instancetype)initWithJson:(NSDictionary *)json{
+- (instancetype)initWithJson:(NSDictionary *)json {
     if (self = [super init]) {
         self.groupId = [json objectForKey:@"id"];
         self.groupName = [json objectForKey:@"name"];
@@ -36,7 +36,7 @@
         if (!self.introduce) {
             self.introduce = @"";
         }
-        self.number = [[json objectForKey:@"memberCount"] stringValue] ;
+        self.number = [[json objectForKey:@"memberCount"] stringValue];
         self.maxNumber = [json objectForKey:@"max_number"];
         NSString *deletedAt = [json objectForKey:@"deletedAt"];
         if (deletedAt.length > 0) {

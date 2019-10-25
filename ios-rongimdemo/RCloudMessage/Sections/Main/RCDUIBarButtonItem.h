@@ -10,7 +10,7 @@
 
 @interface RCDUIBarButtonItem : UIBarButtonItem
 
-@property(nonatomic, strong) UIButton *button;
+@property (nonatomic, strong) UIButton *button;
 //初始化包含图片的
 - (RCDUIBarButtonItem *)initWithLeftBarButton:(NSString *)title target:(id)target action:(SEL)method;
 

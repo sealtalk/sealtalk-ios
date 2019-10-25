@@ -14,7 +14,7 @@
 
 @interface RCDGroupViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property(nonatomic, strong) NSMutableArray *groups;
+@property (nonatomic, strong) NSMutableArray *groups;
 
 @end
 
@@ -27,7 +27,7 @@
     [self setupNavi];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self loadData];
 }
@@ -36,9 +36,9 @@
 - (void)loadData {
     self.groups = [NSMutableArray arrayWithArray:[RCDGroupManager getMyGroupList]];
     __weak typeof(self) weakSelf = self;
-    [RCDGroupManager getMyGroupListFromServer:^(NSArray<RCDGroupInfo *> * _Nonnull groupList) {
+    [RCDGroupManager getMyGroupListFromServer:^(NSArray<RCDGroupInfo *> *_Nonnull groupList) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if(groupList){
+            if (groupList) {
                 weakSelf.groups = groupList.mutableCopy;
             }
             [weakSelf.tableView reloadData];
@@ -84,7 +84,7 @@
     if (!cell) {
         cell = [[RCDGroupTableViewCell alloc] init];
     }
-    
+
     RCDGroupInfo *group = self.groups[indexPath.row];
     [cell setModel:group];
     return cell;

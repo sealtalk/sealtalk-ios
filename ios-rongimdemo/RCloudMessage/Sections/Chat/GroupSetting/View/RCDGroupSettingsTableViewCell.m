@@ -13,7 +13,7 @@
 #import "RCDDBManager.h"
 
 @implementation RCDGroupSettingsTableViewCell
-- (instancetype)initWithTitle:(NSString *)title andGroupInfo:(RCDGroupInfo *)groupInfo{
+- (instancetype)initWithTitle:(NSString *)title andGroupInfo:(RCDGroupInfo *)groupInfo {
     groupInfo = [RCDGroupManager getGroupInfo:groupInfo.groupId];
     if ([title isEqualToString:RCDLocalizedString(@"group_portrait")]) {
         NSString *groupPortrait;
@@ -26,14 +26,14 @@
                              leftImageSize:CGSizeZero
                               rightImaeStr:groupPortrait
                             rightImageSize:CGSizeMake(25, 25)];
-    }else if ([title isEqualToString:RCDLocalizedString(@"GroupQR")]){
+    } else if ([title isEqualToString:RCDLocalizedString(@"GroupQR")]) {
         self = [super initWithLeftImageStr:nil
                              leftImageSize:CGSizeZero
                               rightImaeStr:@"qr"
                             rightImageSize:CGSizeMake(22, 22)];
     }
     //一般cell
-    else{
+    else {
         self = [super init];
     }
     [self initSubviewsWithTitle:title andGroupInfo:groupInfo];
@@ -42,7 +42,8 @@
 
 - (void)initSubviewsWithTitle:(NSString *)title andGroupInfo:(RCDGroupInfo *)groupInfo {
     self.leftLabel.text = title;
-    if ([title isEqualToString:[NSString stringWithFormat:RCDLocalizedString(@"all_group_member_z"), groupInfo.number]]) {
+    if ([title
+            isEqualToString:[NSString stringWithFormat:RCDLocalizedString(@"all_group_member_z"), groupInfo.number]]) {
         [self setCellStyle:DefaultStyle];
         self.tag = RCDGroupSettingsTableViewCellGroupNameTag;
     } else if ([title isEqualToString:RCDLocalizedString(@"group_portrait")]) {
@@ -65,7 +66,7 @@
     } else if ([title isEqualToString:RCDLocalizedString(@"stick_on_top")]) {
         [self setCellStyle:SwitchStyle];
         self.switchButton.tag = SwitchButtonTag + 1;
-    }else if ([title isEqualToString:RCDLocalizedString(@"SaveToAddress")]) {
+    } else if ([title isEqualToString:RCDLocalizedString(@"SaveToAddress")]) {
         [self setCellStyle:SwitchStyle];
         self.switchButton.tag = SwitchButtonTag + 2;
         self.switchButton.on = [RCDGroupManager isInMyGroups:groupInfo.groupId];
@@ -76,7 +77,7 @@
         [self setCleanUpGroupMessagesRegularly:groupInfo];
     } else if ([title isEqualToString:RCDLocalizedString(@"clear_chat_history")]) {
         [self setClearChatHistory];
-    }else if ([title isEqualToString:RCDLocalizedString(@"MyInfoInGroup")]){
+    } else if ([title isEqualToString:RCDLocalizedString(@"MyInfoInGroup")]) {
         [self setCellStyle:DefaultStyle];
     }
 }
@@ -89,29 +90,30 @@
 - (void)setCleanUpGroupMessagesRegularly:(RCDGroupInfo *)groupInfo {
     [self setCellStyle:DefaultStyle_RightLabel];
     self.leftLabel.text = RCDLocalizedString(@"CleanUpGroupMessagesRegularly");
-    RCDGroupMessageClearStatus status = [RCDDBManager getMessageClearStatus:ConversationType_GROUP targetId:groupInfo.groupId];
+    RCDGroupMessageClearStatus status =
+        [RCDDBManager getMessageClearStatus:ConversationType_GROUP targetId:groupInfo.groupId];
     [self changeGroupMessageStatus:status];
 }
 
 - (void)changeGroupMessageStatus:(RCDGroupMessageClearStatus)status {
     NSString *content = nil;
     switch (status) {
-        case RCDGroupMessageClearStatusClose:
-            content = RCDLocalizedString(@"PleaseSetTime");
-            break;
-        case RCDGroupMessageClearStatusBefore3d:
-            content = RCDLocalizedString(@"CleanUpGroupMessages3DaysAgo");
-            break;
-        case RCDGroupMessageClearStatusBefore7d:
-            content = RCDLocalizedString(@"CleanUpGroupMessages7DaysAgo");
-            break;
-        case RCDGroupMessageClearStatusBefore36h:
-            content = RCDLocalizedString(@"CleanUpGroupMessages36HoursAgo");
-            break;
-        case RCDGroupMessageClearStatusUnknown:
-            content = RCDLocalizedString(@"PleaseSetTime");
-        default:
-            break;
+    case RCDGroupMessageClearStatusClose:
+        content = RCDLocalizedString(@"PleaseSetTime");
+        break;
+    case RCDGroupMessageClearStatusBefore3d:
+        content = RCDLocalizedString(@"CleanUpGroupMessages3DaysAgo");
+        break;
+    case RCDGroupMessageClearStatusBefore7d:
+        content = RCDLocalizedString(@"CleanUpGroupMessages7DaysAgo");
+        break;
+    case RCDGroupMessageClearStatusBefore36h:
+        content = RCDLocalizedString(@"CleanUpGroupMessages36HoursAgo");
+        break;
+    case RCDGroupMessageClearStatusUnknown:
+        content = RCDLocalizedString(@"PleaseSetTime");
+    default:
+        break;
     }
     self.rightLabel.text = content;
 }

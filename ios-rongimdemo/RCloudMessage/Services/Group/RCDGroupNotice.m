@@ -9,7 +9,7 @@
 #import "RCDGroupNotice.h"
 
 @implementation RCDGroupNotice
-- (instancetype)initWithJson:(NSDictionary *)json{
+- (instancetype)initWithJson:(NSDictionary *)json {
     if (self = [super init]) {
         self.groupId = json[@"group"][@"id"];
         self.operatorId = json[@"requester"][@"id"];

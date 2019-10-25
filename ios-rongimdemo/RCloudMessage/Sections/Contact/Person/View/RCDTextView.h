@@ -16,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)rcdTextView:(RCDTextView *)textView textDidChange:(NSString *)text;
 @end
 
-
 @interface RCDTextView : UITextView
 
 @property (nonatomic, weak) id<RCDTextViewDelegate> textChangeDelegate;

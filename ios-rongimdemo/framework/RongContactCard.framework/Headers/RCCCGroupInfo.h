@@ -14,6 +14,6 @@
 //父类RCGroup中有三个属性，群组ID、群组名称和群组头像地址
 
 /** 人数 */
-@property(nonatomic, strong) NSString *number;
+@property (nonatomic, strong) NSString *number;
 
 @end

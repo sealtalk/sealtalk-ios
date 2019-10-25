@@ -80,7 +80,7 @@
                 model.otherInformation = user.displayName;
             }
             model.searchType = RCDSearchFriend;
-            
+
             [friendResults addObject:model];
         }
     }
@@ -146,19 +146,22 @@
         return nil;
     }
     NSMutableArray *array = [NSMutableArray array];
-    NSArray *messsageResult = [[RCIMClient sharedRCIMClient]
-        searchConversations:@[ @(ConversationType_GROUP), @(ConversationType_PRIVATE) ]
-                messageType:@[
-                    [RCTextMessage getObjectName], [RCRichContentMessage getObjectName], [RCFileMessage getObjectName]
-                ]
-                    keyword:searchText];
+    NSArray *messsageResult =
+        [[RCIMClient sharedRCIMClient] searchConversations:@[ @(ConversationType_GROUP), @(ConversationType_PRIVATE) ]
+                                               messageType:@[
+                                                   [RCTextMessage getObjectName],
+                                                   [RCRichContentMessage getObjectName],
+                                                   [RCFileMessage getObjectName]
+                                               ]
+                                                   keyword:searchText];
 
     for (RCSearchConversationResult *result in messsageResult) {
         RCDSearchResultModel *model = [[RCDSearchResultModel alloc] init];
         model.conversationType = result.conversation.conversationType;
         model.targetId = result.conversation.targetId;
         if (result.matchCount > 1) {
-            model.otherInformation = [NSString stringWithFormat:RCDLocalizedString(@"total_related_message"), result.matchCount];
+            model.otherInformation =
+                [NSString stringWithFormat:RCDLocalizedString(@"total_related_message"), result.matchCount];
         } else {
             NSString *string = nil;
             model.objectName = result.conversation.objectName;

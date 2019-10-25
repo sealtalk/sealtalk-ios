@@ -40,7 +40,9 @@
 #import "RCDGroupMemberDetailController.h"
 static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
-@interface RCDGroupSettingsTableViewController ()<UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, RCDBaseSettingTableViewCellDelegate, RCDUserListCollectionViewDelegate>
+@interface RCDGroupSettingsTableViewController () <UIActionSheetDelegate, UINavigationControllerDelegate,
+                                                   UIImagePickerControllerDelegate, RCDBaseSettingTableViewCellDelegate,
+                                                   RCDUserListCollectionViewDelegate>
 @property (nonatomic, strong) RCDUserListCollectionView *headerView;
 @property (nonatomic, strong) NSArray *memberList;
 @property (nonatomic, strong) NSArray *headerDisplayMembers;
@@ -64,7 +66,10 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     self.tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
     self.tableView.separatorColor = HEXCOLOR(0xdfdfdf);
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(backBarButtonItemClicked:)];
+    RCDUIBarButtonItem *leftButton =
+        [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                   target:self
+                                                   action:@selector(backBarButtonItemClicked:)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
     [self registerNotification];
     [self startLoad];
@@ -73,29 +78,29 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if (self.group.number) {
-        self.title = [NSString stringWithFormat:RCDLocalizedString(@"group_information_x"),self.group.number];
+        self.title = [NSString stringWithFormat:RCDLocalizedString(@"group_information_x"), self.group.number];
     } else {
         self.title = RCDLocalizedString(@"group_information");
     }
 }
 
 - (void)dealloc {
-    NSLog(@"%s",__func__);
+    NSLog(@"%s", __func__);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (actionSheet.tag == 200) {
         [self pushImagePickVC:buttonIndex];
-    }else if (actionSheet.tag == 100) {
+    } else if (actionSheet.tag == 100) {
         if (buttonIndex == 0) {
             [self clearHistoryMessage];
         }
-    }else if (actionSheet.tag == 101) {
+    } else if (actionSheet.tag == 101) {
         if (buttonIndex == 0) {
             [self quitGroup];
         }
-    }else if (actionSheet.tag == 102) {
+    } else if (actionSheet.tag == 102) {
         if (buttonIndex == 0) {
             [self dismissGroup];
         }
@@ -120,12 +125,13 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     if (!cell) {
         cell = [[RCDGroupSettingsTableViewCell alloc] initWithTitle:title andGroupInfo:self.group];
     }
-    
+
     //设置switchbutton的开关状态
     if ([title isEqualToString:RCDLocalizedString(@"mute_notifications")]) {
         [self setCurrentNotificationStatus:cell.switchButton];
     } else if ([title isEqualToString:RCDLocalizedString(@"stick_on_top")]) {
-        RCConversation *conversation = [[RCIMClient sharedRCIMClient] getConversation:ConversationType_GROUP targetId:self.group.groupId];
+        RCConversation *conversation =
+            [[RCIMClient sharedRCIMClient] getConversation:ConversationType_GROUP targetId:self.group.groupId];
         cell.switchButton.on = conversation.isTop;
     } else if ([title isEqualToString:RCDLocalizedString(@"ScreenCaptureNotification")]) {
         [self setScreenCaptureSwitchStatusWithCell:cell];
@@ -171,7 +177,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSArray *array = self.settingTableArr[indexPath.section];
     NSString *title = array[indexPath.row];
-    if ([title isEqualToString:[NSString stringWithFormat:RCDLocalizedString(@"all_group_member_z"), self.group.number]]) {
+    if ([title
+            isEqualToString:[NSString stringWithFormat:RCDLocalizedString(@"all_group_member_z"), self.group.number]]) {
         [self pushGroupMemberVC];
     } else if ([title isEqualToString:RCDLocalizedString(@"group_portrait")]) {
         [self choosePortrait];
@@ -186,34 +193,39 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     } else if ([title isEqualToString:RCDLocalizedString(@"search_chat_history")]) {
         [self pushSearchHistoryVC];
     } else if ([title isEqualToString:RCDLocalizedString(@"CleanUpGroupMessagesRegularly")]) {
-        if ([RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.group.groupId].role == RCDGroupMemberRoleOwner) {
+        if ([RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.group.groupId].role ==
+            RCDGroupMemberRoleOwner) {
             [self cleanUpGroupMessagesRegularly];
         } else {
             [self showHUDMessage:RCDLocalizedString(@"OperateOnlyGroupCreator")];
         }
     } else if ([title isEqualToString:RCDLocalizedString(@"clear_chat_history")]) {
         [self showActionSheet:RCDLocalizedString(@"clear_chat_history_alert") tag:100];
-    } else if ([title isEqualToString:RCDLocalizedString(@"MyInfoInGroup")]){
+    } else if ([title isEqualToString:RCDLocalizedString(@"MyInfoInGroup")]) {
         [self pushMyInfoInGroup];
     }
 }
 
 #pragma mark - RCDUserListCollectionViewDelegate
-- (void)didTipHeaderClicked:(NSString *)userId{
+- (void)didTipHeaderClicked:(NSString *)userId {
     UIViewController *vc = [RCDPersonDetailViewController configVC:userId groupId:self.group.groupId];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)addButtonDidClicked{
-    RCDContactSelectedTableViewController *contactSelectedVC = [[RCDContactSelectedTableViewController alloc] initWithTitle:RCDLocalizedString(@"select_contact") isAllowsMultipleSelection:YES];
+- (void)addButtonDidClicked {
+    RCDContactSelectedTableViewController *contactSelectedVC =
+        [[RCDContactSelectedTableViewController alloc] initWithTitle:RCDLocalizedString(@"select_contact")
+                                           isAllowsMultipleSelection:YES];
     contactSelectedVC.groupId = self.group.groupId;
     contactSelectedVC.orignalGroupMembers = [self.memberList mutableCopy];
     contactSelectedVC.groupOptionType = RCDContactSelectedGroupOptionTypeAdd;
     [self.navigationController pushViewController:contactSelectedVC animated:YES];
 }
 
-- (void)deleteButtonDidClicked{
-    RCDContactSelectedTableViewController *contactSelectedVC = [[RCDContactSelectedTableViewController alloc] initWithTitle:RCDLocalizedString(@"remove_member") isAllowsMultipleSelection:YES];
+- (void)deleteButtonDidClicked {
+    RCDContactSelectedTableViewController *contactSelectedVC =
+        [[RCDContactSelectedTableViewController alloc] initWithTitle:RCDLocalizedString(@"remove_member")
+                                           isAllowsMultipleSelection:YES];
     contactSelectedVC.groupId = self.group.groupId;
     NSMutableArray *members = [NSMutableArray new];
     for (NSString *userId in self.memberList) {
@@ -239,8 +251,8 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         UIImage *originImage = [info objectForKey:UIImagePickerControllerOriginalImage];
         CGRect captureRect = [[info objectForKey:UIImagePickerControllerCropRect] CGRectValue];
         UIImage *captureImage =
-        [UIImage getSubImage:originImage Rect:captureRect imageOrientation:originImage.imageOrientation];
-        
+            [UIImage getSubImage:originImage Rect:captureRect imageOrientation:originImage.imageOrientation];
+
         UIImage *scaleImage = [UIImage scaleImage:captureImage toScale:0.8];
         data = UIImageJPEGRepresentation(scaleImage, 0.00001);
     }
@@ -249,32 +261,36 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     hud.labelText = RCDLocalizedString(@"Uploading_avatar");
     [hud show:YES];
     __weak typeof(self) weakSelf = self;
-    [RCDUploadManager uploadImage:data
-                         complete:^(NSString *url) {
-                             if (url.length > 0) {
-                                 [RCDGroupManager setGroupPortrait:url groupId:weakSelf.group.groupId complete:^(BOOL success) {
-                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                         [hud hide:YES];
-                                         if (success == YES) {
-                                             RCDBaseSettingTableViewCell *cell =
-                                             (RCDBaseSettingTableViewCell *)[weakSelf.tableView viewWithTag:RCDGroupSettingsTableViewCellGroupPortraitTag];
-                                             [cell.rightImageView
-                                              sd_setImageWithURL:[NSURL URLWithString:url]];
-                                             //在修改群组头像成功后，更新本地数据库。
-                                             //                                      cell.PortraitImg.image = image;
-                                         } else {
-                                             [self showAlert:RCDLocalizedString(@"Upload_avatar_fail")];
-                                         }
-                                     });
-                                 }];
-                             } else {
-                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                     //关闭HUD
-                                     [hud hide:YES];
-                                     [self showAlert:RCDLocalizedString(@"Upload_avatar_fail")];
-                                 });
-                             }
-                         }];
+    [RCDUploadManager
+        uploadImage:data
+           complete:^(NSString *url) {
+               if (url.length > 0) {
+                   [RCDGroupManager
+                       setGroupPortrait:url
+                                groupId:weakSelf.group.groupId
+                               complete:^(BOOL success) {
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                       [hud hide:YES];
+                                       if (success == YES) {
+                                           RCDBaseSettingTableViewCell *cell =
+                                               (RCDBaseSettingTableViewCell *)[weakSelf.tableView
+                                                   viewWithTag:RCDGroupSettingsTableViewCellGroupPortraitTag];
+                                           [cell.rightImageView sd_setImageWithURL:[NSURL URLWithString:url]];
+                                           //在修改群组头像成功后，更新本地数据库。
+                                           //                                      cell.PortraitImg.image = image;
+                                       } else {
+                                           [self showAlert:RCDLocalizedString(@"Upload_avatar_fail")];
+                                       }
+                                   });
+                               }];
+               } else {
+                   dispatch_async(dispatch_get_main_queue(), ^{
+                       //关闭HUD
+                       [hud hide:YES];
+                       [self showAlert:RCDLocalizedString(@"Upload_avatar_fail")];
+                   });
+               }
+           }];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -284,10 +300,10 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     //如果是“消息免打扰”的switch点击
     if (switchBtn.tag == SwitchButtonTag) {
         [self clickNotificationBtn:sender];
-    } else if (switchBtn.tag == SwitchButtonTag+1){ //
+    } else if (switchBtn.tag == SwitchButtonTag + 1) { //
         //“会话置顶”的switch点击
         [self clickIsTopBtn:sender];
-    } else if (switchBtn.tag == SwitchButtonTag+2){
+    } else if (switchBtn.tag == SwitchButtonTag + 2) {
         //“保存到通讯录”的switch点击
         [self saveToAddressBook:sender];
     } else if (switchBtn.tag == SwitchButtonTag + 3) {
@@ -296,7 +312,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 #pragma mark - Notification Center
-- (void)registerNotification{
+- (void)registerNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didGroupInfoUpdateNotification:)
                                                  name:RCDGroupInfoUpdateKey
@@ -307,13 +323,13 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
                                                object:nil];
 }
 
-- (void)didGroupInfoUpdateNotification:(NSNotification *)notification{
+- (void)didGroupInfoUpdateNotification:(NSNotification *)notification {
     NSString *targetId = notification.object;
     if ([targetId isEqualToString:self.group.groupId]) {
         [self refreshGroupInfo];
     }
 }
-- (void)didGroupMemberUpdateNotification:(NSNotification *)notification{
+- (void)didGroupMemberUpdateNotification:(NSNotification *)notification {
     NSDictionary *dic = notification.object;
     if ([dic[@"targetId"] isEqualToString:self.group.groupId]) {
         [self refreshGroupMemberInfo];
@@ -321,10 +337,10 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 #pragma mark - helper
-- (void)pushMyInfoInGroup{
+- (void)pushMyInfoInGroup {
     if (self.group.isDismiss) {
         [self.view showHUDMessage:RCDLocalizedString(@"GroupNoExist")];
-    }else{
+    } else {
         RCDGroupMemberDetailController *myInfoVC = [[RCDGroupMemberDetailController alloc] init];
         [myInfoVC setUpdateMemberDetail:^{
             [self.headerView reloadData];
@@ -335,29 +351,32 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     }
 }
 
-- (void)pushGroupManageVC{
-    RCDGroupMember *member = [RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.group.groupId];
+- (void)pushGroupManageVC {
+    RCDGroupMember *member =
+        [RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.group.groupId];
     if (member.role != RCDGroupMemberRoleMember) {
         RCDGroupManageController *groupManageVC = [[RCDGroupManageController alloc] init];
         groupManageVC.groupId = self.group.groupId;
         [self.navigationController pushViewController:groupManageVC animated:YES];
-    }else{
+    } else {
         [self showAlert:RCDLocalizedString(@"Only_group_owner_and_manager_can_manage")];
     }
 }
 
-- (void)pushQRCodeVC{
-    RCDQRCodeController *qrCodeVC = [[RCDQRCodeController alloc] initWithTargetId:self.group.groupId conversationType:ConversationType_GROUP];
+- (void)pushQRCodeVC {
+    RCDQRCodeController *qrCodeVC =
+        [[RCDQRCodeController alloc] initWithTargetId:self.group.groupId conversationType:ConversationType_GROUP];
     [self.navigationController pushViewController:qrCodeVC animated:YES];
 }
 
-- (void)pushGroupMemberVC{
-    RCDGroupMemberListController *groupMembersVC = [[RCDGroupMemberListController alloc] initWithGroupId:self.group.groupId];
+- (void)pushGroupMemberVC {
+    RCDGroupMemberListController *groupMembersVC =
+        [[RCDGroupMemberListController alloc] initWithGroupId:self.group.groupId];
     groupMembersVC.groupMembers = self.memberList;
     [self.navigationController pushViewController:groupMembersVC animated:YES];
 }
 
-- (void)pushEditGroupNameVC{
+- (void)pushEditGroupNameVC {
     if ([[RCDGroupManager getGroupOwner:self.group.groupId] isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
         //如果是创建者，进入修改群名称页面
         RCDEditGroupNameViewController *editGroupNameVC = [[RCDEditGroupNameViewController alloc] init];
@@ -368,99 +387,111 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     }
 }
 
-- (void)pushGroupAnnouncementVC{
-    RCDGroupMember *member = [RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.group.groupId];
-    if(member.role == RCDGroupMemberRoleMember){
+- (void)pushGroupAnnouncementVC {
+    RCDGroupMember *member =
+        [RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.group.groupId];
+    if (member.role == RCDGroupMemberRoleMember) {
         __weak typeof(self) weakSelf = self;
-        [RCDGroupManager getGroupAnnouncement:self.group.groupId complete:^(RCDGroupAnnouncement *announce) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (announce.content.length > 0) {
-                    [NormalAlertView showAlertWithTitle:RCDLocalizedString(@"group_announcement") message:announce.content describeTitle:[NSString stringWithFormat:RCDLocalizedString(@"AnnouncementTime"),[RCDUtilities getDataString:announce.publishTime]] confirmTitle:RCDLocalizedString(@"confirm") confirm:^{
-                        
-                    }];
-                }else{
-                    [weakSelf showAlert:RCDLocalizedString(@"GroupNoneAnnounce")];
-                }
-            });
-        }];
-    }else{
+        [RCDGroupManager
+            getGroupAnnouncement:self.group.groupId
+                        complete:^(RCDGroupAnnouncement *announce) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                if (announce.content.length > 0) {
+                                    [NormalAlertView
+                                        showAlertWithTitle:RCDLocalizedString(@"group_announcement")
+                                                   message:announce.content
+                                             describeTitle:[NSString
+                                                               stringWithFormat:RCDLocalizedString(@"AnnouncementTime"),
+                                                                                [RCDUtilities
+                                                                                    getDataString:announce.publishTime]]
+                                              confirmTitle:RCDLocalizedString(@"confirm")
+                                                   confirm:^{
+
+                                                   }];
+                                } else {
+                                    [weakSelf showAlert:RCDLocalizedString(@"GroupNoneAnnounce")];
+                                }
+                            });
+                        }];
+    } else {
         RCDGroupAnnouncementViewController *vc = [[RCDGroupAnnouncementViewController alloc] init];
         vc.groupId = self.group.groupId;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
-- (void)pushSearchHistoryVC{
+- (void)pushSearchHistoryVC {
     RCDSearchHistoryMessageController *searchViewController = [[RCDSearchHistoryMessageController alloc] init];
     searchViewController.conversationType = ConversationType_GROUP;
     searchViewController.targetId = self.group.groupId;
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
-                           
-                           
 
-- (void)quitGroup{
+- (void)quitGroup {
     //判断如果当前群组已经解散，直接删除消息和会话，并跳转到会话列表页面。
     if (self.group.isDismiss) {
         [self clearConversationAndMessage];
         [self.navigationController popToRootViewControllerAnimated:YES];
         return;
     }
-    
-    [RCDGroupManager quitGroup:self.group.groupId complete:^(BOOL success) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (success) {
-                [self clearConversationAndMessage];
-                [self.navigationController popToRootViewControllerAnimated:YES];
-            } else {
-                [self showAlert:RCDLocalizedString(@"quit_fail")];
-            }
-        });
-    }];
+
+    [RCDGroupManager quitGroup:self.group.groupId
+                      complete:^(BOOL success) {
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                              if (success) {
+                                  [self clearConversationAndMessage];
+                                  [self.navigationController popToRootViewControllerAnimated:YES];
+                              } else {
+                                  [self showAlert:RCDLocalizedString(@"quit_fail")];
+                              }
+                          });
+                      }];
 }
 
-- (void)dismissGroup{
-    [RCDGroupManager dismissGroup:self.group.groupId complete:^(BOOL success) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (success) {
-                [self clearConversationAndMessage];
-                [self.navigationController popToRootViewControllerAnimated:YES];
-            } else {
-                [self showAlert:RCDLocalizedString(@"Disband_group_fail")];
-            }
-        });
-    }];
+- (void)dismissGroup {
+    [RCDGroupManager dismissGroup:self.group.groupId
+                         complete:^(BOOL success) {
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                                 if (success) {
+                                     [self clearConversationAndMessage];
+                                     [self.navigationController popToRootViewControllerAnimated:YES];
+                                 } else {
+                                     [self showAlert:RCDLocalizedString(@"Disband_group_fail")];
+                                 }
+                             });
+                         }];
 }
 
-- (void)saveToAddressBook:(UISwitch *)switchButton{
+- (void)saveToAddressBook:(UISwitch *)switchButton {
     __weak typeof(self) weakSelf = self;
     if (!switchButton.on) {
-        [RCDGroupManager removeFromMyGroups:self.group.groupId complete:^(BOOL success) {
-            if (!success) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    switchButton.on = YES;
-                    [weakSelf.view showHUDMessage:RCDLocalizedString(@"set_fail")];
-                });
-            }
-        }];
-    }else{
-        [RCDGroupManager addToMyGroups:self.group.groupId complete:^(BOOL success) {
-            if (!success) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf.view showHUDMessage:RCDLocalizedString(@"set_fail")];
-                    switchButton.on = NO;
-                });
-                
-            }
-        }];
+        [RCDGroupManager removeFromMyGroups:self.group.groupId
+                                   complete:^(BOOL success) {
+                                       if (!success) {
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               switchButton.on = YES;
+                                               [weakSelf.view showHUDMessage:RCDLocalizedString(@"set_fail")];
+                                           });
+                                       }
+                                   }];
+    } else {
+        [RCDGroupManager addToMyGroups:self.group.groupId
+                              complete:^(BOOL success) {
+                                  if (!success) {
+                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                          [weakSelf.view showHUDMessage:RCDLocalizedString(@"set_fail")];
+                                          switchButton.on = NO;
+                                      });
+                                  }
+                              }];
     }
 }
 
-- (void)clearHistoryMessage{
+- (void)clearHistoryMessage {
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     RCDBaseSettingTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     UIActivityIndicatorView *activityIndicatorView =
-    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     float cellWidth = cell.bounds.size.width;
     UIView *loadingView = [[UIView alloc] initWithFrame:CGRectMake(cellWidth - 50, 10, 40, 40)];
     [loadingView addSubview:activityIndicatorView];
@@ -469,55 +500,72 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         [cell addSubview:loadingView];
     });
     __weak typeof(self) weakSelf = self;
-    [[RCDIMService sharedService] clearHistoryMessage:ConversationType_GROUP targetId:weakSelf.group.groupId successBlock:^{
-        [weakSelf showAlert:RCDLocalizedString(@"clear_chat_history_success")];
-        [loadingView removeFromSuperview];
-        weakSelf.clearMessageHistory();
-    } errorBlock:^(RCErrorCode status) {
-        [weakSelf showAlert:RCDLocalizedString(@"clear_chat_history_fail")];
-        [loadingView removeFromSuperview];
-    }];
+    [[RCDIMService sharedService] clearHistoryMessage:ConversationType_GROUP
+        targetId:weakSelf.group.groupId
+        successBlock:^{
+            [weakSelf showAlert:RCDLocalizedString(@"clear_chat_history_success")];
+            [loadingView removeFromSuperview];
+            weakSelf.clearMessageHistory();
+        }
+        errorBlock:^(RCErrorCode status) {
+            [weakSelf showAlert:RCDLocalizedString(@"clear_chat_history_fail")];
+            [loadingView removeFromSuperview];
+        }];
 }
 
-- (void)clearConversationAndMessage{
-    NSArray *latestMessages = [[RCIMClient sharedRCIMClient] getLatestMessages:ConversationType_GROUP targetId:self.group.groupId count:1];
+- (void)clearConversationAndMessage {
+    NSArray *latestMessages =
+        [[RCIMClient sharedRCIMClient] getLatestMessages:ConversationType_GROUP targetId:self.group.groupId count:1];
     if (latestMessages.count > 0) {
         RCMessage *message = (RCMessage *)[latestMessages firstObject];
-        [[RCIMClient sharedRCIMClient]clearRemoteHistoryMessages:ConversationType_GROUP targetId:self.group.groupId recordTime:message.sentTime success:^{
-            [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_GROUP targetId:self.group.groupId];
-        }error:nil];
+        [[RCIMClient sharedRCIMClient] clearRemoteHistoryMessages:ConversationType_GROUP
+                                                         targetId:self.group.groupId
+                                                       recordTime:message.sentTime
+                                                          success:^{
+                                                              [[RCIMClient sharedRCIMClient]
+                                                                  clearMessages:ConversationType_GROUP
+                                                                       targetId:self.group.groupId];
+                                                          }
+                                                            error:nil];
     }
     [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_GROUP targetId:self.group.groupId];
 }
 
-- (void)refreshGroupMemberInfo{
+- (void)refreshGroupMemberInfo {
     __weak typeof(self) weakSelf = self;
-    [RCDGroupManager getGroupMembersFromServer:self.group.groupId complete:^(NSArray<NSString *> * _Nonnull memberIdList) {
-        if(memberIdList){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.title = [NSString stringWithFormat:RCDLocalizedString(@"group_information_x"),[NSString stringWithFormat:@"%lu",(unsigned long)memberIdList.count]];
-            });
-            weakSelf.memberList = [weakSelf resetMemberList:memberIdList];
-            weakSelf.headerDisplayMembers = [weakSelf getHeaderDisplayMemberData];
-            [weakSelf setHeaderView];
-        }
-     }];
+    [RCDGroupManager
+        getGroupMembersFromServer:self.group.groupId
+                         complete:^(NSArray<NSString *> *_Nonnull memberIdList) {
+                             if (memberIdList) {
+                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                     weakSelf.title = [NSString
+                                         stringWithFormat:RCDLocalizedString(@"group_information_x"),
+                                                          [NSString
+                                                              stringWithFormat:@"%lu",
+                                                                               (unsigned long)memberIdList.count]];
+                                 });
+                                 weakSelf.memberList = [weakSelf resetMemberList:memberIdList];
+                                 weakSelf.headerDisplayMembers = [weakSelf getHeaderDisplayMemberData];
+                                 [weakSelf setHeaderView];
+                             }
+                         }];
 }
 
 - (void)refreshGroupClearStatus {
-    [RCDChatManager getGroupMessageClearStatus:self.group.groupId complete:^(RCDGroupMessageClearStatus status) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self changeGroupMessageStatus:status];
-        });
-    }];
+    [RCDChatManager getGroupMessageClearStatus:self.group.groupId
+                                      complete:^(RCDGroupMessageClearStatus status) {
+                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                              [self changeGroupMessageStatus:status];
+                                          });
+                                      }];
 }
 
-- (NSArray *)getHeaderDisplayMemberData{
+- (NSArray *)getHeaderDisplayMemberData {
     NSMutableArray *mutableArray = [NSMutableArray array];
     if (self.memberList.count <= 18) {
         mutableArray = self.memberList.mutableCopy;
-    }else{
-        for (int i = 0 ;i < 18;i++) {
+    } else {
+        for (int i = 0; i < 18; i++) {
             [mutableArray addObject:self.memberList[i]];
         }
     }
@@ -528,61 +576,85 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     self.group = [RCDGroupManager getGroupInfo:self.group.groupId];
     [self refreshTableViewInfo];
     __weak typeof(self) weakSelf = self;
-    [RCDGroupManager getGroupInfoFromServer:self.group.groupId complete:^(RCDGroupInfo * _Nonnull groupInfo) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (groupInfo) {
-                weakSelf.group = groupInfo;
-            }
-            [weakSelf refreshTableViewInfo];
-        });
-    }];
+    [RCDGroupManager getGroupInfoFromServer:self.group.groupId
+                                   complete:^(RCDGroupInfo *_Nonnull groupInfo) {
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           if (groupInfo) {
+                                               weakSelf.group = groupInfo;
+                                           }
+                                           [weakSelf refreshTableViewInfo];
+                                       });
+                                   }];
 }
 
-- (void)refreshTableViewInfo{
-    NSMutableArray *oneSectionArr = @[RCDLocalizedString(@"group_portrait"), RCDLocalizedString(@"group_name"), RCDLocalizedString(@"GroupQR"), RCDLocalizedString(@"group_announcement"), RCDLocalizedString(@"MyInfoInGroup"), RCDLocalizedString(@"GroupManage")].mutableCopy;
-    RCDGroupMember *member = [RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.group.groupId];
-    if (member.role == RCDGroupMemberRoleMember){
+- (void)refreshTableViewInfo {
+    NSMutableArray *oneSectionArr = @[
+        RCDLocalizedString(@"group_portrait"),
+        RCDLocalizedString(@"group_name"),
+        RCDLocalizedString(@"GroupQR"),
+        RCDLocalizedString(@"group_announcement"),
+        RCDLocalizedString(@"MyInfoInGroup"),
+        RCDLocalizedString(@"GroupManage")
+    ].mutableCopy;
+    RCDGroupMember *member =
+        [RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.group.groupId];
+    if (member.role == RCDGroupMemberRoleMember) {
         [oneSectionArr removeObject:RCDLocalizedString(@"GroupManage")];
     }
     if ([RCDGroupManager currentUserIsGroupCreatorOrManager:self.group.groupId]) {
         self.settingTableArr = @[
-                                 @[[NSString stringWithFormat:RCDLocalizedString(@"all_group_member_z"), self.group.number]],
-                                 oneSectionArr.copy,
-                                 @[RCDLocalizedString(@"search_chat_history")],
-                                 @[RCDLocalizedString(@"mute_notifications"), RCDLocalizedString(@"stick_on_top"), RCDLocalizedString(@"SaveToAddress")],
-                                 @[RCDLocalizedString(@"ScreenCaptureNotification")],
-                                 @[RCDLocalizedString(@"CleanUpGroupMessagesRegularly")],
-                                 @[RCDLocalizedString(@"clear_chat_history")]
-                                 ];
-    }else{
+            @[ [NSString stringWithFormat:RCDLocalizedString(@"all_group_member_z"), self.group.number] ],
+            oneSectionArr.copy,
+            @[ RCDLocalizedString(@"search_chat_history") ],
+            @[
+               RCDLocalizedString(@"mute_notifications"),
+               RCDLocalizedString(@"stick_on_top"),
+               RCDLocalizedString(@"SaveToAddress")
+            ],
+            @[ RCDLocalizedString(@"ScreenCaptureNotification") ],
+            @[ RCDLocalizedString(@"CleanUpGroupMessagesRegularly") ],
+            @[ RCDLocalizedString(@"clear_chat_history") ]
+        ];
+    } else {
         self.settingTableArr = @[
-                                 @[[NSString stringWithFormat:RCDLocalizedString(@"all_group_member_z"), self.group.number]],
-                                 oneSectionArr.copy,
-                                 @[RCDLocalizedString(@"search_chat_history")],
-                                 @[RCDLocalizedString(@"mute_notifications"), RCDLocalizedString(@"stick_on_top"), RCDLocalizedString(@"SaveToAddress")],
-                                 @[RCDLocalizedString(@"CleanUpGroupMessagesRegularly")],
-                                 @[RCDLocalizedString(@"clear_chat_history")]
-                                 ];
+            @[ [NSString stringWithFormat:RCDLocalizedString(@"all_group_member_z"), self.group.number] ],
+            oneSectionArr.copy,
+            @[ RCDLocalizedString(@"search_chat_history") ],
+            @[
+               RCDLocalizedString(@"mute_notifications"),
+               RCDLocalizedString(@"stick_on_top"),
+               RCDLocalizedString(@"SaveToAddress")
+            ],
+            @[ RCDLocalizedString(@"CleanUpGroupMessagesRegularly") ],
+            @[ RCDLocalizedString(@"clear_chat_history") ]
+        ];
     }
     [self.tableView reloadData];
 }
 
-- (void)setCurrentNotificationStatus:(UISwitch *)switchButton{
-    [[RCIMClient sharedRCIMClient] getConversationNotificationStatus:ConversationType_GROUP targetId:self.group.groupId success:^(RCConversationNotificationStatus nStatus) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            switchButton.on = !nStatus;
-        });
-    }error:^(RCErrorCode status){
-        
-    }];
+- (void)setCurrentNotificationStatus:(UISwitch *)switchButton {
+    [[RCIMClient sharedRCIMClient] getConversationNotificationStatus:ConversationType_GROUP
+        targetId:self.group.groupId
+        success:^(RCConversationNotificationStatus nStatus) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                switchButton.on = !nStatus;
+            });
+        }
+        error:^(RCErrorCode status){
+
+        }];
 }
 
 - (void)showAlert:(NSString *)alertContent {
-    [NormalAlertView showAlertWithTitle:nil message:alertContent describeTitle:nil confirmTitle:RCDLocalizedString(@"confirm") confirm:^{
-    }];
+    [NormalAlertView showAlertWithTitle:nil
+                                message:alertContent
+                          describeTitle:nil
+                           confirmTitle:RCDLocalizedString(@"confirm")
+                                confirm:^{
+                                }];
 }
 
-- (void)showActionSheet:(NSString *)title tag:(NSInteger)tag{
+- (void)showActionSheet:(NSString *)title tag:(NSInteger)tag {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
                                                              delegate:self
                                                     cancelButtonTitle:RCDLocalizedString(@"cancel")
@@ -631,13 +703,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     });
 }
 
-- (void)setTableFooterView{
+- (void)setTableFooterView {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 150)];
     UIButton *joinOrQuitGroupBtn = [[UIButton alloc] init];
     [joinOrQuitGroupBtn setBackgroundImage:[UIImage imageNamed:@"group_quit"] forState:UIControlStateNormal];
     [joinOrQuitGroupBtn setBackgroundImage:[UIImage imageNamed:@"group_quit_hover"] forState:UIControlStateSelected];
-    [joinOrQuitGroupBtn setTitle:RCDLocalizedString(@"delete_and_exit")
-                        forState:UIControlStateNormal];
+    [joinOrQuitGroupBtn setTitle:RCDLocalizedString(@"delete_and_exit") forState:UIControlStateNormal];
     joinOrQuitGroupBtn.layer.cornerRadius = 5.f;
     joinOrQuitGroupBtn.layer.borderWidth = 0.5f;
     joinOrQuitGroupBtn.layer.borderColor = [HEXCOLOR(0xcc4445) CGColor];
@@ -646,11 +717,14 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     NSDictionary *views = NSDictionaryOfVariableBindings(joinOrQuitGroupBtn);
     if ([[RCDGroupManager getGroupOwner:self.group.groupId] isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
         [joinOrQuitGroupBtn setTitle:RCDLocalizedString(@"DisbandAndDelete") forState:UIControlStateNormal];
-        [joinOrQuitGroupBtn addTarget:self action:@selector(btnDismissAction:) forControlEvents:UIControlEventTouchUpInside];
+        [joinOrQuitGroupBtn addTarget:self
+                               action:@selector(btnDismissAction:)
+                     forControlEvents:UIControlEventTouchUpInside];
     } else {
-        [joinOrQuitGroupBtn setTitle:RCDLocalizedString(@"delete_and_exit")
-                            forState:UIControlStateNormal];
-        [joinOrQuitGroupBtn addTarget:self action:@selector(btnJOQAction:) forControlEvents:UIControlEventTouchUpInside];
+        [joinOrQuitGroupBtn setTitle:RCDLocalizedString(@"delete_and_exit") forState:UIControlStateNormal];
+        [joinOrQuitGroupBtn addTarget:self
+                               action:@selector(btnJOQAction:)
+                     forControlEvents:UIControlEventTouchUpInside];
     }
     [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-29-[joinOrQuitGroupBtn(42)]"
                                                                  options:0
@@ -665,16 +739,22 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 - (void)clickNotificationBtn:(id)sender {
     UISwitch *swch = sender;
-    [[RCIMClient sharedRCIMClient] setConversationNotificationStatus:ConversationType_GROUP targetId:self.group.groupId isBlocked:swch.on success:^(RCConversationNotificationStatus nStatus) {
-        NSLog(@"成功");
-    }error:^(RCErrorCode status) {
-        NSLog(@"失败");
-    }];
+    [[RCIMClient sharedRCIMClient] setConversationNotificationStatus:ConversationType_GROUP
+        targetId:self.group.groupId
+        isBlocked:swch.on
+        success:^(RCConversationNotificationStatus nStatus) {
+            NSLog(@"成功");
+        }
+        error:^(RCErrorCode status) {
+            NSLog(@"失败");
+        }];
 }
 
 - (void)clickIsTopBtn:(id)sender {
     UISwitch *swch = sender;
-    [[RCIMClient sharedRCIMClient] setConversationToTop:ConversationType_GROUP targetId:self.group.groupId isTop:swch.on];
+    [[RCIMClient sharedRCIMClient] setConversationToTop:ConversationType_GROUP
+                                               targetId:self.group.groupId
+                                                  isTop:swch.on];
 }
 
 - (void)backBarButtonItemClicked:(id)sender {
@@ -706,7 +786,12 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 
 - (void)choosePortrait {
     if ([[RCDGroupManager getGroupOwner:self.group.groupId] isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:RCDLocalizedString(@"cancel") destructiveButtonTitle:nil otherButtonTitles:RCDLocalizedString(@"take_picture"),RCDLocalizedString(@"my_album"), nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                     initWithTitle:nil
+                          delegate:self
+                 cancelButtonTitle:RCDLocalizedString(@"cancel")
+            destructiveButtonTitle:nil
+                 otherButtonTitles:RCDLocalizedString(@"take_picture"), RCDLocalizedString(@"my_album"), nil];
         actionSheet.tag = 200;
         [actionSheet showInView:self.view];
     } else {
@@ -714,14 +799,15 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     }
 }
 
-- (void)pushImagePickVC:(NSInteger)buttonIndex{
+- (void)pushImagePickVC:(NSInteger)buttonIndex {
     if (buttonIndex <= 1) {
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.allowsEditing = YES;
         picker.delegate = self;
-        if (buttonIndex == 0 && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        if (buttonIndex == 0 &&
+            [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        }else if (buttonIndex == 1){
+        } else if (buttonIndex == 1) {
             picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
             picker.modalPresentationStyle = UIModalPresentationFullScreen;
         }
@@ -750,76 +836,114 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         }
         NSString *content = nil;
         switch (status) {
-            case RCDGroupMessageClearStatusClose:
-                content = RCDLocalizedString(@"PleaseSetTime");
-                break;
-            case RCDGroupMessageClearStatusBefore3d:
-                content = RCDLocalizedString(@"CleanUpGroupMessages3DaysAgo");
-                break;
-            case RCDGroupMessageClearStatusBefore7d:
-                content = RCDLocalizedString(@"CleanUpGroupMessages7DaysAgo");
-                break;
-            case RCDGroupMessageClearStatusBefore36h:
-                content = RCDLocalizedString(@"CleanUpGroupMessages36HoursAgo");
-                break;
-            case RCDGroupMessageClearStatusUnknown:
-                content = RCDLocalizedString(@"PleaseSetTime");
-            default:
-                break;
+        case RCDGroupMessageClearStatusClose:
+            content = RCDLocalizedString(@"PleaseSetTime");
+            break;
+        case RCDGroupMessageClearStatusBefore3d:
+            content = RCDLocalizedString(@"CleanUpGroupMessages3DaysAgo");
+            break;
+        case RCDGroupMessageClearStatusBefore7d:
+            content = RCDLocalizedString(@"CleanUpGroupMessages7DaysAgo");
+            break;
+        case RCDGroupMessageClearStatusBefore36h:
+            content = RCDLocalizedString(@"CleanUpGroupMessages36HoursAgo");
+            break;
+        case RCDGroupMessageClearStatusUnknown:
+            content = RCDLocalizedString(@"PleaseSetTime");
+        default:
+            break;
         }
         cell.rightLabel.text = content;
     });
 }
 
 - (void)cleanUpGroupMessagesRegularly {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"CleanUpGroupMessages36HoursAgo") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [RCDChatManager setGroupMessageClearStatus:RCDGroupMessageClearStatusBefore36h groupId:self.group.groupId complete:^(BOOL success) {
-            if (success) {
-                [self changeGroupMessageStatus:RCDGroupMessageClearStatusBefore36h];
-            }
-            [self showMBProgressHUDWithSuccess:success];
-        }];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"CleanUpGroupMessages3DaysAgo") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [RCDChatManager setGroupMessageClearStatus:RCDGroupMessageClearStatusBefore3d groupId:self.group.groupId complete:^(BOOL success) {
-            if (success) {
-                [self changeGroupMessageStatus:RCDGroupMessageClearStatusBefore3d];
-            }
-            [self showMBProgressHUDWithSuccess:success];
-        }];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"CleanUpGroupMessages7DaysAgo") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [RCDChatManager setGroupMessageClearStatus:RCDGroupMessageClearStatusBefore7d groupId:self.group.groupId complete:^(BOOL success) {
-            if (success) {
-                [self changeGroupMessageStatus:RCDGroupMessageClearStatusBefore7d];
-            }
-            [self showMBProgressHUDWithSuccess:success];
-        }];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"NeverClean") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [RCDChatManager setGroupMessageClearStatus:RCDGroupMessageClearStatusClose groupId:self.group.groupId complete:^(BOOL success) {
-            if (success) {
-                [self changeGroupMessageStatus:RCDGroupMessageClearStatusClose];
-            }
-            [self showMBProgressHUDWithSuccess:success];
-        }];
-    }]];
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction *_Nonnull action){
+
+                                                      }]];
+    [alertController
+        addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"CleanUpGroupMessages36HoursAgo")
+                                           style:UIAlertActionStyleDefault
+                                         handler:^(UIAlertAction *_Nonnull action) {
+                                             [RCDChatManager
+                                                 setGroupMessageClearStatus:RCDGroupMessageClearStatusBefore36h
+                                                                    groupId:self.group.groupId
+                                                                   complete:^(BOOL success) {
+                                                                       if (success) {
+                                                                           [self
+                                                                               changeGroupMessageStatus:
+                                                                                   RCDGroupMessageClearStatusBefore36h];
+                                                                       }
+                                                                       [self showMBProgressHUDWithSuccess:success];
+                                                                   }];
+                                         }]];
+    [alertController
+        addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"CleanUpGroupMessages3DaysAgo")
+                                           style:UIAlertActionStyleDefault
+                                         handler:^(UIAlertAction *_Nonnull action) {
+                                             [RCDChatManager
+                                                 setGroupMessageClearStatus:RCDGroupMessageClearStatusBefore3d
+                                                                    groupId:self.group.groupId
+                                                                   complete:^(BOOL success) {
+                                                                       if (success) {
+                                                                           [self
+                                                                               changeGroupMessageStatus:
+                                                                                   RCDGroupMessageClearStatusBefore3d];
+                                                                       }
+                                                                       [self showMBProgressHUDWithSuccess:success];
+                                                                   }];
+                                         }]];
+    [alertController
+        addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"CleanUpGroupMessages7DaysAgo")
+                                           style:UIAlertActionStyleDefault
+                                         handler:^(UIAlertAction *_Nonnull action) {
+                                             [RCDChatManager
+                                                 setGroupMessageClearStatus:RCDGroupMessageClearStatusBefore7d
+                                                                    groupId:self.group.groupId
+                                                                   complete:^(BOOL success) {
+                                                                       if (success) {
+                                                                           [self
+                                                                               changeGroupMessageStatus:
+                                                                                   RCDGroupMessageClearStatusBefore7d];
+                                                                       }
+                                                                       [self showMBProgressHUDWithSuccess:success];
+                                                                   }];
+                                         }]];
+    [alertController
+        addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"NeverClean")
+                                           style:UIAlertActionStyleDefault
+                                         handler:^(UIAlertAction *_Nonnull action) {
+                                             [RCDChatManager
+                                                 setGroupMessageClearStatus:RCDGroupMessageClearStatusClose
+                                                                    groupId:self.group.groupId
+                                                                   complete:^(BOOL success) {
+                                                                       if (success) {
+                                                                           [self changeGroupMessageStatus:
+                                                                                     RCDGroupMessageClearStatusClose];
+                                                                       }
+                                                                       [self showMBProgressHUDWithSuccess:success];
+                                                                   }];
+                                         }]];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)setScreenCaptureSwitchStatusWithCell:(RCDGroupSettingsTableViewCell *)cell {
-    cell.switchButton.on = [RCDDBManager getScreenCaptureNotification:ConversationType_GROUP targetId:self.group.groupId];
-    [RCDChatManager getScreenCaptureNotification:ConversationType_GROUP targetId:self.group.groupId complete:^(BOOL result) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            cell.switchButton.on = result;
-        });
-    } error:^{
-        
-    }];
+    cell.switchButton.on =
+        [RCDDBManager getScreenCaptureNotification:ConversationType_GROUP targetId:self.group.groupId];
+    [RCDChatManager getScreenCaptureNotification:ConversationType_GROUP
+        targetId:self.group.groupId
+        complete:^(BOOL result) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.switchButton.on = result;
+            });
+        }
+        error:^{
+
+        }];
 }
 
 - (RCDTipFooterView *)footerViewWithContent:(NSString *)content {
@@ -829,32 +953,40 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 - (CGFloat)footerViewHeightWithContent:(NSString *)content {
-    return [self.tipFooterView heightForTipFooterViewWithTip:content font:[UIFont fontWithName:@"PingFangSC-Regular" size:14] constrainedSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 27, MAXFLOAT)];
+    return [self.tipFooterView
+        heightForTipFooterViewWithTip:content
+                                 font:[UIFont fontWithName:@"PingFangSC-Regular" size:14]
+                      constrainedSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 27, MAXFLOAT)];
 }
 
 - (void)setScreenCaptureNotificationWithSwitchButton:(UISwitch *)switchButton {
-    [RCDChatManager setScreenCaptureNotification:switchButton.on conversationType:ConversationType_GROUP targetId:self.group.groupId complete:^(BOOL result) {
-        if (!result) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                switchButton.on = [RCDDBManager getScreenCaptureNotification:ConversationType_GROUP targetId:self.group.groupId];
-            });
-        } else {
-            [self showHUDMessage:RCDLocalizedString(@"setting_success")];
-        }
-    }];
+    [RCDChatManager setScreenCaptureNotification:switchButton.on
+                                conversationType:ConversationType_GROUP
+                                        targetId:self.group.groupId
+                                        complete:^(BOOL result) {
+                                            if (!result) {
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    switchButton.on = [RCDDBManager
+                                                        getScreenCaptureNotification:ConversationType_GROUP
+                                                                            targetId:self.group.groupId];
+                                                });
+                                            } else {
+                                                [self showHUDMessage:RCDLocalizedString(@"setting_success")];
+                                            }
+                                        }];
 }
 
 #pragma mark - getter & setter
-- (RCDUserListCollectionView *)headerView{
+- (RCDUserListCollectionView *)headerView {
     if (!_headerView) {
         CGRect tempRect =
-        CGRectMake(0, 0, RCDScreenWidth, _headerView.collectionViewLayout.collectionViewContentSize.height);
+            CGRectMake(0, 0, RCDScreenWidth, _headerView.collectionViewLayout.collectionViewContentSize.height);
         NSString *currentUserId = [RCIMClient sharedRCIMClient].currentUserInfo.userId;
         NSString *groupOwnerId = [RCDGroupManager getGroupOwner:self.group.groupId];
         NSArray<NSString *> *groupManagers = [RCDGroupManager getGroupManagers:self.group.groupId];
         BOOL isCreator = NO;
         //群主，管理员都可以删除群成员
-        if([groupOwnerId isEqualToString:currentUserId] || [groupManagers containsObject:currentUserId]) {
+        if ([groupOwnerId isEqualToString:currentUserId] || [groupManagers containsObject:currentUserId]) {
             isCreator = YES;
         }
         _headerView = [[RCDUserListCollectionView alloc] initWithFrame:tempRect isAllowAdd:YES isAllowDelete:isCreator];

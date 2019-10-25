@@ -13,11 +13,17 @@
 
 @implementation RCDChatConfig
 
-+ (instancetype)chatConfigWithConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId  screenCaptureNotification:(BOOL)screenCaptureNotification {
-    return [[[self class] alloc] initWithChatConfigWithConversationType:conversationType targetId:targetId screenCaptureNotification:screenCaptureNotification];
++ (instancetype)chatConfigWithConversationType:(RCConversationType)conversationType
+                                      targetId:(NSString *)targetId
+                     screenCaptureNotification:(BOOL)screenCaptureNotification {
+    return [[[self class] alloc] initWithChatConfigWithConversationType:conversationType
+                                                               targetId:targetId
+                                              screenCaptureNotification:screenCaptureNotification];
 }
 
-- (instancetype)initWithChatConfigWithConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId  screenCaptureNotification:(BOOL)screenCaptureNotification {
+- (instancetype)initWithChatConfigWithConversationType:(RCConversationType)conversationType
+                                              targetId:(NSString *)targetId
+                             screenCaptureNotification:(BOOL)screenCaptureNotification {
     if (self = [super init]) {
         self.conversationType = conversationType;
         self.targetId = targetId;
@@ -26,11 +32,20 @@
     return self;
 }
 
-+ (instancetype)chatConfigWithConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId  screenCaptureNotification:(BOOL)screenCaptureNotification messageClearStatus:(RCDGroupMessageClearStatus)clearStatus {
-    return [[[self class] alloc] initWithChatConfigWithConversationType:conversationType targetId:targetId screenCaptureNotification:screenCaptureNotification messageClearStatus:clearStatus];
++ (instancetype)chatConfigWithConversationType:(RCConversationType)conversationType
+                                      targetId:(NSString *)targetId
+                     screenCaptureNotification:(BOOL)screenCaptureNotification
+                            messageClearStatus:(RCDGroupMessageClearStatus)clearStatus {
+    return [[[self class] alloc] initWithChatConfigWithConversationType:conversationType
+                                                               targetId:targetId
+                                              screenCaptureNotification:screenCaptureNotification
+                                                     messageClearStatus:clearStatus];
 }
 
-- (instancetype)initWithChatConfigWithConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId  screenCaptureNotification:(BOOL)screenCaptureNotification messageClearStatus:(RCDGroupMessageClearStatus)clearStatus {
+- (instancetype)initWithChatConfigWithConversationType:(RCConversationType)conversationType
+                                              targetId:(NSString *)targetId
+                             screenCaptureNotification:(BOOL)screenCaptureNotification
+                                    messageClearStatus:(RCDGroupMessageClearStatus)clearStatus {
     if (self = [super init]) {
         self.conversationType = conversationType;
         self.targetId = targetId;

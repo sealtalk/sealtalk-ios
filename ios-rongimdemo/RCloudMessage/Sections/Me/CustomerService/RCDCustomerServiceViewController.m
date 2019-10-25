@@ -11,42 +11,42 @@
 #import "RCDCSEvaluateView.h"
 #import "RCDCSEvaluateModel.h"
 #import "RCDCommonDefine.h"
-@interface RCDCustomerServiceViewController ()<RCDCSAnnounceViewDelegate,RCDCSEvaluateViewDelegate>
+@interface RCDCustomerServiceViewController () <RCDCSAnnounceViewDelegate, RCDCSEvaluateViewDelegate>
 //＊＊＊＊＊＊＊＊＊应用自定义评价界面开始1＊＊＊＊＊＊＊＊＊＊＊＊＊
-@property (nonatomic, strong)NSString *commentId;
-@property (nonatomic)RCCustomerServiceStatus serviceStatus;
-@property (nonatomic)BOOL quitAfterComment;
+@property (nonatomic, strong) NSString *commentId;
+@property (nonatomic) RCCustomerServiceStatus serviceStatus;
+@property (nonatomic) BOOL quitAfterComment;
 //＊＊＊＊＊＊＊＊＊应用自定义评价界面结束1＊＊＊＊＊＊＊＊＊＊＊＊＊
 
-@property (nonatomic,copy) NSString *announceClickUrl;
+@property (nonatomic, copy) NSString *announceClickUrl;
 
-@property (nonatomic,strong) RCDCSEvaluateView *evaluateView;
-//key为星级；value为RCDCSEvaluateModel对象
-@property (nonatomic,strong)NSMutableDictionary *evaStarDic;
-@property (nonatomic,strong) RCDCSAnnounceView *announceView;
+@property (nonatomic, strong) RCDCSEvaluateView *evaluateView;
+// key为星级；value为RCDCSEvaluateModel对象
+@property (nonatomic, strong) NSMutableDictionary *evaStarDic;
+@property (nonatomic, strong) RCDCSAnnounceView *announceView;
 @end
 
 @implementation RCDCustomerServiceViewController
 - (void)viewDidLoad {
-  [super viewDidLoad];
-  // Do any additional setup after loading the view.
-  
-  self.evaStarDic = [NSMutableDictionary dictionary];
-  
-  [[RCIMClient sharedRCIMClient] getHumanEvaluateCustomerServiceConfig:^(NSDictionary *evaConfig) {
-    NSArray *array = [evaConfig valueForKey:@"evaConfig"];
-      dispatch_async(dispatch_get_main_queue(), ^{
-          if (array) {
-              for (NSDictionary *dic in array) {
-                  RCDCSEvaluateModel *model = [RCDCSEvaluateModel modelWithDictionary:dic];
-                  [self.evaStarDic setObject:model forKey:[NSString stringWithFormat:@"%d",model.score]];
-              }
-          }
-      });
-  }];
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+
+    self.evaStarDic = [NSMutableDictionary dictionary];
+
+    [[RCIMClient sharedRCIMClient] getHumanEvaluateCustomerServiceConfig:^(NSDictionary *evaConfig) {
+        NSArray *array = [evaConfig valueForKey:@"evaConfig"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (array) {
+                for (NSDictionary *dic in array) {
+                    RCDCSEvaluateModel *model = [RCDCSEvaluateModel modelWithDictionary:dic];
+                    [self.evaStarDic setObject:model forKey:[NSString stringWithFormat:@"%d", model.score]];
+                }
+            }
+        });
+    }];
 }
 
--(void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self createNavLeftBarButtonItem];
     self.navigationItem.rightBarButtonItems = nil;
@@ -58,7 +58,7 @@
     if (![[UIDevice currentDevice].model containsString:@"iPad"]) {
         return;
     }
-    
+
     CGRect collectionViewFrame = self.conversationMessageCollectionView.frame;
     CGRect frame = CGRectMake(0, collectionViewFrame.origin.y, self.view.frame.size.width, 44);
     if (RCDIsIPad) {
@@ -71,8 +71,8 @@
 }
 
 - (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 //客服VC左按键注册的selector是customerServiceLeftCurrentViewController，
@@ -97,7 +97,7 @@
 //＊＊＊＊＊＊＊＊＊应用去掉评价界面开始＊＊＊＊＊＊＊＊＊＊＊＊＊
 //-
 //(void)commentCustomerServiceWithStatus:(RCCustomerServiceStatus)serviceStatus
-//commentId:(NSString *)commentId quitAfterComment:(BOOL)isQuit {
+// commentId:(NSString *)commentId quitAfterComment:(BOOL)isQuit {
 //    if (isQuit) {
 //        [super customerServiceLeftCurrentViewController];;
 //    }
@@ -105,9 +105,9 @@
 //＊＊＊＊＊＊＊＊＊应用去掉评价界面结束＊＊＊＊＊＊＊＊＊＊＊＊＊
 
 //＊＊＊＊＊＊＊＊＊应用自定义评价界面开始2＊＊＊＊＊＊＊＊＊＊＊＊＊
--
-(void)commentCustomerServiceWithStatus:(RCCustomerServiceStatus)serviceStatus
-commentId:(NSString *)commentId quitAfterComment:(BOOL)isQuit {
+- (void)commentCustomerServiceWithStatus:(RCCustomerServiceStatus)serviceStatus
+                               commentId:(NSString *)commentId
+                        quitAfterComment:(BOOL)isQuit {
     if (self.evaStarDic.count == 0) {
         [super commentCustomerServiceWithStatus:serviceStatus commentId:commentId quitAfterComment:isQuit];
         return;
@@ -116,98 +116,113 @@ commentId:(NSString *)commentId quitAfterComment:(BOOL)isQuit {
     self.commentId = commentId;
     self.quitAfterComment = isQuit;
     if (serviceStatus == 0) {
-        [super customerServiceLeftCurrentViewController];;
+        [super customerServiceLeftCurrentViewController];
+        ;
     } else if (serviceStatus == 1) {
         //人工评价结果
-      [self.evaluateView show];
+        [self.evaluateView show];
     } else if (serviceStatus == 2) {
         //机器人评价结果
-        UIAlertView *alert = [[UIAlertView alloc]
-        initWithTitle:RCDLocalizedString(@"remark_rebot_service")
-        message:RCDLocalizedString(@"satisfaction") delegate:self
-        cancelButtonTitle:RCDLocalizedString(@"yes") otherButtonTitles:RCDLocalizedString(@"no"), nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"remark_rebot_service")
+                                                        message:RCDLocalizedString(@"satisfaction")
+                                                       delegate:self
+                                              cancelButtonTitle:RCDLocalizedString(@"yes")
+                                              otherButtonTitles:RCDLocalizedString(@"no"), nil];
         [alert show];
     }
 }
-- (void)alertView:(UIAlertView *)alertView
-clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     //(1)调用evaluateCustomerService将评价结果传给融云sdk。
-    if (self.serviceStatus == RCCustomerService_RobotService)
-    {//机器人评价结果
+    if (self.serviceStatus == RCCustomerService_RobotService) { //机器人评价结果
         if (buttonIndex == 0) {
-            [[RCIMClient sharedRCIMClient]
-            evaluateCustomerService:self.targetId knownledgeId:self.commentId
-            robotValue:YES suggest:nil];
+            [[RCIMClient sharedRCIMClient] evaluateCustomerService:self.targetId
+                                                      knownledgeId:self.commentId
+                                                        robotValue:YES
+                                                           suggest:nil];
         } else if (buttonIndex == 1) {
-            [[RCIMClient sharedRCIMClient]
-            evaluateCustomerService:self.targetId knownledgeId:self.commentId
-            robotValue:NO suggest:nil];
+            [[RCIMClient sharedRCIMClient] evaluateCustomerService:self.targetId
+                                                      knownledgeId:self.commentId
+                                                        robotValue:NO
+                                                           suggest:nil];
         }
     }
     //(2)离开当前客服VC
     if (self.quitAfterComment) {
-        [super customerServiceLeftCurrentViewController];;
+        [super customerServiceLeftCurrentViewController];
+        ;
     }
 }
 
 //＊＊＊＊＊＊＊＊＊应用自定义客服通告＊＊＊＊＊＊＊＊＊＊＊＊＊
 
-- (void)announceViewWillShow:(NSString *)announceMsg announceClickUrl:(NSString *)announceClickUrl{
-  self.announceClickUrl = announceClickUrl;
-  
-  self.announceView.content.text = announceMsg;
-  if (announceClickUrl.length == 0) {
-    self.announceView.hiddenArrowIcon = YES;
-  }
+- (void)announceViewWillShow:(NSString *)announceMsg announceClickUrl:(NSString *)announceClickUrl {
+    self.announceClickUrl = announceClickUrl;
+
+    self.announceView.content.text = announceMsg;
+    if (announceClickUrl.length == 0) {
+        self.announceView.hiddenArrowIcon = YES;
+    }
 }
 
-#pragma mark -- RCDCSAnnounceViewDelegate
-- (void)didTapViewAction{
-  if (self.announceClickUrl.length > 0) {
-    [RCKitUtility openURLInSafariViewOrWebView:self.announceClickUrl base:self];
-  }
+#pragma mark-- RCDCSAnnounceViewDelegate
+- (void)didTapViewAction {
+    if (self.announceClickUrl.length > 0) {
+        [RCKitUtility openURLInSafariViewOrWebView:self.announceClickUrl base:self];
+    }
 }
 //＊＊＊＊＊＊＊＊＊应用自定义客服通告＊＊＊＊＊＊＊＊＊＊＊＊＊
 
-#pragma mark -- RCDCSEvaluateViewDelegate
+#pragma mark-- RCDCSEvaluateViewDelegate
 
-- (void)didSubmitEvaluate:(RCCSResolveStatus)solveStatus star:(int)star tagString:(NSString *)tagString suggest:(NSString *)suggest{
-  [[RCIMClient sharedRCIMClient] evaluateCustomerService:self.targetId dialogId:nil starValue:star suggest:suggest resolveStatus:solveStatus tagText:tagString extra:nil];
-  if (self.quitAfterComment) {
-    [super customerServiceLeftCurrentViewController];;
-  }
+- (void)didSubmitEvaluate:(RCCSResolveStatus)solveStatus
+                     star:(int)star
+                tagString:(NSString *)tagString
+                  suggest:(NSString *)suggest {
+    [[RCIMClient sharedRCIMClient] evaluateCustomerService:self.targetId
+                                                  dialogId:nil
+                                                 starValue:star
+                                                   suggest:suggest
+                                             resolveStatus:solveStatus
+                                                   tagText:tagString
+                                                     extra:nil];
+    if (self.quitAfterComment) {
+        [super customerServiceLeftCurrentViewController];
+        ;
+    }
 }
 
-- (void)dismissEvaluateView{
-  [self.evaluateView hide];
-  if (self.quitAfterComment) {
-    [super customerServiceLeftCurrentViewController];;
-  }
+- (void)dismissEvaluateView {
+    [self.evaluateView hide];
+    if (self.quitAfterComment) {
+        [super customerServiceLeftCurrentViewController];
+        ;
+    }
 }
 
-- (RCDCSEvaluateView *)evaluateView{
-  if (!_evaluateView) {
-    _evaluateView = [[RCDCSEvaluateView alloc] initWithEvaStarDic:self.evaStarDic];
-    _evaluateView.delegate = self;
-  }
-  return _evaluateView;
+- (RCDCSEvaluateView *)evaluateView {
+    if (!_evaluateView) {
+        _evaluateView = [[RCDCSEvaluateView alloc] initWithEvaStarDic:self.evaStarDic];
+        _evaluateView.delegate = self;
+    }
+    return _evaluateView;
 }
 
-- (RCDCSAnnounceView *)announceView{
-  if (!_announceView) {
-    CGRect rect = self.conversationMessageCollectionView.frame;
-    rect.origin.y += 44;
-    rect.size.height -= 44;
-    self.conversationMessageCollectionView.frame = rect;
-    _announceView = [[RCDCSAnnounceView alloc] initWithFrame:CGRectMake(0,rect.origin.y-44, self.view.frame.size.width,44)];
-    _announceView.delegate = self;
-    [self.view addSubview:_announceView];
-  }
-  return _announceView;
+- (RCDCSAnnounceView *)announceView {
+    if (!_announceView) {
+        CGRect rect = self.conversationMessageCollectionView.frame;
+        rect.origin.y += 44;
+        rect.size.height -= 44;
+        self.conversationMessageCollectionView.frame = rect;
+        _announceView =
+            [[RCDCSAnnounceView alloc] initWithFrame:CGRectMake(0, rect.origin.y - 44, self.view.frame.size.width, 44)];
+        _announceView.delegate = self;
+        [self.view addSubview:_announceView];
+    }
+    return _announceView;
 }
 
 #pragma mark Navigation Setting
-- (void) createNavLeftBarButtonItem {
+- (void)createNavLeftBarButtonItem {
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.frame = CGRectMake(0, 6, 72, 23);
     UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 70, 22)];

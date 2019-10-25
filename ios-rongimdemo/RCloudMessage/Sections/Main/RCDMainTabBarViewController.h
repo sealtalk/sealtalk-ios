@@ -12,6 +12,6 @@
 
 + (RCDMainTabBarViewController *)sharedInstance;
 
-@property(nonatomic, assign) NSUInteger selectedTabBarIndex;
+@property (nonatomic, assign) NSUInteger selectedTabBarIndex;
 
 @end

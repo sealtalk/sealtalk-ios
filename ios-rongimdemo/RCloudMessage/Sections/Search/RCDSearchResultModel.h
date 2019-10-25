@@ -11,23 +11,23 @@
 #import <RongIMKit/RongIMKit.h>
 @interface RCDSearchResultModel : NSObject
 //该字段需要单独设置，不会在 modelForMessage 设置
-@property(nonatomic, assign) RCDSearchType searchType;
+@property (nonatomic, assign) RCDSearchType searchType;
 
-@property(nonatomic, assign) RCConversationType conversationType;
+@property (nonatomic, assign) RCConversationType conversationType;
 
-@property(nonatomic, copy) NSString *targetId;
+@property (nonatomic, copy) NSString *targetId;
 
-@property(nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *name;
 
-@property(nonatomic, copy) NSString *portraitUri;
+@property (nonatomic, copy) NSString *portraitUri;
 
-@property(nonatomic, copy) NSString *otherInformation;
+@property (nonatomic, copy) NSString *otherInformation;
 
-@property(nonatomic, assign) int count;
+@property (nonatomic, assign) int count;
 
-@property(nonatomic, copy) NSString *objectName;
+@property (nonatomic, copy) NSString *objectName;
 
-@property(nonatomic, assign) long long time;
+@property (nonatomic, assign) long long time;
 
 + (instancetype)modelForMessage:(RCMessage *)message;
 @end

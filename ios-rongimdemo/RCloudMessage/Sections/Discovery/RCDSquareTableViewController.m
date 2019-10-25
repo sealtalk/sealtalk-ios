@@ -18,8 +18,7 @@
 
 @implementation RCDSquareTableViewController
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -37,9 +36,8 @@
     [self getDefaultChatRoomInfo];
 
     [self reloadTableViewIfNeed];
-    
+
     [self fetchRemoteChatRoomListAndRefresh];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -52,7 +50,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCDChatRoom *room = self.chatRoomList[indexPath.row];
-    RCDChatViewController *chatVC = [[RCDChatViewController alloc] initWithConversationType:ConversationType_CHATROOM targetId:room.targetId];
+    RCDChatViewController *chatVC =
+        [[RCDChatViewController alloc] initWithConversationType:ConversationType_CHATROOM targetId:room.targetId];
     chatVC.title = room.name;
     [self.navigationController pushViewController:chatVC animated:YES];
 }
@@ -79,8 +78,9 @@
     RCDSquareCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
     RCDChatRoom *room = self.chatRoomList[indexPath.row];
     if (cell == nil) {
-        cell = [[RCDSquareCell alloc] initWithIconName:[NSString stringWithFormat:@"%@", chatroomIcons[indexPath.row % chatroomIcons.count]]
-                                             TitleName:room.name];
+        cell = [[RCDSquareCell alloc]
+            initWithIconName:[NSString stringWithFormat:@"%@", chatroomIcons[indexPath.row % chatroomIcons.count]]
+                   TitleName:room.name];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -95,28 +95,27 @@
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *sectionHeaderView =
-    [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 35.5)];
+        [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 35.5)];
     sectionHeaderView.backgroundColor = HEXCOLOR(0xf0f0f6);
     UIView *line =
-    [[UIView alloc] initWithFrame:CGRectMake(0, 35.5 - 0.5, [[UIScreen mainScreen] bounds].size.width, 0.5)];
+        [[UIView alloc] initWithFrame:CGRectMake(0, 35.5 - 0.5, [[UIScreen mainScreen] bounds].size.width, 0.5)];
     line.backgroundColor = HEXCOLOR(0xdfdfdf);
     [sectionHeaderView addSubview:line];
-    
+
     UILabel *Title = [[UILabel alloc] initWithFrame:CGRectMake(9, (35.5 - 20) / 2.0, 200, 20)];
     [Title setTextColor:HEXCOLOR(0x000000)];
     [Title setFont:[UIFont systemFontOfSize:16.f]];
-    
+
     [sectionHeaderView addSubview:Title];
     switch (section) {
-        case 0:
-            Title.text = RCDLocalizedString(@"chatroom");
-            break;
-        default:
-            break;
+    case 0:
+        Title.text = RCDLocalizedString(@"chatroom");
+        break;
+    default:
+        break;
     }
     return sectionHeaderView;
 }
-
 
 #pragma mark - private method
 - (void)getDefaultChatRoomInfo {
@@ -138,13 +137,13 @@
 }
 
 - (void)fetchRemoteChatRoomListAndRefresh {
-    
+
     RCNetworkStatus status = [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
     if (RC_NotReachable == status) {
         return;
     }
-    [RCDChatRoomManager getChatRoomList:^(NSArray<RCDChatRoom *> * _Nonnull rooms){
-        if(rooms){
+    [RCDChatRoomManager getChatRoomList:^(NSArray<RCDChatRoom *> *_Nonnull rooms) {
+        if (rooms) {
             rcd_dispatch_main_async_safe(^{
                 self.chatRoomList = rooms;
                 [self reloadTableViewIfNeed];
@@ -155,17 +154,16 @@
 }
 
 - (void)saveChatRoomList:(NSArray *)result {
-    if(result.count > 0) {
+    if (result.count > 0) {
         NSMutableArray *array = [NSMutableArray array];
         for (RCDChatRoom *room in result) {
-            NSDictionary *dic = @{@"id":room.targetId,@"name":room.name};
+            NSDictionary *dic = @{ @"id" : room.targetId, @"name" : room.name };
             [array addObject:dic];
         }
         //保存默认聊天室信息
         [DEFAULTS setObject:array forKey:RCDSquareInfoListKey];
         [DEFAULTS synchronize];
     }
-    
 }
 
 @end

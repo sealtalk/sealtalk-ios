@@ -68,10 +68,11 @@
             UIImage *portrait = [DefaultPortraitView portraitView:user.userId name:user.name];
             self.portraitImageView.image = portrait;
         } else {
-            [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
+            [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                                      placeholderImage:[UIImage imageNamed:@"contact"]];
         }
     }
-    
+
     if (user.status == RCDFriendStatusRequest) {
         self.rightLabel.text = RCDLocalizedString(@"had_invite");
         self.selected = NO;
@@ -116,40 +117,40 @@
     [self.contentView addSubview:self.arrowImgView];
     [self.contentView addSubview:self.acceptBtn];
     [self.contentView addSubview:self.ignoreButton];
-    
+
     [self.portraitImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).offset(22);
         make.height.width.offset(36);
     }];
-    
+
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.portraitImageView.mas_right).offset(8);
         make.width.offset(150);
         make.height.offset(21);
     }];
-    
+
     [self.arrowImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView).offset(-8);
         make.centerY.equalTo(self.contentView);
         make.width.offset(15);
         make.height.offset(CellHeight - 19.5 - 19 - 8 - 8);
     }];
-    
+
     [self.rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.arrowImgView.mas_left).offset(-5);
         make.centerY.equalTo(self.contentView);
         make.width.offset(80);
         make.height.offset(CellHeight - 16.5 - 16);
     }];
-    
+
     [self.ignoreButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.right.equalTo(self.acceptBtn.mas_left).offset(-10);
         make.height.offset(CellHeight - 16.5 - 16 - 8);
     }];
-    
+
     [self.acceptBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.right.equalTo(self.contentView).offset(-8);

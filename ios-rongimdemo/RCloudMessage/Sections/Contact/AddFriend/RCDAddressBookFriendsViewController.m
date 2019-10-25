@@ -20,7 +20,7 @@
 #import "RCDUserInfoManager.h"
 #import "RCDAddFriendViewController.h"
 
-@interface RCDAddressBookFriendsViewController ()<UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface RCDAddressBookFriendsViewController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) RCDSearchBar *searchBar;
 @property (nonatomic, strong) UITableView *tableView;
@@ -36,7 +36,7 @@
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) UILabel *friendCountLabel;
 
-@property(nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, strong) MBProgressHUD *hud;
 
 @end
 
@@ -44,7 +44,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupNavi];
     [self setupUI];
     [self setupData];
@@ -92,14 +92,17 @@
     RCDContactsInfo *contacts = sectionUserInfoList[indexPath.row];
     [cell setModel:contacts];
     __weak typeof(self) weakSelf = self;
-    cell.addBlock = ^(NSString * _Nonnull userId) {
-        [RCDUserInfoManager getUserInfoFromServer:userId complete:^(RCDUserInfo *userInfo) {
-            rcd_dispatch_main_async_safe(^{
-                RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
-                addViewController.targetUserInfo = userInfo;
-                [weakSelf.navigationController pushViewController:addViewController animated:YES];
-            });
-        }];
+    cell.addBlock = ^(NSString *_Nonnull userId) {
+        [RCDUserInfoManager
+            getUserInfoFromServer:userId
+                         complete:^(RCDUserInfo *userInfo) {
+                             rcd_dispatch_main_async_safe(^{
+                                 RCDAddFriendViewController *addViewController =
+                                     [[RCDAddFriendViewController alloc] init];
+                                 addViewController.targetUserInfo = userInfo;
+                                 [weakSelf.navigationController pushViewController:addViewController animated:YES];
+                             });
+                         }];
     };
     return cell;
 }
@@ -117,7 +120,7 @@
     title.font = [UIFont systemFontOfSize:12.f];
     title.textColor = [UIColor colorWithHexString:@"#262626" alpha:1];
     [view addSubview:title];
-    
+
     title.text = self.resultKeys[section];
     return view;
 }
@@ -141,9 +144,12 @@
             NSString *name = contacts.name;
             NSString *displayName = contacts.nickname;
             if ([name rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound ||
-                [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound ||
+                [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch]
+                        .location != NSNotFound ||
                 [displayName rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound ||
-                [[RCDUtilities hanZiToPinYinWithString:displayName] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                [[RCDUtilities hanZiToPinYinWithString:displayName] rangeOfString:searchText
+                                                                          options:NSCaseInsensitiveSearch]
+                        .location != NSNotFound) {
                 [self.matchFriendList addObject:contacts];
             }
         }
@@ -164,9 +170,9 @@
         [self.tableView reloadData];
     }
     self.searchBar.showsCancelButton = YES;
-    for(UIView *view in [[[self.searchBar subviews] objectAtIndex:0] subviews]) {
-        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
-            UIButton * cancel = (UIButton *)view;
+    for (UIView *view in [[[self.searchBar subviews] objectAtIndex:0] subviews]) {
+        if ([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
+            UIButton *cancel = (UIButton *)view;
             [cancel setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
             break;
         }
@@ -186,7 +192,7 @@
 
 - (void)pushToSetting {
     NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-    if([[UIApplication sharedApplication] canOpenURL:url]) {
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url];
     }
 }
@@ -195,29 +201,28 @@
 - (void)setupNavi {
     RCDAddressBookManager *manager = [RCDAddressBookManager sharedManager];
     [manager getContactsAuthState];
-    
 }
 
 - (void)setupUI {
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.withoutPermissionView];
-    
+
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);
         make.height.offset(44);
     }];
-    
+
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
         make.top.equalTo(self.searchBar.mas_bottom);
         make.bottom.equalTo(self.view).offset(-RCDExtraBottomHeight);
     }];
-    
+
     [self.withoutPermissionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.left.right.equalTo(self.view);
     }];
-    
+
     [self setupFooterView];
 }
 
@@ -229,9 +234,9 @@
     self.resultKeys = [[NSArray alloc] init];
     self.resultSectionDict = [[NSDictionary alloc] init];
     self.matchFriendList = [[NSMutableArray alloc] init];
-    
+
     self.contactsArray = [[NSArray alloc] init];
-    
+
     self.title = RCDLocalizedString(@"AddressBookFriends");
     RCDAddressBookManager *manager = [RCDAddressBookManager sharedManager];
     [manager getContactsAuthState];
@@ -240,17 +245,20 @@
     } else if (manager.state == RCDContactsAuthStateApprove) {
         [self.hud showAnimated:YES];
         NSArray *phoneNumbers = [manager getAllContactPhoneNumber];
-        [RCDAddressBookManager getContactsInfo:phoneNumbers complete:^(NSArray * _Nonnull contactsList) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.hud hideAnimated:YES];
-                self.contactsArray = contactsList;
-                if (self.contactsArray.count > 0) {
-                    self.friendCountLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"AddressBookFriendCount"), self.contactsArray.count];
-                    [self sortAndRefreshWithList:self.contactsArray];
-                    [self.tableView reloadData];
-                }
-            });
-        }];
+        [RCDAddressBookManager getContactsInfo:phoneNumbers
+                                      complete:^(NSArray *_Nonnull contactsList) {
+                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                              [self.hud hideAnimated:YES];
+                                              self.contactsArray = contactsList;
+                                              if (self.contactsArray.count > 0) {
+                                                  self.friendCountLabel.text = [NSString
+                                                      stringWithFormat:RCDLocalizedString(@"AddressBookFriendCount"),
+                                                                       self.contactsArray.count];
+                                                  [self sortAndRefreshWithList:self.contactsArray];
+                                                  [self.tableView reloadData];
+                                              }
+                                          });
+                                      }];
     } else {
         self.withoutPermissionView.hidden = NO;
         self.title = RCDLocalizedString(@"AddressBookMatching");
@@ -258,8 +266,14 @@
 }
 
 - (void)addObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactsAuthStateChange) name:RCDContactsAuthStateChangeKey object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupData) name:RCDContactsUpdateUIKey object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contactsAuthStateChange)
+                                                 name:RCDContactsAuthStateChangeKey
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setupData)
+                                                 name:RCDContactsUpdateUIKey
+                                               object:nil];
 }
 
 - (void)sortAndRefreshWithList:(NSArray *)friendList {
@@ -309,7 +323,9 @@
     if (!_withoutPermissionView) {
         _withoutPermissionView = [[RCDUnableGetContactsView alloc] init];
         _withoutPermissionView.hidden = YES;
-        [_withoutPermissionView.settingButton addTarget:self action:@selector(pushToSetting) forControlEvents:UIControlEventTouchUpInside];
+        [_withoutPermissionView.settingButton addTarget:self
+                                                 action:@selector(pushToSetting)
+                                       forControlEvents:UIControlEventTouchUpInside];
     }
     return _withoutPermissionView;
 }
@@ -334,7 +350,7 @@
 }
 
 - (MBProgressHUD *)hud {
-    if(!_hud) {
+    if (!_hud) {
         _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         _hud.color = [UIColor colorWithHexString:@"343637" alpha:0.8];
     }

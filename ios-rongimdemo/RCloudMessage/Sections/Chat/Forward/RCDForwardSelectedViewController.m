@@ -23,7 +23,8 @@
 static NSString *rightArrowCellIdentifier = @"RCDRightArrowCellIdentifier";
 static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentifier";
 
-@interface RCDForwardSelectedViewController ()<UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, RCDForwardSearchViewDelegate>
+@interface RCDForwardSelectedViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate,
+                                                RCDForwardSearchViewDelegate>
 
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) RCDBottomResultView *bottomResultView;
@@ -48,7 +49,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     [self.tableView reloadData];
     [self updateSelectedResult];
 }
@@ -64,17 +65,17 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-        case 0:
-            if (self.isMultiSelectModel) {
-                return 1;
-            }
-            return 2;
-            break;
-        case 1:
-            return self.conversationList.count;
-            break;
-        default:
-            break;
+    case 0:
+        if (self.isMultiSelectModel) {
+            return 1;
+        }
+        return 2;
+        break;
+    case 1:
+        return self.conversationList.count;
+        break;
+    default:
+        break;
     }
     return 0;
 }
@@ -124,11 +125,12 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
             [cell setLeftText:RCDLocalizedString(@"ChooseAddressBook")];
             return cell;
         } else {
-            RCDForwardSelectedCell *cell = [self.tableView dequeueReusableCellWithIdentifier:forwardSelectedCellIdentifier];
+            RCDForwardSelectedCell *cell =
+                [self.tableView dequeueReusableCellWithIdentifier:forwardSelectedCellIdentifier];
             if (cell == nil) {
                 cell = [[RCDForwardSelectedCell alloc] init];
             }
-            RCConversation *conversation  = self.conversationList[indexPath.row];
+            RCConversation *conversation = self.conversationList[indexPath.row];
             RCDForwardCellModel *model = [RCDForwardCellModel createModelWith:conversation];
             [cell setModel:model];
             cell.selectStatus = RCDForwardSelectedStatusMultiUnSelected;
@@ -150,11 +152,12 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
             }
             return cell;
         } else {
-            RCDForwardSelectedCell *cell = [self.tableView dequeueReusableCellWithIdentifier:forwardSelectedCellIdentifier];
+            RCDForwardSelectedCell *cell =
+                [self.tableView dequeueReusableCellWithIdentifier:forwardSelectedCellIdentifier];
             if (cell == nil) {
                 cell = [[RCDForwardSelectedCell alloc] init];
             }
-            RCConversation *conversation  = self.conversationList[indexPath.row];
+            RCConversation *conversation = self.conversationList[indexPath.row];
             RCDForwardCellModel *cellModel = [RCDForwardCellModel createModelWith:conversation];
             [cell setModel:cellModel];
             cell.selectStatus = RCDForwardSelectedStatusSingleSelect;
@@ -185,7 +188,9 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
     } else {
         if (indexPath.section == 0) {
             if (indexPath.row == 0) {
-                RCDContactSelectedTableViewController *contactSelectedVC = [[RCDContactSelectedTableViewController alloc] initWithTitle:RCDLocalizedString(@"select_contact") isAllowsMultipleSelection:YES];
+                RCDContactSelectedTableViewController *contactSelectedVC =
+                    [[RCDContactSelectedTableViewController alloc] initWithTitle:RCDLocalizedString(@"select_contact")
+                                                       isAllowsMultipleSelection:YES];
                 contactSelectedVC.groupOptionType = RCDContactSelectedGroupOptionTypeCreate;
                 [self.navigationController pushViewController:contactSelectedVC animated:YES];
             } else if (indexPath.row == 1) {
@@ -236,7 +241,8 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 #pragma mark - Private Method
 - (void)setupData {
-    NSArray *conversations = [[RCIMClient sharedRCIMClient] getConversationList:@[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ]];
+    NSArray *conversations =
+        [[RCIMClient sharedRCIMClient] getConversationList:@[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ]];
     NSMutableArray *dealWithArray = [NSMutableArray array];
     for (RCConversation *conversation in conversations) {
         if (![conversation.targetId isEqualToString:RCDGroupNoticeTargetId]) {
@@ -249,12 +255,12 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 - (void)setupViews {
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
-    
+
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.offset(44);
     }];
-    
+
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchBar.mas_bottom);
         make.left.right.equalTo(self.view);
@@ -263,19 +269,27 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 }
 
 - (void)setupNavi {
-    
+
     self.title = RCDLocalizedString(@"SelectAConversation");
     self.navigationItem.rightBarButtonItem = self.rightBarItem;
-    
-    UIBarButtonItem *leftBarItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"cancel") style:UIBarButtonItemStylePlain target:self action:@selector(onLeftButtonClick:)];
+
+    UIBarButtonItem *leftBarItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"cancel")
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(onLeftButtonClick:)];
     leftBarItem.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
     self.navigationItem.leftBarButtonItem = leftBarItem;
 }
 
 - (void)addObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEndForwardMessage) name:@"RCDForwardMessageEnd" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSelectedResult) name:@"ReloadBottomResultView" object:nil
-     ];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onEndForwardMessage)
+                                                 name:@"RCDForwardMessageEnd"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateSelectedResult)
+                                                 name:@"ReloadBottomResultView"
+                                               object:nil];
 }
 
 - (void)onEndForwardMessage {
@@ -308,7 +322,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 - (void)refreshTableViewIfNeed {
     if (!self.isMultiSelectModel) {
         [self.bottomResultView removeFromSuperview];
-        
+
         [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.right.equalTo(self.view);
             make.top.equalTo(self.searchBar.mas_bottom);
@@ -322,14 +336,14 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
             make.bottom.equalTo(self.view);
             make.height.offset(50 + RCDExtraBottomHeight);
         }];
-        
+
         [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.right.equalTo(self.view);
             make.top.equalTo(self.searchBar.mas_bottom);
             make.left.right.equalTo(self.view);
             make.bottom.equalTo(self.bottomResultView.mas_top);
         }];
-        
+
         [self updateSelectedResult];
     }
     self.tableView.allowsMultipleSelection = self.isMultiSelectModel;
@@ -367,7 +381,10 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 - (UIBarButtonItem *)rightBarItem {
     if (!_rightBarItem) {
-        _rightBarItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"MultiChoice") style:UIBarButtonItemStylePlain target:self action:@selector(onRightButtonClick:)];
+        _rightBarItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"MultiChoice")
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(onRightButtonClick:)];
         _rightBarItem.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
     }
     return _rightBarItem;

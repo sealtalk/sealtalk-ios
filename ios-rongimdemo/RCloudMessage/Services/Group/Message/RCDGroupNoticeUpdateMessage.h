@@ -8,7 +8,7 @@
 
 #import <RongIMLib/RongIMLib.h>
 #import "RCDGroupNotice.h"
-extern NSString * _Nullable const RCDGroupMemberInvite;
+extern NSString *_Nullable const RCDGroupMemberInvite;
 
 NS_ASSUME_NONNULL_BEGIN
 #define RCDGroupNoticeUpdateMessageIdentifier @"ST:GrpApply"

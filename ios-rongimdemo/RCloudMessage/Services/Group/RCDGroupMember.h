@@ -16,9 +16,9 @@ typedef enum : NSUInteger {
 } RCDGroupMemberRole;
 
 typedef enum : NSUInteger {
-    RCDGroupAddMembersStatusAllJoined = 1,//所有成员已加入
-    RCDGroupAddMemberStatusInviteeApproving,//部分需要被邀请者审批
-    RCDGroupAddMemberStatusOnlyManagerApproving,//仅包含需要管理者审批
+    RCDGroupAddMembersStatusAllJoined = 1,       //所有成员已加入
+    RCDGroupAddMemberStatusInviteeApproving,     //部分需要被邀请者审批
+    RCDGroupAddMemberStatusOnlyManagerApproving, //仅包含需要管理者审批
 } RCDGroupAddMemberStatus;
 NS_ASSUME_NONNULL_BEGIN
 

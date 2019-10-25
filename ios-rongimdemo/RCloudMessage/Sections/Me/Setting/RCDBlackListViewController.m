@@ -16,10 +16,10 @@
 #import "RCDRCIMDataSource.h"
 @interface RCDBlackListViewController ()
 
-@property(nonatomic, strong) NSMutableDictionary *mDictData;
-@property(nonatomic, strong) NSMutableArray *keys;
+@property (nonatomic, strong) NSMutableDictionary *mDictData;
+@property (nonatomic, strong) NSMutableArray *keys;
 
-@property(nonatomic, strong) UILabel *emptyLabel;
+@property (nonatomic, strong) UILabel *emptyLabel;
 @end
 
 @implementation RCDBlackListViewController
@@ -58,7 +58,7 @@
         if (!blackUserIds) {
             blackUserIds = [RCDUserInfoManager getBlacklist];
         }
-        if(!blackUserIds) {//如果 APP 服务器和本地数据库都没有黑名单，直接返回
+        if (!blackUserIds) { //如果 APP 服务器和本地数据库都没有黑名单，直接返回
             return;
         }
         NSMutableArray *blacklist = [[NSMutableArray alloc] init];
@@ -87,7 +87,7 @@
     }];
 }
 
-- (void)reloadView{
+- (void)reloadView {
     self.emptyLabel.hidden = self.keys.count != 0;
     [self.tableView reloadData];
 }
@@ -152,21 +152,22 @@
         RCUserInfo *info = [[self.mDictData objectForKey:key] objectAtIndex:indexPath.row];
 
         __weak typeof(self) weakSelf = self;
-        [RCDUserInfoManager removeFromBlacklist:info.userId complete:^(BOOL success) {
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [RCDDataSource syncFriendList];
-                    [weakSelf getAllData];
-                });
-            }else{
-                NSLog(@" ... 解除黑名单失败 ... ");
-            }
-        }];
+        [RCDUserInfoManager removeFromBlacklist:info.userId
+                                       complete:^(BOOL success) {
+                                           if (success) {
+                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                   [RCDDataSource syncFriendList];
+                                                   [weakSelf getAllData];
+                                               });
+                                           } else {
+                                               NSLog(@" ... 解除黑名单失败 ... ");
+                                           }
+                                       }];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

@@ -34,12 +34,12 @@
 
 - (void)setModel:(RCUserInfo *)userInfo {
     self.currentUserId = userInfo.userId;
-    
+
     BOOL isDisplayID = [DEFAULTS boolForKey:RCDDisplayIDKey];
     if (isDisplayID == YES) {
         self.userIdLabel.text = userInfo.userId;
     }
-    
+
     if ([userInfo isKindOfClass:[RCDFriendInfo class]]) {
         RCDFriendInfo *friendInfo = (RCDFriendInfo *)userInfo;
         if (friendInfo.displayName.length > 0) {
@@ -50,10 +50,11 @@
     } else {
         self.nicknameLabel.text = userInfo.name;
     }
-    if(userInfo.portraitUri.length <= 0){
+    if (userInfo.portraitUri.length <= 0) {
         self.portraitView.image = [DefaultPortraitView portraitView:userInfo.userId name:userInfo.name];
-    }else{
-        [self.portraitView sd_setImageWithURL:[NSURL URLWithString:userInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
+    } else {
+        [self.portraitView sd_setImageWithURL:[NSURL URLWithString:userInfo.portraitUri]
+                             placeholderImage:[UIImage imageNamed:@"contact"]];
     }
 }
 
@@ -62,7 +63,7 @@
     self.selectionStyle = UITableViewCellSelectionStyleDefault;
     self.selectedBackgroundView = [[UIView alloc] initWithFrame:self.frame];
     self.selectedBackgroundView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5" alpha:1.0];
-    
+
     [self.contentView addSubview:self.portraitView];
     [self.contentView addSubview:self.nicknameLabel];
     [self.contentView addSubview:self.userIdLabel];
@@ -73,7 +74,7 @@
         make.centerY.equalTo(self.contentView);
         make.width.height.offset(36);
     }];
-    
+
     BOOL isDisplayID = [DEFAULTS boolForKey:RCDDisplayIDKey];
 
     if (isDisplayID) {
@@ -82,7 +83,7 @@
             make.centerY.height.equalTo(self.portraitView);
             make.right.equalTo(self.userIdLabel.mas_left);
         }];
-        
+
         [self.userIdLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.height.equalTo(self.portraitView);
             make.right.equalTo(self.contentView).offset(-20);
@@ -94,7 +95,7 @@
             make.right.equalTo(self.contentView).offset(-20);
         }];
     }
-    
+
     [self.noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView).offset(-27.5);
         make.centerY.equalTo(self.contentView);
@@ -103,7 +104,8 @@
 }
 
 - (void)addLongPress {
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
+    UILongPressGestureRecognizer *longPress =
+        [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
     [self addGestureRecognizer:longPress];
 }
 

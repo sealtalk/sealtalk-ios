@@ -13,7 +13,7 @@
 #import <RongIMKit/RongIMKit.h>
 #import "RCDUtilities.h"
 
-@interface RCDGroupLeftUserListCell()
+@interface RCDGroupLeftUserListCell ()
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIImageView *portraitImageView;
 @property (nonatomic, strong) UILabel *infoLabel;
@@ -23,9 +23,9 @@
 @end
 @implementation RCDGroupLeftUserListCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView{
++ (instancetype)cellWithTableView:(UITableView *)tableView {
     RCDGroupLeftUserListCell *cell =
-    (RCDGroupLeftUserListCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupLeftUserListCellIdentifier];
+        (RCDGroupLeftUserListCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupLeftUserListCellIdentifier];
     if (!cell) {
         cell = [[RCDGroupLeftUserListCell alloc] init];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -34,7 +34,7 @@
     return cell;
 }
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self addSubviews];
@@ -42,58 +42,66 @@
     return self;
 }
 
-- (void)setDataModel:(RCDGroupLeftMember *)model groupId:(nonnull NSString *)groupId{
+- (void)setDataModel:(RCDGroupLeftMember *)model groupId:(nonnull NSString *)groupId {
     self.model = model;
     [self setUserInfo];
-    self.timeLabel.text = [RCKitUtility ConvertMessageTime:model.time/1000];
+    self.timeLabel.text = [RCKitUtility ConvertMessageTime:model.time / 1000];
 }
 
-- (void)setUserInfo{
-    [RCDUtilities getGroupUserDisplayInfo:self.model.userId groupId:self.groupId result:^(RCUserInfo *user) {
-        self.nameLabel.text = user.name;
-        if (user.portraitUri.length == 0) {
-            user.portraitUri = [RCDUtilities defaultUserPortrait:user];
-        }
-        [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
-    }];
+- (void)setUserInfo {
+    [RCDUtilities getGroupUserDisplayInfo:self.model.userId
+                                  groupId:self.groupId
+                                   result:^(RCUserInfo *user) {
+                                       self.nameLabel.text = user.name;
+                                       if (user.portraitUri.length == 0) {
+                                           user.portraitUri = [RCDUtilities defaultUserPortrait:user];
+                                       }
+                                       [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                                                                 placeholderImage:[UIImage imageNamed:@"contact"]];
+                                   }];
     if (self.model.reason != RCDGroupMemberLeftReasonSelf) {
-        [RCDUtilities getGroupUserDisplayInfo:self.model.operatorId groupId:self.groupId result:^(RCUserInfo *user) {
-            if (self.model.reason == RCDGroupMemberLeftReasonManager) {
-                self.infoLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"KickGroupByManager"),user.name];
-            }else if (self.model.reason == RCDGroupMemberLeftReasonOwner) {
-                self.infoLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"KickGroupByOwner"),user.name];
-            }
-        }];
-    }else{
+        [RCDUtilities
+            getGroupUserDisplayInfo:self.model.operatorId
+                            groupId:self.groupId
+                             result:^(RCUserInfo *user) {
+                                 if (self.model.reason == RCDGroupMemberLeftReasonManager) {
+                                     self.infoLabel.text = [NSString
+                                         stringWithFormat:RCDLocalizedString(@"KickGroupByManager"), user.name];
+                                 } else if (self.model.reason == RCDGroupMemberLeftReasonOwner) {
+                                     self.infoLabel.text =
+                                         [NSString stringWithFormat:RCDLocalizedString(@"KickGroupByOwner"), user.name];
+                                 }
+                             }];
+    } else {
         self.infoLabel.text = RCDLocalizedString(@"KickGroupBySelf");
     }
 }
 
-- (void)addSubviews{
+- (void)addSubviews {
     [self.contentView addSubview:self.portraitImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.timeLabel];
     [self.contentView addSubview:self.infoLabel];
-    
+
     [self.portraitImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).offset(12);
         make.height.width.offset(40);
     }];
-    
+
     [self.nameLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.portraitImageView);
         make.left.equalTo(self.portraitImageView.mas_right).offset(9);
         make.right.equalTo(self.contentView).offset(-12);
         make.height.offset(24);
     }];
-    
+
     [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView.mas_right).offset(-10);
         make.top.equalTo(self.infoLabel);
         make.height.offset(17);
     }];
-    
+
     [self.infoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.portraitImageView);
         make.left.equalTo(self.portraitImageView.mas_right).offset(9);

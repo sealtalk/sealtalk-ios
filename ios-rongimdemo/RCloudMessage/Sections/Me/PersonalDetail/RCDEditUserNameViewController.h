@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCDEditUserNameViewController : UIViewController 
+@interface RCDEditUserNameViewController : UIViewController
 
 @end

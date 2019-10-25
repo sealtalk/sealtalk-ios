@@ -10,7 +10,7 @@
 #import "RCDGroupNotice.h"
 @class RCDGroupNoticeCell;
 
-static NSString * _Nullable RCDGroupNoticeCellIdentifier = @"RCDGroupNoticeCellIdentifier";
+static NSString *_Nullable RCDGroupNoticeCellIdentifier = @"RCDGroupNoticeCellIdentifier";
 
 NS_ASSUME_NONNULL_BEGIN
 @protocol RCDGroupNoticeCellDelegate <NSObject>

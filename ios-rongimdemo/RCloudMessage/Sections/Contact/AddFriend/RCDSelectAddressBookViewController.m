@@ -19,7 +19,8 @@
 #import "RCDUtilities.h"
 #import "UIColor+RCColor.h"
 
-@interface RCDSelectAddressBookViewController ()<UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate>
+@interface RCDSelectAddressBookViewController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource,
+                                                  MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic, strong) RCDSearchBar *searchBar;
 @property (nonatomic, strong) UITableView *tableView;
@@ -39,7 +40,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupNavi];
     [self setupUI];
     [self setupData];
@@ -76,15 +77,15 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     static NSString *cellReuseIdentifier = @"RCDSelectAddressBookCell";
     RCDSelectAddressBookCell *cell = [tableView dequeueReusableCellWithIdentifier:cellReuseIdentifier];
     if (!cell) {
         cell = [[RCDSelectAddressBookCell alloc] init];
     }
-    
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
     NSString *letter = self.resultKeys[indexPath.section];
     NSArray *sectionUserInfoList = self.resultSectionDict[letter];
     RCDContactsInfo *contacts = sectionUserInfoList[indexPath.row];
@@ -100,7 +101,7 @@
     } else {
         cell.selectStatus = RCDSelectedStatusUnSelected;
     }
-    
+
     NSString *letter = self.resultKeys[indexPath.section];
     NSArray *sectionUserInfoList = self.resultSectionDict[letter];
     RCDContactsInfo *contacts = sectionUserInfoList[indexPath.row];
@@ -131,7 +132,7 @@
     title.font = [UIFont systemFontOfSize:15.f];
     title.textColor = HEXCOLOR(0x999999);
     [view addSubview:title];
-    
+
     title.text = self.resultKeys[section];
     return view;
 }
@@ -155,7 +156,8 @@
             NSString *name = contacts.name;
             // //忽略大小写去判断是否包含
             if ([name rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound ||
-                [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch]
+                        .location != NSNotFound) {
                 [self.matchFriendList addObject:contacts];
             }
         }
@@ -175,9 +177,9 @@
         [self.tableView reloadData];
     }
     self.searchBar.showsCancelButton = YES;
-    for(UIView *view in [[[self.searchBar subviews] objectAtIndex:0] subviews]) {
-        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
-            UIButton * cancel = (UIButton *)view;
+    for (UIView *view in [[[self.searchBar subviews] objectAtIndex:0] subviews]) {
+        if ([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
+            UIButton *cancel = (UIButton *)view;
             [cancel setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
             break;
         }
@@ -190,25 +192,24 @@
 }
 
 #pragma mark - MFMessageComposeViewControllerDelegate
-- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
-    [controller dismissModalViewControllerAnimated:NO];//关键的一句   不能为YES
-    switch ( result ) {
-        case MessageComposeResultCancelled: {
-            //click cancel button
-        }
-            break;
-        case MessageComposeResultFailed:
-            // send failed
-            
-            break;
-        case MessageComposeResultSent: {
-            [self.navigationController popViewControllerAnimated:YES];
-            [self.view showHUDMessage:RCDLocalizedString(@"send_success")];
-            //do something
-        }
-            break;
-        default:
-            break;
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+                 didFinishWithResult:(MessageComposeResult)result {
+    [controller dismissModalViewControllerAnimated:NO]; //关键的一句   不能为YES
+    switch (result) {
+    case MessageComposeResultCancelled: {
+        // click cancel button
+    } break;
+    case MessageComposeResultFailed:
+        // send failed
+
+        break;
+    case MessageComposeResultSent: {
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.view showHUDMessage:RCDLocalizedString(@"send_success")];
+        // do something
+    } break;
+    default:
+        break;
     }
 }
 
@@ -224,7 +225,7 @@
 
 - (void)pushToSetting {
     NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-    if([[UIApplication sharedApplication] canOpenURL:url]) {
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url];
     }
 }
@@ -234,11 +235,14 @@
     RCDAddressBookManager *manager = [RCDAddressBookManager sharedManager];
     [manager getContactsAuthState];
     if (manager.state == RCDContactsAuthStateApprove) {
-        UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"send") style:UIBarButtonItemStylePlain target:self action:@selector(onRightButtonClick)];
+        UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"send")
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(onRightButtonClick)];
         rightBarItem.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
         self.navigationItem.rightBarButtonItem = rightBarItem;
         rightBarItem.enabled = NO;
-    } else if(manager.state == RCDContactsAuthStateRefuse) {
+    } else if (manager.state == RCDContactsAuthStateRefuse) {
         self.navigationItem.rightBarButtonItem = nil;
     }
 }
@@ -247,18 +251,18 @@
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.withoutPermissionView];
-    
+
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);
         make.height.offset(44);
     }];
-    
+
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
         make.top.equalTo(self.searchBar.mas_bottom);
         make.bottom.equalTo(self.view).offset(-RCDExtraBottomHeight);
     }];
-    
+
     [self.withoutPermissionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.left.right.equalTo(self.view);
     }];
@@ -268,10 +272,10 @@
     self.resultKeys = [[NSArray alloc] init];
     self.resultSectionDict = [[NSDictionary alloc] init];
     self.matchFriendList = [[NSMutableArray alloc] init];
-    
+
     self.contactsArray = [[NSArray alloc] init];
     self.selectContacts = [[NSMutableArray alloc] init];
-    
+
     self.title = RCDLocalizedString(@"Invite_Phonebook_Title");
     RCDAddressBookManager *manager = [RCDAddressBookManager sharedManager];
     [manager getContactsAuthState];
@@ -288,7 +292,10 @@
 }
 
 - (void)addObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactsAuthStateChange) name:RCDContactsAuthStateChangeKey object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contactsAuthStateChange)
+                                                 name:RCDContactsAuthStateChangeKey
+                                               object:nil];
 }
 
 - (void)sendMsg {
@@ -358,7 +365,9 @@
     if (!_withoutPermissionView) {
         _withoutPermissionView = [[RCDUnableGetContactsView alloc] init];
         _withoutPermissionView.hidden = YES;
-        [_withoutPermissionView.settingButton addTarget:self action:@selector(pushToSetting) forControlEvents:UIControlEventTouchUpInside];
+        [_withoutPermissionView.settingButton addTarget:self
+                                                 action:@selector(pushToSetting)
+                                       forControlEvents:UIControlEventTouchUpInside];
     }
     return _withoutPermissionView;
 }

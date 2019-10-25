@@ -27,11 +27,11 @@ static NSString *RCDReceiptDetailsTableViewCellIdentifier = @"RCDReceiptDetailsT
 @interface RCDReceiptDetailsTableViewCell : UITableViewCell
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 
-@property(nonatomic, weak) id<RCDReceiptDetailsCellDelegate> delegate;
+@property (nonatomic, weak) id<RCDReceiptDetailsCellDelegate> delegate;
 
-@property(nonatomic, assign) BOOL displayHasreadUsers;
+@property (nonatomic, assign) BOOL displayHasreadUsers;
 
-@property(nonatomic, assign) NSInteger hasReadUsersCount;
+@property (nonatomic, assign) NSInteger hasReadUsersCount;
 
-@property(nonatomic, assign) NSInteger unreadUsersCount;
+@property (nonatomic, assign) NSInteger unreadUsersCount;
 @end

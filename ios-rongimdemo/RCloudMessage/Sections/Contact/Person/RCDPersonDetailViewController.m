@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
     RCDFriendDescriptionTypeDesc,
 };
 
-@interface RCDPersonDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface RCDPersonDetailViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSString *groupId;
 
@@ -70,9 +70,11 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 @end
 
 @implementation RCDPersonDetailViewController
-+ (UIViewController *)configVC:(NSString *)userId groupId:(NSString *)groupId{
++ (UIViewController *)configVC:(NSString *)userId groupId:(NSString *)groupId {
     RCDFriendInfo *friendInfo = [RCDUserInfoManager getFriendInfo:userId];
-    if ((friendInfo != nil && (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) || [userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
+    if ((friendInfo != nil &&
+         (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) ||
+        [userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
         RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
         detailViewController.userId = userId;
         detailViewController.groupId = groupId;
@@ -87,37 +89,37 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupSubviews];
     [self getUserInfoData];
 }
 
 #pragma mark - Private Method
 - (void)setupSubviews {
-    
+
     self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    
+
     [self.view addSubview:self.scrollView];
     [self.scrollView addSubview:self.contentView];
     [self.contentView addSubview:self.infoView];
     [self.contentView addSubview:self.conversationButton];
     [self.contentView addSubview:self.audioCallButton];
     [self.contentView addSubview:self.videoCallButton];
-    
+
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.width.height.equalTo(self.view);
     }];
-    
+
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.scrollView);
         make.width.equalTo(self.scrollView);
     }];
-    
+
     [self.infoView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.contentView);
         make.height.offset(85);
     }];
-    
+
     UIView *lastView = nil;
     if ([self isCurrentUser]) {
         lastView = self.infoView;
@@ -130,19 +132,19 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
         }];
         lastView = self.tableView;
     }
-    
+
     [self.conversationButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lastView.mas_bottom).offset(15);
         make.left.right.equalTo(self.contentView).inset(10);
         make.height.offset(43);
     }];
-    
+
     [self.audioCallButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.conversationButton.mas_bottom).offset(15);
         make.left.right.equalTo(self.contentView).inset(10);
         make.height.offset(43);
     }];
-    
+
     [self.videoCallButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.audioCallButton.mas_bottom).offset(15);
         make.left.right.equalTo(self.contentView).inset(10);
@@ -155,7 +157,9 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
     if ([self isCurrentUser]) {
         NSString *currentUserId = [RCIM sharedRCIM].currentUserInfo.userId;
         RCDUserInfo *currentUserInfo = [RCDUserInfoManager getUserInfo:currentUserId];
-        self.userInfo = [[RCDFriendInfo alloc] initWithUserId:currentUserInfo.userId name:currentUserInfo.name portrait:currentUserInfo.portraitUri];
+        self.userInfo = [[RCDFriendInfo alloc] initWithUserId:currentUserInfo.userId
+                                                         name:currentUserInfo.name
+                                                     portrait:currentUserInfo.portraitUri];
         self.userInfo.stAccount = currentUserInfo.stAccount;
         self.userInfo.gender = currentUserInfo.gender;
         [self.infoView setUserInfo:self.userInfo];
@@ -163,18 +167,19 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
         self.userInfo = [RCDUserInfoManager getFriendInfo:self.userId];
         [self handleIsInBlockList];
         [self.infoView setUserInfo:self.userInfo];
-        [RCDUserInfoManager getFriendInfoFromServer:self.userId complete:^(RCDFriendInfo *friendInfo) {
-            rcd_dispatch_main_async_safe(^{
-                if (friendInfo) {
-                    self.userInfo = friendInfo;
-                } else {
-                    self.userInfo = [RCDUserInfoManager getFriendInfo:self.userId];
-                }
-                [self handleIsInBlockList];
-                [self.tableView reloadData];
-                [self.infoView setUserInfo:self.userInfo];
-            });
-        }];
+        [RCDUserInfoManager getFriendInfoFromServer:self.userId
+                                           complete:^(RCDFriendInfo *friendInfo) {
+                                               rcd_dispatch_main_async_safe(^{
+                                                   if (friendInfo) {
+                                                       self.userInfo = friendInfo;
+                                                   } else {
+                                                       self.userInfo = [RCDUserInfoManager getFriendInfo:self.userId];
+                                                   }
+                                                   [self handleIsInBlockList];
+                                                   [self.tableView reloadData];
+                                                   [self.infoView setUserInfo:self.userInfo];
+                                               });
+                                           }];
         [self getFriendDescription];
     }
     if (self.groupId.length > 0) {
@@ -195,14 +200,15 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
     self.friendDescription = [RCDUserInfoManager getFriendDescription:self.userId];
     if (!self.friendDescription && !self.isLoadFriendDescription) {
         self.isLoadFriendDescription = YES;
-        [RCDUserInfoManager getDescriptionFromServer:self.userId complete:^(RCDFriendDescription *description) {
-            rcd_dispatch_main_async_safe(^{
-                self.friendDescription = description;
-                [self setupDescriptionType];
-                [self.tableView reloadData];
-                [self updateTableView];
-            });
-        }];
+        [RCDUserInfoManager getDescriptionFromServer:self.userId
+                                            complete:^(RCDFriendDescription *description) {
+                                                rcd_dispatch_main_async_safe(^{
+                                                    self.friendDescription = description;
+                                                    [self setupDescriptionType];
+                                                    [self.tableView reloadData];
+                                                    [self updateTableView];
+                                                });
+                                            }];
     } else {
         [self setupDescriptionType];
         [self.tableView reloadData];
@@ -239,24 +245,35 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 }
 
 - (void)showAlertWithMessage:(NSString *)message {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+                                              otherButtonTitles:nil, nil];
     [alertView show];
 }
 
-- (void)showAlertWithMessage:(NSString *)message highlightText:(NSString *)highlightText leftTitle:(NSString *)leftTitle rightTitle:(NSString *)rightTitle {
-    
-    [NormalAlertView showAlertWithMessage:message highlightText:highlightText leftTitle:leftTitle rightTitle:rightTitle cancel:^{
-    } confirm:^{
-        if (self.operation == RCDPersonOperationDelete) {
-            [self deleteFriend];
-        } else {
-            [self dealWithBlacklist];
+- (void)showAlertWithMessage:(NSString *)message
+               highlightText:(NSString *)highlightText
+                   leftTitle:(NSString *)leftTitle
+                  rightTitle:(NSString *)rightTitle {
+
+    [NormalAlertView showAlertWithMessage:message
+        highlightText:highlightText
+        leftTitle:leftTitle
+        rightTitle:rightTitle
+        cancel:^{
         }
-    }];
-    
+        confirm:^{
+            if (self.operation == RCDPersonOperationDelete) {
+                [self deleteFriend];
+            } else {
+                [self dealWithBlacklist];
+            }
+        }];
 }
 
-- (void)pushGroupMemberInfoVC{
+- (void)pushGroupMemberInfoVC {
     RCDGroupMemberDetailController *vc = [[RCDGroupMemberDetailController alloc] init];
     vc.userId = self.userId;
     vc.groupId = self.groupId;
@@ -277,60 +294,67 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
     if (!self.inBlacklist) {
         __weak typeof(self) weakSelf = self;
         hud.labelText = RCDLocalizedString(@"adding_to_blacklist");
-        [RCDUserInfoManager addToBlacklist:self.userId complete:^(BOOL success) {
-            if (success) {
-                weakSelf.inBlacklist = YES;
-                [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_PRIVATE targetId:weakSelf.userId];
-                [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_PRIVATE targetId:weakSelf.userId];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [RCDDataSource syncFriendList];
-                    [weakSelf.tableView reloadData];
-                    [hud hide:YES];
-                    [self.view showHUDMessage:RCDLocalizedString(@"HasAddBlacklist")];
-                });
-            }else{
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [hud hide:YES];
-                    [weakSelf showAlertWithMessage:RCDLocalizedString(@"fail_to_add_to_blacklist")];
-                });
-            }
-        }];
+        [RCDUserInfoManager
+            addToBlacklist:self.userId
+                  complete:^(BOOL success) {
+                      if (success) {
+                          weakSelf.inBlacklist = YES;
+                          [[RCIMClient sharedRCIMClient] clearMessages:ConversationType_PRIVATE
+                                                              targetId:weakSelf.userId];
+                          [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_PRIVATE
+                                                                   targetId:weakSelf.userId];
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                              [RCDDataSource syncFriendList];
+                              [weakSelf.tableView reloadData];
+                              [hud hide:YES];
+                              [self.view showHUDMessage:RCDLocalizedString(@"HasAddBlacklist")];
+                          });
+                      } else {
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                              [hud hide:YES];
+                              [weakSelf showAlertWithMessage:RCDLocalizedString(@"fail_to_add_to_blacklist")];
+                          });
+                      }
+                  }];
     } else {
         hud.labelText = RCDLocalizedString(@"removing_from_blacklist");
         __weak typeof(self) weakSelf = self;
-        [RCDUserInfoManager removeFromBlacklist:self.userId complete:^(BOOL success) {
-            if (success) {
-                weakSelf.inBlacklist = NO;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [RCDDataSource syncFriendList];
-                    [weakSelf.tableView reloadData];
-                    [hud hide:YES];
-                    [weakSelf.view showHUDMessage:RCDLocalizedString(@"HasRemoveBlacklist")];
-                });
-            }else{
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [hud hide:YES];
-                    [weakSelf showAlertWithMessage:RCDLocalizedString(@"fail_to_remove_from_blacklist")];
-                });
-            }
-        }];
+        [RCDUserInfoManager
+            removeFromBlacklist:self.userId
+                       complete:^(BOOL success) {
+                           if (success) {
+                               weakSelf.inBlacklist = NO;
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   [RCDDataSource syncFriendList];
+                                   [weakSelf.tableView reloadData];
+                                   [hud hide:YES];
+                                   [weakSelf.view showHUDMessage:RCDLocalizedString(@"HasRemoveBlacklist")];
+                               });
+                           } else {
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   [hud hide:YES];
+                                   [weakSelf showAlertWithMessage:RCDLocalizedString(@"fail_to_remove_from_blacklist")];
+                               });
+                           }
+                       }];
     }
 }
 
 - (void)deleteFriend {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [RCDUserInfoManager deleteFriend:self.userId complete:^(BOOL success) {
-        rcd_dispatch_main_async_safe(^{
-            [hud hideAnimated:YES];
-            if (success) {
-                [self.view showHUDMessage:RCDLocalizedString(@"DeleteSuccess")];
-                [RCDDataSource syncFriendList];
-                [self.navigationController popToRootViewControllerAnimated:YES];
-            } else {
-                [self.view showHUDMessage:RCDLocalizedString(@"DeleteFailure")];
-            }
-        });
-    }];
+    [RCDUserInfoManager deleteFriend:self.userId
+                            complete:^(BOOL success) {
+                                rcd_dispatch_main_async_safe(^{
+                                    [hud hideAnimated:YES];
+                                    if (success) {
+                                        [self.view showHUDMessage:RCDLocalizedString(@"DeleteSuccess")];
+                                        [RCDDataSource syncFriendList];
+                                        [self.navigationController popToRootViewControllerAnimated:YES];
+                                    } else {
+                                        [self.view showHUDMessage:RCDLocalizedString(@"DeleteFailure")];
+                                    }
+                                });
+                            }];
 }
 
 - (void)startChat:(UIButton *)sender {
@@ -355,56 +379,63 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 }
 
 - (void)audioCall:(UIButton *)sender {
-    //语音通话
+//语音通话
 #if USE_SignalingKit
     [[RCSCall sharedRCSCall] startSingleCall:self.userInfo.userId mediaType:RCSCallMediaAudio];
 #else
     [[RCCall sharedRCCall] startSingleCall:self.userInfo.userId mediaType:RCCallMediaAudio];
 #endif
-    
 }
 
 - (void)videoCall:(UIButton *)sender {
-    //视频通话
+//视频通话
 #if USE_SignalingKit
     [[RCSCall sharedRCSCall] startSingleCall:self.userInfo.userId mediaType:RCSCallMediaVideo];
 #else
     [[RCCall sharedRCCall] startSingleCall:self.userInfo.userId mediaType:RCCallMediaVideo];
 #endif
-    
 }
 
 - (void)presentActionSheet {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-    }];
-    
-    UIAlertAction *callAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"Call") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.friendDescription.phone) {
-                NSURL *phoneUrl = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", self.friendDescription.phone]];
-                if (IOS_FSystenVersion > 10) {
-                    [[UIApplication sharedApplication] openURL:phoneUrl options:@{} completionHandler:nil];
-                } else {
-                    [[UIApplication sharedApplication] openURL:phoneUrl];
-                }
-                
-            }
-        });
-    }];
-    
-    UIAlertAction *copyAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"CopyNumber") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        if (self.friendDescription.phone) {
-            UIPasteboard *pastboard = [UIPasteboard generalPasteboard];
-            [pastboard setString:self.friendDescription.phone];
-        }
-    }];
-    
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *_Nonnull action){
+                                                         }];
+
+    UIAlertAction *callAction = [UIAlertAction
+        actionWithTitle:RCDLocalizedString(@"Call")
+                  style:UIAlertActionStyleDefault
+                handler:^(UIAlertAction *_Nonnull action) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (self.friendDescription.phone) {
+                            NSURL *phoneUrl = [NSURL
+                                URLWithString:[NSString stringWithFormat:@"tel://%@", self.friendDescription.phone]];
+                            if (IOS_FSystenVersion > 10) {
+                                [[UIApplication sharedApplication] openURL:phoneUrl options:@{} completionHandler:nil];
+                            } else {
+                                [[UIApplication sharedApplication] openURL:phoneUrl];
+                            }
+                        }
+                    });
+                }];
+
+    UIAlertAction *copyAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"CopyNumber")
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction *_Nonnull action) {
+                                                           if (self.friendDescription.phone) {
+                                                               UIPasteboard *pastboard =
+                                                                   [UIPasteboard generalPasteboard];
+                                                               [pastboard setString:self.friendDescription.phone];
+                                                           }
+                                                       }];
+
     [alertController addAction:cancelAction];
     [alertController addAction:callAction];
     [alertController addAction:copyAction];
-    
+
     [self.navigationController presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -450,42 +481,40 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
         cell = [[RCDPersonDetailCell alloc] init];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
     if (indexPath.section == 0) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         switch (self.descriptionType) {
-            case RCDFriendDescriptionTypeAll:
-            case RCDFriendDescriptionTypePhone:
-            case RCDFriendDescriptionTypeDesc: {
-                [cell setCellStyle:Style_Title_Detail];
-                if (indexPath.row == 0) {
-                    cell.detailLabel.textColor = [UIColor colorWithHexString:@"0099FF" alpha:1];
-                    cell.titleLabel.text = RCDLocalizedString(@"PhoneNumber");
-                    cell.detailLabel.text = self.friendDescription.phone;
-                    cell.detailLabel.userInteractionEnabled = YES;
-                    cell.tapDetailBlock = ^(NSString * _Nonnull detail) {
-                        rcd_dispatch_main_async_safe(^{
-                            [self presentActionSheet];
-                        });
-                    };
-                } else {
-                    cell.detailLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1];
-                    cell.titleLabel.text = RCDLocalizedString(@"Describe");
-                    cell.detailLabel.text = self.friendDescription.desc;
-                    cell.detailLabel.userInteractionEnabled = NO;
-                }
+        case RCDFriendDescriptionTypeAll:
+        case RCDFriendDescriptionTypePhone:
+        case RCDFriendDescriptionTypeDesc: {
+            [cell setCellStyle:Style_Title_Detail];
+            if (indexPath.row == 0) {
+                cell.detailLabel.textColor = [UIColor colorWithHexString:@"0099FF" alpha:1];
+                cell.titleLabel.text = RCDLocalizedString(@"PhoneNumber");
+                cell.detailLabel.text = self.friendDescription.phone;
+                cell.detailLabel.userInteractionEnabled = YES;
+                cell.tapDetailBlock = ^(NSString *_Nonnull detail) {
+                    rcd_dispatch_main_async_safe(^{
+                        [self presentActionSheet];
+                    });
+                };
+            } else {
+                cell.detailLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1];
+                cell.titleLabel.text = RCDLocalizedString(@"Describe");
+                cell.detailLabel.text = self.friendDescription.desc;
+                cell.detailLabel.userInteractionEnabled = NO;
             }
-                break;
-            case RCDFriendDescriptionTypeDefault:
-            default: {
-                [cell setCellStyle:Style_Default];
-                cell.titleLabel.text = RCDLocalizedString(@"SetRemarksAndDescription");
-            }
-                break;
+        } break;
+        case RCDFriendDescriptionTypeDefault:
+        default: {
+            [cell setCellStyle:Style_Default];
+            cell.titleLabel.text = RCDLocalizedString(@"SetRemarksAndDescription");
+        } break;
         }
         if (self.groupId.length > 0) {
             NSInteger count = [self tableView:tableView numberOfRowsInSection:0];
-            if (indexPath.row == count -1) {
+            if (indexPath.row == count - 1) {
                 [cell setCellStyle:Style_Default];
                 cell.titleLabel.text = RCDLocalizedString(@"Personal_information");
             }
@@ -494,7 +523,8 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
     } else {
         [cell setCellStyle:Style_Default];
         if (indexPath.row == 0) {
-            NSString *blackString = self.inBlacklist ? RCDLocalizedString(@"cancel_block") : RCDLocalizedString(@"add_to_blacklist");
+            NSString *blackString =
+                self.inBlacklist ? RCDLocalizedString(@"cancel_block") : RCDLocalizedString(@"add_to_blacklist");
             cell.titleLabel.text = blackString;
         } else {
             cell.titleLabel.text = RCDLocalizedString(@"DeleteFriend");
@@ -504,27 +534,36 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     if (indexPath.section == 0) {
         if (self.groupId.length > 0) {
             NSInteger count = [self tableView:tableView numberOfRowsInSection:0];
-            if (indexPath.row == count -1) {
+            if (indexPath.row == count - 1) {
                 [self pushGroupMemberInfoVC];
-            }else{
+            } else {
                 [self pushToRemarksVC];
             }
-        }else{
+        } else {
             [self pushToRemarksVC];
         }
     } else {
         if (indexPath.row == 0) {
-            self.operation = self.inBlacklist ? RCDPersonOperationRemoveFromBlacklist : RCDPersonOperationAddToBlacklist;
-            NSString *hintString = self.inBlacklist ? RCDLocalizedString(@"cancel_block") : RCDLocalizedString(@"AddToBlacklistHintMessage");
-            
-            [self showAlertWithMessage:hintString highlightText:nil leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"confirm")];
+            self.operation =
+                self.inBlacklist ? RCDPersonOperationRemoveFromBlacklist : RCDPersonOperationAddToBlacklist;
+            NSString *hintString = self.inBlacklist ? RCDLocalizedString(@"cancel_block")
+                                                    : RCDLocalizedString(@"AddToBlacklistHintMessage");
+
+            [self showAlertWithMessage:hintString
+                         highlightText:nil
+                             leftTitle:RCDLocalizedString(@"cancel")
+                            rightTitle:RCDLocalizedString(@"confirm")];
         } else {
             self.operation = RCDPersonOperationDelete;
-            [self showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"DeleteFriendHindMessage"),self.userInfo.name] highlightText:self.userInfo.name leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"Delete")];
+            [self showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"DeleteFriendHindMessage"),
+                                                                  self.userInfo.name]
+                         highlightText:self.userInfo.name
+                             leftTitle:RCDLocalizedString(@"cancel")
+                            rightTitle:RCDLocalizedString(@"Delete")];
         }
     }
 }
@@ -561,7 +600,8 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
         _tableView.tableFooterView = [UIView new];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"FFFFFF" alpha:1];
         _tableView.separatorColor = [UIColor colorWithHexString:@"E5E5E5" alpha:1];
-        _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
+        _tableView.tableHeaderView =
+            [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
     }
     return _tableView;
 }

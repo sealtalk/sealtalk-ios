@@ -11,9 +11,9 @@
 
 @interface RCDDebugViewController () <UIAlertViewDelegate>
 
-@property(nonatomic, strong) UILabel *offLineMessageTimeLabel;
-@property(nonatomic, strong) UITextField *updateTimeTextField;
-@property(nonatomic, strong) UIButton *confirmBtn;
+@property (nonatomic, strong) UILabel *offLineMessageTimeLabel;
+@property (nonatomic, strong) UITextField *updateTimeTextField;
+@property (nonatomic, strong) UIButton *confirmBtn;
 
 @end
 
@@ -49,7 +49,7 @@
 - (void)showAlert:(BOOL)success {
     NSString *title = RCDLocalizedString(@"alert");
     NSString *content = RCDLocalizedString(@"setting_success");
-    if(!success) {
+    if (!success) {
         content = RCDLocalizedString(@"set_fail");
     }
     NSString *confirm = RCDLocalizedString(@"confirm");
@@ -65,40 +65,41 @@
 
 #pragma mark - getter
 - (UILabel *)offLineMessageTimeLabel {
-    if(!_offLineMessageTimeLabel) {
+    if (!_offLineMessageTimeLabel) {
         _offLineMessageTimeLabel =
-        [[UILabel alloc] initWithFrame:CGRectMake(50, 50, self.view.bounds.size.width - 100, 50)];
+            [[UILabel alloc] initWithFrame:CGRectMake(50, 50, self.view.bounds.size.width - 100, 50)];
         _offLineMessageTimeLabel.textAlignment = NSTextAlignmentCenter;
         _offLineMessageTimeLabel.textColor = [UIColor blackColor];
-        [_offLineMessageTimeLabel setText:[NSString stringWithFormat:RCDLocalizedString(@"xday")
-                                               , [[RCIMClient sharedRCIMClient] getOfflineMessageDuration]]];
+        [_offLineMessageTimeLabel
+            setText:[NSString stringWithFormat:RCDLocalizedString(@"xday"),
+                                               [[RCIMClient sharedRCIMClient] getOfflineMessageDuration]]];
     }
     return _offLineMessageTimeLabel;
 }
 
 - (UITextField *)updateTimeTextField {
-    if(!_updateTimeTextField) {
+    if (!_updateTimeTextField) {
         _updateTimeTextField =
-        [[UITextField alloc] initWithFrame:CGRectMake(50, 150, self.view.bounds.size.width - 100, 50)];
-        _updateTimeTextField.placeholder =RCDLocalizedString(@"Set_offline_message_compensation_hint")
-        ;
+            [[UITextField alloc] initWithFrame:CGRectMake(50, 150, self.view.bounds.size.width - 100, 50)];
+        _updateTimeTextField.placeholder = RCDLocalizedString(@"Set_offline_message_compensation_hint");
         [_updateTimeTextField setFont:[UIFont systemFontOfSize:13]];
         _updateTimeTextField.borderStyle = UITextBorderStyleRoundedRect;
-        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:_updateTimeTextField.placeholder attributes:
-        @{NSForegroundColorAttributeName:HEXCOLOR(0x999999),
-                     NSFontAttributeName:_updateTimeTextField.font
-             }];
+        NSAttributedString *attrString =
+            [[NSAttributedString alloc] initWithString:_updateTimeTextField.placeholder
+                                            attributes:@{
+                                                NSForegroundColorAttributeName : HEXCOLOR(0x999999),
+                                                NSFontAttributeName : _updateTimeTextField.font
+                                            }];
         _updateTimeTextField.attributedPlaceholder = attrString;
     }
     return _updateTimeTextField;
 }
 
 - (UIButton *)confirmBtn {
-    if(!_confirmBtn) {
+    if (!_confirmBtn) {
         _confirmBtn =
-        [[UIButton alloc] initWithFrame:CGRectMake((self.view.bounds.size.width - 100) / 2, 250, 100, 50)];
-        [_confirmBtn setTitle:RCDLocalizedString(@"confirm")
-                         forState:UIControlStateNormal];
+            [[UIButton alloc] initWithFrame:CGRectMake((self.view.bounds.size.width - 100) / 2, 250, 100, 50)];
+        [_confirmBtn setTitle:RCDLocalizedString(@"confirm") forState:UIControlStateNormal];
         _confirmBtn.backgroundColor = [UIColor blueColor];
         [_confirmBtn addTarget:self action:@selector(confirm) forControlEvents:UIControlEventTouchUpInside];
     }

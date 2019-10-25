@@ -12,10 +12,10 @@
 /*!
  当前会话的会话类型
  */
-@property(nonatomic, assign) RCConversationType conversationType;
+@property (nonatomic, assign) RCConversationType conversationType;
 
 /*!
  目标会话ID
  */
-@property(nonatomic, strong) NSString *targetId;
+@property (nonatomic, strong) NSString *targetId;
 @end

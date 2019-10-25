@@ -10,7 +10,10 @@
 #import "RCDHTTPUtility.h"
 @implementation RCDChatAPI
 
-+ (void)setChatConfigWithConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId screenCaptureNotification:(BOOL)open complete:(void (^)(BOOL))complete {
++ (void)setChatConfigWithConversationType:(RCConversationType)conversationType
+                                 targetId:(NSString *)targetId
+                screenCaptureNotification:(BOOL)open
+                                 complete:(void (^)(BOOL))complete {
     if (!targetId) {
         SealTalkLog(@"targetId is nil");
         if (complete) {
@@ -24,7 +27,11 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"misc/set_screen_capture"
-                               parameters:@{@"conversationType" : @(conversationType), @"targetId" : targetId, @"noticeStatus" : @(open?1:0)}
+                               parameters:@{
+                                   @"conversationType" : @(conversationType),
+                                   @"targetId" : targetId,
+                                   @"noticeStatus" : @(open ? 1 : 0)
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (complete) {
                                          complete(result.success);
@@ -43,18 +50,18 @@
         }
         return;
     }
-    NSDictionary *params = @{@"conversationType" : @(type), @"targetId" : targetId};
+    NSDictionary *params = @{ @"conversationType" : @(type), @"targetId" : targetId };
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"misc/get_screen_capture"
                                parameters:params
                                  response:^(RCDHTTPResult *result) {
-                                     if(result.success){
+                                     if (result.success) {
                                          NSDictionary *dic = result.content;
                                          BOOL open = [dic[@"status"] boolValue];
                                          if (success) {
                                              success(open);
                                          }
-                                     }else{
+                                     } else {
                                          if (error) {
                                              error();
                                          }
@@ -62,7 +69,9 @@
                                  }];
 }
 
-+ (void)sendScreenCaptureNotification:(RCConversationType)conversationType targetId:(NSString *)targetId complete:(void (^)(BOOL))complete{
++ (void)sendScreenCaptureNotification:(RCConversationType)conversationType
+                             targetId:(NSString *)targetId
+                             complete:(void (^)(BOOL))complete {
     if (!targetId) {
         SealTalkLog(@"targetId is nil");
         if (complete) {
@@ -72,7 +81,10 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"misc/send_sc_msg"
-                               parameters:@{@"conversationType" : @(conversationType), @"targetId" : targetId}
+                               parameters:@{
+                                   @"conversationType" : @(conversationType),
+                                   @"targetId" : targetId
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (complete) {
                                          complete(result.success);
@@ -80,7 +92,9 @@
                                  }];
 }
 
-+ (void)setGroupMessageClearStatus:(RCDGroupMessageClearStatus)status groupId:(NSString *)groupId complete:(void (^)(BOOL))complete{
++ (void)setGroupMessageClearStatus:(RCDGroupMessageClearStatus)status
+                           groupId:(NSString *)groupId
+                          complete:(void (^)(BOOL))complete {
     if (!groupId) {
         SealTalkLog(@"groupId is nil");
         if (complete) {
@@ -88,7 +102,7 @@
         }
         return;
     }
-    NSDictionary *params = @{@"groupId" : groupId,@"clearStatus":@(status)};
+    NSDictionary *params = @{ @"groupId" : groupId, @"clearStatus" : @(status) };
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"group/set_regular_clear"
                                parameters:params
@@ -99,7 +113,7 @@
                                  }];
 }
 
-+ (void)getGroupMessageClearStatus:(NSString *)groupId complete:(void (^)(RCDGroupMessageClearStatus))complete{
++ (void)getGroupMessageClearStatus:(NSString *)groupId complete:(void (^)(RCDGroupMessageClearStatus))complete {
     if (!groupId) {
         SealTalkLog(@"groupId is nil");
         if (complete) {
@@ -107,7 +121,7 @@
         }
         return;
     }
-    NSDictionary *params = @{@"groupId" : groupId};
+    NSDictionary *params = @{ @"groupId" : groupId };
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"group/get_regular_clear"
                                parameters:params
@@ -117,12 +131,12 @@
                                              if (complete) {
                                                  complete([result.content integerValue]);
                                              }
-                                         }else{
+                                         } else {
                                              if (complete) {
                                                  complete([result.content[@"clearStatus"] integerValue]);
                                              }
                                          }
-                                     }else{
+                                     } else {
                                          if (complete) {
                                              complete(RCDGroupMessageClearStatusUnknown);
                                          }

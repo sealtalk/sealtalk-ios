@@ -31,12 +31,12 @@ typedef NS_ENUM(NSInteger, RCDFriendStatus) {
         | 删除了好友关系  | 30   | 30  | 删除了好友关系
         | 拉黑          | 31   | 31  | 拉黑
  */
-@property(nonatomic, assign) RCDFriendStatus status;
+@property (nonatomic, assign) RCDFriendStatus status;
 
-@property(nonatomic, strong) NSString *displayName;
+@property (nonatomic, strong) NSString *displayName;
 
-@property(nonatomic, strong) NSString *phoneNumber;
+@property (nonatomic, strong) NSString *phoneNumber;
 
-@property(nonatomic, assign) long long updateDt;
+@property (nonatomic, assign) long long updateDt;
 
 @end

@@ -10,7 +10,7 @@
 #import <Masonry/Masonry.h>
 #import "RCDUtilities.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-@interface RCDGroupManagerCell()
+@interface RCDGroupManagerCell ()
 @property (nonatomic, strong) UILabel *nameLabel;
 
 @property (nonatomic, strong) UIImageView *portraitImageView;
@@ -20,9 +20,9 @@
 @property (nonatomic, strong) NSString *userId;
 @end
 @implementation RCDGroupManagerCell
-+ (instancetype)cellWithTableView:(UITableView *)tableView{
++ (instancetype)cellWithTableView:(UITableView *)tableView {
     RCDGroupManagerCell *cell =
-    (RCDGroupManagerCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupManagerCellIdentifier];
+        (RCDGroupManagerCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupManagerCellIdentifier];
     if (!cell) {
         cell = [[RCDGroupManagerCell alloc] init];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -31,7 +31,7 @@
     return cell;
 }
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self addSubviews];
@@ -39,41 +39,43 @@
     return self;
 }
 
-- (void)setDataModel:(NSString *)userId groupId:(NSString *)groupId{
+- (void)setDataModel:(NSString *)userId groupId:(NSString *)groupId {
     [self deleteButtonIsShow:NO];
-    if(userId.length == 0){
+    if (userId.length == 0) {
         self.nameLabel.textColor = HEXCOLOR(0x939393);
         self.nameLabel.text = RCDLocalizedString(@"GroupManagerAdd");
         self.portraitImageView.image = [UIImage imageNamed:@"groupmanageradd"];
-    }else{
+    } else {
         self.userId = userId;
         self.nameLabel.textColor = HEXCOLOR(0x262626);
         __weak typeof(self) weakSelf = self;
-        [RCDUtilities getGroupUserDisplayInfo:userId groupId:groupId result:^(RCUserInfo *user) {
-            [weakSelf.portraitImageView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
-                                          placeholderImage:[UIImage imageNamed:@"contact"]];
-            weakSelf.nameLabel.text = user.name;
-        }];
+        [RCDUtilities getGroupUserDisplayInfo:userId
+                                      groupId:groupId
+                                       result:^(RCUserInfo *user) {
+                                           [weakSelf.portraitImageView
+                                               sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                                                 placeholderImage:[UIImage imageNamed:@"contact"]];
+                                           weakSelf.nameLabel.text = user.name;
+                                       }];
     }
 }
 
-- (void)deleteButtonShow{
+- (void)deleteButtonShow {
     [self deleteButtonIsShow:YES];
 }
 
-- (void)deleteButtonIsShow:(BOOL)isShow{
+- (void)deleteButtonIsShow:(BOOL)isShow {
     self.deleteButton.hidden = !isShow;
     self.deleteButton.enabled = isShow;
 }
 
-- (void)didClickDeleteButton{
+- (void)didClickDeleteButton {
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectUserId:)]) {
         [self.delegate didSelectUserId:self.userId];
     }
 }
 
-
-- (void)addSubviews{
+- (void)addSubviews {
     [self.contentView addSubview:self.portraitImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.deleteButton];
@@ -82,14 +84,14 @@
         make.left.equalTo(self.contentView).offset(12);
         make.height.width.offset(40);
     }];
-    
+
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.portraitImageView.mas_right).offset(9);
         make.width.offset(150);
         make.height.offset(24);
     }];
-    
+
     [self.deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView.mas_right).offset(-12);
         make.centerY.equalTo(self.contentView);
@@ -118,11 +120,13 @@
     return _nameLabel;
 }
 
-- (UIButton *)deleteButton{
+- (UIButton *)deleteButton {
     if (!_deleteButton) {
         _deleteButton = [[UIButton alloc] init];
         [_deleteButton setImage:[UIImage imageNamed:@"groupmanagerdelete"] forState:(UIControlStateNormal)];
-        [_deleteButton addTarget:self action:@selector(didClickDeleteButton) forControlEvents:(UIControlEventTouchUpInside)];
+        [_deleteButton addTarget:self
+                          action:@selector(didClickDeleteButton)
+                forControlEvents:(UIControlEventTouchUpInside)];
     }
     return _deleteButton;
 }

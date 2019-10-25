@@ -19,10 +19,10 @@
 
 @interface HeadCollectionView : UIView
 
-@property(nonatomic, strong) UIButton *quitButton;
-@property(nonatomic, strong) UIButton *backButton;
-@property(nonatomic, assign) RCUserAvatarStyle avatarStyle;
-@property(nonatomic, weak) id<HeadCollectionTouchDelegate> touchDelegate;
+@property (nonatomic, strong) UIButton *quitButton;
+@property (nonatomic, strong) UIButton *backButton;
+@property (nonatomic, assign) RCUserAvatarStyle avatarStyle;
+@property (nonatomic, weak) id<HeadCollectionTouchDelegate> touchDelegate;
 
 #pragma mark init
 - (instancetype)initWithFrame:(CGRect)frame participants:(NSArray *)userIds touchDelegate:touchDelegate;

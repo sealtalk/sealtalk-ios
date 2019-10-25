@@ -29,36 +29,36 @@
 }
 
 - (void)addSubviews {
-    
+
     self.backgroundColor = [UIColor colorWithHexString:@"FAFAFA" alpha:1];
-    
+
     [self addSubview:self.bgView];
     [self.bgView addSubview:self.headerImgView];
     [self.bgView addSubview:self.titleLabel];
     [self.bgView addSubview:self.detailLabel];
     [self.bgView addSubview:self.settingButton];
-    
+
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.centerY.equalTo(self);
     }];
-    
+
     [self.headerImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.centerX.equalTo(self.bgView);
         make.width.height.offset(110);
     }];
-    
+
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.headerImgView.mas_bottom).offset(25);
         make.left.right.equalTo(self.bgView).inset(10);
         make.height.offset(24);
     }];
-    
+
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).offset(15);
         make.left.right.equalTo(self.bgView).inset(10);
         make.height.offset(40);
     }];
-    
+
     [self.settingButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.detailLabel.mas_bottom).offset(42);
         make.left.right.equalTo(self.bgView).inset(15);

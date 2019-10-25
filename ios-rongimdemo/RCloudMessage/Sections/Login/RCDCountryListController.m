@@ -13,19 +13,19 @@
 #import "RCDCommonDefine.h"
 #import "RCDCommonString.h"
 #import "RCDLoginManager.h"
-@interface RCDCountryListController ()<UITableViewDelegate, UITableViewDataSource,
-UISearchControllerDelegate, UISearchResultsUpdating>
+@interface RCDCountryListController () <UITableViewDelegate, UITableViewDataSource, UISearchControllerDelegate,
+                                        UISearchResultsUpdating>
 
-@property(nonatomic, retain) UISearchController *searchController;
+@property (nonatomic, retain) UISearchController *searchController;
 
 //数据源
-@property(nonatomic, strong) NSMutableArray *countryArray;
-@property(nonatomic, strong) NSMutableArray *searchListArry;
+@property (nonatomic, strong) NSMutableArray *countryArray;
+@property (nonatomic, strong) NSMutableArray *searchListArry;
 
-@property(nonatomic, strong) NSMutableDictionary *resultDic;
-@property(nonatomic, strong) NSMutableDictionary *searchResultDic;
-@property(nonatomic, strong) NSDictionary *allCountryDic;
-@property(nonatomic, strong) NSDictionary *allSearchCountryDic;
+@property (nonatomic, strong) NSMutableDictionary *resultDic;
+@property (nonatomic, strong) NSMutableDictionary *searchResultDic;
+@property (nonatomic, strong) NSDictionary *allCountryDic;
+@property (nonatomic, strong) NSDictionary *allSearchCountryDic;
 
 @end
 
@@ -65,8 +65,8 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     self.allCountryDic = [[NSDictionary alloc] init];
     self.allSearchCountryDic = [[NSDictionary alloc] init];
     __weak typeof(self) weakSelf = self;
-    
-    [RCDLoginManager getRegionlist:^(NSArray * _Nonnull countryArray) {
+
+    [RCDLoginManager getRegionlist:^(NSArray *_Nonnull countryArray) {
         weakSelf.countryArray = [countryArray mutableCopy];
         weakSelf.resultDic = [weakSelf sortedArrayWithPinYinDic:countryArray];
         rcd_dispatch_main_async_safe(^{
@@ -86,7 +86,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
 
 - (NSArray *)countriesInSection:(NSInteger)section {
     NSString *letter = [self sectionCountryTitles][section];
-    
+
     NSArray *countries;
     if (self.searchController.active) {
         countries = self.allSearchCountryDic[letter];
@@ -113,16 +113,16 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     view.frame = CGRectMake(0, 0, self.view.frame.size.width, 19);
     view.backgroundColor = HEXCOLOR(0xF5F5F5);
-    
+
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
     title.frame = CGRectMake(13, 3, 15, 15);
     title.font = [UIFont systemFontOfSize:15.f];
     title.textColor = HEXCOLOR(0x808080);
     [view addSubview:title];
-    
+
     NSArray *sectionTitles = [self sectionCountryTitles];
     title.text = sectionTitles[section];
-    
+
     return view;
 }
 
@@ -135,21 +135,21 @@ UISearchControllerDelegate, UISearchResultsUpdating>
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     static NSString *flag = @"cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:flag];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:flag];
         cell.backgroundColor = [UIColor whiteColor];
     }
-    
+
     NSArray *sectionUserInfoList = [self countriesInSection:indexPath.section];
-    
+
     RCDCountry *countryInfo = sectionUserInfoList[indexPath.row];
     if (countryInfo) {
         [cell.textLabel setText:countryInfo.countryName];
         cell.textLabel.textColor = [UIColor blackColor];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"+%@",countryInfo.phoneCode];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"+%@", countryInfo.phoneCode];
     }
     return cell;
 }
@@ -162,7 +162,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
         self.SelectCountryResult(countryInfo);
     }
     if ([self.delegate respondsToSelector:@selector(fetchCountryPhoneCode:)]) {
-        
+
         [self.delegate fetchCountryPhoneCode:countryInfo];
     }
     [self.navigationController popViewControllerAnimated:NO];
@@ -180,7 +180,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     }
     //过滤数据
     self.searchListArry = [NSMutableArray arrayWithArray:[self.countryArray filteredArrayUsingPredicate:preicate]];
-    
+
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         self.searchResultDic = [self sortedArrayWithPinYinDic:self.searchListArry];
         self.allSearchCountryDic = self.searchResultDic[@"infoDic"];
@@ -192,7 +192,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
 
 #pragma mark - 属性初始化 -
 - (UISearchController *)searchController {
-    if(!_searchController){
+    if (!_searchController) {
         _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
         _searchController.delegate = self;
         _searchController.searchResultsUpdater = self;
@@ -208,13 +208,38 @@ UISearchControllerDelegate, UISearchResultsUpdating>
     if (!countryList)
         return nil;
     NSArray *_keys = @[
-                       @"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N",
-                       @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", @"#"
-                       ];
+        @"A",
+        @"B",
+        @"C",
+        @"D",
+        @"E",
+        @"F",
+        @"G",
+        @"H",
+        @"I",
+        @"J",
+        @"K",
+        @"L",
+        @"M",
+        @"N",
+        @"O",
+        @"P",
+        @"Q",
+        @"R",
+        @"S",
+        @"T",
+        @"U",
+        @"V",
+        @"W",
+        @"X",
+        @"Y",
+        @"Z",
+        @"#"
+    ];
     NSMutableArray *mutableList = [countryList mutableCopy];
 
     NSMutableDictionary *infoDic = [NSMutableDictionary new];
-    
+
     for (RCDCountry *model in mutableList) {
         NSString *firstLetter;
         if (model.countryName.length > 0 && ![model.countryName isEqualToString:@""]) {
@@ -227,16 +252,16 @@ UISearchControllerDelegate, UISearchResultsUpdating>
             if (array) {
                 [array addObject:model];
                 [infoDic setObject:array forKey:firstLetter];
-            }else{
-                [infoDic setObject:@[model].mutableCopy forKey:firstLetter];
+            } else {
+                [infoDic setObject:@[ model ].mutableCopy forKey:firstLetter];
             }
-        }else{
+        } else {
             NSMutableArray *array = infoDic[@"#"];
             if (array) {
                 [array addObject:model];
                 [infoDic setObject:array forKey:@"#"];
-            }else{
-                [infoDic setObject:@[model].mutableCopy forKey:@"#"];
+            } else {
+                [infoDic setObject:@[ model ].mutableCopy forKey:@"#"];
             }
         }
     }
@@ -244,7 +269,7 @@ UISearchControllerDelegate, UISearchResultsUpdating>
         return [obj1 compare:obj2 options:NSNumericSearch];
     }];
     NSMutableArray *allKeys = [[NSMutableArray alloc] initWithArray:keys];
-    
+
     NSMutableDictionary *resultDic = [NSMutableDictionary new];
     [resultDic setObject:infoDic forKey:@"infoDic"];
     [resultDic setObject:allKeys forKey:@"allKeys"];

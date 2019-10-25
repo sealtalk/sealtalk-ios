@@ -16,9 +16,9 @@
 #import "RCDCommonString.h"
 
 @interface RCDAboutRongCloudTableViewController ()
-@property(nonatomic, strong) NSArray *urls;
-@property(nonatomic, strong) NSDate *firstClickDate;
-@property(nonatomic, assign) NSUInteger clickTimes;
+@property (nonatomic, strong) NSArray *urls;
+@property (nonatomic, strong) NSDate *firstClickDate;
+@property (nonatomic, assign) NSUInteger clickTimes;
 @end
 
 @implementation RCDAboutRongCloudTableViewController
@@ -49,7 +49,7 @@
 - (void)openUrlFor:(NSInteger)index {
     NSString *urlString = self.urls[index];
     if (!urlString.length) {
-        return ;
+        return;
     }
     NSURL *url = [NSURL URLWithString:urlString];
     if (url) {
@@ -63,8 +63,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if(0 == indexPath.row) {
+
+    if (0 == indexPath.row) {
         static NSString *logoCellWithIdentifier = @"RCDLogoTableViewCell";
         RCDLogoTableViewCell *logoCell = [self.tableView dequeueReusableCellWithIdentifier:logoCellWithIdentifier];
         if (logoCell == nil) {
@@ -73,7 +73,7 @@
         logoCell.selectionStyle = UITableViewCellSelectionStyleNone;
         return logoCell;
     }
-    if(4 == indexPath.row) {
+    if (4 == indexPath.row) {
         static NSString *versionCellWithIdentifier = @"RCDVersionCell";
         RCDVersionCell *versionCell = [self.tableView dequeueReusableCellWithIdentifier:versionCellWithIdentifier];
         if (versionCell == nil) {
@@ -90,26 +90,25 @@
         versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
         return versionCell;
     }
-    
+
     static NSString *reusableCellWithIdentifier = @"RCDBaseSettingTableViewCell";
     RCDBaseSettingTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
-    
+
     if (cell == nil) {
         cell = [[RCDBaseSettingTableViewCell alloc] init];
     }
-    if(1 == indexPath.row) {
+    if (1 == indexPath.row) {
         [cell setCellStyle:DefaultStyle];
         cell.leftLabel.text = RCDLocalizedString(@"update_log");
-    }else if(2 == indexPath.row) {
+    } else if (2 == indexPath.row) {
         [cell setCellStyle:DefaultStyle];
         cell.leftLabel.text = RCDLocalizedString(@"function_introduce");
-    }else if(3 == indexPath.row) {
+    } else if (3 == indexPath.row) {
         [cell setCellStyle:DefaultStyle];
         cell.leftLabel.text = RCDLocalizedString(@"offical_website");
-    }else if(5 == indexPath.row) {
+    } else if (5 == indexPath.row) {
         [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
-        cell.leftLabel.text = RCDLocalizedString(@"SDK_version")
-        ;
+        cell.leftLabel.text = RCDLocalizedString(@"SDK_version");
         NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
         cell.rightLabel.text = version;
     }
@@ -119,19 +118,19 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height = 44.f;
-    if(0 == indexPath.row) {
+    if (0 == indexPath.row) {
         height = 141.f;
     }
     return height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     if (indexPath.row < 4) {
         [self openUrlFor:indexPath.row];
-    }else if (indexPath.row == 4) {
+    } else if (indexPath.row == 4) {
         [self downloadNewVersionIfNeed];
-    }else if (indexPath.row == 5) {
+    } else if (indexPath.row == 5) {
         if (self.clickTimes == 0) {
             self.firstClickDate = [[NSDate alloc] init];
             self.clickTimes = 1;
@@ -198,23 +197,24 @@
     self.tableView.tableFooterView = [UIView new];
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    self.navigationItem.title = RCDLocalizedString(@"about_sealtalk")
-    ;
-    
-    RCDUIBarButtonItem *leftBtn =
-    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
-                                               target:self action:@selector(clickBackBtn:)];
+
+    self.navigationItem.title = RCDLocalizedString(@"about_sealtalk");
+
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
 #pragma mark - getter
 - (NSArray *)urls {
     if (!_urls) {
-        _urls = @[@"http://rongcloud.cn/",
-                  @"http://blog.rongcloud.cn/?page_id=1569",
-                  @"http://rongcloud.cn/features",
-                  @"http://rongcloud.cn/"];
+        _urls = @[
+            @"http://rongcloud.cn/",
+            @"http://blog.rongcloud.cn/?page_id=1569",
+            @"http://rongcloud.cn/features",
+            @"http://rongcloud.cn/"
+        ];
     }
     return _urls;
 }

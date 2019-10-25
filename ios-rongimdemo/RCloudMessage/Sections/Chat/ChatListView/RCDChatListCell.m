@@ -11,19 +11,18 @@
 #import "RCDUserInfoManager.h"
 #import "RCDContactNotificationMessage.h"
 
-@interface RCDChatListCell()
-@property(nonatomic, strong) UIImageView *ivAva;
-@property(nonatomic, strong) UILabel *lblName;
-@property(nonatomic, strong) UILabel *lblDetail;
-@property(nonatomic, copy) NSString *userName;
-@property(nonatomic, strong) UILabel *labelTime;
+@interface RCDChatListCell ()
+@property (nonatomic, strong) UIImageView *ivAva;
+@property (nonatomic, strong) UILabel *lblName;
+@property (nonatomic, strong) UILabel *lblDetail;
+@property (nonatomic, copy) NSString *userName;
+@property (nonatomic, strong) UILabel *labelTime;
 @end
 
 @implementation RCDChatListCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView{
-    RCDChatListCell *cell =
-    (RCDChatListCell *)[tableView dequeueReusableCellWithIdentifier:RCDChatListCellIdentifier];
++ (instancetype)cellWithTableView:(UITableView *)tableView {
+    RCDChatListCell *cell = (RCDChatListCell *)[tableView dequeueReusableCellWithIdentifier:RCDChatListCellIdentifier];
     if (!cell) {
         cell = [[RCDChatListCell alloc] init];
         cell.backgroundColor = [UIColor whiteColor];
@@ -40,7 +39,7 @@
     return self;
 }
 
-- (void)setDataModel:(RCConversationModel *)model{
+- (void)setDataModel:(RCConversationModel *)model {
     self.model = model;
     __block NSString *userName = nil;
     __block NSString *portraitUri = nil;
@@ -50,13 +49,15 @@
         if (model.conversationType == ConversationType_SYSTEM) {
             NSString *sourceUserId;
             if ([model.lastestMessage isMemberOfClass:[RCDContactNotificationMessage class]]) {
-                RCDContactNotificationMessage *_contactNotificationMsg = (RCDContactNotificationMessage*)model.lastestMessage;
+                RCDContactNotificationMessage *_contactNotificationMsg =
+                    (RCDContactNotificationMessage *)model.lastestMessage;
                 sourceUserId = _contactNotificationMsg.sourceUserId;
-            }else if([model.lastestMessage isMemberOfClass:[RCContactNotificationMessage class]]){
-                RCContactNotificationMessage *_contactNotificationMsg = (RCContactNotificationMessage*)model.lastestMessage;
+            } else if ([model.lastestMessage isMemberOfClass:[RCContactNotificationMessage class]]) {
+                RCContactNotificationMessage *_contactNotificationMsg =
+                    (RCContactNotificationMessage *)model.lastestMessage;
                 sourceUserId = _contactNotificationMsg.sourceUserId;
             }
-            
+
             if (sourceUserId == nil) {
                 self.lblDetail.text = RCDLocalizedString(@"friend_request");
                 [self.ivAva sd_setImageWithURL:[NSURL URLWithString:portraitUri]
@@ -83,7 +84,7 @@
         RCDFriendInfo *user = (RCDFriendInfo *)model.extend;
         if (user.displayName.length > 0) {
             userName = user.displayName;
-        }else{
+        } else {
             userName = user.name;
         }
         portraitUri = user.portraitUri;
@@ -91,20 +92,23 @@
     [self setDataInfo:userName portraitUri:portraitUri];
 }
 
-- (void)setDataInfo:(NSString *)userName portraitUri:(NSString *)portraitUri{
+- (void)setDataInfo:(NSString *)userName portraitUri:(NSString *)portraitUri {
     NSString *operation;
     if ([(self.model.lastestMessage) isMemberOfClass:[RCDContactNotificationMessage class]]) {
-        RCDContactNotificationMessage *_contactNotificationMsg = (RCDContactNotificationMessage*)(self.model.lastestMessage);
+        RCDContactNotificationMessage *_contactNotificationMsg =
+            (RCDContactNotificationMessage *)(self.model.lastestMessage);
         operation = _contactNotificationMsg.operation;
-    }else if([(self.model.lastestMessage) isMemberOfClass:[RCContactNotificationMessage class]]){
-        RCContactNotificationMessage *_contactNotificationMsg = (RCContactNotificationMessage*)(self.model.lastestMessage);
+    } else if ([(self.model.lastestMessage) isMemberOfClass:[RCContactNotificationMessage class]]) {
+        RCContactNotificationMessage *_contactNotificationMsg =
+            (RCContactNotificationMessage *)(self.model.lastestMessage);
         operation = _contactNotificationMsg.operation;
     }
     NSString *operationContent;
     if ([operation isEqualToString:RCDContactNotificationMessage_ContactOperationRequest]) {
         operationContent = [NSString stringWithFormat:RCDLocalizedString(@"from_someone_friend_request"), userName];
     } else if ([operation isEqualToString:RCDContactNotificationMessage_ContactOperationAcceptResponse]) {
-        operationContent = [NSString stringWithFormat:RCDLocalizedString(@"someone_accept_you_friend_request"), userName];
+        operationContent =
+            [NSString stringWithFormat:RCDLocalizedString(@"someone_accept_you_friend_request"), userName];
     }
     rcd_dispatch_main_async_safe(^{
         self.lblDetail.text = operationContent;
@@ -114,45 +118,44 @@
     });
 }
 
-- (void)cacheUserInfo:(RCUserInfo *)user{
+- (void)cacheUserInfo:(RCUserInfo *)user {
     RCDFriendInfo *rcduserinfo_ = [RCDFriendInfo new];
     rcduserinfo_.name = user.name;
     rcduserinfo_.userId = user.userId;
     rcduserinfo_.portraitUri = user.portraitUri;
     self.model.extend = rcduserinfo_;
     // local cache for userInfo
-    NSDictionary *userinfoDic =
-    @{@"username" : rcduserinfo_.name, @"portraitUri" : rcduserinfo_.portraitUri};
+    NSDictionary *userinfoDic = @{ @"username" : rcduserinfo_.name, @"portraitUri" : rcduserinfo_.portraitUri };
     [DEFAULTS setObject:userinfoDic forKey:user.userId];
     [DEFAULTS synchronize];
 }
 
-- (void)setupSubviews{
+- (void)setupSubviews {
     _ivAva = [UIImageView new];
     _ivAva.clipsToBounds = YES;
     _ivAva.layer.cornerRadius = 5.0f;
     if ([[RCIM sharedRCIM] globalConversationAvatarStyle] == RC_USER_AVATAR_CYCLE) {
         _ivAva.layer.cornerRadius = [[RCIM sharedRCIM] globalConversationPortraitSize].height / 2;
     }
-    
+
     [_ivAva setBackgroundColor:[UIColor blackColor]];
-    
+
     _lblDetail = [UILabel new];
     [_lblDetail setFont:[UIFont systemFontOfSize:14.f]];
     [_lblDetail setTextColor:HEXCOLOR(0x8c8c8c)];
     _lblDetail.text = [NSString stringWithFormat:RCDLocalizedString(@"from_someone_friend_request"), _userName];
-    
+
     _lblName = [UILabel new];
     [_lblName setFont:[UIFont boldSystemFontOfSize:16.f]];
     [_lblName setTextColor:HEXCOLOR(0x252525)];
     _lblName.text = RCDLocalizedString(@"friend_news");
-    
+
     _labelTime = [[UILabel alloc] init];
     _labelTime.backgroundColor = [UIColor clearColor];
     _labelTime.font = [UIFont systemFontOfSize:14];
     _labelTime.textColor = [UIColor lightGrayColor];
     _labelTime.textAlignment = NSTextAlignmentRight;
-    
+
     [self.contentView addSubview:_ivAva];
     [self.contentView addSubview:_lblDetail];
     [self.contentView addSubview:_lblName];
@@ -161,38 +164,42 @@
     _lblName.translatesAutoresizingMaskIntoConstraints = NO;
     _lblDetail.translatesAutoresizingMaskIntoConstraints = NO;
     _labelTime.translatesAutoresizingMaskIntoConstraints = NO;
-    
+
     NSDictionary *_bindingViews = NSDictionaryOfVariableBindings(_ivAva, _lblName, _lblDetail, _labelTime);
-    
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-11-[_labelTime(20)]"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(_labelTime)]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_labelTime(200)]-11-|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(_labelTime)]];
+
     [self
-     addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-11-[_labelTime(20)]"
-                                                            options:0
-                                                            metrics:nil
-                                                              views:NSDictionaryOfVariableBindings(_labelTime)]];
-    
-    [self
-     addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_labelTime(200)]-11-|"
-                                                            options:0
-                                                            metrics:nil
-                                                              views:NSDictionaryOfVariableBindings(_labelTime)]];
-    
+        addConstraints:[NSLayoutConstraint
+                           constraintsWithVisualFormat:@"H:|-13-[_ivAva(width)]"
+                                               options:0
+                                               metrics:@{
+                                                   @"width" : @([RCIM sharedRCIM].globalConversationPortraitSize.width)
+                                               }
+                                                 views:NSDictionaryOfVariableBindings(_ivAva)]];
+
     [self addConstraints:[NSLayoutConstraint
-                          constraintsWithVisualFormat:@"H:|-13-[_ivAva(width)]"
-                          options:0
-                          metrics:@{@"width" :@([RCIM sharedRCIM].globalConversationPortraitSize.width)}
-                          views:NSDictionaryOfVariableBindings(_ivAva)]];
-    
-    [self addConstraints:[NSLayoutConstraint
-                          constraintsWithVisualFormat:@"V:|-10-[_ivAva(height)]"
-                          options:0
-                          metrics:@{@"height" :@([RCIM sharedRCIM].globalConversationPortraitSize.height)}
-                          views:NSDictionaryOfVariableBindings(_ivAva)]];
-    
+                             constraintsWithVisualFormat:@"V:|-10-[_ivAva(height)]"
+                                                 options:0
+                                                 metrics:@{
+                                                     @"height" :
+                                                         @([RCIM sharedRCIM].globalConversationPortraitSize.height)
+                                                 }
+                                                   views:NSDictionaryOfVariableBindings(_ivAva)]];
+
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_lblName(18)]-[_lblDetail(18)]"
                                                                  options:kNilOptions
                                                                  metrics:kNilOptions
                                                                    views:_bindingViews]];
-    
+
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_lblName
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
@@ -200,7 +207,7 @@
                                                      attribute:NSLayoutAttributeTop
                                                     multiplier:1.0
                                                       constant:2.f]];
-    
+
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_lblName
                                                      attribute:NSLayoutAttributeLeft
                                                      relatedBy:NSLayoutRelationEqual
@@ -208,7 +215,7 @@
                                                      attribute:NSLayoutAttributeRight
                                                     multiplier:1.0
                                                       constant:8]];
-    
+
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_lblDetail
                                                      attribute:NSLayoutAttributeLeft
                                                      relatedBy:NSLayoutRelationEqual
@@ -216,7 +223,7 @@
                                                      attribute:NSLayoutAttributeLeft
                                                     multiplier:1.0
                                                       constant:1]];
-    
+
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_lblDetail
                                                      attribute:NSLayoutAttributeRight
                                                      relatedBy:NSLayoutRelationEqual

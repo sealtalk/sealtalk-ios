@@ -10,6 +10,6 @@
 #import <UIKit/UIKit.h>
 @class RCDGroupInfo;
 @interface RCDGroupSettingsTableViewController : RCDTableViewController
-@property(nonatomic, strong) RCDGroupInfo *group;
-@property (nonatomic, copy) void(^clearMessageHistory)();
+@property (nonatomic, strong) RCDGroupInfo *group;
+@property (nonatomic, copy) void (^clearMessageHistory)();
 @end

@@ -12,7 +12,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import "UIView+MBProgressHUD.h"
 #import "RCDQRInfoHandle.h"
-@interface RCDScanQRCodeController ()<AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,RCDScannerViewDelegate>
+@interface RCDScanQRCodeController () <AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate,
+                                       UINavigationControllerDelegate, RCDScannerViewDelegate>
 
 /** 扫描器 */
 @property (nonatomic, strong) RCDScannerView *scannerView;
@@ -28,7 +29,7 @@
     [self.view addSubview:self.scannerView];
     [self setNavi];
     [self checkCameraAuthorizationStatus];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(appDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
@@ -39,12 +40,12 @@
                                                object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self resumeScanning];
 }
 
-- (void)viewWillDisappear:(BOOL)animated{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.scannerView rcd_setFlashlightOn:NO];
     [self.scannerView rcd_hideFlashlightWithAnimated:YES];
@@ -54,64 +55,77 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark -- AVCaptureMetadataOutputObjectsDelegate
-- (void)captureOutput:(AVCaptureOutput *)output didOutputMetadataObjects:(NSArray<__kindof AVMetadataObject *> *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
+#pragma mark-- AVCaptureMetadataOutputObjectsDelegate
+- (void)captureOutput:(AVCaptureOutput *)output
+    didOutputMetadataObjects:(NSArray<__kindof AVMetadataObject *> *)metadataObjects
+              fromConnection:(AVCaptureConnection *)connection {
     // 获取扫一扫结果
     if (metadataObjects && metadataObjects.count > 0) {
         [self pauseScanning];
         AVMetadataMachineReadableCodeObject *metadataObject = metadataObjects[0];
         NSString *stringValue = metadataObject.stringValue;
         [self rcd_handleWithValue:stringValue];
-    }else{
+    } else {
         [self showErrorAlertView];
     }
 }
 
-
 #pragma mark -  RCDScannerViewDelegate
-- (void)didClickSelectImageButton{
+- (void)didClickSelectImageButton {
     [self showAlbum];
 }
 
-#pragma mark -- UIImagePickerControllerDelegate
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+#pragma mark-- UIImagePickerControllerDelegate
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     UIImage *pickImage = info[UIImagePickerControllerOriginalImage];
-    CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{CIDetectorAccuracy: CIDetectorAccuracyHigh}];
+    CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode
+                                              context:nil
+                                              options:@{CIDetectorAccuracy : CIDetectorAccuracyHigh}];
     // 获取选择图片中识别结果
     NSArray *features = [detector featuresInImage:[CIImage imageWithData:UIImagePNGRepresentation(pickImage)]];
-    
-    [picker dismissViewControllerAnimated:YES completion:^{
-        if (features.count > 0) {
-            CIQRCodeFeature *feature = features[0];
-            NSString *stringValue = feature.messageString;
-            [self rcd_handleWithValue:stringValue];
-        }
-        else {
-            [self rcd_didReadFromAlbumFailed];
-        }
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-    }];
+
+    [picker dismissViewControllerAnimated:YES
+                               completion:^{
+                                   if (features.count > 0) {
+                                       CIQRCodeFeature *feature = features[0];
+                                       NSString *stringValue = feature.messageString;
+                                       [self rcd_handleWithValue:stringValue];
+                                   } else {
+                                       [self rcd_didReadFromAlbumFailed];
+                                   }
+                                   [MBProgressHUD hideHUDForView:self.view animated:YES];
+                               }];
 }
 
 #pragma mark - private
-- (void)showErrorAlertView{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"confirm", @"RongCloudKit", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"QRIdentifyError") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }]];
+- (void)showErrorAlertView {
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alertController
+        addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"confirm", @"RongCloudKit", nil)
+                                           style:UIAlertActionStyleDestructive
+                                         handler:^(UIAlertAction *_Nonnull action){
+                                         }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"QRIdentifyError")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *_Nonnull action) {
+                                                          [self.navigationController popViewControllerAnimated:YES];
+                                                      }]];
 }
 
 - (void)setNavi {
     self.navigationItem.title = RCDLocalizedString(@"qr_scan");
-    
-    UIBarButtonItem *albumItem = [[UIBarButtonItem alloc]initWithTitle:RCDLocalizedString(@"PhotoAlbum") style:UIBarButtonItemStylePlain target:self action:@selector(showAlbum)];
+
+    UIBarButtonItem *albumItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"PhotoAlbum")
+                                                                  style:UIBarButtonItemStylePlain
+                                                                 target:self
+                                                                 action:@selector(showAlbum)];
     self.navigationItem.rightBarButtonItem = albumItem;
 }
 
-- (void)checkCameraAuthorizationStatus{
+- (void)checkCameraAuthorizationStatus {
     // 校验相机权限
     [RCDQRCodeManager rcd_checkCameraAuthorizationStatusWithGrand:^(BOOL granted) {
         if (granted) {
@@ -126,14 +140,17 @@
 - (void)setupScanner {
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
-    
+
     AVCaptureMetadataOutput *metadataOutput = [[AVCaptureMetadataOutput alloc] init];
     [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-    metadataOutput.rectOfInterest = CGRectMake([self.scannerView scanner_y]/self.view.frame.size.height, [self.scannerView scanner_x]/self.view.frame.size.width, [self.scannerView scanner_width]/self.view.frame.size.height, [self.scannerView scanner_width]/self.view.frame.size.width);
-    
+    metadataOutput.rectOfInterest = CGRectMake([self.scannerView scanner_y] / self.view.frame.size.height,
+                                               [self.scannerView scanner_x] / self.view.frame.size.width,
+                                               [self.scannerView scanner_width] / self.view.frame.size.height,
+                                               [self.scannerView scanner_width] / self.view.frame.size.width);
+
     AVCaptureVideoDataOutput *videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
 
-    self.session = [[AVCaptureSession alloc]init];
+    self.session = [[AVCaptureSession alloc] init];
     [self.session setSessionPreset:AVCaptureSessionPresetHigh];
     if ([self.session canAddInput:deviceInput]) {
         [self.session addInput:deviceInput];
@@ -145,23 +162,21 @@
         [self.session addOutput:videoDataOutput];
     }
 #if TARGET_IPHONE_SIMULATOR
-    // 模拟器设置不了，会crash
+// 模拟器设置不了，会crash
 #else
-    metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeQRCode];
+    metadataOutput.metadataObjectTypes = @[ AVMetadataObjectTypeQRCode ];
 #endif
-    
-    
+
     AVCaptureVideoPreviewLayer *videoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
     videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     videoPreviewLayer.frame = self.view.layer.bounds;
     [self.view.layer insertSublayer:videoPreviewLayer atIndex:0];
-    
+
     [self.session startRunning];
 }
 
-
 - (void)pushImagePicker {
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     imagePicker.delegate = self;
     imagePicker.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -218,12 +233,11 @@
 }
 
 #pragma mark - getter & setter
-- (RCDScannerView *)scannerView{
+- (RCDScannerView *)scannerView {
     if (!_scannerView) {
-        _scannerView = [[RCDScannerView alloc]initWithFrame:self.view.bounds];
+        _scannerView = [[RCDScannerView alloc] initWithFrame:self.view.bounds];
         _scannerView.delegate = self;
     }
     return _scannerView;
 }
 @end
-

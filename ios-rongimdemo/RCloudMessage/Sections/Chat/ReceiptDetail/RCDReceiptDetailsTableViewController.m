@@ -20,7 +20,8 @@
 #import <RongIMKit/RongIMKit.h>
 #import "RCDGroupManager.h"
 #define CellHeight 44
-@interface RCDReceiptDetailsTableViewController () <RCDReceiptDetailsCellDelegate, RCDReceiptDetailHeaderDelegate, RCDUserListCollectionViewDelegate>
+@interface RCDReceiptDetailsTableViewController () <RCDReceiptDetailsCellDelegate, RCDReceiptDetailHeaderDelegate,
+                                                    RCDUserListCollectionViewDelegate>
 
 @property (nonatomic, strong) RCDReceiptDetailHeader *headerMessageContentView;
 
@@ -77,7 +78,7 @@
 }
 
 #pragma mark - RCDReceiptDetailHeaderDelegate
-- (void)receiptDetailHeaderDidUpdate:(BOOL)isClosed{
+- (void)receiptDetailHeaderDidUpdate:(BOOL)isClosed {
     self.tableView.scrollEnabled = !isClosed;
     self.tableView.tableHeaderView = self.headerMessageContentView;
     CGRect rect = self.footerUserListView.frame;
@@ -86,11 +87,11 @@
 }
 
 #pragma mark - RCDUserListCollectionViewDelegate
-- (void)didTipHeaderClicked:(NSString *)userId{
+- (void)didTipHeaderClicked:(NSString *)userId {
     if (self.message.conversationType == ConversationType_GROUP) {
         UIViewController *vc = [RCDPersonDetailViewController configVC:userId groupId:self.message.targetId];
         [self.navigationController pushViewController:vc animated:YES];
-    }else{
+    } else {
         UIViewController *vc = [RCDPersonDetailViewController configVC:userId groupId:nil];
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -101,13 +102,15 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)setNaviItem{
+- (void)setNaviItem {
     self.navigationItem.title = RCDLocalizedString(@"Receipt_details");
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
-- (void)handleData{
+- (void)handleData {
     RCMessage *message = [[RCIMClient sharedRCIMClient] getMessageByUId:self.message.messageUId];
     NSMutableDictionary *readReceiptUserList = message.readReceiptInfo.userIdList;
     NSArray *hasReadUserList = [readReceiptUserList allKeys];
@@ -124,7 +127,7 @@
     NSArray *userList;
     NSMutableArray *allUsers = [RCDDBManager getGroupMembers:self.message.targetId].mutableCopy;
     if ([RCIM sharedRCIM].currentUserInfo.userId) {
-         [allUsers removeObject:[RCIM sharedRCIM].currentUserInfo.userId];
+        [allUsers removeObject:[RCIM sharedRCIM].currentUserInfo.userId];
     }
     NSPredicate *filterPredicate = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)", self.hasReadUserList];
     userList = [allUsers filteredArrayUsingPredicate:filterPredicate];
@@ -146,7 +149,7 @@
     return result;
 }
 #pragma mark - getter & setter
-- (RCDReceiptDetailHeader *)headerMessageContentView{
+- (RCDReceiptDetailHeader *)headerMessageContentView {
     if (!_headerMessageContentView) {
         _headerMessageContentView = [[RCDReceiptDetailHeader alloc] initWithMessage:self.message];
         _headerMessageContentView.delegate = self;
@@ -154,11 +157,11 @@
     return _headerMessageContentView;
 }
 
-- (RCDUserListCollectionView *)footerUserListView{
+- (RCDUserListCollectionView *)footerUserListView {
     if (!_footerUserListView) {
-        CGFloat height = self.tableView.frame.size.height - self.headerMessageContentView.frame.size.height - CellHeight;
-        CGRect tempRect =
-        CGRectMake(0, 0, RCDScreenWidth,height);
+        CGFloat height =
+            self.tableView.frame.size.height - self.headerMessageContentView.frame.size.height - CellHeight;
+        CGRect tempRect = CGRectMake(0, 0, RCDScreenWidth, height);
         _footerUserListView = [[RCDUserListCollectionView alloc] initWithFrame:tempRect isAllowAdd:NO isAllowDelete:NO];
         if (self.message.conversationType == ConversationType_GROUP) {
             _footerUserListView.groupId = self.message.targetId;

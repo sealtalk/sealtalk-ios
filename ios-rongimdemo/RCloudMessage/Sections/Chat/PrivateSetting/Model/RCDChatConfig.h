@@ -13,11 +13,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RCDChatConfig : RCConversation <NSCoding>
 
-@property(nonatomic, assign) BOOL screenCaptureNotification;
-@property(nonatomic, assign) RCDGroupMessageClearStatus messageClearStatus;
+@property (nonatomic, assign) BOOL screenCaptureNotification;
+@property (nonatomic, assign) RCDGroupMessageClearStatus messageClearStatus;
 
-+ (instancetype)chatConfigWithConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId  screenCaptureNotification:(BOOL)screenCaptureNotification;
-+ (instancetype)chatConfigWithConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId  screenCaptureNotification:(BOOL)screenCaptureNotification messageClearStatus:(RCDGroupMessageClearStatus)clearStatus;
++ (instancetype)chatConfigWithConversationType:(RCConversationType)conversationType
+                                      targetId:(NSString *)targetId
+                     screenCaptureNotification:(BOOL)screenCaptureNotification;
++ (instancetype)chatConfigWithConversationType:(RCConversationType)conversationType
+                                      targetId:(NSString *)targetId
+                     screenCaptureNotification:(BOOL)screenCaptureNotification
+                            messageClearStatus:(RCDGroupMessageClearStatus)clearStatus;
 
 @end
 

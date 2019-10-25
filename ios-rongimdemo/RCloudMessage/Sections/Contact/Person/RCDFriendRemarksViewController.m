@@ -26,7 +26,8 @@
 
 #define MAX_STARWORDS_LENGTH 16
 
-@interface RCDFriendRemarksViewController ()<RCDPictureViewDelegate, UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface RCDFriendRemarksViewController () <RCDPictureViewDelegate, UIScrollViewDelegate,
+                                              UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *contentView;
@@ -64,50 +65,55 @@
 #pragma mark - Private Method
 - (void)setupNavi {
     self.navigationItem.title = RCDLocalizedString(@"SetRemarksAndDescription");
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"done") style:UIBarButtonItemStylePlain target:self action:@selector(clickRightBtn:)];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"done")
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(clickRightBtn:)];
     self.navigationItem.rightBarButtonItem = rightButton;
-    
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn:)];
+
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                                target:self
+                                                                                action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftButton;
 }
 
 - (void)setupSubviews {
     self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
+
     [self.view addSubview:self.scrollView];
     [self.scrollView addSubview:self.contentView];
     [self.contentView addSubview:self.remarksView];
     [self.contentView addSubview:self.phoneView];
     [self.contentView addSubview:self.descriptionView];
     [self.contentView addSubview:self.pictureView];
-    
+
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.height.width.equalTo(self.view);
     }];
-    
+
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.scrollView);
         make.width.equalTo(self.scrollView);
     }];
-    
+
     [self.remarksView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.contentView);
         make.height.offset(70.5);
     }];
-    
+
     [self.phoneView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.remarksView.mas_bottom);
         make.left.right.equalTo(self.contentView);
         make.height.offset(70.5);
     }];
-    
+
     [self.descriptionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.phoneView.mas_bottom);
         make.left.right.equalTo(self.contentView);
         make.height.mas_greaterThanOrEqualTo(70.5);
     }];
-    
+
     [self.pictureView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.descriptionView.mas_bottom);
         make.left.right.equalTo(self.contentView);
@@ -125,12 +131,13 @@
     self.phoneView.btnTitle = self.friendDescription.region;
     self.phoneView.inputText = self.friendDescription.phone;
     self.descriptionView.inputText = self.friendDescription.desc;
-    
+
     if (self.friendDescription.imageUrl != nil && ![self.friendDescription.imageUrl isEqualToString:@""]) {
-        [self.pictureView.imageView sd_setImageWithURL:[NSURL URLWithString:self.friendDescription.imageUrl] placeholderImage:[UIImage imageNamed:@""]];
+        [self.pictureView.imageView sd_setImageWithURL:[NSURL URLWithString:self.friendDescription.imageUrl]
+                                      placeholderImage:[UIImage imageNamed:@""]];
         self.pictureView.promptTitle = @"";
     }
-    
+
     __weak typeof(self) weakSelf = self;
     self.phoneView.tapAreaCodeBlock = ^{
         [weakSelf pushToCountryListVC];
@@ -141,43 +148,65 @@
     RCDCountryListController *countryListVC = [[RCDCountryListController alloc] init];
     countryListVC.showNavigationBarWhenBack = YES;
     __weak typeof(self) weakSelf = self;
-    [countryListVC setSelectCountryResult:^(RCDCountry * _Nonnull country) {
+    [countryListVC setSelectCountryResult:^(RCDCountry *_Nonnull country) {
         weakSelf.phoneView.btnTitle = country.phoneCode;
     }];
     [self.navigationController pushViewController:countryListVC animated:YES];
 }
 
 - (void)addObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:self.view.window];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:self.view.window];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewDidChanged:) name:@"TextViewTextChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:self.view.window];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:self.view.window];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textViewDidChanged:)
+                                                 name:@"TextViewTextChanged"
+                                               object:nil];
 }
 
 - (void)alertInfo:(NSString *)infoStr {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:infoStr delegate:nil cancelButtonTitle:RCDLocalizedString(@"confirm") otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:infoStr
+                                                   delegate:nil
+                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
+                                          otherButtonTitles:nil];
     [alert show];
 }
 
 - (void)showActionSheet {
-    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *takePictureAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"take_picture") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self pushImagePickerVCWithType:UIImagePickerControllerSourceTypeCamera];
-    }];
-    
-    UIAlertAction *albumsAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"SelectFromAlbum") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self pushImagePickerVCWithType:UIImagePickerControllerSourceTypePhotoLibrary];
-    }];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-    }];
-    
+    UIAlertController *actionSheetController =
+        [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+    UIAlertAction *takePictureAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"take_picture")
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   [self pushImagePickerVCWithType:UIImagePickerControllerSourceTypeCamera];
+                               }];
+
+    UIAlertAction *albumsAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"SelectFromAlbum")
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   [self pushImagePickerVCWithType:UIImagePickerControllerSourceTypePhotoLibrary];
+                               }];
+
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *_Nonnull action){
+                                                         }];
+
     [actionSheetController addAction:cancelAction];
     [actionSheetController addAction:takePictureAction];
     [actionSheetController addAction:albumsAction];
-    
+
     [self presentViewController:actionSheetController animated:YES completion:nil];
 }
 
@@ -201,8 +230,7 @@
     if (![self.remarksView.inputText isEqualToString:self.friendDescription.displayName] ||
         ![self.phoneView.btnTitle isEqualToString:self.friendDescription.region] ||
         ![self.phoneView.inputText isEqualToString:self.friendDescription.phone] ||
-        ![self.descriptionView.inputText isEqualToString:self.friendDescription.desc]
-        ) {
+        ![self.descriptionView.inputText isEqualToString:self.friendDescription.desc]) {
         isChange = YES;
     }
     return isChange;
@@ -212,19 +240,20 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = RCDLocalizedString(@"setting");
     [hud show:YES];
-    
+
     if (self.photoIsChange) {
         if (self.imageData) {
-            [RCDUploadManager uploadImage:self.imageData complete:^(NSString *url) {
-                if (url.length > 0) {
-                    [self setRemarksAndDescription:url hud:hud];
-                } else {
-                    rcd_dispatch_main_async_safe(^{
-                        [hud hide:YES];
-                        [self.view showHUDMessage:RCDLocalizedString(@"PicutreUploadFailed")];
-                    });
-                }
-            }];
+            [RCDUploadManager uploadImage:self.imageData
+                                 complete:^(NSString *url) {
+                                     if (url.length > 0) {
+                                         [self setRemarksAndDescription:url hud:hud];
+                                     } else {
+                                         rcd_dispatch_main_async_safe(^{
+                                             [hud hide:YES];
+                                             [self.view showHUDMessage:RCDLocalizedString(@"PicutreUploadFailed")];
+                                         });
+                                     }
+                                 }];
         } else {
             [self setRemarksAndDescription:@"" hud:hud];
         }
@@ -234,17 +263,23 @@
 }
 
 - (void)setRemarksAndDescription:(NSString *)imageUrl hud:(MBProgressHUD *)hud {
-    [RCDUserInfoManager setDescriptionWithUserId:self.friendId remark:self.remarksView.inputText region:self.phoneView.btnTitle phone:self.phoneView.inputText desc:self.descriptionView.inputText imageUrl:imageUrl complete:^(BOOL success) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hide:YES];
-            if (success) {
-                self.setRemarksSuccess();
-                [self.navigationController popViewControllerAnimated:YES];
-            } else {
-                [self alertInfo:RCDLocalizedString(@"set_fail")];
-            }
-        });
-    }];
+    [RCDUserInfoManager setDescriptionWithUserId:self.friendId
+                                          remark:self.remarksView.inputText
+                                          region:self.phoneView.btnTitle
+                                           phone:self.phoneView.inputText
+                                            desc:self.descriptionView.inputText
+                                        imageUrl:imageUrl
+                                        complete:^(BOOL success) {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                [hud hide:YES];
+                                                if (success) {
+                                                    self.setRemarksSuccess();
+                                                    [self.navigationController popViewControllerAnimated:YES];
+                                                } else {
+                                                    [self alertInfo:RCDLocalizedString(@"set_fail")];
+                                                }
+                                            });
+                                        }];
 }
 
 - (CGFloat)getNaviAndStatusHeight {
@@ -266,13 +301,20 @@
 - (void)clickBackBtn:(id)sender {
     [self.scrollView endEditing:YES];
     if ([self judgeIsChange] || self.photoIsChange) {
-        [NormalAlertView showAlertWithTitle:RCDLocalizedString(@"WarmPrompt") message:RCDLocalizedString(@"SaveTheChanges") highlightText:nil describeTitle:nil leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"Delete_Confirm") cancel:^{
-            rcd_dispatch_main_async_safe(^{
-                [self.navigationController popViewControllerAnimated:YES];
-            });
-        } confirm:^{
-            [self uploadImageIfNeed];
-        }];
+        [NormalAlertView showAlertWithTitle:RCDLocalizedString(@"WarmPrompt")
+            message:RCDLocalizedString(@"SaveTheChanges")
+            highlightText:nil
+            describeTitle:nil
+            leftTitle:RCDLocalizedString(@"cancel")
+            rightTitle:RCDLocalizedString(@"Delete_Confirm")
+            cancel:^{
+                rcd_dispatch_main_async_safe(^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
+            }
+            confirm:^{
+                [self uploadImageIfNeed];
+            }];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -284,31 +326,37 @@
         CGRect keyboardBounds = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
         CGRect viewFrame = self.originalFrame;
         viewFrame.size.height -= keyboardBounds.size.height;
-        
+
         self.keyboardY = keyboardBounds.origin.y;
         self.descriptionViewY = self.descriptionView.frame.origin.y;
         self.view.frame = viewFrame;
-        [UIView animateWithDuration:0.25 animations:^{
-            self.view.frame = viewFrame;
-        } completion:nil];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"TextViewTextChanged" object:self.descriptionView.textView];
+        [UIView animateWithDuration:0.25
+                         animations:^{
+                             self.view.frame = viewFrame;
+                         }
+                         completion:nil];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"TextViewTextChanged"
+                                                            object:self.descriptionView.textView];
     }
 }
 
 //键盘关闭时动画
 - (void)keyboardWillHide:(NSNotification *)notification {
-    [UIView animateWithDuration:0.25 animations:^{
-        CGRect frame = self.originalFrame;
-        frame.origin.y += [self getNaviAndStatusHeight];
-        self.view.frame = frame;
-    } completion:nil];
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         CGRect frame = self.originalFrame;
+                         frame.origin.y += [self getNaviAndStatusHeight];
+                         self.view.frame = frame;
+                     }
+                     completion:nil];
 }
 
 - (void)textViewDidChanged:(NSNotification *)notification {
     CGFloat descriptionViewBottomY = self.descriptionViewY + self.descriptionView.frame.size.height + 29 + 18;
     if (descriptionViewBottomY >= self.keyboardY) {
-        CGFloat offsetY = self.scrollView.contentSize.height - self.scrollView.frame.size.height - self.pictureView.frame.size.height;
+        CGFloat offsetY =
+            self.scrollView.contentSize.height - self.scrollView.frame.size.height - self.pictureView.frame.size.height;
         [self.scrollView setContentOffset:CGPointMake(0, offsetY) animated:NO];
     } else {
         [self.scrollView setContentOffset:CGPointMake(0, 0) animated:YES];

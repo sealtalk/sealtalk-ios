@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedService;
 
-//IM connect
+// IM connect
 - (void)connectWithToken:(NSString *)token
                 dbOpened:(void (^)(RCDBErrorCode))dbOpenedBlock
                  success:(void (^)(NSString *userId))successBlock

@@ -13,8 +13,7 @@
 
 @implementation RCDContactSelectedCollectionViewCell
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
+- (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [self setupSubviews];
@@ -32,10 +31,12 @@
 - (void)setUserModel:(RCDFriendInfo *)userModel {
     self.portraitImgView.image = nil;
     if ([userModel.portraitUri isEqualToString:@""]) {
-        UIImage *portrait = [DefaultPortraitView portraitView:userModel.userId name:userModel.name];;
+        UIImage *portrait = [DefaultPortraitView portraitView:userModel.userId name:userModel.name];
+        ;
         self.portraitImgView.image = portrait;
     } else {
-        [self.portraitImgView sd_setImageWithURL:[NSURL URLWithString:userModel.portraitUri] placeholderImage:[UIImage imageNamed:@"icon_person"]];
+        [self.portraitImgView sd_setImageWithURL:[NSURL URLWithString:userModel.portraitUri]
+                                placeholderImage:[UIImage imageNamed:@"icon_person"]];
     }
 }
 

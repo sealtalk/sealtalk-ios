@@ -9,7 +9,7 @@
 #import "RCDUserSetting.h"
 #import <RongIMKit/RongIMKit.h>
 @implementation RCDUserSetting
-- (instancetype)initWithJson:(NSDictionary *)json{
+- (instancetype)initWithJson:(NSDictionary *)json {
     if (self = [super init]) {
         self.userId = json[@"id"];
         self.allowMobileSearch = [json[@"phoneVerify"] boolValue];

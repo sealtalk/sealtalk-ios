@@ -44,11 +44,13 @@
 
 #define PLUGIN_BOARD_ITEM_POKE_TAG 20000
 
-@interface RCChatSessionInputBarControl()
-@property(nonatomic, assign) BOOL burnMessageMode;
-@end;
+@interface RCChatSessionInputBarControl ()
+@property (nonatomic, assign) BOOL burnMessageMode;
+@end
+;
 
-@interface RCDChatViewController () <UIActionSheetDelegate,  UIAlertViewDelegate, RCMessageCellDelegate, RCDQuicklySendManagerDelegate, UIGestureRecognizerDelegate>
+@interface RCDChatViewController () <UIActionSheetDelegate, UIAlertViewDelegate, RCMessageCellDelegate,
+                                     RCDQuicklySendManagerDelegate, UIGestureRecognizerDelegate>
 @property (nonatomic, strong) RCDGroupInfo *groupInfo;
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) BOOL isShow;
@@ -70,7 +72,7 @@
     self.enableSaveNewPhotoToLocalSystem = YES;
     [self notifyUpdateUnreadMessageCount];
     [self addOtherPluginBoard];
-    
+
     [self refreshUserInfoOrGroupInfo];
     [self addNotifications];
     [self addToolbarItems];
@@ -78,9 +80,9 @@
     [self registerRealTimeLocationCell];
     [self getRealTimeLocationProxy];
     /******************实时地理位置共享**************/
-    
+
     //    self.enableContinuousReadUnreadVoice = YES;//开启语音连读功能
-    
+
     [self handleChatSessionInputBarControlDemo];
     [self insertMessageDemo];
     [self addEmoticonTabDemo];
@@ -106,7 +108,7 @@
     [self resetQucilySendView];
     self.isShow = NO;
     [RCDPokeManager sharedInstance].currentConversation = nil;
-    NSArray *viewControllers = self.navigationController.viewControllers;//获取当前的视图控制其
+    NSArray *viewControllers = self.navigationController.viewControllers; //获取当前的视图控制其
     if ([viewControllers indexOfObject:self] == NSNotFound) {
         //当前视图控制器不在栈中，故为pop操作
         [self.realTimeLocation removeRealTimeLocationObserver:self];
@@ -122,7 +124,7 @@
     self.realTimeLocationStatusView.frame = frame;
 }
 
-- (void)willMoveToParentViewController:(UIViewController*)parent{
+- (void)willMoveToParentViewController:(UIViewController *)parent {
     [super willMoveToParentViewController:parent];
     if (!parent) {
         [self.realTimeLocation quitRealTimeLocation];
@@ -130,7 +132,8 @@
 }
 
 - (void)dealloc {
-    NSLog(@"%s",__func__);
+    NSLog(@"%s", __func__);
+    [self.conversationMessageCollectionView removeObserver:self forKeyPath:@"frame"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 #pragma mark - RCMessageCellDelegate
@@ -142,25 +145,28 @@
     }
 }
 
-- (void)inputTextView:(UITextView *)inputTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+- (void)inputTextView:(UITextView *)inputTextView
+    shouldChangeTextInRange:(NSRange)range
+            replacementText:(NSString *)text {
     [self resetQucilySendView];
 }
 
 #pragma mark - UIActionSheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
-        case 0: {
-            [super pluginBoardView:self.chatSessionInputBarControl.pluginBoardView clickedItemWithTag:PLUGIN_BOARD_ITEM_LOCATION_TAG];
-        } break;
-        case 1: {
-            [self showRealTimeLocationViewController];
-        } break;
+    case 0: {
+        [super pluginBoardView:self.chatSessionInputBarControl.pluginBoardView
+            clickedItemWithTag:PLUGIN_BOARD_ITEM_LOCATION_TAG];
+    } break;
+    case 1: {
+        [self showRealTimeLocationViewController];
+    } break;
     }
 }
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
     SEL selector = NSSelectorFromString(@"_alertController");
-    
+
     if ([actionSheet respondsToSelector:selector]) {
         UIAlertController *alertController = [actionSheet valueForKey:@"_alertController"];
         if ([alertController isKindOfClass:[UIAlertController class]]) {
@@ -179,16 +185,16 @@
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (alertView.tag) {
-        case 101: {
-            if (buttonIndex == 1) {
-                [self.realTimeLocation quitRealTimeLocation];
-                [self popupChatViewController];
-            }
-        } break;
-            
-            break;
-        default:
-            break;
+    case 101: {
+        if (buttonIndex == 1) {
+            [self.realTimeLocation quitRealTimeLocation];
+            [self popupChatViewController];
+        }
+    } break;
+
+        break;
+    default:
+        break;
     }
 }
 
@@ -207,7 +213,7 @@
 }
 
 #pragma mark - UIGestureRecognizerDelegate
--(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     [self resetQucilySendView];
     return YES;
 }
@@ -218,10 +224,11 @@
     if ([model.content isKindOfClass:[RCRealTimeLocationStartMessage class]]) {
         [self showRealTimeLocationViewController];
     }
-    
+
     if ([model.content isKindOfClass:[RCContactCardMessage class]]) {
         RCContactCardMessage *cardMSg = (RCContactCardMessage *)model.content;
-        RCDUserInfo *user = [[RCDUserInfo alloc] initWithUserId:cardMSg.userId name:cardMSg.name portrait:cardMSg.portraitUri];
+        RCDUserInfo *user =
+            [[RCDUserInfo alloc] initWithUserId:cardMSg.userId name:cardMSg.name portrait:cardMSg.portraitUri];
         [self pushPersonDetailVC:user];
     }
 }
@@ -238,11 +245,11 @@
      *stop = YES;
      }
      }];
-     
+
      UIMenuItem *forwardItem = [[UIMenuItem alloc] initWithTitle:@"转发"
      action:@selector(onForwardMessage:)];
      [menuList addObject:forwardItem];
-     
+
      如果您不需要修改，不用重写此方法，或者直接return［super
      getLongTouchMessageCellMenuList:model]。
      */
@@ -263,11 +270,12 @@
 - (void)didTapCellPortrait:(NSString *)userId {
     if (self.conversationType == ConversationType_GROUP || self.conversationType == ConversationType_PRIVATE) {
         __weak typeof(self) weakSelf = self;
-        [RCDUserInfoManager getUserInfoFromServer:userId complete:^(RCDUserInfo *userInfo) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf pushPersonDetailVC:userInfo];
-            });
-        }];
+        [RCDUserInfoManager getUserInfoFromServer:userId
+                                         complete:^(RCDUserInfo *userInfo) {
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 [weakSelf pushPersonDetailVC:userInfo];
+                                             });
+                                         }];
     }
 }
 
@@ -306,7 +314,7 @@
 - (void)presentImagePreviewController:(RCMessageModel *)model {
     RCDImageSlideController *previewController = [[RCDImageSlideController alloc] init];
     previewController.messageModel = model;
-    
+
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:previewController];
     nav.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController presentViewController:nav animated:YES completion:nil];
@@ -327,7 +335,7 @@
 }
 
 - (RCMessage *)willAppendAndDisplayMessage:(RCMessage *)message {
-    if([message.content isKindOfClass:[RCDGroupNotificationMessage class]]){
+    if ([message.content isKindOfClass:[RCDGroupNotificationMessage class]]) {
         RCDGroupNotificationMessage *groupNotif = (RCDGroupNotificationMessage *)message.content;
         if ([groupNotif.operation isEqualToString:RCDGroupMemberManagerRemove]) {
             return nil;
@@ -339,50 +347,72 @@
 - (void)pluginBoardView:(RCPluginBoardView *)pluginBoardView clickedItemWithTag:(NSInteger)tag {
     [self resetQucilySendView];
     switch (tag) {
-        case PLUGIN_BOARD_ITEM_LOCATION_TAG: {
-            if (self.realTimeLocation) {
-                UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                         delegate:self
-                                                                cancelButtonTitle:RCDLocalizedString(@"cancel")
-                                                           destructiveButtonTitle:nil
-                                                                otherButtonTitles:RCDLocalizedString(@"send_location"), RCDLocalizedString(@"location_share"), nil];
-                [actionSheet showInView:self.view];
-            } else {
-                [super pluginBoardView:pluginBoardView clickedItemWithTag:tag];
-            }
-        } break;
-        case PLUGIN_BOARD_ITEM_POKE_TAG:{
-            if (self.conversationType == ConversationType_GROUP) {
-                RCDGroupMember *member = [RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.targetId];
-                if (member) {
-                    if (member.role == RCDGroupMemberRoleMember) {
-                        [NormalAlertView showAlertWithTitle:nil message:RCDLocalizedString(@"Only_group_owner_and_manager_can_manage") describeTitle:nil confirmTitle:RCDLocalizedString(@"confirm") confirm:^{
-                        }];
-                    }else{
-                        [RCDPokeAlertView showPokeAlertView:self.conversationType targetId:self.targetId inViewController:self];
-                    }
-                }else{
-                    [RCDGroupManager getGroupMembersFromServer:self.targetId complete:^(NSArray<NSString *> *memberIdList) {
-                        if (memberIdList) {
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                RCDGroupMember *member = [RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.targetId];
-                                if (member.role == RCDGroupMemberRoleMember) {
-                                    [NormalAlertView showAlertWithTitle:nil message:RCDLocalizedString(@"Only_group_owner_and_manager_can_manage") describeTitle:nil confirmTitle:RCDLocalizedString(@"confirm") confirm:^{
-                                    }];
-                                }else{
-                                    [RCDPokeAlertView showPokeAlertView:self.conversationType targetId:self.targetId inViewController:self];
-                                }
-                            });
-                        }
-                    }];
-                }
-            }else if (self.conversationType == ConversationType_PRIVATE) {
-                [RCDPokeAlertView showPokeAlertView:self.conversationType targetId:self.targetId inViewController:self];
-            }
-        } break;
-        default:
+    case PLUGIN_BOARD_ITEM_LOCATION_TAG: {
+        if (self.realTimeLocation) {
+            UIActionSheet *actionSheet =
+                [[UIActionSheet alloc] initWithTitle:nil
+                                            delegate:self
+                                   cancelButtonTitle:RCDLocalizedString(@"cancel")
+                              destructiveButtonTitle:nil
+                                   otherButtonTitles:RCDLocalizedString(@"send_location"),
+                                                     RCDLocalizedString(@"location_share"), nil];
+            [actionSheet showInView:self.view];
+        } else {
             [super pluginBoardView:pluginBoardView clickedItemWithTag:tag];
-            break;
+        }
+    } break;
+    case PLUGIN_BOARD_ITEM_POKE_TAG: {
+        if (self.conversationType == ConversationType_GROUP) {
+            RCDGroupMember *member =
+                [RCDGroupManager getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId groupId:self.targetId];
+            if (member) {
+                if (member.role == RCDGroupMemberRoleMember) {
+                    [NormalAlertView showAlertWithTitle:nil
+                                                message:RCDLocalizedString(@"Only_group_owner_and_manager_can_manage")
+                                          describeTitle:nil
+                                           confirmTitle:RCDLocalizedString(@"confirm")
+                                                confirm:^{
+                                                }];
+                } else {
+                    [RCDPokeAlertView showPokeAlertView:self.conversationType
+                                               targetId:self.targetId
+                                       inViewController:self];
+                }
+            } else {
+                [RCDGroupManager
+                    getGroupMembersFromServer:self.targetId
+                                     complete:^(NSArray<NSString *> *memberIdList) {
+                                         if (memberIdList) {
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 RCDGroupMember *member = [RCDGroupManager
+                                                     getGroupMember:[RCIM sharedRCIM].currentUserInfo.userId
+                                                            groupId:self.targetId];
+                                                 if (member.role == RCDGroupMemberRoleMember) {
+                                                     [NormalAlertView
+                                                         showAlertWithTitle:nil
+                                                                    message:
+                                                                        RCDLocalizedString(
+                                                                            @"Only_group_owner_and_manager_can_manage")
+                                                              describeTitle:nil
+                                                               confirmTitle:RCDLocalizedString(@"confirm")
+                                                                    confirm:^{
+                                                                    }];
+                                                 } else {
+                                                     [RCDPokeAlertView showPokeAlertView:self.conversationType
+                                                                                targetId:self.targetId
+                                                                        inViewController:self];
+                                                 }
+                                             });
+                                         }
+                                     }];
+            }
+        } else if (self.conversationType == ConversationType_PRIVATE) {
+            [RCDPokeAlertView showPokeAlertView:self.conversationType targetId:self.targetId inViewController:self];
+        }
+    } break;
+    default:
+        [super pluginBoardView:pluginBoardView clickedItemWithTag:tag];
+        break;
     }
 }
 
@@ -407,7 +437,7 @@
 }
 
 - (void)showChooseUserViewController:(void (^)(RCUserInfo *selectedUserInfo))selectedBlock
-                              cancel:(void (^)(void))cancelBlock{
+                              cancel:(void (^)(void))cancelBlock {
     RCDChooseUserController *userListVC = [[RCDChooseUserController alloc] initWithGroupId:self.targetId];
     userListVC.selectedBlock = selectedBlock;
     userListVC.cancelBlock = cancelBlock;
@@ -423,7 +453,7 @@
     if ([model.content isKindOfClass:[RCDGroupNotificationMessage class]]) {
         RCDGroupNotificationMessage *groupNotif = (RCDGroupNotificationMessage *)model.content;
         if ([groupNotif.operation isEqualToString:RCDGroupMemberManagerRemove]) {
-            [[RCIMClient sharedRCIMClient] deleteMessages:@[@(model.messageId)]];
+            [[RCIMClient sharedRCIMClient] deleteMessages:@[ @(model.messageId) ]];
             return CGSizeZero;
         }
     }
@@ -440,8 +470,7 @@
         if (friendInfo.status != RCDFriendStatusAgree && friendInfo.status != RCDFriendStatusBlock) {
             [self pushFriendVC:friendInfo];
         } else {
-            RCDPrivateSettingsTableViewController *settingsVC =
-            [[RCDPrivateSettingsTableViewController alloc] init];
+            RCDPrivateSettingsTableViewController *settingsVC = [[RCDPrivateSettingsTableViewController alloc] init];
             settingsVC.userId = self.targetId;
             __weak typeof(self) weakSelf = self;
             [settingsVC setClearMessageHistory:^{
@@ -452,8 +481,7 @@
     }
     //群组设置
     else if (self.conversationType == ConversationType_GROUP) {
-        RCDGroupSettingsTableViewController *settingsVC =
-        [[RCDGroupSettingsTableViewController alloc] init];
+        RCDGroupSettingsTableViewController *settingsVC = [[RCDGroupSettingsTableViewController alloc] init];
         if (_groupInfo == nil) {
             settingsVC.group = [RCDGroupManager getGroupInfo:self.targetId];
         } else {
@@ -485,9 +513,9 @@
     } else if (ConversationType_APPSERVICE == self.conversationType ||
                ConversationType_PUBLICSERVICE == self.conversationType) {
         RCPublicServiceProfile *serviceProfile =
-        [[RCIMClient sharedRCIMClient] getPublicServiceProfile:(RCPublicServiceType)self.conversationType
-                                               publicServiceId:self.targetId];
-        
+            [[RCIMClient sharedRCIMClient] getPublicServiceProfile:(RCPublicServiceType)self.conversationType
+                                                   publicServiceId:self.targetId];
+
         RCPublicServiceProfileViewController *infoVC = [[RCPublicServiceProfileViewController alloc] init];
         infoVC.serviceProfile = serviceProfile;
         infoVC.fromConversation = YES;
@@ -497,15 +525,16 @@
 
 /*点击系统键盘的语音按钮，导致输入工具栏被遮挡*/
 - (void)keyboardWillShowNotification:(NSNotification *)notification {
-    //PokeAlertView 输入内容时，内容直接被输到了输入栏里，所以需要判断PokeAlertView是否展示
-    if(!self.chatSessionInputBarControl.inputTextView.isFirstResponder && ![RCDPokeManager sharedInstance].isShowPokeAlert){
+    // PokeAlertView 输入内容时，内容直接被输到了输入栏里，所以需要判断PokeAlertView是否展示
+    if (!self.chatSessionInputBarControl.inputTextView.isFirstResponder &&
+        ![RCDPokeManager sharedInstance].isShowPokeAlert) {
         [self.chatSessionInputBarControl.inputTextView becomeFirstResponder];
     }
 }
 
 //和上面的方法相对应，在别的页面弹出键盘导致聊天页面输入状态改变需要及时改变回来
 - (void)keyboardWillHideNotification:(NSNotification *)notification {
-    if(!self.chatSessionInputBarControl.inputTextView.isFirstResponder ){
+    if (!self.chatSessionInputBarControl.inputTextView.isFirstResponder) {
         [self.chatSessionInputBarControl.inputTextView resignFirstResponder];
     }
 }
@@ -524,7 +553,7 @@
     }
 }
 
-- (void)didGroupMemberUpdateNotification:(NSNotification *)notification{
+- (void)didGroupMemberUpdateNotification:(NSNotification *)notification {
     NSDictionary *dic = notification.object;
     if ([dic[@"targetId"] isEqualToString:self.targetId]) {
         [self setRightNavigationItems];
@@ -535,14 +564,14 @@
     if ([self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_OUTGOING ||
         [self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_CONNECTED) {
         [self.chatSessionInputBarControl resetToDefaultStatus];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:RCDLocalizedString(@"leave_location_share_when_leave_chat")
-                                  
-                                                           delegate:self
-                                                  cancelButtonTitle:RCDLocalizedString(@"cancel")
-                                  
-                                                  otherButtonTitles:RCDLocalizedString(@"confirm")
-                                  , nil];
+        UIAlertView *alertView =
+            [[UIAlertView alloc] initWithTitle:nil
+                                       message:RCDLocalizedString(@"leave_location_share_when_leave_chat")
+
+                                      delegate:self
+                             cancelButtonTitle:RCDLocalizedString(@"cancel")
+
+                             otherButtonTitles:RCDLocalizedString(@"confirm"), nil];
         alertView.tag = 101;
         [alertView show];
     } else {
@@ -551,16 +580,20 @@
 }
 
 - (void)quicklySendImage:(UIButton *)button {
-    CGRect targetFrame = CGRectMake(RCDScreenWidth - 108, self.chatSessionInputBarControl.frame.origin.y - 143 - 5, 100, 143);
+    CGRect targetFrame =
+        CGRectMake(RCDScreenWidth - 108, self.chatSessionInputBarControl.frame.origin.y - 143 - 5, 100, 143);
     [[RCDQuicklySendManager sharedManager] showQuicklySendViewWithframe:targetFrame];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary<NSKeyValueChangeKey, id> *)change
+                       context:(void *)context {
     [self resetQucilySendView];
 }
 
 #pragma mark - Demo
-- (void)handleChatSessionInputBarControlDemo{
+- (void)handleChatSessionInputBarControlDemo {
     //    self.chatSessionInputBarControl.hidden = YES;
     //    CGRect intputTextRect = self.conversationMessageCollectionView.frame;
     //    intputTextRect.size.height = intputTextRect.size.height+50;
@@ -585,20 +618,20 @@
      或者根据tag来更换
      [self.chatSessionInputBarControl.pluginBoardView updateItemWithTag:101 image:newImage title:newTitle];
      以上所有的接口都在RCPluginBoardView.h可以查到。
-     
+
      当编辑完扩展功能后，下一步就是要实现对扩展功能事件的处理，放开被注掉的函数
      pluginBoardView:clickedItemWithTag:
      在super之后加上自己的处理。
-     
+
      */
-    
+
     //默认输入类型为语音
     // self.defaultInputType = RCChatSessionInputBarInputExtention;
 }
 
-- (void)insertMessageDemo{
+- (void)insertMessageDemo {
     /***********如何在会话页面插入提醒消息***********************
-     
+
      RCInformationNotificationMessage *warningMsg =
      [RCInformationNotificationMessage
      notificationWithMessage:@"请不要轻易给陌生人汇钱！" extra:nil];
@@ -617,7 +650,7 @@
      */
 }
 
-- (void)addEmoticonTabDemo{
+- (void)addEmoticonTabDemo {
     //  //表情面板添加自定义表情包
     //  UIImage *icon = [RCKitUtility imageNamed:@"emoji_btn_normal"
     //                                  ofBundle:@"RongCloud.bundle"];
@@ -635,7 +668,7 @@
 }
 
 #pragma mark - helper
-- (void)addOtherPluginBoard{
+- (void)addOtherPluginBoard {
     if (self.conversationType != ConversationType_APPSERVICE &&
         self.conversationType != ConversationType_PUBLICSERVICE) {
         //加号区域增加发送文件功能，Kit中已经默认实现了该功能，但是为了SDK向后兼容性，目前SDK默认不开启该入口，可以参考以下代码在加号区域中增加发送文件功能。
@@ -647,7 +680,9 @@
                                          tag:PLUGIN_BOARD_ITEM_FILE_TAG];
     }
     if (self.conversationType == ConversationType_PRIVATE || self.conversationType == ConversationType_GROUP) {
-        [self.chatSessionInputBarControl.pluginBoardView insertItemWithImage:[UIImage imageNamed:@"poke_plugin_item"] title:RCDLocalizedString(@"Poke") tag:PLUGIN_BOARD_ITEM_POKE_TAG];
+        [self.chatSessionInputBarControl.pluginBoardView insertItemWithImage:[UIImage imageNamed:@"poke_plugin_item"]
+                                                                       title:RCDLocalizedString(@"Poke")
+                                                                         tag:PLUGIN_BOARD_ITEM_POKE_TAG];
     }
 }
 
@@ -655,7 +690,7 @@
     if (self.conversationType == ConversationType_GROUP) {
         UIViewController *vc = [RCDPersonDetailViewController configVC:user.userId groupId:self.targetId];
         [self.navigationController pushViewController:vc animated:YES];
-    }else{
+    } else {
         UIViewController *vc = [RCDPersonDetailViewController configVC:user.userId groupId:nil];
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -672,22 +707,27 @@
     });
 }
 
-- (void)setLeftNavigationItem{
+- (void)setLeftNavigationItem {
     int count = [RCDUtilities getTotalUnreadCount];
     NSString *backString = nil;
     if (count > 0 && count < 1000) {
-        backString = [NSString stringWithFormat:@"%@(%d)",RCDLocalizedString(@"back"),count];
+        backString = [NSString stringWithFormat:@"%@(%d)", RCDLocalizedString(@"back"), count];
     } else if (count >= 1000) {
-        backString = [NSString stringWithFormat:@"%@(...)",RCDLocalizedString(@"back")];
+        backString = [NSString stringWithFormat:@"%@(...)", RCDLocalizedString(@"back")];
     } else {
         backString = RCDLocalizedString(@"back");
     }
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:backString target:self                        action:@selector(leftBarButtonItemPressed:)];
+    RCDUIBarButtonItem *leftButton =
+        [[RCDUIBarButtonItem alloc] initWithLeftBarButton:backString
+                                                   target:self
+                                                   action:@selector(leftBarButtonItemPressed:)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
 - (void)setRightNavigationItem:(UIImage *)image withFrame:(CGRect)frame {
-    RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:image imageViewFrame:frame buttonTitle:nil
+    RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:image
+                                                                 imageViewFrame:frame
+                                                                    buttonTitle:nil
                                                                      titleColor:nil
                                                                      titleFrame:CGRectZero
                                                                     buttonFrame:frame
@@ -696,9 +736,7 @@
     self.navigationItem.rightBarButtonItem = rightBtn;
 }
 
-
-
-- (void)clearHistoryMSG{
+- (void)clearHistoryMSG {
     [self.conversationDataRepository removeAllObjects];
     [self.conversationMessageCollectionView reloadData];
 }
@@ -707,7 +745,7 @@
     [self.realTimeLocation removeRealTimeLocationObserver:self];
     if (self.needPopToRootView == YES) {
         [self.navigationController popToRootViewControllerAnimated:YES];
-    }else{
+    } else {
         [super leftBarButtonItemPressed:nil];
     }
 }
@@ -720,37 +758,43 @@
     if (self.conversationType == ConversationType_PRIVATE) {
         if (![self.targetId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
             __weak typeof(self) weakSelf = self;
-            [RCDUserInfoManager getUserInfoFromServer:self.targetId complete:^(RCUserInfo *userInfo) {
-                [RCDUserInfoManager getFriendInfoFromServer:userInfo.userId complete:^(RCDFriendInfo *friendInfo) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (friendInfo.displayName.length > 0) {
-                            weakSelf.navigationItem.title = friendInfo.displayName;
-                        } else {
-                            weakSelf.navigationItem.title = userInfo.name;
-                        }
-                    });
-                }];
-            }];
+            [RCDUserInfoManager
+                getUserInfoFromServer:self.targetId
+                             complete:^(RCUserInfo *userInfo) {
+                                 [RCDUserInfoManager
+                                     getFriendInfoFromServer:userInfo.userId
+                                                    complete:^(RCDFriendInfo *friendInfo) {
+                                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                                            if (friendInfo.displayName.length > 0) {
+                                                                weakSelf.navigationItem.title = friendInfo.displayName;
+                                                            } else {
+                                                                weakSelf.navigationItem.title = userInfo.name;
+                                                            }
+                                                        });
+                                                    }];
+                             }];
         }
     }
 
     //打开群聊强制从demo server 获取群组信息更新本地数据库
     if (self.conversationType == ConversationType_GROUP) {
         __weak typeof(self) weakSelf = self;
-        [RCDGroupManager getGroupInfoFromServer:self.targetId complete:^(RCDGroupInfo * _Nonnull groupInfo) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (groupInfo) {
-                    weakSelf.groupInfo = groupInfo;
-                    [weakSelf refreshTitle];
-                    [RCDGroupManager getGroupMembersFromServer:self.targetId complete:^(NSArray<NSString *> *memberIdList) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [weakSelf setRightNavigationItems];
-                        });
-                    }];
-                    
-                }
-            });
-        }];
+        [RCDGroupManager getGroupInfoFromServer:self.targetId
+                                       complete:^(RCDGroupInfo *_Nonnull groupInfo) {
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               if (groupInfo) {
+                                                   weakSelf.groupInfo = groupInfo;
+                                                   [weakSelf refreshTitle];
+                                                   [RCDGroupManager
+                                                       getGroupMembersFromServer:self.targetId
+                                                                        complete:^(NSArray<NSString *> *memberIdList) {
+                                                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                [weakSelf setRightNavigationItems];
+                                                                            });
+                                                                        }];
+                                               }
+                                           });
+                                       }];
     }
 }
 
@@ -762,7 +806,7 @@
         }
         if ([groupInfo.number intValue] > 0) {
             self.title = [NSString stringWithFormat:@"%@(%d)", self.userName, [groupInfo.number intValue]];
-        }else{
+        } else {
             self.title = [NSString stringWithFormat:@"%@", self.userName];
         }
     } else {
@@ -785,17 +829,18 @@
 }
 
 - (void)setRightNavigationItems {
-    if(self.conversationType == ConversationType_GROUP) {
-        if (self.groupInfo.isDismiss || ![[RCDGroupManager getGroupMembers:self.targetId] containsObject:[RCIM sharedRCIM].currentUserInfo.userId]) {
+    if (self.conversationType == ConversationType_GROUP) {
+        if (self.groupInfo.isDismiss ||
+            ![[RCDGroupManager getGroupMembers:self.targetId]
+                containsObject:[RCIM sharedRCIM].currentUserInfo.userId]) {
             self.navigationItem.rightBarButtonItem = nil;
             return;
         }
-        [self setRightNavigationItem:[UIImage imageNamed:@"Group_Setting"] withFrame:CGRectMake(0,0, 21, 19.5)];
-    }else if(self.conversationType == ConversationType_CHATROOM) {
+        [self setRightNavigationItem:[UIImage imageNamed:@"Group_Setting"] withFrame:CGRectMake(0, 0, 21, 19.5)];
+    } else if (self.conversationType == ConversationType_CHATROOM) {
         [self setRightNavigationItem:nil withFrame:CGRectZero];
-    }else {
-        [self setRightNavigationItem:[UIImage imageNamed:@"Private_Setting"]
-                           withFrame:CGRectMake(0, 0, 16, 18.5)];
+    } else {
+        [self setRightNavigationItem:[UIImage imageNamed:@"Private_Setting"] withFrame:CGRectMake(0, 0, 16, 18.5)];
     }
 }
 - (void)addNotifications {
@@ -810,36 +855,41 @@
                                                      name:RCDGroupMemberUpdateKey
                                                    object:nil];
     }
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateForSharedMessageInsertSuccess:)
                                                  name:@"RCDSharedMessageInsertSuccess"
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShowNotification:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHideNotification:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onEndForwardMessage:)
                                                  name:@"RCDForwardMessageEnd"
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userDidTakeScreenshot:)
                                                  name:UIApplicationUserDidTakeScreenshotNotification
                                                object:nil];
-    [self.conversationMessageCollectionView addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    [self.conversationMessageCollectionView addObserver:self
+                                             forKeyPath:@"frame"
+                                                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                                                context:nil];
 }
 
 - (void)addQuicklySendImage {
-    [self.chatSessionInputBarControl.additionalButton addTarget:self action:@selector(quicklySendImage:) forControlEvents:UIControlEventTouchUpInside];
+    [self.chatSessionInputBarControl.additionalButton addTarget:self
+                                                         action:@selector(quicklySendImage:)
+                                               forControlEvents:UIControlEventTouchUpInside];
     [RCDQuicklySendManager sharedManager].delegate = self;
 }
 
@@ -857,9 +907,9 @@
     }
 }
 
-- (RCChatSessionInputBarInputType)getInputStatus{
+- (RCChatSessionInputBarInputType)getInputStatus {
     NSString *userInputStatusKey =
-    [NSString stringWithFormat:@"%lu--%@", (unsigned long)self.conversationType, self.targetId];
+        [NSString stringWithFormat:@"%lu--%@", (unsigned long)self.conversationType, self.targetId];
     NSMutableDictionary *userInputStatus = [RCDIMService sharedService].userInputStatus;
     if (userInputStatus && [userInputStatus.allKeys containsObject:userInputStatusKey]) {
         KBottomBarStatus inputType = (KBottomBarStatus)[userInputStatus[userInputStatusKey] integerValue];
@@ -875,7 +925,7 @@
     return 0;
 }
 
-- (void)saveInputStatus{
+- (void)saveInputStatus {
     KBottomBarStatus inputType = self.chatSessionInputBarControl.currentBottomBarStatus;
     if (self.chatSessionInputBarControl.burnMessageMode) {
         inputType = KBottomBarBurnStatus;
@@ -884,7 +934,8 @@
     if (!userInputStatus) {
         userInputStatus = [NSMutableDictionary new];
     }
-    NSString *userInputStatusKey = [NSString stringWithFormat:@"%lu--%@", (unsigned long)self.conversationType, self.targetId];
+    NSString *userInputStatusKey =
+        [NSString stringWithFormat:@"%lu--%@", (unsigned long)self.conversationType, self.targetId];
     [userInputStatus setObject:[NSString stringWithFormat:@"%ld", (long)inputType] forKey:userInputStatusKey];
 }
 
@@ -994,7 +1045,7 @@
 
 #pragma mark - *************消息多选功能:转发、删除*************
 /******************消息多选功能:转发、删除**********************/
-- (void)addToolbarItems{
+- (void)addToolbarItems {
     //转发按钮
     UIButton *forwardBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 40)];
     [forwardBtn setImage:[UIImage imageNamed:@"forward_message"] forState:UIControlStateNormal];
@@ -1002,13 +1053,16 @@
     UIBarButtonItem *forwardBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:forwardBtn];
     //删除按钮
     UIButton *deleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 40)];
-    [deleteBtn setImage:[RCKitUtility imageNamed:@"delete_message" ofBundle:@"RongCloud.bundle"] forState:UIControlStateNormal];
+    [deleteBtn setImage:[RCKitUtility imageNamed:@"delete_message" ofBundle:@"RongCloud.bundle"]
+               forState:UIControlStateNormal];
     [deleteBtn addTarget:self action:@selector(deleteMessages) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *deleteBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:deleteBtn];
     //按钮间 space
     UIBarButtonItem *spaceItem =
-    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    [self.messageSelectionToolbar setItems:@[spaceItem,forwardBarButtonItem,spaceItem,deleteBarButtonItem,spaceItem] animated:YES];
+        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [self.messageSelectionToolbar
+        setItems:@[ spaceItem, forwardBarButtonItem, spaceItem, deleteBarButtonItem, spaceItem ]
+        animated:YES];
 }
 
 - (void)forwardMessage {
@@ -1029,14 +1083,14 @@
     }
 }
 
-- (void)onEndForwardMessage:(NSNotification *)notification{
+- (void)onEndForwardMessage:(NSNotification *)notification {
     //置为 NO,将消息 cell 重置为初始状态
     self.allowsMessageCellSelection = NO;
     [self.view showHUDMessage:RCDLocalizedString(@"send_success")];
     [self scrollToBottomAnimated:YES];
 }
 
-- (void)deleteMessages{
+- (void)deleteMessages {
     for (int i = 0; i < self.selectedMessages.count; i++) {
         [self deleteMessage:self.selectedMessages[i]];
     }
@@ -1046,15 +1100,20 @@
 
 - (void)userDidTakeScreenshot:(NSNotification *)notification {
     if (self.isShow && [self.navigationController.topViewController isKindOfClass:[self class]]) {
-        [RCDChatManager getScreenCaptureNotification:self.conversationType targetId:self.targetId complete:^(BOOL screenCaptureNotification) {
-            if (screenCaptureNotification) {
-                [RCDChatManager sendScreenCaptureNotification:self.conversationType targetId:self.targetId complete:^(BOOL success) {
-                    
-                }];
+        [RCDChatManager getScreenCaptureNotification:self.conversationType
+            targetId:self.targetId
+            complete:^(BOOL screenCaptureNotification) {
+                if (screenCaptureNotification) {
+                    [RCDChatManager sendScreenCaptureNotification:self.conversationType
+                                                         targetId:self.targetId
+                                                         complete:^(BOOL success){
+
+                                                         }];
+                }
             }
-        } error:^{
-            
-        }];
+            error:^{
+
+            }];
     }
 }
 

@@ -26,10 +26,9 @@
 @property (nonatomic, strong) UIButton *joinChatButton;
 @property (nonatomic, strong) UILabel *joinChatlabel;
 
-@property (nonatomic, strong) NSTimer* shakeTimer;//震动定时器
-@property (nonatomic, strong) AVAudioPlayer* player;
-@property (nonatomic, assign) NSInteger timeLimit
-;
+@property (nonatomic, strong) NSTimer *shakeTimer; //震动定时器
+@property (nonatomic, strong) AVAudioPlayer *player;
+@property (nonatomic, assign) NSInteger timeLimit;
 @end
 
 @implementation RCDPokeRemindController
@@ -38,34 +37,34 @@
     [super viewDidLoad];
     self.view.backgroundColor = [HEXCOLOR(0x000000) colorWithAlphaComponent:0.9];
     [self setDataInfo];
-    [self setupSubviews];    
+    [self setupSubviews];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(appWillTerminate)
                                                  name:UIApplicationWillTerminateNotification
                                                object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self beginShakeAndSound];
     [RCDPokeManager sharedInstance].isShowPokeVC = YES;
 }
 
-- (void)viewWillDisappear:(BOOL)animated{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [RCDPokeManager sharedInstance].isShowPokeVC = NO;
 }
 
 #pragma mark - helper
-- (void)appWillTerminate{
+- (void)appWillTerminate {
     [self stopShakeAndSound];
 }
 
-- (void)didClickIgnoreButton{
+- (void)didClickIgnoreButton {
     [self dismiss];
 }
 
-- (void)didClickJoinChatButton{
+- (void)didClickJoinChatButton {
     [self dismiss];
     UIViewController *rootVC = [self getCurrentVC];
     RCDChatViewController *chatVC = [[RCDChatViewController alloc] init];
@@ -74,26 +73,27 @@
     if ([rootVC isKindOfClass:[UINavigationController class]]) {
         if ([rootVC.presentedViewController isKindOfClass:[UINavigationController class]]) {
             [(UINavigationController *)rootVC.presentedViewController pushViewController:chatVC animated:YES];
-        }else{
+        } else {
             [(UINavigationController *)rootVC pushViewController:chatVC animated:YES];
         }
-    }else{
+    } else {
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];
         navi.modalPresentationStyle = UIModalPresentationFullScreen;
         [rootVC presentViewController:navi animated:YES completion:nil];
     }
 }
 
-- (void)dismiss{
+- (void)dismiss {
     [self stopShakeAndSound];
     [self.view removeFromSuperview];
 }
 
 // 开始震动和播放音乐
--(void)beginShakeAndSound{
-    self.shakeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(shakePhone) userInfo:nil repeats:YES];
+- (void)beginShakeAndSound {
+    self.shakeTimer =
+        [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(shakePhone) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.shakeTimer forMode:NSDefaultRunLoopMode];
-    
+
     NSError *error;
     NSString *path = [[NSBundle mainBundle] pathForResource:@"poke" ofType:@".mp3"];
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
@@ -102,7 +102,7 @@
     SystemSoundID soundID = 0;
     CFURLRef urlRef = (__bridge CFURLRef)([NSURL fileURLWithPath:path]);
     AudioServicesCreateSystemSoundID(urlRef, &soundID);
-    
+
     self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path] error:&error];
     if (!self.player) {
         NSLog(@"Error: %@", [error localizedDescription]);
@@ -116,14 +116,14 @@
 /**
  停止震动和音乐
  */
--(void)stopShakeAndSound{
+- (void)stopShakeAndSound {
     [_player stop];
     //停止前手动出发震动一下
     [self shakePhone];
     [_shakeTimer invalidate];
 }
 
--(void)shakePhone{
+- (void)shakePhone {
     self.timeLimit -= 1;
     if (self.timeLimit == 0) {
         [self dismiss];
@@ -131,32 +131,39 @@
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
 
-- (void)setDataInfo{
+- (void)setDataInfo {
     if (self.message.conversationType == ConversationType_GROUP) {
         __weak typeof(self) weakSelf = self;
-        [RCDUtilities getGroupUserDisplayInfo:self.message.senderUserId groupId:self.message.targetId result:^(RCUserInfo *user) {
-            weakSelf.userNameLabel.text = user.name;
-            [weakSelf.headerView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
-        }];
-    }else{
+        [RCDUtilities getGroupUserDisplayInfo:self.message.senderUserId
+                                      groupId:self.message.targetId
+                                       result:^(RCUserInfo *user) {
+                                           weakSelf.userNameLabel.text = user.name;
+                                           [weakSelf.headerView
+                                               sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                                                 placeholderImage:[UIImage imageNamed:@"contact"]];
+                                       }];
+    } else {
         __weak typeof(self) weakSelf = self;
-        [RCDUtilities getUserDisplayInfo:self.message.senderUserId complete:^(RCUserInfo *user) {
-            weakSelf.userNameLabel.text = user.name;
-            [weakSelf.headerView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
-        }];
+        [RCDUtilities getUserDisplayInfo:self.message.senderUserId
+                                complete:^(RCUserInfo *user) {
+                                    weakSelf.userNameLabel.text = user.name;
+                                    [weakSelf.headerView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                                                           placeholderImage:[UIImage imageNamed:@"contact"]];
+                                }];
     }
-    
+
     if (self.message.conversationType == ConversationType_GROUP) {
         RCDGroupInfo *group = [RCDGroupManager getGroupInfo:self.message.targetId];
         if (!group) {
-            [RCDGroupManager getGroupInfoFromServer:self.message.targetId complete:^(RCDGroupInfo *groupInfo) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (groupInfo) {
-                       self.groupNameLabel.text = groupInfo.groupName;
-                    }
-                });
-            }];
-        }else{
+            [RCDGroupManager getGroupInfoFromServer:self.message.targetId
+                                           complete:^(RCDGroupInfo *groupInfo) {
+                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                   if (groupInfo) {
+                                                       self.groupNameLabel.text = groupInfo.groupName;
+                                                   }
+                                               });
+                                           }];
+        } else {
             self.groupNameLabel.text = group.groupName;
         }
     }
@@ -166,13 +173,13 @@
 }
 
 //获取当前屏幕显示的viewcontroller
-- (UIViewController *)getCurrentVC{
+- (UIViewController *)getCurrentVC {
     UIViewController *result = nil;
-    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
-    if (window.windowLevel != UIWindowLevelNormal){
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    if (window.windowLevel != UIWindowLevelNormal) {
         NSArray *windows = [[UIApplication sharedApplication] windows];
-        for(UIWindow * tmpWin in windows){
-            if (tmpWin.windowLevel == UIWindowLevelNormal){
+        for (UIWindow *tmpWin in windows) {
+            if (tmpWin.windowLevel == UIWindowLevelNormal) {
                 window = tmpWin;
                 break;
             }
@@ -180,15 +187,15 @@
     }
     UIView *frontView = [[window subviews] objectAtIndex:0];
     id nextResponder = [frontView nextResponder];
-    if ([nextResponder isKindOfClass:[UIViewController class]]){
+    if ([nextResponder isKindOfClass:[UIViewController class]]) {
         result = nextResponder;
-    }else{
+    } else {
         result = window.rootViewController;
     }
     return result;
 }
 
-- (void)setupSubviews{
+- (void)setupSubviews {
     [self.view addSubview:self.headerView];
     [self.view addSubview:self.userNameLabel];
     UIView *contentBgView = [[UIView alloc] init];
@@ -201,7 +208,7 @@
     [self.view addSubview:self.ignoreLabel];
     [self.view addSubview:self.joinChatButton];
     [self.view addSubview:self.joinChatlabel];
-    
+
     [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
         if (@available(iOS 11.0, *)) {
             make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(83);
@@ -262,7 +269,7 @@
 }
 
 #pragma mark - getter
-- (UIImageView *)headerView{
+- (UIImageView *)headerView {
     if (!_headerView) {
         _headerView = [[UIImageView alloc] init];
         _headerView.layer.cornerRadius = 6.f;
@@ -272,7 +279,7 @@
     return _headerView;
 }
 
-- (UILabel *)userNameLabel{
+- (UILabel *)userNameLabel {
     if (!_userNameLabel) {
         _userNameLabel = [[UILabel alloc] init];
         _userNameLabel.font = [UIFont systemFontOfSize:20];
@@ -282,7 +289,7 @@
     return _userNameLabel;
 }
 
-- (UILabel *)groupNameLabel{
+- (UILabel *)groupNameLabel {
     if (!_groupNameLabel) {
         _groupNameLabel = [[UILabel alloc] init];
         _groupNameLabel.font = [UIFont systemFontOfSize:20];
@@ -292,7 +299,7 @@
     return _groupNameLabel;
 }
 
-- (UILabel *)contentLabel{
+- (UILabel *)contentLabel {
     if (!_contentLabel) {
         _contentLabel = [[UILabel alloc] init];
         _contentLabel.font = [UIFont systemFontOfSize:15];
@@ -303,16 +310,18 @@
     return _contentLabel;
 }
 
-- (UIButton *)ignoreButton{
+- (UIButton *)ignoreButton {
     if (!_ignoreButton) {
         _ignoreButton = [[UIButton alloc] init];
         [_ignoreButton setImage:[UIImage imageNamed:@"poke_ignore"] forState:(UIControlStateNormal)];
-        [_ignoreButton addTarget:self action:@selector(didClickIgnoreButton) forControlEvents:(UIControlEventTouchUpInside)];
+        [_ignoreButton addTarget:self
+                          action:@selector(didClickIgnoreButton)
+                forControlEvents:(UIControlEventTouchUpInside)];
     }
     return _ignoreButton;
 }
 
-- (UILabel *)ignoreLabel{
+- (UILabel *)ignoreLabel {
     if (!_ignoreLabel) {
         _ignoreLabel = [[UILabel alloc] init];
         _ignoreLabel.font = [UIFont systemFontOfSize:15];
@@ -323,16 +332,18 @@
     return _ignoreLabel;
 }
 
-- (UIButton *)joinChatButton{
+- (UIButton *)joinChatButton {
     if (!_joinChatButton) {
         _joinChatButton = [[UIButton alloc] init];
         [_joinChatButton setImage:[UIImage imageNamed:@"poke_join_chat"] forState:(UIControlStateNormal)];
-        [_joinChatButton addTarget:self action:@selector(didClickJoinChatButton) forControlEvents:(UIControlEventTouchUpInside)];
+        [_joinChatButton addTarget:self
+                            action:@selector(didClickJoinChatButton)
+                  forControlEvents:(UIControlEventTouchUpInside)];
     }
     return _joinChatButton;
 }
 
-- (UILabel *)joinChatlabel{
+- (UILabel *)joinChatlabel {
     if (!_joinChatlabel) {
         _joinChatlabel = [[UILabel alloc] init];
         _joinChatlabel.font = [UIFont systemFontOfSize:15];

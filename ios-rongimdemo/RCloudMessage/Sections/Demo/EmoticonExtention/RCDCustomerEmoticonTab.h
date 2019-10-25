@@ -16,19 +16,19 @@
  表情tab的标识符
  @return 表情tab的标识符，请勿重复
  */
-@property(nonatomic, strong) NSString *identify;
+@property (nonatomic, strong) NSString *identify;
 
 /*!
  表情tab的图标
  @return 表情tab的图标
  */
-@property(nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) UIImage *image;
 
 /*!
  表情tab的页数
  @return 表情tab的页数
  */
-@property(nonatomic, assign) int pageCount;
+@property (nonatomic, assign) int pageCount;
 /*!
  表情tab的index页的表情View
 

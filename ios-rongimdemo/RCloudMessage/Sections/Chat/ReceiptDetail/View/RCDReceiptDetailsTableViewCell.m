@@ -11,25 +11,25 @@
 #import "UIColor+RCColor.h"
 @interface RCDReceiptDetailsTableViewCell ()
 
-@property(nonatomic, strong) NSDictionary *CellSubviews;
+@property (nonatomic, strong) NSDictionary *CellSubviews;
 
-@property(nonatomic, strong) UIView *verticalLine;
+@property (nonatomic, strong) UIView *verticalLine;
 
-@property(nonatomic, strong) UIButton *hasReadButton;
+@property (nonatomic, strong) UIButton *hasReadButton;
 
-@property(nonatomic, strong) UIButton *unReadButton;
+@property (nonatomic, strong) UIButton *unReadButton;
 
-@property(nonatomic, strong) UIView *line;
+@property (nonatomic, strong) UIView *line;
 
-@property(nonatomic, strong) UIView *leftSelectLine;
+@property (nonatomic, strong) UIView *leftSelectLine;
 
-@property(nonatomic, strong) UIView *rightSelectLine;
+@property (nonatomic, strong) UIView *rightSelectLine;
 @end
 
 @implementation RCDReceiptDetailsTableViewCell
-+ (instancetype)cellWithTableView:(UITableView *)tableView{
-    RCDReceiptDetailsTableViewCell *cell =
-    (RCDReceiptDetailsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:RCDReceiptDetailsTableViewCellIdentifier];
++ (instancetype)cellWithTableView:(UITableView *)tableView {
+    RCDReceiptDetailsTableViewCell *cell = (RCDReceiptDetailsTableViewCell *)[tableView
+        dequeueReusableCellWithIdentifier:RCDReceiptDetailsTableViewCellIdentifier];
     if (!cell) {
         cell = [[RCDReceiptDetailsTableViewCell alloc] init];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -49,8 +49,8 @@
     self.verticalLine = [self createLine:[UIColor colorWithHexString:@"dfdfdf" alpha:1.f]];
     [self.contentView addSubview:self.verticalLine];
 
-    self.hasReadButton =
-        [self createButton:[NSString stringWithFormat:RCDLocalizedString(@"x_people_had_read"), self.hasReadUsersCount]];
+    self.hasReadButton = [self
+        createButton:[NSString stringWithFormat:RCDLocalizedString(@"x_people_had_read"), self.hasReadUsersCount]];
     [self.hasReadButton addTarget:self
                            action:@selector(clickHasReadButton:)
                  forControlEvents:UIControlEventTouchUpInside];
@@ -75,7 +75,7 @@
 
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    
+
     self.CellSubviews = NSDictionaryOfVariableBindings(_verticalLine, _hasReadButton, _unReadButton, _line);
     [self setAutoLayout];
 }
@@ -112,7 +112,6 @@
                                                                options:0
                                                                metrics:nil
                                                                  views:self.CellSubviews]];
-    
 
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_verticalLine
                                                                  attribute:NSLayoutAttributeCenterY
@@ -199,12 +198,14 @@
 }
 
 - (void)setHasReadUsersCount:(NSInteger)hasReadUsersCount {
-    [self.hasReadButton setTitle:[NSString stringWithFormat:RCDLocalizedString(@"x_people_had_read"), (unsigned long)hasReadUsersCount]
-                        forState:UIControlStateNormal];
+    [self.hasReadButton
+        setTitle:[NSString stringWithFormat:RCDLocalizedString(@"x_people_had_read"), (unsigned long)hasReadUsersCount]
+        forState:UIControlStateNormal];
 }
 
 - (void)setUnreadUsersCount:(NSInteger)unreadUsersCount {
-    [self.unReadButton setTitle:[NSString stringWithFormat:RCDLocalizedString(@"x_people_unread"), (unsigned long)unreadUsersCount]
-                       forState:UIControlStateNormal];
+    [self.unReadButton
+        setTitle:[NSString stringWithFormat:RCDLocalizedString(@"x_people_unread"), (unsigned long)unreadUsersCount]
+        forState:UIControlStateNormal];
 }
 @end

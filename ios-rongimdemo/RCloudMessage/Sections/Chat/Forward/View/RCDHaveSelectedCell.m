@@ -24,7 +24,7 @@
 
 @implementation RCDHaveSelectedCell
 - (instancetype)init {
-    
+
     if (self = [super init]) {
         [self setupViews];
     }
@@ -36,27 +36,33 @@
     if (model.conversationType == ConversationType_GROUP) {
         RCDGroupInfo *groupInfo = [RCDGroupManager getGroupInfo:model.targetId];
         if (groupInfo) {
-            if(groupInfo.portraitUri.length <= 0){
-                self.headerImageView.image = [DefaultPortraitView portraitView:groupInfo.groupId name:groupInfo.groupName];
+            if (groupInfo.portraitUri.length <= 0) {
+                self.headerImageView.image =
+                    [DefaultPortraitView portraitView:groupInfo.groupId name:groupInfo.groupName];
             } else {
-                [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:groupInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"default_group_portrait"]];
+                [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:groupInfo.portraitUri]
+                                        placeholderImage:[UIImage imageNamed:@"default_group_portrait"]];
             }
             self.conversationTitleLabel.text = groupInfo.groupName;
         }
     } else if (model.conversationType == ConversationType_PRIVATE) {
         RCUserInfo *currentUserInfo = [RCIM sharedRCIM].currentUserInfo;
         if ([model.targetId isEqualToString:currentUserInfo.userId]) {
-            [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:currentUserInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"default_portrait_msg"]];
+            [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:currentUserInfo.portraitUri]
+                                    placeholderImage:[UIImage imageNamed:@"default_portrait_msg"]];
             self.conversationTitleLabel.text = currentUserInfo.name;
         } else {
             RCDFriendInfo *friendInfo = [RCDUserInfoManager getFriendInfo:model.targetId];
             if (friendInfo) {
-                if(friendInfo.portraitUri.length <= 0){
-                    self.headerImageView.image = [DefaultPortraitView portraitView:friendInfo.userId name:friendInfo.name];
+                if (friendInfo.portraitUri.length <= 0) {
+                    self.headerImageView.image =
+                        [DefaultPortraitView portraitView:friendInfo.userId name:friendInfo.name];
                 } else {
-                    [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:friendInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"default_portrait_msg"]];
+                    [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:friendInfo.portraitUri]
+                                            placeholderImage:[UIImage imageNamed:@"default_portrait_msg"]];
                 }
-                self.conversationTitleLabel.text = friendInfo.displayName.length > 0 ? friendInfo.displayName : friendInfo.name;
+                self.conversationTitleLabel.text =
+                    friendInfo.displayName.length > 0 ? friendInfo.displayName : friendInfo.name;
             }
         }
     }
@@ -69,26 +75,26 @@
 }
 
 - (void)setupViews {
-    
+
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.headerImageView];
     [self.contentView addSubview:self.conversationTitleLabel];
     [self.contentView addSubview:self.deleteButton];
-    
+
     [self.headerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(12);
         make.top.equalTo(self.contentView).offset(7.5);
         make.height.width.offset(40);
     }];
-    
+
     [self.conversationTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.headerImageView.mas_right).offset(9);
         make.centerY.equalTo(self.contentView);
         make.right.equalTo(self.contentView).offset(-12);
         make.height.offset(24);
     }];
-    
+
     [self.deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.right.equalTo(self.contentView).offset(-12);
@@ -121,6 +127,5 @@
     }
     return _deleteButton;
 }
-
 
 @end

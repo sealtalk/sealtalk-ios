@@ -24,11 +24,11 @@ typedef void (^TapDetailBlock)(NSString *detail);
  cell的style
  */
 typedef NS_ENUM(NSUInteger, RCDPersonDetailCellStyle) {
-    Style_Default = 0, // leftLabel
-    Style_Title_Detail, // leftLabel,rightLabel
-    Style_Title_rightImg, // leftLabel,rightImg
-    Style_Title_Detail_rightImg, // leftLabel,rightLabel,rightImg
-    Style_Title_leftImg_Detail, // leftLabel,leftImg,rightLabel
+    Style_Default = 0,                   // leftLabel
+    Style_Title_Detail,                  // leftLabel,rightLabel
+    Style_Title_rightImg,                // leftLabel,rightImg
+    Style_Title_Detail_rightImg,         // leftLabel,rightLabel,rightImg
+    Style_Title_leftImg_Detail,          // leftLabel,leftImg,rightLabel
     Style_Title_leftImg_Detail_rightImg, // leftLabel,leftImg,rightLabel,rightImg
 };
 

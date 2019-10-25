@@ -12,7 +12,7 @@
 @implementation RCDBuglyManager
 
 + (void)startWithAppId:(NSString *)appId {
-    BuglyConfig * config = [[BuglyConfig alloc] init];
+    BuglyConfig *config = [[BuglyConfig alloc] init];
     config.reportLogLevel = BuglyLogLevelWarn;
     config.blockMonitorEnable = YES;
     config.blockMonitorTimeout = 2;

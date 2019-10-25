@@ -12,7 +12,7 @@
 + (CGSize)sizeForMessageModel:(RCMessageModel *)model
       withCollectionViewWidth:(CGFloat)collectionViewWidth
          referenceExtraHeight:(CGFloat)extraHeight {
-    CGFloat __messagecontentview_height = 21.0f;
+    CGFloat __messagecontentview_height = 35.0f;
     __messagecontentview_height += extraHeight;
 
     return CGSizeMake(collectionViewWidth, __messagecontentview_height);

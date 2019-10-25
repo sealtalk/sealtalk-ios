@@ -10,7 +10,7 @@
 #import "DefaultPortraitView.h"
 
 @interface RCDShareChatListCell ()
-@property(nonatomic, strong) UIImageView *selectImageView;
+@property (nonatomic, strong) UIImageView *selectImageView;
 @end
 
 @implementation RCDShareChatListCell
@@ -36,7 +36,8 @@
     [self.contentView addSubview:self.nameLabel];
 
     self.selectImageView =
-        [[UIImageView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 52, (self.contentView.frame.size.height - 10) / 2, 13, 10)];
+        [[UIImageView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 52,
+                                                      (self.contentView.frame.size.height - 10) / 2, 13, 10)];
     self.selectImageView.image = [UIImage imageNamed:@"check"];
     [self.contentView addSubview:self.selectImageView];
 }

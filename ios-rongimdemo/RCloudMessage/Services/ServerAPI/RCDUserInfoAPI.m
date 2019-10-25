@@ -11,8 +11,7 @@
 #import "RCDCommonString.h"
 @implementation RCDUserInfoAPI
 
-+ (void)getUserInfo:(NSString *)userId
-           complete:(void (^)(RCDUserInfo *))completeBlock {
++ (void)getUserInfo:(NSString *)userId complete:(void (^)(RCDUserInfo *))completeBlock {
     if (!userId) {
         SealTalkLog(@"userId is nil");
         if (completeBlock) {
@@ -42,8 +41,7 @@
                                  }];
 }
 
-+ (void)getFriendInfo:(NSString *)userId
-             complete:(void (^)(RCDFriendInfo *))completeBlock {
++ (void)getFriendInfo:(NSString *)userId complete:(void (^)(RCDFriendInfo *))completeBlock {
     if (!userId) {
         SealTalkLog(@"userId is nil");
         if (completeBlock) {
@@ -88,7 +86,9 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"user/set_nickname"
-                               parameters:@{@"nickname" : name}
+                               parameters:@{
+                                   @"nickname" : name
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
                                          if (completeBlock) {
@@ -112,7 +112,9 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"user/set_portrait_uri"
-                               parameters:@{@"portraitUri" : portraitUri}
+                               parameters:@{
+                                   @"portraitUri" : portraitUri
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
                                          if (completeBlock) {
@@ -126,9 +128,7 @@
                                  }];
 }
 
-+ (void)setFriendNickname:(NSString *)nickname
-                 byUserId:(NSString *)userId
-                 complete:(void (^)(BOOL))completeBlock {
++ (void)setFriendNickname:(NSString *)nickname byUserId:(NSString *)userId complete:(void (^)(BOOL))completeBlock {
     if (!userId || !nickname) {
         SealTalkLog(@"userId or nickname is nil");
         if (completeBlock) {
@@ -138,7 +138,10 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"friendship/set_display_name"
-                               parameters:@{@"friendId":userId, @"displayName":nickname}
+                               parameters:@{
+                                   @"friendId" : userId,
+                                   @"displayName" : nickname
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
                                          if (completeBlock) {
@@ -164,7 +167,9 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"user/set_st_account"
-                               parameters:@{ @"stAccount":stAccount }
+                               parameters:@{
+                                   @"stAccount" : stAccount
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
                                          if (completeBlock) {
@@ -182,8 +187,7 @@
                                  }];
 }
 
-+ (void)setGender:(NSString *)gender
-         complete:(void (^)(BOOL success))completeBlock {
++ (void)setGender:(NSString *)gender complete:(void (^)(BOOL success))completeBlock {
     if (!gender) {
         SealTalkLog(@"stAccount is nil");
         if (completeBlock) {
@@ -193,7 +197,9 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"user/set_gender"
-                               parameters:@{ @"gender":gender }
+                               parameters:@{
+                                   @"gender" : gender
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (completeBlock) {
                                          completeBlock(result.success);
@@ -232,17 +238,20 @@
 
 + (void)inviteFriend:(NSString *)userId
          withMessage:(NSString *)message
-            complete:(void (^)(BOOL, NSString*))completeBlock {
+            complete:(void (^)(BOOL, NSString *))completeBlock {
     if (!userId || !message) {
         SealTalkLog(@"userId or message is nil");
         if (completeBlock) {
-            completeBlock(NO,@"");
+            completeBlock(NO, @"");
         }
         return;
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"friendship/invite"
-                               parameters:@{@"friendId":userId, @"message":message}
+                               parameters:@{
+                                   @"friendId" : userId,
+                                   @"message" : message
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      NSString *action = result.content[@"action"];
                                      if (completeBlock) {
@@ -251,8 +260,7 @@
                                  }];
 }
 
-+ (void)acceptFriendRequest:(NSString *)userId
-                   complete:(void (^)(BOOL))completeBlock {
++ (void)acceptFriendRequest:(NSString *)userId complete:(void (^)(BOOL))completeBlock {
     if (!userId) {
         SealTalkLog(@"userId is nil");
         if (completeBlock) {
@@ -262,7 +270,9 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"friendship/agree"
-                               parameters:@{@"friendId":userId}
+                               parameters:@{
+                                   @"friendId" : userId
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
                                          if (completeBlock) {
@@ -276,8 +286,7 @@
                                  }];
 }
 
-+ (void)ignoreFriendRequest:(NSString *)userId
-                   complete:(void (^)(BOOL success))completeBlock {
++ (void)ignoreFriendRequest:(NSString *)userId complete:(void (^)(BOOL success))completeBlock {
     if (!userId) {
         SealTalkLog(@"userId is nil");
         if (completeBlock) {
@@ -287,7 +296,9 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"friendship/ignore"
-                               parameters:@{@"friendId":userId}
+                               parameters:@{
+                                   @"friendId" : userId
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (completeBlock) {
                                          completeBlock(result.success);
@@ -295,7 +306,7 @@
                                  }];
 }
 
-+ (void)deleteFriend:(NSString *)userId complete:(void (^)(BOOL))completeBlock{
++ (void)deleteFriend:(NSString *)userId complete:(void (^)(BOOL))completeBlock {
     if (!userId) {
         SealTalkLog(@"userId is nil");
         if (completeBlock) {
@@ -305,7 +316,9 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"friendship/delete"
-                               parameters:@{@"friendId":userId}
+                               parameters:@{
+                                   @"friendId" : userId
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
                                          if (completeBlock) {
@@ -332,13 +345,13 @@
     }
     NSString *params = @"";
     if (stAccount) {
-        params = [NSString stringWithFormat:@"st_account=%@",stAccount];
+        params = [NSString stringWithFormat:@"st_account=%@", stAccount];
     } else {
         params = [NSString stringWithFormat:@"region=%@&phone=%@", region, phone];
     }
-    
+
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodGet
-                                URLString:[NSString stringWithFormat:@"user/find_user?%@",params]
+                                URLString:[NSString stringWithFormat:@"user/find_user?%@", params]
                                parameters:nil
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
@@ -359,9 +372,7 @@
                                  }];
 }
 
-+ (void)findUserByPhone:(NSString *)phone
-                 region:(NSString *)region
-               complete:(void (^)(RCDUserInfo *))completeBlock {
++ (void)findUserByPhone:(NSString *)phone region:(NSString *)region complete:(void (^)(RCDUserInfo *))completeBlock {
     if (!phone || !region) {
         SealTalkLog(@"phone or region is nil");
         if (completeBlock) {
@@ -391,11 +402,12 @@
                                  }];
 }
 
-+ (void)getContactsInfo:(NSArray *)phoneNumberList
-               complete:(void (^)(NSArray *contactsList))completeBlock {
++ (void)getContactsInfo:(NSArray *)phoneNumberList complete:(void (^)(NSArray *contactsList))completeBlock {
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"friendship/get_contacts_info"
-                               parameters:@{@"contactList": phoneNumberList}
+                               parameters:@{
+                                   @"contactList" : phoneNumberList
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
                                          NSArray *list = result.content;
@@ -411,8 +423,7 @@
 }
 
 // 批量删除好友
-+ (void)batchFriendDelete:(NSArray *)friendIds
-                 complete:(void (^)(BOOL success))completeBlock {
++ (void)batchFriendDelete:(NSArray *)friendIds complete:(void (^)(BOOL success))completeBlock {
     if (!friendIds) {
         SealTalkLog(@"friendIds is nil");
         if (completeBlock) {
@@ -422,7 +433,9 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"friendship/batch_delete"
-                               parameters:@{@"friendIds": friendIds}
+                               parameters:@{
+                                   @"friendIds" : friendIds
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (completeBlock) {
                                          completeBlock(result.success);
@@ -431,8 +444,7 @@
 }
 
 //将某个用户加入黑名单
-+ (void)addToBlacklist:(NSString *)userId
-              complete:(void (^)(BOOL success))completeBlock{
++ (void)addToBlacklist:(NSString *)userId complete:(void (^)(BOOL success))completeBlock {
     if (!userId) {
         SealTalkLog(@"userId is nil");
         if (completeBlock) {
@@ -442,7 +454,9 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"user/add_to_blacklist"
-                               parameters:@{@"friendId":userId}
+                               parameters:@{
+                                   @"friendId" : userId
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (completeBlock) {
                                          completeBlock(result.success);
@@ -451,8 +465,7 @@
 }
 
 //将某个用户移出黑名单
-+ (void)removeFromBlacklist:(NSString *)userId
-                   complete:(void (^)(BOOL success))completeBlock{
++ (void)removeFromBlacklist:(NSString *)userId complete:(void (^)(BOOL success))completeBlock {
     if (!userId) {
         SealTalkLog(@"userId is nil");
         if (completeBlock) {
@@ -462,7 +475,9 @@
     }
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"user/remove_from_blacklist"
-                               parameters:@{@"friendId":userId}
+                               parameters:@{
+                                   @"friendId" : userId
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (completeBlock) {
                                          completeBlock(result.success);
@@ -471,7 +486,7 @@
 }
 
 // 查询已经设置的黑名单列表
-+ (void)getBlacklist:(void (^)(NSArray <RCDUserInfo *> *blackUsers))completeBlock{
++ (void)getBlacklist:(void (^)(NSArray<RCDUserInfo *> *blackUsers))completeBlock {
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodGet
                                 URLString:@"user/blacklist"
                                parameters:nil
@@ -498,30 +513,31 @@
                                          }
                                      }
                                  }];
-    
 }
 
 #pragma mark - user setting
-+ (void)setSearchMeByMobile:(BOOL)allow complete:(void (^)(BOOL))completeBlock{
-    [self setUserPrivacy:@{@"phoneVerify":@(allow?1:0)} complete:completeBlock];
++ (void)setSearchMeByMobile:(BOOL)allow complete:(void (^)(BOOL))completeBlock {
+    [self setUserPrivacy:@{ @"phoneVerify" : @(allow ? 1 : 0) } complete:completeBlock];
 }
 
-+ (void)setSearchMeBySTAccount:(BOOL)allow complete:(void (^)(BOOL))completeBlock{
-    [self setUserPrivacy:@{@"stSearchVerify":@(allow?1:0)} complete:completeBlock];
++ (void)setSearchMeBySTAccount:(BOOL)allow complete:(void (^)(BOOL))completeBlock {
+    [self setUserPrivacy:@{ @"stSearchVerify" : @(allow ? 1 : 0) } complete:completeBlock];
 }
 
-+ (void)setAddFriendVerify:(BOOL)needVerify complete:(void (^)(BOOL))completeBlock{
-    [self setUserPrivacy:@{@"friVerify":@(needVerify?1:0)} complete:completeBlock];
++ (void)setAddFriendVerify:(BOOL)needVerify complete:(void (^)(BOOL))completeBlock {
+    [self setUserPrivacy:@{ @"friVerify" : @(needVerify ? 1 : 0) } complete:completeBlock];
 }
 
-+ (void)setJoinGroupVerify:(BOOL)needVerify complete:(void (^)(BOOL))completeBlock{
-    [self setUserPrivacy:@{@"groupVerify":@(needVerify?1:0)} complete:completeBlock];
++ (void)setJoinGroupVerify:(BOOL)needVerify complete:(void (^)(BOOL))completeBlock {
+    [self setUserPrivacy:@{ @"groupVerify" : @(needVerify ? 1 : 0) } complete:completeBlock];
 }
 
-+ (void)setReceivePokeMessage:(BOOL)allowReceive complete:(void (^)(BOOL))completeBlock{
++ (void)setReceivePokeMessage:(BOOL)allowReceive complete:(void (^)(BOOL))completeBlock {
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"user/set_poke"
-                               parameters:@{@"pokeStatus":@(allowReceive?1:0)}
+                               parameters:@{
+                                   @"pokeStatus" : @(allowReceive ? 1 : 0)
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (completeBlock) {
                                          completeBlock(result.success);
@@ -529,18 +545,18 @@
                                  }];
 }
 
-+ (void)getReceivePokeMessageStatus:(void (^)(BOOL))success error:(void (^)())error{
++ (void)getReceivePokeMessageStatus:(void (^)(BOOL))success error:(void (^)())error {
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodGet
                                 URLString:@"user/get_poke"
                                parameters:nil
                                  response:^(RCDHTTPResult *result) {
-                                     if(result.success){
+                                     if (result.success) {
                                          NSDictionary *dic = result.content;
                                          BOOL allow = [dic[@"pokeStatus"] boolValue];
                                          if (success) {
                                              success(allow);
                                          }
-                                     }else{
+                                     } else {
                                          if (error) {
                                              error();
                                          }
@@ -548,7 +564,7 @@
                                  }];
 }
 
-+(void)getUserPrivacy:(void (^)(RCDUserSetting *))completeBlock{
++ (void)getUserPrivacy:(void (^)(RCDUserSetting *))completeBlock {
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodGet
                                 URLString:@"user/get_privacy"
                                parameters:nil
@@ -559,13 +575,12 @@
                                          if (completeBlock) {
                                              completeBlock(setting);
                                          }
-                                     }else{
+                                     } else {
                                          if (completeBlock) {
                                              completeBlock(nil);
                                          }
                                      }
                                  }];
-
 }
 
 #pragma mark - Friend Description
@@ -583,9 +598,16 @@
         }
         return;
     }
-    
-    NSDictionary *params = @{@"friendId": friendId, @"displayName": remark, @"region": region, @"phone": phone, @"description": desc, @"imageUri": imageUrl};
-    
+
+    NSDictionary *params = @{
+        @"friendId" : friendId,
+        @"displayName" : remark,
+        @"region" : region,
+        @"phone" : phone,
+        @"description" : desc,
+        @"imageUri" : imageUrl
+    };
+
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"friendship/set_friend_description"
                                parameters:params
@@ -605,14 +627,17 @@
         }
         return;
     }
-    
+
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"friendship/get_friend_description"
-                               parameters:@{@"friendId": friendId}
+                               parameters:@{
+                                   @"friendId" : friendId
+                               }
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
                                          NSDictionary *dict = result.content;
-                                         RCDFriendDescription *description = [[RCDFriendDescription alloc] initWithJson:dict];
+                                         RCDFriendDescription *description =
+                                             [[RCDFriendDescription alloc] initWithJson:dict];
                                          description.userId = friendId;
                                          if (completeBlock) {
                                              completeBlock(description);
@@ -626,7 +651,7 @@
 }
 
 #pragma mark - private
-+ (void)setUserPrivacy:(NSDictionary *)param complete:(void (^)(BOOL success))completeBlock{
++ (void)setUserPrivacy:(NSDictionary *)param complete:(void (^)(BOOL success))completeBlock {
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
                                 URLString:@"user/set_privacy"
                                parameters:param

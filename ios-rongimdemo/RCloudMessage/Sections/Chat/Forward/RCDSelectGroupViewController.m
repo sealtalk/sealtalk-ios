@@ -19,7 +19,8 @@
 
 static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
 
-@interface RCDSelectGroupViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchControllerDelegate>
+@interface RCDSelectGroupViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,
+                                            UISearchControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *groups;
 @property (nonatomic, strong) NSArray *displayGroups;
@@ -37,7 +38,7 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self loadData];
     [self setupView];
     [self setupNavi];
@@ -54,7 +55,7 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
     self.groups = [NSMutableArray arrayWithArray:[RCDGroupManager getMyGroupList]];
     self.displayGroups = [self.groups copy];
     __weak typeof(self) weakSelf = self;
-    [RCDGroupManager getMyGroupListFromServer:^(NSArray<RCDGroupInfo *> * _Nonnull groupList) {
+    [RCDGroupManager getMyGroupListFromServer:^(NSArray<RCDGroupInfo *> *_Nonnull groupList) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.groups = groupList.mutableCopy;
             [weakSelf.tableView reloadData];
@@ -67,16 +68,16 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
     self.view.backgroundColor = [UIColor colorWithRed:235 / 255.0 green:235 / 255.0 blue:235 / 255.0 alpha:1];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.searchBar];
-    
+
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchBar.mas_bottom);
         make.left.right.bottom.equalTo(self.view);
     }];
-    
+
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);
     }];
-    
+
     if (!self.isMultiSelectModel) {
         [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.right.equalTo(self.view);
@@ -95,19 +96,24 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
             make.bottom.equalTo(self.view);
             make.height.offset(50 + RCDExtraBottomHeight);
         }];
-        
+
         [self updateSelectedResult];
     }
 }
 
 - (void)setupNavi {
     self.navigationItem.title = RCDLocalizedString(@"group");
-    self.navigationItem.leftBarButtonItem = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+    self.navigationItem.leftBarButtonItem =
+        [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                   target:self
+                                                   action:@selector(clickBackBtn)];
 }
 
 - (void)addObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSelectedResult) name:@"ReloadBottomResultView" object:nil
-     ];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateSelectedResult)
+                                                 name:@"ReloadBottomResultView"
+                                               object:nil];
 }
 
 - (void)resetSearchBarAndMatchFriendList {
@@ -130,7 +136,7 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
     }
     RCDGroupInfo *group = self.displayGroups[indexPath.row];
     [cell setGroupInfo:group];
-    
+
     if (self.isMultiSelectModel) {
         cell.selectStatus = RCDForwardSelectedStatusMultiUnSelected;
         if ([[RCDForwardManager sharedInstance] modelIsContains:group.groupId]) {
@@ -149,7 +155,7 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
         RCDForwardCellModel *forwardCellmodel = [[RCDForwardCellModel alloc] init];
         forwardCellmodel.targetId = groupInfo.groupId;
         forwardCellmodel.conversationType = ConversationType_GROUP;
-        
+
         if (cell.selectStatus == RCDForwardSelectedStatusMultiUnSelected) {
             [[RCDForwardManager sharedInstance] addForwardModel:forwardCellmodel];
             cell.selectStatus = RCDForwardSelectedStatusMultiSelected;
@@ -184,7 +190,10 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
     } else {
         NSMutableArray *matchArray = [NSMutableArray array];
         for (RCDGroupInfo *group in self.displayGroups) {
-            if ([group.groupName rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound || [[RCDUtilities hanZiToPinYinWithString:group.groupName] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
+            if ([group.groupName rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound ||
+                [[RCDUtilities hanZiToPinYinWithString:group.groupName] rangeOfString:searchText
+                                                                              options:NSCaseInsensitiveSearch]
+                        .location != NSNotFound) {
                 [matchArray addObject:group];
             }
         }
@@ -203,9 +212,9 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
         [self.tableView reloadData];
     }
     self.searchBar.showsCancelButton = YES;
-    for(UIView *view in [[[self.searchBar subviews] objectAtIndex:0] subviews]) {
-        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
-            UIButton * cancel = (UIButton *)view;
+    for (UIView *view in [[[self.searchBar subviews] objectAtIndex:0] subviews]) {
+        if ([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
+            UIButton *cancel = (UIButton *)view;
             [cancel setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
             break;
         }
@@ -248,7 +257,8 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
         _tableView.tableFooterView = [UIView new];
         _tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
         _tableView.separatorColor = HEXCOLOR(0xdfdfdf);
-        _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
+        _tableView.tableHeaderView =
+            [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
         //设置右侧索引
         _tableView.sectionIndexBackgroundColor = [UIColor clearColor];
         _tableView.sectionIndexColor = HEXCOLOR(0x555555);

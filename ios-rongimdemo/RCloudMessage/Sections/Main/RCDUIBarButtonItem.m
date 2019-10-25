@@ -10,20 +10,25 @@
 #import <RongIMKit/RongIMKit.h>
 @interface RCDUIBarButtonItem ()
 
-@property(nonatomic, strong) UILabel *titleText;
+@property (nonatomic, strong) UILabel *titleText;
 
 @end
 
 @implementation RCDUIBarButtonItem
-- (RCDUIBarButtonItem *)initWithLeftBarButton:(NSString *)title target:(id)target action:(SEL)method{
+- (RCDUIBarButtonItem *)initWithLeftBarButton:(NSString *)title target:(id)target action:(SEL)method {
     CGRect titleFrame = CGRectMake(15, 4, 85, 17);
     if (title.length == 0) {
         titleFrame = CGRectZero;
     }
-    return [self initContainImage:[UIImage imageNamed:@"navigator_btn_back"] imageViewFrame:CGRectMake(0, 4, 10, 17) buttonTitle:title titleColor:[RCIM sharedRCIM].globalNavigationBarTintColor titleFrame:titleFrame buttonFrame:CGRectMake(0, 0, 87, 23) target:target action:method];
+    return [self initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
+                   imageViewFrame:CGRectMake(0, 4, 10, 17)
+                      buttonTitle:title
+                       titleColor:[RCIM sharedRCIM].globalNavigationBarTintColor
+                       titleFrame:titleFrame
+                      buttonFrame:CGRectMake(0, 0, 87, 23)
+                           target:target
+                           action:method];
 }
-
-
 
 //初始化包含图片的UIBarButtonItem
 - (RCDUIBarButtonItem *)initContainImage:(UIImage *)buttonImage

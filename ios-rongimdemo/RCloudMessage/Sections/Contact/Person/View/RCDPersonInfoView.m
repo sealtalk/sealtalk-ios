@@ -56,31 +56,34 @@
         }
     }
     if (userInfo.stAccount.length > 0 && ![userInfo.stAccount isEqualToString:@""]) {
-        self.stAccountLabel.text = [NSString stringWithFormat:@"%@：%@",RCDLocalizedString(@"SealTalkNumber"), userInfo.stAccount];
+        self.stAccountLabel.text =
+            [NSString stringWithFormat:@"%@：%@", RCDLocalizedString(@"SealTalkNumber"), userInfo.stAccount];
     }
     if (!userInfo.portraitUri || userInfo.portraitUri.length <= 0) {
         self.portraitImgView.image = [DefaultPortraitView portraitView:userInfo.userId name:userInfo.name];
-    }else{
-        [self.portraitImgView sd_setImageWithURL:[NSURL URLWithString:userInfo.portraitUri] placeholderImage:[UIImage imageNamed:@"icon_person"]];
+    } else {
+        [self.portraitImgView sd_setImageWithURL:[NSURL URLWithString:userInfo.portraitUri]
+                                placeholderImage:[UIImage imageNamed:@"icon_person"]];
     }
     if (userInfo.gender.length > 0) {
-        self.genderImgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"gender_%@",userInfo.gender]];
+        self.genderImgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"gender_%@", userInfo.gender]];
     } else {
         self.genderImgView.image = [UIImage imageNamed:@"gender_male"];
     }
     [self updateInfoViewLayout];
 }
 
-- (void)setGroupNickname:(NSString *)groupNickname{
+- (void)setGroupNickname:(NSString *)groupNickname {
     if (groupNickname.length > 0) {
         self.groupNicknameLabel.hidden = NO;
-        self.groupNicknameLabel.text = [NSString stringWithFormat:@"%@：%@",RCDLocalizedString(@"GroupNickname"), groupNickname];
+        self.groupNicknameLabel.text =
+            [NSString stringWithFormat:@"%@：%@", RCDLocalizedString(@"GroupNickname"), groupNickname];
         [self updateInfoViewLayout];
     }
 }
 
 #pragma mark - Private Method
-- (void)updateInfoViewLayout{
+- (void)updateInfoViewLayout {
     if (!self.groupNicknameLabel.hidden) {
         if (self.remarksLabel.hidden) {
             if (self.stAccountLabel.hidden) {
@@ -104,7 +107,7 @@
                 make.right.equalTo(self.infoBgView);
                 make.height.offset(16);
             }];
-        }else{
+        } else {
             if (self.stAccountLabel.hidden) {
                 [self.remarksLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.infoBgView).offset(14);
@@ -147,7 +150,7 @@
             make.height.width.equalTo(@15);
             make.right.lessThanOrEqualTo(self.infoBgView);
         }];
-        
+
         if (self.friendInfo.stAccount.length > 0 && ![self.friendInfo.stAccount isEqualToString:@""]) {
             [self.stAccountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.remarksLabel.mas_bottom).offset(5);
@@ -172,7 +175,7 @@
     } else {
         self.nameLabel.font = [UIFont systemFontOfSize:16];
         self.nameLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1];
-        
+
         if (self.friendInfo.stAccount.length > 0 && ![self.friendInfo.stAccount isEqualToString:@""]) {
             self.stAccountLabel.hidden = NO;
             [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -181,7 +184,7 @@
                 make.height.offset(16);
                 make.right.equalTo(self.genderImgView.mas_left).offset(-5);
             }];
-            
+
             [self.stAccountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.nameLabel.mas_bottom).offset(8);
                 make.left.equalTo(self.remarksLabel);
@@ -197,7 +200,7 @@
                 make.right.equalTo(self.genderImgView.mas_left).offset(-5);
             }];
         }
-        
+
         [self.genderImgView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.nameLabel);
             make.left.equalTo(self.nameLabel.mas_right).offset(5);
@@ -215,44 +218,44 @@
     [self.infoBgView addSubview:self.nameLabel];
     [self.infoBgView addSubview:self.genderImgView];
     [self.infoBgView addSubview:self.groupNicknameLabel];
-    
+
     [self.infoBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.left.right.equalTo(self);
     }];
-    
+
     [self.portraitImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(10);
         make.centerY.equalTo(self);
         make.width.height.offset(65);
     }];
-    
+
     [self.remarksLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.infoBgView).offset(14);
         make.left.equalTo(self.portraitImgView.mas_right).offset(10);
         make.height.offset(16);
     }];
-    
+
     [self.stAccountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.remarksLabel.mas_bottom).offset(5);
         make.left.equalTo(self.remarksLabel);
         make.right.equalTo(self.infoBgView);
         make.height.offset(14);
     }];
-    
+
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.stAccountLabel.mas_bottom).offset(3);
         make.left.equalTo(self.remarksLabel);
         make.right.equalTo(self.infoBgView);
         make.height.offset(16);
     }];
-    
+
     [self.groupNicknameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
         make.left.equalTo(self.remarksLabel);
         make.right.equalTo(self.infoBgView);
         make.height.offset(16);
     }];
-    
+
     [self.genderImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.remarksLabel);
         make.left.equalTo(self.remarksLabel.mas_right).offset(5);
@@ -273,7 +276,8 @@
     if (!_portraitImgView) {
         _portraitImgView = [[UIImageView alloc] init];
         _portraitImgView.contentMode = UIViewContentModeScaleAspectFill;
-        if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE && [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
+        if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
+            [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
             _portraitImgView.layer.cornerRadius = 30;
         } else {
             _portraitImgView.layer.cornerRadius = 5;
@@ -320,7 +324,7 @@
     return _genderImgView;
 }
 
-- (UILabel *)groupNicknameLabel{
+- (UILabel *)groupNicknameLabel {
     if (!_groupNicknameLabel) {
         _groupNicknameLabel = [[UILabel alloc] init];
         _groupNicknameLabel.font = [UIFont systemFontOfSize:14];

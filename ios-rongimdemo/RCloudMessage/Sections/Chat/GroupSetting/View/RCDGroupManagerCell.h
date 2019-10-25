@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 static NSString *RCDGroupManagerCellIdentifier = @"RCDGroupManagerCellIdentifier";
 @protocol RCDGroupManagerCellDelegate <NSObject>
--(void)didSelectUserId:(NSString *)userId;
+- (void)didSelectUserId:(NSString *)userId;
 
 @end
 

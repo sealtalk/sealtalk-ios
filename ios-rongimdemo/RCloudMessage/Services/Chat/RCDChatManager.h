@@ -25,7 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
                             complete:(void (^)(BOOL open))complete
                                error:(void (^)())error;
 
-
 + (void)sendScreenCaptureNotification:(RCConversationType)conversationType
                              targetId:(NSString *)targetId
                              complete:(void (^)(BOOL success))complete;
@@ -34,8 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
                            groupId:(NSString *)groupId
                           complete:(void (^)(BOOL success))complete;
 
-+ (void)getGroupMessageClearStatus:(NSString *)groupId
-                          complete:(void (^)(RCDGroupMessageClearStatus status))complete;
++ (void)getGroupMessageClearStatus:(NSString *)groupId complete:(void (^)(RCDGroupMessageClearStatus status))complete;
 
 + (BOOL)isHoldChatNotificationMessage:(RCMessage *)message;
 @end

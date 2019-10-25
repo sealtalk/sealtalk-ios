@@ -10,7 +10,7 @@
 #import <Masonry/Masonry.h>
 #import "UIColor+RCColor.h"
 #import <RongIMKit/RongIMKit.h>
-@interface RCDReceiptDetailHeader()
+@interface RCDReceiptDetailHeader ()
 @property (nonatomic, strong) RCMessageModel *message;
 
 @property (nonatomic, strong) UILabel *nameLabel;
@@ -24,7 +24,7 @@
 @property (nonatomic, assign) CGFloat headerViewHeight;
 @end
 @implementation RCDReceiptDetailHeader
-- (instancetype)initWithMessage:(RCMessageModel *)message{
+- (instancetype)initWithMessage:(RCMessageModel *)message {
     if (self = [super init]) {
         self.message = message;
         [self addSubbiews];
@@ -37,7 +37,10 @@
     [button setSelected:!button.selected];
     if (button.selected == YES) {
         self.messageContentLabel.numberOfLines = 0;
-        self.headerViewHeight = 70 + [self.messageContentLabel sizeThatFits:CGSizeMake(self.messageContentLabel.frame.size.width, MAXFLOAT)].height;
+        self.headerViewHeight =
+            70 +
+            [self.messageContentLabel sizeThatFits:CGSizeMake(self.messageContentLabel.frame.size.width, MAXFLOAT)]
+                .height;
     } else {
         self.headerViewHeight = 145;
         self.messageContentLabel.numberOfLines = 4;
@@ -77,8 +80,11 @@
             make.right.equalTo(self);
             make.height.offset(0);
         }];
-        self.headerViewHeight = 47 + [self.messageContentLabel sizeThatFits:CGSizeMake(self.messageContentLabel.frame.size.width, MAXFLOAT)].height;
-    }else{
+        self.headerViewHeight =
+            47 +
+            [self.messageContentLabel sizeThatFits:CGSizeMake(self.messageContentLabel.frame.size.width, MAXFLOAT)]
+                .height;
+    } else {
         self.headerViewHeight = 145;
         self.openAndCloseButton.hidden = NO;
         [self.openAndCloseButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -91,7 +97,7 @@
     [self updateHeaderViewFrame:self.headerViewHeight];
 }
 
-- (void)updateHeaderViewFrame:(CGFloat)height{
+- (void)updateHeaderViewFrame:(CGFloat)height {
     self.frame = CGRectMake(0, 0, RCDScreenWidth, height);
     if (self.delegate && [self.delegate respondsToSelector:@selector(receiptDetailHeaderDidUpdate:)]) {
         [self.delegate receiptDetailHeaderDidUpdate:!self.openAndCloseButton.selected];
@@ -105,14 +111,15 @@
     CGFloat textH = [label.text boundingRectWithSize:maxSize
                                              options:NSStringDrawingUsesLineFragmentOrigin
                                           attributes:attrs
-                                             context:nil].size.height;
+                                             context:nil]
+                        .size.height;
     CGFloat lineHeight = label.font.lineHeight;
     NSInteger lineCount = textH / lineHeight;
     return lineCount;
 }
 
 #pragma mark - getter & setter
-- (UILabel *)nameLabel{
+- (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _nameLabel.font = [UIFont systemFontOfSize:16.f];
@@ -122,7 +129,7 @@
     return _nameLabel;
 }
 
-- (UILabel *)timeLabel{
+- (UILabel *)timeLabel {
     if (!_timeLabel) {
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _timeLabel.font = [UIFont systemFontOfSize:14.f];
@@ -132,7 +139,7 @@
     return _timeLabel;
 }
 
-- (UILabel *)messageContentLabel{
+- (UILabel *)messageContentLabel {
     if (!_messageContentLabel) {
         _messageContentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _messageContentLabel.font = [UIFont systemFontOfSize:16.f];
@@ -144,7 +151,7 @@
     return _messageContentLabel;
 }
 
-- (UIButton *)openAndCloseButton{
+- (UIButton *)openAndCloseButton {
     if (!_openAndCloseButton) {
         _openAndCloseButton = [[UIButton alloc] initWithFrame:CGRectZero];
         [_openAndCloseButton setImage:[UIImage imageNamed:@"open"] forState:UIControlStateNormal];

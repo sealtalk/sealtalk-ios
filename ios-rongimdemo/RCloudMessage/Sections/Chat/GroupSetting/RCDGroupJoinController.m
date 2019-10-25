@@ -34,52 +34,56 @@
 }
 
 #pragma mark - helper
-- (void)setGroupInfo{
+- (void)setGroupInfo {
     if (self.group.isDismiss) {
         self.joinButton.enabled = NO;
         [self.joinButton setTitle:RCDLocalizedString(@"GroupDidDismiss") forState:(UIControlStateNormal)];
         self.joinButton.backgroundColor = [HEXCOLOR(0x999999) colorWithAlphaComponent:0.6];
     }
-    self.infoLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"GroupDetailCount"),self.group.number];
-    
+    self.infoLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"GroupDetailCount"), self.group.number];
+
     self.nameLabel.text = self.group.groupName;
     if ([self.group.portraitUri isEqualToString:@""]) {
-        [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:self.group.portraitUri] placeholderImage:[UIImage imageNamed:@"contact"]];
+        [self.portraitImageView sd_setImageWithURL:[NSURL URLWithString:self.group.portraitUri]
+                                  placeholderImage:[UIImage imageNamed:@"contact"]];
     }
     if (!self.portraitImageView.image) {
         self.portraitImageView.image = [DefaultPortraitView portraitView:self.group.groupId name:self.group.groupName];
     }
 }
 
-- (void)setNaviItem{
+- (void)setNaviItem {
     if (self.group.needCertification) {
         self.navigationItem.title = RCDLocalizedString(@"alert");
         return;
-    }else{
+    } else {
         self.navigationItem.title = RCDLocalizedString(@"JoinGroup");
     }
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
-- (void)clickBackBtn{
+- (void)clickBackBtn {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)didClickJoinAction{
+- (void)didClickJoinAction {
     __weak typeof(self) weakSelf = self;
-    [RCDGroupManager joinGroup:self.groupId complete:^(BOOL success) {
-        rcd_dispatch_main_async_safe(^{
-            if (success) {
-                [weakSelf pushChatVC];
-            }else{
-                [weakSelf showAlert:@"GroupJoinFail"];
-            }
-        });
-    }];
+    [RCDGroupManager joinGroup:self.groupId
+                      complete:^(BOOL success) {
+                          rcd_dispatch_main_async_safe(^{
+                              if (success) {
+                                  [weakSelf pushChatVC];
+                              } else {
+                                  [weakSelf showAlert:@"GroupJoinFail"];
+                              }
+                          });
+                      }];
 }
 
-- (void)pushChatVC{
+- (void)pushChatVC {
     RCDChatViewController *chatVC = [[RCDChatViewController alloc] init];
     chatVC.targetId = self.groupId;
     chatVC.conversationType = ConversationType_GROUP;
@@ -95,7 +99,7 @@
     [alert show];
 }
 
-- (void)addSubViews{
+- (void)addSubViews {
     if (self.group.needCertification) {
         [self showTipAlertView];
         return;
@@ -114,7 +118,7 @@
         make.left.equalTo(self.view).offset(32);
         make.top.equalTo(self.bgView.mas_bottom).offset(30);
     }];
-    
+
     [self.bgView addSubview:self.portraitImageView];
     [self.bgView addSubview:self.nameLabel];
     [self.bgView addSubview:self.infoLabel];
@@ -124,14 +128,14 @@
         make.top.equalTo(self.bgView).offset(60);
         make.width.height.offset(70);
     }];
-    
+
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.bgView);
         make.top.equalTo(self.portraitImageView.mas_bottom).offset(9);
         make.height.offset(28);
         make.width.equalTo(self.bgView);
     }];
-    
+
     [self.infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.bgView);
         make.top.equalTo(self.nameLabel.mas_bottom).offset(2);
@@ -140,8 +144,9 @@
     }];
 }
 
-- (void)showTipAlertView{
-    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height/2-100, self.view.frame.size.width, 28)];
+- (void)showTipAlertView {
+    UILabel *tipLabel = [[UILabel alloc]
+        initWithFrame:CGRectMake(0, self.view.frame.size.height / 2 - 100, self.view.frame.size.width, 28)];
     tipLabel.text = RCDLocalizedString(@"GroupAuthTipInfo");
     tipLabel.textColor = HEXCOLOR(0x939393);
     tipLabel.font = [UIFont systemFontOfSize:20];
@@ -150,7 +155,7 @@
 }
 
 #pragma mark - getter
-- (UIView *)bgView{
+- (UIView *)bgView {
     if (!_bgView) {
         _bgView = [[UIView alloc] init];
         _bgView.backgroundColor = [UIColor whiteColor];
@@ -158,7 +163,7 @@
     return _bgView;
 }
 
-- (UIImageView *)portraitImageView{
+- (UIImageView *)portraitImageView {
     if (!_portraitImageView) {
         _portraitImageView = [[UIImageView alloc] init];
         _portraitImageView.layer.masksToBounds = YES;
@@ -167,7 +172,7 @@
     return _portraitImageView;
 }
 
-- (UILabel *)nameLabel{
+- (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.textColor = HEXCOLOR(0x262626);
@@ -177,7 +182,7 @@
     return _nameLabel;
 }
 
-- (UILabel *)infoLabel{
+- (UILabel *)infoLabel {
     if (!_infoLabel) {
         _infoLabel = [[UILabel alloc] init];
         _infoLabel.textColor = HEXCOLOR(0x939393);
@@ -187,14 +192,16 @@
     return _infoLabel;
 }
 
-- (UIButton *)joinButton{
+- (UIButton *)joinButton {
     if (!_joinButton) {
         _joinButton = [[UIButton alloc] init];
         _joinButton.backgroundColor = HEXCOLOR(0x368ae8);
         [_joinButton setTitleColor:HEXCOLOR(0xffffff) forState:(UIControlStateNormal)];
         _joinButton.titleLabel.font = [UIFont systemFontOfSize:17];
         [_joinButton setTitle:RCDLocalizedString(@"JoinThisGroup") forState:(UIControlStateNormal)];
-        [_joinButton addTarget:self action:@selector(didClickJoinAction) forControlEvents:(UIControlEventTouchUpInside)];
+        [_joinButton addTarget:self
+                        action:@selector(didClickJoinAction)
+              forControlEvents:(UIControlEventTouchUpInside)];
     }
     return _joinButton;
 }

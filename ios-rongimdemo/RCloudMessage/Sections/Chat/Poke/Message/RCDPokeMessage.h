@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 #define RCDPokeMessageTypeIdentifier @"ST:PokeMsg"
 @interface RCDPokeMessage : RCMessageContent
-@property(nonatomic, strong) NSString *content;
+@property (nonatomic, strong) NSString *content;
 @end
 
 NS_ASSUME_NONNULL_END

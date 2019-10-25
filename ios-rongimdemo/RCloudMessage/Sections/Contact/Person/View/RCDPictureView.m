@@ -47,7 +47,7 @@
     self.border.fillColor = [UIColor clearColor].CGColor;
     self.border.lineWidth = .5f;
     self.border.lineCap = @"square";
-    self.border.lineDashPattern = @[@8, @8];
+    self.border.lineDashPattern = @[ @8, @8 ];
     [self.imageView.layer addSublayer:self.border];
 }
 
@@ -56,20 +56,20 @@
     [self addSubview:self.titleLabel];
     [self addSubview:self.imageView];
     [self addSubview:self.promptLabel];
-    
+
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(5);
         make.left.right.equalTo(self).inset(10);
         make.height.offset(16.5);
     }];
-    
+
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).offset(20);
         make.left.right.equalTo(self).inset(10);
-        make.height.equalTo(self.mas_width).multipliedBy(147.5/355);
+        make.height.equalTo(self.mas_width).multipliedBy(147.5 / 355);
         make.bottom.equalTo(self);
     }];
-    
+
     [self.promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.width.equalTo(self.imageView);
         make.height.offset(23);

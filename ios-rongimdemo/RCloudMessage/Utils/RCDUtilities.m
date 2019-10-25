@@ -127,8 +127,33 @@
     if (!userList)
         return nil;
     NSArray *_keys = @[
-        @"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N",
-        @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", @"#"
+        @"A",
+        @"B",
+        @"C",
+        @"D",
+        @"E",
+        @"F",
+        @"G",
+        @"H",
+        @"I",
+        @"J",
+        @"K",
+        @"L",
+        @"M",
+        @"N",
+        @"O",
+        @"P",
+        @"Q",
+        @"R",
+        @"S",
+        @"T",
+        @"U",
+        @"V",
+        @"W",
+        @"X",
+        @"Y",
+        @"Z",
+        @"#"
     ];
 
     NSMutableDictionary *infoDic = [NSMutableDictionary new];
@@ -163,7 +188,7 @@
                 RCDUserInfo *userInfo = (RCDUserInfo *)user;
                 firstLetter = [self getFirstUpperLetter:userInfo.name];
             }
-            
+
             if ([firstLetter isEqualToString:key]) {
                 [tempArr addObject:user];
             }
@@ -220,29 +245,29 @@
     return img;
 }
 
-+ (NSString *)getDataString:(long long)time{
-    if(time <= 0){
++ (NSString *)getDataString:(long long)time {
+    if (time <= 0) {
         return @"0000-00-00 00:00:00";
     }
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:time/1000];
-    NSDateFormatter* fmt = [[NSDateFormatter alloc] init];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:time / 1000];
+    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
     [fmt setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString* dateString = [fmt stringFromDate:date];
+    NSString *dateString = [fmt stringFromDate:date];
     return dateString;
 }
 
 + (CGFloat)getStringHeight:(NSString *)text font:(UIFont *)font viewWidth:(CGFloat)width {
     // 设置文字属性 要和label的一致
-    NSDictionary *attrs = @{NSFontAttributeName :font};
+    NSDictionary *attrs = @{NSFontAttributeName : font};
     CGSize maxSize = CGSizeMake(width, MAXFLOAT);
-    
+
     NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
-    
+
     // 计算文字占据的宽高
     CGSize size = [text boundingRectWithSize:maxSize options:options attributes:attrs context:nil].size;
-    
+
     // 当你是把获得的高度来布局控件的View的高度的时候.size转化为ceilf(size.height)。
-    return  ceilf(size.height);
+    return ceilf(size.height);
 }
 
 + (BOOL)isLowerLetter:(NSString *)string {
@@ -253,7 +278,7 @@
         return NO;
     }
     NSString *regex = @"[A-Za-z]+";
-    NSPredicate*predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     if ([predicate evaluateWithObject:firstString]) {
         return YES;
     }
@@ -262,36 +287,44 @@
 
 + (BOOL)judgeSealTalkAccount:(NSString *)string {
     NSString *regex = @"^[A-Za-z0-9_-]+$";
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     if ([predicate evaluateWithObject:string]) {
         return YES;
     }
     return NO;
 }
 
-+ (int)getTotalUnreadCount{
-    int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[@(ConversationType_PRIVATE), @(ConversationType_APPSERVICE),@(ConversationType_PUBLICSERVICE), @(ConversationType_GROUP), @(ConversationType_SYSTEM)]];
++ (int)getTotalUnreadCount {
+    int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
+        @(ConversationType_PRIVATE),
+        @(ConversationType_APPSERVICE),
+        @(ConversationType_PUBLICSERVICE),
+        @(ConversationType_GROUP),
+        @(ConversationType_SYSTEM)
+    ]];
     return unreadMsgCount + (int)[RCDGroupManager getGroupNoticeUnreadCount];
 }
 
-+ (void)getGroupUserDisplayInfo:(NSString *)userId groupId:(NSString *)groupId result:(void (^)(RCUserInfo *))result{
++ (void)getGroupUserDisplayInfo:(NSString *)userId groupId:(NSString *)groupId result:(void (^)(RCUserInfo *))result {
     RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
     if (friend && friend.displayName.length > 0) {
         if (friend.portraitUri.length == 0) {
             friend.portraitUri = [self defaultUserPortrait:friend];
         }
-        RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:userId name:friend.displayName portrait:friend.portraitUri];
+        RCUserInfo *user =
+            [[RCUserInfo alloc] initWithUserId:userId name:friend.displayName portrait:friend.portraitUri];
         result(user);
         [[RCIM sharedRCIM] refreshGroupUserInfoCache:friend withUserId:userId withGroupId:groupId];
-    }else{
-        [self getUserDisplayInfo:userId complete:^(RCUserInfo *user) {
-            RCDGroupMember *memberDetail = [RCDGroupManager getGroupMember:userId groupId:groupId];
-            if (groupId.length > 0 && memberDetail.groupNickname.length > 0){
-                user.name = memberDetail.groupNickname;
-            }
-            result(user);
-            [[RCIM sharedRCIM] refreshGroupUserInfoCache:user withUserId:userId withGroupId:groupId];
-        }];
+    } else {
+        [self getUserDisplayInfo:userId
+                        complete:^(RCUserInfo *user) {
+                            RCDGroupMember *memberDetail = [RCDGroupManager getGroupMember:userId groupId:groupId];
+                            if (groupId.length > 0 && memberDetail.groupNickname.length > 0) {
+                                user.name = memberDetail.groupNickname;
+                            }
+                            result(user);
+                            [[RCIM sharedRCIM] refreshGroupUserInfoCache:user withUserId:userId withGroupId:groupId];
+                        }];
     }
 }
 
@@ -301,24 +334,26 @@
         if (friend.portraitUri.length == 0) {
             friend.portraitUri = [self defaultUserPortrait:friend];
         }
-        RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:userId name:friend.displayName portrait:friend.portraitUri];
+        RCUserInfo *user =
+            [[RCUserInfo alloc] initWithUserId:userId name:friend.displayName portrait:friend.portraitUri];
         completeBlock(user);
-    }else{
+    } else {
         RCDUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
         if (user) {
             if (user.portraitUri.length == 0) {
                 user.portraitUri = [self defaultUserPortrait:user];
             }
             completeBlock(user);
-        }else{
-            [RCDUserInfoManager getUserInfoFromServer:userId complete:^(RCDUserInfo *userInfo) {
-                if (user.portraitUri.length == 0) {
-                    user.portraitUri = [self defaultUserPortrait:user];
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completeBlock(userInfo);
-                });
-            }];
+        } else {
+            [RCDUserInfoManager getUserInfoFromServer:userId
+                                             complete:^(RCDUserInfo *userInfo) {
+                                                 if (user.portraitUri.length == 0) {
+                                                     user.portraitUri = [self defaultUserPortrait:user];
+                                                 }
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     completeBlock(userInfo);
+                                                 });
+                                             }];
         }
     }
 }
@@ -331,47 +366,51 @@
  */
 + (BOOL)stringContainsEmoji:(NSString *)string {
     __block BOOL returnValue = NO;
-    [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock: ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
-        
-        const unichar hs = [substring characterAtIndex:0];
-        // surrogate pair
-        if (0xd800 <= hs && hs <= 0xdbff) {
-            if (substring.length > 1) {
-                const unichar ls = [substring characterAtIndex:1];
-                const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
-                if (0x1d000 <= uc && uc <= 0x1f77f) {
-                    returnValue = YES;
-                }
-            }
-        } else if (substring.length > 1) {
-            const unichar ls = [substring characterAtIndex:1];
-            if (ls == 0x20e3) {
-                returnValue = YES;
-            }
-        } else {
-            // non surrogate
-            if (0x2100 <= hs && hs <= 0x27ff) {
-                // 区分九宫格输入 U+278b u'➋' -  U+2792 u'➒'
-                if (0x278b <= hs && hs <= 0x2792) {
-                    returnValue = NO;
-                    // 九宫格键盘上 “^-^” 键所对应的为符号 ☻
-                } else if (0x263b == hs) {
-                    returnValue = NO;
-                } else {
-                    returnValue = YES;
-                }
-            } else if (0x2B05 <= hs && hs <= 0x2b07) {
-                returnValue = YES;
-            } else if (0x2934 <= hs && hs <= 0x2935) {
-                returnValue = YES;
-            } else if (0x3297 <= hs && hs <= 0x3299) {
-                returnValue = YES;
-            } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
-                returnValue = YES;
-            }
-        }
-    }];
-    
+    [string
+        enumerateSubstringsInRange:NSMakeRange(0, [string length])
+                           options:NSStringEnumerationByComposedCharacterSequences
+                        usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+
+                            const unichar hs = [substring characterAtIndex:0];
+                            // surrogate pair
+                            if (0xd800 <= hs && hs <= 0xdbff) {
+                                if (substring.length > 1) {
+                                    const unichar ls = [substring characterAtIndex:1];
+                                    const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+                                    if (0x1d000 <= uc && uc <= 0x1f77f) {
+                                        returnValue = YES;
+                                    }
+                                }
+                            } else if (substring.length > 1) {
+                                const unichar ls = [substring characterAtIndex:1];
+                                if (ls == 0x20e3) {
+                                    returnValue = YES;
+                                }
+                            } else {
+                                // non surrogate
+                                if (0x2100 <= hs && hs <= 0x27ff) {
+                                    // 区分九宫格输入 U+278b u'➋' -  U+2792 u'➒'
+                                    if (0x278b <= hs && hs <= 0x2792) {
+                                        returnValue = NO;
+                                        // 九宫格键盘上 “^-^” 键所对应的为符号 ☻
+                                    } else if (0x263b == hs) {
+                                        returnValue = NO;
+                                    } else {
+                                        returnValue = YES;
+                                    }
+                                } else if (0x2B05 <= hs && hs <= 0x2b07) {
+                                    returnValue = YES;
+                                } else if (0x2934 <= hs && hs <= 0x2935) {
+                                    returnValue = YES;
+                                } else if (0x3297 <= hs && hs <= 0x3299) {
+                                    returnValue = YES;
+                                } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 ||
+                                           hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
+                                    returnValue = YES;
+                                }
+                            }
+                        }];
+
     return returnValue;
 }
 @end

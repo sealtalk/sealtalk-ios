@@ -13,15 +13,15 @@ typedef void (^LongPressBlock)(NSString *userId);
 
 @interface RCDContactTableViewCell : UITableViewCell
 
-@property(nonatomic, copy) LongPressBlock longPressBlock;
+@property (nonatomic, copy) LongPressBlock longPressBlock;
 
-@property(nonatomic, strong) UIImageView *portraitView;
+@property (nonatomic, strong) UIImageView *portraitView;
 
-@property(nonatomic, strong) UILabel *nicknameLabel;
+@property (nonatomic, strong) UILabel *nicknameLabel;
 
-@property(nonatomic, strong) UILabel *userIdLabel;
+@property (nonatomic, strong) UILabel *userIdLabel;
 
-@property(nonatomic, strong) UILabel *noticeLabel;
+@property (nonatomic, strong) UILabel *noticeLabel;
 
 - (void)showNoticeLabel:(int)noticeCount;
 

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RCDContactsInfo : NSObject
 
-@property (nonatomic, assign) BOOL isRegister; // 是否注册
+@property (nonatomic, assign) BOOL isRegister;     // 是否注册
 @property (nonatomic, assign) BOOL isRelationship; // 是否是好友
 @property (nonatomic, strong) NSString *userId;
 @property (nonatomic, strong) NSString *name;

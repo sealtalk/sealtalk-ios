@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface RCDShareChatListController : UITableViewController
-@property(nonatomic, copy) NSString *titleString;
-@property(nonatomic, copy) NSString *contentString;
-@property(nonatomic, copy) NSString *imageString;
-@property(nonatomic, copy) NSString *url;
+@property (nonatomic, copy) NSString *titleString;
+@property (nonatomic, copy) NSString *contentString;
+@property (nonatomic, copy) NSString *imageString;
+@property (nonatomic, copy) NSString *url;
 
 - (void)enableSendMessage:(BOOL)sender;
 @end

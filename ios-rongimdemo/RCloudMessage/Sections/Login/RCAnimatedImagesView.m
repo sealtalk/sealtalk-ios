@@ -20,8 +20,8 @@
     NSInteger currentlyDisplayingImageIndex;
 }
 
-@property(nonatomic, retain) NSArray *imageViews;
-@property(nonatomic, retain) NSTimer *imageSwappingTimer;
+@property (nonatomic, retain) NSArray *imageViews;
+@property (nonatomic, retain) NSTimer *imageSwappingTimer;
 
 - (void)_init;
 

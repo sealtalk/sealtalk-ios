@@ -34,14 +34,15 @@
 }
 
 - (void)showQuicklySendViewWithframe:(CGRect)frame {
-    [self getRecentlyAddedPhoto:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
+    [self getRecentlyAddedPhoto:^(UIImage *_Nullable image, NSDictionary *_Nullable info) {
         if (image) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self.quicklySendView) {
                     [self hideQuicklySendView];
                 }
                 self.quicklySendView = [RCDQuicklySendView quicklSendViewWithFrame:frame image:image];
-                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
+                UITapGestureRecognizer *tap =
+                    [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
                 [self.quicklySendView addGestureRecognizer:tap];
                 [self.quicklySendView show];
                 // 30s 倒计时消失
@@ -64,39 +65,49 @@
     }
 }
 
-- (void)getRecentlyAddedPhoto:(void (^)(UIImage * _Nullable image, NSDictionary * _Nullable info))resultHandler {
+- (void)getRecentlyAddedPhoto:(void (^)(UIImage *_Nullable image, NSDictionary *_Nullable info))resultHandler {
     // 获取相册
-    PHFetchResult *collectionResult = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary options:nil];
-    
+    PHFetchResult *collectionResult =
+        [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+                                                 subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary
+                                                 options:nil];
+
     // 获取资源时的参数
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
     options.wantsIncrementalChangeDetails = YES;
-    options.predicate = [NSPredicate predicateWithFormat:@"creationDate > %@", [[NSDate date] dateByAddingTimeInterval:(-30)]];
-    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-    
+    options.predicate =
+        [NSPredicate predicateWithFormat:@"creationDate > %@", [[NSDate date] dateByAddingTimeInterval:(-30)]];
+    options.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO] ];
+
     if (collectionResult.count > 0) {
-        PHFetchResult *fetchResult = [PHAsset fetchAssetsInAssetCollection:[collectionResult firstObject] options:options];
+        PHFetchResult *fetchResult =
+            [PHAsset fetchAssetsInAssetCollection:[collectionResult firstObject] options:options];
         if (fetchResult.count > 0) {
             PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
             requestOptions.synchronous = YES;
             // 获取原图
-            [[PHImageManager defaultManager] requestImageForAsset:[fetchResult firstObject] targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFit options:requestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-                if (result) {
-                    PHAsset *asset = [fetchResult firstObject];
-                    NSDateFormatter *dateformatter = [[NSDateFormatter alloc] init];
-                    [dateformatter setDateFormat:@"yyyyMMddHHmmss"];
-                    NSString *formattedDate = [dateformatter stringFromDate:asset.creationDate];
-                    if (formattedDate && ![formattedDate isEqualToString:self.currentImageURL]) {
-                        self.currentImageURL = formattedDate;
-                        self.currentImage = result;
-                        resultHandler(result, info);
-                    } else {
-                        resultHandler(nil, nil);
-                    }
-                } else {
-                    resultHandler(nil, nil);
-                }
-            }];
+            [[PHImageManager defaultManager]
+                requestImageForAsset:[fetchResult firstObject]
+                          targetSize:PHImageManagerMaximumSize
+                         contentMode:PHImageContentModeAspectFit
+                             options:requestOptions
+                       resultHandler:^(UIImage *_Nullable result, NSDictionary *_Nullable info) {
+                           if (result) {
+                               PHAsset *asset = [fetchResult firstObject];
+                               NSDateFormatter *dateformatter = [[NSDateFormatter alloc] init];
+                               [dateformatter setDateFormat:@"yyyyMMddHHmmss"];
+                               NSString *formattedDate = [dateformatter stringFromDate:asset.creationDate];
+                               if (formattedDate && ![formattedDate isEqualToString:self.currentImageURL]) {
+                                   self.currentImageURL = formattedDate;
+                                   self.currentImage = result;
+                                   resultHandler(result, info);
+                               } else {
+                                   resultHandler(nil, nil);
+                               }
+                           } else {
+                               resultHandler(nil, nil);
+                           }
+                       }];
         }
         resultHandler(nil, nil);
     } else {
@@ -106,7 +117,11 @@
 
 - (void)startHideTimer {
     [self stopTimerIfNeed];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(hideQuicklySendView) userInfo:nil repeats:NO];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:30
+                                                  target:self
+                                                selector:@selector(hideQuicklySendView)
+                                                userInfo:nil
+                                                 repeats:NO];
 }
 
 - (void)stopTimerIfNeed {

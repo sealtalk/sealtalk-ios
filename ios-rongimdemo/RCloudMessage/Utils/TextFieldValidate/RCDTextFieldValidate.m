@@ -13,8 +13,7 @@
 //验证手机号码
 + (BOOL)validateMobile:(NSString *)mobile {
     if (mobile.length == 0) {
-        NSString *message = RCDLocalizedString(@"mobile_number_unempty")
-;
+        NSString *message = RCDLocalizedString(@"mobile_number_unempty");
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                             message:message
                                                            delegate:nil

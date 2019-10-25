@@ -13,7 +13,7 @@
 #define vertical_space 15
 @interface RCDCSTagView : UIView
 
-@property (nonatomic, copy) void(^isSelectedTags)(NSDictionary *selectTags);
+@property (nonatomic, copy) void (^isSelectedTags)(NSDictionary *selectTags);
 
 @property (nonatomic, strong) NSArray *tags;
 - (void)setTags:(NSArray *)tags;

@@ -12,5 +12,3 @@
 + (UIViewController *)configVC:(NSString *)userId groupId:(NSString *)groupId;
 @property (nonatomic, strong) NSString *userId;
 @end
-
-

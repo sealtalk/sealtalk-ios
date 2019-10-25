@@ -45,7 +45,7 @@ static NSString *const TFHppleTextNodeName = @"text";
     __weak TFHppleElement *parent;
 }
 
-@property(nonatomic, weak, readwrite) TFHppleElement *parent;
+@property (nonatomic, weak, readwrite) TFHppleElement *parent;
 
 @end
 

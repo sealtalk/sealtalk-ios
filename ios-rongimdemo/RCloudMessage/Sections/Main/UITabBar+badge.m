@@ -38,35 +38,33 @@
     }
     float peRCDntX = (index + 0.51) / itemsCount;
     CGFloat x = ceilf(peRCDntX * tabFrame.size.width);
-    if (index==0) {
-        x=x+4;
+    if (index == 0) {
+        x = x + 4;
     }
     CGFloat y = ceilf(0.07 * tabFrame.size.height);
-    if (badgeValue>0) {
+    if (badgeValue > 0) {
         CGFloat width = 18;
         if (badgeValue >= 10 && badgeValue < 100) {
             width = 22;
-        }
-        else if(badgeValue >= 100 && badgeValue < 1000){
+        } else if (badgeValue >= 100 && badgeValue < 1000) {
             width = 30;
         }
         decideFrame = CGRectMake(x, y, width, 18);
-    }
-    else{
+    } else {
         decideFrame = CGRectMake(x, y, 10, 10);
     }
     if (!badge) {
-        badge = [[RCDTabBarBtn alloc]initWithFrame:decideFrame];
+        badge = [[RCDTabBarBtn alloc] initWithFrame:decideFrame];
         badge.tag = tag;
         [self addSubview:badge];
     }
     [badge setFrame:decideFrame];
-    badge.layer.cornerRadius = badge.frame.size.height/2;
+    badge.layer.cornerRadius = badge.frame.size.height / 2;
     badge.hidden = NO;
     if (badgeValue) {
         badge.userInteractionEnabled = enable;
         if (badgeValue <= 99) {
-            badge.unreadCount = [NSString stringWithFormat:@"%d",badgeValue];
+            badge.unreadCount = [NSString stringWithFormat:@"%d", badgeValue];
         } else if (badgeValue > 99 && badgeValue < 1000) {
             badge.unreadCount = [NSString stringWithFormat:@"99+"];
         } else {
@@ -77,16 +75,16 @@
         badge.unreadCount = @"";
     }
 }
--(void)deviceOrientationChange{
+- (void)deviceOrientationChange {
     if (RCDIsIPad) {
         NSInteger itemsCount = self.items.count;
         CGRect tabFrame = self.frame;
         for (NSInteger index = 0; index < itemsCount; index++) {
-            RCDTabBarBtn *badge = [self viewWithTag: index + RCDTabBarButtonTagFrom];
+            RCDTabBarBtn *badge = [self viewWithTag:index + RCDTabBarButtonTagFrom];
             float peRCDntX = (index + 0.51) / itemsCount;
             CGFloat x = ceilf(peRCDntX * tabFrame.size.width);
-            if (index==0) {
-                x=x+4;
+            if (index == 0) {
+                x = x + 4;
             }
             CGFloat y = ceilf(0.07 * tabFrame.size.height);
             CGRect frame = badge.frame;

@@ -19,21 +19,21 @@
 
 - (void)setModel:(RCDFriendInfo *)user;
 
-@property(nonatomic, strong) NSString *groupId;
+@property (nonatomic, strong) NSString *groupId;
 
 /**
  *  选中图片
  */
-@property(nonatomic, strong) UIImageView *selectedImageView;
+@property (nonatomic, strong) UIImageView *selectedImageView;
 
 /**
  *  头像图片
  */
-@property(nonatomic, strong) UIImageView *portraitImageView;
+@property (nonatomic, strong) UIImageView *portraitImageView;
 
 /**
  *  昵称
  */
-@property(nonatomic, strong) UILabel *nicknameLabel;
+@property (nonatomic, strong) UILabel *nicknameLabel;
 
 @end

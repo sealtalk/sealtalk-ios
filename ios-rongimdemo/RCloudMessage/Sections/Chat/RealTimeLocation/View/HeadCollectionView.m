@@ -11,13 +11,13 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 @interface HeadCollectionView ()
 
-@property(nonatomic) CGRect headViewRect;
-@property(nonatomic) CGFloat headViewSize;
-@property(nonatomic) CGFloat headViewSpace;
-@property(nonatomic, strong) UILabel *tipLabel;
-@property(nonatomic, strong) UIScrollView *scrollView;
-@property(nonatomic, strong) NSMutableArray *headsView;
-@property(nonatomic, strong) NSMutableArray *rcUserInfos;
+@property (nonatomic) CGRect headViewRect;
+@property (nonatomic) CGFloat headViewSize;
+@property (nonatomic) CGFloat headViewSpace;
+@property (nonatomic, strong) UILabel *tipLabel;
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) NSMutableArray *headsView;
+@property (nonatomic, strong) NSMutableArray *rcUserInfos;
 
 @end
 
@@ -41,9 +41,9 @@
     if (self) {
         self.touchDelegate = touchDelegate;
         self.avatarStyle = avatarStyle;
-        
+
         [self setupSubviews];
-        
+
         for (NSString *userId in userIds) {
             [self addUser:userId showChange:NO];
         }
@@ -58,16 +58,15 @@
     CGPoint tipLabelCenter = self.tipLabel.center;
     tipLabelCenter.x = self.center.x;
     self.tipLabel.center = tipLabelCenter;
-    
+
     CGPoint scrollViewCenter = self.scrollView.center;
     scrollViewCenter.x = self.center.x;
     self.scrollView.center = scrollViewCenter;
-    
 }
 
 - (BOOL)addUserInfoIfNeed:(RCUserInfo *)userInfo {
-    for(RCUserInfo *user in self.rcUserInfos) {
-        if([userInfo.userId isEqualToString:user.userId]) {
+    for (RCUserInfo *user in self.rcUserInfos) {
+        if ([userInfo.userId isEqualToString:user.userId]) {
             return NO;
         }
     }
@@ -114,37 +113,43 @@
     if (userId && [self getUserIndex:userId] < 0) {
         if ([RCIM sharedRCIM].userInfoDataSource &&
             [[RCIM sharedRCIM].userInfoDataSource respondsToSelector:@selector(getUserInfoWithUserId:completion:)]) {
-            [[RCIM sharedRCIM].userInfoDataSource
-             getUserInfoWithUserId:userId
-             completion:^(RCUserInfo *user) {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     RCUserInfo *userInfo = user;
-                     if (!userInfo) {
-                         userInfo = [[RCUserInfo alloc]
-                                     initWithUserId:userId
-                                     name:[NSString stringWithFormat:@"user<%@>", userId]
-                                     portrait:nil];
-                     }
-                     if([self addUserInfoIfNeed:userInfo]) {
-                         [self addHeadViewUser:userInfo];
-                         if (show) {
-                             [self showUserChangeInfo:[NSString stringWithFormat:RCDLocalizedString(@"join_share_location"), userInfo.name]];
-                         } else {
-                             self.tipLabel.text = [NSString
-                                                   stringWithFormat:RCDLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
-                         }
-                     }
-                 });
-             }];
+            [[RCIM sharedRCIM]
+                    .userInfoDataSource
+                getUserInfoWithUserId:userId
+                           completion:^(RCUserInfo *user) {
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   RCUserInfo *userInfo = user;
+                                   if (!userInfo) {
+                                       userInfo = [[RCUserInfo alloc]
+                                           initWithUserId:userId
+                                                     name:[NSString stringWithFormat:@"user<%@>", userId]
+                                                 portrait:nil];
+                                   }
+                                   if ([self addUserInfoIfNeed:userInfo]) {
+                                       [self addHeadViewUser:userInfo];
+                                       if (show) {
+                                           [self showUserChangeInfo:[NSString
+                                                                        stringWithFormat:RCDLocalizedString(
+                                                                                             @"join_share_location"),
+                                                                                         userInfo.name]];
+                                       } else {
+                                           self.tipLabel.text = [NSString
+                                               stringWithFormat:RCDLocalizedString(@"share_location_people_count"),
+                                                                (unsigned long)self.rcUserInfos.count];
+                                       }
+                                   }
+                               });
+                           }];
         } else {
             RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:userId name:userId portrait:nil];
-            if([self addUserInfoIfNeed:userInfo]) {
+            if ([self addUserInfoIfNeed:userInfo]) {
                 [self addHeadViewUser:userInfo];
                 if (show) {
-                    [self showUserChangeInfo:[NSString stringWithFormat:RCDLocalizedString(@"join_share_location"), userInfo.name]];
+                    [self showUserChangeInfo:[NSString stringWithFormat:RCDLocalizedString(@"join_share_location"),
+                                                                        userInfo.name]];
                 } else {
-                    self.tipLabel.text =
-                    [NSString stringWithFormat:RCDLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
+                    self.tipLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"share_location_people_count"),
+                                                                    (unsigned long)self.rcUserInfos.count];
                 }
             }
         }
@@ -164,8 +169,8 @@
             if (show) {
                 [self showUserChangeInfo:[NSString stringWithFormat:@"%@退出...", userInfo.name]];
             } else {
-                self.tipLabel.text =
-                [NSString stringWithFormat:RCDLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
+                self.tipLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"share_location_people_count"),
+                                                                (unsigned long)self.rcUserInfos.count];
             }
             return YES;
         } else {
@@ -188,7 +193,8 @@
 
 - (void)showUserShareInfo {
     self.tipLabel.textColor = [UIColor whiteColor];
-    self.tipLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
+    self.tipLabel.text = [NSString
+        stringWithFormat:RCDLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
 }
 
 - (void)addHeadViewUser:(RCUserInfo *)user {
@@ -198,25 +204,25 @@
         [userHead sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
                     placeholderImage:[RCDUtilities imageNamed:@"default_portrait_msg" ofBundle:@"RongCloud.bundle"]];
         [userHead setFrame:CGRectMake(scrollViewWidth - self.headViewSize, 0, self.headViewSize, self.headViewSize)];
-        
+
         if (self.avatarStyle == RC_USER_AVATAR_CYCLE) {
             userHead.layer.cornerRadius = self.headViewSize / 2;
             userHead.layer.masksToBounds = YES;
         }
         userHead.layer.borderWidth = 1.0f;
         userHead.layer.borderColor = [UIColor whiteColor].CGColor;
-        
+
         UITapGestureRecognizer *tap =
-        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onUserSelected:)];
+            [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onUserSelected:)];
         [userHead addGestureRecognizer:tap];
         userHead.userInteractionEnabled = YES;
-        
+
         [self.headsView addObject:userHead];
         [self.scrollView addSubview:userHead];
         if (scrollViewWidth < self.headViewRect.size.width) {
             [self.scrollView
-             setFrame:CGRectMake((self.frame.size.width - scrollViewWidth) / 2, self.headViewRect.origin.y,
-                                 scrollViewWidth, self.headViewRect.size.height)];
+                setFrame:CGRectMake((self.frame.size.width - scrollViewWidth) / 2, self.headViewRect.origin.y,
+                                    scrollViewWidth, self.headViewRect.size.height)];
         } else {
             [self.scrollView setFrame:self.headViewRect];
         }
@@ -227,13 +233,13 @@
 - (void)removeHeadViewUser:(NSUInteger)index {
     CGFloat scrollViewWidth = [self getScrollViewWidth];
     UIImageView *removeUserHead = [self.headsView objectAtIndex:index];
-    
+
     for (NSUInteger i = index + 1; i < [self.headsView count]; i++) {
         UIImageView *userHead = self.headsView[i];
         [userHead setFrame:CGRectMake(userHead.frame.origin.x - self.headViewSize - self.headViewSpace, 0,
                                       self.headViewSize, self.headViewSize)];
     }
-    
+
     [self.headsView removeObject:removeUserHead];
     [removeUserHead removeFromSuperview];
     if (scrollViewWidth < self.headViewRect.size.width) {
@@ -252,7 +258,7 @@
             return index;
         }
     }
-    
+
     return -1;
 }
 
@@ -293,33 +299,31 @@
     return image;
 }
 
-- (void)setupSubviews{
+- (void)setupSubviews {
     self.headsView = [[NSMutableArray alloc] init];
     self.rcUserInfos = [[NSMutableArray alloc] init];
     [self setBackgroundColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5]];
     self.headViewSize = 42;
     self.headViewSpace = 8;
     self.headViewRect = CGRectMake(8 + 26 + 8, 20 + 8, self.frame.size.width - (8 + 26 + 8) * 2, self.headViewSize);
-    
+
     UIButton *quitButton = [[UIButton alloc] initWithFrame:CGRectMake(8, 41.5, 26, 26)];
     [quitButton setImage:[UIImage imageNamed:@"quit_location_share"] forState:UIControlStateNormal];
     [quitButton addTarget:self action:@selector(onQuitButtonPressed:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:quitButton];
-    
+
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.headViewRect];
     self.scrollView.showsHorizontalScrollIndicator = NO;
     [self addSubview:self.scrollView];
-    
-    UIButton *backButton =
-    [[UIButton alloc] initWithFrame:CGRectMake(self.bounds.size.width - 8 - 26, 41.5, 26, 26)];
+
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(self.bounds.size.width - 8 - 26, 41.5, 26, 26)];
     [backButton setImage:[UIImage imageNamed:@"back_to_conversation"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(onBackButtonPressed:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:backButton];
     self.backButton = backButton;
-    
-    self.tipLabel =
-    [[UILabel alloc] initWithFrame:CGRectMake(self.headViewRect.origin.x, 20 + self.headViewSize + 12,
-                                              self.headViewRect.size.width, 13)];
+
+    self.tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.headViewRect.origin.x, 20 + self.headViewSize + 12,
+                                                              self.headViewRect.size.width, 13)];
     self.tipLabel.textAlignment = NSTextAlignmentCenter;
     self.tipLabel.font = [UIFont boldSystemFontOfSize:13];
     [self showUserShareInfo];

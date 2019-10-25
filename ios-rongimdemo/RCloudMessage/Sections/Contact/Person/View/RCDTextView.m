@@ -36,11 +36,11 @@
     self.textContainerInset = UIEdgeInsetsMake(11.5, -4, 11.5, 0);
     self.layoutManager.allowsNonContiguousLayout = NO;
     [self addSubview:self.placeholderLabel];
-    
+
     self.placeholderColor = [UIColor colorWithHexString:@"C0C0C0" alpha:1];
     self.placeholderFont = [UIFont systemFontOfSize:15.0f];
     self.font = [UIFont systemFontOfSize:15.0f];
-    
+
     [self.placeholderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
         make.height.equalTo(self);
@@ -49,7 +49,10 @@
 }
 
 - (void)addObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange) name:UITextViewTextDidChangeNotification object:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textDidChange)
+                                                 name:UITextViewTextDidChangeNotification
+                                               object:self];
 }
 
 - (void)textDidChange {
@@ -103,6 +106,5 @@
     [super setSelectedRange:selectedRange];
     [self textDidChange];
 }
-
 
 @end

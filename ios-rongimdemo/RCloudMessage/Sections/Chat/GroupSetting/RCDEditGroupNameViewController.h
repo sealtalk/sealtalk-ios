@@ -12,6 +12,6 @@
 /**
  *  用户信息
  */
-@property(nonatomic, strong) RCDGroupInfo *groupInfo;
+@property (nonatomic, strong) RCDGroupInfo *groupInfo;
 
 @end

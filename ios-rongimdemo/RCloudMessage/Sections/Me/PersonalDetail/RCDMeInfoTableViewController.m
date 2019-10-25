@@ -23,9 +23,9 @@
 #import "RCDSetSealTalkNumViewController.h"
 
 @interface RCDMeInfoTableViewController ()
-@property(nonatomic, strong) NSData *data;
-@property(nonatomic, strong) UIImage *image;
-@property(nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, strong) NSData *data;
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) MBProgressHUD *hud;
 @end
 
 @implementation RCDMeInfoTableViewController
@@ -47,18 +47,20 @@
 }
 - (void)updateCurrentUserPortraitUri:(NSString *)url {
     __weak typeof(self) ws = self;
-    [RCDUserInfoManager setCurrentUserPortrait:url complete:^(BOOL result) {
-        if (result == YES) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [ws refreshCurrentUserInfo:url];
-                [ws.tableView reloadData];
-                [ws.hud hide:YES];
-            });
-        }else {
-            [ws.hud hide:YES];
-            [ws showAlertView:RCDLocalizedString(@"Upload_avatar_fail") cancelBtnTitle:RCDLocalizedString(@"confirm")];
-        }
-    }];
+    [RCDUserInfoManager setCurrentUserPortrait:url
+                                      complete:^(BOOL result) {
+                                          if (result == YES) {
+                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                  [ws refreshCurrentUserInfo:url];
+                                                  [ws.tableView reloadData];
+                                                  [ws.hud hide:YES];
+                                              });
+                                          } else {
+                                              [ws.hud hide:YES];
+                                              [ws showAlertView:RCDLocalizedString(@"Upload_avatar_fail")
+                                                  cancelBtnTitle:RCDLocalizedString(@"confirm")];
+                                          }
+                                      }];
 }
 - (void)uploadImage {
     [self.hud show:YES];
@@ -71,7 +73,8 @@
                                  } else {
                                      //关闭HUD
                                      [ws.hud hide:YES];
-                                     [ws showAlertView:RCDLocalizedString(@"Upload_avatar_fail") cancelBtnTitle:RCDLocalizedString(@"confirm")];
+                                     [ws showAlertView:RCDLocalizedString(@"Upload_avatar_fail")
+                                         cancelBtnTitle:RCDLocalizedString(@"confirm")];
                                  }
                              });
                          }];
@@ -95,42 +98,38 @@
     if (cell == nil) {
         cell = [[RCDBaseSettingTableViewCell alloc] init];
     }
-    
+
     if (indexPath.section == 0) {
         switch (indexPath.row) {
-            case 0: {
-                NSString *portraitUrl = [DEFAULTS stringForKey:RCDUserPortraitUriKey];
-                [cell setImageView:cell.rightImageView ImageStr:portraitUrl imageSize:CGSizeMake(65, 65) LeftOrRight:1];
-                cell.rightImageCornerRadius = 5.f;
-                cell.leftLabel.text = RCDLocalizedString(@"portrait");
-            }
-                break;
-            case 1: {
-                [cell setCellStyle:DefaultStyle_RightLabel];
-                cell.leftLabel.text = RCDLocalizedString(@"nickname");
-                cell.rightLabel.text = [DEFAULTS stringForKey:RCDUserNickNameKey];
-            }
-                break;
-            case 2: {
-                NSString *sealTalkNumber = [DEFAULTS stringForKey:RCDSealTalkNumberKey];
-                cell.leftLabel.text = RCDLocalizedString(@"SealTalkNumber");
-                if (sealTalkNumber.length > 0) {
-                    [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
-                    cell.rightLabel.text = sealTalkNumber;
-                } else {
-                    [cell setCellStyle:DefaultStyle_RightLabel];
-                    cell.rightLabel.text = RCDLocalizedString(@"NotSetting");
-                }
-            }
-                break;
-            case 3: {
+        case 0: {
+            NSString *portraitUrl = [DEFAULTS stringForKey:RCDUserPortraitUriKey];
+            [cell setImageView:cell.rightImageView ImageStr:portraitUrl imageSize:CGSizeMake(65, 65) LeftOrRight:1];
+            cell.rightImageCornerRadius = 5.f;
+            cell.leftLabel.text = RCDLocalizedString(@"portrait");
+        } break;
+        case 1: {
+            [cell setCellStyle:DefaultStyle_RightLabel];
+            cell.leftLabel.text = RCDLocalizedString(@"nickname");
+            cell.rightLabel.text = [DEFAULTS stringForKey:RCDUserNickNameKey];
+        } break;
+        case 2: {
+            NSString *sealTalkNumber = [DEFAULTS stringForKey:RCDSealTalkNumberKey];
+            cell.leftLabel.text = RCDLocalizedString(@"SealTalkNumber");
+            if (sealTalkNumber.length > 0) {
                 [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
-                cell.leftLabel.text = RCDLocalizedString(@"mobile_number");
-                cell.rightLabel.text = [DEFAULTS stringForKey:RCDUserNameKey];
+                cell.rightLabel.text = sealTalkNumber;
+            } else {
+                [cell setCellStyle:DefaultStyle_RightLabel];
+                cell.rightLabel.text = RCDLocalizedString(@"NotSetting");
             }
-                break;
-            default:
-                break;
+        } break;
+        case 3: {
+            [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
+            cell.leftLabel.text = RCDLocalizedString(@"mobile_number");
+            cell.rightLabel.text = [DEFAULTS stringForKey:RCDUserNameKey];
+        } break;
+        default:
+            break;
         }
     } else {
         if (indexPath.row == 0) {
@@ -150,7 +149,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height = 44.f;
-    if(indexPath.section == 0 && indexPath.row == 0) {
+    if (indexPath.section == 0 && indexPath.row == 0) {
         height = 88.f;
     }
     return height;
@@ -168,7 +167,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        if(indexPath.row == 0) {
+        if (indexPath.row == 0) {
             if ([self dealWithNetworkStatus]) {
                 [self changePortrait];
             }
@@ -199,8 +198,7 @@
 
                                                destructiveButtonTitle:RCDLocalizedString(@"take_picture")
 
-                                                    otherButtonTitles:RCDLocalizedString(@"my_album")
-, nil];
+                                                    otherButtonTitles:RCDLocalizedString(@"my_album"), nil];
     [actionSheet showInView:self.view];
 }
 
@@ -268,12 +266,13 @@
     BOOL isconnected = NO;
     RCNetworkStatus networkStatus = [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
     if (networkStatus == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:NSLocalizedStringFromTable(@"ConnectionIsNotReachable", @"RongCloudKit", nil)
-                                                       delegate:nil
-                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
+        UIAlertView *alert = [[UIAlertView alloc]
+                initWithTitle:nil
+                      message:NSLocalizedStringFromTable(@"ConnectionIsNotReachable", @"RongCloudKit", nil)
+                     delegate:nil
+            cancelButtonTitle:RCDLocalizedString(@"confirm")
 
-                                              otherButtonTitles:nil];
+            otherButtonTitles:nil];
         [alert show];
         return isconnected;
     }
@@ -286,17 +285,17 @@
     self.tabBarController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
     self.navigationItem.title = RCDLocalizedString(@"Personal_information");
-    
-    RCDUIBarButtonItem *leftBtn =
-    [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
-                                               target:self action:@selector(clickBackBtn:)];
+
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
 - (MBProgressHUD *)hud {
-    if(!_hud) {
+    if (!_hud) {
         _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         _hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
         _hud.labelText = RCDLocalizedString(@"Uploading_avatar");

@@ -14,14 +14,14 @@
 #import "RCDUserInfoManager.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDAddFriendViewController.h"
-@interface RCDQRInfoHandle()
+@interface RCDQRInfoHandle ()
 @property (nonatomic, strong) UIViewController *baseController;
 @end
 @implementation RCDQRInfoHandle
-- (void)identifyQRCode:(NSString *)info base:(UIViewController *)viewController{
+- (void)identifyQRCode:(NSString *)info base:(UIViewController *)viewController {
     self.baseController = viewController;
     if (info) {
-        if([info containsString:@"key=sealtalk://group/join?"]){
+        if ([info containsString:@"key=sealtalk://group/join?"]) {
             NSArray *array = [info componentsSeparatedByString:@"key=sealtalk://group/join?"];
             if (array.count >= 2) {
                 NSArray *arr = [array[1] componentsSeparatedByString:@"&"];
@@ -29,85 +29,97 @@
                     NSString *gIdStr = arr[0];
                     NSString *uIdStr = arr[1];
                     if ([gIdStr hasPrefix:@"g="] && gIdStr.length > 2) {
-                        gIdStr = [gIdStr substringWithRange:NSMakeRange(2, gIdStr.length-2)];
+                        gIdStr = [gIdStr substringWithRange:NSMakeRange(2, gIdStr.length - 2)];
                     }
                     if ([uIdStr hasPrefix:@"u="] && uIdStr.length > 2) {
-                        uIdStr = [uIdStr substringWithRange:NSMakeRange(2, uIdStr.length-2)];
+                        uIdStr = [uIdStr substringWithRange:NSMakeRange(2, uIdStr.length - 2)];
                     }
                     if (gIdStr.length > 0) {
                         [self handleGroupInfo:gIdStr];
                     }
                 }
             }
-        }else if ([info containsString:@"key=sealtalk://user/info?"]){
+        } else if ([info containsString:@"key=sealtalk://user/info?"]) {
             NSArray *array = [info componentsSeparatedByString:@"key=sealtalk://user/info?"];
             if (array.count >= 2) {
                 NSString *uIdStr = array[1];
                 if ([uIdStr hasPrefix:@"u="] && uIdStr.length > 2) {
-                    uIdStr = [uIdStr substringWithRange:NSMakeRange(2, uIdStr.length-2)];
+                    uIdStr = [uIdStr substringWithRange:NSMakeRange(2, uIdStr.length - 2)];
                 }
                 if (uIdStr.length > 0) {
                     [self handleUserInfo:uIdStr];
                 }
             }
-        }else if([info hasPrefix:@"http"]){
+        } else if ([info hasPrefix:@"http"]) {
             [RCKitUtility openURLInSafariViewOrWebView:info base:viewController];
-        }else{
+        } else {
             [self showAlert:RCDLocalizedString(@"QRIdentifyError")];
         }
-    }else{
+    } else {
         [self showAlert:RCDLocalizedString(@"QRIdentifyError")];
     }
 }
 
 #pragma mark - helper
-- (void)handleUserInfo:(NSString *)userId{
+- (void)handleUserInfo:(NSString *)userId {
     RCDUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
     RCDFriendInfo *friendInfo = [RCDUserInfoManager getFriendInfo:userId];
-    if ((friendInfo != nil && (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) || [user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]){
+    if ((friendInfo != nil &&
+         (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) ||
+        [user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
         RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
         [self.baseController.navigationController pushViewController:detailViewController animated:YES];
         RCDUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
         detailViewController.userId = user.userId;
     } else {
-        if(user){
+        if (user) {
             RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
             addViewController.targetUserInfo = user;
             [self.baseController.navigationController pushViewController:addViewController animated:YES];
-        }else{
-            [RCDUserInfoManager getUserInfoFromServer:userId complete:^(RCDUserInfo *userInfo) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
-                    addViewController.targetUserInfo = userInfo;
-                    [self.baseController.navigationController pushViewController:addViewController animated:YES];
-                });
-            }];
+        } else {
+            [RCDUserInfoManager getUserInfoFromServer:userId
+                                             complete:^(RCDUserInfo *userInfo) {
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     RCDAddFriendViewController *addViewController =
+                                                         [[RCDAddFriendViewController alloc] init];
+                                                     addViewController.targetUserInfo = userInfo;
+                                                     [self.baseController.navigationController
+                                                         pushViewController:addViewController
+                                                                   animated:YES];
+                                                 });
+                                             }];
         }
     }
 }
 
-- (void)handleGroupInfo:(NSString *)groupId{
-    [RCDGroupManager getGroupInfoFromServer:groupId complete:^(RCDGroupInfo * _Nonnull groupInfo) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (groupInfo) {
-                if (!groupInfo.isDismiss) {
-                    [RCDGroupManager getGroupMembersFromServer:groupId complete:^(NSArray<NSString *> * _Nonnull memberIdList) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            if ([memberIdList containsObject:[RCIM sharedRCIM].currentUserInfo.userId]) {
-                                [self pushChatVC:groupId];
-                            }else{
-                                [self pushGroupJoinVC:groupId];
-                            }
-                        });
-                    }];
-                }else{
-                    [self pushGroupJoinVC:groupId];
-                }
-            } else {
-                [self showAlert:RCDLocalizedString(@"GroupNoExist")];
-            }
-        });
-    }];
+- (void)handleGroupInfo:(NSString *)groupId {
+    [RCDGroupManager
+        getGroupInfoFromServer:groupId
+                      complete:^(RCDGroupInfo *_Nonnull groupInfo) {
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                              if (groupInfo) {
+                                  if (!groupInfo.isDismiss) {
+                                      [RCDGroupManager
+                                          getGroupMembersFromServer:groupId
+                                                           complete:^(NSArray<NSString *> *_Nonnull memberIdList) {
+                                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                                   if ([memberIdList containsObject:[RCIM sharedRCIM]
+                                                                                                        .currentUserInfo
+                                                                                                        .userId]) {
+                                                                       [self pushChatVC:groupId];
+                                                                   } else {
+                                                                       [self pushGroupJoinVC:groupId];
+                                                                   }
+                                                               });
+                                                           }];
+                                  } else {
+                                      [self pushGroupJoinVC:groupId];
+                                  }
+                              } else {
+                                  [self showAlert:RCDLocalizedString(@"GroupNoExist")];
+                              }
+                          });
+                      }];
 }
 
 - (void)showAlert:(NSString *)alertContent {
@@ -119,15 +131,14 @@
     [alert show];
 }
 
-
-- (void)pushChatVC:(NSString *)groupId{
+- (void)pushChatVC:(NSString *)groupId {
     RCDChatViewController *chatVC = [[RCDChatViewController alloc] init];
     chatVC.targetId = groupId;
     chatVC.conversationType = ConversationType_GROUP;
     [self.baseController.navigationController pushViewController:chatVC animated:YES];
 }
 
-- (void)pushGroupJoinVC:(NSString *)groupId{
+- (void)pushGroupJoinVC:(NSString *)groupId {
     RCDGroupJoinController *groupJoinVC = [[RCDGroupJoinController alloc] init];
     groupJoinVC.groupId = groupId;
     [self.baseController.navigationController pushViewController:groupJoinVC animated:YES];

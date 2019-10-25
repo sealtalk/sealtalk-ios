@@ -25,7 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupSubviews];
 }
 
@@ -51,22 +51,22 @@
     [self.view addSubview:self.bottomBgView];
     [self.bottomBgView addSubview:self.fullButton];
     [self.bottomBgView addSubview:self.sendButton];
-    
+
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.width.height.equalTo(self.view);
     }];
-    
+
     [self.topBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.offset(50);
     }];
-    
+
     [self.cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.topBgView);
         make.right.equalTo(self.topBgView).offset(-10);
         make.height.offset(24);
     }];
-    
+
     [self.bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self.view);
         if (@available(iOS 11.0, *)) {
@@ -75,13 +75,13 @@
             make.height.offset(50);
         }
     }];
-    
+
     [self.fullButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.bottomBgView).offset(10);
         make.left.equalTo(self.bottomBgView).offset(10);
         make.height.offset(25);
     }];
-    
+
     [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.bottomBgView).offset(10);
         make.right.equalTo(self.bottomBgView).offset(-10);

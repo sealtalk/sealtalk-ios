@@ -14,7 +14,8 @@
 #import "RCDCommonString.h"
 
 #define RCDChatBackgroundCellID @"RCDChatBackgroundCellIdentifier"
-@interface RCDChatBackgroundViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface RCDChatBackgroundViewController () <UICollectionViewDelegate, UICollectionViewDataSource,
+                                               UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *albumSelectLabel;
@@ -32,7 +33,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setupData];
     [self setupSubviews];
 }
@@ -46,18 +47,26 @@
 
 #pragma mark - Private Method
 - (void)setupData {
-    self.dataArray = @[@"chat_bg_select_0", @"chat_bg_select_1", @"chat_bg_select_2", @"chat_bg_select_3", @"chat_bg_select_4", @"chat_bg_select_5"];
-    self.imageDetailArray = @[@"chat_bg_select_0", @"chat_bg_1", @"chat_bg_2", @"chat_bg_3", @"chat_bg_4", @"chat_bg_5"];
+    self.dataArray = @[
+        @"chat_bg_select_0",
+        @"chat_bg_select_1",
+        @"chat_bg_select_2",
+        @"chat_bg_select_3",
+        @"chat_bg_select_4",
+        @"chat_bg_select_5"
+    ];
+    self.imageDetailArray =
+        @[ @"chat_bg_select_0", @"chat_bg_1", @"chat_bg_2", @"chat_bg_3", @"chat_bg_4", @"chat_bg_5" ];
 }
 
 - (void)setupSubviews {
     self.view.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
-    
+
     [self.view addSubview:self.headerView];
     [self.view addSubview:self.bgCollectionView];
     [self.headerView addSubview:self.albumSelectLabel];
     [self.headerView addSubview:self.arrowImageView];
-    
+
     [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
         make.top.equalTo(self.view).offset(15);
@@ -93,7 +102,8 @@
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *imageName = self.imageDetailArray[indexPath.item];
-    RCDChatBgDetailViewController *detailVC = [[RCDChatBgDetailViewController alloc] initWithChatBgDetailType:RCDChatBgDetailTypeDefault imageName:imageName];
+    RCDChatBgDetailViewController *detailVC =
+        [[RCDChatBgDetailViewController alloc] initWithChatBgDetailType:RCDChatBgDetailTypeDefault imageName:imageName];
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 
@@ -102,8 +112,10 @@
     return self.dataArray.count;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    RCDChatBackgroundCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:RCDChatBackgroundCellID forIndexPath:indexPath];
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    RCDChatBackgroundCell *cell =
+        [collectionView dequeueReusableCellWithReuseIdentifier:RCDChatBackgroundCellID forIndexPath:indexPath];
     if (!cell) {
         cell = [[RCDChatBackgroundCell alloc] init];
     }
@@ -124,7 +136,8 @@
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
     if ([mediaType isEqual:@"public.image"]) {
         UIImage *originImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-        RCDChatBgDetailViewController *detailVC = [[RCDChatBgDetailViewController alloc] initWithChatBgDetailType:RCDChatBgDetailTypeAlbum image:originImage];
+        RCDChatBgDetailViewController *detailVC =
+            [[RCDChatBgDetailViewController alloc] initWithChatBgDetailType:RCDChatBgDetailTypeAlbum image:originImage];
         [self.navigationController pushViewController:detailVC animated:YES];
     }
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -163,22 +176,23 @@
     if (!_bgCollectionView) {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         CGFloat widthScale = RCDScreenWidth / 375;
-//        if (widthScale > 1) {
-//            widthScale = 1;
-//        }
+        //        if (widthScale > 1) {
+        //            widthScale = 1;
+        //        }
         flowLayout.itemSize = CGSizeMake(114 * widthScale, 152 * widthScale);
         flowLayout.minimumLineSpacing = 6.5;
         CGFloat space = (RCDScreenWidth - 114 * widthScale * 3 - 7) / 4 / 2;
         flowLayout.minimumInteritemSpacing = space;
         flowLayout.sectionInset = UIEdgeInsetsMake(0, space, 15.0, space);
         [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-        
+
         _bgCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
         _bgCollectionView.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
         _bgCollectionView.delegate = self;
         _bgCollectionView.dataSource = self;
         _bgCollectionView.scrollEnabled = YES;
-        [_bgCollectionView registerClass:[RCDChatBackgroundCell class] forCellWithReuseIdentifier:RCDChatBackgroundCellID];
+        [_bgCollectionView registerClass:[RCDChatBackgroundCell class]
+              forCellWithReuseIdentifier:RCDChatBackgroundCellID];
     }
     return _bgCollectionView;
 }

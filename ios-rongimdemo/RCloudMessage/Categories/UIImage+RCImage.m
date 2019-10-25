@@ -42,7 +42,7 @@
         imageOrientation:(UIImageOrientation)imageOrientation {
     CGImageRef subImageRef = CGImageCreateWithImageInRect(originImage.CGImage, rect);
     CGRect smallBounds = CGRectMake(0, 0, CGImageGetWidth(subImageRef), CGImageGetHeight(subImageRef));
-    
+
     UIGraphicsBeginImageContext(smallBounds.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextDrawImage(context, smallBounds, subImageRef);
@@ -51,7 +51,6 @@
     UIGraphicsEndImageContext();
     return smallImage;
 }
-
 
 + (UIImage *)scaleImage:(UIImage *)Image toScale:(float)scaleSize {
     UIGraphicsBeginImageContext(CGSizeMake(Image.size.width * scaleSize, Image.size.height * scaleSize));

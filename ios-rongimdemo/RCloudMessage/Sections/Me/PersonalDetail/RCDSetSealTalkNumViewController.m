@@ -17,7 +17,7 @@
 #import "UIView+MBProgressHUD.h"
 #import "NormalAlertView.h"
 #import "RCDUIBarButtonItem.h"
-@interface RCDSetSealTalkNumViewController ()<UITextFieldDelegate>
+@interface RCDSetSealTalkNumViewController () <UITextFieldDelegate>
 
 @property (nonatomic, strong) UIView *portraitBgView;
 @property (nonatomic, strong) UIImageView *portraitImageView;
@@ -33,15 +33,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self setNavi];
     [self setupUI];
     [self setupUserInfo];
 }
 
 #pragma mark - UITextFieldDelegate
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if (string.length == 0 ||[RCDUtilities judgeSealTalkAccount:string]) {
+- (BOOL)textField:(UITextField *)textField
+    shouldChangeCharactersInRange:(NSRange)range
+                replacementString:(NSString *)string {
+    if (string.length == 0 || [RCDUtilities judgeSealTalkAccount:string]) {
         return YES;
     } else {
         return NO;
@@ -71,15 +73,23 @@
 - (void)save {
     [self.textField resignFirstResponder];
     NSString *sealTalkAccount = self.textField.text;
-    
+
     if (![self judgeSealTalkAccount:sealTalkAccount]) {
         [self showAlert:RCDLocalizedString(@"STAccountInvalidFormat")];
         return;
     }
-    
-    [NormalAlertView showAlertWithTitle:RCDLocalizedString(@"MakeSureSetStAccount") message:[NSString stringWithFormat:RCDLocalizedString(@"SetStAccountHint"), sealTalkAccount] highlightText:sealTalkAccount describeTitle:nil leftTitle:RCDLocalizedString(@"cancel") rightTitle:RCDLocalizedString(@"confirm") cancel:nil confirm:^{
-        [self setSTAccount:sealTalkAccount];
-    }];
+
+    [NormalAlertView
+        showAlertWithTitle:RCDLocalizedString(@"MakeSureSetStAccount")
+                   message:[NSString stringWithFormat:RCDLocalizedString(@"SetStAccountHint"), sealTalkAccount]
+             highlightText:sealTalkAccount
+             describeTitle:nil
+                 leftTitle:RCDLocalizedString(@"cancel")
+                rightTitle:RCDLocalizedString(@"confirm")
+                    cancel:nil
+                   confirm:^{
+                       [self setSTAccount:sealTalkAccount];
+                   }];
 }
 
 - (void)tapAction {
@@ -89,16 +99,21 @@
 #pragma mark - Private Method
 - (void)setNavi {
     self.title = RCDLocalizedString(@"SetSealTalkNumber");
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"save") style:UIBarButtonItemStylePlain target:self action:@selector(save)];
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"save")
+                                                                           style:UIBarButtonItemStylePlain
+                                                                          target:self
+                                                                          action:@selector(save)];
     [rightBarButtonItem setTintColor:[RCIM sharedRCIM].globalNavigationBarTintColor];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     self.navigationItem.rightBarButtonItem.enabled = NO;
-    
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
-- (void)clickBackBtn{
+- (void)clickBackBtn {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -106,7 +121,7 @@
     self.view.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
     [self.view addGestureRecognizer:tap];
-    
+
     [self.view addSubview:self.portraitBgView];
     [self.view addSubview:self.numberBgView];
     [self.portraitBgView addSubview:self.portraitImageView];
@@ -114,45 +129,45 @@
     [self.numberBgView addSubview:self.sealTalkNumLabel];
     [self.numberBgView addSubview:self.textField];
     [self.view addSubview:self.hintLabel];
-    
+
     [self.portraitBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.equalTo(@79);
     }];
-    
+
     [self.portraitImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.portraitBgView);
         make.left.equalTo(self.portraitBgView).offset(8);
         make.height.width.equalTo(@59);
     }];
-    
+
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.portraitImageView.mas_right).offset(12);
         make.centerY.equalTo(self.portraitImageView);
         make.right.equalTo(self.portraitBgView).offset(-8);
         make.height.equalTo(@23);
     }];
-    
+
     [self.numberBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
         make.top.equalTo(self.portraitBgView.mas_bottom).offset(13.5);
         make.height.equalTo(@40);
     }];
-    
+
     [self.sealTalkNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.numberBgView).offset(8);
         make.centerY.equalTo(self.numberBgView);
         make.width.equalTo(@79);
         make.height.equalTo(@21);
     }];
-    
+
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.sealTalkNumLabel.mas_right).offset(8);
         make.right.equalTo(self.numberBgView).offset(-8);
         make.centerY.equalTo(self.sealTalkNumLabel);
         make.height.equalTo(self.numberBgView);
     }];
-    
+
     [self.hintLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view).inset(9);
         make.top.equalTo(self.numberBgView.mas_bottom).offset(5);
@@ -175,28 +190,34 @@
 }
 
 - (void)setSTAccount:(NSString *)account {
-    [RCDUserInfoManager setSTAccount:account complete:^(BOOL success) {
-        if (success) {
-            rcd_dispatch_main_async_safe(^{
-                [DEFAULTS setObject:account forKey:RCDSealTalkNumberKey];
-                [self.view showHUDMessage:RCDLocalizedString(@"setting_success")];
-                [self.navigationController popViewControllerAnimated:YES];
-            });
-        }
-    } error:^(RCDUserErrorCode errorCode) {
-        rcd_dispatch_main_async_safe(^{
-            if (errorCode == RCDUserErrorCodeStAccountIsExist) {
-                [self showAlert:RCDLocalizedString(@"STAccountIsExist")];
-            } else if (errorCode == RCDUserErrorCodeInvalidFormat) {
-                [self showAlert:RCDLocalizedString(@"STAccountInvalidFormat")];
+    [RCDUserInfoManager setSTAccount:account
+        complete:^(BOOL success) {
+            if (success) {
+                rcd_dispatch_main_async_safe(^{
+                    [DEFAULTS setObject:account forKey:RCDSealTalkNumberKey];
+                    [self.view showHUDMessage:RCDLocalizedString(@"setting_success")];
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
             }
-        });
-    }];
+        }
+        error:^(RCDUserErrorCode errorCode) {
+            rcd_dispatch_main_async_safe(^{
+                if (errorCode == RCDUserErrorCodeStAccountIsExist) {
+                    [self showAlert:RCDLocalizedString(@"STAccountIsExist")];
+                } else if (errorCode == RCDUserErrorCodeInvalidFormat) {
+                    [self showAlert:RCDLocalizedString(@"STAccountInvalidFormat")];
+                }
+            });
+        }];
 }
 
 - (void)showAlert:(NSString *)alertContent {
-    [NormalAlertView showAlertWithTitle:RCDLocalizedString(@"SetStAccountFailure") message:alertContent describeTitle:nil confirmTitle:RCDLocalizedString(@"confirm") confirm:^{
-    }];
+    [NormalAlertView showAlertWithTitle:RCDLocalizedString(@"SetStAccountFailure")
+                                message:alertContent
+                          describeTitle:nil
+                           confirmTitle:RCDLocalizedString(@"confirm")
+                                confirm:^{
+                                }];
 }
 
 #pragma mark - Getter && Setter
@@ -258,10 +279,12 @@
         _textField.adjustsFontSizeToFitWidth = YES;
         _textField.delegate = self;
         [_textField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:_textField.placeholder attributes:
-        @{NSForegroundColorAttributeName:HEXCOLOR(0x999999),
-                     NSFontAttributeName:_textField.font
-             }];
+        NSAttributedString *attrString =
+            [[NSAttributedString alloc] initWithString:_textField.placeholder
+                                            attributes:@{
+                                                NSForegroundColorAttributeName : HEXCOLOR(0x999999),
+                                                NSFontAttributeName : _textField.font
+                                            }];
         _textField.attributedPlaceholder = attrString;
     }
     return _textField;

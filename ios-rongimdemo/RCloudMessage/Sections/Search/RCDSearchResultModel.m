@@ -17,8 +17,7 @@
     messegeModel.targetId = message.targetId;
     messegeModel.time = message.sentTime;
     messegeModel.objectName = message.objectName;
-    
-    
+
     if (message.conversationType == ConversationType_GROUP) {
         RCUserInfo *user = [RCDUserInfoManager getUserInfo:message.senderUserId];
         messegeModel.name = user.name;
@@ -28,7 +27,7 @@
         messegeModel.name = user.name;
         messegeModel.portraitUri = user.portraitUri;
     }
-    
+
     NSString *string = nil;
     if ([message.content isKindOfClass:[RCRichContentMessage class]]) {
         RCRichContentMessage *rich = (RCRichContentMessage *)message.content;
@@ -39,7 +38,7 @@
     } else {
         string = [RCKitUtility formatMessage:message.content];
     }
-    
+
     messegeModel.otherInformation = string;
     return messegeModel;
 }

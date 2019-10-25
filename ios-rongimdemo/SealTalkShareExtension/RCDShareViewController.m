@@ -11,15 +11,14 @@
 #import "TFHpple.h"
 #define RCDLocalizedString(key) NSLocalizedStringFromTable(key, @"SealTalk", nil)
 
-
 @interface RCDShareViewController ()
-@property(nonatomic, copy) NSString *titleString;
-@property(nonatomic, copy) NSString *contentString;
-@property(nonatomic, copy) NSString *imageString;
-@property(nonatomic, copy) NSString *url;
+@property (nonatomic, copy) NSString *titleString;
+@property (nonatomic, copy) NSString *contentString;
+@property (nonatomic, copy) NSString *imageString;
+@property (nonatomic, copy) NSString *url;
 
-@property(nonatomic, assign) BOOL isLogin;
-@property(nonatomic, assign) BOOL canShare;
+@property (nonatomic, assign) BOOL isLogin;
+@property (nonatomic, assign) BOOL canShare;
 @end
 
 @implementation RCDShareViewController
@@ -33,25 +32,24 @@
     } else {
         self.isLogin = YES;
     }
-    
+
     NSExtensionItem *extensionItem = self.extensionContext.inputItems.firstObject;
     for (NSItemProvider *itemProvider in extensionItem.attachments) {
         if (![itemProvider hasItemConformingToTypeIdentifier:@"public.url"]) {
             self.canShare = NO;
         } else {
-            [itemProvider
-             loadItemForTypeIdentifier:@"public.url"
-             options:nil
-             completionHandler:^(NSURL *url, NSError *error) {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     if ([url.absoluteString.lowercaseString hasPrefix:@"http"] ) {
-                         self.canShare = YES;
-                     }else{
-                         self.canShare = NO;
-                     }
-                     
-                 });
-             }];
+            [itemProvider loadItemForTypeIdentifier:@"public.url"
+                                            options:nil
+                                  completionHandler:^(NSURL *url, NSError *error) {
+                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                          if ([url.absoluteString.lowercaseString hasPrefix:@"http"]) {
+                                              self.canShare = YES;
+                                          } else {
+                                              self.canShare = NO;
+                                          }
+
+                                      });
+                                  }];
         }
     }
 }
@@ -79,99 +77,94 @@
 
 - (NSArray *)configurationItems {
     SLComposeSheetConfigurationItem *item = [[SLComposeSheetConfigurationItem alloc] init];
-    
+
     if (self.isLogin) {
         //不支持此类型的分享
         if (!self.canShare) {
-            item.title = RCDLocalizedString(@"i_know_it")
-;
+            item.title = RCDLocalizedString(@"i_know_it");
             __weak typeof(self) weakSelf = self;
-            self.textView.text = RCDLocalizedString(@"support_share")
-;
+            self.textView.text = RCDLocalizedString(@"support_share");
             self.textView.textAlignment = NSTextAlignmentCenter;
             item.tapHandler = ^{
                 [weakSelf.extensionContext completeRequestReturningItems:@[] completionHandler:nil];
             };
             return @[ item ];
         }
-        
-        item.title = RCDLocalizedString(@"share_to_friend")
-;
+
+        item.title = RCDLocalizedString(@"share_to_friend");
         __weak typeof(self) weakSelf = self;
         item.tapHandler = ^{
             RCDShareChatListController *tableView = [[RCDShareChatListController alloc] init];
             NSExtensionItem *imageItem = weakSelf.extensionContext.inputItems.firstObject;
             for (NSItemProvider *imageItemProvider in imageItem.attachments) {
-                
+
                 if ([imageItemProvider hasItemConformingToTypeIdentifier:@"public.url"]) {
                     [imageItemProvider
-                     loadItemForTypeIdentifier:@"public.url"
-                     options:nil
-                     completionHandler:^(NSURL *url, NSError *error) {
-                         //           __strong typeof(weakSelf) weakSelf = weakSelf;
-                         weakSelf.url = url.absoluteString;
-                         NSData *data = [NSData dataWithContentsOfURL:url];
-                         TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:data];
-                         
-                         if (weakSelf.contentText.length > 0) {
-                             weakSelf.titleString = weakSelf.contentText;
-                         } else {
-                             NSArray *titleElements = [xpathParser searchWithXPathQuery:@"//title"];
-                             if (titleElements.count > 0) {
-                                 TFHppleElement *element = [titleElements objectAtIndex:0];
-                                 weakSelf.titleString = element.content;
-                             }
-                         }
-                         
-                         NSArray *contentElements = [xpathParser searchWithXPathQuery:@"//meta"];
-                         if (contentElements.count > 0) {
-                             for (TFHppleElement *element in contentElements) {
-                                 if ([[element objectForKey:@"name"] isEqualToString:@"description"]) {
-                                     weakSelf.contentString = [element objectForKey:@"content"];
-                                     break;
-                                 } else {
-                                     weakSelf.contentString = url.absoluteString;
-                                 }
-                             }
-                         } else {
-                             weakSelf.contentString = url.absoluteString;
-                         }
-                         
-                         NSArray *imageElements = [xpathParser searchWithXPathQuery:@"//img"];
-                         if (imageElements && contentElements.count > 0) {
-                             for (TFHppleElement *element in imageElements) {
-                                 NSString *string = [element objectForKey:@"src"];
-                                 if ([string hasPrefix:@"http"]) {
-                                     weakSelf.imageString = string;
-                                     break;
-                                 }
-                             }
-                         }
-                         
-                         if (!weakSelf.imageString) {
-                             weakSelf.imageString = @"";
-                         }
-                         tableView.titleString = weakSelf.titleString;
-                         tableView.contentString = weakSelf.contentString;
-                         tableView.url = weakSelf.url;
-                         tableView.imageString = weakSelf.imageString;
-                         [tableView enableSendMessage:YES];
-                         
-                     }];
+                        loadItemForTypeIdentifier:@"public.url"
+                                          options:nil
+                                completionHandler:^(NSURL *url, NSError *error) {
+                                    //           __strong typeof(weakSelf) weakSelf = weakSelf;
+                                    weakSelf.url = url.absoluteString;
+                                    NSData *data = [NSData dataWithContentsOfURL:url];
+                                    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:data];
+
+                                    if (weakSelf.contentText.length > 0) {
+                                        weakSelf.titleString = weakSelf.contentText;
+                                    } else {
+                                        NSArray *titleElements = [xpathParser searchWithXPathQuery:@"//title"];
+                                        if (titleElements.count > 0) {
+                                            TFHppleElement *element = [titleElements objectAtIndex:0];
+                                            weakSelf.titleString = element.content;
+                                        }
+                                    }
+
+                                    NSArray *contentElements = [xpathParser searchWithXPathQuery:@"//meta"];
+                                    if (contentElements.count > 0) {
+                                        for (TFHppleElement *element in contentElements) {
+                                            if ([[element objectForKey:@"name"] isEqualToString:@"description"]) {
+                                                weakSelf.contentString = [element objectForKey:@"content"];
+                                                break;
+                                            } else {
+                                                weakSelf.contentString = url.absoluteString;
+                                            }
+                                        }
+                                    } else {
+                                        weakSelf.contentString = url.absoluteString;
+                                    }
+
+                                    NSArray *imageElements = [xpathParser searchWithXPathQuery:@"//img"];
+                                    if (imageElements && contentElements.count > 0) {
+                                        for (TFHppleElement *element in imageElements) {
+                                            NSString *string = [element objectForKey:@"src"];
+                                            if ([string hasPrefix:@"http"]) {
+                                                weakSelf.imageString = string;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    if (!weakSelf.imageString) {
+                                        weakSelf.imageString = @"";
+                                    }
+                                    tableView.titleString = weakSelf.titleString;
+                                    tableView.contentString = weakSelf.contentString;
+                                    tableView.url = weakSelf.url;
+                                    tableView.imageString = weakSelf.imageString;
+                                    [tableView enableSendMessage:YES];
+
+                                }];
                     break;
                 }
             }
             [weakSelf pushConfigurationViewController:tableView];
-            
+
         };
-        
-    }else{
-        item.title = RCDLocalizedString(@"i_know_it")
-;
+
+    } else {
+        item.title = RCDLocalizedString(@"i_know_it");
         __weak typeof(self) weakSelf = self;
-        
-        self.textView.text = RCDLocalizedString(@"use_share_must_open_sealtalk")
-;
+
+        self.textView.text = RCDLocalizedString(@"use_share_must_open_sealtalk");
         self.textView.textAlignment = NSTextAlignmentCenter;
         item.tapHandler = ^{
             [weakSelf.extensionContext completeRequestReturningItems:@[] completionHandler:nil];
@@ -191,7 +184,7 @@
     [super didSelectCancel];
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)textView{
+- (void)textViewDidBeginEditing:(UITextView *)textView {
     if (!(self.isLogin && self.canShare)) {
         [textView resignFirstResponder];
         textView.userInteractionEnabled = NO;

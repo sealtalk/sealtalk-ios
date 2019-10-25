@@ -43,105 +43,105 @@ static AFHTTPSessionManager *manager;
                      response:(void (^)(RCDHTTPResult *))responseBlock {
     AFHTTPSessionManager *manager = [RCDHTTPUtility sharedHTTPManager];
     NSString *url = [BASE_URL stringByAppendingPathComponent:URLString];
-    
+
     switch (method) {
-        case HTTPMethodGet: {
-            [manager GET:url
-              parameters:parameters
-                progress:nil
-                 success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
-                     if (responseBlock) {
-                         responseBlock([[self class] httpSuccessResult:task response:responseObject]);
-                     }
-                 }
-                 failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
-                     NSLog(@"GET url is %@, error is %@", URLString, error.localizedDescription);
-                     if (responseBlock) {
-                         responseBlock([[self class] httpFailureResult:task]);
-                     }
-                 }];
-            break;
-        }
-            
-        case HTTPMethodHead: {
-            [manager HEAD:url
-               parameters:parameters
-                  success:^(NSURLSessionDataTask *_Nonnull task) {
-                      if (responseBlock) {
-                          responseBlock([[self class] httpSuccessResult:task response:nil]);
-                      }
-                  }
-                  failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
-                      NSLog(@"HEAD url is %@, error is %@", URLString, error.localizedDescription);
-                      if (responseBlock) {
-                          responseBlock([[self class] httpFailureResult:task]);
-                      }
-                  }];
-            break;
-        }
-            
-        case HTTPMethodPost: {
-            [manager POST:url
-               parameters:parameters
-                 progress:nil
-                  success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
-                      [self saveCookieIfHave:task];
-                      if (responseBlock) {
-                          responseBlock([[self class] httpSuccessResult:task response:responseObject]);
-                      }
-                  }
-                  failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
-                      NSLog(@"POST url is %@, error is %@", URLString, error.localizedDescription);
-                      if (responseBlock) {
-                          responseBlock([[self class] httpFailureResult:task]);
-                      }
-                  }];
-            break;
-        }
-            
-        case HTTPMethodPut: {
-            [manager PUT:url
-              parameters:parameters
-                 success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
-                     if (responseBlock) {
-                         responseBlock([[self class] httpSuccessResult:task response:responseObject]);
-                     }
-                 }
-                 failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
-                     NSLog(@"PUT url is %@, error is %@", URLString, error.localizedDescription);
-                     if (responseBlock) {
-                         responseBlock([[self class] httpFailureResult:task]);
-                     }
-                 }];
-            break;
-        }
-            
-        case HTTPMethodDelete: {
-            [manager DELETE:url
-                 parameters:parameters
-                    success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
-                        if (responseBlock) {
-                            responseBlock([[self class] httpSuccessResult:task response:responseObject]);
-                        }
-                    }
-                    failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
-                        NSLog(@"DELETE url is %@, error is %@", URLString, error.localizedDescription);
-                        if (responseBlock) {
-                            responseBlock([[self class] httpFailureResult:task]);
-                        }
-                    }];
-            break;
-        }
-            
-        default:
-            break;
+    case HTTPMethodGet: {
+        [manager GET:url
+            parameters:parameters
+            progress:nil
+            success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
+                if (responseBlock) {
+                    responseBlock([[self class] httpSuccessResult:task response:responseObject]);
+                }
+            }
+            failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
+                NSLog(@"GET url is %@, error is %@", URLString, error.localizedDescription);
+                if (responseBlock) {
+                    responseBlock([[self class] httpFailureResult:task]);
+                }
+            }];
+        break;
+    }
+
+    case HTTPMethodHead: {
+        [manager HEAD:url
+            parameters:parameters
+            success:^(NSURLSessionDataTask *_Nonnull task) {
+                if (responseBlock) {
+                    responseBlock([[self class] httpSuccessResult:task response:nil]);
+                }
+            }
+            failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
+                NSLog(@"HEAD url is %@, error is %@", URLString, error.localizedDescription);
+                if (responseBlock) {
+                    responseBlock([[self class] httpFailureResult:task]);
+                }
+            }];
+        break;
+    }
+
+    case HTTPMethodPost: {
+        [manager POST:url
+            parameters:parameters
+            progress:nil
+            success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
+                [self saveCookieIfHave:task];
+                if (responseBlock) {
+                    responseBlock([[self class] httpSuccessResult:task response:responseObject]);
+                }
+            }
+            failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
+                NSLog(@"POST url is %@, error is %@", URLString, error.localizedDescription);
+                if (responseBlock) {
+                    responseBlock([[self class] httpFailureResult:task]);
+                }
+            }];
+        break;
+    }
+
+    case HTTPMethodPut: {
+        [manager PUT:url
+            parameters:parameters
+            success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
+                if (responseBlock) {
+                    responseBlock([[self class] httpSuccessResult:task response:responseObject]);
+                }
+            }
+            failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
+                NSLog(@"PUT url is %@, error is %@", URLString, error.localizedDescription);
+                if (responseBlock) {
+                    responseBlock([[self class] httpFailureResult:task]);
+                }
+            }];
+        break;
+    }
+
+    case HTTPMethodDelete: {
+        [manager DELETE:url
+            parameters:parameters
+            success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
+                if (responseBlock) {
+                    responseBlock([[self class] httpSuccessResult:task response:responseObject]);
+                }
+            }
+            failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
+                NSLog(@"DELETE url is %@, error is %@", URLString, error.localizedDescription);
+                if (responseBlock) {
+                    responseBlock([[self class] httpFailureResult:task]);
+                }
+            }];
+        break;
+    }
+
+    default:
+        break;
     }
 }
 
 + (RCDHTTPResult *)httpSuccessResult:(NSURLSessionDataTask *)task response:(id)responseObject {
     RCDHTTPResult *result = [[RCDHTTPResult alloc] init];
     result.httpCode = ((NSHTTPURLResponse *)task.response).statusCode;
-    
+
     if ([responseObject isKindOfClass:[NSDictionary class]]) {
         result.errorCode = [responseObject[@"code"] integerValue];
         result.content = responseObject[@"result"];
@@ -152,7 +152,7 @@ static AFHTTPSessionManager *manager;
     } else {
         result.success = NO;
     }
-    
+
     return result;
 }
 
