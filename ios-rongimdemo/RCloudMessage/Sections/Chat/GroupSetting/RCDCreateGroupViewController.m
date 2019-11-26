@@ -7,7 +7,6 @@
 //
 
 #import "RCDCreateGroupViewController.h"
-#import "DefaultPortraitView.h"
 #import "UIView+MBProgressHUD.h"
 #import "RCDChatViewController.h"
 #import "UIColor+RCColor.h"

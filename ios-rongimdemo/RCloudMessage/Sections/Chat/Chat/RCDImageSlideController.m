@@ -42,6 +42,9 @@
     if (press.state == UIGestureRecognizerStateEnded) {
         return;
     } else if (press.state == UIGestureRecognizerStateBegan) {
+        if (![self getCurrentPreviewImageData]) {
+            return;
+        }
         UIAlertController *alertController =
             [UIAlertController alertControllerWithTitle:nil
                                                 message:nil

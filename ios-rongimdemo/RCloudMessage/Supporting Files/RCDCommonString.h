@@ -25,6 +25,7 @@ NSString *const RCDCurrentCountryKey = @"currentCountry";
 NSString *const RCDStayAfterJoinChatRoomFailedKey = @"stayAfterJoinChatRoomFailed";
 NSString *const RCDDebugDataStatisticsKey = @"RCDDebugDataStatistics";
 NSString *const RCDDebugBurnMessageKey = @"RCDDebugBurnMessage";
+NSString *const RCDDebugSendCombineMessageKey = @"RCDDebugSendCombineMessage";
 NSString *const RCDUserCookiesKey = @"UserCookies";
 NSString *const RCDDisplayOnlineStatusKey = @"isDisplayOnlineStatus";
 NSString *const RCDCookieKey = @"Cookie";

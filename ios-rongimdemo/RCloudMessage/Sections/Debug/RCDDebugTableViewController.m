@@ -13,6 +13,7 @@
 #import <SSZipArchive/SSZipArchive.h>
 #import "RCDCommonString.h"
 #import <GCDWebServer/GCDWebUploader.h>
+#import "RCDDebugJoinChatroomViewController.h"
 #import "RCDDataStatistics.h"
 
 #define DISPLAY_ID_TAG 100
@@ -20,6 +21,7 @@
 #define JOIN_CHATROOM_TAG 102
 #define DATA_STATISTICS_TAG 103
 #define BURN_MESSAGE_TAG 104
+#define SEND_COMBINE_MESSAGE_TAG 105
 
 #define FILEMANAGER [NSFileManager defaultManager]
 
@@ -106,6 +108,9 @@
     if ([title isEqualToString:@"阅后即焚"]) {
         [self setSwitchButtonCell:cell tag:BURN_MESSAGE_TAG];
     }
+    if ([title isEqualToString:@"合并转发"]) {
+        [self setSwitchButtonCell:cell tag:SEND_COMBINE_MESSAGE_TAG];
+    }
     if ([title isEqualToString:RCDLocalizedString(@"Set_offline_message_compensation_time")] ||
         [title isEqualToString:RCDLocalizedString(@"Set_global_DND_time")]) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -114,43 +119,20 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.section) {
-    // section1
-    case 1:
-        switch (indexPath.row) {
-        case 0: {
-            [self doCrash];
-        } break;
-
-        case 1: {
-            [self copyAndSendFiles];
-        } break;
-        case 2: {
-            [self startHttpServer];
-        }
-        default:
-            break;
-        }
-        break;
-
-    // section 2
-    case 2: {
-        switch (indexPath.row) {
-        case 0:
-            [self pushToDebugVC];
-            break;
-
-        case 1:
-            [self pushToNoDisturbVC];
-            break;
-
-        default:
-            break;
-        }
-    } break;
-
-    default:
-        break;
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSString *title = cell.textLabel.text;
+    if ([title isEqualToString:RCDLocalizedString(@"force_crash")]) {
+        [self doCrash];
+    } else if ([title isEqualToString:RCDLocalizedString(@"send_log")]) {
+        [self copyAndSendFiles];
+    } else if ([title isEqualToString:@"显示沙盒内容"]) {
+        [self startHttpServer];
+    } else if ([title isEqualToString:RCDLocalizedString(@"Set_offline_message_compensation_time")]) {
+        [self pushToDebugVC];
+    } else if ([title isEqualToString:RCDLocalizedString(@"Set_global_DND_time")]) {
+        [self pushToNoDisturbVC];
+    } else if ([title isEqualToString:@"进入聊天室存储测试"]) {
+        [self pushToChatroomStatusVC];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -169,9 +151,10 @@
         RCDLocalizedString(@"Joining_the_chat_room_failed_to_stay_in_the_session_interface"),
         @"打开性能数据统计",
         @"阅后即焚",
+        @"合并转发",
     ]
             forKey:RCDLocalizedString(@"custom_setting")];
-
+    //    [dic setObject:@[ @"进入聊天室存储测试" ] forKey:@"聊天室测试"];
     [dic setObject:@[
         RCDLocalizedString(@"Set_offline_message_compensation_time"),
         RCDLocalizedString(@"Set_global_DND_time")
@@ -227,6 +210,9 @@
     case BURN_MESSAGE_TAG: {
         isButtonOn = [DEFAULTS boolForKey:RCDDebugBurnMessageKey];
     } break;
+    case SEND_COMBINE_MESSAGE_TAG: {
+        isButtonOn = [DEFAULTS boolForKey:RCDDebugSendCombineMessageKey];
+    } break;
     default:
         break;
     }
@@ -278,6 +264,11 @@
         [DEFAULTS synchronize];
         [RCIM sharedRCIM].enableBurnMessage = isButtonOn;
     } break;
+    case SEND_COMBINE_MESSAGE_TAG: {
+        [DEFAULTS setBool:isButtonOn forKey:RCDDebugSendCombineMessageKey];
+        [DEFAULTS synchronize];
+        [RCIM sharedRCIM].enableSendCombineMessage = isButtonOn;
+    } break;
     default:
         break;
     }
@@ -327,6 +318,12 @@
         [alert show];
         NSLog(@"web uploader host:%@ port:%@", host, @(self.webUploader.port));
     }
+}
+
+- (void)pushToChatroomStatusVC {
+    RCDDebugJoinChatroomViewController *vc = [[RCDDebugJoinChatroomViewController alloc] init];
+    vc.title = @"加入聊天室";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /**

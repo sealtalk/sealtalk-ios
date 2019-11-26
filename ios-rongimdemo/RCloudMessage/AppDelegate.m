@@ -99,8 +99,6 @@
     [RCContactCardKit shareInstance].groupDataSource = RCDDataSource;
     [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
     [RCIM sharedRCIM].enableTypingStatus = YES;
-    [RCIM sharedRCIM].enabledReadReceiptConversationTypeList =
-        @[ @(ConversationType_PRIVATE), @(ConversationType_GROUP) ];
     [RCIM sharedRCIM].enableSyncReadStatus = YES;
     [RCIM sharedRCIM].showUnkownMessage = YES;
     [RCIM sharedRCIM].showUnkownMessageNotificaiton = YES;
@@ -108,7 +106,7 @@
     [RCIM sharedRCIM].enableMessageRecall = YES;
     [RCIM sharedRCIM].isMediaSelectorContainVideo = YES;
     [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;
-    [RCIM sharedRCIM].enableSendCombineMessage = YES;
+    //    [RCIM sharedRCIM].enableSendCombineMessage = YES;
     //    [RCIM sharedRCIM].enableBurnMessage = YES;
 
     //  设置头像为圆形
@@ -472,13 +470,12 @@
     return YES;
 }
 
-//设置群组通知消息没有提示音
 - (BOOL)onRCIMCustomAlertSound:(RCMessage *)message {
-    //当应用处于前台运行，收到消息不会有提示音。
-    //  if ([message.content isMemberOfClass:[RCGroupNotificationMessage class]]) {
-    return YES;
-    //  }
-    //  return NO;
+    //设置群组通知消息没有提示音
+    //    if ([message.content isMemberOfClass:[RCGroupNotificationMessage class]]) {
+    //        return YES;
+    //    }
+    return NO;
 }
 
 - (void)dealloc {

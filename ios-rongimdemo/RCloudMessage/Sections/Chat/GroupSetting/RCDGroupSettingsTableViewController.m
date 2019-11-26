@@ -8,7 +8,6 @@
 
 #import "RCDGroupSettingsTableViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
-#import "RCDAddFriendViewController.h"
 #import "RCDContactSelectedTableViewController.h"
 #import "RCDEditGroupNameViewController.h"
 #import "RCDGroupAnnouncementViewController.h"
@@ -48,7 +47,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 @property (nonatomic, strong) NSArray *headerDisplayMembers;
 @property (nonatomic, strong) RCDTipFooterView *tipFooterView;
 @property (nonatomic, strong) NSArray *settingTableArr;
-
+@property (nonatomic, strong) UIActivityIndicatorView *clearLoadingView;
 @end
 
 @implementation RCDGroupSettingsTableViewController
@@ -490,26 +489,22 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 - (void)clearHistoryMessage {
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     RCDBaseSettingTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    UIActivityIndicatorView *activityIndicatorView =
-        [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    float cellWidth = cell.bounds.size.width;
-    UIView *loadingView = [[UIView alloc] initWithFrame:CGRectMake(cellWidth - 50, 10, 40, 40)];
-    [loadingView addSubview:activityIndicatorView];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [activityIndicatorView startAnimating];
-        [cell addSubview:loadingView];
-    });
+    [self.clearLoadingView removeFromSuperview];
+    [cell addSubview:self.clearLoadingView];
+    [self.clearLoadingView startAnimating];
     __weak typeof(self) weakSelf = self;
     [[RCDIMService sharedService] clearHistoryMessage:ConversationType_GROUP
         targetId:weakSelf.group.groupId
         successBlock:^{
             [weakSelf showAlert:RCDLocalizedString(@"clear_chat_history_success")];
-            [loadingView removeFromSuperview];
+            [self.clearLoadingView removeFromSuperview];
+            [self.clearLoadingView stopAnimating];
             weakSelf.clearMessageHistory();
         }
         errorBlock:^(RCErrorCode status) {
             [weakSelf showAlert:RCDLocalizedString(@"clear_chat_history_fail")];
-            [loadingView removeFromSuperview];
+            [self.clearLoadingView removeFromSuperview];
+            [self.clearLoadingView stopAnimating];
         }];
 }
 
@@ -1003,4 +998,13 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     return _tipFooterView;
 }
 
+- (UIActivityIndicatorView *)clearLoadingView {
+    if (!_clearLoadingView) {
+        UIActivityIndicatorView *activityIndicatorView =
+            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        activityIndicatorView.frame = CGRectMake(self.tableView.bounds.size.width - 55, 0, 44, 44);
+        _clearLoadingView = activityIndicatorView;
+    }
+    return _clearLoadingView;
+}
 @end

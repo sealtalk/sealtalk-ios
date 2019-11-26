@@ -126,7 +126,7 @@
         [alert show];
     } else {
         RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
-        addViewController.targetUserInfo = user;
+        addViewController.targetUserId = user.userId;
         [self.navigationController pushViewController:addViewController animated:YES];
     }
 }

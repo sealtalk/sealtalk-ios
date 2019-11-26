@@ -155,9 +155,11 @@
         RCCCUserInfo *contact = [RCCCUserInfo new];
         contact.userId = friend.userId;
         contact.name = friend.name;
+        if (friend.portraitUri.length <= 0) {
+            friend.portraitUri = [RCDUtilities defaultUserPortrait:friend];
+        }
         contact.portraitUri = friend.portraitUri;
-        RCUserInfo *tempContact = [RCDUserInfoManager getFriendInfo:friend.userId];
-        contact.displayName = tempContact.name;
+        contact.displayName = friend.displayName;
         [contacts addObject:contact];
     }
     resultBlock(contacts);

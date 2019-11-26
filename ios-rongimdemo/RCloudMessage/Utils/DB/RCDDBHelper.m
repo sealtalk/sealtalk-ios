@@ -14,14 +14,16 @@ static FMDatabaseQueue *dbQueue;
 @implementation RCDDBHelper
 
 + (BOOL)openDB:(NSString *)path {
-    [self closeDB];
-    if (path.length > 0) {
-        dbQueue =
-            [FMDatabaseQueue databaseQueueWithPath:path
-                                             flags:SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE];
-    }
-    if (dbQueue) {
-        [self configVersion];
+    @synchronized(self) {
+        [self closeDB];
+        if (path.length > 0) {
+            dbQueue = [FMDatabaseQueue
+                databaseQueueWithPath:path
+                                flags:SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE];
+        }
+        if (dbQueue) {
+            [self configVersion];
+        }
     }
     return (dbQueue != nil);
 }

@@ -9,7 +9,6 @@
 #import "RCDGroupMemberCell.h"
 #import <Masonry/Masonry.h>
 #import "RCDUserInfoManager.h"
-#import "DefaultPortraitView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "RCDUtilities.h"
 @interface RCDGroupMemberCell ()

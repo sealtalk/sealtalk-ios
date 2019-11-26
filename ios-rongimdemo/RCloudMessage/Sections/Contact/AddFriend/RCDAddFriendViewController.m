@@ -30,6 +30,7 @@
 
 @property (nonatomic, strong) MBProgressHUD *hud;
 @property (nonatomic, strong) RCDGroupInfo *groupInfo;
+@property (nonatomic, strong) RCDUserInfo *targetUserInfo;
 @end
 
 @implementation RCDAddFriendViewController
@@ -40,7 +41,7 @@
     self.groupInfo = [RCDGroupManager getGroupInfo:self.groupId];
     [self setupNavi];
     [self setupTableView];
-    [self setHeaderData];
+    [self getUserInfo];
     [self setGroupMemberInfo];
     [self updateNameLayout];
 }
@@ -80,7 +81,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCDGroupMemberDetailController *vc = [[RCDGroupMemberDetailController alloc] init];
-    vc.userId = self.targetUserInfo.userId;
+    vc.userId = self.targetUserId;
     vc.groupId = self.groupId;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -133,9 +134,24 @@
     }];
 }
 
+- (void)getUserInfo {
+    self.targetUserInfo = [RCDUserInfoManager getUserInfo:self.targetUserId];
+    if (!self.targetUserInfo) {
+        __weak typeof(self) weakSelf = self;
+        [RCDUserInfoManager getUserInfoFromServer:self.targetUserId
+                                         complete:^(RCDUserInfo *userInfo) {
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 [weakSelf setHeaderData];
+                                             });
+                                         }];
+    } else {
+        [self setHeaderData];
+    }
+}
+
 - (void)setGroupMemberInfo {
     if (self.groupId.length > 0) {
-        RCDGroupMember *member = [RCDGroupManager getGroupMember:self.targetUserInfo.userId groupId:self.groupId];
+        RCDGroupMember *member = [RCDGroupManager getGroupMember:self.targetUserId groupId:self.groupId];
         if (member.groupNickname.length > 0) {
             self.groupNicknameLabel.hidden = NO;
             [self.tableView.tableHeaderView addSubview:self.groupNicknameLabel];
@@ -180,12 +196,13 @@
 
 - (void)setHeaderData {
     self.nameLabel.text = self.targetUserInfo.name;
-    if ([self.targetUserInfo.portraitUri isEqualToString:@""]) {
-        UIImage *portrait = [DefaultPortraitView portraitView:self.targetUserInfo.userId name:self.targetUserInfo.name];
-        self.portraitImgView.image = portrait;
-    } else {
+    if (self.targetUserInfo.portraitUri.length > 0) {
         [self.portraitImgView sd_setImageWithURL:[NSURL URLWithString:self.targetUserInfo.portraitUri]
-                                placeholderImage:[UIImage imageNamed:@"icon_person"]];
+                                placeholderImage:nil];
+    }
+    if (!self.portraitImgView.image) {
+        UIImage *portrait = [DefaultPortraitView portraitView:self.targetUserId name:self.targetUserInfo.name];
+        self.portraitImgView.image = portrait;
     }
     if (self.targetUserInfo.gender.length > 0) {
         self.genderImgView.image =
@@ -247,7 +264,7 @@
     NSMutableArray *cacheList = [[NSMutableArray alloc] initWithArray:[RCDUserInfoManager getAllFriends]];
     BOOL isFriend = NO;
     for (RCDFriendInfo *user in cacheList) {
-        if ([user.userId isEqualToString:self.targetUserInfo.userId]) {
+        if ([user.userId isEqualToString:self.targetUserId]) {
             isFriend = YES;
             break;
         }

@@ -698,7 +698,7 @@
 
 - (void)pushFriendVC:(RCDUserInfo *)user {
     RCDAddFriendViewController *vc = [[RCDAddFriendViewController alloc] init];
-    vc.targetUserInfo = user;
+    vc.targetUserId = user.userId;
     if (self.conversationType == ConversationType_GROUP) {
         vc.groupId = self.targetId;
     }
@@ -819,7 +819,7 @@
 
 - (BOOL)stayAfterJoinChatRoomFailed {
     //加入聊天室失败之后，是否还停留在会话界面
-    return [[DEFAULTS objectForKey:RCDStayAfterJoinChatRoomFailedKey] isEqualToString:@"YES"];
+    return [DEFAULTS boolForKey:RCDStayAfterJoinChatRoomFailedKey];
 }
 
 - (void)alertErrorAndLeft:(NSString *)errorInfo {

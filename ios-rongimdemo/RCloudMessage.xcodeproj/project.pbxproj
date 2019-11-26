@@ -101,9 +101,6 @@
 		3B054E4922F439C6009A3C72 /* RCDSetupRemarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B054E4822F439C6009A3C72 /* RCDSetupRemarkView.m */; };
 		3B054E5722F43C7C009A3C72 /* RCDTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B054E5622F43C7C009A3C72 /* RCDTextView.m */; };
 		3B08F41022E6F90C009EB9E1 /* RCDMyQRCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B08F40F22E6F90C009EB9E1 /* RCDMyQRCodeView.m */; };
-		3B0D3867235EEADC006444F5 /* jrmf_o.cer in Resources */ = {isa = PBXBuildFile; fileRef = 3B0D3859235EEADC006444F5 /* jrmf_o.cer */; };
-		3B0D3868235EEADC006444F5 /* jrmf_n.cer in Resources */ = {isa = PBXBuildFile; fileRef = 3B0D3865235EEADC006444F5 /* jrmf_n.cer */; };
-		3B0D3869235EEADC006444F5 /* jrmf_p.cer in Resources */ = {isa = PBXBuildFile; fileRef = 3B0D3866235EEADC006444F5 /* jrmf_p.cer */; };
 		3B0E2A7522D329C8000E1BE6 /* RCDSettingGenderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E2A7422D329C8000E1BE6 /* RCDSettingGenderViewController.m */; };
 		3B0E2A8522D33307000E1BE6 /* RCDSetSealTalkNumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E2A8422D33307000E1BE6 /* RCDSetSealTalkNumViewController.m */; };
 		3B0E2A9522D48CED000E1BE6 /* RCDAddFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E2A9422D48CED000E1BE6 /* RCDAddFriendListViewController.m */; };
@@ -142,6 +139,9 @@
 		3B4789B222BCE1DB00D33F10 /* RCDForwardSearchMoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B4789B122BCE1DB00D33F10 /* RCDForwardSearchMoreController.m */; };
 		3B7D8F2822326670009E1417 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B7D8F2722326670009E1417 /* Security.framework */; };
 		3B7D8F2B223266B8009E1417 /* RCDBuglyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D8F2A223266B8009E1417 /* RCDBuglyManager.m */; };
+		3B98493E2358184D00E9DCCE /* RCDDebugJoinChatroomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B98493D2358184D00E9DCCE /* RCDDebugJoinChatroomViewController.m */; };
+		3B98494E2358215600E9DCCE /* RCDDebugChatroomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B98494D2358215600E9DCCE /* RCDDebugChatroomViewController.m */; };
+		3B98495C235849C300E9DCCE /* RCDDebugChatRoomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B98495B235849C300E9DCCE /* RCDDebugChatRoomCell.m */; };
 		3BB6CDFD22D723460007FFFB /* RCDUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB6CDFC22D723460007FFFB /* RCDUserInfo.m */; };
 		3BB6CE1A22D743720007FFFB /* RCDContactsInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB6CE0D22D743720007FFFB /* RCDContactsInfo.m */; };
 		3BB6CE1B22D743720007FFFB /* RCDAddressBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB6CE0E22D743720007FFFB /* RCDAddressBookManager.m */; };
@@ -160,6 +160,7 @@
 		3BC0C7E5229E79490079234F /* RCDContactSelectedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0C7D8229E79480079234F /* RCDContactSelectedTableViewController.m */; };
 		3BC0C820229FC1E80079234F /* RCDPersonInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0C81D229FC1E80079234F /* RCDPersonInfoView.m */; };
 		3BC0C821229FC1E80079234F /* RCDRemarksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0C81E229FC1E80079234F /* RCDRemarksView.m */; };
+		3BCA7CA52359536700EBCE54 /* RCDDebugAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BCA7CA42359536600EBCE54 /* RCDDebugAlertView.m */; };
 		3BEB4F7322C380A7003923CC /* RCDContactNotificationMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BEB4F7222C380A7003923CC /* RCDContactNotificationMessage.m */; };
 		466684361B5DF36E000B7504 /* RCDUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684351B5DF36E000B7504 /* RCDUtilities.m */; };
 		6E1C98201F39C90C008F96D8 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1C981F1F39C90C008F96D8 /* libresolv.tbd */; };
@@ -637,9 +638,6 @@
 		3B054E5622F43C7C009A3C72 /* RCDTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDTextView.m; sourceTree = "<group>"; };
 		3B08F40E22E6F90C009EB9E1 /* RCDMyQRCodeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDMyQRCodeView.h; sourceTree = "<group>"; };
 		3B08F40F22E6F90C009EB9E1 /* RCDMyQRCodeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDMyQRCodeView.m; sourceTree = "<group>"; };
-		3B0D3859235EEADC006444F5 /* jrmf_o.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = jrmf_o.cer; path = "../../../ios-3rd-vendor/jrmf/JrmfIMLib/jrmf_o.cer"; sourceTree = "<group>"; };
-		3B0D3865235EEADC006444F5 /* jrmf_n.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = jrmf_n.cer; path = "../../../ios-3rd-vendor/jrmf/JrmfIMLib/jrmf_n.cer"; sourceTree = "<group>"; };
-		3B0D3866235EEADC006444F5 /* jrmf_p.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = jrmf_p.cer; path = "../../../ios-3rd-vendor/jrmf/JrmfIMLib/jrmf_p.cer"; sourceTree = "<group>"; };
 		3B0E2A7322D329C8000E1BE6 /* RCDSettingGenderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDSettingGenderViewController.h; sourceTree = "<group>"; };
 		3B0E2A7422D329C8000E1BE6 /* RCDSettingGenderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDSettingGenderViewController.m; sourceTree = "<group>"; };
 		3B0E2A8322D33307000E1BE6 /* RCDSetSealTalkNumViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDSetSealTalkNumViewController.h; sourceTree = "<group>"; };
@@ -715,6 +713,12 @@
 		3B7D8F2722326670009E1417 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		3B7D8F29223266B8009E1417 /* RCDBuglyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDBuglyManager.h; sourceTree = "<group>"; };
 		3B7D8F2A223266B8009E1417 /* RCDBuglyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDBuglyManager.m; sourceTree = "<group>"; };
+		3B98493C2358184D00E9DCCE /* RCDDebugJoinChatroomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugJoinChatroomViewController.h; sourceTree = "<group>"; };
+		3B98493D2358184D00E9DCCE /* RCDDebugJoinChatroomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugJoinChatroomViewController.m; sourceTree = "<group>"; };
+		3B98494C2358215600E9DCCE /* RCDDebugChatroomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugChatroomViewController.h; sourceTree = "<group>"; };
+		3B98494D2358215600E9DCCE /* RCDDebugChatroomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugChatroomViewController.m; sourceTree = "<group>"; };
+		3B98495A235849C300E9DCCE /* RCDDebugChatRoomCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugChatRoomCell.h; sourceTree = "<group>"; };
+		3B98495B235849C300E9DCCE /* RCDDebugChatRoomCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugChatRoomCell.m; sourceTree = "<group>"; };
 		3BB6CDFB22D723460007FFFB /* RCDUserInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDUserInfo.h; sourceTree = "<group>"; };
 		3BB6CDFC22D723460007FFFB /* RCDUserInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDUserInfo.m; sourceTree = "<group>"; };
 		3BB6CE0B22D743720007FFFB /* RCDAddressBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDAddressBookManager.h; sourceTree = "<group>"; };
@@ -751,6 +755,8 @@
 		3BC0C81D229FC1E80079234F /* RCDPersonInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPersonInfoView.m; sourceTree = "<group>"; };
 		3BC0C81E229FC1E80079234F /* RCDRemarksView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDRemarksView.m; sourceTree = "<group>"; };
 		3BC0C81F229FC1E80079234F /* RCDPersonInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPersonInfoView.h; sourceTree = "<group>"; };
+		3BCA7CA32359536600EBCE54 /* RCDDebugAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugAlertView.h; sourceTree = "<group>"; };
+		3BCA7CA42359536600EBCE54 /* RCDDebugAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugAlertView.m; sourceTree = "<group>"; };
 		3BEB4F7122C380A7003923CC /* RCDContactNotificationMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDContactNotificationMessage.h; sourceTree = "<group>"; };
 		3BEB4F7222C380A7003923CC /* RCDContactNotificationMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDContactNotificationMessage.m; sourceTree = "<group>"; };
 		466684341B5DF36E000B7504 /* RCDUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RCDUtilities.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1289,6 +1295,7 @@
 		27AD2F69229E721D003C2680 /* Debug */ = {
 			isa = PBXGroup;
 			children = (
+				3B93C32A237423CF00D1A9DA /* ChatroomStatus */,
 				27AD2F6A229E721D003C2680 /* RCDDebugViewController.h */,
 				27AD2F6D229E721D003C2680 /* RCDDebugViewController.m */,
 				27AD2F6B229E721D003C2680 /* RCDDebugNoDisturbViewController.h */,
@@ -1580,6 +1587,21 @@
 				3B7D8F2A223266B8009E1417 /* RCDBuglyManager.m */,
 			);
 			path = Bugly;
+			sourceTree = "<group>";
+		};
+		3B93C32A237423CF00D1A9DA /* ChatroomStatus */ = {
+			isa = PBXGroup;
+			children = (
+				3B98493C2358184D00E9DCCE /* RCDDebugJoinChatroomViewController.h */,
+				3B98493D2358184D00E9DCCE /* RCDDebugJoinChatroomViewController.m */,
+				3B98494C2358215600E9DCCE /* RCDDebugChatroomViewController.h */,
+				3B98494D2358215600E9DCCE /* RCDDebugChatroomViewController.m */,
+				3BCA7CA32359536600EBCE54 /* RCDDebugAlertView.h */,
+				3BCA7CA42359536600EBCE54 /* RCDDebugAlertView.m */,
+				3B98495A235849C300E9DCCE /* RCDDebugChatRoomCell.h */,
+				3B98495B235849C300E9DCCE /* RCDDebugChatRoomCell.m */,
+			);
+			path = ChatroomStatus;
 			sourceTree = "<group>";
 		};
 		3BB6CE0A22D743720007FFFB /* AddressBook */ = {
@@ -2887,12 +2909,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				178998221F6244FA00FC44D3 /* sms-received.caf in Resources */,
-				3B0D3867235EEADC006444F5 /* jrmf_o.cer in Resources */,
 				A28C439322E95818005BA7A0 /* InfoPlist.strings in Resources */,
 				E4BFAE251A121839007165B1 /* Images.xcassets in Resources */,
-				3B0D3868235EEADC006444F5 /* jrmf_n.cer in Resources */,
 				A28C439522E95818005BA7A0 /* SealTalk.strings in Resources */,
-				3B0D3869235EEADC006444F5 /* jrmf_p.cer in Resources */,
 				A2F0A96F22F9173000422802 /* poke.mp3 in Resources */,
 				987653631D796C5B008A6BF0 /* Launch Screen.storyboard in Resources */,
 			);
@@ -3145,6 +3164,7 @@
 				A25750A822B8DA6700A79749 /* RCDGroupMemberSelectCell.m in Sources */,
 				A2907090229E7F61006BDAC7 /* RCDGroupAnnouncementViewController.m in Sources */,
 				3B47899022BCA7E300D33F10 /* RCDPersonDetailCell.m in Sources */,
+				3B98493E2358184D00E9DCCE /* RCDDebugJoinChatroomViewController.m in Sources */,
 				A2907094229E7F61006BDAC7 /* RCDGroupSettingsTableViewCell.m in Sources */,
 				A290709F229E7F61006BDAC7 /* RCDUserListCollectionItem.m in Sources */,
 				A29070A2229E7F61006BDAC7 /* RCDChatListCell.m in Sources */,
@@ -3179,6 +3199,8 @@
 				3BB6CDFD22D723460007FFFB /* RCDUserInfo.m in Sources */,
 				A2F0A97522F9579500422802 /* RCDGroupMemberDetailCell.m in Sources */,
 				3B47891722B7A11100D33F10 /* RCDForwardSelectedCell.m in Sources */,
+				3B98495C235849C300E9DCCE /* RCDDebugChatRoomCell.m in Sources */,
+				3B98494E2358215600E9DCCE /* RCDDebugChatroomViewController.m in Sources */,
 				27AD301D229E721F003C2680 /* RCUnderlineTextField.m in Sources */,
 				A201321A22F3D24500C24160 /* RCDPokeRemindController.m in Sources */,
 				A29070B0229E7F61006BDAC7 /* RCDForwardAlertView.m in Sources */,
@@ -3227,6 +3249,7 @@
 				A2F0A97222F9512200422802 /* RCDGroupMemberDetailController.m in Sources */,
 				3B7D8F2B223266B8009E1417 /* RCDBuglyManager.m in Sources */,
 				27F0E3CB22A0E3E300C8B0B8 /* RCDAboutRongCloudTableViewController.m in Sources */,
+				3BCA7CA52359536700EBCE54 /* RCDDebugAlertView.m in Sources */,
 				A28F1E3E22E16AEF007C5814 /* RCDGroupNoticeUpdateMessage.m in Sources */,
 				27F0E3CF22A0E3E300C8B0B8 /* RCDCSButton.m in Sources */,
 				3B47896222BB2BA900D33F10 /* RCDSelectGroupViewController.m in Sources */,

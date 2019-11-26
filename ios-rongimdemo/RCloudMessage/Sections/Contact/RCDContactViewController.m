@@ -322,17 +322,21 @@
 
 - (void)extracted {
     [RCDUserInfoManager getFriendListFromServer:^(NSArray<RCDFriendInfo *> *friendList) {
-        self.hasSyncFriendList = YES;
-        if (friendList) {
-            self.allFriendArray = [self getAllFriendList];
-            [self sortAndRefreshWithList:self.allFriendArray];
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.hasSyncFriendList = YES;
+            if (friendList) {
+                self.allFriendArray = [self getAllFriendList];
+                [self sortAndRefreshWithList:self.allFriendArray];
+            }
+        });
     }];
 }
 
 - (void)reloadContents {
-    self.allFriendArray = [self getAllFriendList];
-    [self sortAndRefreshWithList:self.allFriendArray];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.allFriendArray = [self getAllFriendList];
+        [self sortAndRefreshWithList:self.allFriendArray];
+    });
 }
 
 // 获取好友并且排序

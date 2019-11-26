@@ -197,9 +197,9 @@
 "setting"="设置中...";
 "set_fail"="设置失败";
 "Remark_name"="备注名";
-"x_people_had_read"="%lu人已读";
-"zero_people_unread"="0人未读";
-"x_people_unread"="%lu人未读";
+"x_people_had_read"="%lu 人已读";
+"zero_people_unread"="0 人未读";
+"x_people_unread"="%lu 人未读";
 "Receipt_details"="回执详情";
 "DisbandAndDelete"="解散并删除";
 "delete_group_alert"="确定退出群组？";
@@ -224,7 +224,6 @@
 "type_croup_name_hint"="填写群名称（2-10个字符)";
 "creating_group"="创建中...";
 "create_group_fail"="创建群组失败，请检查你的网络设置。";
-"customer"="客服";
 "remark_rebot_service"="请评价我们的机器人服务";
 "satisfaction"="如果您满意就按是，不满意就按否";
 "yes"="是";

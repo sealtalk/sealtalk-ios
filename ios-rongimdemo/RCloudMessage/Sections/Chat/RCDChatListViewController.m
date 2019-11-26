@@ -138,7 +138,7 @@
         //聚合会话类型，此处自定设置。
         if (conversationModelType == RC_CONVERSATION_MODEL_TYPE_COLLECTION) {
             RCDChatListViewController *temp = [[RCDChatListViewController alloc] init];
-            NSArray *array = [NSArray arrayWithObject:[NSNumber numberWithInt:model.conversationType]];
+            NSArray *array = [NSArray arrayWithObject:[NSNumber numberWithInteger:model.conversationType]];
             [temp setDisplayConversationTypes:array];
             [temp setCollectionConversationType:nil];
             temp.isEnteredToCollectionViewController = YES;

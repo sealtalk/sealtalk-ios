@@ -22,6 +22,11 @@
       withCollectionViewWidth:(CGFloat)collectionViewWidth
          referenceExtraHeight:(CGFloat)extraHeight {
     CGFloat __messagecontentview_height = 40.0f;
+
+    if (__messagecontentview_height < [RCIM sharedRCIM].globalMessagePortraitSize.height) {
+        __messagecontentview_height = [RCIM sharedRCIM].globalMessagePortraitSize.height;
+    }
+
     __messagecontentview_height += extraHeight;
 
     return CGSizeMake(collectionViewWidth, __messagecontentview_height);

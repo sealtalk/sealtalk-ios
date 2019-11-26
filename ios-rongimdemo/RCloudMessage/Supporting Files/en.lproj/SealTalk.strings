@@ -221,7 +221,6 @@
 "type_croup_name_hint"="Fill in the group name (2-10 characters)";
 "creating_group"="Creating…";
 "create_group_fail"="Failed to create a group, please check your network settings.";
-"customer"="Customer Service";
 "remark_rebot_service"="Please rate our robotic customer service ";
 "satisfaction"="If you are satisfied with our service, press Yes. If is not, press No.";
 "yes"="Yes";

@@ -758,8 +758,11 @@
         self.matchSearchList = [self.friendArray mutableCopy];
     } else {
         for (RCDFriendInfo *userInfo in [self.friendArray copy]) {
+            NSString *name = userInfo.name;
+            if ([userInfo isMemberOfClass:[RCDFriendInfo class]] && userInfo.displayName.length > 0) {
+                name = userInfo.displayName;
+            }
             //忽略大小写去判断是否包含
-            NSString *name = userInfo.displayName.length > 0 ? userInfo.displayName : userInfo.name;
             if ([name rangeOfString:temp options:NSCaseInsensitiveSearch].location != NSNotFound ||
                 [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:temp options:NSCaseInsensitiveSearch]
                         .location != NSNotFound) {

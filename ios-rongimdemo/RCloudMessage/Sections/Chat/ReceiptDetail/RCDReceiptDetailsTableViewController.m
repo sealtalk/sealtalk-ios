@@ -7,7 +7,6 @@
 //
 
 #import "RCDReceiptDetailsTableViewController.h"
-#import "RCDAddFriendViewController.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDReceiptDetailsTableViewCell.h"
 #import "RCDUIBarButtonItem.h"

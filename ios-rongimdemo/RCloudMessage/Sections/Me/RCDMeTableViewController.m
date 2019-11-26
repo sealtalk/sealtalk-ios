@@ -19,7 +19,8 @@
 #import "RCDLanguageSettingViewController.h"
 #import "RCDCommonString.h"
 #import "RCDQRCodeController.h"
-#define SERVICE_ID @"KEFU146001495753714"
+//#define SERVICE_ID @"KEFU146001495753714"
+#define SERVICE_ID @"service"
 
 @interface RCDMeTableViewController ()
 @property (nonatomic, strong) NSDictionary *languageDic;
@@ -205,7 +206,7 @@
     csInfo.define = @"自定义信息";
 
     chatService.csInfo = csInfo;
-    chatService.title = RCDLocalizedString(@"customer");
+    chatService.title = RCDLocalizedString(@"feedback");
 
     [self.navigationController pushViewController:chatService animated:YES];
 }

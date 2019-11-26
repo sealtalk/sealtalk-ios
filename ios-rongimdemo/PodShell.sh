@@ -46,6 +46,9 @@ sed -i '' -e "/\/\* JrmfIMLib \*\/ = {/,/};/d"  ${Project}
 sed -i '' -e "/JrmfInfo.strings in Resources/d"  ${Project}
 sed -i '' -e "/JResource.bundle/d"  ${Project}
 sed -i '' -e "/jrmf.cer/d"  ${Project}
+sed -i '' -e "/jrmf_n.cer/d"  ${Project}
+sed -i '' -e "/jrmf_o.cer/d"  ${Project}
+sed -i '' -e "/jrmf_p.cer/d"  ${Project}
 sed -i '' -e "/JrmfWalletKit.framework/d"  ${Project}
 sed -i '' -e "/JrmfPacketKit.framework/d"  ${Project}
 sed -i '' -e "/JYangToolKit.framework/d"  ${Project}

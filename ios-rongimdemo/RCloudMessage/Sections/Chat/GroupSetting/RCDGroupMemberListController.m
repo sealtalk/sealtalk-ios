@@ -7,8 +7,6 @@
 //
 
 #import "RCDGroupMemberListController.h"
-#import "DefaultPortraitView.h"
-#import "RCDAddFriendViewController.h"
 #import "RCDContactTableViewCell.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDUIBarButtonItem.h"

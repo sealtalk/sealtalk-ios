@@ -82,7 +82,7 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
     } else {
         RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
         addViewController.groupId = groupId;
-        addViewController.targetUserInfo = [RCDUserInfoManager getUserInfo:userId];
+        addViewController.targetUserId = userId;
         return addViewController;
     }
 }

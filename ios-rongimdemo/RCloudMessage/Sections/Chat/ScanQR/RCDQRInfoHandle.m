@@ -62,34 +62,8 @@
 
 #pragma mark - helper
 - (void)handleUserInfo:(NSString *)userId {
-    RCDUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
-    RCDFriendInfo *friendInfo = [RCDUserInfoManager getFriendInfo:userId];
-    if ((friendInfo != nil &&
-         (friendInfo.status == RCDFriendStatusAgree || friendInfo.status == RCDFriendStatusBlock)) ||
-        [user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-        RCDPersonDetailViewController *detailViewController = [[RCDPersonDetailViewController alloc] init];
-        [self.baseController.navigationController pushViewController:detailViewController animated:YES];
-        RCDUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
-        detailViewController.userId = user.userId;
-    } else {
-        if (user) {
-            RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
-            addViewController.targetUserInfo = user;
-            [self.baseController.navigationController pushViewController:addViewController animated:YES];
-        } else {
-            [RCDUserInfoManager getUserInfoFromServer:userId
-                                             complete:^(RCDUserInfo *userInfo) {
-                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                     RCDAddFriendViewController *addViewController =
-                                                         [[RCDAddFriendViewController alloc] init];
-                                                     addViewController.targetUserInfo = userInfo;
-                                                     [self.baseController.navigationController
-                                                         pushViewController:addViewController
-                                                                   animated:YES];
-                                                 });
-                                             }];
-        }
-    }
+    UIViewController *vc = [RCDPersonDetailViewController configVC:userId groupId:nil];
+    [self.baseController.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)handleGroupInfo:(NSString *)groupId {

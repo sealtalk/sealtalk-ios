@@ -30,6 +30,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 @property (nonatomic, strong) RCDUserListCollectionView *headerView;
 @property (nonatomic, strong) RCDFriendInfo *userInfo;
 @property (nonatomic, strong) RCDTipFooterView *tipFooterView;
+@property (nonatomic, strong) UIActivityIndicatorView *clearLoadingView;
 
 @end
 
@@ -203,7 +204,7 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     } else {
         RCDUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
         RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
-        addViewController.targetUserInfo = user;
+        addViewController.targetUserId = userId;
         [self.navigationController pushViewController:addViewController animated:YES];
     }
 }
@@ -222,27 +223,23 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     if (buttonIndex == 0) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         RCDBaseSettingTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-        UIActivityIndicatorView *activityIndicatorView =
-            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        float cellWidth = cell.bounds.size.width;
-        UIView *loadingView = [[UIView alloc] initWithFrame:CGRectMake(cellWidth - 50, 15, 40, 40)];
-        [loadingView addSubview:activityIndicatorView];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [activityIndicatorView startAnimating];
-            [cell addSubview:loadingView];
-        });
+        [self.clearLoadingView removeFromSuperview];
+        [cell addSubview:self.clearLoadingView];
+        [self.clearLoadingView startAnimating];
         __weak typeof(self) weakSelf = self;
         [[RCDIMService sharedService] clearHistoryMessage:ConversationType_PRIVATE
             targetId:weakSelf.userId
             successBlock:^{
                 [weakSelf showAlertMessage:RCDLocalizedString(@"clear_chat_history_success")];
                 weakSelf.clearMessageHistory();
-                [loadingView removeFromSuperview];
+                [self.clearLoadingView stopAnimating];
+                [self.clearLoadingView removeFromSuperview];
 
             }
             errorBlock:^(RCErrorCode status) {
                 [weakSelf showAlertMessage:RCDLocalizedString(@"clear_chat_history_fail")];
-                [loadingView removeFromSuperview];
+                [self.clearLoadingView stopAnimating];
+                [self.clearLoadingView removeFromSuperview];
             }];
     }
 }
@@ -374,6 +371,16 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         _tipFooterView = [[RCDTipFooterView alloc] init];
     }
     return _tipFooterView;
+}
+
+- (UIActivityIndicatorView *)clearLoadingView {
+    if (!_clearLoadingView) {
+        UIActivityIndicatorView *activityIndicatorView =
+            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        activityIndicatorView.frame = CGRectMake(self.tableView.bounds.size.width - 55, 0, 44, 44);
+        _clearLoadingView = activityIndicatorView;
+    }
+    return _clearLoadingView;
 }
 
 @end

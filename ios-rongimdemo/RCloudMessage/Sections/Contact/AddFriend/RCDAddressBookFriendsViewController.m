@@ -93,16 +93,9 @@
     [cell setModel:contacts];
     __weak typeof(self) weakSelf = self;
     cell.addBlock = ^(NSString *_Nonnull userId) {
-        [RCDUserInfoManager
-            getUserInfoFromServer:userId
-                         complete:^(RCDUserInfo *userInfo) {
-                             rcd_dispatch_main_async_safe(^{
-                                 RCDAddFriendViewController *addViewController =
-                                     [[RCDAddFriendViewController alloc] init];
-                                 addViewController.targetUserInfo = userInfo;
-                                 [weakSelf.navigationController pushViewController:addViewController animated:YES];
-                             });
-                         }];
+        RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
+        addViewController.targetUserId = userId;
+        [weakSelf.navigationController pushViewController:addViewController animated:YES];
     };
     return cell;
 }

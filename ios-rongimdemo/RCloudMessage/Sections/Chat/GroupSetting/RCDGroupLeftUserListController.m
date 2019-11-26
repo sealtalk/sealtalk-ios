@@ -10,7 +10,6 @@
 #import "RCDGroupLeftUserListCell.h"
 #import "RCDUserInfoManager.h"
 #import <RongIMKit/RongIMKit.h>
-#import "RCDAddFriendViewController.h"
 #import "RCDPersonDetailViewController.h"
 #import "RCDGroupManager.h"
 @interface RCDGroupLeftUserListController ()

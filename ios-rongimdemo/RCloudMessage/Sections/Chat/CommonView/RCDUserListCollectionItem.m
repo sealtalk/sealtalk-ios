@@ -7,7 +7,6 @@
 //
 
 #import "RCDUserListCollectionItem.h"
-#import "DefaultPortraitView.h"
 #import "RCDUtilities.h"
 #import "UIColor+RCColor.h"
 #import <SDWebImage/UIImageView+WebCache.h>

@@ -18,6 +18,11 @@
     CGSize size = [RCDTestMessageCell getBubbleBackgroundViewSize:message];
 
     CGFloat __messagecontentview_height = size.height;
+
+    if (__messagecontentview_height < [RCIM sharedRCIM].globalMessagePortraitSize.height) {
+        __messagecontentview_height = [RCIM sharedRCIM].globalMessagePortraitSize.height;
+    }
+
     __messagecontentview_height += extraHeight;
 
     return CGSizeMake(collectionViewWidth, __messagecontentview_height);

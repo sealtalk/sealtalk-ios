@@ -54,7 +54,7 @@
 
 - (void)layoutSubviews {
     self.backButton.frame = CGRectMake(self.bounds.size.width - 8 - 26, 41.5, 26, 26);
-    self.tipLabel.frame = CGRectMake(0, 20 + self.headViewSize + 12, self.headViewRect.size.width, 13);
+    self.tipLabel.frame = CGRectMake(0, 24 + self.headViewSize + 12, self.headViewRect.size.width, 13);
     CGPoint tipLabelCenter = self.tipLabel.center;
     tipLabelCenter.x = self.center.x;
     self.tipLabel.center = tipLabelCenter;
@@ -305,7 +305,7 @@
     [self setBackgroundColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5]];
     self.headViewSize = 42;
     self.headViewSpace = 8;
-    self.headViewRect = CGRectMake(8 + 26 + 8, 20 + 8, self.frame.size.width - (8 + 26 + 8) * 2, self.headViewSize);
+    self.headViewRect = CGRectMake(8 + 26 + 8, 24 + 8, self.frame.size.width - (8 + 26 + 8) * 2, self.headViewSize);
 
     UIButton *quitButton = [[UIButton alloc] initWithFrame:CGRectMake(8, 41.5, 26, 26)];
     [quitButton setImage:[UIImage imageNamed:@"quit_location_share"] forState:UIControlStateNormal];
