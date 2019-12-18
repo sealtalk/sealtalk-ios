@@ -24,7 +24,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor whiteColor];
         [self loadView];
     }
 
@@ -122,22 +121,22 @@
 
     self.nameLabel = [[RCDLabel alloc] initWithFrame:CGRectZero];
     self.nameLabel.font = [UIFont systemFontOfSize:15.f];
-    self.nameLabel.textColor = HEXCOLOR(0x000000);
+    self.nameLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     [self.contentView addSubview:self.nameLabel];
 
     self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(RCDScreenWidth - 100 - 10, (65 - 48) / 2, 100, 17)];
-    self.timeLabel.textColor = HEXCOLOR(0x999999);
+    self.timeLabel.textColor = RCDDYCOLOR(0x999999, 0x707070);
     self.timeLabel.font = [UIFont systemFontOfSize:15.f];
     self.timeLabel.textAlignment = NSTextAlignmentRight;
     [self.contentView addSubview:self.timeLabel];
 
     self.otherLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.otherLabel.textColor = HEXCOLOR(0x999999);
+    self.otherLabel.textColor = RCDDYCOLOR(0x999999, 0x707070);
     self.otherLabel.font = [UIFont systemFontOfSize:14.f];
 
     self.additionalLabel = [[RCDLabel alloc] initWithFrame:CGRectZero];
     self.additionalLabel.font = [UIFont systemFontOfSize:14.f];
-    self.additionalLabel.textColor = HEXCOLOR(0x999999);
+    self.additionalLabel.textColor = RCDDYCOLOR(0x999999, 0x707070);
     [self.contentView addSubview:self.otherLabel];
     [self.contentView addSubview:self.additionalLabel];
 }

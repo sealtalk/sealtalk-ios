@@ -6,7 +6,7 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 /**
  *  RCDBaseSettingTableViewCellDelegate
  */
@@ -22,7 +22,7 @@
 
 @end
 
-@interface RCDBaseSettingTableViewCell : UITableViewCell
+@interface RCDBaseSettingTableViewCell : RCDTableViewCell
 
 @property (nonatomic, strong) UIImageView *leftImageView;
 

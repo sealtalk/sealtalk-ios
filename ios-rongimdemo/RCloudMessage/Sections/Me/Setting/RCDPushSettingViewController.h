@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
-@interface RCDPushSettingViewController : UIViewController
+@interface RCDPushSettingViewController : RCDViewController
 
 @end

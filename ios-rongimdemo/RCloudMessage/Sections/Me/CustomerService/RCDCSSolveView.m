@@ -9,6 +9,7 @@
 #import "RCDCSSolveView.h"
 #import "RCDCommonDefine.h"
 #import "RCDCSButton.h"
+#import "RCDUtilities.h"
 #define button_size CGSizeMake(130, 30)
 #define button_space 21
 #define titleAndButton_space 11
@@ -53,7 +54,7 @@
 - (UILabel *)solveTitle {
     if (!_solveTitle) {
         self.solveTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 20)];
-        self.solveTitle.textColor = HEXCOLOR(0x3c4d65);
+        self.solveTitle.textColor = RCDDYCOLOR(0x3c4d65, 0x9f9f9f);
         self.solveTitle.font = [UIFont systemFontOfSize:16];
         self.solveTitle.textAlignment = NSTextAlignmentCenter;
         [self addSubview:self.solveTitle];

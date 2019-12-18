@@ -6,7 +6,7 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)forwardSearchViewControllerDidClickCancel;
 @end
 
-@interface RCDForwardSearchViewController : UIViewController
+@interface RCDForwardSearchViewController : RCDViewController
 
 @property (nonatomic, weak) id<RCDForwardSearchViewDelegate> delegate;
 @end

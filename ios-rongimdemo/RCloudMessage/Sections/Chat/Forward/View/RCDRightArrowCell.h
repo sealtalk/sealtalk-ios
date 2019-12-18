@@ -6,11 +6,11 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDRightArrowCell : UITableViewCell
+@interface RCDRightArrowCell : RCDTableViewCell
 
 @property (nonatomic, strong) UILabel *leftLabel;
 

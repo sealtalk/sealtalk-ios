@@ -126,7 +126,6 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     view.frame = CGRectMake(0, 0, self.view.frame.size.width, 21);
-    view.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
     title.frame = CGRectMake(13, 3, 15, 15);
     title.font = [UIFont systemFontOfSize:15.f];
@@ -239,7 +238,6 @@
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:self
                                                                         action:@selector(onRightButtonClick)];
-        rightBarItem.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
         self.navigationItem.rightBarButtonItem = rightBarItem;
         rightBarItem.enabled = NO;
     } else if (manager.state == RCDContactsAuthStateRefuse) {
@@ -349,7 +347,6 @@
     if (!_tableView) {
         _tableView = [[UITableView alloc] init];
         [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
-        _tableView.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
         _tableView.allowsMultipleSelection = YES;
         _tableView.delegate = self;
         _tableView.dataSource = self;

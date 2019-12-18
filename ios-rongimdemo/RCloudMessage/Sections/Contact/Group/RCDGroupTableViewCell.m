@@ -113,7 +113,8 @@
 - (UILabel *)groupNameLabel {
     if (!_groupNameLabel) {
         _groupNameLabel = [[UILabel alloc] init];
-        self.groupNameLabel.font = [UIFont systemFontOfSize:15];
+        _groupNameLabel.font = [UIFont systemFontOfSize:15];
+        _groupNameLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     }
     return _groupNameLabel;
 }
@@ -122,6 +123,7 @@
     if (!_groupIdLabel) {
         _groupIdLabel = [[UILabel alloc] init];
         _groupIdLabel.font = [UIFont systemFontOfSize:12];
+        _groupIdLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     }
     return _groupIdLabel;
 }

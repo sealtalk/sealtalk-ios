@@ -6,12 +6,12 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 @class RCUserInfo;
 NS_ASSUME_NONNULL_BEGIN
 static NSString *RCDGroupMemberCellIdentifier = @"RCDGroupMemberCellIdentifier";
 
-@interface RCDGroupMemberCell : UITableViewCell
+@interface RCDGroupMemberCell : RCDTableViewCell
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIImageView *portraitImageView;
 + (instancetype)cellWithTableView:(UITableView *)tableView;

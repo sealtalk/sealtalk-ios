@@ -6,10 +6,10 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 @class RCDSearchResultModel;
 @class RCDLabel;
-@interface RCDSearchResultViewCell : UITableViewCell
+@interface RCDSearchResultViewCell : RCDTableViewCell
 @property (nonatomic, strong) UIImageView *headerView;
 @property (nonatomic, strong) RCDLabel *nameLabel;
 @property (nonatomic, strong) RCDLabel *additionalLabel;

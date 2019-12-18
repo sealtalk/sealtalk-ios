@@ -10,7 +10,6 @@
 #import "UIColor+RCColor.h"
 #import <Masonry/Masonry.h>
 #import "RCDUtilities.h"
-
 @interface RCDSetupRemarkView () <UITextFieldDelegate>
 
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -37,10 +36,11 @@
 }
 
 - (void)setupViews {
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                    darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.2]];
 
     UIView *titleBgView = [[UIView alloc] init];
-    titleBgView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1];
+    titleBgView.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     [self addSubview:titleBgView];
 
     [titleBgView addSubview:self.titleLabel];
@@ -199,7 +199,7 @@
 - (UITextField *)textField {
     if (!_textField) {
         _textField = [[UITextField alloc] init];
-        _textField.textColor = [UIColor blackColor];
+        _textField.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
         _textField.font = [UIFont systemFontOfSize:15];
         _textField.returnKeyType = UIReturnKeyDone;
         _textField.delegate = self;
@@ -214,7 +214,7 @@
         _countryButton = [[UIButton alloc] init];
         _countryButton.titleLabel.font = [UIFont systemFontOfSize:15];
         _countryButton.titleLabel.textAlignment = NSTextAlignmentRight;
-        [_countryButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_countryButton setTitleColor:RCDDYCOLOR(0x000000, 0x9f9f9f) forState:UIControlStateNormal];
         [_countryButton addTarget:self action:@selector(tapButtonAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _countryButton;

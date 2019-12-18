@@ -30,7 +30,6 @@
     [super viewDidLoad];
     self.title =
         [NSString stringWithFormat:RCDLocalizedString(@"group_members_x"), (unsigned long)[self.groupMembers count]];
-    self.tableView.backgroundColor = [UIColor whiteColor];
     RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
                                                                              target:self
                                                                              action:@selector(clickBackBtn)];

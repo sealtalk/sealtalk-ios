@@ -7,7 +7,7 @@
 //
 
 #import "RCDLogoTableViewCell.h"
-
+#import "RCDUtilities.h"
 @implementation RCDLogoTableViewCell
 
 - (void)awakeFromNib {
@@ -24,7 +24,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = RCDDYCOLOR(0xffffff, 0x000000);
         UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"about_rong"]];
         logoImageView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:logoImageView];

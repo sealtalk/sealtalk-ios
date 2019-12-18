@@ -14,6 +14,7 @@
 #import "RCDPokeMessage.h"
 #import "UIView+MBProgressHUD.h"
 #import "RCDPokeManager.h"
+#import "RCDUtilities.h"
 @interface RCDPokeAlertView () <UITextFieldDelegate>
 @property (nonatomic, strong) UIView *bgView;
 @property (nonatomic, strong) UIImageView *pokeIcon;
@@ -40,7 +41,8 @@
     } else {
         RCDPokeAlertView *pokeView = [[RCDPokeAlertView alloc] initWithFrame:controller.view.bounds];
         [pokeView registerNotification];
-        pokeView.backgroundColor = [HEXCOLOR(0x000000) colorWithAlphaComponent:0.21];
+        pokeView.backgroundColor = [RCDUtilities generateDynamicColor:[HEXCOLOR(0x000000) colorWithAlphaComponent:0.21]
+                                                            darkColor:[HEXCOLOR(0x6a6a6a) colorWithAlphaComponent:0.6]];
         pokeView.type = type;
         pokeView.targetId = targetId;
         pokeView.baseController = controller;
@@ -231,8 +233,12 @@
     [self.bgView addSubview:self.pokeIcon];
     [self.bgView addSubview:self.infolabel];
     UIView *inputBgView = [[UIView alloc] init];
+    inputBgView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xf8f8f8)
+                                                           darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.2]];
     inputBgView.layer.masksToBounds = YES;
-    inputBgView.layer.borderColor = HEXCOLOR(0x999999).CGColor;
+    inputBgView.layer.borderColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0x999999)
+                                                             darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.3]]
+                                        .CGColor;
     inputBgView.layer.borderWidth = 0.5;
     [self.bgView addSubview:inputBgView];
     [self.bgView addSubview:self.inputTextField];
@@ -317,7 +323,8 @@
 - (UIView *)bgView {
     if (!_bgView) {
         _bgView = [[UIView alloc] init];
-        _bgView.backgroundColor = HEXCOLOR(0xf8f8f8);
+        _bgView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xf8f8f8)
+                                                           darkColor:[HEXCOLOR(0x000000) colorWithAlphaComponent:0.8]];
         _bgView.layer.masksToBounds = YES;
         _bgView.layer.cornerRadius = 6;
     }
@@ -335,7 +342,7 @@
     if (!_infolabel) {
         _infolabel = [[UILabel alloc] init];
         _infolabel.font = [UIFont systemFontOfSize:17];
-        _infolabel.textColor = HEXCOLOR(0x333333);
+        _infolabel.textColor = RCDDYCOLOR(0x333333, 0x9f9f9f);
         _infolabel.textAlignment = NSTextAlignmentCenter;
         if (self.type == ConversationType_GROUP) {
             RCGroup *group = [[RCIM sharedRCIM] getGroupInfoCache:self.targetId];
@@ -352,7 +359,7 @@
     if (!_sendLabel) {
         _sendLabel = [[UILabel alloc] init];
         _sendLabel.font = [UIFont systemFontOfSize:17];
-        _sendLabel.textColor = HEXCOLOR(0x333333);
+        _sendLabel.textColor = RCDDYCOLOR(0x333333, 0x9f9f9f);
         _sendLabel.text = RCDLocalizedString(@"SendTo");
     }
     return _sendLabel;
@@ -381,12 +388,12 @@
     if (!_inputTextField) {
         _inputTextField = [[UITextField alloc] init];
         _inputTextField.font = [UIFont systemFontOfSize:15];
-        _inputTextField.textColor = HEXCOLOR(0x333333);
+        _inputTextField.textColor = RCDDYCOLOR(0x333333, 0x9f9f9f);
         _inputTextField.placeholder = RCDLocalizedString(@"PokeInputPlaceholder");
         NSAttributedString *attrString =
             [[NSAttributedString alloc] initWithString:_inputTextField.placeholder
                                             attributes:@{
-                                                NSForegroundColorAttributeName : HEXCOLOR(0x999999),
+                                                NSForegroundColorAttributeName : RCDDYCOLOR(0x999999, 0x666666),
                                                 NSFontAttributeName : _inputTextField.font
                                             }];
         _inputTextField.attributedPlaceholder = attrString;
@@ -399,7 +406,7 @@
     if (!_cancelButton) {
         _cancelButton = [[UIButton alloc] init];
         [_cancelButton setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
-        [_cancelButton setTitleColor:HEXCOLOR(0x999999) forState:(UIControlStateNormal)];
+        [_cancelButton setTitleColor:RCDDYCOLOR(0x999999, 0x666666) forState:(UIControlStateNormal)];
         [_cancelButton addTarget:self action:@selector(onCanelPressed) forControlEvents:UIControlEventTouchUpInside];
         [_cancelButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
     }
@@ -410,7 +417,7 @@
     if (!_confirmButton) {
         _confirmButton = [[UIButton alloc] init];
         [_confirmButton setTitle:RCDLocalizedString(@"confirm") forState:UIControlStateNormal];
-        [_confirmButton setTitleColor:HEXCOLOR(0x0099ff) forState:(UIControlStateNormal)];
+        [_confirmButton setTitleColor:RCDDYCOLOR(0x0099ff, 0x007acc) forState:(UIControlStateNormal)];
         [_confirmButton addTarget:self action:@selector(onConfirmPressed) forControlEvents:UIControlEventTouchUpInside];
         [_confirmButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
     }
@@ -419,7 +426,7 @@
 
 - (UIView *)getLineView {
     UIView *view = [[UIView alloc] init];
-    view.backgroundColor = HEXCOLOR(0xd8d8d8);
+    view.backgroundColor = RCDDYCOLOR(0xd8d8d8, 0x3a3a3a);
     return view;
 }
 @end

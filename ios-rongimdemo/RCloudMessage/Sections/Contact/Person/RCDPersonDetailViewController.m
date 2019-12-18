@@ -32,6 +32,7 @@
 #import "RCDAddFriendViewController.h"
 #import "RCDGroupMemberDetailController.h"
 #import "RCDGroupManager.h"
+
 typedef NS_ENUM(NSInteger, RCDPersonOperation) {
     RCDPersonOperationDelete = 0,
     RCDPersonOperationAddToBlacklist,
@@ -96,9 +97,6 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 
 #pragma mark - Private Method
 - (void)setupSubviews {
-
-    self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-
     [self.view addSubview:self.scrollView];
     [self.scrollView addSubview:self.contentView];
     [self.contentView addSubview:self.infoView];
@@ -245,12 +243,12 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 }
 
 - (void)showAlertWithMessage:(NSString *)message {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                              otherButtonTitles:nil, nil];
-    [alertView show];
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showAlertWithMessage:(NSString *)message
@@ -397,14 +395,8 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 }
 
 - (void)presentActionSheet {
-    UIAlertController *alertController =
-        [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel")
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction *_Nonnull action){
-                                                         }];
-
+    UIAlertAction *cancelAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
     UIAlertAction *callAction = [UIAlertAction
         actionWithTitle:RCDLocalizedString(@"Call")
                   style:UIAlertActionStyleDefault
@@ -421,7 +413,6 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
                         }
                     });
                 }];
-
     UIAlertAction *copyAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"CopyNumber")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction *_Nonnull action) {
@@ -431,12 +422,11 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
                                                                [pastboard setString:self.friendDescription.phone];
                                                            }
                                                        }];
-
-    [alertController addAction:cancelAction];
-    [alertController addAction:callAction];
-    [alertController addAction:copyAction];
-
-    [self.navigationController presentViewController:alertController animated:YES completion:nil];
+    [RCKitUtility showAlertController:nil
+                              message:nil
+                       preferredStyle:UIAlertControllerStyleActionSheet
+                              actions:@[ cancelAction, callAction, copyAction ]
+                     inViewController:self];
 }
 
 #pragma mark - UITableViewDelegate && UITableViewDataSource
@@ -471,7 +461,7 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth, 15)];
-    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     return view;
 }
 
@@ -579,7 +569,6 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 - (UIView *)contentView {
     if (!_contentView) {
         _contentView = [[UIView alloc] init];
-        _contentView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     }
     return _contentView;
 }
@@ -598,10 +587,9 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
         _tableView.dataSource = self;
         _tableView.scrollEnabled = NO;
         _tableView.tableFooterView = [UIView new];
-        _tableView.backgroundColor = [UIColor colorWithHexString:@"FFFFFF" alpha:1];
-        _tableView.separatorColor = [UIColor colorWithHexString:@"E5E5E5" alpha:1];
-        _tableView.tableHeaderView =
-            [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
+        _tableView.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+        _tableView.separatorColor = RCDDYCOLOR(0xdfdfdf, 0x1a1a1a);
+        _tableView.tableFooterView = [UIView new];
     }
     return _tableView;
 }
@@ -609,7 +597,7 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 - (UIButton *)conversationButton {
     if (!_conversationButton) {
         _conversationButton = [[UIButton alloc] init];
-        _conversationButton.backgroundColor = [UIColor colorWithHexString:@"0099ff" alpha:1.f];
+        _conversationButton.backgroundColor = RCDDYCOLOR(0x0099ff, 0x007acc);
         _conversationButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_conversationButton setTitle:RCDLocalizedString(@"start_chat") forState:UIControlStateNormal];
         [_conversationButton addTarget:self action:@selector(startChat:) forControlEvents:UIControlEventTouchUpInside];
@@ -624,9 +612,9 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 - (UIButton *)audioCallButton {
     if (!_audioCallButton) {
         _audioCallButton = [[UIButton alloc] init];
-        _audioCallButton.backgroundColor = [UIColor whiteColor];
+        _audioCallButton.backgroundColor = RCDDYCOLOR(0xffffff, 0x1c1c1e);
         [_audioCallButton setTitle:RCDLocalizedString(@"voice_call") forState:UIControlStateNormal];
-        [_audioCallButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_audioCallButton setTitleColor:RCDDYCOLOR(0x000000, 0x9f9f9f) forState:UIControlStateNormal];
         [_audioCallButton addTarget:self action:@selector(audioCall:) forControlEvents:UIControlEventTouchUpInside];
         _audioCallButton.translatesAutoresizingMaskIntoConstraints = NO;
         _audioCallButton.layer.masksToBounds = YES;
@@ -638,9 +626,9 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 - (UIButton *)videoCallButton {
     if (!_videoCallButton) {
         _videoCallButton = [[UIButton alloc] init];
-        _videoCallButton.backgroundColor = [UIColor whiteColor];
+        _videoCallButton.backgroundColor = RCDDYCOLOR(0xffffff, 0x1c1c1e);
         [_videoCallButton setTitle:RCDLocalizedString(@"video_call") forState:UIControlStateNormal];
-        [_videoCallButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_videoCallButton setTitleColor:RCDDYCOLOR(0x000000, 0x9f9f9f) forState:UIControlStateNormal];
         [_videoCallButton addTarget:self action:@selector(videoCall:) forControlEvents:UIControlEventTouchUpInside];
         _videoCallButton.translatesAutoresizingMaskIntoConstraints = NO;
         _videoCallButton.layer.masksToBounds = YES;

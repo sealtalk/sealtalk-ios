@@ -10,29 +10,47 @@
 #import <sqlite3.h>
 
 static FMDatabaseQueue *dbQueue;
+static NSString *currentDBPath = @"";
+static NSRecursiveLock *GetSafeLock() {
+    static NSRecursiveLock *tempSafeLock;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        tempSafeLock = [NSRecursiveLock new];
+    });
+    return tempSafeLock;
+};
+
+#define SafeLock GetSafeLock()
 
 @implementation RCDDBHelper
 
 + (BOOL)openDB:(NSString *)path {
-    @synchronized(self) {
-        [self closeDB];
-        if (path.length > 0) {
-            dbQueue = [FMDatabaseQueue
-                databaseQueueWithPath:path
-                                flags:SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE];
-        }
-        if (dbQueue) {
-            [self configVersion];
-        }
+    if ([currentDBPath isEqualToString:path] && dbQueue != nil) {
+        return YES;
     }
+    currentDBPath = path;
+    [self closeDB];
+    [SafeLock lock];
+    if (path.length > 0) {
+        dbQueue =
+            [FMDatabaseQueue databaseQueueWithPath:path
+                                             flags:SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE];
+    }
+    if (dbQueue) {
+        [self configVersion];
+    }
+    [SafeLock unlock];
     return (dbQueue != nil);
 }
 
 + (void)closeDB {
+    [SafeLock lock];
     if (dbQueue) {
         [dbQueue close];
     }
     dbQueue = nil;
+    currentDBPath = @"";
+    [SafeLock unlock];
 }
 
 + (BOOL)isDBOpened {
@@ -40,32 +58,39 @@ static FMDatabaseQueue *dbQueue;
 }
 
 + (BOOL)executeUpdate:(NSString *)sql withArgumentsInArray:(NSArray *)arguments {
+    [SafeLock lock];
     __block BOOL result = NO;
     [dbQueue inDatabase:^(FMDatabase *db) {
         result = [db executeUpdate:sql withArgumentsInArray:arguments];
     }];
+    [SafeLock unlock];
     return result;
 }
 
 + (void)executeQuery:(NSString *)sql
 withArgumentsInArray:(NSArray *)arguments
           syncResult:(void (^)(FMResultSet *resultSet))syncResultBlock {
+    [SafeLock lock];
     [dbQueue inDatabase:^(FMDatabase *db) {
         FMResultSet *resultSet = [db executeQuery:sql withArgumentsInArray:arguments];
         syncResultBlock(resultSet);
         [resultSet close];
     }];
+    [SafeLock unlock];
 }
 
 + (void)executeTransaction:(void (^)(FMDatabase *db, BOOL *rollback))transactionBlock {
+    [SafeLock lock];
     [dbQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
         if (transactionBlock) {
             transactionBlock(db, rollback);
         }
     }];
+    [SafeLock unlock];
 }
 
 + (int)versionOfTable:(NSString *)table {
+    [SafeLock lock];
     __block int version = 0;
     [dbQueue inDatabase:^(FMDatabase *db) {
         FMResultSet *rs = [db executeQuery:@"SELECT version FROM table_version WHERE table_name = ?", table];
@@ -74,10 +99,12 @@ withArgumentsInArray:(NSArray *)arguments
         }
         [rs close];
     }];
+    [SafeLock unlock];
     return version;
 }
 
 + (BOOL)updateTable:(NSString *)table version:(int)version transaction:(BOOL (^)(FMDatabase *db))updateTransaction {
+    [SafeLock lock];
     __block BOOL result = NO;
     [self executeTransaction:^(FMDatabase *db, BOOL *rollback) {
         result = updateTransaction(db);
@@ -87,6 +114,7 @@ withArgumentsInArray:(NSArray *)arguments
         }
         *rollback = !result;
     }];
+    [SafeLock unlock];
     return result;
 }
 
@@ -105,6 +133,7 @@ withArgumentsInArray:(NSArray *)arguments
 }
 
 + (BOOL)existsTableWithName:(NSString *)tableName {
+    [SafeLock lock];
     __block BOOL exists = NO;
     [dbQueue inDatabase:^(FMDatabase *db) {
         NSString *sql = [NSString
@@ -122,9 +151,11 @@ withArgumentsInArray:(NSArray *)arguments
             break;
         }
     }];
+    [SafeLock unlock];
     return exists;
 }
 + (BOOL)isColumnExist:(NSString *)columnName inTable:(NSString *)tableName {
+    [SafeLock lock];
     __block BOOL isExist = NO;
     [dbQueue inDatabase:^(FMDatabase *db) {
         NSString *columnQurerySql = [NSString stringWithFormat:@"SELECT %@ from %@", columnName, tableName];
@@ -136,6 +167,7 @@ withArgumentsInArray:(NSArray *)arguments
         }
         [rs close];
     }];
+    [SafeLock unlock];
     return isExist;
 }
 

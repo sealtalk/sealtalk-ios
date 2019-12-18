@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 
-@interface RCDMessageNoDisturbSettingController : UITableViewController
+@interface RCDMessageNoDisturbSettingController : RCDTableViewController
 @property (nonatomic, strong) UISwitch *swch;
 @end

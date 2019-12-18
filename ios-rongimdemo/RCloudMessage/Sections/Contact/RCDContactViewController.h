@@ -8,8 +8,8 @@
 
 #import "RCDTableView.h"
 #import <RongIMLib/RongIMLib.h>
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
-@interface RCDContactViewController : UIViewController
+@interface RCDContactViewController : RCDViewController
 
 @end

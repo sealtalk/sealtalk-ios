@@ -38,8 +38,6 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 #pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
     [self setNaviItem];
     [self loadUserInfo];
@@ -145,14 +143,18 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     }
     if (indexPath.section == 3 && indexPath.row == 0) {
         //清理历史消息
-        UIActionSheet *actionSheet =
-            [[UIActionSheet alloc] initWithTitle:RCDLocalizedString(@"clear_chat_history_alert")
-                                        delegate:self
-                               cancelButtonTitle:RCDLocalizedString(@"cancel")
-                          destructiveButtonTitle:RCDLocalizedString(@"confirm")
-                               otherButtonTitles:nil];
-        [actionSheet showInView:self.view];
-        actionSheet.tag = 100;
+        UIAlertAction *cancelAction =
+            [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                                style:UIAlertActionStyleDestructive
+                                                              handler:^(UIAlertAction *_Nonnull action) {
+                                                                  [self clearHistoryMessage];
+                                                              }];
+        [RCKitUtility showAlertController:RCDLocalizedString(@"clear_chat_history_alert")
+                                  message:nil
+                           preferredStyle:UIAlertControllerStyleActionSheet
+                                  actions:@[ cancelAction, confirmAction ]
+                         inViewController:self];
     }
 }
 
@@ -161,12 +163,6 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         return 0;
     }
     return 15;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 15)];
-    view.backgroundColor = HEXCOLOR(0xf0f0f6);
-    return view;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -202,7 +198,6 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
         detailViewController.userId = userId;
         [self.navigationController pushViewController:detailViewController animated:YES];
     } else {
-        RCDUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
         RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
         addViewController.targetUserId = userId;
         [self.navigationController pushViewController:addViewController animated:YES];
@@ -218,30 +213,27 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     [self.navigationController pushViewController:contactSelectedVC animated:YES];
 }
 
-#pragma mark -UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        RCDBaseSettingTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-        [self.clearLoadingView removeFromSuperview];
-        [cell addSubview:self.clearLoadingView];
-        [self.clearLoadingView startAnimating];
-        __weak typeof(self) weakSelf = self;
-        [[RCDIMService sharedService] clearHistoryMessage:ConversationType_PRIVATE
-            targetId:weakSelf.userId
-            successBlock:^{
-                [weakSelf showAlertMessage:RCDLocalizedString(@"clear_chat_history_success")];
-                weakSelf.clearMessageHistory();
-                [self.clearLoadingView stopAnimating];
-                [self.clearLoadingView removeFromSuperview];
+- (void)clearHistoryMessage {
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    RCDBaseSettingTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    [self.clearLoadingView removeFromSuperview];
+    [cell addSubview:self.clearLoadingView];
+    [self.clearLoadingView startAnimating];
+    __weak typeof(self) weakSelf = self;
+    [[RCDIMService sharedService] clearHistoryMessage:ConversationType_PRIVATE
+        targetId:weakSelf.userId
+        successBlock:^{
+            [weakSelf showAlertMessage:RCDLocalizedString(@"clear_chat_history_success")];
+            weakSelf.clearMessageHistory();
+            [self.clearLoadingView stopAnimating];
+            [self.clearLoadingView removeFromSuperview];
 
-            }
-            errorBlock:^(RCErrorCode status) {
-                [weakSelf showAlertMessage:RCDLocalizedString(@"clear_chat_history_fail")];
-                [self.clearLoadingView stopAnimating];
-                [self.clearLoadingView removeFromSuperview];
-            }];
-    }
+        }
+        errorBlock:^(RCErrorCode status) {
+            [weakSelf showAlertMessage:RCDLocalizedString(@"clear_chat_history_fail")];
+            [self.clearLoadingView stopAnimating];
+            [self.clearLoadingView removeFromSuperview];
+        }];
 }
 
 #pragma mark - helper
@@ -264,12 +256,14 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 - (void)showAlertMessage:(NSString *)msg {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:msg
-                                                       delegate:nil
-                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                              otherButtonTitles:nil, nil];
-    [alertView show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:msg preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)loadUserInfo {
@@ -377,6 +371,11 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
     if (!_clearLoadingView) {
         UIActivityIndicatorView *activityIndicatorView =
             [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        if (@available(iOS 13.0, *)) {
+            activityIndicatorView =
+                [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
+        }
+        activityIndicatorView.frame = CGRectMake(self.tableView.bounds.size.width - 55, 0, 44, 44);
         activityIndicatorView.frame = CGRectMake(self.tableView.bounds.size.width - 55, 0, 44, 44);
         _clearLoadingView = activityIndicatorView;
     }

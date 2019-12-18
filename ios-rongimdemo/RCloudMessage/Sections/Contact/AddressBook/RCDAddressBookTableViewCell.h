@@ -6,10 +6,10 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 @class RCDFriendInfo;
 
-@interface RCDAddressBookTableViewCell : UITableViewCell
+@interface RCDAddressBookTableViewCell : RCDTableViewCell
 
 @property (nonatomic, copy) void (^acceptBlock)(NSString *userId);
 

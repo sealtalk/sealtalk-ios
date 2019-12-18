@@ -10,8 +10,8 @@ rm -rf ./framework/JrmfIMLib
 cp -rf ../ios-3rd-vendor/jrmf/JrmfIMLib ./framework/
 fi
 if [ -d "../ios-3rd-vendor/ifly" ]; then
-rm -rf ./framework/ifly
-cp -rf ../ios-3rd-vendor/ifly ./framework/
+#rm -rf ./framework/ifly
+cp -rf ../ios-3rd-vendor/ifly ./framework/ifly
 fi
 if [ -d "../ios-3rd-vendor/bqmm" ]; then
 rm -rf ./framework/bqmm

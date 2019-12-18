@@ -132,9 +132,11 @@ static NSString *kInterfaceNone = @"";
 - (void)dataStatistics {
     NetworkBandwidth *bandWidth = [self getNetworkBandwidth];
     [self pushNetworkBandwidth:bandWidth];
-    NSString *log = [NSString stringWithFormat:@"{\"cpuUsage\":%@,\"cpuUsageOfOS\":%@,\"memory\":%@,\"fps\":%@,\"netSend\":%@,\"netReceive\":%@}",
-                                               @([self cpuUsage]), @([self cpuUsageOfOS]), @([self appUsesMemoryBytes]),
-                                               @(self.fps),@(bandWidth.sent/kTimerInterval),@(bandWidth.received/kTimerInterval)];
+    NSString *log = [NSString
+        stringWithFormat:
+            @"{\"cpuUsage\":%@,\"cpuUsageOfOS\":%@,\"memory\":%@,\"fps\":%@,\"netSend\":%@,\"netReceive\":%@}",
+            @([self cpuUsage]), @([self cpuUsageOfOS]), @([self appUsesMemoryBytes]), @(self.fps),
+            @(bandWidth.sent / kTimerInterval), @(bandWidth.received / kTimerInterval)];
     NSLog(@"statistics form: %@", log);
 }
 
@@ -168,7 +170,7 @@ static NSString *kInterfaceNone = @"";
 }
 
 - (float)cpuUsageOfOS {
-    float cpuUsage;
+    float cpuUsage = 0.0;
     kern_return_t kr;
     mach_msg_type_number_t count;
     static host_cpu_load_info_data_t previous_info = {0, 0, 0, 0};

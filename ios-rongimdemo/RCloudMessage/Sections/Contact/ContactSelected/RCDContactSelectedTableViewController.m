@@ -21,6 +21,8 @@
 #import "UIColor+RCColor.h"
 #import "RCDForwardManager.h"
 #import "UIView+MBProgressHUD.h"
+#import "RCDSearchBar.h"
+#import "RCDTableView.h"
 @interface RCDContactSelectedTableViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
                                                      UICollectionViewDelegate, UITableViewDelegate,
                                                      UITableViewDataSource, UISearchBarDelegate, UITextFieldDelegate>
@@ -49,8 +51,8 @@
 @property (nonatomic, strong) RCDNoFriendView *noFriendView;
 @property (nonatomic, strong) RCDUIBarButtonItem *rightBtn;
 @property (nonatomic, strong) UICollectionView *selectedUsersCollectionView;
-@property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) RCDTableView *tableView;
+@property (nonatomic, strong) RCDSearchBar *searchBar;
 @property (nonatomic, strong) UITextField *searchField;
 @property (nonatomic, strong) UIView *searchFieldLeftView;
 @property (nonatomic, strong) MBProgressHUD *hud;
@@ -70,7 +72,6 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.backgroundColor = [UIColor whiteColor];
     [self setupNavi];
     [self initData];
     [self setupSubviews];
@@ -91,13 +92,12 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
+    [self.rightBtn buttonIsCanClick:YES buttonColor:RCDDYCOLOR(0xffffff, 0xA8A8A8) barButtonItem:self.rightBtn];
     [self.hud hide:YES];
 }
 
 #pragma mark - Private Method
 - (void)setupNavi {
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationItem.leftBarButtonItem =
         [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
                                                    target:self
@@ -106,7 +106,6 @@
 }
 
 - (void)setupSubviews {
-    self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.selectedUsersCollectionView];
     [self.view addSubview:self.searchBar];
@@ -266,15 +265,15 @@
     NSString *titleStr;
     if (self.selectUserList.count > 0) {
         titleStr = [NSString stringWithFormat:@"%@(%zd)", RCDLocalizedString(@"confirm"), [self.selectUserList count]];
-        [self.rightBtn buttonIsCanClick:YES
-                            buttonColor:[UIColor colorWithHexString:@"ffffff" alpha:1.0]
-                          barButtonItem:self.rightBtn];
+        [self.rightBtn buttonIsCanClick:YES buttonColor:RCDDYCOLOR(0xffffff, 0xA8A8A8) barButtonItem:self.rightBtn];
     } else {
         titleStr = RCDLocalizedString(@"confirm");
 
-        [self.rightBtn buttonIsCanClick:NO
-                            buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
-                          barButtonItem:self.rightBtn];
+        [self.rightBtn
+            buttonIsCanClick:NO
+                 buttonColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                      darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
+               barButtonItem:self.rightBtn];
     }
     [self.rightBtn.button setTitle:titleStr forState:UIControlStateNormal];
 }
@@ -294,12 +293,12 @@
 }
 
 - (void)showAlertViewWithMessage:(NSString *)message {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:message
-                                                    message:nil
-                                                   delegate:self
-                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                          otherButtonTitles:nil, nil];
-    [alert show];
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)pushChatVCWithUserInfo:(RCDFriendInfo *)userInfo {
@@ -338,7 +337,8 @@
     }
 
     [self.rightBtn buttonIsCanClick:NO
-                        buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                        buttonColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                             darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
                       barButtonItem:self.rightBtn];
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
@@ -366,7 +366,7 @@
                         } else {
                             [self showAlertViewWithMessage:RCDLocalizedString(@"add_member_fail")];
                             [self.rightBtn buttonIsCanClick:YES
-                                                buttonColor:[UIColor whiteColor]
+                                                buttonColor:RCDDYCOLOR(0xffffff, 0xA8A8A8)
                                               barButtonItem:self.rightBtn];
                         }
                         if (status == RCDGroupAddMemberStatusInviteeApproving) {
@@ -388,7 +388,7 @@
                                       } else {
                                           [self showAlertViewWithMessage:RCDLocalizedString(@"delete_member_fail")];
                                           [self.rightBtn buttonIsCanClick:YES
-                                                              buttonColor:[UIColor whiteColor]
+                                                              buttonColor:RCDDYCOLOR(0xffffff, 0xA8A8A8)
                                                             barButtonItem:self.rightBtn];
                                       }
                                   })}];
@@ -405,12 +405,20 @@
             }
 
             if (seletedUsersId.count == 1 && [RCDForwardManager sharedInstance].isForward) {
-                [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
+                [self.rightBtn buttonIsCanClick:YES
+                                    buttonColor:RCDDYCOLOR(0xffffff, 0xA8A8A8)
+                                  barButtonItem:self.rightBtn];
                 RCConversation *conversation = [[RCConversation alloc] init];
-                conversation.conversationType = ConversationType_PRIVATE;
                 conversation.targetId = seletedUsersId[0];
-                [RCDForwardManager sharedInstance].toConversation = conversation;
-                [[RCDForwardManager sharedInstance] showForwardAlertViewInViewController:self];
+                conversation.conversationType = ConversationType_PRIVATE;
+                if ([RCDForwardManager sharedInstance].selectConversationCompleted) {
+                    [RCDForwardManager sharedInstance].selectConversationCompleted([@[ conversation ] copy]);
+                    [[RCDForwardManager sharedInstance] forwardEnd];
+                } else {
+                    [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
+                    [RCDForwardManager sharedInstance].toConversation = conversation;
+                    [[RCDForwardManager sharedInstance] showForwardAlertViewInViewController:self];
+                }
             } else {
                 RCDCreateGroupViewController *createGroupVC = [[RCDCreateGroupViewController alloc] init];
                 createGroupVC.groupMemberIdList = seletedUsersId;
@@ -463,11 +471,11 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 15)];
-    view.backgroundColor = HEXCOLOR(0xf0f0f6);
+    view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     if (self.isSearchResult == NO) {
         NSString *key = [self.allKeys objectAtIndex:section];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 8, [UIScreen mainScreen].bounds.size.width, 15)];
-        label.textColor = [UIColor blackColor];
+        label.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
         label.font = [UIFont boldSystemFontOfSize:17];
         label.text = key;
         [view addSubview:label];
@@ -788,15 +796,16 @@
         _rightBtn.button.titleLabel.font = [UIFont systemFontOfSize:16];
         [_rightBtn.button setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, -10)];
         [_rightBtn buttonIsCanClick:NO
-                        buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                        buttonColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                             darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
                       barButtonItem:_rightBtn];
     }
     return _rightBtn;
 }
 
-- (UITableView *)tableView {
+- (RCDTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] init];
+        _tableView = [[RCDTableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -806,9 +815,10 @@
             _tableView.cellLayoutMarginsFollowReadableWidth = NO;
         }
         UIView *separatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth, 1)];
-        separatorLine.backgroundColor = [UIColor colorWithRed:230 / 255.0 green:230 / 255.0 blue:230 / 255.0 alpha:1];
+        separatorLine.backgroundColor = [RCKitUtility
+            generateDynamicColor:[UIColor colorWithRed:230 / 255.0 green:230 / 255.0 blue:230 / 255.0 alpha:1]
+                       darkColor:HEXCOLOR(0x1a1a1a)];
         _tableView.tableHeaderView = separatorLine;
-        _tableView.tableFooterView = [UIView new];
         _tableView.allowsMultipleSelection = _isAllowsMultipleSelection;
     }
     return _tableView;
@@ -824,7 +834,7 @@
         _selectedUsersCollectionView.delegate = self;
         _selectedUsersCollectionView.dataSource = self;
         _selectedUsersCollectionView.scrollEnabled = YES;
-        _selectedUsersCollectionView.backgroundColor = [UIColor whiteColor];
+        _selectedUsersCollectionView.backgroundColor = RCDDYCOLOR(0xffffff, 0x000000);
         [_selectedUsersCollectionView registerClass:[RCDContactSelectedCollectionViewCell class]
                          forCellWithReuseIdentifier:@"RCDContactSelectedCollectionViewCell"];
         _selectedUsersCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -832,12 +842,10 @@
     return _selectedUsersCollectionView;
 }
 
-- (UISearchBar *)searchBar {
+- (RCDSearchBar *)searchBar {
     if (!_searchBar) {
-        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth, 54)];
+        _searchBar = [[RCDSearchBar alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth, 54)];
         _searchBar.placeholder = NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil);
-        _searchBar.backgroundColor = [UIColor whiteColor];
-        _searchBar.backgroundImage = [UIColor imageWithColor:[UIColor whiteColor]];
         [_searchBar setDelegate:self];
         [_searchBar setKeyboardType:UIKeyboardTypeDefault];
     }

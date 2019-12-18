@@ -6,13 +6,13 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^DeleteImageBlock)();
 
-@interface RCDPictureDetailViewController : UIViewController
+@interface RCDPictureDetailViewController : RCDViewController
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, copy) DeleteImageBlock deleteImageBlock;

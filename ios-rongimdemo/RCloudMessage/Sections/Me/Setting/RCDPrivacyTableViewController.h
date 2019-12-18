@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 
-@interface RCDPrivacyTableViewController : UITableViewController
+@interface RCDPrivacyTableViewController : RCDTableViewController
 
 @end

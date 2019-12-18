@@ -17,11 +17,10 @@
 #import "RCDForwardSelectedCell.h"
 #import "RCDRightArrowCell.h"
 #import "RCDBottomResultView.h"
-#import "RCDHaveSelectedViewController.h"
 #import "RCDSelectGroupViewController.h"
 #import "NormalAlertView.h"
 #import "UIView+MBProgressHUD.h"
-
+#import "RCDSearchBar.h"
 // 批量删除最大限制：20
 #define RCDDeleteMaxNumber 20
 
@@ -32,7 +31,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
                                               UISearchControllerDelegate>
 
 @property (nonatomic, strong) RCDTableView *tableView;
-@property (nonatomic, strong) UISearchBar *searchFriendsBar;
+@property (nonatomic, strong) RCDSearchBar *searchFriendsBar;
 
 @property (nonatomic, strong) NSArray *allFriendArray;
 @property (nonatomic, strong) NSArray *resultKeys;
@@ -435,15 +434,11 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 }
 
 #pragma mark - Getter & Setter
-- (UISearchBar *)searchFriendsBar {
+- (RCDSearchBar *)searchFriendsBar {
     if (!_searchFriendsBar) {
-        _searchFriendsBar = [[UISearchBar alloc] init];
+        _searchFriendsBar = [[RCDSearchBar alloc] init];
         _searchFriendsBar.delegate = self;
         _searchFriendsBar.keyboardType = UIKeyboardTypeDefault;
-        _searchFriendsBar.placeholder = RCDLocalizedString(@"search");
-        UIImage *searchBarBg = [RCDUtilities getImageWithColor:[UIColor clearColor] andHeight:32.0f];
-        _searchFriendsBar.backgroundImage = searchBarBg;
-        _searchFriendsBar.backgroundColor = HEXCOLOR(0xf0f0f6);
     }
     return _searchFriendsBar;
 }
@@ -453,9 +448,6 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         _tableView = [[RCDTableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.tableFooterView = [UIView new];
-        _tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
-        _tableView.separatorColor = HEXCOLOR(0xdfdfdf);
         _tableView.tableHeaderView =
             [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
         //设置右侧索引

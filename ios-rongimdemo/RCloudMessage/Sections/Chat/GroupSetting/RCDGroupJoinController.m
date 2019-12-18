@@ -26,7 +26,6 @@
 #pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = HEXCOLOR(0xf2f2f3);
     self.group = [RCDGroupManager getGroupInfo:self.groupId];
     [self setNaviItem];
     [self addSubViews];
@@ -91,12 +90,15 @@
 }
 
 - (void)showAlert:(NSString *)alertContent {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:alertContent
-                                                   delegate:nil
-                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                          otherButtonTitles:nil];
-    [alert show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                 message:alertContent
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)addSubViews {
@@ -158,7 +160,8 @@
 - (UIView *)bgView {
     if (!_bgView) {
         _bgView = [[UIView alloc] init];
-        _bgView.backgroundColor = [UIColor whiteColor];
+        _bgView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                           darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
     }
     return _bgView;
 }
@@ -175,7 +178,7 @@
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
-        _nameLabel.textColor = HEXCOLOR(0x262626);
+        _nameLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
         _nameLabel.font = [UIFont systemFontOfSize:20];
         _nameLabel.textAlignment = NSTextAlignmentCenter;
     }
@@ -185,7 +188,7 @@
 - (UILabel *)infoLabel {
     if (!_infoLabel) {
         _infoLabel = [[UILabel alloc] init];
-        _infoLabel.textColor = HEXCOLOR(0x939393);
+        _infoLabel.textColor = RCDDYCOLOR(0x939393, 0x666666);
         _infoLabel.font = [UIFont systemFontOfSize:14];
         _infoLabel.textAlignment = NSTextAlignmentCenter;
     }

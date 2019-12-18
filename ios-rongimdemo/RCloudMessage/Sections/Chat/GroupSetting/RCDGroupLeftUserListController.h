@@ -6,11 +6,11 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDGroupLeftUserListController : UITableViewController
+@interface RCDGroupLeftUserListController : RCDTableViewController
 @property (nonatomic, strong) NSString *groupId;
 @end
 

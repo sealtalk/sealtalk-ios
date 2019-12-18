@@ -18,6 +18,7 @@
 #import "RCDSearchResultViewCell.h"
 #import "UIColor+RCColor.h"
 #import "RCDLanguageManager.h"
+#import "RCDTableView.h"
 @interface RCDSearchViewController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource,
                                        UIGestureRecognizerDelegate>
 @property (nonatomic, strong) NSMutableDictionary *resultDictionary;
@@ -25,7 +26,7 @@
 @property (nonatomic, strong) RCDSearchBar *searchBar;
 @property (nonatomic, strong) UIButton *cancelButton;
 @property (nonatomic, strong) UIView *searchView;
-@property (nonatomic, strong) UITableView *resultTableView;
+@property (nonatomic, strong) RCDTableView *resultTableView;
 @property (nonatomic, strong) RCDLabel *emptyLabel;
 @end
 
@@ -39,7 +40,6 @@
     [self loadSearchView];
 
     self.navigationItem.titleView = self.searchView;
-    self.view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.95];
 
     UITapGestureRecognizer *tap =
         [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideSerchBarWhenTapBackground:)];
@@ -47,25 +47,16 @@
     [self.view addGestureRecognizer:tap];
 }
 
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    if ([self.resultTableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [self.resultTableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
-    }
-    if ([self.resultTableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [self.resultTableView setLayoutMargins:UIEdgeInsetsMake(0, 10, 0, 0)];
-    }
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.barTintColor = HEXCOLOR(0xf0f0f6);
+    self.resultTableView.frame = self.view.bounds;
+    self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"0099ff" alpha:1.0f];
+    self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0x0099ff, 0x000000);
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
@@ -126,17 +117,18 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
-    view.backgroundColor = [UIColor whiteColor];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 40 - 16 - 7, self.view.frame.size.width, 16)];
     label.font = [UIFont systemFontOfSize:14.];
     label.text = self.groupTypeArray[section];
-    label.textColor = HEXCOLOR(0x999999);
+    label.textColor = RCDDYCOLOR(0x999999, 0x666666);
     [view addSubview:label];
     //添加与cell分割线等宽的session分割线
     CGRect viewFrame = view.frame;
     UIView *separatorLine =
         [[UIView alloc] initWithFrame:CGRectMake(10, viewFrame.size.height - 1, viewFrame.size.width - 10, 1)];
-    separatorLine.backgroundColor = [UIColor colorWithRed:230 / 255.0 green:230 / 255.0 blue:230 / 255.0 alpha:1];
+    separatorLine.backgroundColor =
+        [RCDUtilities generateDynamicColor:[UIColor colorWithRed:230 / 255.0 green:230 / 255.0 blue:230 / 255.0 alpha:1]
+                                 darkColor:[UIColor clearColor]];
     [view addSubview:separatorLine];
     return view;
 }
@@ -146,7 +138,7 @@
         return nil;
     }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
-    view.backgroundColor = HEXCOLOR(0xf0f0f6);
+    view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     return view;
 }
 
@@ -335,16 +327,17 @@
 }
 
 #pragma mark - getter
-- (UITableView *)resultTableView {
+- (RCDTableView *)resultTableView {
     if (!_resultTableView) {
-        _resultTableView =
-            [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
-                                         style:UITableViewStylePlain];
-        _resultTableView.backgroundColor = [UIColor clearColor];
+        _resultTableView = [[RCDTableView alloc] init];
         _resultTableView.delegate = self;
         _resultTableView.dataSource = self;
-        _resultTableView.tableFooterView = [UIView new];
-        [_resultTableView setSeparatorColor:HEXCOLOR(0xdfdfdf)];
+        if ([_resultTableView respondsToSelector:@selector(setSeparatorInset:)]) {
+            [_resultTableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
+        }
+        if ([_resultTableView respondsToSelector:@selector(setLayoutMargins:)]) {
+            [_resultTableView setLayoutMargins:UIEdgeInsetsMake(0, 10, 0, 0)];
+        }
     }
     return _resultTableView;
 }

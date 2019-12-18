@@ -41,7 +41,7 @@
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
 #import "UIColor+RCColor.h"
 #import "UIImage+RCImage.h"
-
+#import "RCDUtilities.h"
 const CGFloat kArrowSize = 8.f;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -442,8 +442,7 @@ typedef enum {
             titleLabel.font = titleFont;
             titleLabel.textAlignment = menuItem.alignment;
             //设置字体颜色
-            titleLabel.textColor =
-                menuItem.foreColor ? menuItem.foreColor : [UIColor colorWithHexString:@"000000" alpha:1.0f];
+            titleLabel.textColor = menuItem.foreColor ? menuItem.foreColor : RCDDYCOLOR(0x000000, 0x9f9f9f);
             titleLabel.backgroundColor = [UIColor clearColor];
             titleLabel.autoresizingMask = UIViewAutoresizingNone;
             // titleLabel.backgroundColor = [UIColor greenColor];
@@ -586,7 +585,7 @@ typedef enum {
         [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowY1}];
         [arrowPath addLineToPoint:(CGPoint){arrowXM, arrowY0}];
 
-        [[[UIColor whiteColor] colorWithAlphaComponent:1.0f] set];
+        [[RCDDYCOLOR(0xffffff, 0x1a1a1a) colorWithAlphaComponent:1.0f] set];
 
         Y0 += kArrowSize;
 
@@ -603,7 +602,7 @@ typedef enum {
         [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowY0}];
         [arrowPath addLineToPoint:(CGPoint){arrowXM, arrowY1}];
 
-        [[[UIColor whiteColor] colorWithAlphaComponent:1.0f] set];
+        [[RCDDYCOLOR(0xffffff, 0x1a1a1a) colorWithAlphaComponent:1.0f] set];
 
         Y1 -= kArrowSize;
 
@@ -621,7 +620,7 @@ typedef enum {
         [arrowPath addLineToPoint:(CGPoint){arrowX1, arrowY1}];
         [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowYM}];
 
-        [[[UIColor whiteColor] colorWithAlphaComponent:1.0f] set];
+        [[RCDDYCOLOR(0xffffff, 0x1a1a1a) colorWithAlphaComponent:1.0f] set];
 
         X0 += kArrowSize;
 
@@ -639,7 +638,7 @@ typedef enum {
         [arrowPath addLineToPoint:(CGPoint){arrowX1, arrowY1}];
         [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowYM}];
 
-        [[[UIColor whiteColor] colorWithAlphaComponent:1.0f] set];
+        [[RCDDYCOLOR(0xffffff, 0x1a1a1a) colorWithAlphaComponent:1.0f] set];
 
         X1 -= kArrowSize;
     }

@@ -10,7 +10,7 @@
 #import "UIColor+RCColor.h"
 #import <Masonry/Masonry.h>
 #import <AVFoundation/AVFoundation.h>
-
+#import "RCDUtilities.h"
 @implementation RCDPersonDetailCell
 
 - (instancetype)init {
@@ -22,7 +22,6 @@
 }
 
 - (void)initSubviews {
-    self.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.leftImgView];
     [self.contentView addSubview:self.detailLabel];
@@ -163,7 +162,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = [UIFont systemFontOfSize:17];
-        _titleLabel.textColor = [UIColor colorWithHexString:@"262626" alpha:1.f];
+        _titleLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
     }
     return _titleLabel;
 }

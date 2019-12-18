@@ -36,7 +36,6 @@
     [self loadSearchView];
 
     self.navigationItem.titleView = self.searchView;
-    self.view.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = [UIView new];
     self.navigationItem.hidesBackButton = YES;
 }
@@ -53,13 +52,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.barTintColor = HEXCOLOR(0xf0f0f6);
+    self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"0099ff" alpha:1.0f];
+    self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0x0099ff, 0x000000);
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 

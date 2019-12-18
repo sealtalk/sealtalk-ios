@@ -7,8 +7,8 @@
 //
 
 #import <RongIMKit/RongIMKit.h>
-#import <UIKit/UIKit.h>
-@interface RCDSearchHistoryMessageController : UITableViewController
+#import "RCDTableViewController.h"
+@interface RCDSearchHistoryMessageController : RCDTableViewController
 /*!
  当前会话的会话类型
  */

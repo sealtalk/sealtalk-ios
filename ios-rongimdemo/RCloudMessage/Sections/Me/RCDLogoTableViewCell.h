@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 
-@interface RCDLogoTableViewCell : UITableViewCell
+@interface RCDLogoTableViewCell : RCDTableViewCell
 
 @end

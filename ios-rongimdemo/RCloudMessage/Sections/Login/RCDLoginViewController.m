@@ -32,7 +32,7 @@
 #define UserTextFieldTag 1000
 #define PassWordFieldTag 1001
 
-@interface RCDLoginViewController () <UITextFieldDelegate, UIAlertViewDelegate, RCDCountryListControllerDelegate>
+@interface RCDLoginViewController () <UITextFieldDelegate, RCDCountryListControllerDelegate>
 
 @property (nonatomic, strong) RCAnimatedImagesView *animatedImagesView;
 @property (nonatomic, strong) RCDIndicateTextField *countryTextField;

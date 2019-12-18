@@ -40,13 +40,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = RCDLocalizedString(@"GroupSelectNewOwner");
-    self.tableView.tableFooterView = [UIView new];
     self.definesPresentationContext = YES;
     self.tableView.tableHeaderView = self.searchController.searchBar;
     if ([self.tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }
-    self.tableView.backgroundColor = HEXCOLOR(0xf2f2f3);
 
     RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
                                                                              target:self
@@ -92,7 +90,7 @@
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
     title.frame = CGRectMake(12, 8, 15, 15);
     title.font = [UIFont systemFontOfSize:15.f];
-    title.textColor = HEXCOLOR(0x999999);
+    title.textColor = RCDDYCOLOR(0x999999, 0x666666);
     [view addSubview:title];
     title.text = self.resultKeys[section];
     return view;
@@ -213,8 +211,13 @@
         _searchController.searchResultsUpdater = self;
         //提醒字眼
         _searchController.searchBar.placeholder = NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil);
-        _searchController.searchBar.backgroundImage = [UIColor imageWithColor:[UIColor clearColor]];
-        [_searchController.searchBar setBackgroundColor:HEXCOLOR(0xE4E5E7)];
+        if (@available(iOS 13.0, *)) {
+            _searchController.searchBar.searchTextField.backgroundColor =
+                [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                         darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.6]];
+        }
+        //设置顶部搜索栏的背景色
+        _searchController.searchBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
         _searchController.dimsBackgroundDuringPresentation = NO;
     }
     return _searchController;

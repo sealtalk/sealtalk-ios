@@ -6,7 +6,7 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 #import "RCDGroupNotice.h"
 @class RCDGroupNoticeCell;
 
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didClickIgnoreButton:(RCDGroupNoticeCell *)cell;
 
 @end
-@interface RCDGroupNoticeCell : UITableViewCell
+@interface RCDGroupNoticeCell : RCDTableViewCell
 @property (nonatomic, weak) id<RCDGroupNoticeCellDelegate> delegate;
 @property (nonatomic, strong, readonly) RCDGroupNotice *notice;
 + (instancetype)cellWithTableView:(UITableView *)tableView;

@@ -8,11 +8,12 @@
 
 #import "RCDCSButton.h"
 #import "RCDCommonDefine.h"
+#import "RCDUtilities.h"
 @implementation RCDCSButton
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setTitleColor:HEXCOLOR(0x939dab) forState:(UIControlStateNormal)];
+        [self setTitleColor:RCDDYCOLOR(0x939dab, 0x666666) forState:(UIControlStateNormal)];
         self.layer.borderWidth = 0.5;
         self.layer.borderColor = HEXCOLOR(0xb4bdcd).CGColor;
         self.layer.masksToBounds = YES;
@@ -30,7 +31,7 @@
     } else {
         [self setTitleColor:HEXCOLOR(0x939dab) forState:(UIControlStateNormal)];
         self.layer.borderColor = HEXCOLOR(0xb4bdcd).CGColor;
-        self.backgroundColor = HEXCOLOR(0xffffff);
+        self.backgroundColor = [HEXCOLOR(0xffffff) colorWithAlphaComponent:0];
     }
     super.selected = selected;
 }

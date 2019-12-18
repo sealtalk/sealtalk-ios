@@ -60,8 +60,6 @@
 }
 
 - (void)setupSubviews {
-    self.view.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
-
     [self.view addSubview:self.headerView];
     [self.view addSubview:self.bgCollectionView];
     [self.headerView addSubview:self.albumSelectLabel];
@@ -147,7 +145,9 @@
 - (UIView *)headerView {
     if (!_headerView) {
         _headerView = [[UIView alloc] init];
-        _headerView.backgroundColor = [UIColor whiteColor];
+        _headerView.backgroundColor =
+            [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                     darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
         [_headerView addGestureRecognizer:tap];
     }
@@ -157,7 +157,7 @@
 - (UILabel *)albumSelectLabel {
     if (!_albumSelectLabel) {
         _albumSelectLabel = [[UILabel alloc] init];
-        _albumSelectLabel.textColor = [UIColor blackColor];
+        _albumSelectLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
         _albumSelectLabel.text = RCDLocalizedString(@"SelectFromAlbum");
         _albumSelectLabel.font = [UIFont systemFontOfSize:15];
     }
@@ -187,7 +187,7 @@
         [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
 
         _bgCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
-        _bgCollectionView.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
+        _bgCollectionView.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
         _bgCollectionView.delegate = self;
         _bgCollectionView.dataSource = self;
         _bgCollectionView.scrollEnabled = YES;

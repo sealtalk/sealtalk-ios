@@ -93,25 +93,27 @@
 - (void)textFieldDidChange:(UITextField *)textField {
     NSString *toBeString = textField.text;
     if (![toBeString isEqualToString:self.originNickName]) {
-        [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
+        [self.rightBtn buttonIsCanClick:YES buttonColor:RCDDYCOLOR(0xffffff, 0xA8A8A8) barButtonItem:self.rightBtn];
     } else {
-        [self.rightBtn buttonIsCanClick:NO
-                            buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
-                          barButtonItem:self.rightBtn];
+        [self.rightBtn
+            buttonIsCanClick:NO
+                 buttonColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                      darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
+               barButtonItem:self.rightBtn];
     }
 }
 
 - (void)showAlert:(NSString *)message cancelBtnTitle:(NSString *)cBtnTitle {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:message
-                                                   delegate:self
-                                          cancelButtonTitle:cBtnTitle
-                                          otherButtonTitles:nil, nil];
-    [alert show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)initUI {
-    self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     [self setNavigationButton];
     [self setSubViews];
     self.navigationItem.title = RCDLocalizedString(@"modify_nickname");
@@ -123,22 +125,24 @@
                                                               action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = self.leftBtn;
 
-    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"save")
-                                                         titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
-                                                        buttonFrame:CGRectMake(0, 0, 50, 30)
-                                                             target:self
-                                                             action:@selector(saveUserName:)];
+    self.rightBtn = [[RCDUIBarButtonItem alloc]
+        initWithbuttonTitle:RCDLocalizedString(@"save")
+                 titleColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                     darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
+                buttonFrame:CGRectMake(0, 0, 50, 30)
+                     target:self
+                     action:@selector(saveUserName:)];
     [self.rightBtn buttonIsCanClick:NO
-                        buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                        buttonColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                             darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
                       barButtonItem:self.rightBtn];
     self.navigationItem.rightBarButtonItems = [self.rightBtn setTranslation:self.rightBtn translation:-11];
 }
 
 - (void)setSubViews {
     self.bgView = [UIView new];
-    self.bgView.backgroundColor = [UIColor whiteColor];
-    self.bgView.layer.borderWidth = 0.5;
-    self.bgView.layer.borderColor = [HEXCOLOR(0xdfdfdf) CGColor];
+    self.bgView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                           darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.2]];
     self.bgView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.bgView];
 
@@ -150,7 +154,7 @@
     self.userNameTextField.borderStyle = UITextBorderStyleNone;
     self.userNameTextField.clearButtonMode = UITextFieldViewModeAlways;
     self.userNameTextField.font = [UIFont systemFontOfSize:16.f];
-    self.userNameTextField.textColor = [UIColor colorWithHexString:@"000000" alpha:1.f];
+    self.userNameTextField.textColor = RCDDYCOLOR(0x000000, 0x999999);
     self.userNameTextField.translatesAutoresizingMaskIntoConstraints = NO;
     [self.userNameTextField addTarget:self
                                action:@selector(textFieldDidChange:)

@@ -6,9 +6,9 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
-@interface RCDPersonDetailViewController : UIViewController
+@interface RCDPersonDetailViewController : RCDViewController
 + (UIViewController *)configVC:(NSString *)userId groupId:(NSString *)groupId;
 @property (nonatomic, strong) NSString *userId;
 @end

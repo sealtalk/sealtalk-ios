@@ -6,9 +6,9 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 
-@interface RCDSearchMoreController : UITableViewController
+@interface RCDSearchMoreController : RCDTableViewController
 @property (nonatomic, copy) NSString *searchString;
 @property (nonatomic, copy) NSString *type;
 @property (nonatomic, strong) NSArray *resultArray;

@@ -22,6 +22,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.tipMessageLabel = [RCTipLabel greyTipLabel];
+        self.tipMessageLabel.backgroundColor =
+            [RCKitUtility generateDynamicColor:[UIColor colorWithWhite:0 alpha:0.1] darkColor:HEXCOLOR(0x232323)];
+        self.tipMessageLabel.textColor =
+            [RCKitUtility generateDynamicColor:HEXCOLOR(0xffffff) darkColor:HEXCOLOR(0x707070)];
         [self.baseContentView addSubview:self.tipMessageLabel];
         // self.tipMessageLabel.marginInsets = UIEdgeInsetsMake(0.5f, 0.5f, 0.5f,
         // 0.5f);

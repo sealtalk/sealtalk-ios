@@ -16,7 +16,7 @@
 #import "RCDGroupManager.h"
 #import "RCDUserInfoManager.h"
 #import "DefaultPortraitView.h"
-
+#import "RCDUtilities.h"
 #define itemHight 40
 
 @interface RCDForwardAlertView ()
@@ -83,7 +83,8 @@
 
 #pragma mark - Private Method
 - (void)loadSubviews {
-    self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+    self.backgroundColor = [RCDUtilities generateDynamicColor:[HEXCOLOR(0x000000) colorWithAlphaComponent:0.5]
+                                                    darkColor:[HEXCOLOR(0x6a6a6a) colorWithAlphaComponent:0.6]];
     [self addSubview:self.contentView];
     [self.contentView addSubview:self.cancelButton];
     [self.contentView addSubview:self.confirmButton];
@@ -106,7 +107,7 @@
         make.height.offset(55);
     }];
     UIView *firstLine = [[UIView alloc] init];
-    firstLine.backgroundColor = [UIColor colorWithHexString:@"E5E5E5" alpha:1];
+    firstLine.backgroundColor = RCDDYCOLOR(0xE5E5E5, 0x3a3a3a);
     [self.contentView addSubview:firstLine];
     [firstLine mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.contentView);
@@ -119,7 +120,7 @@
         make.height.offset(44);
     }];
     UIView *secondLine = [[UIView alloc] init];
-    secondLine.backgroundColor = [UIColor colorWithHexString:@"E5E5E5" alpha:1];
+    secondLine.backgroundColor = RCDDYCOLOR(0xE5E5E5, 0x3a3a3a);
     [self.contentView addSubview:secondLine];
     [secondLine mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.contentView);
@@ -127,7 +128,7 @@
         make.height.offset(1);
     }];
     UIView *separateLine = [[UIView alloc] init];
-    separateLine.backgroundColor = [UIColor colorWithHexString:@"E5E5E5" alpha:1];
+    separateLine.backgroundColor = RCDDYCOLOR(0xE5E5E5, 0x3a3a3a);
     [self.contentView addSubview:separateLine];
     [self.cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView);
@@ -267,7 +268,9 @@
 - (UIView *)contentView {
     if (!_contentView) {
         _contentView = [[UIView alloc] init];
-        _contentView.backgroundColor = [UIColor whiteColor];
+        _contentView.backgroundColor =
+            [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                     darkColor:[HEXCOLOR(0x000000) colorWithAlphaComponent:0.8]];
         _contentView.layer.cornerRadius = 5;
         _contentView.layer.masksToBounds = YES;
         _contentView.userInteractionEnabled = YES;
@@ -279,7 +282,7 @@
     if (!_cancelButton) {
         _cancelButton = [[UIButton alloc] init];
         [_cancelButton setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
-        [_cancelButton setTitleColor:HEXCOLOR(0x262626) forState:UIControlStateNormal];
+        [_cancelButton setTitleColor:RCDDYCOLOR(0x262626, 0x9f9f9f) forState:UIControlStateNormal];
         _cancelButton.titleLabel.font = [UIFont systemFontOfSize:18];
         [_cancelButton addTarget:self action:@selector(cancelButtonEvent) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -311,7 +314,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = [UIFont systemFontOfSize:18];
-        _titleLabel.textColor = HEXCOLOR(0x262626);
+        _titleLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
     }
     return _titleLabel;
 }
@@ -319,6 +322,7 @@
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
+        _nameLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
         _nameLabel.font = [UIFont systemFontOfSize:18];
         _nameLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         [self.scrollView addSubview:_nameLabel];
@@ -329,7 +333,7 @@
 - (UILabel *)forwardContentLabel {
     if (!_forwardContentLabel) {
         _forwardContentLabel = [[UILabel alloc] init];
-        _forwardContentLabel.textColor = [UIColor colorWithHexString:@"262626" alpha:1];
+        _forwardContentLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
         _forwardContentLabel.font = [UIFont systemFontOfSize:17];
     }
     return _forwardContentLabel;

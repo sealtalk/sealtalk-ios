@@ -15,6 +15,7 @@
 #import "RCDCommonString.h"
 #import "UIView+MBProgressHUD.h"
 #import <RongIMLib/RongIMLib.h>
+#import "RCDUtilities.h"
 @interface RCDGroupManagerListController () <RCDGroupManagerCellDelegate>
 @property (nonatomic, strong) NSArray *managers;
 @end
@@ -30,9 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = RCDLocalizedString(@"GroupManagerTitle");
-    self.tableView.tableFooterView = [UIView new];
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.01)];
-    self.tableView.backgroundColor = HEXCOLOR(0xf2f2f3);
     [self registerNotification];
     [self refreshData];
 }
@@ -80,7 +79,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
-    label.textColor = HEXCOLOR(0x939393);
+    label.textColor = RCDDYCOLOR(0x939393, 0x666666);
     label.font = [UIFont systemFontOfSize:14];
     if (section == 0) {
         label.text = [NSString stringWithFormat:@"   %@", RCDLocalizedString(@"GroupOwner")];

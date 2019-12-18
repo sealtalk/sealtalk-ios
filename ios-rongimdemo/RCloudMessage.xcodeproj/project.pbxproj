@@ -252,6 +252,8 @@
 		A2AD03E522D5CDDD00F8E64D /* RCDChatAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AD03E422D5CDDD00F8E64D /* RCDChatAPI.m */; };
 		A2AD03F322D5D05500F8E64D /* RCDChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AD03F222D5D05500F8E64D /* RCDChatManager.m */; };
 		A2B126FA22C1FDB300697964 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B126F822C1FDB300697964 /* AppDelegate.m */; };
+		A2CEEFF32366DE50008BC233 /* RCDTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A2CEEFF22366DE50008BC233 /* RCDTableViewCell.m */; };
+		A2CEF0052366E3F7008BC233 /* RCDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2CEF0042366E3F7008BC233 /* RCDViewController.m */; };
 		A2D549572320FE7000AC640B /* RCDClearMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A2D549562320FE7000AC640B /* RCDClearMessage.m */; };
 		A2E4FEF8229F7FF6002B53E7 /* RCDIMService.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E4FEF7229F7FF6002B53E7 /* RCDIMService.m */; };
 		A2E705BC22BA1C5E0047DF47 /* UIView+MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E705B422BA1C5D0047DF47 /* UIView+MBProgressHUD.m */; };
@@ -751,9 +753,7 @@
 		3BC0C7D6229E79480079234F /* RCDContactSelectedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDContactSelectedTableViewController.h; sourceTree = "<group>"; };
 		3BC0C7D8229E79480079234F /* RCDContactSelectedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDContactSelectedTableViewController.m; sourceTree = "<group>"; };
 		3BC0C813229F8F980079234F /* RCDFriendRemarksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDFriendRemarksViewController.h; sourceTree = "<group>"; };
-		3BC0C81C229FC1E80079234F /* RCDRemarksView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDRemarksView.h; sourceTree = "<group>"; };
 		3BC0C81D229FC1E80079234F /* RCDPersonInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDPersonInfoView.m; sourceTree = "<group>"; };
-		3BC0C81E229FC1E80079234F /* RCDRemarksView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDRemarksView.m; sourceTree = "<group>"; };
 		3BC0C81F229FC1E80079234F /* RCDPersonInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDPersonInfoView.h; sourceTree = "<group>"; };
 		3BCA7CA32359536600EBCE54 /* RCDDebugAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugAlertView.h; sourceTree = "<group>"; };
 		3BCA7CA42359536600EBCE54 /* RCDDebugAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugAlertView.m; sourceTree = "<group>"; };
@@ -934,6 +934,10 @@
 		A2AD03F222D5D05500F8E64D /* RCDChatManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDChatManager.m; sourceTree = "<group>"; };
 		A2B126F822C1FDB300697964 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = RCloudMessage/AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		A2B126F922C1FDB300697964 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RCloudMessage/AppDelegate.h; sourceTree = SOURCE_ROOT; };
+		A2CEEFF12366DE50008BC233 /* RCDTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDTableViewCell.h; sourceTree = "<group>"; };
+		A2CEEFF22366DE50008BC233 /* RCDTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDTableViewCell.m; sourceTree = "<group>"; };
+		A2CEF0032366E3F7008BC233 /* RCDViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDViewController.h; sourceTree = "<group>"; };
+		A2CEF0042366E3F7008BC233 /* RCDViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDViewController.m; sourceTree = "<group>"; };
 		A2D549552320FE7000AC640B /* RCDClearMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDClearMessage.h; sourceTree = "<group>"; };
 		A2D549562320FE7000AC640B /* RCDClearMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDClearMessage.m; sourceTree = "<group>"; };
 		A2E4FEF6229F7FF6002B53E7 /* RCDIMService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDIMService.h; sourceTree = "<group>"; };
@@ -1315,6 +1319,10 @@
 				27AD2F86229E721E003C2680 /* RCDTableView.m */,
 				27AD2F8F229E721E003C2680 /* RCDTableViewController.h */,
 				27AD2F7C229E721D003C2680 /* RCDTableViewController.m */,
+				A2CEEFF12366DE50008BC233 /* RCDTableViewCell.h */,
+				A2CEEFF22366DE50008BC233 /* RCDTableViewCell.m */,
+				A2CEF0032366E3F7008BC233 /* RCDViewController.h */,
+				A2CEF0042366E3F7008BC233 /* RCDViewController.m */,
 				27AD2F73229E721D003C2680 /* RCDNoFriendView.h */,
 				27AD2F84229E721D003C2680 /* RCDNoFriendView.m */,
 				27AD2F74229E721D003C2680 /* RCDBaseSettingTableViewCell.h */,
@@ -1708,8 +1716,6 @@
 			children = (
 				3BC0C81F229FC1E80079234F /* RCDPersonInfoView.h */,
 				3BC0C81D229FC1E80079234F /* RCDPersonInfoView.m */,
-				3BC0C81C229FC1E80079234F /* RCDRemarksView.h */,
-				3BC0C81E229FC1E80079234F /* RCDRemarksView.m */,
 				3B47898E22BCA7E300D33F10 /* RCDPersonDetailCell.h */,
 				3B47898F22BCA7E300D33F10 /* RCDPersonDetailCell.m */,
 				3B054E4722F439C6009A3C72 /* RCDSetupRemarkView.h */,
@@ -2780,10 +2786,9 @@
 			};
 			buildConfigurationList = E4D40F231A031F460045097C /* Build configuration list for PBXProject "RCloudMessage" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 				"zh-Hans",
@@ -3112,6 +3117,7 @@
 				A29070BB229E8045006BDAC7 /* RCDTestMessage.m in Sources */,
 				3B0F2C6A22DC6D470017979E /* RCDAddressBookFriendCell.m in Sources */,
 				3BC0C7DB229E79490079234F /* RCDAddFriendViewController.m in Sources */,
+				A2CEEFF32366DE50008BC233 /* RCDTableViewCell.m in Sources */,
 				A29070AD229E7F61006BDAC7 /* RealTimeLocationViewController.m in Sources */,
 				9C226CF9229FB1D400F49FC5 /* RCDHTTPResult.m in Sources */,
 				27AD303D229E721F003C2680 /* RCDNavigationBar.m in Sources */,
@@ -3143,9 +3149,9 @@
 				3B16DA0422F7D4AA00AD2770 /* RCDDescriptionView.m in Sources */,
 				A2F0A98F22FAA3FF00422802 /* RCDGroupLeftUserListCell.m in Sources */,
 				3BB6CE1B22D743720007FFFB /* RCDAddressBookManager.m in Sources */,
-				3BC0C821229FC1E80079234F /* RCDRemarksView.m in Sources */,
 				3B0E2A7522D329C8000E1BE6 /* RCDSettingGenderViewController.m in Sources */,
 				A2907093229E7F61006BDAC7 /* RCDGroupSettingsTableViewController.m in Sources */,
+				A2CEF0052366E3F7008BC233 /* RCDViewController.m in Sources */,
 				3B054E3422F2DCFC009A3C72 /* RCDRecentPictureViewController.m in Sources */,
 				9C21F43B22A8F0BE003AB415 /* RCDGroupManager.m in Sources */,
 				3B3DED11221D62E40079DFE6 /* RCDLanguageManager.m in Sources */,

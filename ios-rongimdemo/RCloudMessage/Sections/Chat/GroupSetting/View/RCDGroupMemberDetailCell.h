@@ -6,7 +6,7 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 #import "UITextViewAndPlaceholder.h"
 @class RCDGroupMemberDetailCell;
 static NSString *_Nullable RCDGroupMyInfoCellIdentifier = @"RCDGroupMyInfoCellIdentifier";
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)onSelectPhoneRegionCode:(RCDGroupMemberDetailCell *)cell;
 @end
-@interface RCDGroupMemberDetailCell : UITableViewCell
+@interface RCDGroupMemberDetailCell : RCDTableViewCell
 
 @property (nonatomic, weak) id<RCDGroupMemberDetailCellDelegate> delegate;
 @property (nonatomic, strong) UITextViewAndPlaceholder *textView;

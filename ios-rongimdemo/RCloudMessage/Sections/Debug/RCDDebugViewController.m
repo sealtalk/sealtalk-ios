@@ -9,7 +9,7 @@
 #import "RCDDebugViewController.h"
 #import <RongIMLib/RongIMLib.h>
 
-@interface RCDDebugViewController () <UIAlertViewDelegate>
+@interface RCDDebugViewController ()
 
 @property (nonatomic, strong) UILabel *offLineMessageTimeLabel;
 @property (nonatomic, strong) UITextField *updateTimeTextField;
@@ -42,10 +42,6 @@
         }];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 - (void)showAlert:(BOOL)success {
     NSString *title = RCDLocalizedString(@"alert");
     NSString *content = RCDLocalizedString(@"setting_success");
@@ -54,12 +50,15 @@
     }
     NSString *confirm = RCDLocalizedString(@"confirm");
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                        message:content
-                                                       delegate:self
-                                              cancelButtonTitle:confirm
-                                              otherButtonTitles:nil];
-        [alert show];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:content
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:confirm
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *_Nonnull action) {
+                                                              [self.navigationController popViewControllerAnimated:YES];
+                                                          }]];
+        [self presentViewController:alertController animated:YES completion:nil];
     });
 }
 

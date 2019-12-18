@@ -10,7 +10,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "RCDUserInfoManager.h"
 #import "RCDContactNotificationMessage.h"
-
+#import "RCDUtilities.h"
 @interface RCDChatListCell ()
 @property (nonatomic, strong) UIImageView *ivAva;
 @property (nonatomic, strong) UILabel *lblName;
@@ -25,7 +25,6 @@
     RCDChatListCell *cell = (RCDChatListCell *)[tableView dequeueReusableCellWithIdentifier:RCDChatListCellIdentifier];
     if (!cell) {
         cell = [[RCDChatListCell alloc] init];
-        cell.backgroundColor = [UIColor whiteColor];
     }
     return cell;
 }
@@ -147,13 +146,13 @@
 
     _lblName = [UILabel new];
     [_lblName setFont:[UIFont boldSystemFontOfSize:16.f]];
-    [_lblName setTextColor:HEXCOLOR(0x252525)];
+    [_lblName setTextColor:RCDDYCOLOR(0x252525, 0x9f9f9f)];
     _lblName.text = RCDLocalizedString(@"friend_news");
 
     _labelTime = [[UILabel alloc] init];
     _labelTime.backgroundColor = [UIColor clearColor];
     _labelTime.font = [UIFont systemFontOfSize:14];
-    _labelTime.textColor = [UIColor lightGrayColor];
+    _labelTime.textColor = [RCDUtilities generateDynamicColor:[UIColor lightGrayColor] darkColor:HEXCOLOR(0x707070)];
     _labelTime.textAlignment = NSTextAlignmentRight;
 
     [self.contentView addSubview:_ivAva];

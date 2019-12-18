@@ -8,7 +8,7 @@
 
 #import "RCDLanguageSettingTableViewCell.h"
 #import "UIColor+RCColor.h"
-
+#import "RCDUtilities.h"
 @interface RCDLanguageSettingTableViewCell ()
 
 @property (nonatomic, strong) NSDictionary *cellSubViews;
@@ -26,10 +26,9 @@
 }
 
 - (void)initialize {
-    self.contentView.backgroundColor = [UIColor whiteColor];
     self.leftLabel = [[UILabel alloc] init];
     self.leftLabel.font = [UIFont systemFontOfSize:17.f];
-    self.leftLabel.textColor = [UIColor colorWithHexString:@"0x262626" alpha:1.0f];
+    self.leftLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
     self.leftLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.rightImageView = [[UIImageView alloc] init];

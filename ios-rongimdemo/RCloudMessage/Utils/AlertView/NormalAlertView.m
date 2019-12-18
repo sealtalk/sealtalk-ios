@@ -8,7 +8,7 @@
 
 #import "NormalAlertView.h"
 #import <Masonry/Masonry.h>
-
+#import "RCDUtilities.h"
 typedef enum : NSUInteger {
     ClassRoomAlertViewCancel,
     ClassRoomAlertViewConfirm,
@@ -79,7 +79,8 @@ typedef enum : NSUInteger {
                     cancel:(ButtonBlock)cancel
                    confirm:(ButtonBlock)confirm {
     NormalAlertView *alertView = [[NormalAlertView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    alertView.backgroundColor = [HEXCOLOR(0x000000) colorWithAlphaComponent:0.5];
+    alertView.backgroundColor = [RCDUtilities generateDynamicColor:[HEXCOLOR(0x000000) colorWithAlphaComponent:0.5]
+                                                         darkColor:[HEXCOLOR(0x6a6a6a) colorWithAlphaComponent:0.6]];
     alertView.title = title;
     alertView.message = message;
     alertView.info = describeTitle;
@@ -104,7 +105,8 @@ typedef enum : NSUInteger {
     CGRect rect = CGRectMake(([UIScreen mainScreen].bounds.size.width - AWidth) / 2,
                              ([UIScreen mainScreen].bounds.size.height - AHeight) / 2, AWidth, AHeight);
     UIView *contentView = [[UIView alloc] initWithFrame:rect];
-    contentView.backgroundColor = HEXCOLOR(0xffffff);
+    contentView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                           darkColor:[HEXCOLOR(0x000000) colorWithAlphaComponent:0.8]];
     contentView.layer.cornerRadius = 8;
     contentView.layer.masksToBounds = YES;
     [self addSubview:contentView];
@@ -209,7 +211,7 @@ typedef enum : NSUInteger {
         _titleLabel.text = self.title;
         _titleLabel.numberOfLines = 1;
         _titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
-        _titleLabel.textColor = HEXCOLOR(0x000000);
+        _titleLabel.textColor = RCDDYCOLOR(0x000000, 0xffffff);
     }
     return _titleLabel;
 }
@@ -222,7 +224,7 @@ typedef enum : NSUInteger {
         _messageLabel.text = self.message;
         _messageLabel.numberOfLines = 0;
         _messageLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
-        _messageLabel.textColor = HEXCOLOR(0x262626);
+        _messageLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
         if (self.highlightText.length > 0) {
             NSRange range = [self.message rangeOfString:self.highlightText];
             if (range.location != NSNotFound) {
@@ -244,7 +246,7 @@ typedef enum : NSUInteger {
         _infoLabel.text = self.info;
         _infoLabel.numberOfLines = 0;
         _infoLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
-        _infoLabel.textColor = HEXCOLOR(0x939393);
+        _infoLabel.textColor = RCDDYCOLOR(0x939393, 0x666666);
     }
     return _infoLabel;
 }
@@ -254,7 +256,7 @@ typedef enum : NSUInteger {
         _cancelButton = [[UIButton alloc] init];
         _cancelButton.backgroundColor = [UIColor clearColor];
         [_cancelButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
-        [_cancelButton setTitleColor:HEXCOLOR(0x262626) forState:UIControlStateNormal];
+        [_cancelButton setTitleColor:RCDDYCOLOR(0x262626, 0x666666) forState:UIControlStateNormal];
         [_cancelButton setTitle:self.leftTitle forState:UIControlStateNormal];
         _cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         _cancelButton.tag = ClassRoomAlertViewCancel;
@@ -268,7 +270,7 @@ typedef enum : NSUInteger {
         _downgradeButton = [[UIButton alloc] init];
         _downgradeButton.backgroundColor = [UIColor clearColor];
         [_downgradeButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
-        [_downgradeButton setTitleColor:HEXCOLOR(0x3a91f3) forState:UIControlStateNormal];
+        [_downgradeButton setTitleColor:RCDDYCOLOR(0x3a91f3, 0x007acc) forState:UIControlStateNormal];
         [_downgradeButton setTitle:self.rightTitle forState:UIControlStateNormal];
         _downgradeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         _downgradeButton.tag = ClassRoomAlertViewConfirm;
@@ -280,7 +282,7 @@ typedef enum : NSUInteger {
 - (UIView *)horizontalLine {
     if (!_horizontalLine) {
         _horizontalLine = [[UIView alloc] init];
-        _horizontalLine.backgroundColor = HEXCOLOR(0xE5E5E5);
+        _horizontalLine.backgroundColor = RCDDYCOLOR(0xE5E5E5, 0x3a3a3a);
     }
     return _horizontalLine;
 }
@@ -288,7 +290,7 @@ typedef enum : NSUInteger {
 - (UIView *)verticalLine {
     if (!_verticalLine) {
         _verticalLine = [[UIView alloc] init];
-        _verticalLine.backgroundColor = HEXCOLOR(0xE5E5E5);
+        _verticalLine.backgroundColor = RCDDYCOLOR(0xE5E5E5, 0x3a3a3a);
     }
     return _verticalLine;
 }

@@ -84,13 +84,8 @@
     // 用户拒绝授权或权限受限
     case AVAuthorizationStatusRestricted:
     case AVAuthorizationStatusDenied: {
-        UIAlertView *alert =
-            [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"cameraAccessRight", @"RongCloudKit", nil)
-                                       message:nil
-                                      delegate:nil
-                             cancelButtonTitle:RCDLocalizedString(@"confirm")
-                             otherButtonTitles:nil];
-        [alert show];
+        [self showAlertController:NSLocalizedStringFromTable(@"cameraAccessRight", @"RongCloudKit", nil)
+                      cancelTitle:RCDLocalizedString(@"confirm")];
         permissionGranted(NO);
     } break;
     default:
@@ -116,18 +111,24 @@
     // 用户拒绝授权或权限受限
     case PHAuthorizationStatusRestricted:
     case PHAuthorizationStatusDenied: {
-        UIAlertView *alert =
-            [[UIAlertView alloc] initWithTitle:@"请在”设置-隐私-相片”选项中，允许访问你的相册"
-                                       message:nil
-                                      delegate:nil
-                             cancelButtonTitle:@"确定"
-                             otherButtonTitles:nil];
-        [alert show];
+        [self showAlertController:NSLocalizedStringFromTable(@"PhotoAccessRight", @"RongCloudKit", nil)
+                      cancelTitle:RCDLocalizedString(@"confirm")];
         permissionGranted(NO);
     } break;
     default:
         break;
     }
+}
+
++ (void)showAlertController:(NSString *)title cancelTitle:(NSString *)cancelTitle {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:nil]];
+        [rootVC presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 /** 手电筒开关 */

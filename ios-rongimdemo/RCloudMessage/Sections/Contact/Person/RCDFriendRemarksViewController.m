@@ -9,7 +9,6 @@
 #import "RCDFriendRemarksViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "RCDUserInfoManager.h"
-#import "UIColor+RCColor.h"
 #import "RCDUIBarButtonItem.h"
 #import <Masonry/Masonry.h>
 #import <RongIMKit/RongIMKit.h>
@@ -78,7 +77,6 @@
 }
 
 - (void)setupSubviews {
-    self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     self.automaticallyAdjustsScrollViewInsets = NO;
 
     [self.view addSubview:self.scrollView];
@@ -172,18 +170,15 @@
 }
 
 - (void)alertInfo:(NSString *)infoStr {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:infoStr
-                                                   delegate:nil
-                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                          otherButtonTitles:nil];
-    [alert show];
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:nil message:infoStr preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showActionSheet {
-    UIAlertController *actionSheetController =
-        [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
     UIAlertAction *takePictureAction =
         [UIAlertAction actionWithTitle:RCDLocalizedString(@"take_picture")
                                  style:UIAlertActionStyleDefault
@@ -202,12 +197,11 @@
                                                            style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction *_Nonnull action){
                                                          }];
-
-    [actionSheetController addAction:cancelAction];
-    [actionSheetController addAction:takePictureAction];
-    [actionSheetController addAction:albumsAction];
-
-    [self presentViewController:actionSheetController animated:YES completion:nil];
+    [RCKitUtility showAlertController:nil
+                              message:nil
+                       preferredStyle:UIAlertControllerStyleActionSheet
+                              actions:@[ cancelAction, takePictureAction, albumsAction ]
+                     inViewController:self];
 }
 
 - (void)pushImagePickerVCWithType:(UIImagePickerControllerSourceType)type {
@@ -412,7 +406,6 @@
 - (UIView *)contentView {
     if (!_contentView) {
         _contentView = [[UIView alloc] init];
-        _contentView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
     }
     return _contentView;
 }

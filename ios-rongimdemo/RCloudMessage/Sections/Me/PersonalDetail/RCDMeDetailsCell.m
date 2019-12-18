@@ -32,6 +32,7 @@
                                                rightImageSize:CGSizeZero];
         self.leftImageCornerRadius = 5.f;
         self.leftLabel.text = [DEFAULTS stringForKey:RCDUserNickNameKey];
+        self.leftLabel.textColor = RCDDYCOLOR(0x000000, 0xa8a8a8);
     }
     return self;
 }

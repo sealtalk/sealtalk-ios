@@ -12,8 +12,7 @@
 #define RCDOpenQRCodeUrlNotification @"RCDOpenQRCodeUrlNotification"
 #define RCDQRCodeContentInfoUrl @"http://web.sealtalk.im/download"
 
-#define SealTalkLog(s,...) \
-NSLog((@"[SealTalkLog]%s [Line %d] " s), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define SealTalkLog(s, ...) NSLog((@"[SealTalkLog]%s [Line %d] " s), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 
 #define RCDMetionAllUsetId @"All"
 
@@ -24,6 +23,9 @@ NSLog((@"[SealTalkLog]%s [Line %d] " s), __PRETTY_FUNCTION__, __LINE__, ##__VA_A
                     green:((float)((rgbValue & 0xFF00) >> 8)) / 255.0                                                  \
                      blue:((float)(rgbValue & 0xFF)) / 255.0                                                           \
                     alpha:1.0]
+#define RCDDYCOLOR(lrgbValue, drgbValue)                                                                               \
+    [RCDUtilities generateDynamicColor:HEXCOLOR(lrgbValue) darkColor:HEXCOLOR(drgbValue)]
+
 #define IOS_FSystenVersion ([[[UIDevice currentDevice] systemVersion] floatValue])
 
 #define RCDDebugTestFunction 0
@@ -31,17 +33,17 @@ NSLog((@"[SealTalkLog]%s [Line %d] " s), __PRETTY_FUNCTION__, __LINE__, ##__VA_A
 #define RCDScreenWidth [UIScreen mainScreen].bounds.size.width
 #define RCDScreenHeight [UIScreen mainScreen].bounds.size.height
 
-#define RCD_IS_IPHONEX (RCDScreenWidth>=375.0f && RCDScreenHeight>=812.0f)
+#define RCD_IS_IPHONEX (RCDScreenWidth >= 375.0f && RCDScreenHeight >= 812.0f)
 #define RCDExtraBottomHeight (RCD_IS_IPHONEX ? 34 : 0)
 #define RCDExtraTopHeight (RCD_IS_IPHONEX ? 24 : 0)
 #define RCDIsIPad [[UIDevice currentDevice].model containsString:@"iPad"]
 
-#define rcd_dispatch_main_async_safe(block)        \
-if ([NSThread isMainThread]) {                 \
-block();                                       \
-} else {                                       \
-dispatch_async(dispatch_get_main_queue(), block);\
-}
+#define rcd_dispatch_main_async_safe(block)                                                                            \
+    if ([NSThread isMainThread]) {                                                                                     \
+        block();                                                                                                       \
+    } else {                                                                                                           \
+        dispatch_async(dispatch_get_main_queue(), block);                                                              \
+    }
 #endif
 
 //#define USE_SignalingKit true

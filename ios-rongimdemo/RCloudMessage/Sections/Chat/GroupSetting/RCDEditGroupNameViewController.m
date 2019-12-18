@@ -35,14 +35,15 @@
 - (BOOL)textField:(UITextField *)textField
     shouldChangeCharactersInRange:(NSRange)range
                 replacementString:(NSString *)string {
-    [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
+    [self.rightBtn buttonIsCanClick:YES buttonColor:RCDDYCOLOR(0xffffff, 0xA8A8A8) barButtonItem:self.rightBtn];
     return YES;
 }
 
 #pragma mark - target action
 - (void)clickDone:(id)sender {
     [self.rightBtn buttonIsCanClick:NO
-                        buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                        buttonColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                             darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
                       barButtonItem:self.rightBtn];
     NSString *nameStr =
         [_groupNameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -65,40 +66,46 @@
 - (void)initSubViews {
     // backgroundView
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 10, RCDScreenWidth, 44)];
-    bgView.backgroundColor = [UIColor whiteColor];
+    bgView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                      darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.2]];
     [self.view addSubview:bgView];
 
     // groupNameTextField
-    self.view.backgroundColor = [UIColor colorWithRed:239 / 255.0 green:239 / 255.0 blue:244 / 255.0 alpha:1];
     CGFloat groupNameTextFieldWidth = RCDScreenWidth - 8 - 8;
     self.groupNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 10, groupNameTextFieldWidth, 44)];
     self.groupNameTextField.clearButtonMode = UITextFieldViewModeAlways;
     self.groupNameTextField.font = [UIFont systemFontOfSize:14];
-    self.groupNameTextField.textColor = [UIColor blackColor];
+    self.groupNameTextField.textColor = RCDDYCOLOR(0x000000, 0xffffff);
     [self.view addSubview:self.groupNameTextField];
     self.groupNameTextField.delegate = self;
 }
 
 - (void)setNaviItem {
     //自定义rightBarButtonItem
-    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"save")
-                                                         titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
-                                                        buttonFrame:CGRectMake(0, 0, 50, 30)
-                                                             target:self
-                                                             action:@selector(clickDone:)];
+    self.rightBtn = [[RCDUIBarButtonItem alloc]
+        initWithbuttonTitle:RCDLocalizedString(@"save")
+                 titleColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                     darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
+                buttonFrame:CGRectMake(0, 0, 50, 30)
+                     target:self
+                     action:@selector(clickDone:)];
     [self.rightBtn buttonIsCanClick:NO
-                        buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                        buttonColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                             darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
                       barButtonItem:self.rightBtn];
     self.navigationItem.rightBarButtonItems = [self.rightBtn setTranslation:self.rightBtn translation:-11];
 }
 
 - (void)Alert:(NSString *)alertContent {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:alertContent
-                                                   delegate:self
-                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                          otherButtonTitles:nil];
-    [alert show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                 message:alertContent
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (BOOL)groupNameIsAvailable:(NSString *)nameStr {

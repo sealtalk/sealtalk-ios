@@ -37,11 +37,6 @@
         @[ RCDLocalizedString(@"blacklist") ]
     ];
     self.navigationItem.title = RCDLocalizedString(@"SecurityAndprivacy");
-
-    self.tableView.tableFooterView = [UIView new];
-
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self getCurrentUserSettings];
 }
 
@@ -66,12 +61,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 15.f;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [UIView new];
-    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    return view;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

@@ -18,14 +18,11 @@
 
 @implementation RCDSquareTableViewController
 
-- (instancetype)init {
-    self = [super init];
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
         self.navigationController.navigationBar.translucent = NO;
-        self.tableView.tableFooterView = [UIView new];
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        self.tableView.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }
@@ -72,7 +69,8 @@
     if (self.chatRoomList.count == 0 || self.chatRoomList == nil) {
         return [UITableViewCell new];
     }
-    NSArray *chatroomIcons = [[NSArray alloc] initWithObjects:@"icon_1-1", @"icon_2-1", @"icon_3-1", @"icon_4-1", nil];
+    NSArray *chatroomIcons =
+        [[NSArray alloc] initWithObjects:@"chatroom_1", @"chatroom_2", @"chatroom_3", @"chatroom_4", nil];
 
     static NSString *reusableCellWithIdentifier = @"RCDSquareCell";
     RCDSquareCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
@@ -87,23 +85,23 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 68.5;
+    return 64.5;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 35;
+    return 44;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *sectionHeaderView =
-        [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 35.5)];
-    sectionHeaderView.backgroundColor = HEXCOLOR(0xf0f0f6);
+        [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 44)];
+    sectionHeaderView.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     UIView *line =
-        [[UIView alloc] initWithFrame:CGRectMake(0, 35.5 - 0.5, [[UIScreen mainScreen] bounds].size.width, 0.5)];
-    line.backgroundColor = HEXCOLOR(0xdfdfdf);
+        [[UIView alloc] initWithFrame:CGRectMake(0, 44 - 0.5, [[UIScreen mainScreen] bounds].size.width, 0.5)];
+    line.backgroundColor = RCDDYCOLOR(0xdfdfdf, 0x000000);
     [sectionHeaderView addSubview:line];
 
-    UILabel *Title = [[UILabel alloc] initWithFrame:CGRectMake(9, (35.5 - 20) / 2.0, 200, 20)];
-    [Title setTextColor:HEXCOLOR(0x000000)];
+    UILabel *Title = [[UILabel alloc] initWithFrame:CGRectMake(9, (44 - 20) / 2.0, 200, 20)];
+    [Title setTextColor:RCDDYCOLOR(0x000000, 0xA7a7a7)];
     [Title setFont:[UIFont systemFontOfSize:16.f]];
 
     [sectionHeaderView addSubview:Title];

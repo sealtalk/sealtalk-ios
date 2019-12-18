@@ -62,12 +62,6 @@
     return 15;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth, 15)];
-    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    return view;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RCDBaseSettingTableViewCell *cell =
         [tableView dequeueReusableCellWithIdentifier:@"PersonDetailSettingReuseIdentifier"];
@@ -92,15 +86,14 @@
 }
 
 - (void)setupTableView {
-    self.tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
-    self.tableView.separatorColor = HEXCOLOR(0xdfdfdf);
     [self setHeaderView];
     [self setFooterView];
 }
 
 - (void)setHeaderView {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 86)];
-    headerView.backgroundColor = [UIColor whiteColor];
+    headerView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                          darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
     self.tableView.tableHeaderView = headerView;
 
     [headerView addSubview:self.portraitImgView];
@@ -249,7 +242,7 @@
 
     UILabel *label = [[UILabel alloc] init];
     label.text = RCDLocalizedString(@"AddFriendProtectTip");
-    label.textColor = HEXCOLOR(0x8b8b8b);
+    label.textColor = RCDDYCOLOR(0x8b8b8b, 0x666666);
     label.font = [UIFont systemFontOfSize:14];
     label.numberOfLines = 0;
     [footerView addSubview:label];
@@ -279,12 +272,12 @@
 }
 
 - (void)showAlertViewWith:(NSString *)message {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                              otherButtonTitles:nil, nil];
-    [alertView show];
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Target Action
@@ -330,7 +323,7 @@
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
-        _nameLabel.textColor = [UIColor blackColor];
+        _nameLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     }
     return _nameLabel;
 }

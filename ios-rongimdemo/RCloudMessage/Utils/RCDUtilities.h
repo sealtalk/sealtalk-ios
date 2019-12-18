@@ -30,4 +30,12 @@
                          result:(void (^)(RCUserInfo *user))result;
 + (void)getUserDisplayInfo:(NSString *)userId complete:(void (^)(RCUserInfo *user))completeBlock;
 + (BOOL)stringContainsEmoji:(NSString *)string;
+/**
+动态颜色设置
+
+ @param lightColor  亮色
+ @param darkColor  暗色
+ @return 修正后的图片
+*/
++ (UIColor *)generateDynamicColor:(UIColor *)lightColor darkColor:(UIColor *)darkColor;
 @end

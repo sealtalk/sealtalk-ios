@@ -103,7 +103,6 @@
                                                                            style:UIBarButtonItemStylePlain
                                                                           target:self
                                                                           action:@selector(save)];
-    [rightBarButtonItem setTintColor:[RCIM sharedRCIM].globalNavigationBarTintColor];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
@@ -118,7 +117,6 @@
 }
 
 - (void)setupUI {
-    self.view.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
     [self.view addGestureRecognizer:tap];
 
@@ -224,7 +222,9 @@
 - (UIView *)portraitBgView {
     if (!_portraitBgView) {
         _portraitBgView = [[UIView alloc] init];
-        _portraitBgView.backgroundColor = [UIColor whiteColor];
+        _portraitBgView.backgroundColor =
+            [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                     darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
     }
     return _portraitBgView;
 }
@@ -241,7 +241,7 @@
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
-        _nameLabel.textColor = [UIColor colorWithHexString:@"262626" alpha:1];
+        _nameLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
         if (IOS_FSystenVersion >= 8.2) {
             _nameLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
         } else {
@@ -254,7 +254,9 @@
 - (UIView *)numberBgView {
     if (!_numberBgView) {
         _numberBgView = [[UIView alloc] init];
-        _numberBgView.backgroundColor = [UIColor whiteColor];
+        _numberBgView.backgroundColor =
+            [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                     darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
     }
     return _numberBgView;
 }
@@ -262,7 +264,7 @@
 - (UILabel *)sealTalkNumLabel {
     if (!_sealTalkNumLabel) {
         _sealTalkNumLabel = [[UILabel alloc] init];
-        _sealTalkNumLabel.textColor = [UIColor colorWithHexString:@"262626" alpha:1];
+        _sealTalkNumLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
         _sealTalkNumLabel.font = [UIFont systemFontOfSize:15];
         _sealTalkNumLabel.text = RCDLocalizedString(@"SealTalkNumber");
     }
@@ -272,7 +274,7 @@
 - (UITextField *)textField {
     if (!_textField) {
         _textField = [[UITextField alloc] init];
-        _textField.textColor = [UIColor blackColor];
+        _textField.textColor = RCDDYCOLOR(0x000000, 0x999999);
         _textField.placeholder = RCDLocalizedString(@"SetSealTalkNumPlaceholder");
         _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _textField.font = [UIFont systemFontOfSize:12];
@@ -282,7 +284,7 @@
         NSAttributedString *attrString =
             [[NSAttributedString alloc] initWithString:_textField.placeholder
                                             attributes:@{
-                                                NSForegroundColorAttributeName : HEXCOLOR(0x999999),
+                                                NSForegroundColorAttributeName : RCDDYCOLOR(0x999999, 0x666666),
                                                 NSFontAttributeName : _textField.font
                                             }];
         _textField.attributedPlaceholder = attrString;

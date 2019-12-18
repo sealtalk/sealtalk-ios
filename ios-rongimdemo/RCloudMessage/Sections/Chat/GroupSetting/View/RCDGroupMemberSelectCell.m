@@ -11,6 +11,7 @@
 #import "RCDUserInfoManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "RCDUtilities.h"
+
 @interface RCDGroupMemberSelectCell ()
 @property (nonatomic, strong) UIImageView *selectIcon;
 
@@ -25,7 +26,6 @@
     if (!cell) {
         cell = [[RCDGroupMemberSelectCell alloc] init];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [UIColor whiteColor];
     }
     return cell;
 }
@@ -102,7 +102,7 @@
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = [UIFont systemFontOfSize:17];
-        _nameLabel.textColor = HEXCOLOR(0x262626);
+        _nameLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
     }
     return _nameLabel;
 }

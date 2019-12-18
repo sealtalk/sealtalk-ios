@@ -11,12 +11,12 @@
 #import "RCDHaveSelectedCell.h"
 #import "UIColor+RCColor.h"
 #import "RCDForwardManager.h"
-
+#import "RCDTableView.h"
 static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
 
 @interface RCDHaveSelectedViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) RCDTableView *tableView;
 @property (nonatomic, strong) UIButton *confirmButton;
 @property (nonatomic, strong) NSArray *selectedModelArray;
 
@@ -68,7 +68,6 @@ static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
 - (void)setupSubviews {
 
     self.title = RCDLocalizedString(@"SelectedContacts");
-    self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
 
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -94,13 +93,11 @@ static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
 }
 
 #pragma mark - Setter && Getter
-- (UITableView *)tableView {
+- (RCDTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] init];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView = [[RCDTableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.tableFooterView = [UIView new];
         [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
         _tableView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
         _tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);

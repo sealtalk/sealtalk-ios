@@ -6,12 +6,12 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 @class RCUserInfo;
 
 typedef void (^LongPressBlock)(NSString *userId);
 
-@interface RCDContactTableViewCell : UITableViewCell
+@interface RCDContactTableViewCell : RCDTableViewCell
 
 @property (nonatomic, copy) LongPressBlock longPressBlock;
 

@@ -6,7 +6,7 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 
 /*!
  用户信息提供者
@@ -24,7 +24,7 @@
 @end
 static NSString *RCDReceiptDetailsTableViewCellIdentifier = @"RCDReceiptDetailsTableViewCellIdentifier";
 
-@interface RCDReceiptDetailsTableViewCell : UITableViewCell
+@interface RCDReceiptDetailsTableViewCell : RCDTableViewCell
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 
 @property (nonatomic, weak) id<RCDReceiptDetailsCellDelegate> delegate;

@@ -6,8 +6,8 @@
 //  Copyright © 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
-@interface RCDEditUserNameViewController : UIViewController
+@interface RCDEditUserNameViewController : RCDViewController
 
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "RealTimeLocationStartCell.h"
-
 @interface RealTimeLocationStartCell ()
 @property (nonatomic, strong) UIImageView *bubbleBackgroundView;
 @property (nonatomic, strong) RCAttributedLabel *textLabel;
@@ -38,7 +37,6 @@
     //    for (UIView *subView in [self.messageContentView subviews]) {
     //        [subView removeFromSuperview];
     //    }
-
     NSString *content = RCDLocalizedString(@"i_start_location_share");
     [self.textLabel setText:content dataDetectorEnabled:NO];
     self.bubbleBackgroundView.userInteractionEnabled = YES;
@@ -133,7 +131,7 @@
         _textLabel.numberOfLines = 0;
         [_textLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_textLabel setTextAlignment:NSTextAlignmentLeft];
-        [_textLabel setTextColor:[UIColor blackColor]];
+        [_textLabel setTextColor:[RCKitUtility generateDynamicColor:HEXCOLOR(0x000000) darkColor:HEXCOLOR(0xe0e0e0)]];
 
         [self.bubbleBackgroundView addSubview:_textLabel];
     }

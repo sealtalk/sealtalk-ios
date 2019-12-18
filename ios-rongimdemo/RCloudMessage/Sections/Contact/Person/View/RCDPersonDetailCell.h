@@ -6,13 +6,13 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^TapDetailBlock)(NSString *detail);
 
-@interface RCDPersonDetailCell : UITableViewCell
+@interface RCDPersonDetailCell : RCDTableViewCell
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIImageView *leftImgView;
 @property (nonatomic, strong) UILabel *detailLabel;

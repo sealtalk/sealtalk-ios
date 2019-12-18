@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 
-@interface RCDGroupViewController : UITableViewController
+@interface RCDGroupViewController : RCDTableViewController
 @end

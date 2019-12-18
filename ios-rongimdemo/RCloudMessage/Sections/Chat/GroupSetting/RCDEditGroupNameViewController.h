@@ -6,9 +6,9 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 @class RCDGroupInfo;
-@interface RCDEditGroupNameViewController : UIViewController <UITextFieldDelegate>
+@interface RCDEditGroupNameViewController : RCDViewController <UITextFieldDelegate>
 /**
  *  用户信息
  */

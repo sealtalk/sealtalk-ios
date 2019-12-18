@@ -9,6 +9,7 @@
 #import "RCDReceiptDetailsTableViewCell.h"
 #import "RCDCommonDefine.h"
 #import "UIColor+RCColor.h"
+#import "RCDUtilities.h"
 @interface RCDReceiptDetailsTableViewCell ()
 
 @property (nonatomic, strong) NSDictionary *CellSubviews;
@@ -46,7 +47,7 @@
 }
 
 - (void)initialize {
-    self.verticalLine = [self createLine:[UIColor colorWithHexString:@"dfdfdf" alpha:1.f]];
+    self.verticalLine = [self createLine:RCDDYCOLOR(0xdfdfdf, 0x3a3a3a)];
     [self.contentView addSubview:self.verticalLine];
 
     self.hasReadButton = [self
@@ -89,7 +90,7 @@
 
 - (UIButton *)createButton:(NSString *)buttonTitle {
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectZero];
-    UIColor *normalColor = [UIColor colorWithHexString:@"000000" alpha:1.f];
+    UIColor *normalColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     UIColor *selectedColor = [UIColor colorWithHexString:@"0099ff" alpha:1.f];
     [button setTitle:buttonTitle forState:UIControlStateNormal];
     [button setTitleColor:normalColor forState:UIControlStateNormal];

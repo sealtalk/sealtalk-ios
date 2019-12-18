@@ -6,7 +6,7 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
 typedef NS_ENUM(NSUInteger, RCDContactSelectType) {
     RCDContactSelectTypeForward = 0, // 转发
@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, RCDContactSelectType) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDSelectContactViewController : UIViewController
+@interface RCDSelectContactViewController : RCDViewController
 
 - (instancetype)initWithContactSelectType:(RCDContactSelectType)type;
 

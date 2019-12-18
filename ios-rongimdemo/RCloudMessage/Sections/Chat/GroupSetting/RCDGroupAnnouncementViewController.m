@@ -31,7 +31,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = RCDLocalizedString(@"group_announcement");
 
     [self setNaviItem];
@@ -265,7 +264,7 @@
         _announcementContent = [[UITextViewAndPlaceholder alloc] initWithFrame:CGRectZero];
         _announcementContent.delegate = self;
         _announcementContent.font = [UIFont systemFontOfSize:16.f];
-        _announcementContent.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];
+        _announcementContent.textColor = RCDDYCOLOR(0x000000, 0xffffff);
         _announcementContent.myPlaceholder = RCDLocalizedString(@"Please_edit_the_group_announcement");
     }
     return _announcementContent;

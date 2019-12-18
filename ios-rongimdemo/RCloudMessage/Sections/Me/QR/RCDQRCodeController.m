@@ -50,7 +50,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = HEXCOLOR(0xf2f2f3);
     self.group = [RCDGroupManager getGroupInfo:self.targetId];
     [self setDataInfo];
     [self setNaviItem];
@@ -111,13 +110,15 @@
 - (void)didClickSaveAction {
     ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
     if (status == ALAuthorizationStatusRestricted || status == ALAuthorizationStatusDenied) {
-        UIAlertView *alertView =
-            [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil)
-                                       message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil)
-                                      delegate:nil
-                             cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)
-                             otherButtonTitles:nil, nil];
-        [alertView show];
+        UIAlertController *alertController = [UIAlertController
+            alertControllerWithTitle:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil)
+                             message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil)
+                      preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)
+                                               style:UIAlertActionStyleDefault
+                                             handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
     } else {
         [self saveImageToPhotos:[self captureCurrentView:self.qrBgView]];
     }

@@ -37,7 +37,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
     if (self.isShowSeachBar) {
         [self loadSearchView];
         self.navigationItem.titleView = self.searchView;
@@ -58,23 +57,20 @@
                                                                            target:self
                                                                            action:@selector(leftBarButtonBackAction)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
-
-    self.tableView.tableFooterView = [UIView new];
-    self.tableView.separatorColor = HEXCOLOR(0xdfdfdf);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.tableView.tableHeaderView = self.headerView;
     if (self.isShowSeachBar) {
-        self.navigationController.navigationBar.barTintColor = HEXCOLOR(0xf0f0f6);
+        self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"0099ff" alpha:1.0f];
+    self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0x0099ff, 0x000000);
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
@@ -301,14 +297,14 @@
 - (UIView *)headerView {
     if (!_headerView) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
-        _headerView.backgroundColor = [UIColor whiteColor];
+        _headerView.backgroundColor = RCDDYCOLOR(0xffffff, 0x000000);
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 40 - 16 - 7, self.view.frame.size.width, 16)];
         label.font = [UIFont systemFontOfSize:14.];
         label.text = self.type;
-        label.textColor = HEXCOLOR(0x999999);
+        label.textColor = RCDDYCOLOR(0x999999, 0x666666);
         [_headerView addSubview:label];
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10, 39.5, self.view.frame.size.width - 10, 0.5)];
-        view.backgroundColor = HEXCOLOR(0xdfdfdf);
+        view.backgroundColor = RCDDYCOLOR(0xdfdfdf, 0x000000);
         [self.headerView addSubview:view];
     }
     return _headerView;

@@ -9,7 +9,7 @@
 #import "RCDSelectAddressBookCell.h"
 #import <Masonry/Masonry.h>
 #import "UIColor+RCColor.h"
-
+#import "RCDUtilities.h"
 @interface RCDSelectAddressBookCell ()
 
 @property (nonatomic, strong) UIImageView *headerImgView;
@@ -48,7 +48,6 @@
 }
 
 - (void)setupViews {
-    self.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.headerImgView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.detailLabel];
@@ -85,7 +84,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = [UIFont systemFontOfSize:14];
-        _titleLabel.textColor = [UIColor colorWithHexString:@"333333" alpha:1];
+        _titleLabel.textColor = RCDDYCOLOR(0x333333, 0x9f9f9f);
     }
     return _titleLabel;
 }

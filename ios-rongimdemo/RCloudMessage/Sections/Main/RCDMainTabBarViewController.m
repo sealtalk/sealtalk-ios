@@ -11,7 +11,8 @@
 #import "RCDContactViewController.h"
 #import "RCDMeTableViewController.h"
 #import "RCDSquareTableViewController.h"
-
+#import "UITabBar+badge.h"
+#import "RCDUtilities.h"
 @interface RCDMainTabBarViewController ()
 
 @property NSUInteger previousIndex;
@@ -38,6 +39,11 @@
                                              selector:@selector(changeSelectedIndex:)
                                                  name:@"ChangeTabBarIndex"
                                                object:nil];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    [self setTabBarItems];
 }
 
 - (void)setControllers {
@@ -89,6 +95,7 @@
             } else {
                 NSLog(@"Unknown TabBarController");
             }
+            [obj.tabBarController.tabBar bringBadgeToFrontOnItemIndex:(int)idx];
         }];
 }
 

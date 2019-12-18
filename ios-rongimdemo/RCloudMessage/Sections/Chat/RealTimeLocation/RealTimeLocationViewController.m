@@ -15,7 +15,7 @@
 #import "UIColor+RCColor.h"
 
 @interface RealTimeLocationViewController () <RCRealTimeLocationObserver, MKMapViewDelegate,
-                                              HeadCollectionTouchDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+                                              HeadCollectionTouchDelegate>
 
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) UIView *headBackgroundView;
@@ -58,14 +58,14 @@ MBProgressHUD *hud;
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (status == kCLAuthorizationStatusDenied) {
         [hud hide:YES];
-        UIAlertView *alertView =
-            [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"Inaccessible")
-                                       message:RCDLocalizedString(@"Location_access_without_permission")
-                                      delegate:nil
-                             cancelButtonTitle:RCDLocalizedString(@"confirm")
-
-                             otherButtonTitles:nil];
-        [alertView show];
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:RCDLocalizedString(@"Inaccessible")
+                                                message:RCDLocalizedString(@"Location_access_without_permission")
+                                         preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
@@ -86,13 +86,23 @@ MBProgressHUD *hud;
 
 #pragma mark - HeadCollectionTouchDelegate
 - (BOOL)quitButtonPressed {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:RCDLocalizedString(@"end_share_location_alert")
-                                                             delegate:self
-                                                    cancelButtonTitle:RCDLocalizedString(@"cancel")
-
-                                               destructiveButtonTitle:RCDLocalizedString(@"end")
-                                                    otherButtonTitles:nil];
-    [actionSheet showInView:self.view];
+    UIAlertAction *cancelAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *endAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"end")
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   __weak typeof(self) __weakself = self;
+                                   [self dismissViewControllerAnimated:YES
+                                                            completion:^{
+                                                                [__weakself.realTimeLocationProxy quitRealTimeLocation];
+                                                            }];
+                               }];
+    [RCKitUtility showAlertController:RCDLocalizedString(@"end_share_location_alert")
+                              message:nil
+                       preferredStyle:UIAlertControllerStyleActionSheet
+                              actions:@[ cancelAction, endAction ]
+                     inViewController:self];
     return YES;
 }
 
@@ -301,42 +311,6 @@ MBProgressHUD *hud;
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
     self.theRegion = mapView.region;
-}
-
-#pragma mark - UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-    case 0: {
-        __weak typeof(self) __weakself = self;
-        [self dismissViewControllerAnimated:YES
-                                 completion:^{
-                                     [__weakself.realTimeLocationProxy quitRealTimeLocation];
-                                 }];
-
-    } break;
-    }
-}
-
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
-    SEL selector = NSSelectorFromString(@"_alertController");
-
-    if ([actionSheet respondsToSelector:selector]) {
-        UIAlertController *alertController = [actionSheet valueForKey:@"_alertController"];
-        if ([alertController isKindOfClass:[UIAlertController class]]) {
-            alertController.view.tintColor = [UIColor colorWithWhite:0 alpha:0.6];
-        }
-    } else {
-        for (UIView *subView in actionSheet.subviews) {
-            if ([subView isKindOfClass:[UIButton class]]) {
-                UIButton *btn = (UIButton *)subView;
-                if ([btn.titleLabel.text isEqualToString:RCDLocalizedString(@"end")]) {
-                    [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-                } else {
-                    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                }
-            }
-        }
-    }
 }
 
 #pragma mark - target action

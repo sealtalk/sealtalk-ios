@@ -45,7 +45,29 @@
 
 - (void)forwardAlertView:(RCDForwardAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        [self doForwardMessage:alertView];
+        if (self.selectConversationCompleted) {
+            NSMutableArray *selectConversations = [[NSMutableArray alloc] init];
+            if (self.selectedContactArray.count == 0) {
+                RCConversation *conversation = [[RCConversation alloc] init];
+                conversation.targetId = self.toConversation.targetId;
+                conversation.conversationType = self.toConversation.conversationType;
+                [selectConversations addObject:conversation];
+            } else {
+                for (RCDForwardCellModel *model in self.selectedContactArray) {
+                    RCConversation *conversation = [[RCConversation alloc] init];
+                    conversation.targetId = model.targetId;
+                    conversation.conversationType = model.conversationType;
+                    [selectConversations addObject:conversation];
+                }
+            }
+            self.selectConversationCompleted([selectConversations copy]);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.viewController dismissViewControllerAnimated:YES completion:nil];
+                [self clear];
+            });
+        } else {
+            [self doForwardMessage:alertView];
+        }
     }
 }
 
@@ -164,6 +186,10 @@
     //未成功发送的消息不可转发
     if (model.sentStatus == SentStatus_SENDING || model.sentStatus == SentStatus_FAILED ||
         model.sentStatus == SentStatus_CANCELED) {
+        return NO;
+    }
+    // 阅后即焚消息不可转发
+    if (model.content.destructDuration > 0) {
         return NO;
     }
     if ([[self blackList] containsObject:model.objectName]) {

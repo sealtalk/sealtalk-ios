@@ -82,8 +82,6 @@
     [[RCIM sharedRCIM] registerMessageType:[RCDChatNotificationMessage class]];
     [[RCIM sharedRCIM] registerMessageType:[RCDPokeMessage class]];
     [[RCIM sharedRCIM] registerMessageType:[RCDClearMessage class]];
-    // 设置语音消息采样率为 16KHZ
-    [RCIMClient sharedRCIMClient].sampleRate = RCSample_Rate_16000;
 
     [RCIMClient sharedRCIMClient].voiceMsgType = RCVoiceMessageTypeHighQuality;
 
@@ -98,6 +96,7 @@
     [RCContactCardKit shareInstance].contactsDataSource = RCDDataSource;
     [RCContactCardKit shareInstance].groupDataSource = RCDDataSource;
     [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
+    [RCIM sharedRCIM].globalNavigationBarTintColor = RCDDYCOLOR(0xffffff, 0xA8A8A8);
     [RCIM sharedRCIM].enableTypingStatus = YES;
     [RCIM sharedRCIM].enableSyncReadStatus = YES;
     [RCIM sharedRCIM].showUnkownMessage = YES;
@@ -106,9 +105,9 @@
     [RCIM sharedRCIM].enableMessageRecall = YES;
     [RCIM sharedRCIM].isMediaSelectorContainVideo = YES;
     [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;
-    //    [RCIM sharedRCIM].enableSendCombineMessage = YES;
-    //    [RCIM sharedRCIM].enableBurnMessage = YES;
-
+    [RCIM sharedRCIM].enableSendCombineMessage = YES;
+    [RCIM sharedRCIM].enableBurnMessage = YES;
+    [RCIM sharedRCIM].enableDarkMode = YES;
     //  设置头像为圆形
     //  [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
     //  [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
@@ -679,18 +678,18 @@
 - (void)setNavigationBarAppearance {
     //统一导航条样式
     UIFont *font = [UIFont systemFontOfSize:19.f];
-    NSDictionary *textAttributes = @{NSFontAttributeName : font, NSForegroundColorAttributeName : [UIColor whiteColor]};
+    NSDictionary *textAttributes =
+        @{NSFontAttributeName : font, NSForegroundColorAttributeName : RCDDYCOLOR(0xffffff, 0xA8A8A8)};
     [[UINavigationBar appearance] setTitleTextAttributes:textAttributes];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:@"0099ff" alpha:1.0f]];
+    [[UINavigationBar appearance] setTintColor:RCDDYCOLOR(0xffffff, 0xA8A8A8)];
+    [[UINavigationBar appearance] setBarTintColor:RCDDYCOLOR(0x0099ff, 0x000000)];
 
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-1.5, 0)
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(2, 1)
                                                          forBarMetrics:UIBarMetricsDefault];
-    UIImage *tmpImage = [UIImage imageNamed:@"back"];
-
-    CGSize newSize = CGSizeMake(12, 20);
+    UIImage *tmpImage = [UIImage imageNamed:@"navigator_btn_back"];
+    CGSize newSize = CGSizeMake(10, 17);
     UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0f);
-    [tmpImage drawInRect:CGRectMake(2, -2, newSize.width, newSize.height)];
+    [tmpImage drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
     UIImage *backButtonImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     [[UINavigationBar appearance] setBackIndicatorImage:backButtonImage];
@@ -762,11 +761,13 @@
 }
 
 - (void)showAlert:(NSString *)title message:(NSString *)msg cancelBtnTitle:(NSString *)cBtnTitle {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                    message:msg
-                                                   delegate:nil
-                                          cancelButtonTitle:cBtnTitle
-                                          otherButtonTitles:nil, nil];
-    [alert show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIViewController *rootVC = self.window.rootViewController;
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        [rootVC presentViewController:alertController animated:YES completion:nil];
+    });
 }
 @end

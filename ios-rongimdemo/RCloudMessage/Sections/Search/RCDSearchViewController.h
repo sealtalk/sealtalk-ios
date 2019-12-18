@@ -6,13 +6,13 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 @class RCDSearchResultModel;
 @protocol RCDSearchViewDelegate <NSObject>
 - (void)searchViewControllerDidClickCancel;
 @end
 
-@interface RCDSearchViewController : UIViewController <UINavigationControllerDelegate>
+@interface RCDSearchViewController : RCDViewController <UINavigationControllerDelegate>
 
 @property (nonatomic, weak) id<RCDSearchViewDelegate> delegate;
 

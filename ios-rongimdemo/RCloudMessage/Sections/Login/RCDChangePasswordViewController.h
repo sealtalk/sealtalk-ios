@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
-@interface RCDChangePasswordViewController : UIViewController <UITextFieldDelegate>
+@interface RCDChangePasswordViewController : RCDViewController <UITextFieldDelegate>
 
 @end

@@ -9,6 +9,7 @@
 #import "RCDCSStarView.h"
 #import <RongIMKit/RongIMKit.h>
 #import "RCDCommonDefine.h"
+#import "RCDUtilities.h"
 @interface RCDCSStarView ()
 @property (nonatomic) int starValue; // 0-4
 @property (nonatomic, strong) NSArray *starButtonArray;
@@ -66,7 +67,7 @@
 
 - (void)setStarTitle {
     self.starTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 20)];
-    self.starTitle.textColor = HEXCOLOR(0x3c4d65);
+    self.starTitle.textColor = RCDDYCOLOR(0x3c4d65, 0x9f9f9f);
     self.starTitle.text = RCDLocalizedString(@"remark_customer");
     self.starTitle.font = [UIFont systemFontOfSize:16];
     self.starTitle.textAlignment = NSTextAlignmentCenter;

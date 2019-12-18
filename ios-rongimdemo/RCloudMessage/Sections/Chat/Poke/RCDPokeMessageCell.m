@@ -8,8 +8,8 @@
 
 #import "RCDPokeMessageCell.h"
 #import "RCDPokeMessage.h"
-#define Poke_Message_Font_Size 15
 
+#define Poke_Message_Font_Size 15
 #define PokeSize CGSizeMake(12, 14)
 @interface RCDPokeMessageCell ()
 /*!
@@ -24,7 +24,7 @@
 + (CGSize)sizeForMessageModel:(RCMessageModel *)model
       withCollectionViewWidth:(CGFloat)collectionViewWidth
          referenceExtraHeight:(CGFloat)extraHeight {
-    CGSize size = [RCDPokeMessageCell getBubbleBackgroundViewSize:(RCDPokeMessage *)model.content];
+    CGSize size = [RCDPokeMessageCell getBubbleBackgroundViewSize:model];
 
     CGFloat __messagecontentview_height = size.height;
     if (__messagecontentview_height < [RCIM sharedRCIM].globalMessagePortraitSize.height) {
@@ -59,13 +59,14 @@
 }
 
 - (void)setAutoLayout {
-    self.contentLabel.attributedText = [[self class] getDisplayContent:(RCDPokeMessage *)self.model.content];
-    CGSize textLabelSize = [[self class] getTextLabelSize:(RCDPokeMessage *)self.model.content];
+    self.contentLabel.attributedText = [[self class] getDisplayContent:self.model];
+    CGSize textLabelSize = [[self class] getTextLabelSize:self.model];
     CGSize bubbleBackgroundViewSize = [[self class] getBubbleSize:textLabelSize];
     CGRect messageContentViewRect = self.messageContentView.frame;
     CGFloat pokeX = 20;
     //拉伸图片
     if (MessageDirection_RECEIVE == self.messageDirection) {
+        self.pokeIcon.image = [UIImage imageNamed:@"poke_msg_receive"];
         messageContentViewRect.size.width = bubbleBackgroundViewSize.width;
         self.messageContentView.frame = messageContentViewRect;
 
@@ -76,6 +77,7 @@
             [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height * 0.8, image.size.width * 0.8,
                                                                 image.size.height * 0.2, image.size.width * 0.2)];
     } else {
+        self.pokeIcon.image = [UIImage imageNamed:@"poke_msg_send"];
         pokeX = 12;
         messageContentViewRect.size.width = bubbleBackgroundViewSize.width;
         messageContentViewRect.size.height = bubbleBackgroundViewSize.height;
@@ -105,7 +107,8 @@
     }
 }
 
-+ (NSAttributedString *)getDisplayContent:(RCDPokeMessage *)pokeMessage {
++ (NSAttributedString *)getDisplayContent:(RCMessageModel *)model {
+    RCDPokeMessage *pokeMessage = (RCDPokeMessage *)model.content;
     NSString *string;
     if (pokeMessage.content.length > 0) {
         string = [NSString stringWithFormat:@"%@  %@", RCDLocalizedString(@"Poke"), pokeMessage.content];
@@ -115,13 +118,23 @@
     NSRange range = [string rangeOfString:RCDLocalizedString(@"Poke")];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string];
     if (range.location != NSNotFound) {
-        [attributedString addAttribute:NSForegroundColorAttributeName value:HEXCOLOR(0x0099ff) range:range];
+        if (model && model.messageDirection == MessageDirection_SEND) {
+            [attributedString
+                addAttribute:NSForegroundColorAttributeName
+                       value:[RCKitUtility generateDynamicColor:HEXCOLOR(0x0099ff) darkColor:HEXCOLOR(0x219dbe)]
+                       range:range];
+        } else {
+            [attributedString
+                addAttribute:NSForegroundColorAttributeName
+                       value:[RCKitUtility generateDynamicColor:HEXCOLOR(0x0099ff) darkColor:HEXCOLOR(0x0099ff)]
+                       range:range];
+        }
     }
     return attributedString.copy;
 }
 
-+ (CGSize)getTextLabelSize:(RCDPokeMessage *)message {
-    NSAttributedString *attr = [self getDisplayContent:message];
++ (CGSize)getTextLabelSize:(RCMessageModel *)model {
+    NSAttributedString *attr = [self getDisplayContent:model];
     if ([attr.string length] > 0) {
         float maxWidth = RCDScreenWidth - (10 + [RCIM sharedRCIM].globalMessagePortraitSize.width + 10) * 2 - 5 - 35;
         CGRect textRect =
@@ -157,15 +170,15 @@
     return bubbleSize;
 }
 
-+ (CGSize)getBubbleBackgroundViewSize:(RCDPokeMessage *)message {
-    CGSize textLabelSize = [[self class] getTextLabelSize:message];
++ (CGSize)getBubbleBackgroundViewSize:(RCMessageModel *)model {
+    CGSize textLabelSize = [[self class] getTextLabelSize:model];
     return [[self class] getBubbleSize:textLabelSize];
 }
 
 #pragma mark - getter
 - (UIImageView *)pokeIcon {
     if (!_pokeIcon) {
-        _pokeIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"poke_msg"]];
+        _pokeIcon = [[UIImageView alloc] init];
     }
     return _pokeIcon;
 }
@@ -176,7 +189,7 @@
         _contentLabel.font = [UIFont systemFontOfSize:Poke_Message_Font_Size];
         _contentLabel.numberOfLines = 0;
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        _contentLabel.textColor = HEXCOLOR(0x333333);
+        _contentLabel.textColor = [RCKitUtility generateDynamicColor:HEXCOLOR(0x333333) darkColor:HEXCOLOR(0xe0e0e0)];
     }
     return _contentLabel;
 }

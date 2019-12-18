@@ -6,11 +6,11 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDGroupSelectNewOwnerController : UITableViewController
+@interface RCDGroupSelectNewOwnerController : RCDTableViewController
 - (instancetype)initWithGroupId:(NSString *)groupId;
 @end
 

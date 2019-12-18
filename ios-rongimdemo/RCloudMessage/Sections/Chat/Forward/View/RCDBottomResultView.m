@@ -11,7 +11,7 @@
 #import <Masonry/Masonry.h>
 #import "RCDForwardManager.h"
 #import "RCDHaveSelectedViewController.h"
-
+#import "RCDUtilities.h"
 @interface RCDBottomResultView ()
 
 @property (nonatomic, strong) UIButton *resultButton;
@@ -35,7 +35,7 @@
 
 - (void)setupSubviews {
 
-    self.backgroundColor = [UIColor colorWithHexString:@"FAFAFA" alpha:1];
+    self.backgroundColor = RCDDYCOLOR(0xFAFAFA, 0x1a1a1a);
 
     [self addSubview:self.confirmButton];
     [self addSubview:self.resultButton];

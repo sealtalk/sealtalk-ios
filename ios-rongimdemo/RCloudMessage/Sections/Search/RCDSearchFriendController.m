@@ -29,7 +29,6 @@
 #pragma mark - Life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
     self.currentRegion = [[RCDCountry alloc] initWithDict:[DEFAULTS objectForKey:RCDCurrentCountryKey]];
     [self addSubviews];
     self.navigationItem.title = RCDLocalizedString(@"add_contacts");
@@ -108,22 +107,19 @@
 }
 
 - (void)showAlertWithMessage:(NSString *)message {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                          otherButtonTitles:nil];
-    [alert show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)pushAddFriendVC:(RCDUserInfo *)user {
     if ([user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:RCDLocalizedString(@"can_not_add_self_to_address_book")
-                                                       delegate:nil
-                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                              otherButtonTitles:nil];
-        [alert show];
+        [self showAlertWithMessage:RCDLocalizedString(@"can_not_add_self_to_address_book")];
     } else {
         RCDAddFriendViewController *addViewController = [[RCDAddFriendViewController alloc] init];
         addViewController.targetUserId = user.userId;
@@ -138,12 +134,15 @@
     [self.searchInfoView addSubview:self.countryTextField];
     [self.searchInfoView addSubview:self.phoneTextField];
     UIButton *searchButton = [[UIButton alloc] init];
-    [searchButton setTitleColor:HEXCOLOR(0x252525) forState:(UIControlStateNormal)];
+    [searchButton setTitleColor:RCDDYCOLOR(0x252525, 0x999999) forState:(UIControlStateNormal)];
     [searchButton setTitle:RCDLocalizedString(@"search") forState:(UIControlStateNormal)];
     searchButton.titleLabel.font = [UIFont systemFontOfSize:15];
     searchButton.layer.masksToBounds = YES;
     searchButton.layer.cornerRadius = 4;
-    searchButton.layer.borderColor = [UIColor grayColor].CGColor;
+    searchButton.layer.borderColor =
+        [RCDUtilities generateDynamicColor:[UIColor grayColor]
+                                 darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.3]]
+            .CGColor;
     searchButton.layer.borderWidth = 1;
     [searchButton addTarget:self action:@selector(didSearchFriend) forControlEvents:(UIControlEventTouchUpInside)];
     [self.searchInfoView addSubview:searchButton];
@@ -188,9 +187,9 @@
         _countryTextField = [[RCDIndicateTextField alloc] initWithLineColor:[UIColor grayColor]];
         _countryTextField.indicateIcon.image = [UIImage imageNamed:@"right_arrow"];
         _countryTextField.indicateInfoLabel.text = RCDLocalizedString(@"country");
-        _countryTextField.indicateInfoLabel.textColor = HEXCOLOR(0x252525);
+        _countryTextField.indicateInfoLabel.textColor = RCDDYCOLOR(0x252525, 0x999999);
         _countryTextField.textField.text = self.currentRegion.countryName;
-        _countryTextField.textField.textColor = HEXCOLOR(0x252525);
+        _countryTextField.textField.textColor = RCDDYCOLOR(0x252525, 0x999999);
         _countryTextField.textField.userInteractionEnabled = NO;
         [_countryTextField indicateIconShow:YES];
         UITapGestureRecognizer *tap =
@@ -206,8 +205,8 @@
         _phoneTextField = [[RCDIndicateTextField alloc] initWithLineColor:[UIColor grayColor]];
         _phoneTextField.backgroundColor = [UIColor clearColor];
         _phoneTextField.indicateInfoLabel.text = [NSString stringWithFormat:@"+%@", self.currentRegion.phoneCode];
-        _phoneTextField.indicateInfoLabel.textColor = HEXCOLOR(0x252525);
-        _phoneTextField.textField.textColor = HEXCOLOR(0x252525);
+        _phoneTextField.indicateInfoLabel.textColor = RCDDYCOLOR(0x252525, 0x999999);
+        _phoneTextField.textField.textColor = RCDDYCOLOR(0x252525, 0x999999);
         _phoneTextField.userInteractionEnabled = YES;
         _phoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
         _phoneTextField.textField.adjustsFontSizeToFitWidth = YES;

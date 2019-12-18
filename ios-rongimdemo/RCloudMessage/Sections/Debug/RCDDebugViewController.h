@@ -6,8 +6,8 @@
 //  Copyright © 2017年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
-@interface RCDDebugViewController : UIViewController
+@interface RCDDebugViewController : RCDViewController
 
 @end

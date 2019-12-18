@@ -6,12 +6,12 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <RongIMKit/RongIMKit.h>
+#import "RCDTableViewCell.h"
 #import "RCDForwardCellModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDHaveSelectedCell : UITableViewCell
+@interface RCDHaveSelectedCell : RCDTableViewCell
 
 @property (nonatomic, copy) void (^deleteButtonBlock)(RCDForwardCellModel *model);
 

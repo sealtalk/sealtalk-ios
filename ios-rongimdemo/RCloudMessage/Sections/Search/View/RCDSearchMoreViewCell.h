@@ -6,9 +6,9 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 
-@interface RCDSearchMoreViewCell : UITableViewCell
+@interface RCDSearchMoreViewCell : RCDTableViewCell
 @property (nonatomic, strong) UIImageView *searchImageView;
 @property (nonatomic, strong) UILabel *moreLabel;
 @end

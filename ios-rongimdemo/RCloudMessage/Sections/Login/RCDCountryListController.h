@@ -6,7 +6,7 @@
 //  Copyright © 2019年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 @class RCDCountry;
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface RCDCountryListController : UITableViewController
+@interface RCDCountryListController : RCDTableViewController
 
 @property (nonatomic, assign) BOOL showNavigationBarWhenBack;
 

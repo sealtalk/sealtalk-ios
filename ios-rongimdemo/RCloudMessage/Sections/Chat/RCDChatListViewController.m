@@ -68,7 +68,6 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    self.searchBar.frame = CGRectMake(0, 0, self.conversationListTableView.frame.size.width, 44);
     [self updateBadgeValueForTabBarItem];
 }
 
@@ -475,6 +474,16 @@
                                              selector:@selector(updateBadgeForTabBarItem)
                                                  name:RCDContactsRequestKey
                                                object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didClearMessage)
+                                                 name:RCDGroupClearMessageKey
+                                               object:nil];
+}
+
+- (void)didClearMessage {
+    [self refreshConversationTableViewIfNeeded];
+    [self updateBadgeValueForTabBarItem];
 }
 
 - (void)updateBadgeValueForTabBarItem {
@@ -597,25 +606,25 @@
 - (void)setTabBarStyle {
     //修改tabbar的背景色
     UIView *tabBarBG = [UIView new];
-    tabBarBG.backgroundColor = HEXCOLOR(0xf9f9f9);
     tabBarBG.frame = self.tabBarController.tabBar.bounds;
     [[UITabBar appearance] insertSubview:tabBarBG atIndex:0];
     [[UITabBarItem appearance]
-        setTitleTextAttributes:[NSDictionary
-                                   dictionaryWithObjectsAndKeys:HEXCOLOR(0x999999), UITextAttributeTextColor, nil]
+        setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RCDDYCOLOR(0x999999, 0x707070),
+                                                                          UITextAttributeTextColor, nil]
                       forState:UIControlStateNormal];
 
     [[UITabBarItem appearance]
-        setTitleTextAttributes:[NSDictionary
-                                   dictionaryWithObjectsAndKeys:HEXCOLOR(0x0099ff), UITextAttributeTextColor, nil]
+        setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RCDDYCOLOR(0x0099ff, 0x007acc),
+                                                                          UITextAttributeTextColor, nil]
                       forState:UIControlStateSelected];
+    self.tabBarController.tabBar.backgroundColor = RCDDYCOLOR(0xf9f9f9, 0x000000);
 }
 
 - (void)initSubviews {
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.navigationController.navigationBar.translucent = NO;
     //设置tableView样式
-    self.conversationListTableView.separatorColor = [UIColor colorWithHexString:@"dfdfdf" alpha:1.0f];
+    self.conversationListTableView.separatorColor = RCDDYCOLOR(0xdfdfdf, 0x1a1a1a);
     self.conversationListTableView.tableFooterView = [UIView new];
     [self.headerView addSubview:self.searchBar];
     self.conversationListTableView.tableHeaderView = self.headerView;
@@ -642,7 +651,8 @@
 - (RCDSearchBar *)searchBar {
     if (!_searchBar) {
         _searchBar =
-            [[RCDSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.conversationListTableView.frame.size.width, 44)];
+            [[RCDSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.conversationListTableView.frame.size.width,
+                                                           self.headerView.frame.size.height)];
         _searchBar.delegate = self;
     }
     return _searchBar;
@@ -652,6 +662,9 @@
     if (!_headerView) {
         _headerView =
             [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.conversationListTableView.frame.size.width, 44)];
+        if (@available(iOS 11.0, *)) {
+            _headerView.frame = CGRectMake(0, 0, self.conversationListTableView.frame.size.width, 56);
+        }
     }
     return _headerView;
 }

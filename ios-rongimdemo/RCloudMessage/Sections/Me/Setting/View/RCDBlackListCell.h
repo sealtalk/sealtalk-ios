@@ -6,11 +6,11 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 
 @class RCUserInfo;
 
-@interface RCDBlackListCell : UITableViewCell
+@interface RCDBlackListCell : RCDTableViewCell
 
 //
 - (void)setUserInfo:(RCUserInfo *)info;

@@ -6,8 +6,8 @@
 //  Copyright © 2018年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 
-@interface RCDDebugTableViewController : UITableViewController
+@interface RCDDebugTableViewController : RCDTableViewController
 
 @end

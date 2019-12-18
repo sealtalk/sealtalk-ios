@@ -6,11 +6,11 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDChatBackgroundViewController : UIViewController
+@interface RCDChatBackgroundViewController : RCDViewController
 
 @end
 

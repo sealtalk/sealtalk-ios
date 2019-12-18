@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 
-@interface RCDBlackListViewController : UITableViewController
+@interface RCDBlackListViewController : RCDTableViewController
 
 @end

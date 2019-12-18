@@ -30,10 +30,12 @@
 
 - (void)setupViews {
 
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                    darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.2]];
 
     UIView *titleBgView = [[UIView alloc] init];
-    titleBgView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1];
+    titleBgView.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+
     [self addSubview:titleBgView];
 
     [titleBgView addSubview:self.titleLabel];
@@ -170,10 +172,12 @@
 - (RCDTextView *)textView {
     if (!_textView) {
         _textView = [[RCDTextView alloc] init];
-        _textView.textColor = [UIColor blackColor];
+        _textView.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
         _textView.textChangeDelegate = self;
         _textView.delegate = self;
         _textView.returnKeyType = UIReturnKeyDone;
+        _textView.backgroundColor = [HEXCOLOR(0x808080) colorWithAlphaComponent:0];
+        _textView.placeholderColor = HEXCOLOR(0x999999);
     }
     return _textView;
 }

@@ -537,3 +537,6 @@
 "Deleting"="Deleting...";
 "UnknownMessage"="unknown message";
 "GroupMemberOnlyOne"="Group member count should be greater than 1 at least";
+"Set_chatroom_default_history_message_count"="Set up chatroom default history message count";
+"pullXMessage"="Now pull %d history message(s)";
+"Set_chatroom_default_history_message"="Set up chatroom default history message";

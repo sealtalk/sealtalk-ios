@@ -13,10 +13,10 @@
 #import "RCDNavigationViewController.h"
 #import "UIColor+RCColor.h"
 #import "RCDLanguageSettingTableViewCell.h"
-
+#import "RCDTableView.h"
 @interface RCDLanguageSettingViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) RCDTableView *tableView;
 @property (nonatomic, strong) NSString *language;
 @property (nonatomic, strong) NSString *currentLanguage;
 @property (nonatomic, strong) NSDictionary *languageDic;
@@ -66,7 +66,6 @@
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"3A91F3" alpha:0.4]];
         self.navigationItem.rightBarButtonItem.enabled = NO;
     } else {
-        [self.navigationItem.rightBarButtonItem setTintColor:[RCIM sharedRCIM].globalNavigationBarTintColor];
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
     [self.tableView reloadData];
@@ -77,12 +76,9 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-
-    UITableViewHeaderFooterView *header = [[UITableViewHeaderFooterView alloc] init];
-    header.contentView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    ;
-
-    return header;
+    UIView *view = [UIView new];
+    view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+    return view;
 }
 
 #pragma mark - UITableView DataSource
@@ -108,20 +104,16 @@
                                                                            style:UIBarButtonItemStylePlain
                                                                           target:self
                                                                           action:@selector(save)];
-    [rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"3A91F3" alpha:0.4]];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 #pragma mark - Getters and setters
-- (UITableView *)tableView {
+- (RCDTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        _tableView = [[RCDTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.tableFooterView = [UIView new];
-
-        _tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
         if ([_tableView respondsToSelector:@selector(setSeparatorInset:)]) {
             _tableView.separatorInset = UIEdgeInsetsMake(0, 10, 0, 0);
         }

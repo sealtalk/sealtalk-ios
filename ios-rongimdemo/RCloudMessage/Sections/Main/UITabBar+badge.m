@@ -16,6 +16,14 @@
 #define RCDTabBarButtonTagFrom 888
 
 @implementation UITabBar (badge)
+- (void)bringBadgeToFrontOnItemIndex:(int)index {
+    NSInteger tag = RCDTabBarButtonTagFrom + index;
+    RCDTabBarBtn *badge = [self viewWithTag:tag];
+    if (badge) {
+        [badge removeFromSuperview];
+        [self addSubview:badge];
+    }
+}
 
 - (void)showBadgeOnItemIndex:(int)index {
     [self showBadgeOnItemIndex:index badgeValue:0];

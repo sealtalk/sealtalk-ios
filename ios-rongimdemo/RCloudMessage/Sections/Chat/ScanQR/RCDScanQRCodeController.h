@@ -6,8 +6,8 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
-@interface RCDScanQRCodeController : UIViewController
+@interface RCDScanQRCodeController : RCDViewController
 
 @end

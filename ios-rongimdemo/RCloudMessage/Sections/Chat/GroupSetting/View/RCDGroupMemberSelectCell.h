@@ -6,7 +6,7 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 @class RCUserInfo;
 NS_ASSUME_NONNULL_BEGIN
 static NSString *RCDGroupMemberSelectCellIdentifier = @"RCDGroupMemberSelectCellIdentifier";
@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, RCDGroupMemberSelectCellState) {
     RCDGroupMemberSelectCellStateUnselected,
     RCDGroupMemberSelectCellStateSelected,
 };
-@interface RCDGroupMemberSelectCell : UITableViewCell
+@interface RCDGroupMemberSelectCell : RCDTableViewCell
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 - (void)setDataModel:(NSString *)userId groupId:(NSString *)groupId;
 - (void)setCellSelectState:(RCDGroupMemberSelectCellState)state;

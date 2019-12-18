@@ -17,4 +17,5 @@
 
 - (void)hideBadgeOnItemIndex:(int)index; //隐藏小红点
 
+- (void)bringBadgeToFrontOnItemIndex:(int)index;
 @end

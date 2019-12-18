@@ -6,7 +6,7 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, RCDChatBgDetailType) {
     RCDChatBgDetailTypeAlbum,
 };
 
-@interface RCDChatBgDetailViewController : UIViewController
+@interface RCDChatBgDetailViewController : RCDViewController
 
 - (instancetype)initWithChatBgDetailType:(RCDChatBgDetailType)type imageName:(NSString *)imageName;
 

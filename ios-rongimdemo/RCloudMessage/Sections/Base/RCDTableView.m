@@ -7,8 +7,25 @@
 //
 
 #import "RCDTableView.h"
-
+#import "RCDUtilities.h"
 @implementation RCDTableView
+- (instancetype)init {
+    if (self = [super init]) {
+        self.tableFooterView = [UIView new];
+        self.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+        self.separatorColor = RCDDYCOLOR(0xdfdfdf, 0x1a1a1a);
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
+    if (self = [super initWithFrame:frame style:style]) {
+        self.tableFooterView = [UIView new];
+        self.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+        self.separatorColor = RCDDYCOLOR(0xdfdfdf, 0x1a1a1a);
+    }
+    return self;
+}
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {
     [super willMoveToSuperview:newSuperview];

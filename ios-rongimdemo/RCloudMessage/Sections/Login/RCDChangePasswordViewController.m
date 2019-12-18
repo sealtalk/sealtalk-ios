@@ -44,8 +44,6 @@
     [self initialize];
     [self setNavigationButton];
 
-    self.view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(textFieldEditChanged:)
                                                  name:@"UITextFieldTextDidChangeNotification"
@@ -113,14 +111,17 @@
                                                               action:@selector(clickBackBtn)];
     self.navigationItem.leftBarButtonItem = self.leftBtn;
 
-    self.rightBtn = [[RCDUIBarButtonItem alloc] initWithbuttonTitle:RCDLocalizedString(@"save")
+    self.rightBtn = [[RCDUIBarButtonItem alloc]
+        initWithbuttonTitle:RCDLocalizedString(@"save")
 
-                                                         titleColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
-                                                        buttonFrame:CGRectMake(0, 0, 50, 30)
-                                                             target:self
-                                                             action:@selector(saveNewPassword:)];
+                 titleColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                     darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
+                buttonFrame:CGRectMake(0, 0, 50, 30)
+                     target:self
+                     action:@selector(saveNewPassword:)];
     [self.rightBtn buttonIsCanClick:NO
-                        buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
+                        buttonColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                             darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
                       barButtonItem:self.rightBtn];
     self.navigationItem.rightBarButtonItems = [self.rightBtn setTranslation:self.rightBtn translation:-11];
 }
@@ -136,9 +137,10 @@
 
 - (UIView *)setSubView {
     UIView *subView = [[UIView alloc] init];
-    subView.backgroundColor = [UIColor whiteColor];
+    subView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                       darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.2]];
     subView.layer.borderWidth = 0.5;
-    subView.layer.borderColor = [[UIColor colorWithHexString:@"dfdfdd" alpha:1.f] CGColor];
+    subView.layer.borderColor = [RCDDYCOLOR(0xdfdfdd, 0x000000) CGColor];
     subView.translatesAutoresizingMaskIntoConstraints = NO;
     return subView;
 }
@@ -149,7 +151,7 @@
     subTextField.clearButtonMode = UITextFieldViewModeAlways;
     subTextField.secureTextEntry = YES;
     subTextField.font = [UIFont systemFontOfSize:14.f];
-    subTextField.textColor = [UIColor colorWithHexString:@"000000" alpha:1.f];
+    subTextField.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     if (placeholder != nil) {
         subTextField.placeholder = placeholder;
     }
@@ -159,7 +161,7 @@
         NSAttributedString *attrString =
             [[NSAttributedString alloc] initWithString:subTextField.placeholder
                                             attributes:@{
-                                                NSForegroundColorAttributeName : HEXCOLOR(0x999999),
+                                                NSForegroundColorAttributeName : RCDDYCOLOR(0x999999, 0x666666),
                                                 NSFontAttributeName : subTextField.font
                                             }];
         subTextField.attributedPlaceholder = attrString;
@@ -241,13 +243,14 @@
 }
 
 - (void)AlertShow:(NSString *)content {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:content
-                                                   delegate:self
-                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
-
-                                          otherButtonTitles:nil];
-    [alert show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:content preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)clickBackBtn {
@@ -257,12 +260,14 @@
 - (void)textFieldEditChanged:(NSNotification *)obj {
     if (self.oldPwdTextField.text.length > 0 || self.newsPwdTextField.text.length > 0 ||
         self.confirmPwdTextField.text.length > 0) {
-        [self.rightBtn buttonIsCanClick:YES buttonColor:[UIColor whiteColor] barButtonItem:self.rightBtn];
+        [self.rightBtn buttonIsCanClick:YES buttonColor:RCDDYCOLOR(0xffffff, 0xA8A8A8) barButtonItem:self.rightBtn];
 
     } else {
-        [self.rightBtn buttonIsCanClick:NO
-                            buttonColor:[UIColor colorWithHexString:@"9fcdfd" alpha:1.0]
-                          barButtonItem:self.rightBtn];
+        [self.rightBtn
+            buttonIsCanClick:NO
+                 buttonColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x9fcdfd)
+                                                      darkColor:[HEXCOLOR(0xA8A8A8) colorWithAlphaComponent:0.4]]
+               barButtonItem:self.rightBtn];
     }
 }
 @end

@@ -10,7 +10,7 @@
 #import "RCDUserListCollectionItem.h"
 #import "RCDUserInfoManager.h"
 #import <RongIMKit/RongIMKit.h>
-
+#import "RCDUtilities.h"
 @interface RCDUserListCollectionView () <UICollectionViewDelegate, UICollectionViewDataSource>
 @property (nonatomic, strong) NSArray *userList;
 @property (nonatomic, assign) BOOL isAllowAdd;
@@ -27,7 +27,8 @@
         self.delegate = self;
         self.dataSource = self;
         self.scrollEnabled = NO;
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                        darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
         [self registerClass:[RCDUserListCollectionItem class] forCellWithReuseIdentifier:@"RCDUserListCollectionItem"];
         [self registerClass:[RCDUserListCollectionItem class]
             forCellWithReuseIdentifier:@"RCDUserListCollectionItemForSigns"];

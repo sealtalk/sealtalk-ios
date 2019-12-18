@@ -19,6 +19,7 @@
 #import "RCDLanguageSettingViewController.h"
 #import "RCDCommonString.h"
 #import "RCDQRCodeController.h"
+
 //#define SERVICE_ID @"KEFU146001495753714"
 #define SERVICE_ID @"service"
 
@@ -27,6 +28,12 @@
 @end
 
 @implementation RCDMeTableViewController
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -162,7 +169,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [UIView new];
-    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
+    view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     return view;
 }
 
@@ -215,11 +222,7 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.navigationController.navigationBar.translucent = NO;
     self.tableView.tableFooterView = [UIView new];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
-    self.tabBarController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
 
 @end

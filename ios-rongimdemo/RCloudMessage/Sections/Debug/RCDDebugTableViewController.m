@@ -45,7 +45,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initdata];
-    [self tableViewSetting];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -90,9 +89,10 @@
     NSArray *titles = self.functions[allkeys[indexPath.section]];
     NSString *title = titles[indexPath.row];
     cell.textLabel.text = title;
-    cell.backgroundColor = [UIColor whiteColor];
+    cell.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                    darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
     cell.detailTextLabel.text = @"";
-    cell.textLabel.textColor = [UIColor blackColor];
+    cell.textLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     if ([title isEqualToString:RCDLocalizedString(@"show_ID")]) {
         [self setSwitchButtonCell:cell tag:DISPLAY_ID_TAG];
     }
@@ -133,6 +133,8 @@
         [self pushToNoDisturbVC];
     } else if ([title isEqualToString:@"进入聊天室存储测试"]) {
         [self pushToChatroomStatusVC];
+    } else if ([title isEqualToString:RCDLocalizedString(@"Set_chatroom_default_history_message")]) {
+        [self showAlertController];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -154,7 +156,8 @@
         @"合并转发",
     ]
             forKey:RCDLocalizedString(@"custom_setting")];
-    //    [dic setObject:@[ @"进入聊天室存储测试" ] forKey:@"聊天室测试"];
+    [dic setObject:@[ @"进入聊天室存储测试", RCDLocalizedString(@"Set_chatroom_default_history_message") ]
+            forKey:@"聊天室测试"];
     [dic setObject:@[
         RCDLocalizedString(@"Set_offline_message_compensation_time"),
         RCDLocalizedString(@"Set_global_DND_time")
@@ -162,12 +165,6 @@
             forKey:RCDLocalizedString(@"time_setting")];
 
     self.functions = [dic copy];
-}
-
-#pragma mark UI setting
-- (void)tableViewSetting {
-    self.tableView.backgroundColor = [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:243 / 255.0 alpha:1.f];
-    self.tableView.tableFooterView = [UIView new];
 }
 
 #pragma mark private methord
@@ -310,14 +307,41 @@
     self.webUploader = [[GCDWebUploader alloc] initWithUploadDirectory:homePath];
     if ([self.webUploader start]) {
         NSString *host = self.webUploader.serverURL.absoluteString;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:host
-                                                        message:@"请在电脑浏览器打开上面的地址"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"确定"
-                                              otherButtonTitles:nil, nil];
-        [alert show];
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:host
+                                                message:@"请在电脑浏览器打开上面的地址"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
         NSLog(@"web uploader host:%@ port:%@", host, @(self.webUploader.port));
     }
+}
+
+// 显示设置加入聊天室时获取历史消息数量的弹窗
+- (void)showAlertController {
+    __block UITextField *tempTextField;
+    NSInteger num = [DEFAULTS integerForKey:RCDChatroomDefalutHistoryMessageCountKey];
+    NSString *message = [NSString stringWithFormat:RCDLocalizedString(@"pullXMessage"), num];
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:RCDLocalizedString(@"Set_chatroom_default_history_message_count")
+                                            message:message
+                                     preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"OK")
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   NSInteger count = [tempTextField.text integerValue];
+                                   [DEFAULTS setInteger:count forKey:RCDChatroomDefalutHistoryMessageCountKey];
+                               }];
+    [alertController addAction:cancelAction];
+    [alertController addAction:okAction];
+
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *_Nonnull textField) {
+        tempTextField = textField;
+    }];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)pushToChatroomStatusVC {

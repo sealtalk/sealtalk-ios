@@ -9,7 +9,8 @@
 #import "RCDBaseSettingTableViewCell.h"
 #import "UIColor+RCColor.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-
+#import <RongIMKit/RongIMKit.h>
+#import "RCDUtilities.h"
 @interface RCDBaseSettingTableViewCell ()
 
 @property (nonatomic, strong) NSDictionary *cellSubViews;
@@ -27,7 +28,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.backgroundColor = [UIColor whiteColor];
         [self initialize];
     }
     return self;
@@ -64,15 +64,14 @@
 }
 
 - (void)initialize {
-    self.contentView.backgroundColor = [UIColor whiteColor];
     self.leftLabel = [[UILabel alloc] init];
     self.leftLabel.font = [UIFont systemFontOfSize:16.f];
-    self.leftLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];
+    self.leftLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     self.leftLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.rightLabel = [[UILabel alloc] init];
     self.rightLabel.font = [UIFont systemFontOfSize:14.f];
-    self.rightLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.0];
+    self.rightLabel.textColor = RCDDYCOLOR(0x999999, 0x666666);
     self.rightLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.rightArrow = [[UIImageView alloc] init];
@@ -85,7 +84,7 @@
     self.switchButton.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.bottomLine = [[UIView alloc] init];
-    self.bottomLine.backgroundColor = [UIColor colorWithHexString:@"dfdfdf" alpha:1.0];
+    self.bottomLine.backgroundColor = RCDDYCOLOR(0xdfdfdf, 0x1a1a1a);
     self.bottomLine.translatesAutoresizingMaskIntoConstraints = NO;
 
     [self.contentView addSubview:self.leftLabel];

@@ -44,4 +44,6 @@ NSString *const RCDContactsUpdateUIKey = @"RCDContactsUpdateUIKey";
 NSString *const RCDChatBackgroundKey = @"RCDChatBackgroundKey";
 NSString *const RCDChatBackgroundFromAlbum = @"RCDChatBackgroundFromAlbum";
 NSString *const RCDChatBackgroundImageDataKey = @"RCDChatBackgroundImageDataKey";
+NSString *const RCDChatroomDefalutHistoryMessageCountKey = @"ChatroomDefaultHistoryMessageCount";
+NSString *const RCDGroupClearMessageKey = @"RCDGroupClearMessageKey";
 #endif /* RCDCommonString_h */

@@ -8,7 +8,7 @@
 
 #import "RCDTipFooterView.h"
 #import "UIColor+RCColor.h"
-
+#import "RCDUtilities.h"
 #import <RongIMLib/RongIMLib.h>
 #import <Masonry/Masonry.h>
 
@@ -40,7 +40,7 @@ static const NSInteger __RCDTipLabelBottomSpace = 10;
 }
 
 - (void)__addTipLabel {
-    self.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
+    self.backgroundColor = RCDDYCOLOR(0xf2f2f3, 0x000000);
     [self addSubview:self.tipLabel];
     [self.tipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top).offset(5);
@@ -53,7 +53,7 @@ static const NSInteger __RCDTipLabelBottomSpace = 10;
     if (!_tipLabel) {
         _tipLabel = [[UILabel alloc] init];
         _tipLabel.numberOfLines = 0;
-        [_tipLabel setTextColor:[UIColor colorWithHexString:@"8b8b8b" alpha:1]];
+        [_tipLabel setTextColor:RCDDYCOLOR(0x8b8b8b, 0x666666)];
     }
     return _tipLabel;
 }

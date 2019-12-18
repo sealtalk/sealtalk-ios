@@ -16,20 +16,20 @@
 #import "RCDContactSelectedTableViewController.h"
 #import "RCDSelectContactViewController.h"
 #import <Masonry/Masonry.h>
-#import "RCDHaveSelectedViewController.h"
 #import "RCDForwardSearchViewController.h"
 #import "RCDSelectGroupViewController.h"
-
+#import "RCDTableView.h"
+#import "RCDSearchBar.h"
 static NSString *rightArrowCellIdentifier = @"RCDRightArrowCellIdentifier";
 static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentifier";
 
 @interface RCDForwardSelectedViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate,
                                                 RCDForwardSearchViewDelegate>
 
-@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) RCDSearchBar *searchBar;
 @property (nonatomic, strong) RCDBottomResultView *bottomResultView;
 @property (nonatomic, strong) UIBarButtonItem *rightBarItem;
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) RCDTableView *tableView;
 @property (nonatomic, strong) NSArray *conversationList;
 @property (nonatomic, assign) BOOL isMultiSelectModel;
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
@@ -40,7 +40,6 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.backgroundColor = [UIColor whiteColor];
     [self setupData];
     [self setupViews];
     [self setupNavi];
@@ -100,11 +99,10 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 1) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
-        view.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 200, 30)];
         label.text = RCDLocalizedString(@"RecentChat");
         label.font = [UIFont systemFontOfSize:14];
-        label.textColor = [UIColor colorWithHexString:@"939393" alpha:1];
+        label.textColor = RCDDYCOLOR(0x939393, 0x666666);
         [view addSubview:label];
         return view;
     }
@@ -277,7 +275,6 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
                                                                     style:UIBarButtonItemStylePlain
                                                                    target:self
                                                                    action:@selector(onLeftButtonClick:)];
-    leftBarItem.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
     self.navigationItem.leftBarButtonItem = leftBarItem;
 }
 
@@ -357,9 +354,9 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 }
 
 #pragma mark - Setter && Getter
-- (UITableView *)tableView {
+- (RCDTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] init];
+        _tableView = [[RCDTableView alloc] init];
         [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
         _tableView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
         _tableView.allowsMultipleSelection = YES;
@@ -371,9 +368,9 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
     return _tableView;
 }
 
-- (UISearchBar *)searchBar {
+- (RCDSearchBar *)searchBar {
     if (!_searchBar) {
-        _searchBar = [[UISearchBar alloc] init];
+        _searchBar = [[RCDSearchBar alloc] init];
         _searchBar.delegate = self;
     }
     return _searchBar;
@@ -385,7 +382,6 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
                                                          style:UIBarButtonItemStylePlain
                                                         target:self
                                                         action:@selector(onRightButtonClick:)];
-        _rightBarItem.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
     }
     return _rightBarItem;
 }

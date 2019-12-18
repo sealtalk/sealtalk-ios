@@ -8,13 +8,12 @@
 
 #import "RCDSearchMoreViewCell.h"
 #import "RCDCommonDefine.h"
-
+#import "RCDUtilities.h"
 @implementation RCDSearchMoreViewCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor whiteColor];
         [self loadView];
     }
 
@@ -30,7 +29,7 @@
         [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.searchImageView.frame) + 4, (45 - 17) / 2,
                                                   self.contentView.frame.size.width - 20 - 17, 17)];
     self.moreLabel.font = [UIFont systemFontOfSize:15.0];
-    self.moreLabel.textColor = HEXCOLOR(0x7ca1c9);
+    self.moreLabel.textColor = RCDDYCOLOR(0x7ca1c9, 0x007acc);
     [self.contentView addSubview:self.moreLabel];
 }
 - (void)awakeFromNib {

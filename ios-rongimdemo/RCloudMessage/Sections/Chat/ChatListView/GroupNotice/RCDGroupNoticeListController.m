@@ -24,8 +24,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = RCDLocalizedString(@"GroupNoti");
-    self.tableView.tableFooterView = [UIView new];
-    self.tableView.backgroundColor = [UIColor whiteColor];
     [self regiterNotification];
     [self setNaviItem];
     [self getData];
@@ -162,19 +160,18 @@
 }
 
 - (void)didTapRightNaviBar {
-    UIAlertController *alertController =
-        [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    [alertController
-        addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"Cancel", @"RongCloudKit", nil)
-                                           style:UIAlertActionStyleCancel
-                                         handler:^(UIAlertAction *_Nonnull action){
-                                         }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"ClearGroupInviteListInfo")
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *_Nonnull action) {
-                                                          [self clearGroupNoticeList];
-                                                      }]];
-    [self.navigationController presentViewController:alertController animated:YES completion:nil];
+    UIAlertAction *cancelAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *clearAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"ClearGroupInviteListInfo")
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *_Nonnull action) {
+                                                            [self clearGroupNoticeList];
+                                                        }];
+    [RCKitUtility showAlertController:nil
+                              message:nil
+                       preferredStyle:UIAlertControllerStyleActionSheet
+                              actions:@[ cancelAction, clearAction ]
+                     inViewController:self];
 }
 
 - (void)clearGroupNoticeList {

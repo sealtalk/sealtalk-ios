@@ -22,7 +22,6 @@
     self = [super init];
     if (self) {
         [self initSubviews];
-        self.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }
@@ -90,7 +89,7 @@
     if (selected) {
         _selectedImageView.image = [UIImage imageNamed:@"select"];
     } else {
-        _selectedImageView.image = [UIImage imageNamed:@"unselect"];
+        _selectedImageView.image = [UIImage imageNamed:@"unselected_full"];
     }
     // Configure the view for the selected state
 }
@@ -99,7 +98,7 @@
 - (UIImageView *)selectedImageView {
     if (!_selectedImageView) {
         _selectedImageView = [[UIImageView alloc] init];
-        _selectedImageView.image = [UIImage imageNamed:@"unselect"];
+        _selectedImageView.image = [UIImage imageNamed:@"unselected_full"];
     }
     return _selectedImageView;
 }
@@ -123,7 +122,7 @@
     if (!_nicknameLabel) {
         _nicknameLabel = [[UILabel alloc] init];
         _nicknameLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0];
-        _nicknameLabel.textColor = [UIColor blackColor];
+        _nicknameLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     }
     return _nicknameLabel;
 }

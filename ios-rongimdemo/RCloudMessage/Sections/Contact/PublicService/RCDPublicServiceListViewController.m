@@ -27,7 +27,6 @@
     [rightBtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
     [rightBtn addTarget:self action:@selector(pushAddPublicService:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
-    [rightBtn setTintColor:[UIColor whiteColor]];
     self.navigationItem.rightBarButtonItem = rightButton;
 }
 

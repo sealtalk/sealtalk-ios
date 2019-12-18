@@ -11,7 +11,7 @@
 #import "UIColor+RCColor.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DefaultPortraitView.h"
-
+#import "RCDUtilities.h"
 @interface RCDAddressBookFriendCell ()
 
 @property (nonatomic, strong) UIImageView *headerImgView;
@@ -58,7 +58,6 @@
 }
 
 - (void)setupViews {
-    self.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.headerImgView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.detailLabel];
@@ -112,7 +111,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = [UIFont systemFontOfSize:16.5];
-        _titleLabel.textColor = [UIColor colorWithHexString:@"333333" alpha:1];
+        _titleLabel.textColor = RCDDYCOLOR(0x333333, 0x9f9f9f);
     }
     return _titleLabel;
 }
@@ -121,7 +120,7 @@
     if (!_detailLabel) {
         _detailLabel = [[UILabel alloc] init];
         _detailLabel.font = [UIFont systemFontOfSize:14];
-        _detailLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1];
+        _detailLabel.textColor = RCDDYCOLOR(0x999999, 0x707070);
     }
     return _detailLabel;
 }
@@ -140,7 +139,7 @@
 - (UIButton *)addButton {
     if (!_addButton) {
         _addButton = [[UIButton alloc] init];
-        _addButton.backgroundColor = [UIColor colorWithHexString:@"0399FF" alpha:1];
+        _addButton.backgroundColor = RCDDYCOLOR(0x0399FF, 0x666666);
         _addButton.titleLabel.font = [UIFont systemFontOfSize:12];
         _addButton.layer.cornerRadius = 2;
         _addButton.layer.masksToBounds = YES;

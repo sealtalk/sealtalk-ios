@@ -49,10 +49,8 @@
 @end
 ;
 
-@interface RCDChatViewController () <UIActionSheetDelegate, UIAlertViewDelegate, RCMessageCellDelegate,
-                                     RCDQuicklySendManagerDelegate, UIGestureRecognizerDelegate>
+@interface RCDChatViewController () <RCMessageCellDelegate, RCDQuicklySendManagerDelegate, UIGestureRecognizerDelegate>
 @property (nonatomic, strong) RCDGroupInfo *groupInfo;
-@property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) BOOL isShow;
 
 @end
@@ -60,10 +58,28 @@
 @implementation RCDChatViewController
 
 #pragma mark - life cycle
+- (instancetype)init {
+    self = [super init];
+    int defalutHistoryMessageCount = (int)[DEFAULTS integerForKey:RCDChatroomDefalutHistoryMessageCountKey];
+    if (defalutHistoryMessageCount >= -1 && defalutHistoryMessageCount <= 50) {
+        self.defaultHistoryMessageCountOfChatRoom = defalutHistoryMessageCount;
+    }
+    return self;
+}
+
+- (id)initWithConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId {
+    self = [super initWithConversationType:conversationType targetId:targetId];
+    int defalutHistoryMessageCount = (int)[DEFAULTS integerForKey:RCDChatroomDefalutHistoryMessageCountKey];
+    if (defalutHistoryMessageCount >= -1 && defalutHistoryMessageCount <= 50) {
+        self.defaultHistoryMessageCountOfChatRoom = defalutHistoryMessageCount;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    self.loading = NO;
+
     ///注册自定义测试消息Cell
     [self registerClass:[RCDTestMessageCell class] forMessageClass:[RCDTestMessage class]];
     [self registerClass:RCDTipMessageCell.class forMessageClass:RCDGroupNotificationMessage.class];
@@ -75,7 +91,7 @@
 
     [self refreshUserInfoOrGroupInfo];
     [self addNotifications];
-    [self addToolbarItems];
+    //    [self addToolbarItems];
     /*******************实时地理位置共享***************/
     [self registerRealTimeLocationCell];
     [self getRealTimeLocationProxy];
@@ -149,53 +165,6 @@
     shouldChangeTextInRange:(NSRange)range
             replacementText:(NSString *)text {
     [self resetQucilySendView];
-}
-
-#pragma mark - UIActionSheet Delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-    case 0: {
-        [super pluginBoardView:self.chatSessionInputBarControl.pluginBoardView
-            clickedItemWithTag:PLUGIN_BOARD_ITEM_LOCATION_TAG];
-    } break;
-    case 1: {
-        [self showRealTimeLocationViewController];
-    } break;
-    }
-}
-
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
-    SEL selector = NSSelectorFromString(@"_alertController");
-
-    if ([actionSheet respondsToSelector:selector]) {
-        UIAlertController *alertController = [actionSheet valueForKey:@"_alertController"];
-        if ([alertController isKindOfClass:[UIAlertController class]]) {
-            alertController.view.tintColor = [UIColor blackColor];
-        }
-    } else {
-        for (UIView *subView in actionSheet.subviews) {
-            if ([subView isKindOfClass:[UIButton class]]) {
-                UIButton *btn = (UIButton *)subView;
-                [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            }
-        }
-    }
-}
-
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (alertView.tag) {
-    case 101: {
-        if (buttonIndex == 1) {
-            [self.realTimeLocation quitRealTimeLocation];
-            [self popupChatViewController];
-        }
-    } break;
-
-        break;
-    default:
-        break;
-    }
 }
 
 #pragma mark - RCDQuicklySendManagerDelegate
@@ -349,14 +318,27 @@
     switch (tag) {
     case PLUGIN_BOARD_ITEM_LOCATION_TAG: {
         if (self.realTimeLocation) {
-            UIActionSheet *actionSheet =
-                [[UIActionSheet alloc] initWithTitle:nil
-                                            delegate:self
-                                   cancelButtonTitle:RCDLocalizedString(@"cancel")
-                              destructiveButtonTitle:nil
-                                   otherButtonTitles:RCDLocalizedString(@"send_location"),
-                                                     RCDLocalizedString(@"location_share"), nil];
-            [actionSheet showInView:self.view];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel")
+                                                                   style:UIAlertActionStyleCancel
+                                                                 handler:nil];
+            UIAlertAction *sendLocationAction =
+                [UIAlertAction actionWithTitle:RCDLocalizedString(@"send_location")
+                                         style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction *_Nonnull action) {
+                                           [super pluginBoardView:self.chatSessionInputBarControl.pluginBoardView
+                                               clickedItemWithTag:PLUGIN_BOARD_ITEM_LOCATION_TAG];
+                                       }];
+            UIAlertAction *locationShareAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"location_share")
+                                                                          style:UIAlertActionStyleDefault
+                                                                        handler:^(UIAlertAction *_Nonnull action) {
+                                                                            [self showRealTimeLocationViewController];
+                                                                        }];
+
+            [RCKitUtility showAlertController:nil
+                                      message:nil
+                               preferredStyle:UIAlertControllerStyleActionSheet
+                                      actions:@[ cancelAction, sendLocationAction, locationShareAction ]
+                             inViewController:self];
         } else {
             [super pluginBoardView:pluginBoardView clickedItemWithTag:tag];
         }
@@ -564,16 +546,20 @@
     if ([self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_OUTGOING ||
         [self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_CONNECTED) {
         [self.chatSessionInputBarControl resetToDefaultStatus];
-        UIAlertView *alertView =
-            [[UIAlertView alloc] initWithTitle:nil
-                                       message:RCDLocalizedString(@"leave_location_share_when_leave_chat")
-
-                                      delegate:self
-                             cancelButtonTitle:RCDLocalizedString(@"cancel")
-
-                             otherButtonTitles:RCDLocalizedString(@"confirm"), nil];
-        alertView.tag = 101;
-        [alertView show];
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil
+                                                message:RCDLocalizedString(@"leave_location_share_when_leave_chat")
+                                         preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *_Nonnull action) {
+                                                              [self.realTimeLocation quitRealTimeLocation];
+                                                              [self popupChatViewController];
+                                                          }]];
+        [self presentViewController:alertController animated:YES completion:nil];
     } else {
         [self popupChatViewController];
     }
@@ -887,9 +873,9 @@
 }
 
 - (void)addQuicklySendImage {
-    [self.chatSessionInputBarControl.additionalButton addTarget:self
-                                                         action:@selector(quicklySendImage:)
-                                               forControlEvents:UIControlEventTouchUpInside];
+    [(UIButton *)self.chatSessionInputBarControl.additionalButton addTarget:self
+                                                                     action:@selector(quicklySendImage:)
+                                                           forControlEvents:UIControlEventTouchUpInside];
     [RCDQuicklySendManager sharedManager].delegate = self;
 }
 
@@ -943,106 +929,6 @@
     [[RCDQuicklySendManager sharedManager] hideQuicklySendView];
 }
 
-#pragma mark - *************Load More Chatroom History Message From Server*************
-//需要开通聊天室消息云端存储功能，调用getRemoteChatroomHistoryMessages接口才可以从服务器获取到聊天室消息的数据
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    //当会话类型是聊天室时，下拉加载消息会调用getRemoteChatroomHistoryMessages接口从服务器拉取聊天室消息
-    if (self.conversationType == ConversationType_CHATROOM) {
-        if (scrollView.contentOffset.y < -15.0f && !self.loading) {
-            self.loading = YES;
-            [self performSelector:@selector(loadMoreChatroomHistoryMessageFromServer) withObject:nil afterDelay:0.4f];
-        }
-    } else {
-        [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
-    }
-}
-
-//从服务器拉取聊天室消息的方法
-- (void)loadMoreChatroomHistoryMessageFromServer {
-    long long recordTime = 0;
-    RCMessageModel *model;
-    if (self.conversationDataRepository.count > 0) {
-        model = [self.conversationDataRepository objectAtIndex:0];
-        recordTime = model.sentTime;
-    }
-    __weak typeof(self) weakSelf = self;
-    [[RCIMClient sharedRCIMClient] getRemoteChatroomHistoryMessages:self.targetId
-        recordTime:recordTime
-        count:20
-        order:RC_Timestamp_Desc
-        success:^(NSArray *messages, long long syncTime) {
-            self.loading = NO;
-            [weakSelf handleMessages:messages];
-        }
-        error:^(RCErrorCode status) {
-            NSLog(@"load remote history message failed(%zd)", status);
-        }];
-}
-
-//对于从服务器拉取到的聊天室消息的处理
-- (void)handleMessages:(NSArray *)messages {
-    NSMutableArray *tempMessags = [[NSMutableArray alloc] initWithCapacity:0];
-    for (RCMessage *message in messages) {
-        RCMessageModel *model = [RCMessageModel modelWithMessage:message];
-        [tempMessags addObject:model];
-    }
-    //对去拉取到的消息进行逆序排列
-    NSArray *reversedArray = [[tempMessags reverseObjectEnumerator] allObjects];
-    tempMessags = [reversedArray mutableCopy];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //将逆序排列的消息加入到数据源
-        [tempMessags addObjectsFromArray:self.conversationDataRepository];
-        self.conversationDataRepository = tempMessags;
-        //显示消息发送时间的方法
-        [self figureOutAllConversationDataRepository];
-        [self.conversationMessageCollectionView reloadData];
-        if (self.conversationDataRepository != nil && self.conversationDataRepository.count > 0 &&
-            [self.conversationMessageCollectionView numberOfItemsInSection:0] >= messages.count - 1) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count - 1 inSection:0];
-            [self.conversationMessageCollectionView scrollToItemAtIndexPath:indexPath
-                                                           atScrollPosition:UICollectionViewScrollPositionTop
-                                                                   animated:NO];
-        }
-    });
-}
-
-//显示消息发送时间的方法
-- (void)figureOutAllConversationDataRepository {
-    for (int i = 0; i < self.conversationDataRepository.count; i++) {
-        RCMessageModel *model = [self.conversationDataRepository objectAtIndex:i];
-        if (0 == i) {
-            model.isDisplayMessageTime = YES;
-        } else if (i > 0) {
-            RCMessageModel *pre_model = [self.conversationDataRepository objectAtIndex:i - 1];
-
-            long long previous_time = pre_model.sentTime;
-
-            long long current_time = model.sentTime;
-
-            long long interval =
-                current_time - previous_time > 0 ? current_time - previous_time : previous_time - current_time;
-            if (interval / 1000 <= 3 * 60) {
-                if (model.isDisplayMessageTime && model.cellSize.height > 0) {
-                    CGSize size = model.cellSize;
-                    size.height = model.cellSize.height - 45;
-                    model.cellSize = size;
-                }
-                model.isDisplayMessageTime = NO;
-            } else if (![[[model.content class] getObjectName] isEqualToString:@"RC:OldMsgNtf"]) {
-                if (!model.isDisplayMessageTime && model.cellSize.height > 0) {
-                    CGSize size = model.cellSize;
-                    size.height = model.cellSize.height + 45;
-                    model.cellSize = size;
-                }
-                model.isDisplayMessageTime = YES;
-            }
-        }
-        if ([[[model.content class] getObjectName] isEqualToString:@"RC:OldMsgNtf"]) {
-            model.isDisplayMessageTime = NO;
-        }
-    }
-}
-
 #pragma mark - *************消息多选功能:转发、删除*************
 /******************消息多选功能:转发、删除**********************/
 - (void)addToolbarItems {
@@ -1074,12 +960,14 @@
         navi.modalPresentationStyle = UIModalPresentationFullScreen;
         [self.navigationController presentViewController:navi animated:YES completion:nil];
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:RCDLocalizedString(@"Forwarding_is_not_supported")
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:RCDLocalizedString(@"confirm"), nil];
-        [alertView show];
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil
+                                                message:RCDLocalizedString(@"Forwarding_is_not_supported")
+                                         preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
@@ -1096,6 +984,28 @@
     }
     //置为 NO,将消息 cell 重置为初始状态
     self.allowsMessageCellSelection = NO;
+}
+
+- (void)forwardMessage:(NSInteger)index completed:(void (^)(NSArray<RCConversation *> *))completedBlock {
+    [RCDForwardManager sharedInstance].selectedMessages = self.selectedMessages;
+    if ([[RCDForwardManager sharedInstance] allSelectedMessagesAreLegal]) {
+        [RCDForwardManager sharedInstance].isForward = YES;
+        [RCDForwardManager sharedInstance].selectConversationCompleted =
+            ^(NSArray<RCConversation *> *_Nonnull conversationList) {
+                completedBlock(conversationList);
+            };
+        RCDForwardSelectedViewController *forwardSelectedVC = [[RCDForwardSelectedViewController alloc] init];
+        UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:forwardSelectedVC];
+        navi.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self.navigationController presentViewController:navi animated:YES completion:nil];
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:RCDLocalizedString(@"Forwarding_is_not_supported")
+                                                           delegate:nil
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:RCDLocalizedString(@"confirm"), nil];
+        [alertView show];
+    }
 }
 
 - (void)userDidTakeScreenshot:(NSNotification *)notification {
@@ -1117,4 +1027,8 @@
     }
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self setupChatBackground];
+}
 @end

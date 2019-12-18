@@ -33,9 +33,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = RCDLocalizedString(@"GroupManage");
-    self.tableView.tableFooterView = [UIView new];
     self.tableView.tableHeaderView = [UIView new];
-    self.tableView.backgroundColor = HEXCOLOR(0xf2f2f3);
 
     [self refreshData];
 }
@@ -100,11 +98,6 @@
     return 15;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 15)];
-    return label;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     NSString *footerTip = self.footerTitles[section];
     if (footerTip.length == 0) {
@@ -125,8 +118,7 @@
     if (footerTip.length > 0) {
         UILabel *label = [[UILabel alloc] init];
         [view addSubview:label];
-        label.backgroundColor = HEXCOLOR(0xf2f2f3);
-        label.textColor = HEXCOLOR(0x939393);
+        label.textColor = RCDDYCOLOR(0x939393, 0x666666);
         label.font = [UIFont systemFontOfSize:14];
         label.numberOfLines = 0;
         [label mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -15,12 +15,12 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "NormalAlertView.h"
 #import "UIView+MBProgressHUD.h"
-
+#import "RCDTableView.h"
 static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIdentifier";
 
 @interface RCDCleanChatHistoryViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) RCDTableView *tableView;
 @property (nonatomic, strong) UIView *bottomView;
 @property (nonatomic, strong) UIButton *allSelectBtn;
 @property (nonatomic, strong) UIButton *deleteBtn;
@@ -151,7 +151,7 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
 
     if (self.conversationList.count > 0) {
         self.allSelectBtn.enabled = YES;
-        [self.allSelectBtn setTitleColor:[UIColor colorWithHexString:@"000000" alpha:1] forState:UIControlStateNormal];
+        [self.allSelectBtn setTitleColor:RCDDYCOLOR(0x000000, 0x999999) forState:UIControlStateNormal];
     } else {
         self.allSelectBtn.enabled = NO;
         [self.allSelectBtn setTitleColor:[[UIColor grayColor] colorWithAlphaComponent:0.6]
@@ -199,15 +199,13 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
 }
 
 #pragma mark - Setter && Getter
-- (UITableView *)tableView {
+- (RCDTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] init];
-        _tableView.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
+        _tableView = [[RCDTableView alloc] init];
         [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
         _tableView.allowsMultipleSelection = YES;
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.tableFooterView = [UIView new];
     }
     return _tableView;
 }
@@ -215,7 +213,7 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
 - (UIView *)bottomView {
     if (!_bottomView) {
         _bottomView = [[UIView alloc] init];
-        _bottomView.backgroundColor = [UIColor whiteColor];
+        _bottomView.backgroundColor = RCDDYCOLOR(0xffffff, 0x1a1a1a);
     }
     return _bottomView;
 }
@@ -226,7 +224,7 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
         [_allSelectBtn setTitle:RCDLocalizedString(@"AllSelect") forState:UIControlStateNormal];
         [_allSelectBtn setImage:[UIImage imageNamed:@"unselected_full"] forState:UIControlStateNormal];
         [_allSelectBtn setImage:[UIImage imageNamed:@"selected_full"] forState:UIControlStateSelected];
-        [_allSelectBtn setTitleColor:[UIColor colorWithHexString:@"000000" alpha:1] forState:UIControlStateNormal];
+        [_allSelectBtn setTitleColor:RCDDYCOLOR(0x000000, 0x999999) forState:UIControlStateNormal];
         [_allSelectBtn setTitleColor:[[UIColor grayColor] colorWithAlphaComponent:0.6] forState:UIControlStateDisabled];
         _allSelectBtn.titleLabel.font = [UIFont systemFontOfSize:17];
         [_allSelectBtn addTarget:self action:@selector(allSelectAction) forControlEvents:UIControlEventTouchUpInside];

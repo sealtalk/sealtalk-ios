@@ -27,10 +27,6 @@
     [super viewDidLoad];
 
     self.navigationItem.title = RCDLocalizedString(@"new_message_notification");
-
-    self.tableView.tableFooterView = [UIView new];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -91,11 +87,11 @@
         } else if (1 == indexPath.row) {
             [cell setCellStyle:DefaultStyle];
             cell.leftLabel.text = RCDLocalizedString(@"mute_notifications");
-            if (self.isReceiveNotification == YES) {
-                cell.backgroundColor = [UIColor whiteColor];
-            } else {
-                cell.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.1];
-            }
+            //            if (self.isReceiveNotification == YES) {
+            //                cell.backgroundColor = [UIColor whiteColor];
+            //            } else {
+            //                cell.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.1];
+            //            }
         }
     } else {
         cell.switchButton.tag = RCDReceivePokeMessage;
@@ -129,12 +125,6 @@
     return 0.01f;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [UIView new];
-    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    return view;
-}
-
 #pragma mark - private
 - (void)setReceiveNotification:(UISwitch *)switchBtn {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -156,8 +146,7 @@
                     [self showAlert:RCDLocalizedString(@"alert")
                                message:RCDLocalizedString(@"set_fail")
                         cancelBtnTitle:RCDLocalizedString(@"cancel")
-                         otherBtnTitle:nil
-                                   tag:-1];
+                         otherBtnTitle:nil];
                     self.isReceiveNotification = YES;
                     [self.tableView reloadData];
                 });
@@ -176,8 +165,7 @@
                     [self showAlert:RCDLocalizedString(@"alert")
                                message:@"取消失败"
                         cancelBtnTitle:RCDLocalizedString(@"cancel")
-                         otherBtnTitle:nil
-                                   tag:-1];
+                         otherBtnTitle:nil];
                     self.isReceiveNotification = NO;
                     [self.tableView reloadData];
                 });
@@ -203,17 +191,19 @@
 - (void)showAlert:(NSString *)title
           message:(NSString *)message
    cancelBtnTitle:(NSString *)cBtnTitle
-    otherBtnTitle:(NSString *)oBtnTitle
-              tag:(int)tag {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:cBtnTitle
-                                              otherButtonTitles:oBtnTitle, nil];
-    if (tag > 0) {
-        alertView.tag = tag;
-    }
-    [alertView show];
+    otherBtnTitle:(NSString *)oBtnTitle {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:message
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        if (oBtnTitle) {
+            [alertController
+                addAction:[UIAlertAction actionWithTitle:oBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        }
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 @end

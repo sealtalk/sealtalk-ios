@@ -139,7 +139,7 @@
         [_cancelButton setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
         [_cancelButton setTitleColor:[UIColor colorWithHexString:@"999999" alpha:1] forState:UIControlStateNormal];
         _cancelButton.titleLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
-        _cancelButton.backgroundColor = [UIColor colorWithHexString:@"FFFFFF" alpha:1];
+        _cancelButton.backgroundColor = RCDDYCOLOR(0xffffff, 0x1a1a1a);
         [_cancelButton addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _cancelButton;
@@ -149,9 +149,9 @@
     if (!_settingButton) {
         _settingButton = [[UIButton alloc] init];
         [_settingButton setTitle:RCDLocalizedString(@"settings") forState:UIControlStateNormal];
-        [_settingButton setTitleColor:[UIColor colorWithHexString:@"0099FF" alpha:1] forState:UIControlStateNormal];
+        [_settingButton setTitleColor:RCDDYCOLOR(0x0099FF, 0x007acc) forState:UIControlStateNormal];
         _settingButton.titleLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
-        _settingButton.backgroundColor = [UIColor colorWithHexString:@"FFFFFF" alpha:1];
+        _settingButton.backgroundColor = RCDDYCOLOR(0xffffff, 0x1a1a1a);
         [_settingButton addTarget:self action:@selector(settingAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _settingButton;

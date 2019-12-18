@@ -6,13 +6,13 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^SendBlock)(BOOL isFull);
 
-@interface RCDRecentPictureViewController : UIViewController
+@interface RCDRecentPictureViewController : RCDViewController
 
 @property (nonatomic, copy) SendBlock sendBlock;
 

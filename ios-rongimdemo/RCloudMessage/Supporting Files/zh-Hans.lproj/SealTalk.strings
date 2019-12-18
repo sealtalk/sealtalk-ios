@@ -540,3 +540,6 @@
 "Deleting"="删除中...";
 "UnknownMessage"="未知消息";
 "GroupMemberOnlyOne"="群成员仅有一人，无法复制";
+"Set_chatroom_default_history_message_count"="进入聊天室拉取的历史消息数量，范围【-1~50条】";
+"pullXMessage"="目前拉取 %d 条历史消息";
+"Set_chatroom_default_history_message"="设置加入聊天室时获取历史消息数量";

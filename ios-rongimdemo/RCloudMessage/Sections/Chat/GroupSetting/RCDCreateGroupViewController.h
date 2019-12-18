@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
-@interface RCDCreateGroupViewController : UIViewController
+@interface RCDCreateGroupViewController : RCDViewController
 @property (nonatomic, strong) NSMutableArray *groupMemberIdList;
 @end

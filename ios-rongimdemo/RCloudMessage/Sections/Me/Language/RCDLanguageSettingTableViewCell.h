@@ -6,11 +6,11 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import "RCDBaseSettingTableViewCell.h"
+#import "RCDTableViewCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDLanguageSettingTableViewCell : UITableViewCell
+@interface RCDLanguageSettingTableViewCell : RCDTableViewCell
 
 @property (nonatomic, strong) UILabel *leftLabel;
 

@@ -10,5 +10,5 @@
 #import "RCDTableViewController.h"
 
 @interface RCDMeInfoTableViewController
-    : RCDTableViewController <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+    : RCDTableViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @end

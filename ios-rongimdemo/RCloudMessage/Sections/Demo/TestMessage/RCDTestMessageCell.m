@@ -54,7 +54,7 @@
     self.textLabel.numberOfLines = 0;
     [self.textLabel setLineBreakMode:NSLineBreakByWordWrapping];
     [self.textLabel setTextAlignment:NSTextAlignmentLeft];
-    [self.textLabel setTextColor:[UIColor blackColor]];
+    [self.textLabel setTextColor:[RCKitUtility generateDynamicColor:HEXCOLOR(0x000000) darkColor:HEXCOLOR(0xe0e0e0)]];
     [self.bubbleBackgroundView addSubview:self.textLabel];
     self.bubbleBackgroundView.userInteractionEnabled = YES;
     UILongPressGestureRecognizer *longPress =

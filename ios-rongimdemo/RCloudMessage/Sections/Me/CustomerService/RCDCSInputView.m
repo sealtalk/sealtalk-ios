@@ -8,6 +8,7 @@
 
 #import "RCDCSInputView.h"
 #import "RCDCommonDefine.h"
+#import "RCDUtilities.h"
 @interface RCDCSInputView () <UITextViewDelegate>
 
 @property (nonatomic, strong) UITextView *placeHolderText;
@@ -60,7 +61,7 @@
                                                                     self.placeHolderText.frame.size.height)];
         _suggestText.layer.cornerRadius = 4;
         _suggestText.font = [UIFont systemFontOfSize:14];
-        _suggestText.textColor = HEXCOLOR(0x939dab);
+        _suggestText.textColor = RCDDYCOLOR(0x939dab, 0x999999);
         _suggestText.backgroundColor = [UIColor clearColor];
         _suggestText.delegate = self;
         _suggestText.delegate = self;
@@ -73,8 +74,8 @@
         _placeHolderText = [[UITextView alloc] initWithFrame:CGRectMake(47, 0, RCDScreenWidth - 94, 80)];
         _placeHolderText.font = [UIFont systemFontOfSize:14];
         _placeHolderText.editable = NO;
-        _placeHolderText.textColor = HEXCOLOR(0x939dab);
-        _placeHolderText.backgroundColor = HEXCOLOR(0xf1f3f5);
+        _placeHolderText.textColor = RCDDYCOLOR(0x939dab, 0x999999);
+        _placeHolderText.backgroundColor = RCDDYCOLOR(0xf1f3f5, 0x1a1a1a);
         _placeHolderText.layer.cornerRadius = 4;
         [self addSubview:_placeHolderText];
         _placeHolderText.text = self.placeHolderString;

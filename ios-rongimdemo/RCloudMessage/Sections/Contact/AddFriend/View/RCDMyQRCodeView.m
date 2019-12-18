@@ -71,13 +71,16 @@
 - (void)didClickSaveAction {
     ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
     if (status == ALAuthorizationStatusRestricted || status == ALAuthorizationStatusDenied) {
-        UIAlertView *alertView =
-            [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil)
-                                       message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil)
-                                      delegate:nil
-                             cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)
-                             otherButtonTitles:nil, nil];
-        [alertView show];
+        UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+        UIAlertController *alertController = [UIAlertController
+            alertControllerWithTitle:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil)
+                             message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil)
+                      preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)
+                                               style:UIAlertActionStyleDefault
+                                             handler:nil]];
+        [rootVC presentViewController:alertController animated:YES completion:nil];
     } else {
         [self saveImageToPhotos:[self captureCurrentView:self.qrBgView]];
     }

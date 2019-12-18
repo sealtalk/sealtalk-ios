@@ -9,7 +9,7 @@
 #import "RCDUnableGetContactsView.h"
 #import <Masonry/Masonry.h>
 #import "UIColor+RCColor.h"
-
+#import "RCDUtilities.h"
 @interface RCDUnableGetContactsView ()
 
 @property (nonatomic, strong) UIView *bgView;
@@ -30,8 +30,7 @@
 
 - (void)addSubviews {
 
-    self.backgroundColor = [UIColor colorWithHexString:@"FAFAFA" alpha:1];
-
+    self.backgroundColor = RCDDYCOLOR(0xFAFAFA, 0x000000);
     [self addSubview:self.bgView];
     [self.bgView addSubview:self.headerImgView];
     [self.bgView addSubview:self.titleLabel];
@@ -87,7 +86,7 @@
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.textColor = [UIColor colorWithHexString:@"333333" alpha:1];
+        _titleLabel.textColor = RCDDYCOLOR(0x333333, 0x9f9f9f);
         _titleLabel.font = [UIFont systemFontOfSize:17];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.text = RCDLocalizedString(@"UnableToAccessAddressBookInformation");
@@ -98,7 +97,7 @@
 - (UILabel *)detailLabel {
     if (!_detailLabel) {
         _detailLabel = [[UILabel alloc] init];
-        _detailLabel.textColor = [UIColor colorWithHexString:@"262626" alpha:1];
+        _detailLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
         _detailLabel.font = [UIFont systemFontOfSize:14];
         _detailLabel.textAlignment = NSTextAlignmentCenter;
         _detailLabel.text = RCDLocalizedString(@"ToSettingContactsPermissions");

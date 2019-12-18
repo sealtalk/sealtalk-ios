@@ -194,10 +194,6 @@
 
 - (void)initUI {
     [self setPoweredView];
-    self.tableView.tableFooterView = [UIView new];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
     self.navigationItem.title = RCDLocalizedString(@"about_sealtalk");
 
     RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")

@@ -6,7 +6,7 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 #import <RongIMLib/RongIMLib.h>
 
 typedef NS_ENUM(NSUInteger, RCDContactSelectedGroupOptionType) {
@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, RCDContactSelectedGroupOptionType) {
     RCDContactSelectedGroupOptionTypeDelete,
 };
 @class RCDFriendInfo;
-@interface RCDContactSelectedTableViewController : UIViewController
+@interface RCDContactSelectedTableViewController : RCDViewController
 
 @property (nonatomic, strong) NSString *groupId;
 

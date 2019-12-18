@@ -14,6 +14,7 @@
 #import "UIColor+RCColor.h"
 #import "RCDChatNotificationMessage.h"
 #import "RCDClearMessage.h"
+#import "RCDCommonString.h"
 @implementation RCDChatManager
 
 //设置会话截屏通知
@@ -117,7 +118,9 @@
             recordTime:msg.clearTime
             clearRemote:YES
             success:^{
-
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RCDGroupClearMessageKey object:nil];
+                });
             }
             error:^(RCErrorCode status){
 

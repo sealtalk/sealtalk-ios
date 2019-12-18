@@ -21,7 +21,6 @@
         (RCDGroupMemberCell *)[tableView dequeueReusableCellWithIdentifier:RCDGroupMemberCellIdentifier];
     if (!cell) {
         cell = [[RCDGroupMemberCell alloc] init];
-        cell.backgroundColor = [UIColor whiteColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -92,7 +91,7 @@
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = [UIFont systemFontOfSize:17];
-        _nameLabel.textColor = HEXCOLOR(0x262626);
+        _nameLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
     }
     return _nameLabel;
 }
@@ -102,7 +101,7 @@
         _rightLabel = [[UILabel alloc] init];
         _rightLabel.font = [UIFont systemFontOfSize:16];
         _rightLabel.textAlignment = NSTextAlignmentRight;
-        _rightLabel.textColor = HEXCOLOR(0x939393);
+        _rightLabel.textColor = RCDDYCOLOR(0x939393, 0x666666);
     }
     return _rightLabel;
 }

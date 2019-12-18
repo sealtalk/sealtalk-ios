@@ -16,7 +16,7 @@
 #import "RCDUploadManager.h"
 #import "RCDForwardManager.h"
 #import "NormalAlertView.h"
-@interface RCDCreateGroupViewController () <UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate,
+@interface RCDCreateGroupViewController () <UITextFieldDelegate, UIImagePickerControllerDelegate,
                                             UINavigationControllerDelegate>
 @property (nonatomic, strong) UIImageView *groupPortrait;
 @property (nonatomic, strong) UITextField *groupName;
@@ -40,30 +40,6 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
-}
-
-#pragma mark - UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.allowsEditing = YES;
-    picker.delegate = self;
-    switch (buttonIndex) {
-    case 0:
-        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        } else {
-            NSLog(@"模拟器无法连接相机");
-        }
-        [self presentViewController:picker animated:YES completion:nil];
-        break;
-    case 1:
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        picker.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:picker animated:YES completion:nil];
-        break;
-    default:
-        break;
-    }
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -134,7 +110,6 @@
 
 #pragma mark - helper
 - (void)addSubViews {
-    self.view.backgroundColor = [UIColor whiteColor];
     //给整个view添加手势，隐藏键盘
     UITapGestureRecognizer *resetBottomTapGesture =
         [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
@@ -180,7 +155,6 @@
                                                              style:UIBarButtonItemStylePlain
                                                             target:self
                                                             action:@selector(clickDoneBtn)];
-    item.tintColor = [RCIM sharedRCIM].globalNavigationBarTintColor;
     self.navigationItem.rightBarButtonItem = item;
 }
 
@@ -193,6 +167,25 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+}
+
+- (void)pushToImagePickerController:(UIImagePickerControllerSourceType)sourceType {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.allowsEditing = YES;
+        picker.delegate = self;
+        if (sourceType == UIImagePickerControllerSourceTypeCamera) {
+            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+                picker.sourceType = sourceType;
+            } else {
+                NSLog(@"模拟器无法连接相机");
+            }
+        } else {
+            picker.sourceType = sourceType;
+        }
+        picker.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:picker animated:YES completion:nil];
+    });
 }
 
 - (void)gotoChatView:(NSString *)groupId groupName:(NSString *)groupName {
@@ -234,14 +227,25 @@
 
 - (void)choosePortrait {
     [self.groupName resignFirstResponder];
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:RCDLocalizedString(@"cancel")
-
-                                               destructiveButtonTitle:RCDLocalizedString(@"take_picture")
-
-                                                    otherButtonTitles:RCDLocalizedString(@"my_album"), nil];
-    [actionSheet showInView:self.view];
+    UIAlertAction *cancelAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *takePictureAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"take_picture")
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   [self pushToImagePickerController:UIImagePickerControllerSourceTypeCamera];
+                               }];
+    UIAlertAction *myAlbumAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"my_album")
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   [self pushToImagePickerController:UIImagePickerControllerSourceTypePhotoLibrary];
+                               }];
+    [RCKitUtility showAlertController:nil
+                              message:nil
+                       preferredStyle:UIAlertControllerStyleActionSheet
+                              actions:@[ cancelAction, takePictureAction, myAlbumAction ]
+                     inViewController:self];
 }
 
 - (BOOL)groupNameIsAvailable:(NSString *)nameStr {
@@ -285,33 +289,42 @@
 
 - (void)createGroupWithPortraitUri:(NSString *)portraitUri {
     NSString *nameStr = [self.groupName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    [RCDGroupManager createGroup:nameStr
-                     portraitUri:portraitUri
-                       memberIds:self.groupMemberIdList
-                        complete:^(NSString *groupId, RCDGroupAddMemberStatus status) {
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                if (groupId) {
-                                    if (status == RCDGroupAddMemberStatusInviteeApproving) {
-                                        [self.view showHUDMessage:RCDLocalizedString(@"MemberInviteNeedConfirm")];
-                                    }
+    [RCDGroupManager
+        createGroup:nameStr
+        portraitUri:portraitUri
+          memberIds:self.groupMemberIdList
+           complete:^(NSString *groupId, RCDGroupAddMemberStatus status) {
+               dispatch_async(dispatch_get_main_queue(), ^{
+                   if (groupId) {
+                       if (status == RCDGroupAddMemberStatusInviteeApproving) {
+                           [self.view showHUDMessage:RCDLocalizedString(@"MemberInviteNeedConfirm")];
+                       }
 
-                                    if ([RCDForwardManager sharedInstance].isForward) {
-                                        [self sendForwardMessage:groupId];
-                                    } else {
-                                        [self gotoChatView:groupId groupName:nameStr];
-                                    }
-                                    //关闭HUD
-                                    [MBProgressHUD hideHUDForView:self.view animated:YES];
-                                } else {
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                        self.navigationItem.rightBarButtonItem.enabled = YES;
-                                        //关闭HUD
-                                        [MBProgressHUD hideHUDForView:self.view animated:YES];
-                                        [self showAlert:RCDLocalizedString(@"create_group_fail")];
-                                    });
-                                }
-                            });
-                        }];
+                       if ([RCDForwardManager sharedInstance].isForward) {
+                           if ([RCDForwardManager sharedInstance].selectConversationCompleted) {
+                               RCConversation *conversation = [[RCConversation alloc] init];
+                               conversation.targetId = groupId;
+                               conversation.conversationType = ConversationType_GROUP;
+                               [RCDForwardManager sharedInstance].selectConversationCompleted([@[ conversation ] copy]);
+                               [[RCDForwardManager sharedInstance] forwardEnd];
+                           } else {
+                               [self sendForwardMessage:groupId];
+                           }
+                       } else {
+                           [self gotoChatView:groupId groupName:nameStr];
+                       }
+                       //关闭HUD
+                       [MBProgressHUD hideHUDForView:self.view animated:YES];
+                   } else {
+                       dispatch_async(dispatch_get_main_queue(), ^{
+                           self.navigationItem.rightBarButtonItem.enabled = YES;
+                           //关闭HUD
+                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+                           [self showAlert:RCDLocalizedString(@"create_group_fail")];
+                       });
+                   }
+               });
+           }];
 }
 
 #pragma mark - geter & setter
@@ -340,7 +353,7 @@
         _groupName.delegate = self;
         _groupName.returnKeyType = UIReturnKeyDone;
         _groupName.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-        _groupName.textColor = [UIColor blackColor];
+        _groupName.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
         NSAttributedString *attrString = [[NSAttributedString alloc]
             initWithString:_groupName.placeholder
                 attributes:@{

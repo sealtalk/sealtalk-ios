@@ -6,7 +6,7 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 #import "RCDContactsInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, RCDSelectedStatus) {
     RCDSelectedStatusSelected,
 };
 
-@interface RCDSelectAddressBookCell : UITableViewCell
+@interface RCDSelectAddressBookCell : RCDTableViewCell
 
 @property (nonatomic, assign) RCDSelectedStatus selectStatus;
 

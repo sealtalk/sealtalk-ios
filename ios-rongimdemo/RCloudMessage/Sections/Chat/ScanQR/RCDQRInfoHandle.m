@@ -97,12 +97,13 @@
 }
 
 - (void)showAlert:(NSString *)alertContent {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:alertContent
-                                                   delegate:nil
-                                          cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                          otherButtonTitles:nil];
-    [alert show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:alertContent
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [self.baseController presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)pushChatVC:(NSString *)groupId {

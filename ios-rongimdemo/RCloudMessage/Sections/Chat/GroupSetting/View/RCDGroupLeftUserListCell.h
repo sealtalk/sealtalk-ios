@@ -6,11 +6,11 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 #import "RCDGroupLeftMember.h"
 NS_ASSUME_NONNULL_BEGIN
 static NSString *RCDGroupLeftUserListCellIdentifier = @"RCDGroupLeftUserListCellIdentifier";
-@interface RCDGroupLeftUserListCell : UITableViewCell
+@interface RCDGroupLeftUserListCell : RCDTableViewCell
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 - (void)setDataModel:(RCDGroupLeftMember *)model groupId:(NSString *)groupId;
 @end

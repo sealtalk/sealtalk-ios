@@ -17,10 +17,9 @@
 #import "RCDLanguageManager.h"
 #import "RCDForwardSelectedCell.h"
 #import "RCDBottomResultView.h"
-#import "RCDHaveSelectedViewController.h"
 #import <Masonry/Masonry.h>
 #import "RCDForwardManager.h"
-
+#import "RCDTableView.h"
 @interface RCDForwardSearchMoreController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) RCDSearchBar *searchBar;
@@ -29,7 +28,7 @@
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) RCDLabel *emptyLabel;
 @property (nonatomic, strong) RCDBottomResultView *bottomResultView;
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) RCDTableView *tableView;
 
 @end
 
@@ -37,7 +36,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
     if (self.isShowSeachBar) {
         [self setupSubViews];
         self.navigationItem.titleView = self.searchView;
@@ -51,15 +49,14 @@
     [super viewWillAppear:animated];
     self.tableView.tableHeaderView = self.headerView;
     if (self.isShowSeachBar) {
-        self.navigationController.navigationBar.barTintColor = HEXCOLOR(0xf0f0f6);
+        self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"0099ff" alpha:1.0f];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0x0099ff, 0x000000);
 }
 
 - (void)viewWillLayoutSubviews {
@@ -282,14 +279,11 @@
 }
 
 #pragma mark - getter
-- (UITableView *)tableView {
+- (RCDTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _tableView.backgroundColor = [UIColor clearColor];
+        _tableView = [[RCDTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.tableFooterView = [UIView new];
-        [_tableView setSeparatorColor:HEXCOLOR(0xdfdfdf)];
     }
     return _tableView;
 }
@@ -331,14 +325,14 @@
 - (UIView *)headerView {
     if (!_headerView) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
-        _headerView.backgroundColor = [UIColor whiteColor];
+        _headerView.backgroundColor = RCDDYCOLOR(0xffffff, 0x000000);
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 40 - 16 - 7, self.view.frame.size.width, 16)];
         label.font = [UIFont systemFontOfSize:14.];
         label.text = self.type;
-        label.textColor = HEXCOLOR(0x999999);
+        label.textColor = RCDDYCOLOR(0x999999, 0x666666);
         [_headerView addSubview:label];
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10, 39.5, self.view.frame.size.width - 10, 0.5)];
-        view.backgroundColor = HEXCOLOR(0xdfdfdf);
+        view.backgroundColor = RCDDYCOLOR(0xdfdfdf, 0x000000);
         [self.headerView addSubview:view];
     }
     return _headerView;

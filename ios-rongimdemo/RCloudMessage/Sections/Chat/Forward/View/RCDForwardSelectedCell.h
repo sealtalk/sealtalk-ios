@@ -5,7 +5,7 @@
 //  Created by 孙浩 on 2019/6/17.
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
-
+#import "RCDTableViewCell.h"
 #import "RCDFriendInfo.h"
 #import "RCDGroupInfo.h"
 #import "RCDForwardCellModel.h"
@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, RCDForwardSelectedStatus) {
     RCDForwardSelectedStatusMultiSelected,
 };
 
-@interface RCDForwardSelectedCell : UITableViewCell
+@interface RCDForwardSelectedCell : RCDTableViewCell
 
 @property (nonatomic, assign) RCDForwardSelectedStatus selectStatus;
 

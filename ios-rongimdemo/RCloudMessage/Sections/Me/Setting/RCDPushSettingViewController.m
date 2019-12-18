@@ -12,16 +12,13 @@
 #import "RCDUIBarButtonItem.h"
 #import "UIColor+RCColor.h"
 #import <RongIMKit/RongIMKit.h>
-
+#import "RCDTableView.h"
 @interface RCDPushSettingViewController () <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate,
-                                            UIPickerViewDataSource, UIActionSheetDelegate,
-                                            RCDBaseSettingTableViewCellDelegate>
+                                            UIPickerViewDataSource, RCDBaseSettingTableViewCellDelegate>
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) RCDTableView *tableView;
 
 @property (nonatomic, strong) UIPickerView *pickerView;
-
-@property (nonatomic, strong) UIActionSheet *actionSheet;
 
 @end
 
@@ -122,7 +119,6 @@
         self.pickerView.hidden = NO;
         [self.view bringSubviewToFront:self.pickerView];
          */
-        //      [self.actionSheet showInView:self.view];
     } break;
 
     default:
@@ -175,9 +171,6 @@
     [self.view addSubview:self.tableView];
 
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    self.tableView.tableFooterView = [UIView new];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.scrollEnabled = NO;
 }
 
@@ -190,53 +183,6 @@
     self.pickerView.frame = frame;
     self.pickerView.hidden = YES;
     [self.view addSubview:self.pickerView];
-}
-
-- (void)setActionSheetLayout {
-    self.actionSheet.delegate = self;
-    self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                   delegate:self
-                                          cancelButtonTitle:RCDLocalizedString(@"cancel")
-
-                                     destructiveButtonTitle:nil
-                                          otherButtonTitles:@"中文", @"英文", nil];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-    //点中文
-    case 0: {
-        //      [[RCIMClient sharedRCIMClient].pushProfile updatePushLauguage:RCPushLauguage_ZH_CN success:^{
-        //        NSLog(@"设置PUSH语音成功");
-        //        [self AlertMessage:@"设置PUSH语言成功"];
-        //          dispatch_async(dispatch_get_main_queue(), ^{
-        //              [self.tableView reloadData];
-        //          });
-        //      } error:^(RCErrorCode status) {
-        //        NSLog(@"设置PUSH语音失败");
-        //        [self AlertMessage:@"设置PUSH语言失败"];
-        //      }];;
-    } break;
-
-    //点英文
-    case 1: {
-        //      [[RCIMClient sharedRCIMClient].pushProfile updatePushLauguage:RCPushLauguage_EN_US success:^{
-        //        NSLog(@"设置PUSH语音成功");
-        //        [self AlertMessage:@"设置PUSH语言成功"];
-        //      } error:^(RCErrorCode status) {
-        //        NSLog(@"设置PUSH语音失败");
-        //        [self AlertMessage:@"设置PUSH语言失败"];
-        //      }];
-    } break;
-
-    //点取消
-    case 2: {
-
-    } break;
-
-    default:
-        break;
-    }
 }
 
 - (void)onClickSwitchButton:(id)sender {
@@ -279,13 +225,12 @@
 
 - (void)AlertMessage:(NSString *)message {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:RCDLocalizedString(@"confirm")
-
-                                              otherButtonTitles:nil];
-        [alert show];
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
     });
 }
 
@@ -295,14 +240,11 @@
                                                                              action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftBtn;
 
-    self.tableView = [[UITableView alloc] init];
+    self.tableView = [[RCDTableView alloc] init];
     [self setTableViewLayout];
 
     self.pickerView = [[UIPickerView alloc] init];
     //[self setPickerViewLayout];
-
-    self.actionSheet = [[UIActionSheet alloc] init];
-    [self setActionSheetLayout];
 }
 
 @end

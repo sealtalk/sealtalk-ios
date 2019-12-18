@@ -9,7 +9,7 @@
 #import "RCDTableViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface RCDPrivateSettingsTableViewController : RCDTableViewController <UIActionSheetDelegate>
+@interface RCDPrivateSettingsTableViewController : RCDTableViewController
 @property (nonatomic, strong) NSString *userId;
 @property (nonatomic, copy) void (^clearMessageHistory)();
 @end

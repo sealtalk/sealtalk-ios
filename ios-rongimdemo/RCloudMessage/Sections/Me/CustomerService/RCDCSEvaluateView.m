@@ -13,6 +13,7 @@
 #import "RCDCSInputView.h"
 #import "RCDCommonDefine.h"
 #import "RCDCSEvaluateModel.h"
+#import "RCDUtilities.h"
 #define WIDTH self.frame.size.width
 #define title_height 50.5
 #define submit_height 55
@@ -475,12 +476,13 @@
 }
 
 - (void)showAlertWarning:(NSString *)message {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:nil
-                                              otherButtonTitles:RCDLocalizedString(@"i_know_it"), nil];
-    [alertView show];
+    UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"i_know_it")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [rootVC presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)resignInputViewFirstResponder {
@@ -500,7 +502,9 @@
         _backgroundView = [[UIView alloc]
             initWithFrame:CGRectMake(0, self.frame.size.height - height, self.frame.size.width, height)];
         self.backgroundViewFrame = self.backgroundView.frame;
-        _backgroundView.backgroundColor = HEXCOLOR(0xffffff);
+        _backgroundView.backgroundColor =
+            [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                     darkColor:[HEXCOLOR(0x00000) colorWithAlphaComponent:1]];
     }
     return _backgroundView;
 }
@@ -514,13 +518,13 @@
         [cancelButton addTarget:self action:@selector(cancelEvaAction) forControlEvents:(UIControlEventTouchUpInside)];
 
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 50)];
-        titleLabel.textColor = HEXCOLOR(0x333333);
+        titleLabel.textColor = RCDDYCOLOR(0x333333, 0xffffff);
         titleLabel.text = RCDLocalizedString(@"remark");
         titleLabel.font = [UIFont systemFontOfSize:18];
         titleLabel.textAlignment = NSTextAlignmentCenter;
 
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 50, self.frame.size.width, 0.5)];
-        line.backgroundColor = HEXCOLOR(0xeceef3);
+        line.backgroundColor = RCDDYCOLOR(0xeceef3, 0x3a3a3a);
 
         [_titleView addSubview:cancelButton];
         [_titleView addSubview:titleLabel];

@@ -28,7 +28,6 @@
     [super viewDidLoad];
     self.title = RCDLocalizedString(@"MyInfoInGroup");
     self.tableView.tableFooterView = [self setFooterView];
-    self.tableView.backgroundColor = HEXCOLOR(0xf2f2f3);
     BOOL isCurrentUser = [self.userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId];
     self.tableTitleArr = @[
         @[
@@ -140,12 +139,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 15;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 15)];
-    view.backgroundColor = HEXCOLOR(0xf0f0f6);
-    return view;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -432,9 +425,10 @@
         return [UIView new];
     }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-    view.backgroundColor = HEXCOLOR(0xffffff);
+    view.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                    darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width, 0.5)];
-    lineView.backgroundColor = HEXCOLOR(0xe5e5e5);
+    lineView.backgroundColor = RCDDYCOLOR(0xe5e5e5, 0x1a1a1a);
     [view addSubview:lineView];
     UILabel *add = [[UILabel alloc] init];
     add.textColor = HEXCOLOR(0x0099ff);

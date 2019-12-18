@@ -32,7 +32,6 @@
     if (!cell) {
         cell = [[RCDGroupNoticeCell alloc] init];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [UIColor whiteColor];
     }
     return cell;
 }
@@ -230,7 +229,7 @@
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = [UIFont systemFontOfSize:14];
-        _nameLabel.textColor = HEXCOLOR(0x333333);
+        _nameLabel.textColor = RCDDYCOLOR(0x333333, 0x9f9f9f);
     }
     return _nameLabel;
 }
@@ -239,7 +238,7 @@
     if (!_infoLabel) {
         _infoLabel = [[UILabel alloc] init];
         _infoLabel.font = [UIFont systemFontOfSize:14];
-        _infoLabel.textColor = HEXCOLOR(0x999999);
+        _infoLabel.textColor = RCDDYCOLOR(0x999999, 0x707070);
     }
     return _infoLabel;
 }
@@ -249,7 +248,7 @@
         _timeLabel = [[UILabel alloc] init];
         _timeLabel.font = [UIFont systemFontOfSize:12];
         _timeLabel.textAlignment = NSTextAlignmentRight;
-        _timeLabel.textColor = HEXCOLOR(0x9b9b9b);
+        _timeLabel.textColor = RCDDYCOLOR(0x9b9b9b, 0x707070);
     }
     return _timeLabel;
 }
@@ -271,7 +270,7 @@
     if (!_ignoreButton) {
         _ignoreButton = [[UIButton alloc] init];
         [_ignoreButton setTitle:RCDLocalizedString(@"Ignore") forState:(UIControlStateNormal)];
-        [_ignoreButton setTitleColor:HEXCOLOR(0x333333) forState:(UIControlStateNormal)];
+        [_ignoreButton setTitleColor:RCDDYCOLOR(0x333333, 0x9f9f9f) forState:(UIControlStateNormal)];
         [_ignoreButton addTarget:self
                           action:@selector(didClickIgnoreButton)
                 forControlEvents:(UIControlEventTouchUpInside)];
@@ -285,7 +284,7 @@
         _statusLabel = [[UILabel alloc] init];
         _statusLabel.font = [UIFont systemFontOfSize:14];
         _statusLabel.textAlignment = NSTextAlignmentRight;
-        _statusLabel.textColor = HEXCOLOR(0x999999);
+        _statusLabel.textColor = RCDDYCOLOR(0x999999, 0x707070);
     }
     return _statusLabel;
 }

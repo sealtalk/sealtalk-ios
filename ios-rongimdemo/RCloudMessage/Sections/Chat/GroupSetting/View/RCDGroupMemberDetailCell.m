@@ -8,6 +8,8 @@
 
 #import "RCDGroupMemberDetailCell.h"
 #import <Masonry/Masonry.h>
+#import "RCDUtilities.h"
+
 @interface RCDGroupMemberDetailCell () <UITextViewDelegate>
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *lineView;
@@ -39,7 +41,6 @@
     if (!cell) {
         cell = [[RCDGroupMemberDetailCell alloc] init];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [UIColor whiteColor];
     }
     return cell;
 }
@@ -202,7 +203,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = [UIFont systemFontOfSize:15];
-        _titleLabel.textColor = HEXCOLOR(0x262626);
+        _titleLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
     }
     return _titleLabel;
 }
@@ -212,8 +213,9 @@
         _textView = [[UITextViewAndPlaceholder alloc] init];
         _textView.delegate = self;
         _textView.font = [UIFont systemFontOfSize:15.f];
-        _textView.textColor = HEXCOLOR(0x999999);
+        _textView.textColor = RCDDYCOLOR(0x999999, 0x666666);
         _textView.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+        _textView.myPlaceholderColor = RCDDYCOLOR(0x999999, 0x666666);
     }
     return _textView;
 }
@@ -221,7 +223,7 @@
 - (UIView *)lineView {
     if (!_lineView) {
         _lineView = [[UIView alloc] init];
-        _lineView.backgroundColor = HEXCOLOR(0xd8d8d8);
+        _lineView.backgroundColor = RCDDYCOLOR(0xd8d8d8, 0x3a3a3a);
     }
     return _lineView;
 }
@@ -229,7 +231,7 @@
 - (UIButton *)regionButton {
     if (!_regionButton) {
         _regionButton = [[UIButton alloc] init];
-        [_regionButton setTitleColor:HEXCOLOR(0x999999) forState:(UIControlStateNormal)];
+        [_regionButton setTitleColor:RCDDYCOLOR(0x999999, 0x666666) forState:(UIControlStateNormal)];
         _regionButton.titleLabel.font = [UIFont systemFontOfSize:15];
         [_regionButton addTarget:self
                           action:@selector(didClickRegionAction)

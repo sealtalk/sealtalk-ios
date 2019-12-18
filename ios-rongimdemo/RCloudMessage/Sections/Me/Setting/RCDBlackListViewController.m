@@ -42,11 +42,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-
-    self.tableView.backgroundColor = [UIColor whiteColor];
-    self.tableView.tableFooterView = [UIView new];
 
     self.title = RCDLocalizedString(@"blacklist");
     [self addEmptyLabel];

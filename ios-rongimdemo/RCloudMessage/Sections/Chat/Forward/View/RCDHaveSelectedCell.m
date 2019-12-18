@@ -13,7 +13,7 @@
 #import "RCDUserInfoManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DefaultPortraitView.h"
-
+#import "RCDUtilities.h"
 @interface RCDHaveSelectedCell ()
 
 @property (nonatomic, strong) UIImageView *headerImageView;
@@ -77,7 +77,6 @@
 - (void)setupViews {
 
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    self.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.headerImageView];
     [self.contentView addSubview:self.conversationTitleLabel];
     [self.contentView addSubview:self.deleteButton];
@@ -114,7 +113,7 @@
         _conversationTitleLabel = [[UILabel alloc] init];
         _conversationTitleLabel.backgroundColor = [UIColor clearColor];
         _conversationTitleLabel.font = [UIFont systemFontOfSize:17];
-        _conversationTitleLabel.textColor = [UIColor colorWithHexString:@"262626" alpha:1];
+        _conversationTitleLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
     }
     return _conversationTitleLabel;
 }

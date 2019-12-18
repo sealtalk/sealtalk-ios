@@ -6,8 +6,8 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 @class RCMessageModel;
-@interface RCDReceiptDetailsTableViewController : UITableViewController
+@interface RCDReceiptDetailsTableViewController : RCDTableViewController
 @property (nonatomic, strong) RCMessageModel *message;
 @end

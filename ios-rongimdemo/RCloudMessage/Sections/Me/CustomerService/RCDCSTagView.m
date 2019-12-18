@@ -9,7 +9,7 @@
 #import "RCDCSTagView.h"
 #import "RCDCommonDefine.h"
 #import "RCDCSButton.h"
-
+#import "RCDUtilities.h"
 @interface RCDCSTagView ()
 @property (nonatomic, strong) UILabel *tagTitle;
 @property (nonatomic, strong) NSMutableDictionary *selectedTags;
@@ -25,7 +25,7 @@
 
 - (void)settagTitle {
     self.tagTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 20)];
-    self.tagTitle.textColor = HEXCOLOR(0x3c4d65);
+    self.tagTitle.textColor = RCDDYCOLOR(0x3c4d65, 0x9f9f9f);
     self.tagTitle.text = RCDLocalizedString(@"cs_evaluate_problem_title");
     self.tagTitle.font = [UIFont systemFontOfSize:16];
     self.tagTitle.textAlignment = NSTextAlignmentCenter;

@@ -6,11 +6,11 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 @class RCUserInfo;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDChooseUserController : UITableViewController
+@interface RCDChooseUserController : RCDTableViewController
 - (instancetype)initWithGroupId:(NSString *)groupId;
 @property (nonatomic, copy) void (^selectedBlock)(RCUserInfo *selectedUserInfo);
 @property (nonatomic, copy) void (^cancelBlock)(void);

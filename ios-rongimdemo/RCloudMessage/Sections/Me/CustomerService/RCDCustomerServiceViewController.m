@@ -11,6 +11,7 @@
 #import "RCDCSEvaluateView.h"
 #import "RCDCSEvaluateModel.h"
 #import "RCDCommonDefine.h"
+#import "RCDUIBarButtonItem.h"
 @interface RCDCustomerServiceViewController () <RCDCSAnnounceViewDelegate, RCDCSEvaluateViewDelegate>
 //＊＊＊＊＊＊＊＊＊应用自定义评价界面开始1＊＊＊＊＊＊＊＊＊＊＊＊＊
 @property (nonatomic, strong) NSString *commentId;
@@ -123,33 +124,33 @@
         [self.evaluateView show];
     } else if (serviceStatus == 2) {
         //机器人评价结果
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"remark_rebot_service")
-                                                        message:RCDLocalizedString(@"satisfaction")
-                                                       delegate:self
-                                              cancelButtonTitle:RCDLocalizedString(@"yes")
-                                              otherButtonTitles:RCDLocalizedString(@"no"), nil];
-        [alert show];
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:RCDLocalizedString(@"remark_rebot_service")
+                                                message:RCDLocalizedString(@"satisfaction")
+                                         preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"yes")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *_Nonnull action) {
+                                                              [self evaluateCustomerService:YES];
+                                                          }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"no")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *_Nonnull action) {
+                                                              [self evaluateCustomerService:NO];
+                                                          }]];
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+
+- (void)evaluateCustomerService:(BOOL)isRobotResolved {
     //(1)调用evaluateCustomerService将评价结果传给融云sdk。
-    if (self.serviceStatus == RCCustomerService_RobotService) { //机器人评价结果
-        if (buttonIndex == 0) {
-            [[RCIMClient sharedRCIMClient] evaluateCustomerService:self.targetId
-                                                      knownledgeId:self.commentId
-                                                        robotValue:YES
-                                                           suggest:nil];
-        } else if (buttonIndex == 1) {
-            [[RCIMClient sharedRCIMClient] evaluateCustomerService:self.targetId
-                                                      knownledgeId:self.commentId
-                                                        robotValue:NO
-                                                           suggest:nil];
-        }
-    }
+    [[RCIMClient sharedRCIMClient] evaluateCustomerService:self.targetId
+                                              knownledgeId:self.commentId
+                                                robotValue:isRobotResolved
+                                                   suggest:nil];
     //(2)离开当前客服VC
     if (self.quitAfterComment) {
         [super customerServiceLeftCurrentViewController];
-        ;
     }
 }
 
@@ -223,20 +224,10 @@
 
 #pragma mark Navigation Setting
 - (void)createNavLeftBarButtonItem {
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 6, 72, 23);
-    UILabel *backText = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 70, 22)];
-    backText.text = RCDLocalizedString(@"back");
-    backText.font = [UIFont systemFontOfSize:17];
-    [backText setBackgroundColor:[UIColor clearColor]];
-    [backText setTextColor:[RCIM sharedRCIM].globalNavigationBarTintColor];
-    [backBtn addSubview:backText];
-    UIImageView *backImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back"]];
-    backImg.frame = CGRectMake(-8, 0, 15, 22);
-    [backBtn addSubview:backImg];
-    [backBtn addTarget:self action:@selector(clickLeftBarButtonItem:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-    [self.navigationItem setLeftBarButtonItem:leftButton];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickLeftBarButtonItem:)];
+    self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
 @end

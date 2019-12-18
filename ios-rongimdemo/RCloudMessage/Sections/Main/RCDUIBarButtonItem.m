@@ -25,7 +25,7 @@
                       buttonTitle:title
                        titleColor:[RCIM sharedRCIM].globalNavigationBarTintColor
                        titleFrame:titleFrame
-                      buttonFrame:CGRectMake(0, 0, 87, 23)
+                      buttonFrame:CGRectMake(-10, 0, 87, 23)
                            target:target
                            action:method];
 }

@@ -6,10 +6,10 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 #import "RCDFriendInfo.h"
 
-@interface RCDSearchResultTableViewCell : UITableViewCell
+@interface RCDSearchResultTableViewCell : RCDTableViewCell
 
 - (void)setModel:(RCDFriendInfo *)friendInfo;
 

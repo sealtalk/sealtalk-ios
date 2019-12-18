@@ -10,6 +10,7 @@
 #import <Masonry/Masonry.h>
 #import "RCDUtilities.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+
 @interface RCDGroupManagerCell ()
 @property (nonatomic, strong) UILabel *nameLabel;
 
@@ -26,7 +27,6 @@
     if (!cell) {
         cell = [[RCDGroupManagerCell alloc] init];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [UIColor whiteColor];
     }
     return cell;
 }
@@ -47,7 +47,7 @@
         self.portraitImageView.image = [UIImage imageNamed:@"groupmanageradd"];
     } else {
         self.userId = userId;
-        self.nameLabel.textColor = HEXCOLOR(0x262626);
+        self.nameLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
         __weak typeof(self) weakSelf = self;
         [RCDUtilities getGroupUserDisplayInfo:userId
                                       groupId:groupId
@@ -115,7 +115,7 @@
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = [UIFont systemFontOfSize:17];
-        _nameLabel.textColor = HEXCOLOR(0x262626);
+        _nameLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
     }
     return _nameLabel;
 }

@@ -174,7 +174,7 @@
         }];
     } else {
         self.nameLabel.font = [UIFont systemFontOfSize:16];
-        self.nameLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1];
+        self.nameLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
 
         if (self.friendInfo.stAccount.length > 0 && ![self.friendInfo.stAccount isEqualToString:@""]) {
             self.stAccountLabel.hidden = NO;
@@ -267,7 +267,9 @@
 - (UIView *)infoBgView {
     if (!_infoBgView) {
         _infoBgView = [[UIView alloc] init];
-        _infoBgView.backgroundColor = [UIColor whiteColor];
+        _infoBgView.backgroundColor =
+            [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                     darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
     }
     return _infoBgView;
 }
@@ -291,7 +293,7 @@
     if (!_remarksLabel) {
         _remarksLabel = [[UILabel alloc] init];
         _remarksLabel.font = [UIFont systemFontOfSize:16];
-        _remarksLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1];
+        _remarksLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
         _remarksLabel.hidden = YES;
     }
     return _remarksLabel;
@@ -310,7 +312,7 @@
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = [UIFont systemFontOfSize:14];
-        _nameLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1];
+        _nameLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     }
     return _nameLabel;
 }

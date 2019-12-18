@@ -6,7 +6,7 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
 static NSString *RCDGroupManagerCellIdentifier = @"RCDGroupManagerCellIdentifier";
@@ -15,7 +15,7 @@ static NSString *RCDGroupManagerCellIdentifier = @"RCDGroupManagerCellIdentifier
 
 @end
 
-@interface RCDGroupManagerCell : UITableViewCell
+@interface RCDGroupManagerCell : RCDTableViewCell
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 @property (nonatomic, weak) id<RCDGroupManagerCellDelegate> delegate;
 - (void)setDataModel:(NSString *)userId groupId:(NSString *)groupId;

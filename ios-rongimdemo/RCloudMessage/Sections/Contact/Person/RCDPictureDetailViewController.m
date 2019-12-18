@@ -13,6 +13,7 @@
 #import "RCDUIBarButtonItem.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "UIView+MBProgressHUD.h"
+#import <RongIMKit/RCKitUtility.h>
 
 @interface RCDPictureDetailViewController ()
 
@@ -48,8 +49,6 @@
 }
 
 - (void)addSubviews {
-
-    self.view.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
     [self.view addSubview:self.scrollView];
     [self.scrollView addSubview:self.contentView];
     [self.contentView addSubview:self.imageView];
@@ -85,13 +84,15 @@
 - (void)saveImage {
     ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
     if (status == ALAuthorizationStatusRestricted || status == ALAuthorizationStatusDenied) {
-        UIAlertView *alertView =
-            [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil)
-                                       message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil)
-                                      delegate:nil
-                             cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)
-                             otherButtonTitles:nil, nil];
-        [alertView show];
+        UIAlertController *alertController = [UIAlertController
+            alertControllerWithTitle:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil)
+                             message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil)
+                      preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)
+                                               style:UIAlertActionStyleDefault
+                                             handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
     } else {
         [self saveImageToPhotos:self.image];
     }
@@ -115,8 +116,6 @@
 }
 
 - (void)moreAction {
-    UIAlertController *actionSheetController =
-        [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *saveAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"SaveToAlbum")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction *_Nonnull action) {
@@ -135,16 +134,14 @@
                                        [self.navigationController popViewControllerAnimated:YES];
                                    });
                                }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel")
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction *_Nonnull action){
-                                                         }];
+    UIAlertAction *cancelAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
 
-    [actionSheetController addAction:cancelAction];
-    [actionSheetController addAction:saveAction];
-    [actionSheetController addAction:deleteAction];
-
-    [self presentViewController:actionSheetController animated:YES completion:nil];
+    [RCKitUtility showAlertController:nil
+                              message:nil
+                       preferredStyle:UIAlertControllerStyleActionSheet
+                              actions:@[ cancelAction, saveAction, deleteAction ]
+                     inViewController:self];
 }
 
 - (UIScrollView *)scrollView {

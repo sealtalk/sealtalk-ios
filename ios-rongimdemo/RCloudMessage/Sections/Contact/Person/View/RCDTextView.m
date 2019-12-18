@@ -31,7 +31,6 @@
 }
 
 - (void)setupViews {
-    self.backgroundColor = [UIColor whiteColor];
     self.scrollEnabled = NO;
     self.textContainerInset = UIEdgeInsetsMake(11.5, -4, 11.5, 0);
     self.layoutManager.allowsNonContiguousLayout = NO;

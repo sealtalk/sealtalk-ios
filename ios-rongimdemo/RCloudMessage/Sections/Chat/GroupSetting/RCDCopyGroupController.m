@@ -31,7 +31,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = RCDLocalizedString(@"CopyGroup");
-    self.view.backgroundColor = HEXCOLOR(0xf2f2f3);
     self.group = [RCDGroupManager getGroupInfo:self.groupId];
     [self setGroupInfo];
     [self addSubViews];
@@ -183,7 +182,8 @@
 - (UIView *)bgView {
     if (!_bgView) {
         _bgView = [[UIView alloc] init];
-        _bgView.backgroundColor = [UIColor whiteColor];
+        _bgView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                           darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
     }
     return _bgView;
 }
@@ -200,7 +200,7 @@
 - (UILabel *)infoLabel {
     if (!_infoLabel) {
         _infoLabel = [[UILabel alloc] init];
-        _infoLabel.textColor = HEXCOLOR(0x939393);
+        _infoLabel.textColor = RCDDYCOLOR(0x939393, 0x9f9f9f);
         _infoLabel.font = [UIFont systemFontOfSize:14];
         _infoLabel.textAlignment = NSTextAlignmentCenter;
     }
@@ -210,7 +210,7 @@
 - (UILabel *)tipLabel {
     if (!_tipLabel) {
         _tipLabel = [[UILabel alloc] init];
-        _tipLabel.textColor = HEXCOLOR(0x939393);
+        _tipLabel.textColor = RCDDYCOLOR(0x939393, 0x9f9f9f);
         _tipLabel.font = [UIFont systemFontOfSize:14];
         _tipLabel.numberOfLines = 0;
         _tipLabel.text = [NSString

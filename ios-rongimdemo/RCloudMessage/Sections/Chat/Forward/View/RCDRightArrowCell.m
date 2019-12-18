@@ -9,7 +9,7 @@
 #import "RCDRightArrowCell.h"
 #import <Masonry/Masonry.h>
 #import "UIColor+RCColor.h"
-
+#import "RCDUtilities.h"
 @implementation RCDRightArrowCell
 
 - (instancetype)init {
@@ -21,8 +21,6 @@
 }
 
 - (void)setupSubviews {
-
-    self.backgroundColor = [UIColor whiteColor];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     [self.contentView addSubview:self.leftLabel];
     [self.contentView addSubview:self.rightArrow];
@@ -49,7 +47,7 @@
     if (!_leftLabel) {
         _leftLabel = [[UILabel alloc] init];
         _leftLabel.font = [UIFont systemFontOfSize:17.f];
-        _leftLabel.textColor = [UIColor colorWithHexString:@"262626" alpha:1];
+        _leftLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
     }
     return _leftLabel;
 }

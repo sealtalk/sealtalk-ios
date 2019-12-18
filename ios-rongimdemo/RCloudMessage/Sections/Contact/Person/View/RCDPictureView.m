@@ -9,7 +9,7 @@
 #import "RCDPictureView.h"
 #import "UIColor+RCColor.h"
 #import <Masonry/Masonry.h>
-
+#import "RCDUtilities.h"
 @interface RCDPictureView ()
 
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -52,7 +52,7 @@
 }
 
 - (void)setupViews {
-    self.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1];
+    self.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     [self addSubview:self.titleLabel];
     [self addSubview:self.imageView];
     [self addSubview:self.promptLabel];

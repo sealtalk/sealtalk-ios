@@ -6,11 +6,11 @@
 //  Copyright © 2019年 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDSearchFriendController : UIViewController
+@interface RCDSearchFriendController : RCDViewController
 
 @end
 

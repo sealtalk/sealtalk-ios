@@ -21,7 +21,7 @@
 #import "RCDCleanChatHistoryViewController.h"
 #import "RCDChatBackgroundViewController.h"
 
-@interface RCDSettingsTableViewController () <UIAlertViewDelegate>
+@interface RCDSettingsTableViewController ()
 
 @end
 
@@ -135,24 +135,6 @@
     return 15.f;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [UIView new];
-    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    return view;
-}
-
-#pragma mark - UIAlertView Delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1 && alertView.tag == 1010) {
-        [self logout];
-    }
-
-    if (buttonIndex == 1 && alertView.tag == 1011) {
-        [self clearCache];
-    }
-}
-
 //清理缓存
 - (void)clearCache {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -203,15 +185,24 @@
    cancelBtnTitle:(NSString *)cBtnTitle
     otherBtnTitle:(NSString *)oBtnTitle
               tag:(int)tag {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:cBtnTitle
-                                              otherButtonTitles:oBtnTitle, nil];
-    if (tag > 0) {
-        alertView.tag = tag;
-    }
-    [alertView show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        if (oBtnTitle) {
+            [alertController addAction:[UIAlertAction actionWithTitle:oBtnTitle
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *_Nonnull action) {
+                                                                  if (tag == 1010) {
+                                                                      [self logout];
+                                                                  } else if (tag == 1011) {
+                                                                      [self clearCache];
+                                                                  }
+                                                              }]];
+        }
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)clickBackBtn:(id)sender {
@@ -221,14 +212,13 @@
 - (UITableViewCell *)createQuitCell {
     UITableViewCell *quitCell = [[UITableViewCell alloc] init];
     quitCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    quitCell.backgroundColor = [UIColor whiteColor];
+    quitCell.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                        darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
     UILabel *label = [[UILabel alloc] init];
     label.font = [UIFont systemFontOfSize:16];
-    label.textColor = [UIColor colorWithHexString:@"000000" alpha:1.0];
+    label.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     label.text = RCDLocalizedString(@"logout");
     label.translatesAutoresizingMaskIntoConstraints = NO;
-    quitCell.contentView.layer.borderWidth = 0.5;
-    quitCell.contentView.layer.borderColor = [[UIColor colorWithHexString:@"dfdfdf" alpha:1.0] CGColor];
 
     [quitCell setSeparatorInset:UIEdgeInsetsMake(0, 100, 0, 1000)];
     [quitCell.contentView addSubview:label];
@@ -252,15 +242,11 @@
 
 - (void)initUI {
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    self.tableView.tableFooterView = [UIView new];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-
     self.navigationItem.title = RCDLocalizedString(@"account_setting");
     RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
                                                                              target:self
                                                                              action:@selector(clickBackBtn:)];
     self.navigationItem.leftBarButtonItem = leftBtn;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 @end

@@ -13,7 +13,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <RongIMKit/RongIMKit.h>
 #import <Masonry/Masonry.h>
-
+#import "RCDUtilities.h"
 #define CellHeight 65.0f
 
 @interface RCDAddressBookTableViewCell ()
@@ -110,7 +110,6 @@
 
 #pragma mark - Private Method
 - (void)initSubviews {
-    self.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.portraitImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.rightLabel];
@@ -190,7 +189,7 @@
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = [UIFont systemFontOfSize:17];
-        _nameLabel.textColor = [UIColor blackColor];
+        _nameLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     }
     return _nameLabel;
 }
@@ -208,7 +207,7 @@
         _rightLabel = [[UILabel alloc] init];
         _rightLabel.font = [UIFont systemFontOfSize:14];
         _rightLabel.textAlignment = NSTextAlignmentRight;
-        _rightLabel.textColor = [UIColor blackColor];
+        _rightLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     }
     return _rightLabel;
 }
@@ -228,7 +227,7 @@
     if (!_ignoreButton) {
         _ignoreButton = [[UIButton alloc] init];
         [_ignoreButton setTitle:RCDLocalizedString(@"Ignore") forState:(UIControlStateNormal)];
-        [_ignoreButton setTitleColor:HEXCOLOR(0x333333) forState:(UIControlStateNormal)];
+        [_ignoreButton setTitleColor:RCDDYCOLOR(0x333333, 0x9f9f9f) forState:(UIControlStateNormal)];
         [_ignoreButton addTarget:self action:@selector(doIgnore) forControlEvents:(UIControlEventTouchUpInside)];
         _ignoreButton.titleLabel.font = [UIFont systemFontOfSize:14];
     }

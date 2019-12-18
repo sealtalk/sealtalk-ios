@@ -22,11 +22,11 @@
 #import "UITabBar+badge.h"
 #import "RCDCommonString.h"
 #import "RCDSelectContactViewController.h"
-
+#import "RCDSearchBar.h"
 @interface RCDContactViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,
                                         UISearchControllerDelegate>
 @property (nonatomic, strong) RCDTableView *friendsTabelView;
-@property (nonatomic, strong) UISearchBar *searchFriendsBar;
+@property (nonatomic, strong) RCDSearchBar *searchFriendsBar;
 @property (nonatomic, strong) UILabel *emptyLabel;
 
 @property (nonatomic, strong) NSArray *allFriendArray;
@@ -108,11 +108,11 @@
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     view.frame = CGRectMake(0, 0, self.view.frame.size.width, 21);
-    view.backgroundColor = HEXCOLOR(0xf0f0f6);
+    view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
     title.frame = CGRectMake(13, 3, 15, 15);
     title.font = [UIFont systemFontOfSize:15.f];
-    title.textColor = HEXCOLOR(0x999999);
+    title.textColor = RCDDYCOLOR(0x999999, 0x9f9f9f);
     [view addSubview:title];
 
     if (section == 0) {
@@ -262,11 +262,10 @@
 #pragma mark - Private Method
 - (void)setupView {
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.view.backgroundColor = [UIColor colorWithRed:235 / 255.0 green:235 / 255.0 blue:235 / 255.0 alpha:1];
+    self.view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     [self.view addSubview:self.friendsTabelView];
     [self.view addSubview:self.searchFriendsBar];
     [self.friendsTabelView addSubview:self.emptyLabel];
-
     [self.friendsTabelView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchFriendsBar.mas_bottom);
         make.left.right.bottom.equalTo(self.view);
@@ -287,11 +286,11 @@
     self.navigationController.navigationBar.translucent = NO;
     self.tabBarController.navigationItem.title = RCDLocalizedString(@"contacts");
     RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"add_friend"]
-                                                                 imageViewFrame:CGRectMake(0, 0, 18, 20)
+                                                                 imageViewFrame:CGRectMake(0, 0, 22, 20)
                                                                     buttonTitle:nil
                                                                      titleColor:nil
                                                                      titleFrame:CGRectZero
-                                                                    buttonFrame:CGRectMake(0, 0, 18, 20)
+                                                                    buttonFrame:CGRectMake(0, 0, 22, 20)
                                                                          target:self
                                                                          action:@selector(pushAddFriendVC:)];
     self.tabBarController.navigationItem.rightBarButtonItems = [rightBtn setTranslation:rightBtn translation:-6];
@@ -400,27 +399,22 @@
 }
 
 #pragma mark - Getter & Setter
-- (UISearchBar *)searchFriendsBar {
+- (RCDSearchBar *)searchFriendsBar {
     if (!_searchFriendsBar) {
-        _searchFriendsBar = [[UISearchBar alloc] init];
+        _searchFriendsBar = [[RCDSearchBar alloc] init];
         _searchFriendsBar.delegate = self;
         _searchFriendsBar.keyboardType = UIKeyboardTypeDefault;
         _searchFriendsBar.placeholder = RCDLocalizedString(@"search");
-        UIImage *searchBarBg = [RCDUtilities getImageWithColor:[UIColor clearColor] andHeight:32.0f];
-        _searchFriendsBar.backgroundImage = searchBarBg;
-        _searchFriendsBar.backgroundColor = HEXCOLOR(0xf0f0f6);
     }
     return _searchFriendsBar;
 }
 
 - (RCDTableView *)friendsTabelView {
     if (!_friendsTabelView) {
-        _friendsTabelView = [[RCDTableView alloc] init];
+        _friendsTabelView = [[RCDTableView alloc] initWithFrame:CGRectZero style:(UITableViewStyleGrouped)];
         _friendsTabelView.delegate = self;
         _friendsTabelView.dataSource = self;
         _friendsTabelView.tableFooterView = [UIView new];
-        _friendsTabelView.backgroundColor = HEXCOLOR(0xf0f0f6);
-        _friendsTabelView.separatorColor = HEXCOLOR(0xdfdfdf);
         _friendsTabelView.tableHeaderView =
             [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _friendsTabelView.bounds.size.width, 0.01f)];
         //设置右侧索引

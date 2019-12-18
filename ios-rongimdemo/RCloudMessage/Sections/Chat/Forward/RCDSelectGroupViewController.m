@@ -13,10 +13,10 @@
 #import "RCDForwardSelectedCell.h"
 #import <Masonry/Masonry.h>
 #import "RCDBottomResultView.h"
-#import "RCDHaveSelectedViewController.h"
 #import "RCDUtilities.h"
 #import "RCDUIBarButtonItem.h"
-
+#import "RCDTableView.h"
+#import "RCDSearchBar.h"
 static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
 
 @interface RCDSelectGroupViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,
@@ -27,8 +27,8 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
 @property (nonatomic, assign) BOOL isBeginSearch;
 @property (nonatomic, assign) BOOL isMultiSelectModel;
 
-@property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) RCDTableView *tableView;
+@property (nonatomic, strong) RCDSearchBar *searchBar;
 @property (nonatomic, strong) RCDBottomResultView *bottomResultView;
 
 @end
@@ -65,7 +65,6 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
 
 - (void)setupView {
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.view.backgroundColor = [UIColor colorWithRed:235 / 255.0 green:235 / 255.0 blue:235 / 255.0 alpha:1];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.searchBar];
 
@@ -236,27 +235,20 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
 }
 
 #pragma mark - Getter & Setter
-- (UISearchBar *)searchBar {
+- (RCDSearchBar *)searchBar {
     if (!_searchBar) {
-        _searchBar = [[UISearchBar alloc] init];
+        _searchBar = [[RCDSearchBar alloc] init];
         _searchBar.delegate = self;
         _searchBar.keyboardType = UIKeyboardTypeDefault;
-        _searchBar.placeholder = RCDLocalizedString(@"search");
-        UIImage *searchBarBg = [RCDUtilities getImageWithColor:[UIColor clearColor] andHeight:32.0f];
-        _searchBar.backgroundImage = searchBarBg;
-        _searchBar.backgroundColor = HEXCOLOR(0xf0f0f6);
     }
     return _searchBar;
 }
 
-- (UITableView *)tableView {
+- (RCDTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] init];
+        _tableView = [[RCDTableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.tableFooterView = [UIView new];
-        _tableView.backgroundColor = HEXCOLOR(0xf0f0f6);
-        _tableView.separatorColor = HEXCOLOR(0xdfdfdf);
         _tableView.tableHeaderView =
             [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
         //设置右侧索引

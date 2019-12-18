@@ -49,17 +49,17 @@
     __weak typeof(self) ws = self;
     [RCDUserInfoManager setCurrentUserPortrait:url
                                       complete:^(BOOL result) {
-                                          if (result == YES) {
-                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                              if (result == YES) {
                                                   [ws refreshCurrentUserInfo:url];
                                                   [ws.tableView reloadData];
                                                   [ws.hud hide:YES];
-                                              });
-                                          } else {
-                                              [ws.hud hide:YES];
-                                              [ws showAlertView:RCDLocalizedString(@"Upload_avatar_fail")
-                                                  cancelBtnTitle:RCDLocalizedString(@"confirm")];
-                                          }
+                                              } else {
+                                                  [ws.hud hide:YES];
+                                                  [ws showAlertView:RCDLocalizedString(@"Upload_avatar_fail")
+                                                      cancelBtnTitle:RCDLocalizedString(@"confirm")];
+                                              }
+                                          });
                                       }];
 }
 - (void)uploadImage {
@@ -159,12 +159,6 @@
     return 13.5;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [UIView new];
-    view.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    return view;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
@@ -192,40 +186,44 @@
 }
 
 - (void)changePortrait {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:RCDLocalizedString(@"cancel")
-
-                                               destructiveButtonTitle:RCDLocalizedString(@"take_picture")
-
-                                                    otherButtonTitles:RCDLocalizedString(@"my_album"), nil];
-    [actionSheet showInView:self.view];
+    UIAlertAction *cancelAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *takePictureAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"take_picture")
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   [self pushToImagePickerController:UIImagePickerControllerSourceTypeCamera];
+                               }];
+    UIAlertAction *myAlbumAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"my_album")
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   [self pushToImagePickerController:UIImagePickerControllerSourceTypePhotoLibrary];
+                               }];
+    [RCKitUtility showAlertController:nil
+                              message:nil
+                       preferredStyle:UIAlertControllerStyleActionSheet
+                              actions:@[ cancelAction, takePictureAction, myAlbumAction ]
+                     inViewController:self];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.allowsEditing = YES;
-    picker.delegate = self;
-
-    switch (buttonIndex) {
-    case 0:
-        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+- (void)pushToImagePickerController:(UIImagePickerControllerSourceType)sourceType {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.allowsEditing = YES;
+        picker.delegate = self;
+        if (sourceType == UIImagePickerControllerSourceTypeCamera) {
+            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+                picker.sourceType = sourceType;
+            } else {
+                NSLog(@"模拟器无法连接相机");
+            }
         } else {
-            NSLog(@"模拟器无法连接相机");
+            picker.sourceType = sourceType;
         }
-        [self presentViewController:picker animated:YES completion:nil];
-        break;
-
-    case 1:
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         picker.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:picker animated:YES completion:nil];
-        break;
-
-    default:
-        break;
-    }
+    });
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -250,12 +248,12 @@
 }
 
 - (void)showAlertView:(NSString *)message cancelBtnTitle:(NSString *)cTitle {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:message
-                                                   delegate:self
-                                          cancelButtonTitle:cTitle
-                                          otherButtonTitles:nil];
-    [alert show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:cTitle style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)clickBackBtn:(id)sender {
@@ -266,26 +264,15 @@
     BOOL isconnected = NO;
     RCNetworkStatus networkStatus = [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
     if (networkStatus == 0) {
-        UIAlertView *alert = [[UIAlertView alloc]
-                initWithTitle:nil
-                      message:NSLocalizedStringFromTable(@"ConnectionIsNotReachable", @"RongCloudKit", nil)
-                     delegate:nil
-            cancelButtonTitle:RCDLocalizedString(@"confirm")
-
-            otherButtonTitles:nil];
-        [alert show];
+        [self showAlertView:NSLocalizedStringFromTable(@"ConnectionIsNotReachable", @"RongCloudKit", nil)
+             cancelBtnTitle:RCDLocalizedString(@"confirm")];
         return isconnected;
     }
     return isconnected = YES;
 }
 
 - (void)initUI {
-    self.tableView.tableFooterView = [UIView new];
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
-    self.tabBarController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"f0f0f6" alpha:1.f];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
     self.navigationItem.title = RCDLocalizedString(@"Personal_information");
 
     RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")

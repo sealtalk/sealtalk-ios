@@ -7,10 +7,10 @@
 //
 
 #import <RongIMLib/RCUserInfo.h>
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 #import "RCDUserInfo.h"
 
-@interface RCDAddFriendViewController : UITableViewController
+@interface RCDAddFriendViewController : RCDTableViewController
 @property (nonatomic, copy) NSString *groupId;
 @property (nonatomic, copy) NSString *targetUserId;
 @end

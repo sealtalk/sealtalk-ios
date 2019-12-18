@@ -8,6 +8,7 @@
 
 #import "RCDCSAnnounceView.h"
 #import "RCDCommonDefine.h"
+#import "RCDUtilities.h"
 @interface RCDCSAnnounceView ()
 @property (nonatomic, strong) UIImageView *trumpetImageView;
 @property (nonatomic, strong) UIImageView *arrowImageView;
@@ -17,7 +18,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = HEXCOLOR(0xfff5ed);
+        self.backgroundColor = RCDDYCOLOR(0xfff5ed, 0x262626);
         [self loadSubview];
         self.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap =
@@ -29,7 +30,7 @@
 
 - (void)loadSubview {
     self.content = [[UILabel alloc] init];
-    self.content.textColor = HEXCOLOR(0x9D5438);
+    self.content.textColor = RCDDYCOLOR(0x9D5438, 0xf76260);
     self.content.font = [UIFont systemFontOfSize:14];
     self.trumpetImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"trumpet"]];
     self.arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow"]];

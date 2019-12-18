@@ -10,6 +10,7 @@
 #import <Masonry/Masonry.h>
 #import "UIColor+RCColor.h"
 #import <RongIMKit/RongIMKit.h>
+#import "RCDUtilities.h"
 @interface RCDReceiptDetailHeader ()
 @property (nonatomic, strong) RCMessageModel *message;
 
@@ -123,7 +124,7 @@
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _nameLabel.font = [UIFont systemFontOfSize:16.f];
-        _nameLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1.f];
+        _nameLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
         _nameLabel.text = [RCIM sharedRCIM].currentUserInfo.name;
     }
     return _nameLabel;
@@ -133,7 +134,7 @@
     if (!_timeLabel) {
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _timeLabel.font = [UIFont systemFontOfSize:14.f];
-        _timeLabel.textColor = [UIColor colorWithHexString:@"999999" alpha:1.f];
+        _timeLabel.textColor = RCDDYCOLOR(0x999999, 0x666666);
         _timeLabel.text = [RCKitUtility ConvertMessageTime:self.message.sentTime / 1000];
     }
     return _timeLabel;
@@ -143,7 +144,7 @@
     if (!_messageContentLabel) {
         _messageContentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _messageContentLabel.font = [UIFont systemFontOfSize:16.f];
-        _messageContentLabel.textColor = [UIColor colorWithHexString:@"000000" alpha:1.f];
+        _messageContentLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
         RCTextMessage *messageContent = (RCTextMessage *)self.message.content;
         _messageContentLabel.text = messageContent.content;
         _messageContentLabel.numberOfLines = 4;

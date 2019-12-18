@@ -19,11 +19,11 @@
 #import "RCDAddressBookFriendCell.h"
 #import "RCDUserInfoManager.h"
 #import "RCDAddFriendViewController.h"
-
+#import "RCDTableView.h"
 @interface RCDAddressBookFriendsViewController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) RCDSearchBar *searchBar;
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) RCDTableView *tableView;
 @property (nonatomic, strong) RCDUnableGetContactsView *withoutPermissionView;
 
 @property (nonatomic, strong) NSArray *contactsArray;
@@ -107,11 +107,10 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     view.frame = CGRectMake(0, 0, self.view.frame.size.width, 15);
-    view.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
     title.frame = CGRectMake(13, 0, 15, 15);
     title.font = [UIFont systemFontOfSize:12.f];
-    title.textColor = [UIColor colorWithHexString:@"#262626" alpha:1];
+    title.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
     [view addSubview:title];
 
     title.text = self.resultKeys[section];
@@ -298,11 +297,10 @@
     return _searchBar;
 }
 
-- (UITableView *)tableView {
+- (RCDTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] init];
+        _tableView = [[RCDTableView alloc] init];
         [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
-        _tableView.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         //设置右侧索引

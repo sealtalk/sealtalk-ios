@@ -88,10 +88,8 @@
 
 #pragma mark - Private Method
 - (void)setupViews {
-    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.tableFooterView = [UIView new];
     if ([self.tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }
@@ -99,7 +97,6 @@
 }
 
 - (void)setupNavi {
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationItem.title = RCDLocalizedString(@"new_friend");
 }
 
@@ -139,13 +136,8 @@
                                                [self.hud hide:YES];
                                            } else {
                                                [self.hud hide:YES];
-                                               UIAlertView *failAlert =
-                                                   [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"add_fail")
-                                                                              message:nil
-                                                                             delegate:nil
-                                                                    cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                                                    otherButtonTitles:nil, nil];
-                                               [failAlert show];
+                                               [self showAlertController:RCDLocalizedString(@"add_fail")
+                                                             cancenTitle:RCDLocalizedString(@"confirm")];
                                            }
                                        });
                                    }];
@@ -154,27 +146,29 @@
 - (void)ignoreInvite:(NSString *)userId {
     self.hud.labelText = RCDLocalizedString(@"IgnoreFriendRequest");
     [self.hud show:YES];
-    [RCDUserInfoManager
-        ignoreFriendRequest:userId
-                   complete:^(BOOL success) {
-                       dispatch_async(dispatch_get_main_queue(), ^{
-                           [self.hud hide:YES];
-                           if (success) {
-                               [[NSNotificationCenter defaultCenter] postNotificationName:RCDContactsRequestKey
-                                                                                   object:nil];
-                               self.friends = [RCDUserInfoManager getAllFriendRequests];
-                               [self.tableView reloadData];
-                           } else {
-                               UIAlertView *failAlert =
-                                   [[UIAlertView alloc] initWithTitle:RCDLocalizedString(@"IgnoreFailure")
-                                                              message:nil
-                                                             delegate:nil
-                                                    cancelButtonTitle:RCDLocalizedString(@"confirm")
-                                                    otherButtonTitles:nil, nil];
-                               [failAlert show];
-                           }
-                       });
-                   }];
+    [RCDUserInfoManager ignoreFriendRequest:userId
+                                   complete:^(BOOL success) {
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           [self.hud hide:YES];
+                                           if (success) {
+                                               [[NSNotificationCenter defaultCenter]
+                                                   postNotificationName:RCDContactsRequestKey
+                                                                 object:nil];
+                                               self.friends = [RCDUserInfoManager getAllFriendRequests];
+                                               [self.tableView reloadData];
+                                           } else {
+                                               [self showAlertController:RCDLocalizedString(@"IgnoreFailure")
+                                                             cancenTitle:RCDLocalizedString(@"confirm")];
+                                           }
+                                       });
+                                   }];
+}
+
+- (void)showAlertController:(NSString *)title cancenTitle:(NSString *)cancelTitle {
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Setter && Getter

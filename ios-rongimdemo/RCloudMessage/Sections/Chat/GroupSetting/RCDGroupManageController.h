@@ -6,10 +6,10 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RCDTableViewController.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCDGroupManageController : UITableViewController
+@interface RCDGroupManageController : RCDTableViewController
 @property (nonatomic, strong) NSString *groupId;
 @end
 

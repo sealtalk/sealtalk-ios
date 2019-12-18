@@ -21,11 +21,11 @@
 #import "UIView+MBProgressHUD.h"
 #import "RCDMyQRCodeView.h"
 #import "RCDForwardSelectedViewController.h"
-
+#import "RCDTableView.h"
 #define RCDAddFriendListCellIdentifier @"RCDAddFriendListCell"
 
-@interface RCDAddFriendListViewController () <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate,
-                                              RCDWeChatManagerDelegate, UISearchBarDelegate, RCDMyQRCodeViewDelegate>
+@interface RCDAddFriendListViewController () <UITableViewDelegate, UITableViewDataSource, RCDWeChatManagerDelegate,
+                                              UISearchBarDelegate, RCDMyQRCodeViewDelegate>
 
 @property (nonatomic, strong) RCDSearchBar *searchBar;
 
@@ -33,7 +33,7 @@
 @property (nonatomic, strong) UILabel *myQRCodeLabel;
 @property (nonatomic, strong) UIImageView *imgView;
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) RCDTableView *tableView;
 
 @property (nonatomic, strong) NSArray *imageArray;
 @property (nonatomic, strong) NSArray *titleArray;
@@ -88,8 +88,7 @@
         [self showAlert:RCDLocalizedString(@"InviteWeChatFriend")
                    message:RCDLocalizedString(@"ToInviteWeChatFriend")
             cancelBtnTitle:RCDLocalizedString(@"cancel")
-             otherBtnTitle:RCDLocalizedString(@"ConfirmBtnTitle")
-                       tag:10001];
+             otherBtnTitle:RCDLocalizedString(@"ConfirmBtnTitle")];
     } break;
     case 3: {
         RCDSelectAddressBookViewController *vc = [[RCDSelectAddressBookViewController alloc] init];
@@ -105,15 +104,6 @@
     RCDSearchFriendController *searchFirendVC = [[RCDSearchFriendController alloc] init];
     [self.navigationController pushViewController:searchFirendVC animated:YES];
     return NO;
-}
-
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == 10001) {
-        if (buttonIndex == 1) {
-            [self shareUrlToWeChat];
-        }
-    }
 }
 
 #pragma mark - RCDWeChatManagerDelegate
@@ -139,7 +129,6 @@
 }
 
 - (void)setupUI {
-    self.view.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.myQRCodeView];
     [self.view addSubview:self.tableView];
@@ -185,17 +174,22 @@
 - (void)showAlert:(NSString *)title
           message:(NSString *)message
    cancelBtnTitle:(NSString *)cBtnTitle
-    otherBtnTitle:(NSString *)oBtnTitle
-              tag:(int)tag {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:cBtnTitle
-                                              otherButtonTitles:oBtnTitle, nil];
-    if (tag > 0) {
-        alertView.tag = tag;
-    }
-    [alertView show];
+    otherBtnTitle:(NSString *)oBtnTitle {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:message
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        if (oBtnTitle) {
+            [alertController addAction:[UIAlertAction actionWithTitle:oBtnTitle
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *_Nonnull action) {
+                                                                  [self shareUrlToWeChat];
+                                                              }]];
+        }
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)shareUrlToWeChat {
@@ -209,9 +203,8 @@
     } else {
         [self showAlert:nil
                    message:RCDLocalizedString(@"NotInstalledWeChat")
-            cancelBtnTitle:nil
-             otherBtnTitle:RCDLocalizedString(@"ConfirmBtnTitle")
-                       tag:0];
+            cancelBtnTitle:RCDLocalizedString(@"ConfirmBtnTitle")
+             otherBtnTitle:nil];
     }
 }
 
@@ -239,7 +232,6 @@
 - (UIView *)myQRCodeView {
     if (!_myQRCodeView) {
         _myQRCodeView = [[UIView alloc] init];
-        _myQRCodeView.backgroundColor = [UIColor colorWithHexString:@"F2F2F3" alpha:1];
         _myQRCodeView.userInteractionEnabled = YES;
 
         UITapGestureRecognizer *tap =
@@ -253,7 +245,7 @@
     if (!_myQRCodeLabel) {
         _myQRCodeLabel = [[UILabel alloc] init];
         _myQRCodeLabel.font = [UIFont systemFontOfSize:14];
-        _myQRCodeLabel.textColor = [UIColor colorWithHexString:@"333333" alpha:1];
+        _myQRCodeLabel.textColor = RCDDYCOLOR(0x333333, 0x9f9f9f);
         _myQRCodeLabel.text = RCDLocalizedString(@"My_QR");
     }
     return _myQRCodeLabel;
@@ -267,14 +259,12 @@
     return _imgView;
 }
 
-- (UITableView *)tableView {
+- (RCDTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] init];
+        _tableView = [[RCDTableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.tableFooterView = [UIView new];
         [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
-        _tableView.backgroundColor = [UIColor colorWithHexString:@"FAFAFA" alpha:1];
         _tableView.scrollEnabled = NO;
     }
     return _tableView;

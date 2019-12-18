@@ -13,6 +13,7 @@
 #import "RCDCommonDefine.h"
 #import "RCDCommonString.h"
 #import "RCDLoginManager.h"
+
 @interface RCDCountryListController () <UITableViewDelegate, UITableViewDataSource, UISearchControllerDelegate,
                                         UISearchResultsUpdating>
 
@@ -33,7 +34,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.backgroundColor = [UIColor whiteColor];
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
 
@@ -46,7 +46,6 @@
     // 添加 searchbar 到 headerview
     self.definesPresentationContext = YES;
     self.tableView.tableHeaderView = self.searchController.searchBar;
-    [self.tableView setTableFooterView:[UIView new]];
     if ([self.tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }
@@ -112,12 +111,10 @@
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     view.frame = CGRectMake(0, 0, self.view.frame.size.width, 19);
-    view.backgroundColor = HEXCOLOR(0xF5F5F5);
-
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
     title.frame = CGRectMake(13, 3, 15, 15);
     title.font = [UIFont systemFontOfSize:15.f];
-    title.textColor = HEXCOLOR(0x808080);
+    title.textColor = RCDDYCOLOR(0x808080, 0x666666);
     [view addSubview:title];
 
     NSArray *sectionTitles = [self sectionCountryTitles];
@@ -140,7 +137,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:flag];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:flag];
-        cell.backgroundColor = [UIColor whiteColor];
+        cell.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
+                                                        darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
     }
 
     NSArray *sectionUserInfoList = [self countriesInSection:indexPath.section];
@@ -148,7 +146,7 @@
     RCDCountry *countryInfo = sectionUserInfoList[indexPath.row];
     if (countryInfo) {
         [cell.textLabel setText:countryInfo.countryName];
-        cell.textLabel.textColor = [UIColor blackColor];
+        cell.textLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
         cell.detailTextLabel.text = [NSString stringWithFormat:@"+%@", countryInfo.phoneCode];
     }
     return cell;
@@ -198,8 +196,7 @@
         _searchController.searchResultsUpdater = self;
         //提醒字眼
         _searchController.searchBar.placeholder = NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil);
-        _searchController.searchBar.backgroundImage = [UIColor imageWithColor:[UIColor clearColor]];
-        [_searchController.searchBar setBackgroundColor:HEXCOLOR(0xE4E5E7)];
+        _searchController.searchBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
         _searchController.dimsBackgroundDuringPresentation = NO;
     }
     return _searchController;

@@ -13,7 +13,7 @@
 #import "RCDUserInfoManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DefaultPortraitView.h"
-
+#import "RCDUtilities.h"
 @interface RCDForwardSelectedCell ()
 
 @property (nonatomic, strong) UIButton *selectedButton;
@@ -33,8 +33,6 @@
 }
 
 - (void)setupViews {
-
-    self.backgroundColor = [UIColor whiteColor];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     [self.contentView addSubview:self.selectedButton];
     [self.contentView addSubview:self.headerImageView];
@@ -191,7 +189,7 @@
         _conversationTitleLabel = [[UILabel alloc] init];
         _conversationTitleLabel.backgroundColor = [UIColor clearColor];
         _conversationTitleLabel.font = [UIFont systemFontOfSize:16];
-        _conversationTitleLabel.textColor = [UIColor colorWithHexString:@"262626" alpha:1];
+        _conversationTitleLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
     }
     return _conversationTitleLabel;
 }

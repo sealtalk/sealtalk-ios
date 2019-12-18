@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "RCDUtilities.h"
 @interface RCDTableViewController : UITableViewController
 
 @end

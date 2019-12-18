@@ -101,18 +101,20 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info {
 
 #pragma mark - private
 - (void)showErrorAlertView {
-    UIAlertController *alertController =
-        [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alertController
-        addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"confirm", @"RongCloudKit", nil)
-                                           style:UIAlertActionStyleDestructive
-                                         handler:^(UIAlertAction *_Nonnull action){
-                                         }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"QRIdentifyError")
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *_Nonnull action) {
-                                                          [self.navigationController popViewControllerAnimated:YES];
-                                                      }]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"confirm", @"RongCloudKit", nil)
+                                               style:UIAlertActionStyleDestructive
+                                             handler:^(UIAlertAction *_Nonnull action){
+                                             }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"QRIdentifyError")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *_Nonnull action) {
+                                                              [self.navigationController popViewControllerAnimated:YES];
+                                                          }]];
+    });
 }
 
 - (void)setNavi {

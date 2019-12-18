@@ -22,8 +22,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = RCDLocalizedString(@"LeaveMembers");
-    self.view.backgroundColor = HEXCOLOR(0xffffff);
-    self.tableView.tableFooterView = [UIView new];
     [self getUserList];
 }
 

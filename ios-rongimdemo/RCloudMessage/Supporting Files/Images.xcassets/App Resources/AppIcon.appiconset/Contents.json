@@ -51,8 +51,9 @@
       "scale" : "2x"
     },
     {
-      "idiom" : "iphone",
       "size" : "60x60",
+      "idiom" : "iphone",
+      "filename" : "app_60@2x.png",
       "scale" : "2x"
     },
     {
@@ -117,23 +118,21 @@
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "76x76",
-      "scale" : "2x"
-    },
-    {
       "idiom" : "ipad",
-      "size" : "83.5x83.5",
+      "filename" : "app_76@2x.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "ios-marketing",
-      "size" : "1024x1024",
-      "scale" : "1x"
+      "size" : "83.5x83.5",
+      "idiom" : "ipad",
+      "filename" : "app_83.5@2x.png",
+      "scale" : "2x"
     },
     {
-      "idiom" : "car",
-      "size" : "120x120",
+      "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "1024x1024.png",
       "scale" : "1x"
     }
   ],

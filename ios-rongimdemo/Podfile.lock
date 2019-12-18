@@ -14,7 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - Bugly (2.5.0)
+  - Bugly (2.5.2)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -63,7 +63,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
+  Bugly: dbac48b55ad469a97cc4321045cd50df8f63d44f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GCDWebServer: ead88cd14596dd4eae4f5830b8877c87c8728990
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -73,6 +73,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 97db4e2c97ce79babb678fc8558bb61aeb60e566
+PODFILE CHECKSUM: d2fd47ae80445f5575a4a7e1d48b57d08e008111
 
 COCOAPODS: 1.7.5

@@ -7,7 +7,7 @@
 //
 
 #import "RCAnimatedImagesView.h"
-#import <UIKit/UIKit.h>
-@interface RCDFindPswViewController : UIViewController <RCAnimatedImagesViewDelegate>
+#import "RCDViewController.h"
+@interface RCDFindPswViewController : RCDViewController <RCAnimatedImagesViewDelegate>
 
 @end
