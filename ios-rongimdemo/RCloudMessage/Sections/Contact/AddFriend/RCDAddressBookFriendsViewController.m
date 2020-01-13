@@ -242,15 +242,14 @@
                                           dispatch_async(dispatch_get_main_queue(), ^{
                                               [self.hud hideAnimated:YES];
                                               self.contactsArray = contactsList;
-                                              if (self.contactsArray.count > 0) {
-                                                  self.friendCountLabel.text = [NSString
-                                                      stringWithFormat:RCDLocalizedString(@"AddressBookFriendCount"),
-                                                                       self.contactsArray.count];
-                                                  [self sortAndRefreshWithList:self.contactsArray];
-                                                  [self.tableView reloadData];
-                                              }
+                                              self.friendCountLabel.text = [NSString
+                                                  stringWithFormat:RCDLocalizedString(@"AddressBookFriendCount"),
+                                                                   self.contactsArray.count];
+                                              [self sortAndRefreshWithList:self.contactsArray];
+                                              [self.tableView reloadData];
                                           });
                                       }];
+
     } else {
         self.withoutPermissionView.hidden = NO;
         self.title = RCDLocalizedString(@"AddressBookMatching");

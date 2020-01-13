@@ -38,4 +38,7 @@
  @return 修正后的图片
 */
 + (UIColor *)generateDynamicColor:(UIColor *)lightColor darkColor:(UIColor *)darkColor;
+
+/// 判断字符串中是否包含汉字
++ (BOOL)includeChinese:(NSString *)string;
 @end

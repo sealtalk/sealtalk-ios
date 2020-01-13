@@ -257,6 +257,7 @@
         self.searchField.leftView = self.searchFieldLeftView;
     }
     self.searchBar.placeholder = RCDLocalizedString(@"search");
+    self.searchBar.text = @"";
     self.searchContent = @"";
     [self.searchBar resignFirstResponder];
 }

@@ -222,8 +222,8 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
     if (!_allSelectBtn) {
         _allSelectBtn = [[UIButton alloc] init];
         [_allSelectBtn setTitle:RCDLocalizedString(@"AllSelect") forState:UIControlStateNormal];
-        [_allSelectBtn setImage:[UIImage imageNamed:@"unselected_full"] forState:UIControlStateNormal];
-        [_allSelectBtn setImage:[UIImage imageNamed:@"selected_full"] forState:UIControlStateSelected];
+        [_allSelectBtn setImage:[UIImage imageNamed:@"forward_unselected"] forState:UIControlStateNormal];
+        [_allSelectBtn setImage:[UIImage imageNamed:@"forward_selected"] forState:UIControlStateSelected];
         [_allSelectBtn setTitleColor:RCDDYCOLOR(0x000000, 0x999999) forState:UIControlStateNormal];
         [_allSelectBtn setTitleColor:[[UIColor grayColor] colorWithAlphaComponent:0.6] forState:UIControlStateDisabled];
         _allSelectBtn.titleLabel.font = [UIFont systemFontOfSize:17];

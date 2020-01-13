@@ -73,6 +73,10 @@
     if (self.type == RCDGroupMemberSelectTypePoke) {
         if ([user.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
             [cell setCellSelectState:(RCDGroupMemberSelectCellStateDisable)];
+        } else if ([self.selectUsers containsObject:user.userId]) {
+            [cell setCellSelectState:(RCDGroupMemberSelectCellStateSelected)];
+        } else {
+            [cell setCellSelectState:(RCDGroupMemberSelectCellStateUnselected)];
         }
     } else if (self.type == RCDGroupMemberSelectTypeAddManager) {
         if ([user.userId isEqualToString:[RCDGroupManager getGroupOwner:self.groupId]] ||

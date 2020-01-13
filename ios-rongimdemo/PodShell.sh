@@ -54,6 +54,7 @@ sed -i '' -e "/JrmfPacketKit.framework/d"  ${Project}
 sed -i '' -e "/JYangToolKit.framework/d"  ${Project}
 sed -i '' -e "/WalletResource.bundle/d"  ${Project}
 
+
 sed -i '' -e "/Blink.framework/d"  ${Project}
 sed -i '' -e "/RongCallKit.framework/d"  ${Project}
 sed -i '' -e "/RongCallLib.framework/d"  ${Project}
@@ -83,8 +84,10 @@ sed -i '' -e "/RongSight.framework/d"  ${Project}
 
 
 # 移除本地使用的库
-rm -rf ./framework/AgoraRtcEngineKit.framework
 rm -rf ./framework/AlipaySDK
+rm -rf ./framework/JrmfIMLib
+
+rm -rf ./framework/AgoraRtcEngineKit.framework
 rm -rf ./framework/Bailingquic.framework
 rm -rf ./framework/Blink.framework
 rm -rf ./framework/bqmm
@@ -92,7 +95,6 @@ rm -rf ./framework/Emoji.plist
 rm -rf ./framework/en.lproj
 rm -rf ./framework/ifly
 rm -rf ./framework/iflyMSC.framework
-rm -rf ./framework/JrmfIMLib
 rm -rf ./framework/libopencore-amrnb.a
 rm -rf ./framework/RCColor.plist
 rm -rf ./framework/RCConfig.plist
@@ -117,8 +119,7 @@ rm -rf ./framework/RongPTTLib.framework
 
 # 变量和=间不能有空格
 pwd
-
 sed -i '' -e 's/#/''/g'  Podfile
-
+sed -i '' -e '/RongCloud/s/2.10.1/'${Version}'/g' Podfile
 pod update
 

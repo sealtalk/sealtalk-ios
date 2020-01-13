@@ -47,7 +47,6 @@
 "add_friend"="Add Contacts";
 "chatroom"="Chatroom";
 "account_setting"="Account Settings";
-"my_wallet"="My Wallet";
 "feedback"="Feedback";
 "about_sealtalk"="About SealTalk";
 "customer_service_xn"="Xiaoneng";
@@ -92,7 +91,7 @@
 "user_join_share_location"="User<%@> joined to location sharing";
 "share_location_people_count"="%lu of people in sharing location";
 "share_location_finished"="Location sharing is ended";
-"i_start_location_share"="I initiate a location sharing";
+"i_start_location_share"="Initiate a location sharing";
 "join_share_location_alert"="Join location sharing, other people in the chat can also see your location, confirm to join?";
 "locating"="Positioning...";
 "Inaccessible"="Unable to access";

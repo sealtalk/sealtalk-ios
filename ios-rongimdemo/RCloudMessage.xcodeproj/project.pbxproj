@@ -159,7 +159,6 @@
 		3BC0C7E3229E79490079234F /* RCDAddressBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0C7D0229E79480079234F /* RCDAddressBookViewController.m */; };
 		3BC0C7E5229E79490079234F /* RCDContactSelectedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0C7D8229E79480079234F /* RCDContactSelectedTableViewController.m */; };
 		3BC0C820229FC1E80079234F /* RCDPersonInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0C81D229FC1E80079234F /* RCDPersonInfoView.m */; };
-		3BC0C821229FC1E80079234F /* RCDRemarksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0C81E229FC1E80079234F /* RCDRemarksView.m */; };
 		3BCA7CA52359536700EBCE54 /* RCDDebugAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BCA7CA42359536600EBCE54 /* RCDDebugAlertView.m */; };
 		3BEB4F7322C380A7003923CC /* RCDContactNotificationMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BEB4F7222C380A7003923CC /* RCDContactNotificationMessage.m */; };
 		466684361B5DF36E000B7504 /* RCDUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 466684351B5DF36E000B7504 /* RCDUtilities.m */; };
@@ -493,8 +492,6 @@
 		270C241E22A4C88E000F22A2 /* RCDSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSearchBar.h; sourceTree = "<group>"; };
 		270C241F22A4C88E000F22A2 /* RCDLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDLabel.m; sourceTree = "<group>"; };
 		270C242C22A50862000F22A2 /* RCDCommonString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDCommonString.h; sourceTree = "<group>"; };
-		270EE2A221EF59BA001DFDED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/JrmfInfo.strings; sourceTree = "<group>"; };
-		270EE2A421EF59C3001DFDED /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/JrmfInfo.strings"; sourceTree = "<group>"; };
 		2724CCD61FF34411006FFC86 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		274E2BF222BB8C770016EE65 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
 		274E2BF322BB8C770016EE65 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
@@ -2511,8 +2508,6 @@
 				27C42EE91DE30637003E2306 /* ifly */,
 				27AADC251DDC4DB800E1AE31 /* AddressBook.framework */,
 				F82B553F1DE03E40007392BD /* SafariServices.framework */,
-				2E29FF391DC1BE8400AF2DF0 /* AlipaySDK */,
-				2E29FF2E1DC1BE7300AF2DF0 /* JrmfIMLib */,
 				17B181861D587B0F0061E02B /* Foundation.framework */,
 				F880EA781D0808B300FD5CC4 /* VideoToolbox.framework */,
 				F8AD4A5A1CAE5782006C1CBB /* CoreMotion.framework */,
@@ -3330,15 +3325,6 @@
 				1D3A2329212D5409009514F1 /* en */,
 			);
 			name = RongSticker.strings;
-			sourceTree = "<group>";
-		};
-		270EE2A121EF59BA001DFDED /* JrmfInfo.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				270EE2A221EF59BA001DFDED /* en */,
-				270EE2A421EF59C3001DFDED /* zh-Hans */,
-			);
-			name = JrmfInfo.strings;
 			sourceTree = "<group>";
 		};
 		510624831AD63A9E00348452 /* RongCloudKit.strings */ = {

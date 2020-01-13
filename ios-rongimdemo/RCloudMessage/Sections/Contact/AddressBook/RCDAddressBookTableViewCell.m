@@ -89,8 +89,10 @@
         self.acceptBtn.hidden = YES;
         self.ignoreButton.hidden = YES;
         self.arrowImgView.hidden = NO;
-    } else if (user.status == RCDFriendStatusIgnore) {
-        self.rightLabel.text = RCDLocalizedString(@"Ignored");
+    } else if (user.status == RCDFriendStatusIgnore || user.status == RCDFriendStatusDelete) {
+        NSString *string =
+            user.status == RCDFriendStatusIgnore ? RCDLocalizedString(@"Ignored") : RCDLocalizedString(@"HadDelete");
+        self.rightLabel.text = string;
         self.acceptBtn.hidden = YES;
         self.ignoreButton.hidden = YES;
         self.arrowImgView.hidden = YES;

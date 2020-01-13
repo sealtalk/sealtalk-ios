@@ -166,7 +166,9 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info {
 #if TARGET_IPHONE_SIMULATOR
 // 模拟器设置不了，会crash
 #else
-    metadataOutput.metadataObjectTypes = @[ AVMetadataObjectTypeQRCode ];
+    if ([metadataOutput.availableMetadataObjectTypes containsObject:AVMetadataObjectTypeQRCode]) {
+        metadataOutput.metadataObjectTypes = @[ AVMetadataObjectTypeQRCode ];
+    }
 #endif
 
     AVCaptureVideoPreviewLayer *videoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];

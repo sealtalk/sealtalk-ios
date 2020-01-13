@@ -428,6 +428,7 @@
         _phoneView.btnTitle = @"86";
         _phoneView.charMaxCount = 11;
         _phoneView.showCountryBtn = YES;
+        _phoneView.isPhoneNumber = YES;
     }
     return _phoneView;
 }

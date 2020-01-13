@@ -276,7 +276,10 @@
         [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
                                                         style:UIAlertActionStyleDefault
-                                                      handler:nil]];
+                                                      handler:^(UIAlertAction *_Nonnull action) {
+                                                          [self.navigationController
+                                                              popToRootViewControllerAnimated:YES];
+                                                      }]];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 

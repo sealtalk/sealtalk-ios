@@ -126,6 +126,10 @@
         NSArray *array = self.resultSectionDict[key];
         user = array[indexPath.row];
         user = [RCDUserInfoManager getUserInfo:user.userId];
+        RCDGroupMember *memberDetail = [RCDGroupManager getGroupMember:user.userId groupId:self.groupId];
+        if (memberDetail.groupNickname.length > 0) {
+            user.name = memberDetail.groupNickname;
+        }
     }
     self.selectedBlock(user);
     [self dismissVC];

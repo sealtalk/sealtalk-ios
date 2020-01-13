@@ -138,6 +138,10 @@
         [RCDUtilities stringContainsEmoji:string]) {
         return NO;
     }
+
+    if (self.isPhoneNumber && [RCDUtilities includeChinese:string]) {
+        return NO;
+    }
     return YES;
 }
 

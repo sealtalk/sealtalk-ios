@@ -14,7 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - Bugly (2.5.2)
+  - Bugly (2.5.0)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -35,18 +35,18 @@ PODS:
   - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
-  - AFNetworking (~> 3.2.1)
-  - Bugly (~> 2.5.0)
-  - FMDB (~> 2.7.5)
+  - AFNetworking (= 3.2.1)
+  - Bugly (= 2.5.0)
+  - FMDB (= 2.7.5)
   - GCDWebServer/Core (= 3.5.2)
   - GCDWebServer/WebDAV (= 3.5.2)
   - GCDWebServer/WebUploader (= 3.5.2)
-  - Masonry (~> 1.1.0)
-  - MBProgressHUD (~> 1.1.0)
-  - SDWebImage (~> 5.0.6)
-  - SSZipArchive (~> 2.2.2)
+  - Masonry (= 1.1.0)
+  - MBProgressHUD (= 1.1.0)
+  - SDWebImage (= 5.0.6)
+  - SSZipArchive (= 2.2.2)
   - WechatOpenSDK (= 1.8.4)
-  - ZXingObjC (~> 3.6.5)
+  - ZXingObjC (= 3.6.5)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -63,7 +63,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  Bugly: dbac48b55ad469a97cc4321045cd50df8f63d44f
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GCDWebServer: ead88cd14596dd4eae4f5830b8877c87c8728990
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -73,6 +73,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: d2fd47ae80445f5575a4a7e1d48b57d08e008111
+PODFILE CHECKSUM: 308db67ab9a428fa3e4c9bf00b0eb1b89c6a8db0
 
 COCOAPODS: 1.7.5

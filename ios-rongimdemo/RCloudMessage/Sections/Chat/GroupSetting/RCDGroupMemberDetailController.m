@@ -337,6 +337,11 @@
 
 - (void)clickDoneBtn {
     [self hideKeyboard];
+    RCNetworkStatus status = [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
+    if (RC_NotReachable == status) {
+        [self.view showHUDMessage:RCDLocalizedString(@"network_can_not_use_please_check")];
+        return;
+    }
     NSMutableArray *array = [NSMutableArray array];
     for (NSString *str in self.describeArray) {
         if (str.length > 0) {

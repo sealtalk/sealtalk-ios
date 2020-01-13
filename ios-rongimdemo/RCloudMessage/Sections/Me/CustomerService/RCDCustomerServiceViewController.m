@@ -33,14 +33,14 @@
     // Do any additional setup after loading the view.
 
     self.evaStarDic = [NSMutableDictionary dictionary];
-
+    __weak typeof(self) weakSelf = self;
     [[RCIMClient sharedRCIMClient] getHumanEvaluateCustomerServiceConfig:^(NSDictionary *evaConfig) {
         NSArray *array = [evaConfig valueForKey:@"evaConfig"];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (array) {
                 for (NSDictionary *dic in array) {
                     RCDCSEvaluateModel *model = [RCDCSEvaluateModel modelWithDictionary:dic];
-                    [self.evaStarDic setObject:model forKey:[NSString stringWithFormat:@"%d", model.score]];
+                    [weakSelf.evaStarDic setObject:model forKey:[NSString stringWithFormat:@"%d", model.score]];
                 }
             }
         });

@@ -141,6 +141,15 @@ NSString *const RCDGroupMemberProtectionClose = @"closeMemberProtection";
                     name = user.name;
                 }
             }
+            if (name.length == 0 && [userId isEqualToString:self.operatorUserId]) {
+                name = self.operationName;
+            }
+            if (name.length == 0 && [self.targetUserIds isEqualToArray:userIds]) {
+                NSInteger index = [userIds indexOfObject:userId];
+                if(self.targetUserNames.count > index){
+                    name = self.targetUserNames[index];
+                }
+            }
         }
         if (name.length == 0) {
             name = [NSString stringWithFormat:@"name%@", userId];

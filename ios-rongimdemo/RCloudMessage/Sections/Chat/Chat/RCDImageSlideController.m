@@ -42,7 +42,7 @@
     if (press.state == UIGestureRecognizerStateEnded) {
         return;
     } else if (press.state == UIGestureRecognizerStateBegan) {
-        if (![RCKitUtility hasLoadedImage:self.currentPreviewImage.imageUrl]) {
+        if (![self getCurrentPreviewImageData]) {
             return;
         }
         UIAlertAction *cancelAction =

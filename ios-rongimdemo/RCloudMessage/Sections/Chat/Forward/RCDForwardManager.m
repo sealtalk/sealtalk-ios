@@ -214,7 +214,6 @@
             @"RC:RLEnd",
             @"RC:RLJoin",
             @"RC:RLQuit",
-            @"RCJrmf:RpMsg",
             @"RC:VcMsg",
             @"ST:PokeMsg"
         ];

@@ -69,11 +69,6 @@
     }
     [DEFAULTS setObject:RONGCLOUD_IM_APPKEY forKey:RCDAppKeyKey];
 
-    /* RedPacket_FTR  */
-    //需要在info.plist加上您的红包的scheme，注意一定不能与其它应用重复
-    //设置扩展Module的Url Scheme。
-    [[RCIM sharedRCIM] setScheme:@"rongCloudRedPacket" forExtensionModule:@"JrmfPacketManager"];
-
     // 注册自定义测试消息
     [[RCIM sharedRCIM] registerMessageType:[RCDTestMessage class]];
     [[RCIM sharedRCIM] registerMessageType:[RCDGroupNotificationMessage class]];
@@ -108,6 +103,7 @@
     [RCIM sharedRCIM].enableSendCombineMessage = YES;
     [RCIM sharedRCIM].enableBurnMessage = YES;
     [RCIM sharedRCIM].enableDarkMode = YES;
+    [RCIM sharedRCIM].reeditDuration = 60;
     //  设置头像为圆形
     //  [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
     //  [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
@@ -416,9 +412,6 @@
     if ([message.content isKindOfClass:[RCGroupNotificationMessage class]]) {
         return YES;
     }
-    if ([[message.content.class getObjectName] isEqualToString:@"RCJrmf:RpOpendMsg"]) {
-        return YES;
-    }
     return NO;
 }
 
@@ -439,8 +432,6 @@
     }
 }
 
-/* RedPacket_FTR  */
-//如果您使用了红包等融云的第三方扩展，请实现下面两个openURL方法
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options {
 
     if ([url.absoluteString containsString:@"wechat"] || [url.absoluteString containsString:@"weixin"]) {
@@ -660,6 +651,11 @@
         }
     } else {
         NSLog(@"该启动事件不包含来自融云的推送服务");
+    }
+    //打印原始的远程推送内容
+    NSDictionary *remoteNotificationUserInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remoteNotificationUserInfo) {
+        NSLog(@"远程推送原始内容为 %@", remoteNotificationUserInfo);
     }
 }
 

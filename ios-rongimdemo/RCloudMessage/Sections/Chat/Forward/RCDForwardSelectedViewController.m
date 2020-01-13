@@ -372,6 +372,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
     if (!_searchBar) {
         _searchBar = [[RCDSearchBar alloc] init];
         _searchBar.delegate = self;
+        _searchBar.placeholder = RCDLocalizedString(@"search");
     }
     return _searchBar;
 }

@@ -24,6 +24,8 @@ typedef void (^TapAreaCodeBlock)();
 
 @property (nonatomic, assign) BOOL showCountryBtn;
 
+@property (nonatomic, assign) BOOL isPhoneNumber;
+
 @property (nonatomic, copy) NSString *btnTitle;
 
 @property (nonatomic, copy) TapAreaCodeBlock tapAreaCodeBlock;

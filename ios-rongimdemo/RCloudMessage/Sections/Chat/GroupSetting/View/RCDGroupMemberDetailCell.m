@@ -124,6 +124,10 @@
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
     //在末尾输入，不拦截，textViewDidChange里面会截取处理
     if (range.location == textView.text.length - 1) {
         return YES;
@@ -216,6 +220,7 @@
         _textView.textColor = RCDDYCOLOR(0x999999, 0x666666);
         _textView.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
         _textView.myPlaceholderColor = RCDDYCOLOR(0x999999, 0x666666);
+        _textView.returnKeyType = UIReturnKeyDone;
     }
     return _textView;
 }

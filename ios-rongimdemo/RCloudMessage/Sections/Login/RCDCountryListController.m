@@ -13,6 +13,7 @@
 #import "RCDCommonDefine.h"
 #import "RCDCommonString.h"
 #import "RCDLoginManager.h"
+#import "RCDUIBarButtonItem.h"
 
 @interface RCDCountryListController () <UITableViewDelegate, UITableViewDataSource, UISearchControllerDelegate,
                                         UISearchResultsUpdating>
@@ -49,14 +50,24 @@
     if ([self.tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }
+    [self setNaviItem];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    if (!self.showNavigationBarWhenBack) {
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
-    }
+    [self.navigationController setNavigationBarHidden:!self.showNavigationBarWhenBack animated:YES];
     [self.searchController setActive:NO];
+}
+
+- (void)setNaviItem {
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn)];
+    self.navigationItem.leftBarButtonItem = leftBtn;
+}
+
+- (void)clickBackBtn {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)configCountryData {
@@ -165,7 +176,6 @@
     }
     [self.navigationController popViewControllerAnimated:NO];
     [self.searchController setActive:NO];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 #pragma mark - UISearchController Delegate -
@@ -197,6 +207,8 @@
         //提醒字眼
         _searchController.searchBar.placeholder = NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil);
         _searchController.searchBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+        _searchController.searchBar.layer.borderColor = RCDDYCOLOR(0xf0f0f6, 0x000000).CGColor;
+        _searchController.searchBar.layer.borderWidth = 1;
         _searchController.dimsBackgroundDuringPresentation = NO;
     }
     return _searchController;

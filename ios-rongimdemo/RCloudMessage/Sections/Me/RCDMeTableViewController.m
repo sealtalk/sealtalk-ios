@@ -60,7 +60,7 @@
     } else if (1 == section) {
         rows = 1;
     } else if (2 == section) {
-        rows = 3;
+        rows = 2;
     } else if (3 == section) {
         rows = 2;
     }
@@ -102,8 +102,6 @@
             [cell setCellWithImageName:@"icon_ multilingual"
                              labelName:RCDLocalizedString(@"language")
                         rightLabelName:rightString];
-        } else if (2 == indexPath.row) {
-            [cell setCellWithImageName:@"wallet" labelName:RCDLocalizedString(@"my_wallet") rightLabelName:@""];
         }
     } else if (3 == indexPath.section) {
         if (0 == indexPath.row) {
@@ -144,14 +142,6 @@
         } else if (1 == indexPath.row) {
             RCDLanguageSettingViewController *vc = [[RCDLanguageSettingViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
-        } else if (2 == indexPath.row) {
-            Class walletSDKClass = NSClassFromString(@"JrmfWalletSDK");
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-            if ([walletSDKClass respondsToSelector:@selector(openWallet)]) {
-                [walletSDKClass performSelector:@selector(openWallet)];
-            }
-#pragma clang diagnostic pop
         }
     } else if (3 == indexPath.section) {
         if (0 == indexPath.row) {

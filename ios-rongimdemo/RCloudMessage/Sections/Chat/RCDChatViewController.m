@@ -295,10 +295,15 @@
 }
 
 - (void)didLongPressCellPortrait:(NSString *)userId {
-    if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
+    if (self.conversationType != ConversationType_GROUP ||
+        [userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
         return;
     }
     RCUserInfo *userInfo = [RCDUserInfoManager getUserInfo:userId];
+    RCDGroupMember *memberDetail = [RCDGroupManager getGroupMember:userId groupId:self.targetId];
+    if (memberDetail.groupNickname.length > 0) {
+        userInfo.name = memberDetail.groupNickname;
+    }
     [self.chatSessionInputBarControl addMentionedUser:userInfo];
     [self.chatSessionInputBarControl.inputTextView becomeFirstResponder];
 }
@@ -988,24 +993,15 @@
 
 - (void)forwardMessage:(NSInteger)index completed:(void (^)(NSArray<RCConversation *> *))completedBlock {
     [RCDForwardManager sharedInstance].selectedMessages = self.selectedMessages;
-    if ([[RCDForwardManager sharedInstance] allSelectedMessagesAreLegal]) {
-        [RCDForwardManager sharedInstance].isForward = YES;
-        [RCDForwardManager sharedInstance].selectConversationCompleted =
-            ^(NSArray<RCConversation *> *_Nonnull conversationList) {
-                completedBlock(conversationList);
-            };
-        RCDForwardSelectedViewController *forwardSelectedVC = [[RCDForwardSelectedViewController alloc] init];
-        UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:forwardSelectedVC];
-        navi.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self.navigationController presentViewController:navi animated:YES completion:nil];
-    } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:RCDLocalizedString(@"Forwarding_is_not_supported")
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:RCDLocalizedString(@"confirm"), nil];
-        [alertView show];
-    }
+    [RCDForwardManager sharedInstance].isForward = YES;
+    [RCDForwardManager sharedInstance].selectConversationCompleted =
+        ^(NSArray<RCConversation *> *_Nonnull conversationList) {
+            completedBlock(conversationList);
+        };
+    RCDForwardSelectedViewController *forwardSelectedVC = [[RCDForwardSelectedViewController alloc] init];
+    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:forwardSelectedVC];
+    navi.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self.navigationController presentViewController:navi animated:YES completion:nil];
 }
 
 - (void)userDidTakeScreenshot:(NSNotification *)notification {

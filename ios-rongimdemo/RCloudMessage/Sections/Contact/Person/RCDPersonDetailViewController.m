@@ -68,6 +68,8 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 @property (nonatomic, assign) BOOL isLoadFriendDescription;
 @property (nonatomic, assign) RCDFriendDescriptionType descriptionType;
 
+@property (nonatomic, assign) CGFloat tableViewHeight;
+
 @end
 
 @implementation RCDPersonDetailViewController
@@ -218,7 +220,7 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.infoView.mas_bottom);
         make.left.right.equalTo(self.contentView);
-        make.height.offset(self.tableView.contentSize.height - 30);
+        make.height.offset(self.tableViewHeight);
     }];
 }
 
@@ -235,6 +237,21 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
     } else {
         self.descriptionType = RCDFriendDescriptionTypeDefault;
     }
+    [self calculateTableViewHeight];
+}
+
+- (void)calculateTableViewHeight {
+    // 跟 numberOfRowsInSection 逻辑对应
+    NSInteger rows = 2;
+    if (self.descriptionType == RCDFriendDescriptionTypeDefault) {
+        rows += 1;
+    } else {
+        rows += 2;
+    }
+    if (self.groupId.length > 0) {
+        rows += 1;
+    }
+    self.tableViewHeight = rows * 44 + 2 * 15;
 }
 
 - (BOOL)isCurrentUser {

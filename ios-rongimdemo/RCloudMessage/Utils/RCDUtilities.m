@@ -314,7 +314,7 @@
         RCUserInfo *user =
             [[RCUserInfo alloc] initWithUserId:userId name:friend.displayName portrait:friend.portraitUri];
         result(user);
-        [[RCIM sharedRCIM] refreshGroupUserInfoCache:friend withUserId:userId withGroupId:groupId];
+        [[RCIM sharedRCIM] refreshGroupUserInfoCache:user withUserId:userId withGroupId:groupId];
     } else {
         [self getUserDisplayInfo:userId
                         complete:^(RCUserInfo *user) {
@@ -429,4 +429,15 @@
         return lightColor;
     }
 }
+
++ (BOOL)includeChinese:(NSString *)string {
+    for (int i = 0; i < [string length]; i++) {
+        int a = [string characterAtIndex:i];
+        if (a > 0x4e00 && a < 0x9fff) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 @end

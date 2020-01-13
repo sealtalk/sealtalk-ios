@@ -50,7 +50,6 @@
 "add_friend"="添加好友";
 "chatroom"="聊天室";
 "account_setting"="账号设置";
-"my_wallet"="我的钱包";
 "feedback"="意见反馈";
 "about_sealtalk"="关于 SealTalk";
 "customer_service_xn"="小能客服";
@@ -97,7 +96,7 @@
 "user_join_share_location"="user<%@>加入地理位置共享";
 "share_location_people_count"="%lu人在共享位置";
 "share_location_finished"="位置共享已结束";
-"i_start_location_share"="我发起了位置共享";
+"i_start_location_share"="发起了位置共享";
 "join_share_location_alert"="加入位置共享，聊天中其他人也能看到你的位置，确定加入？";
 "locating"="定位中...";
 "Inaccessible"="无法访问";
@@ -114,7 +113,7 @@
 "you_quit_location_share"="你退出地理位置共享";
 "someone_quit_location_share"="%@退出地理位置共享";
 "user_quit_location_share"="user<%@>退出地理位置共享";
-"Forwarding_is_not_supported"="语音、表情、红包、发送失败的消息和其它特殊消息类型不支持转发。";
+"Forwarding_is_not_supported"="语音、表情、发送失败的消息和其它特殊消息类型不支持转发。";
 "de_actionbar_sub_system"="系统消息";
 "select_contact"="选择联系人";
 "friend_request"="好友请求";
@@ -422,7 +421,7 @@
 "ToSettingContactsPermissions"="请进入 “设置 - 隐私 - 通讯录”，允许本 App 获取通讯录";
 "ToSetting"="进入设置";
 "DeviceNotSupportedSMS"="该设备不支持 SMS";
-"SMSBody"="嗨~ 我正在使用 SealTalk，一款专为同好量身打造的聊天应用，快来试试吧！下载地址：https://www.rongcloud.cn/downloads/demo";
+"SMSBody"="嗨~ 我正在使用 SealTalk，一款专为同行量身打造的聊天应用，快来试试吧！下载地址：https://www.rongcloud.cn/downloads/demo";
 "AddressBookMatching"="手机通讯录匹配";
 "SetFailure"="设置失败";
 "Add"="添加";
