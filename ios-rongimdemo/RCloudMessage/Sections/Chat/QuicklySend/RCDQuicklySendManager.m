@@ -8,6 +8,7 @@
 
 #import "RCDQuicklySendManager.h"
 #import <PhotosUI/PhotosUI.h>
+#import <MobileCoreServices/UTCoreTypes.h>
 
 @interface RCDQuicklySendManager ()
 
@@ -94,18 +95,23 @@
                        resultHandler:^(UIImage *_Nullable result, NSDictionary *_Nullable info) {
                            if (result) {
                                PHAsset *asset = [fetchResult firstObject];
-                               NSDateFormatter *dateformatter = [[NSDateFormatter alloc] init];
-                               [dateformatter setDateFormat:@"yyyyMMddHHmmss"];
-                               NSString *formattedDate = [dateformatter stringFromDate:asset.creationDate];
-                               if (formattedDate && ![formattedDate isEqualToString:self.currentImageURL]) {
-                                   self.currentImageURL = formattedDate;
-                                   self.currentImage = result;
-                                   resultHandler(result, info);
+                               if (![[asset valueForKey:@"uniformTypeIdentifier"]
+                                       isEqualToString:(__bridge NSString *)kUTTypeQuickTimeMovie]) {
+                                   NSDateFormatter *dateformatter = [[NSDateFormatter alloc] init];
+                                   [dateformatter setDateFormat:@"yyyyMMddHHmmss"];
+                                   NSString *formattedDate = [dateformatter stringFromDate:asset.creationDate];
+                                   if (formattedDate && ![formattedDate isEqualToString:self.currentImageURL]) {
+                                       self.currentImageURL = formattedDate;
+                                       self.currentImage = result;
+                                       resultHandler(result, info);
+                                   } else {
+                                       resultHandler(nil, nil);
+                                   }
                                } else {
                                    resultHandler(nil, nil);
                                }
+
                            } else {
-                               resultHandler(nil, nil);
                            }
                        }];
         }

@@ -237,7 +237,8 @@
 }
 
 - (void)didTapCellPortrait:(NSString *)userId {
-    if (self.conversationType == ConversationType_GROUP || self.conversationType == ConversationType_PRIVATE) {
+    if (self.conversationType == ConversationType_GROUP || self.conversationType == ConversationType_PRIVATE ||
+        self.conversationType == ConversationType_CHATROOM) {
         __weak typeof(self) weakSelf = self;
         [RCDUserInfoManager getUserInfoFromServer:userId
                                          complete:^(RCDUserInfo *userInfo) {

@@ -103,8 +103,6 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
     [self.scrollView addSubview:self.contentView];
     [self.contentView addSubview:self.infoView];
     [self.contentView addSubview:self.conversationButton];
-    [self.contentView addSubview:self.audioCallButton];
-    [self.contentView addSubview:self.videoCallButton];
 
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.width.height.equalTo(self.view);
@@ -138,19 +136,22 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
         make.left.right.equalTo(self.contentView).inset(10);
         make.height.offset(43);
     }];
+    if (![self isCurrentUser]) {
+        [self.contentView addSubview:self.audioCallButton];
+        [self.contentView addSubview:self.videoCallButton];
+        [self.audioCallButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.conversationButton.mas_bottom).offset(15);
+            make.left.right.equalTo(self.contentView).inset(10);
+            make.height.offset(43);
+        }];
 
-    [self.audioCallButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.conversationButton.mas_bottom).offset(15);
-        make.left.right.equalTo(self.contentView).inset(10);
-        make.height.offset(43);
-    }];
-
-    [self.videoCallButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.audioCallButton.mas_bottom).offset(15);
-        make.left.right.equalTo(self.contentView).inset(10);
-        make.height.offset(43);
-        make.bottom.equalTo(self.contentView).offset(-15);
-    }];
+        [self.videoCallButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.audioCallButton.mas_bottom).offset(15);
+            make.left.right.equalTo(self.contentView).inset(10);
+            make.height.offset(43);
+            make.bottom.equalTo(self.contentView).offset(-15);
+        }];
+    }
 }
 
 - (void)getUserInfoData {

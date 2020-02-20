@@ -102,7 +102,7 @@
                 }];
             }
             [self.groupNicknameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.stAccountLabel.mas_bottom).offset(5);
+                make.top.equalTo(self.stAccountLabel.mas_bottom).offset(4);
                 make.left.equalTo(self.remarksLabel);
                 make.right.equalTo(self.infoBgView);
                 make.height.offset(16);
@@ -124,7 +124,7 @@
                 }];
             }
             [self.groupNicknameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+                make.top.equalTo(self.nameLabel.mas_bottom).offset(4);
                 make.left.equalTo(self.remarksLabel);
                 make.right.equalTo(self.infoBgView);
                 make.height.offset(16);
@@ -153,21 +153,21 @@
 
         if (self.friendInfo.stAccount.length > 0 && ![self.friendInfo.stAccount isEqualToString:@""]) {
             [self.stAccountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.remarksLabel.mas_bottom).offset(5);
+                make.top.equalTo(self.remarksLabel.mas_bottom).offset(4);
                 make.left.equalTo(self.remarksLabel);
                 make.right.equalTo(self.infoBgView);
-                make.height.offset(14);
+                make.height.offset(16);
             }];
         } else {
             [self.stAccountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.remarksLabel.mas_bottom).offset(5);
+                make.top.equalTo(self.remarksLabel.mas_bottom).offset(4);
                 make.left.equalTo(self.remarksLabel);
                 make.right.equalTo(self.infoBgView);
                 make.height.offset(0.1);
             }];
         }
         [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.stAccountLabel.mas_bottom).offset(5);
+            make.top.equalTo(self.stAccountLabel.mas_bottom).offset(4);
             make.left.equalTo(self.remarksLabel);
             make.right.equalTo(self.infoBgView);
             make.height.offset(16);
@@ -181,7 +181,7 @@
             [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.infoBgView).offset(20);
                 make.left.equalTo(self.portraitImgView.mas_right).offset(10);
-                make.height.offset(16);
+                make.height.offset(18);
                 make.right.equalTo(self.genderImgView.mas_left).offset(-5);
             }];
 
@@ -189,14 +189,14 @@
                 make.top.equalTo(self.nameLabel.mas_bottom).offset(8);
                 make.left.equalTo(self.remarksLabel);
                 make.right.equalTo(self.infoBgView);
-                make.height.offset(14);
+                make.height.offset(16);
             }];
         } else {
             self.stAccountLabel.hidden = YES;
             [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self.infoBgView);
                 make.left.equalTo(self.portraitImgView.mas_right).offset(10);
-                make.height.offset(16);
+                make.height.offset(18);
                 make.right.equalTo(self.genderImgView.mas_left).offset(-5);
             }];
         }
@@ -236,10 +236,10 @@
     }];
 
     [self.stAccountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.remarksLabel.mas_bottom).offset(5);
+        make.top.equalTo(self.remarksLabel.mas_bottom).offset(4);
         make.left.equalTo(self.remarksLabel);
         make.right.equalTo(self.infoBgView);
-        make.height.offset(14);
+        make.height.offset(16);
     }];
 
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -250,7 +250,7 @@
     }];
 
     [self.groupNicknameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+        make.top.equalTo(self.nameLabel.mas_bottom).offset(4);
         make.left.equalTo(self.remarksLabel);
         make.right.equalTo(self.infoBgView);
         make.height.offset(16);
