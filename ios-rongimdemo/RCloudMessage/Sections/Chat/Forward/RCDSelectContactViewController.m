@@ -246,7 +246,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
     } else {
         for (RCDFriendInfo *userInfo in self.allFriendArray) {
             NSString *name = userInfo.name;
-            if ([userInfo isKindOfClass:[RCDFriendInfo class]] && userInfo.displayName.length > 0) {
+            if ([userInfo isMemberOfClass:[RCDFriendInfo class]] && userInfo.displayName.length > 0) {
                 name = userInfo.displayName;
             }
             // //忽略大小写去判断是否包含

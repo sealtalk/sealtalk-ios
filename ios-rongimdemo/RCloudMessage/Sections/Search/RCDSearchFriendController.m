@@ -39,8 +39,21 @@
     [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 
-- (void)viewDidLayoutSubviews {
-    self.searchInfoView.frame = CGRectMake(0, 0, self.view.frame.size.width, 200);
+- (void)viewWillTransitionToSize:(CGSize)size
+       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self layoutSubview:size];
+    }
+        completion:^(id<UIViewControllerTransitionCoordinatorContext> context){
+
+        }];
+}
+
+- (void)layoutSubview:(CGSize)size {
+    self.searchInfoView.frame = CGRectMake(0, 0, size.width, 200);
 }
 
 #pragma mark - Target action

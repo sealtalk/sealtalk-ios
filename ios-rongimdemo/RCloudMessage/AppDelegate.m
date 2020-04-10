@@ -104,6 +104,7 @@
     [RCIM sharedRCIM].enableBurnMessage = YES;
     [RCIM sharedRCIM].enableDarkMode = YES;
     [RCIM sharedRCIM].reeditDuration = 60;
+    [RCIM sharedRCIM].enableMessageReference = YES;
     //  设置头像为圆形
     //  [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
     //  [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;

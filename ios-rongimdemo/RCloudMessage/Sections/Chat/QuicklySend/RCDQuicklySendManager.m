@@ -96,7 +96,9 @@
                            if (result) {
                                PHAsset *asset = [fetchResult firstObject];
                                if (![[asset valueForKey:@"uniformTypeIdentifier"]
-                                       isEqualToString:(__bridge NSString *)kUTTypeQuickTimeMovie]) {
+                                       isEqualToString:(__bridge NSString *)kUTTypeQuickTimeMovie] &&
+                                   ![[asset valueForKey:@"uniformTypeIdentifier"]
+                                       isEqualToString:(__bridge NSString *)kUTTypeGIF]) {
                                    NSDateFormatter *dateformatter = [[NSDateFormatter alloc] init];
                                    [dateformatter setDateFormat:@"yyyyMMddHHmmss"];
                                    NSString *formattedDate = [dateformatter stringFromDate:asset.creationDate];

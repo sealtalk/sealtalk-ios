@@ -72,6 +72,24 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size
+       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self layoutSubview:size];
+    }
+        completion:^(id<UIViewControllerTransitionCoordinatorContext> context){
+
+        }];
+}
+
+- (void)layoutSubview:(CGSize)size {
+    self.searchFriendsBar.frame = CGRectMake(0, 0, size.width, 44);
+    self.friendsTabelView.frame = CGRectMake(0, CGRectGetMaxY(self.searchFriendsBar.frame), size.width,
+                                             size.height - CGRectGetMaxY(self.searchFriendsBar.frame));
+}
+
 #pragma mark - UITableViewDelegate & UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger rows = 0;
@@ -219,7 +237,7 @@
     } else {
         for (RCDFriendInfo *userInfo in self.allFriendArray) {
             NSString *name = userInfo.name;
-            if ([userInfo isKindOfClass:[RCDFriendInfo class]] && userInfo.displayName.length > 0) {
+            if ([userInfo isMemberOfClass:[RCDFriendInfo class]] && userInfo.displayName.length > 0) {
                 name = userInfo.displayName;
             }
             // //忽略大小写去判断是否包含

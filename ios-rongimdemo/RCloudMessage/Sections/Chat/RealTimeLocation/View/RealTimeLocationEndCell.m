@@ -7,6 +7,7 @@
 //
 
 #import "RealTimeLocationEndCell.h"
+#import "RealTimeLocationDefine.h"
 
 @implementation RealTimeLocationEndCell
 + (CGSize)sizeForMessageModel:(RCMessageModel *)model
@@ -22,10 +23,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.tipMessageLabel = [RCTipLabel greyTipLabel];
-        self.tipMessageLabel.backgroundColor =
-            [RCKitUtility generateDynamicColor:[UIColor colorWithWhite:0 alpha:0.1] darkColor:HEXCOLOR(0x232323)];
+        self.tipMessageLabel.backgroundColor = [RCKitUtility generateDynamicColor:[UIColor colorWithWhite:0 alpha:0.1]
+                                                                        darkColor:UIColorFromRGB(0x232323, 1.0)];
         self.tipMessageLabel.textColor =
-            [RCKitUtility generateDynamicColor:HEXCOLOR(0xffffff) darkColor:HEXCOLOR(0x707070)];
+            [RCKitUtility generateDynamicColor:UIColorFromRGB(0xffffff, 1.0) darkColor:UIColorFromRGB(0x707070, 1.0)];
         [self.baseContentView addSubview:self.tipMessageLabel];
         // self.tipMessageLabel.marginInsets = UIEdgeInsetsMake(0.5f, 0.5f, 0.5f,
         // 0.5f);
@@ -39,7 +40,7 @@
     //    RCMessageContent *content = model.content;
 
     CGFloat maxMessageLabelWidth = self.baseContentView.bounds.size.width - 30 * 2;
-    [self.tipMessageLabel setText:RCDLocalizedString(@"share_location_finished") dataDetectorEnabled:NO];
+    [self.tipMessageLabel setText:RTLLocalizedString(@"share_location_finished") dataDetectorEnabled:NO];
 
     NSString *__text = self.tipMessageLabel.text;
     CGSize __textSize = [RCKitUtility getTextDrawingSize:__text

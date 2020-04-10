@@ -84,16 +84,29 @@
     }
 }
 
-- (void)viewDidLayoutSubviews {
-    self.noFriendView.frame = CGRectMake(0, 0, RCDScreenWidth, RCDScreenHeight - 64);
-    self.tableView.frame =
-        CGRectMake(0, 54, RCDScreenWidth, RCDScreenHeight - 64 - 54 - RCDExtraTopHeight - RCDExtraBottomHeight);
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.rightBtn buttonIsCanClick:YES buttonColor:RCDDYCOLOR(0xffffff, 0xA8A8A8) barButtonItem:self.rightBtn];
     [self.hud hide:YES];
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size
+       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self layoutSubview:size];
+    }
+        completion:^(id<UIViewControllerTransitionCoordinatorContext> context){
+
+        }];
+}
+
+- (void)layoutSubview:(CGSize)size {
+    self.noFriendView.frame = CGRectMake(0, 0, RCDScreenWidth, RCDScreenHeight - 64);
+    self.tableView.frame =
+        CGRectMake(0, 54, RCDScreenWidth, RCDScreenHeight - 64 - 54 - RCDExtraTopHeight - RCDExtraBottomHeight);
 }
 
 #pragma mark - Private Method
@@ -495,10 +508,11 @@
     if (self.isSearchResult == NO) {
         NSString *key = [self.allKeys objectAtIndex:indexPath.section];
         NSArray *arrayForKey = [self.allFriendsDict objectForKey:key];
-
-        user = arrayForKey[indexPath.row];
+        if (arrayForKey.count > indexPath.row) {
+            user = arrayForKey[indexPath.row];
+        }
     } else {
-        if (self.matchSearchList.count > 0) {
+        if (self.matchSearchList.count > indexPath.row) {
             user = [self.matchSearchList objectAtIndex:indexPath.row];
         }
     }

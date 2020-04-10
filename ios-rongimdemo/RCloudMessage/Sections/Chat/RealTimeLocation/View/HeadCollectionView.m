@@ -7,8 +7,9 @@
 //
 
 #import "HeadCollectionView.h"
-#import "RCDUtilities.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "RTLUtilities.h"
+#import "RealTimeLocationDefine.h"
+
 @interface HeadCollectionView ()
 
 @property (nonatomic) CGRect headViewRect;
@@ -129,12 +130,12 @@
                                        [self addHeadViewUser:userInfo];
                                        if (show) {
                                            [self showUserChangeInfo:[NSString
-                                                                        stringWithFormat:RCDLocalizedString(
+                                                                        stringWithFormat:RTLLocalizedString(
                                                                                              @"join_share_location"),
                                                                                          userInfo.name]];
                                        } else {
                                            self.tipLabel.text = [NSString
-                                               stringWithFormat:RCDLocalizedString(@"share_location_people_count"),
+                                               stringWithFormat:RTLLocalizedString(@"share_location_people_count"),
                                                                 (unsigned long)self.rcUserInfos.count];
                                        }
                                    }
@@ -145,10 +146,10 @@
             if ([self addUserInfoIfNeed:userInfo]) {
                 [self addHeadViewUser:userInfo];
                 if (show) {
-                    [self showUserChangeInfo:[NSString stringWithFormat:RCDLocalizedString(@"join_share_location"),
+                    [self showUserChangeInfo:[NSString stringWithFormat:RTLLocalizedString(@"join_share_location"),
                                                                         userInfo.name]];
                 } else {
-                    self.tipLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"share_location_people_count"),
+                    self.tipLabel.text = [NSString stringWithFormat:RTLLocalizedString(@"share_location_people_count"),
                                                                     (unsigned long)self.rcUserInfos.count];
                 }
             }
@@ -169,7 +170,7 @@
             if (show) {
                 [self showUserChangeInfo:[NSString stringWithFormat:@"%@退出...", userInfo.name]];
             } else {
-                self.tipLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"share_location_people_count"),
+                self.tipLabel.text = [NSString stringWithFormat:RTLLocalizedString(@"share_location_people_count"),
                                                                 (unsigned long)self.rcUserInfos.count];
             }
             return YES;
@@ -183,7 +184,6 @@
 
 - (void)showUserChangeInfo:(NSString *)changInfo {
     self.tipLabel.text = changInfo;
-    self.tipLabel.textColor = [UIColor greenColor];
     [NSTimer scheduledTimerWithTimeInterval:3.0f
                                      target:self
                                    selector:@selector(showUserShareInfo)
@@ -194,15 +194,16 @@
 - (void)showUserShareInfo {
     self.tipLabel.textColor = [UIColor whiteColor];
     self.tipLabel.text = [NSString
-        stringWithFormat:RCDLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
+        stringWithFormat:RTLLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
 }
 
 - (void)addHeadViewUser:(RCUserInfo *)user {
     {
         CGFloat scrollViewWidth = [self getScrollViewWidth];
         UIImageView *userHead = [[UIImageView alloc] init];
-        [userHead sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
-                    placeholderImage:[RCDUtilities imageNamed:@"default_portrait_msg" ofBundle:@"RongCloud.bundle"]];
+        [RTLUtilities setImageWithURL:[NSURL URLWithString:user.portraitUri]
+                     placeholderImage:[RCKitUtility imageNamed:@"default_portrait_msg" ofBundle:@"RongCloud.bundle"]
+                            imageView:userHead];
         [userHead setFrame:CGRectMake(scrollViewWidth - self.headViewSize, 0, self.headViewSize, self.headViewSize)];
 
         if (self.avatarStyle == RC_USER_AVATAR_CYCLE) {

@@ -96,7 +96,6 @@
 		27F0E3DC22A0E3E300C8B0B8 /* RCDPrivacyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F0E3C022A0E3E200C8B0B8 /* RCDPrivacyTableViewController.m */; };
 		27F0E3DD22A0E3E300C8B0B8 /* RCDLogoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F0E3C122A0E3E300C8B0B8 /* RCDLogoTableViewCell.m */; };
 		27F0E3DE22A0E3E300C8B0B8 /* RCDMeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F0E3C222A0E3E300C8B0B8 /* RCDMeCell.m */; };
-		27F0E3F622A1391A00C8B0B8 /* RCDChatViewController+RealTimeLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F0E3F522A1391A00C8B0B8 /* RCDChatViewController+RealTimeLocation.m */; };
 		3B054E3422F2DCFC009A3C72 /* RCDRecentPictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B054E3322F2DCFC009A3C72 /* RCDRecentPictureViewController.m */; };
 		3B054E4922F439C6009A3C72 /* RCDSetupRemarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B054E4822F439C6009A3C72 /* RCDSetupRemarkView.m */; };
 		3B054E5722F43C7C009A3C72 /* RCDTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B054E5622F43C7C009A3C72 /* RCDTextView.m */; };
@@ -170,6 +169,9 @@
 		9870724E20A17AB9008EE653 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C331091A0C728D00E31B9A /* OpenGLES.framework */; };
 		9870725020A17AC3008EE653 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9870724F20A17AC2008EE653 /* GLKit.framework */; };
 		987653631D796C5B008A6BF0 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 987653621D796C5B008A6BF0 /* Launch Screen.storyboard */; };
+		9B49C53D23C421720058D19F /* RealTimeLocation.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9B49C53F23C421720058D19F /* RealTimeLocation.strings */; };
+		9B49C54A23C438180058D19F /* RTLUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B49C54923C438180058D19F /* RTLUtilities.m */; };
+		9B8BBA0024065F2F007CF839 /* RealTimeLocation.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B8BB9FF24065F2E007CF839 /* RealTimeLocation.xcassets */; };
 		9C11941C229CF0AE005407ED /* RCDUserInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1193D3229CF0AE005407ED /* RCDUserInfoManager.m */; };
 		9C11945F229D3F87005407ED /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C11945D229D3F86005407ED /* main.m */; };
 		9C119469229D4A14005407ED /* RCDRCIMDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C119468229D4A13005407ED /* RCDRCIMDataSource.m */; };
@@ -626,8 +628,6 @@
 		27F0E3C122A0E3E300C8B0B8 /* RCDLogoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDLogoTableViewCell.m; sourceTree = "<group>"; };
 		27F0E3C222A0E3E300C8B0B8 /* RCDMeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDMeCell.m; sourceTree = "<group>"; };
 		27F0E3DF22A104A600C8B0B8 /* RCDMessageNoDisturbSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDMessageNoDisturbSettingController.h; sourceTree = "<group>"; };
-		27F0E3F422A1391A00C8B0B8 /* RCDChatViewController+RealTimeLocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCDChatViewController+RealTimeLocation.h"; sourceTree = "<group>"; };
-		27F0E3F522A1391A00C8B0B8 /* RCDChatViewController+RealTimeLocation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCDChatViewController+RealTimeLocation.m"; sourceTree = "<group>"; };
 		2F602A601C49F4AF006C6056 /* Pods-SealTalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalk.release.xcconfig"; path = "Target Support Files/Pods-SealTalk/Pods-SealTalk.release.xcconfig"; sourceTree = "<group>"; };
 		3B054E3222F2DCFC009A3C72 /* RCDRecentPictureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDRecentPictureViewController.h; sourceTree = "<group>"; };
 		3B054E3322F2DCFC009A3C72 /* RCDRecentPictureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDRecentPictureViewController.m; sourceTree = "<group>"; };
@@ -771,6 +771,12 @@
 		8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		9870724F20A17AC2008EE653 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		987653621D796C5B008A6BF0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "RCloudMessage/Supporting Files/Launch Screen.storyboard"; sourceTree = SOURCE_ROOT; };
+		9B49C53E23C421720058D19F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RealTimeLocation.strings; sourceTree = "<group>"; };
+		9B49C54023C421790058D19F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/RealTimeLocation.strings"; sourceTree = "<group>"; };
+		9B49C54123C4240D0058D19F /* RealTimeLocationDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RealTimeLocationDefine.h; sourceTree = "<group>"; };
+		9B49C54823C438180058D19F /* RTLUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTLUtilities.h; sourceTree = "<group>"; };
+		9B49C54923C438180058D19F /* RTLUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTLUtilities.m; sourceTree = "<group>"; };
+		9B8BB9FF24065F2E007CF839 /* RealTimeLocation.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = RealTimeLocation.xcassets; sourceTree = "<group>"; };
 		9C1193D3229CF0AE005407ED /* RCDUserInfoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDUserInfoManager.m; sourceTree = "<group>"; };
 		9C1193D4229CF0AE005407ED /* RCDUserInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDUserInfoManager.h; sourceTree = "<group>"; };
 		9C11945D229D3F86005407ED /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1466,8 +1472,6 @@
 		27F0E3EE22A1390400C8B0B8 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				27F0E3F422A1391A00C8B0B8 /* RCDChatViewController+RealTimeLocation.h */,
-				27F0E3F522A1391A00C8B0B8 /* RCDChatViewController+RealTimeLocation.m */,
 				A2A5253C22B73305008188A1 /* RCDImageSlideController.h */,
 				A2A5253D22B73305008188A1 /* RCDImageSlideController.m */,
 				A221948622BB5F1B00274D4D /* RCDChooseUserController.h */,
@@ -1763,6 +1767,25 @@
 				1C3EE1254F250BC346B4AFE6 /* Pods-SealTalk.autorelease.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		9B49C52D23C4202A0058D19F /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				9B8BB9FF24065F2E007CF839 /* RealTimeLocation.xcassets */,
+				9B49C53F23C421720058D19F /* RealTimeLocation.strings */,
+				9B49C54123C4240D0058D19F /* RealTimeLocationDefine.h */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		9B49C54423C437550058D19F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				9B49C54823C438180058D19F /* RTLUtilities.h */,
+				9B49C54923C438180058D19F /* RTLUtilities.m */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		9C1193D1229CF0AE005407ED /* Services */ = {
@@ -2171,6 +2194,8 @@
 			children = (
 				A2907086229E7F61006BDAC7 /* RealTimeLocationViewController.h */,
 				A290708A229E7F61006BDAC7 /* RealTimeLocationViewController.m */,
+				9B49C54423C437550058D19F /* Utilities */,
+				9B49C52D23C4202A0058D19F /* Resource */,
 				A29070C0229E8123006BDAC7 /* View */,
 			);
 			path = RealTimeLocation;
@@ -2909,6 +2934,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				178998221F6244FA00FC44D3 /* sms-received.caf in Resources */,
+				9B8BBA0024065F2F007CF839 /* RealTimeLocation.xcassets in Resources */,
+				9B49C53D23C421720058D19F /* RealTimeLocation.strings in Resources */,
 				A28C439322E95818005BA7A0 /* InfoPlist.strings in Resources */,
 				E4BFAE251A121839007165B1 /* Images.xcassets in Resources */,
 				A28C439522E95818005BA7A0 /* SealTalk.strings in Resources */,
@@ -3050,9 +3077,9 @@
 				3B4789A422BCD2FF00D33F10 /* RCDForwardSearchViewController.m in Sources */,
 				27AD3031229E721F003C2680 /* RCDCountry.m in Sources */,
 				A2AD037A22D3226900F8E64D /* RCDScanQRCodeController.m in Sources */,
+				9B49C54A23C438180058D19F /* RTLUtilities.m in Sources */,
 				79B02A0E22D72FE70062CBA5 /* RCDUserSetting.m in Sources */,
 				A2A5255922B784FB008188A1 /* RCDQRCodeController.m in Sources */,
-				27F0E3F622A1391A00C8B0B8 /* RCDChatViewController+RealTimeLocation.m in Sources */,
 				3B16DA3722FAA4D200AD2770 /* RCDFriendDescription.m in Sources */,
 				270C242022A4C88E000F22A2 /* RCDSearchMoreViewCell.m in Sources */,
 				3BB6CE2D22D833AC0007FFFB /* RCDSelectAddressBookCell.m in Sources */,
@@ -3334,6 +3361,15 @@
 				510624861AD63AA500348452 /* zh-Hans */,
 			);
 			name = RongCloudKit.strings;
+			sourceTree = "<group>";
+		};
+		9B49C53F23C421720058D19F /* RealTimeLocation.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9B49C53E23C421720058D19F /* en */,
+				9B49C54023C421790058D19F /* zh-Hans */,
+			);
+			name = RealTimeLocation.strings;
 			sourceTree = "<group>";
 		};
 		A28C438F22E95818005BA7A0 /* InfoPlist.strings */ = {

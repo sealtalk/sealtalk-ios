@@ -71,6 +71,23 @@
     [self updateBadgeValueForTabBarItem];
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size
+       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self updateSubviews:size];
+    }
+        completion:^(id<UIViewControllerTransitionCoordinatorContext> context){
+
+        }];
+}
+
+- (void)updateSubviews:(CGSize)size {
+    self.searchBar.frame = CGRectMake(0, 0, size.width, 44);
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.isClick = YES;

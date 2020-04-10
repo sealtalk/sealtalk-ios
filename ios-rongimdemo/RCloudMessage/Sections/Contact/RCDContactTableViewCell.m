@@ -40,7 +40,7 @@
         self.userIdLabel.text = userInfo.userId;
     }
 
-    if ([userInfo isKindOfClass:[RCDFriendInfo class]]) {
+    if ([userInfo isMemberOfClass:[RCDFriendInfo class]]) {
         RCDFriendInfo *friendInfo = (RCDFriendInfo *)userInfo;
         if (friendInfo.displayName.length > 0) {
             self.nicknameLabel.text = friendInfo.displayName;

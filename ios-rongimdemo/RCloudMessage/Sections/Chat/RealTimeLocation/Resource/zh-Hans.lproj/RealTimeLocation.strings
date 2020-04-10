@@ -1,0 +1,31 @@
+/* 
+  RealTimeLocation.strings
+  RCloudMessage
+
+  Created by Jue on 2020/1/7.
+  Copyright © 2020 RongCloud. All rights reserved.
+*/
+
+"locating"="定位中...";
+"Inaccessible"="无法访问";
+"Location_access_without_permission"="没有权限访问位置信息，请从设置-隐私-定位服务中打开位置访问权限";
+"end_share_location_alert"="是否结束位置共享？";
+"end"="结束";
+"leave_location_share_when_leave_chat"="离开聊天，位置共享也会结束，确认离开";
+"send_location"="发送位置";
+"location_share"="共享实时位置";
+"you_join_location_share"="你加入了地理位置共享";
+"you_location_sharing"="你正在共享位置";
+"someone_location_sharing"="%@正在共享位置";
+"user_location_sharing"="user<%@>正在共享位置";
+"you_quit_location_share"="你退出地理位置共享";
+"someone_quit_location_share"="%@退出地理位置共享";
+"user_quit_location_share"="user<%@>退出地理位置共享";
+"share_location_people_count"="%lu人正在共享位置";
+"confirm"="确定";
+"cancel"="取消";
+"share_location_finished"="位置共享已结束";
+"i_start_location_share"="发起了位置共享";
+"join_share_location_alert"="加入位置共享，聊天中其他人也能看到你的位置，确定加入？";
+"join"="加入";
+"join_share_location"="%@加入...";

@@ -7,6 +7,8 @@
 //
 
 #import "RealTimeLocationStartCell.h"
+#import "RealTimeLocationDefine.h"
+
 @interface RealTimeLocationStartCell ()
 @property (nonatomic, strong) UIImageView *bubbleBackgroundView;
 @property (nonatomic, strong) RCAttributedLabel *textLabel;
@@ -37,7 +39,7 @@
     //    for (UIView *subView in [self.messageContentView subviews]) {
     //        [subView removeFromSuperview];
     //    }
-    NSString *content = RCDLocalizedString(@"i_start_location_share");
+    NSString *content = RTLLocalizedString(@"i_start_location_share");
     [self.textLabel setText:content dataDetectorEnabled:NO];
     self.bubbleBackgroundView.userInteractionEnabled = YES;
     UILongPressGestureRecognizer *longPress =
@@ -131,7 +133,8 @@
         _textLabel.numberOfLines = 0;
         [_textLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_textLabel setTextAlignment:NSTextAlignmentLeft];
-        [_textLabel setTextColor:[RCKitUtility generateDynamicColor:HEXCOLOR(0x000000) darkColor:HEXCOLOR(0xe0e0e0)]];
+        [_textLabel setTextColor:[RCKitUtility generateDynamicColor:UIColorFromRGB(0x000000, 1.0)
+                                                          darkColor:UIColorFromRGB(0xe0e0e0, 1.0)]];
 
         [self.bubbleBackgroundView addSubview:_textLabel];
     }

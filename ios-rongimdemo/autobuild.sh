@@ -63,6 +63,9 @@ MANUAL_STATS_SERVER_URL=$PPARAM
 elif [ $PFLAG == "-o" ]
 then
 VOIP_FLAG=$PPARAM
+elif [ $PFLAG == "-c" ]
+then
+MANUAL_CUSTOMER_SERVICE_ID=$PPARAM
 fi
 done
 
@@ -151,18 +154,16 @@ if [ -n "${MANUAL_STATS_SERVER_URL}" ]; then
     fi
 fi
 
+if [ -n "${MANUAL_CUSTOMER_SERVICE_ID}" ]; then
+    sed -i '' -e '/SERVICE_ID/s/@"service"/@"'$MANUAL_CUSTOMER_SERVICE_ID'"/g' ./RCloudMessage/Sections/Me/RCDMeTableViewController.m
+fi
+
 if [ ${ENV_FLAG} == "dev" ]; then
-    sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU145760441681012"/g' ./RCloudMessage/Sections/Me/RCDMeTableViewController.h
     sed -i '' -e 's/nav.cn.ronghub.com/navxq.rongcloud.net/g' ./RCloudMessage/Supporting\ Files/Info.plist
 elif [ ${ENV_FLAG} == "dev_backup" ]; then
-    sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU145760441681012"/g' ./RCloudMessage/Sections/Me/RCDMeTableViewController.h
     sed -i '' -e 's/nav.cn.ronghub.com/navzhouyu.cn.rongcloud.net/g' ./RCloudMessage/Supporting\ Files/Info.plist
 elif [ ${ENV_FLAG} == "pre" ]; then
-    sed -i '' -e '/SERVICE_ID/s/@"KEFU146001495753714"/@"KEFU147980517733135"/g' ./RCloudMessage/Sections/Me/RCDMeTableViewController.h
     sed -i '' -e 's/nav.cn.ronghub.com/navqa.cn.ronghub.com/g' ./RCloudMessage/Supporting\ Files/Info.plist
-elif [ ${ENV_FLAG} == "pri" ]; then
-    sed -i '' -e '/SERVICE_ID_XIAONENG1/s/@"kf_4029_1483495902343"/@"zf_1000_1481459114694"/g' ./RCloudMessage/Sections/Me/RCDMeTableViewController.h
-    sed -i '' -e '/SERVICE_ID_XIAONENG2/s/@"op_1000_1483495280515"/@"zf_1000_1480591492399"/g' ./RCloudMessage/Sections/Me/RCDMeTableViewController.h
 fi
 
 if [ ${ENV_FLAG} == "pri" ]; then

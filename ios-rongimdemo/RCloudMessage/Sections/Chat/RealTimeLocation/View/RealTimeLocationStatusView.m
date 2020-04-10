@@ -7,7 +7,7 @@
 //
 
 #import "RealTimeLocationStatusView.h"
-#import "RCDCommonDefine.h"
+#import "RealTimeLocationDefine.h"
 
 @interface RealTimeLocationStatusView ()
 @property (nonatomic) BOOL isExpended;
@@ -127,7 +127,7 @@
     [super layoutSubviews];
 
     // iPad 位置共享提示横竖屏适配
-    if (RCDIsIPad && [self.delegate getStatus] != RC_REAL_TIME_LOCATION_STATUS_IDLE) {
+    if (RTLIsIPad && [self.delegate getStatus] != RC_REAL_TIME_LOCATION_STATUS_IDLE) {
         CGRect statusFrame = self.statusLabel.frame;
         statusFrame = CGRectMake(30, 0, self.frame.size.width - 60, 40);
         self.statusLabel.frame = statusFrame;
@@ -193,7 +193,7 @@
         _expendLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, self.frame.size.width - 48, 60)];
         _expendLabel.textAlignment = NSTextAlignmentCenter;
         _expendLabel.textColor = [UIColor whiteColor];
-        [_expendLabel setText:RCDLocalizedString(@"join_share_location_alert")];
+        [_expendLabel setText:RTLLocalizedString(@"join_share_location_alert")];
         _expendLabel.numberOfLines = 0;
     }
     return _expendLabel;
@@ -201,7 +201,7 @@
 - (UIButton *)cancelButton {
     if (!_cancelButton) {
         _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(79, 52, 60, 25)];
-        [_cancelButton setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
+        [_cancelButton setTitle:RTLLocalizedString(@"cancel") forState:UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"location_share_button"] forState:UIControlStateNormal];
         [_cancelButton setBackgroundImage:[UIImage imageNamed:@"location_share_button_hover"]
                                  forState:UIControlStateHighlighted];
@@ -212,7 +212,7 @@
 - (UIButton *)joinButton {
     if (!_joinButton) {
         _joinButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 60 - 79, 52, 60, 25)];
-        [_joinButton setTitle:RCDLocalizedString(@"join") forState:UIControlStateNormal];
+        [_joinButton setTitle:RTLLocalizedString(@"join") forState:UIControlStateNormal];
         [_joinButton setBackgroundImage:[UIImage imageNamed:@"location_share_button"] forState:UIControlStateNormal];
         [_joinButton setBackgroundImage:[UIImage imageNamed:@"location_share_button_hover"]
                                forState:UIControlStateHighlighted];

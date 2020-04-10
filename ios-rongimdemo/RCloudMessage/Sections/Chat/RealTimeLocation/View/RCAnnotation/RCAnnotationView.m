@@ -7,8 +7,7 @@
 //
 
 #import "RCAnnotationView.h"
-#import "RCDUtilities.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "RTLUtilities.h"
 
 @implementation RCAnnotationView
 float fromValue = 0.0f;
@@ -22,13 +21,6 @@ float fromValue = 0.0f;
     return self;
 }
 
-//- (void)refreshHead:(NSString *)imageUrl
-//{
-//    [_imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]
-//    placeholderImage:[RCDUtilities imageNamed:@"default_portrait_msg"
-//    ofBundle:@"RongCloud.bundle"]];
-//
-//}
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change
@@ -36,9 +28,10 @@ float fromValue = 0.0f;
     if ([keyPath isEqualToString:@"imageUrl"]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (![[change objectForKey:@"new"] isKindOfClass:[NSNull class]]) {
-                [_imageView
-                    sd_setImageWithURL:[NSURL URLWithString:[change objectForKey:@"new"]]
-                      placeholderImage:[RCDUtilities imageNamed:@"default_portrait_msg" ofBundle:@"RongCloud.bundle"]];
+                [RTLUtilities
+                     setImageWithURL:[NSURL URLWithString:[change objectForKey:@"new"]]
+                    placeholderImage:[RTLUtilities imageNamed:@"default_portrait_msg" ofBundle:@"RongCloud.bundle"]
+                           imageView:_imageView];
             }
         });
     }
@@ -62,8 +55,9 @@ float fromValue = 0.0f;
     self.backgroundColor = [UIColor clearColor];
     self.centerOffset = CGPointMake(0, 0);
     _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -35, 40, 40)];
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:self.imageUrl]
-                  placeholderImage:[RCDUtilities imageNamed:@"default_portrait_msg" ofBundle:@"RongCloud.bundle"]];
+    [RTLUtilities setImageWithURL:[NSURL URLWithString:self.imageUrl]
+                 placeholderImage:[RTLUtilities imageNamed:@"default_portrait_msg" ofBundle:@"RongCloud.bundle"]
+                        imageView:_imageView];
     _imageView.layer.cornerRadius = 20.0;
     _imageView.layer.masksToBounds = YES;
     _imageView.layer.borderColor = [[UIColor whiteColor] CGColor];

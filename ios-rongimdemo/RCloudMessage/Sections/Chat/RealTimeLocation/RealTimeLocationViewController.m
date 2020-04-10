@@ -9,10 +9,10 @@
 
 #import "RealTimeLocationViewController.h"
 #import "HeadCollectionView.h"
-#import <MBProgressHUD/MBProgressHUD.h>
 #import "RCAnnotation.h"
 #import "RCLocationConvert.h"
-#import "UIColor+RCColor.h"
+#import "RealTimeLocationDefine.h"
+#import "RTLUtilities.h"
 
 @interface RealTimeLocationViewController () <RCRealTimeLocationObserver, MKMapViewDelegate,
                                               HeadCollectionTouchDelegate>
@@ -27,7 +27,7 @@
 @end
 
 @implementation RealTimeLocationViewController
-MBProgressHUD *hud;
+
 #pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,11 +45,10 @@ MBProgressHUD *hud;
                              fromUserId:[RCIMClient sharedRCIMClient].currentUserInfo.userId];
         });
     }
-
-    hud = [MBProgressHUD showHUDAddedTo:self.mapView animated:YES];
-    hud.color = [UIColor colorWithHexString:@"343637" alpha:0.5];
-    hud.labelText = RCDLocalizedString(@"locating");
-    [hud show:YES];
+    [RTLUtilities showHUDAddedTo:self.mapView
+                           color:UIColorFromRGB(0x343637, 0.5)
+                       labelText:RTLLocalizedString(@"locating")
+                        animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -57,12 +56,12 @@ MBProgressHUD *hud;
     [self.realTimeLocationProxy addRealTimeLocationObserver:self];
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (status == kCLAuthorizationStatusDenied) {
-        [hud hide:YES];
+        [RTLUtilities hideHUDAnimated:YES];
         UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:RCDLocalizedString(@"Inaccessible")
-                                                message:RCDLocalizedString(@"Location_access_without_permission")
+            [UIAlertController alertControllerWithTitle:RTLLocalizedString(@"Inaccessible")
+                                                message:RTLLocalizedString(@"Location_access_without_permission")
                                          preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+        [alertController addAction:[UIAlertAction actionWithTitle:RTLLocalizedString(@"confirm")
                                                             style:UIAlertActionStyleDefault
                                                           handler:nil]];
         [self presentViewController:alertController animated:YES completion:nil];
@@ -70,7 +69,7 @@ MBProgressHUD *hud;
 }
 
 - (void)viewDidLayoutSubviews {
-    self.mapView.frame = CGRectMake(0, 0, RCDScreenWidth, RCDScreenHeight);
+    self.mapView.frame = CGRectMake(0, 0, RTLScreenWidth, RTLScreenHeight);
     self.headCollectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 95);
 }
 
@@ -87,9 +86,9 @@ MBProgressHUD *hud;
 #pragma mark - HeadCollectionTouchDelegate
 - (BOOL)quitButtonPressed {
     UIAlertAction *cancelAction =
-        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
+        [UIAlertAction actionWithTitle:RTLLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
     UIAlertAction *endAction =
-        [UIAlertAction actionWithTitle:RCDLocalizedString(@"end")
+        [UIAlertAction actionWithTitle:RTLLocalizedString(@"end")
                                  style:UIAlertActionStyleDefault
                                handler:^(UIAlertAction *_Nonnull action) {
                                    __weak typeof(self) __weakself = self;
@@ -98,7 +97,7 @@ MBProgressHUD *hud;
                                                                 [__weakself.realTimeLocationProxy quitRealTimeLocation];
                                                             }];
                                }];
-    [RCKitUtility showAlertController:RCDLocalizedString(@"end_share_location_alert")
+    [RCKitUtility showAlertController:RTLLocalizedString(@"end_share_location_alert")
                               message:nil
                        preferredStyle:UIAlertControllerStyleActionSheet
                               actions:@[ cancelAction, endAction ]
@@ -151,7 +150,7 @@ MBProgressHUD *hud;
         self.isFirstTimeToLoad = NO;
         CLLocation *cll = [self.realTimeLocationProxy getLocation:userId];
         if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-            [hud hide:YES];
+            [RTLUtilities hideHUDAnimated:YES];
         }
         RCAnnotation *annotaton = [self.userAnnotationDic objectForKey:userId];
         if (annotaton == nil) {
@@ -283,7 +282,7 @@ MBProgressHUD *hud;
 
 - (void)onFailUpdateLocation:(NSString *)description {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [hud hide:YES];
+        [RTLUtilities hideHUDAnimated:YES];
     });
 }
 
@@ -341,7 +340,7 @@ MBProgressHUD *hud;
 - (void)addSubviews {
     [self.view addSubview:self.mapView];
     [self.view addSubview:self.headCollectionView];
-    UIImageView *gpsImg = [[UIImageView alloc] initWithFrame:CGRectMake(18, RCDScreenHeight - 80, 50, 50)];
+    UIImageView *gpsImg = [[UIImageView alloc] initWithFrame:CGRectMake(18, RTLScreenHeight - 80, 50, 50)];
     gpsImg.image = [UIImage imageNamed:@"gps.png"];
     [self.view addSubview:gpsImg];
     gpsImg.userInteractionEnabled = YES;
@@ -353,7 +352,7 @@ MBProgressHUD *hud;
 #pragma mark - getter
 - (MKMapView *)mapView {
     if (!_mapView) {
-        _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, RCDScreenWidth, RCDScreenHeight)];
+        _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, RTLScreenWidth, RTLScreenHeight)];
         [_mapView setMapType:MKMapTypeStandard];
         _mapView.showsUserLocation = YES;
         _mapView.delegate = self;
