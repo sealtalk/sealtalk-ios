@@ -1,6 +1,0 @@
-framework module RongContactCard {
-  umbrella header "RongContactCard.h"
-
-  export *
-  module * { export * }
-}

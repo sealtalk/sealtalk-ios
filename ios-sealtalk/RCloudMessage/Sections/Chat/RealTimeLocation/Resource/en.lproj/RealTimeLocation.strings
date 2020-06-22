@@ -1,0 +1,31 @@
+/* 
+  RealTimeLocation.strings
+  RCloudMessage
+
+  Created by Jue on 2020/1/7.
+  Copyright © 2020 RongCloud. All rights reserved.
+*/
+
+"locating"="Positioning...";
+"Inaccessible"="Unable to access";
+"Location_access_without_permission"="Can not access to location information, please turn on location access from Settings - Privacy - Location Services";
+"end_share_location_alert"="Are you sure to end location sharing？";
+"end"="End";
+"leave_location_share_when_leave_chat"="End chatting, the location share will also be ended, confirm to end the conversion ?";
+"send_location"="Send Location";
+"location_share"="Real-time Location";
+"you_join_location_share"="You have joined a location share";
+"you_location_sharing"="You are sharing a location";
+"someone_location_sharing"="%@ is sharing a location";
+"user_location_sharing"="User<%@> is sharing a location";
+"you_quit_location_share"="You have quit a location sharing";
+"someone_quit_location_share"="%@ quit a location sharing";
+"user_quit_location_share"="User<%@> has quit a location sharing";
+"confirm"="Confirm";
+"cancel"="Cancel";
+"share_location_finished"="Location sharing is ended";
+"i_start_location_share"="Initiate a location sharing";
+"join_share_location_alert"="Join location sharing, other people in the chat can also see your location, confirm to join?";
+"join"="Join";
+"share_location_people_count"="%lu of people in sharing location";
+"join_share_location"="%@ join...";
