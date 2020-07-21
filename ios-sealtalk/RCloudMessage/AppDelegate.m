@@ -166,11 +166,10 @@
             [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
         self.window.rootViewController = rootNavi;
 
-        [self insertSharedMessageIfNeed];
-
         RCUserInfo *_currentUserInfo =
             [[RCUserInfo alloc] initWithUserId:userId name:userNickName portrait:userPortraitUri];
         [RCIM sharedRCIM].currentUserInfo = _currentUserInfo;
+        [self insertSharedMessageIfNeed];
         [[RCDIMService sharedService] connectWithToken:token
             dbOpened:^(RCDBErrorCode code) {
                 NSLog(@"RCDBOpened %@", code ? @"failed" : @"success");

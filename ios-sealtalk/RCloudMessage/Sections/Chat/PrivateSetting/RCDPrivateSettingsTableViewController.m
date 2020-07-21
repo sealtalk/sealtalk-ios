@@ -205,12 +205,16 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
 }
 
 - (void)addButtonDidClicked {
-    RCDContactSelectedTableViewController *contactSelectedVC =
-        [[RCDContactSelectedTableViewController alloc] initWithTitle:RCDLocalizedString(@"select_contact")
-                                           isAllowsMultipleSelection:YES];
-    contactSelectedVC.orignalGroupMembers = @[ self.userInfo ].mutableCopy;
-    contactSelectedVC.groupOptionType = RCDContactSelectedGroupOptionTypeCreate;
-    [self.navigationController pushViewController:contactSelectedVC animated:YES];
+    if (self.userInfo) {
+        RCDContactSelectedTableViewController *contactSelectedVC =
+            [[RCDContactSelectedTableViewController alloc] initWithTitle:RCDLocalizedString(@"select_contact")
+                                               isAllowsMultipleSelection:YES];
+        contactSelectedVC.orignalGroupMembers = @[ self.userInfo ].mutableCopy;
+        contactSelectedVC.groupOptionType = RCDContactSelectedGroupOptionTypeCreate;
+        [self.navigationController pushViewController:contactSelectedVC animated:YES];
+    } else {
+        SealTalkLog("userInfo is nil");
+    }
 }
 
 - (void)clearHistoryMessage {

@@ -172,8 +172,11 @@ static AFHTTPSessionManager *manager;
         NSArray *tempArr = [temp componentsSeparatedByString:@";"];
         [finalCookie appendString:[NSString stringWithFormat:@"%@;", tempArr[0]]];
     }
-    [DEFAULTS setObject:finalCookie forKey:RCDUserCookiesKey];
-    [DEFAULTS synchronize];
+    if (finalCookie.length > 0) {
+        [DEFAULTS setObject:finalCookie forKey:RCDUserCookiesKey];
+        [DEFAULTS synchronize];
+        [[RCDHTTPUtility sharedHTTPManager].requestSerializer setValue:finalCookie forHTTPHeaderField:@"Cookie"];
+    }
 }
 
 @end

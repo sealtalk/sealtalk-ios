@@ -128,24 +128,22 @@ fi
 #demo 服务器
 if [ -n "${DEMO_SERVER_URL}" ]; then
     if [[ $DEMO_SERVER_URL =~ ^http ]]; then
-        sed -i '' -e 's?http://api.sealtalk.im?'$DEMO_SERVER_URL'?g' ./RCloudMessage/Supporting\ Files/RCDCommonDefine.h
-        sed -i '' -e 's?http://api.sealtalk.im?'$DEMO_SERVER_URL'?g' ./SealTalkShareExtension/RCDShareChatListController.m
+        sed -i '' -e 's?http://api-sealtalk.rongcloud.cn?'$DEMO_SERVER_URL'?g' ./RCloudMessage/Supporting\ Files/RCDCommonDefine.h
+        sed -i '' -e 's?http://api-sealtalk.rongcloud.cn?'$DEMO_SERVER_URL'?g' ./SealTalkShareExtension/RCDShareChatListController.m
     else
-        sed -i '' -e 's?http://api.sealtalk.im?http://'$DEMO_SERVER_URL'?g' ./RCloudMessage/Supporting\ Files/RCDCommonDefine.h
-        sed -i '' -e 's?http://api.sealtalk.im?http://'$DEMO_SERVER_URL'?g' ./SealTalkShareExtension/RCDShareChatListController.m
+        sed -i '' -e 's?http://api-sealtalk.rongcloud.cn?http://'$DEMO_SERVER_URL'?g' ./RCloudMessage/Supporting\ Files/RCDCommonDefine.h
+        sed -i '' -e 's?http://api-sealtalk.rongcloud.cn?http://'$DEMO_SERVER_URL'?g' ./SealTalkShareExtension/RCDShareChatListController.m
     fi
 fi
 
 #导航服务器
 if [ -n "${NAVI_SERVER_URL}" ]; then
 sed -i "" -e 's?#define RONGCLOUD_NAVI_SERVER @\"\"$?#define RONGCLOUD_NAVI_SERVER @\"'${NAVI_SERVER_URL}'\"?' ./RCloudMessage/Supporting\ Files/RCDCommonDefine.h
-sed -i '' -e '/RONGCLOUD_NAVI_SERVER/s?nav.cn.ronghub.com?'$NAVI_SERVER_URL'?g' ./RCloudMessage/Supporting\ Files/RCDCommonDefine.h
 fi
 
 #文件服务器
 if [ -n "${FILE_SERVER_URL}" ]; then
 sed -i "" -e 's?#define RONGCLOUD_FILE_SERVER @\"\"$?#define RONGCLOUD_FILE_SERVER @\"'${FILE_SERVER_URL}'\"?' ./RCloudMessage/Supporting\ Files/RCDCommonDefine.h
-sed -i '' -e '/RONGCLOUD_FILE_SERVER/s?img.cn.ronghub.com?'$FILE_SERVER_URL'?g' ./RCloudMessage/Supporting\ Files/RCDCommonDefine.h
 fi
 
 #统计服务器
@@ -174,21 +172,22 @@ BUILD_CODE_SIGN_IDENTITY="iPhone Distribution: Beijing Rong Cloud Network Techno
 
 echo $VER_FLAG
 
-sed -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}/'"$VER_FLAG"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
-sed -i "" -e '/CFBundleShortVersionString/{n;s/Stable/'"$RELEASE_FLAG"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
-sed -i "" -e '/CFBundleShortVersionString/{n;s/Dev/'"$RELEASE_FLAG"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
+#sed -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}/'"$VER_FLAG"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
+Bundle_Short_Version=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ./RCloudMessage/Supporting\ Files/Info.plist)
+sed -i ""  -e '/CFBundleShortVersionString/{n;s/'"${Bundle_Short_Version}"'/'"$VER_FLAG"\ "$RELEASE_FLAG"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
 sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
 
-sed -i "" -e '/SealTalk Version/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}/'"$DEMO_VER_FLAG"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
+Bundle_Demo_Version=$(/usr/libexec/PlistBuddy -c "Print SealTalk\ Version" ./RCloudMessage/Supporting\ Files/Info.plist)
+sed -i "" -e '/SealTalk Version/{n;s/'"${Bundle_Demo_Version}"'/'"$DEMO_VER_FLAG"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
 
-sed -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}/'"$VER_FLAG"'/; }' ./融云\ Demo\ WatchKit\ App/Info.plist
-sed -i "" -e '/CFBundleShortVersionString/{n;s/Stable/'"$RELEASE_FLAG"'/; }' ./融云\ Demo\ WatchKit\ App/Info.plist
-sed -i "" -e '/CFBundleShortVersionString/{n;s/Dev/'"$RELEASE_FLAG"'/; }' ./融云\ Demo\ WatchKit\ App/Info.plist
+#sed -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}/'"$VER_FLAG"'/; }' ./融云\ Demo\ WatchKit\ App/Info.plist
+Bundle_Short_Version=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ./融云\ Demo\ WatchKit\ App/Info.plist)
+sed -i ""  -e '/CFBundleShortVersionString/{n;s/'"${Bundle_Short_Version}"'/'"$VER_FLAG"\ "$RELEASE_FLAG"'/; }' ./融云\ Demo\ WatchKit\ App/Info.plist
 sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./融云\ Demo\ WatchKit\ App/Info.plist
 
-sed -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}/'"$VER_FLAG"'/; }' ./融云\ Demo\ WatchKit\ Extension/Info.plist
-sed -i "" -e '/CFBundleShortVersionString/{n;s/Stable/'"$RELEASE_FLAG"'/; }' ./融云\ Demo\ WatchKit\ Extension/Info.plist
-sed -i "" -e '/CFBundleShortVersionString/{n;s/Dev/'"$RELEASE_FLAG"'/; }' ./融云\ Demo\ WatchKit\ Extension/Info.plist
+#sed -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}/'"$VER_FLAG"'/; }' ./融云\ Demo\ WatchKit\ Extension/Info.plist
+Bundle_Short_Version=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ./融云\ Demo\ WatchKit\ Extension/Info.plist)
+sed -i ""  -e '/CFBundleShortVersionString/{n;s/'"${Bundle_Short_Version}"'/'"$VER_FLAG"\ "$RELEASE_FLAG"'/; }' ./融云\ Demo\ WatchKit\ Extension/Info.plist
 sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./融云\ Demo\ WatchKit\ Extension/Info.plist
 
 PROJECT_NAME="RCloudMessage.xcodeproj"

@@ -3,5 +3,6 @@ Podfile.lock
 bin
 Build
 DerivedData
+framework
 RCloudMessage.xcodeproj/xcuserdata
 RCloudMessage.xcworkspace/xcuserdata
