@@ -14,7 +14,7 @@
 
 static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier";
 
-@interface RCDDebugChatroomViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface RCDDebugChatroomViewController () <UITableViewDelegate, UITableViewDataSource, RCChatRoomKVStatusChangeDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
@@ -275,6 +275,47 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
     }
 }
 
+#pragma mark - RCChatRoomKVStatusChangeDelegate
+- (void)chatRoomKVDidSync:(NSString *)roomId {
+    NSLog(@"chatRoomKVDidSync --- roomId：%@", roomId);
+    NSString *targetString = [NSString stringWithFormat:@"chatRoomKVDidSync：%@", roomId];
+    [self addStringToDataSource:targetString];
+}
+
+- (void)chatRoomKVDidUpdate:(NSString *)roomId entry:(NSDictionary<NSString *,NSString *> *)entry {
+    NSLog(@"chatRoomKVDidUpdate --- roomId：%@，entry：%@", roomId, entry);
+    NSString *jsonString = @"";
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:entry
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    if (error) {
+        jsonString = [entry description];
+    }
+    jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSString *targetString =
+    [NSString stringWithFormat:@"chatRoomKVDidUpdate：共 %lu 个，\n roomId：%@，entry：%@",
+     (unsigned long)entry.count, roomId, jsonString];
+    [self addStringToDataSource:targetString];
+}
+
+- (void)chatRoomKVDidRemove:(NSString *)roomId entry:(NSDictionary<NSString *,NSString *> *)entry {
+    NSLog(@"chatRoomKVDidRemove --- roomId：%@，entry：%@", roomId, entry);
+    NSString *jsonString = @"";
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:entry
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    if (error) {
+        jsonString = [entry description];
+    }
+    jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSString *targetString =
+    [NSString stringWithFormat:@"chatRoomKVDidRemove：共 %lu 个，\n roomId：%@，entry：%@",
+    (unsigned long)entry.count, roomId, jsonString];
+    [self addStringToDataSource:targetString];
+}
+
 #pragma mark - Private Method
 - (void)setupData {
 
@@ -284,6 +325,8 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
                                                object:nil];
 
     [self addStringToDataSource:[NSString stringWithFormat:@"加入聊天室：%@", self.roomId]];
+    
+    [[RCIMClient sharedRCIMClient] setRCChatRoomKVStatusChangeDelegate:self];
 }
 
 - (void)setupNav {

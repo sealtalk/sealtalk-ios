@@ -15,7 +15,7 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
     self = [super init];
     if (self) {
-        self.phoneCode = [dict objectForKey:@"region"];
+        self.phoneCode = [dict objectForKey:@"region"]?:@"86";
         NSDictionary *locale = [dict objectForKey:@"locale"];
         self.locale = locale;
     }

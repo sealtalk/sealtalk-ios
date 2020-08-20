@@ -18,6 +18,7 @@ sed -i '' -e '/path = RongCloudTests;/d' ${Project}
 sed -i '' -e "/\/\* ShellScript \*\/ = {/,/};/d" ${Project}
 
 # 2. 删除敏感信息
+sed -i "" -e 's?^#define DORAEMON_APPID.*$?#define DORAEMON_APPID @\"\"?' RCloudMessage/AppDelegate.m
 sed -i "" -e 's?^#define BUGLY_APPID.*$?#define BUGLY_APPID @\"\"?' RCloudMessage/AppDelegate.m
 sed -i "" -e 's?^#define RONGCLOUD_STATUS_SERVER.*$?#define RONGCLOUD_STATUS_SERVER @\"\"?' RCloudMessage/AppDelegate.m
 

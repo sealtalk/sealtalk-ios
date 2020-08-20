@@ -34,6 +34,11 @@
 #import "RCDPokeManager.h"
 #import "RCDClearMessage.h"
 
+#ifdef DEBUG
+#import <DoraemonKit/DoraemonManager.h>
+#endif
+
+#define DORAEMON_APPID @""
 #define BUGLY_APPID @""
 #define LOG_EXPIRE_TIME -7 * 24 * 60 * 60
 
@@ -54,6 +59,8 @@
     [self configRongIM];
     [self configWeChatShare];
     [self loginAndEnterMainPage];
+    [self configDoraemon];
+    
     return YES;
 }
 
@@ -113,6 +120,12 @@
 
 - (void)configWeChatShare {
     [RCDWeChatManager registerApp:WECHAT_APPID];
+}
+
+- (void)configDoraemon {
+    #ifdef DEBUG
+    [[DoraemonManager shareInstance] installWithPid:DORAEMON_APPID];
+    #endif
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {

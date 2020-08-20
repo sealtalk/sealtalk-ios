@@ -42,6 +42,7 @@ static AFHTTPSessionManager *manager;
                    parameters:(NSDictionary *)parameters
                      response:(void (^)(RCDHTTPResult *))responseBlock {
     AFHTTPSessionManager *manager = [RCDHTTPUtility sharedHTTPManager];
+    URLString = [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *url = [BASE_URL stringByAppendingPathComponent:URLString];
 
     switch (method) {

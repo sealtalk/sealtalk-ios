@@ -13,10 +13,16 @@ target 'SealTalk' do
   pod 'SDWebImage', '5.0.6'
   pod 'Bugly', '2.5.0'
   pod 'WechatOpenSDK', '1.8.4'
-  pod 'RongCloudIM/IMLib', '4.0.1'
-  pod 'RongCloudIM/IMKit', '4.0.1'
-  pod 'RongCloudIM/RongSticker', '4.0.1'
-  pod 'RongCloudIM/Sight', '4.0.1'
-  pod 'RongCloudRTC/RongCallLib', '4.0.1'
-  pod 'RongCloudRTC/RongCallKit', '4.0.1'
+  
+  pod 'DoraemonKit/Core', '~> 3.0.2', :configurations => ['Debug'] 必选
+  pod 'DoraemonKit/WithGPS', '~> 3.0.2', :configurations => ['Debug'] 模拟定位
+  pod 'DoraemonKit/WithLoad', '~> 3.0.2', :configurations => ['Debug'] Load耗时检测
+  pod 'DoraemonKit/WithMLeaksFinder', '~> 3.0.2', :configurations => ['Debug'] 查找内存泄漏
+  
+  pod 'RongCloudIM/IMLib', '4.0.2'
+  pod 'RongCloudIM/IMKit', '4.0.2'
+  pod 'RongCloudIM/RongSticker', '4.0.2'
+  pod 'RongCloudIM/Sight', '4.0.2'
+  pod 'RongCloudRTC/RongCallLib', '4.0.2'
+  pod 'RongCloudRTC/RongCallKit', '4.0.2'
 end
