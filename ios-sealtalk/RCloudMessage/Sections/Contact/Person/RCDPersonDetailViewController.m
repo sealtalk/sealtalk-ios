@@ -16,11 +16,7 @@
 #import "RCDFriendRemarksViewController.h"
 #import "RCDChatViewController.h"
 
-#ifdef USE_SignalingKit
-#import <RongSignalingKit/RCSCallKit.h>
-#else
 #import <RongCallKit/RongCallKit.h>
-#endif
 
 #import "UIView+MBProgressHUD.h"
 #import "RCDUserInfoManager.h"
@@ -402,20 +398,12 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 
 - (void)audioCall:(UIButton *)sender {
 //语音通话
-#if USE_SignalingKit
-    [[RCSCall sharedRCSCall] startSingleCall:self.userInfo.userId mediaType:RCSCallMediaAudio];
-#else
     [[RCCall sharedRCCall] startSingleCall:self.userInfo.userId mediaType:RCCallMediaAudio];
-#endif
 }
 
 - (void)videoCall:(UIButton *)sender {
 //视频通话
-#if USE_SignalingKit
-    [[RCSCall sharedRCSCall] startSingleCall:self.userInfo.userId mediaType:RCSCallMediaVideo];
-#else
     [[RCCall sharedRCCall] startSingleCall:self.userInfo.userId mediaType:RCCallMediaVideo];
-#endif
 }
 
 - (void)presentActionSheet {

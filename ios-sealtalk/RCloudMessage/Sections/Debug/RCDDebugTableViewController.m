@@ -15,7 +15,7 @@
 #import <GCDWebServer/GCDWebUploader.h>
 #import "RCDDebugJoinChatroomViewController.h"
 #import "RCDDataStatistics.h"
-
+#import "RCDDebugSelectChatController.h"
 #define DISPLAY_ID_TAG 100
 #define DISPLAY_ONLINE_STATUS_TAG 101
 #define JOIN_CHATROOM_TAG 102
@@ -135,6 +135,8 @@
         [self pushToChatroomStatusVC];
     } else if ([title isEqualToString:RCDLocalizedString(@"Set_chatroom_default_history_message")]) {
         [self showAlertController];
+    }else if ([title isEqualToString:@"消息扩展"]){
+        [self pushDebugMessageExtensionVC];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -154,6 +156,7 @@
         @"打开性能数据统计",
         @"阅后即焚",
         @"合并转发",
+        @"消息扩展"
     ]
             forKey:RCDLocalizedString(@"custom_setting")];
     [dic setObject:@[ @"进入聊天室存储测试", RCDLocalizedString(@"Set_chatroom_default_history_message") ]
@@ -299,6 +302,11 @@
 - (void)pushToNoDisturbVC {
     RCDDebugNoDisturbViewController *vc = [[RCDDebugNoDisturbViewController alloc] init];
     vc.title = @"设置全局免打扰";
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushDebugMessageExtensionVC{
+    RCDDebugSelectChatController *vc = [[RCDDebugSelectChatController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

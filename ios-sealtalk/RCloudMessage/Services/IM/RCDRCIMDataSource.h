@@ -8,12 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <RongContactCard/RongContactCard.h>
-
-#ifdef USE_SignalingKit
-#import <RongSignalingKit/RCSCallKit.h>
-#else
 #import <RongCallKit/RongCallKit.h>
-#endif
 
 #define RCDDataSource [RCDRCIMDataSource sharedInstance]
 
@@ -22,15 +17,9 @@
  *  用户信息和群组信息都要通过回传id请求服务器获取，参考具体实现代码。
  */
 
-#ifdef USE_SignalingKit
-@interface RCDRCIMDataSource
-    : NSObject <RCIMUserInfoDataSource, RCIMGroupInfoDataSource, RCIMGroupUserInfoDataSource,
-                RCSCallGroupMemberDataSource, RCIMGroupMemberDataSource, RCCCContactsDataSource, RCCCGroupDataSource>
-#else
 @interface RCDRCIMDataSource
     : NSObject <RCIMUserInfoDataSource, RCIMGroupInfoDataSource, RCIMGroupUserInfoDataSource,
                 RCCallGroupMemberDataSource, RCIMGroupMemberDataSource, RCCCContactsDataSource, RCCCGroupDataSource>
-#endif
 
 + (RCDRCIMDataSource *)sharedInstance;
 

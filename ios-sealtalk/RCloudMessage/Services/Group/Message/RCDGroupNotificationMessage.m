@@ -62,7 +62,7 @@ NSString *const RCDGroupMemberProtectionClose = @"closeMemberProtection";
 
 - (NSString *)getDigest:(NSString *)groupId {
     NSString *content;
-    NSString *operationName = [self getDisplayNames:@[ self.operatorUserId ] groupId:groupId];
+    NSString *operationName = [self getDisplayNames:@[ self.operatorUserId?self.operatorUserId:@""] groupId:groupId];
     NSString *targetNames = [self getDisplayNames:self.targetUserIds groupId:groupId];
     BOOL isMeOperate = NO;
     if ([self.operatorUserId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {

@@ -107,7 +107,6 @@
     [RCIM sharedRCIM].isMediaSelectorContainVideo = YES;
     [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;
     [RCIM sharedRCIM].enableSendCombineMessage = YES;
-    [RCIM sharedRCIM].enableBurnMessage = YES;
     [RCIM sharedRCIM].enableDarkMode = YES;
     [RCIM sharedRCIM].reeditDuration = 60;
 
