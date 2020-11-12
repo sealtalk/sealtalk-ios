@@ -50,6 +50,8 @@ static NSString *const RCDAppleLanguagesKey = @"AppleLanguages";
             userLanguage = @"en";
         } else if ([userLanguage containsString:@"zh-Hans"]) {
             userLanguage = @"zh-Hans";
+        } else if ([userLanguage containsString:@"ar"]) {
+            userLanguage = @"ar";
         }
     }
     return userLanguage ? userLanguage : @"default";

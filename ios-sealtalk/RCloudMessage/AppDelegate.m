@@ -33,6 +33,7 @@
 #import "RCDPokeMessage.h"
 #import "RCDPokeManager.h"
 #import "RCDClearMessage.h"
+#import "RCDLanguageManager.h"
 
 #ifdef DEBUG
 #import <DoraemonKit/DoraemonManager.h>
@@ -60,6 +61,7 @@
     [self configWeChatShare];
     [self loginAndEnterMainPage];
     [self configDoraemon];
+    [self configCurrentLanguage];
     
     return YES;
 }
@@ -202,6 +204,18 @@
         RCDLoginViewController *vc = [[RCDLoginViewController alloc] init];
         RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc] initWithRootViewController:vc];
         self.window.rootViewController = _navi;
+    }
+}
+
+- (void)configCurrentLanguage {
+    //设置当前语言
+    NSString *language = [DEFAULTS valueForKey:@"RCDUserLanguageKey"];
+
+    // App 内切换语言时需要设置布局，不重启有部分视图有问题
+    if ([language isEqualToString:@"ar"]) {
+        [UIView appearance].semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
+    } else {
+        [UIView appearance].semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
     }
 }
 

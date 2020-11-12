@@ -19,10 +19,10 @@ target 'SealTalk' do
   pod 'DoraemonKit/WithLoad', '~> 3.0.2', :configurations => ['Debug']
   pod 'DoraemonKit/WithMLeaksFinder', '~> 3.0.2', :configurations => ['Debug']
   
-  pod 'RongCloudIM/IMLib', '4.0.3'
-  pod 'RongCloudIM/IMKit', '4.0.3'
-  pod 'RongCloudIM/RongSticker', '4.0.3'
-  pod 'RongCloudIM/Sight', '4.0.3'
-  pod 'RongCloudRTC/RongCallLib', '4.0.3'
-  pod 'RongCloudRTC/RongCallKit', '4.0.3'
+  pod 'RongCloudIM/IMLib', '4.0.4'
+  pod 'RongCloudIM/IMKit', '4.0.4'
+  pod 'RongCloudIM/RongSticker', '4.0.4'
+  pod 'RongCloudIM/Sight', '4.0.4'
+  pod 'RongCloudRTC/RongCallLib', '4.0.4'
+  pod 'RongCloudRTC/RongCallKit', '4.0.4'
 end

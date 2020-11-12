@@ -393,6 +393,27 @@
 			remoteGlobalIDString = 6EBDD19BFFFD954165D471F1A9163671;
 			remoteInfo = ZXingObjC;
 		};
+		3B7ED69525515BF300500319 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 276599A1229E87B20074FAB2 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2A1194AC019E1C497A170EE4AB725374;
+			remoteInfo = FBRetainCycleDetector;
+		};
+		3BACB0062500CED50001A92C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 276599A1229E87B20074FAB2 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D1896D9851F43425DB6409A9170E0354;
+			remoteInfo = DoraemonKit;
+		};
+		3BACB0082500CED50001A92C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 276599A1229E87B20074FAB2 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D3F3B6C7D4AD810C6DDF4A69D741EE2;
+			remoteInfo = "DoraemonKit-DoraemonKit";
+		};
 		3BC0C80F229F8F3B0079234F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 276599A1229E87B20074FAB2 /* Pods.xcodeproj */;
@@ -758,8 +779,6 @@
 		3BEB4F7222C380A7003923CC /* RCDContactNotificationMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDContactNotificationMessage.m; sourceTree = "<group>"; };
 		466684341B5DF36E000B7504 /* RCDUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RCDUtilities.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		466684351B5DF36E000B7504 /* RCDUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RCDUtilities.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		510624841AD63A9E00348452 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = framework/en.lproj/RongCloudKit.strings; sourceTree = SOURCE_ROOT; };
-		510624861AD63AA500348452 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "framework/zh-Hans.lproj/RongCloudKit.strings"; sourceTree = SOURCE_ROOT; };
 		6E1C981F1F39C90C008F96D8 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		79B029EA22D5FE8E0062CBA5 /* RCDChatConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDChatConfig.m; sourceTree = "<group>"; };
 		79B029EB22D5FE8E0062CBA5 /* RCDChatConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDChatConfig.h; sourceTree = "<group>"; };
@@ -1244,6 +1263,9 @@
 			isa = PBXGroup;
 			children = (
 				3BC0C810229F8F3B0079234F /* AFNetworking.framework */,
+				3BACB0072500CED50001A92C /* DoraemonKit.framework */,
+				3BACB0092500CED50001A92C /* DoraemonKit.bundle */,
+				3B7ED69625515BF300500319 /* FBRetainCycleDetector.framework */,
 				3BC0C812229F8F3B0079234F /* FMDB.framework */,
 				9C226D0F229FD5C800F49FC5 /* GCDWebServer.framework */,
 				276599A7229E87B20074FAB2 /* Masonry.framework */,
@@ -1894,7 +1916,6 @@
 				9C11945D229D3F86005407ED /* main.m */,
 				A28C438F22E95818005BA7A0 /* InfoPlist.strings */,
 				A28C439122E95818005BA7A0 /* SealTalk.strings */,
-				510624831AD63A9E00348452 /* RongCloudKit.strings */,
 				E4BFAE221A121839007165B1 /* Images.xcassets */,
 				987653621D796C5B008A6BF0 /* Launch Screen.storyboard */,
 				0A1DDD9F22169D7300A9FE21 /* PrefixHeader.pch */,
@@ -2944,6 +2965,7 @@
 				en,
 				Base,
 				"zh-Hans",
+				ar,
 			);
 			mainGroup = E4D40F1F1A031F460045097C;
 			productRefGroup = E4D40F291A031F460045097C /* Products */;
@@ -2999,6 +3021,27 @@
 			fileType = wrapper.framework;
 			path = ZXingObjC.framework;
 			remoteRef = 3B47890222B78F1C00D33F10 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3B7ED69625515BF300500319 /* FBRetainCycleDetector.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FBRetainCycleDetector.framework;
+			remoteRef = 3B7ED69525515BF300500319 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3BACB0072500CED50001A92C /* DoraemonKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = DoraemonKit.framework;
+			remoteRef = 3BACB0062500CED50001A92C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3BACB0092500CED50001A92C /* DoraemonKit.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = DoraemonKit.bundle;
+			remoteRef = 3BACB0082500CED50001A92C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3BC0C810229F8F3B0079234F /* AFNetworking.framework */ = {
@@ -3120,6 +3163,7 @@
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/DoraemonKit/DoraemonKit.framework",
 				"${PODS_ROOT}/DoraemonKit/iOS/DoraemonKit/Framework/DoraemonLoadAnalyze.framework",
+				"${BUILT_PRODUCTS_DIR}/FBRetainCycleDetector/FBRetainCycleDetector.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/GCDWebServer/GCDWebServer.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
@@ -3133,6 +3177,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoraemonKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoraemonLoadAnalyze.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBRetainCycleDetector.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GCDWebServer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
@@ -3487,15 +3532,6 @@
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
-		510624831AD63A9E00348452 /* RongCloudKit.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				510624841AD63A9E00348452 /* en */,
-				510624861AD63AA500348452 /* zh-Hans */,
-			);
-			name = RongCloudKit.strings;
-			sourceTree = "<group>";
-		};
 		9B49C53F23C421720058D19F /* RealTimeLocation.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3687,7 +3723,6 @@
 				PROVISIONING_PROFILE = "$APP_PROFILE";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = AutoDebug;
 		};
@@ -3743,7 +3778,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "$APP_PROFILE";
-				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = AutoDebug;
 		};
@@ -3847,7 +3881,6 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = AutoRelease;
 		};
@@ -3903,7 +3936,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "$APP_PROFILE";
-				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = AutoRelease;
 		};
@@ -4124,7 +4156,6 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
@@ -4166,7 +4197,6 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};
@@ -4222,7 +4252,6 @@
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
-				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
@@ -4277,7 +4306,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};

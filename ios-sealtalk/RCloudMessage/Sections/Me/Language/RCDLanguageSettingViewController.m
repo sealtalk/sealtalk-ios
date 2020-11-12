@@ -14,6 +14,7 @@
 #import "UIColor+RCColor.h"
 #import "RCDLanguageSettingTableViewCell.h"
 #import "RCDTableView.h"
+#import "UIView+MBProgressHUD.h"
 @interface RCDLanguageSettingViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) RCDTableView *tableView;
@@ -30,7 +31,7 @@
     [super viewDidLoad];
     self.title = RCDLocalizedString(@"language");
 
-    self.languageDic = @{ @"en" : @"English", @"zh-Hans" : @"简体中文" };
+    self.languageDic = @{ @"en" : @"English", @"zh-Hans" : @"简体中文", @"ar" : @"العربية"};
     self.language = [RCDLanguageManager sharedRCDLanguageManager].currentLanguage;
     self.currentLanguage = self.language;
 
@@ -45,15 +46,40 @@
 
 #pragma mark - Target action
 - (void)save {
-    //设置当前语言
-    [[RCDLanguageManager sharedRCDLanguageManager] setLocalizableLanguage:self.language];
-
-    //重置vc堆栈
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
-    RCDNavigationViewController *nav = [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
-    mainTabBarVC.selectedIndex = 3;
-    app.window.rootViewController = nav;
+    
+    RCPushLauguage lauguage = RCPushLauguage_EN_US;
+    if ([self.language isEqualToString:@"ar"]) {
+        lauguage = RCPushLauguage_AR_SA;
+    } else if ([self.language isEqualToString:@"zh-Hans"]) {
+        lauguage = RCPushLauguage_ZH_CN;
+    } else {
+        lauguage = RCPushLauguage_EN_US;
+    }
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [[RCIMClient sharedRCIMClient].pushProfile setPushLauguage:lauguage success:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            if (lauguage== RCPushLauguage_AR_SA) {
+                [UIView appearance].semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
+            } else {
+                [UIView appearance].semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+            }
+            //设置当前语言
+            [[RCDLanguageManager sharedRCDLanguageManager] setLocalizableLanguage:self.language];
+            //重置vc堆栈
+            AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+            RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
+            RCDNavigationViewController *nav = [[RCDNavigationViewController alloc] initWithRootViewController:mainTabBarVC];
+            mainTabBarVC.selectedIndex = 3;
+            app.window.rootViewController = nav;
+        });
+    } error:^(RCErrorCode status) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [self.view showHUDMessage:[NSString stringWithFormat:@"%@ %ld", RCDLocalizedString(@"Failed"), (long)status]];
+        });
+    }];
 }
 
 #pragma mark - UITableView Delegate

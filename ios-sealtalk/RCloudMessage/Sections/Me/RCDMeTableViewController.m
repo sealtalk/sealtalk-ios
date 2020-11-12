@@ -36,7 +36,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.languageDic = @{ @"en" : @"English", @"zh-Hans" : @"简体中文" };
+    self.languageDic = @{ @"en" : @"English", @"zh-Hans" : @"简体中文", @"ar" : @"العربية"};
     [self initUI];
 }
 
