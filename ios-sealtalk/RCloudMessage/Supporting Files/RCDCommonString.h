@@ -9,41 +9,41 @@
 #ifndef RCDCommonString_h
 #define RCDCommonString_h
 
-NSString *const RCDIMTokenKey = @"userToken";
-NSString *const RCDAppKeyKey = @"appKey";
-NSString *const RCDUserIdKey = @"userId";
-NSString *const RCDUserNameKey = @"userName";
-NSString *const RCDUserPasswordKey = @"userPwd";
-NSString *const RCDUserNickNameKey = @"userNickName";
-NSString *const RCDUserPortraitUriKey = @"userPortraitUri";
-NSString *const RCDSquareInfoListKey = @"SquareInfoList";
-NSString *const RCDQiNiuDomainKey = @"QiNiuDomain";
-NSString *const RCDApplistURLKey = @"applistURL";
-NSString *const RCDNeedUpdateKey = @"isNeedUpdate";
-NSString *const RCDDisplayIDKey = @"isDisplayID";
-NSString *const RCDCurrentCountryKey = @"currentCountry";
-NSString *const RCDStayAfterJoinChatRoomFailedKey = @"stayAfterJoinChatRoomFailed";
-NSString *const RCDDebugDataStatisticsKey = @"RCDDebugDataStatistics";
-NSString *const RCDDebugBurnMessageKey = @"RCDDebugBurnMessage";
-NSString *const RCDDebugSendCombineMessageKey = @"RCDDebugSendCombineMessage";
-NSString *const RCDUserCookiesKey = @"UserCookies";
-NSString *const RCDDisplayOnlineStatusKey = @"isDisplayOnlineStatus";
-NSString *const RCDCookieKey = @"Cookie";
-NSString *const RCDGroupInfoUpdateKey = @"UpdateGroupInfo";
-NSString *const RCDGroupMemberUpdateKey = @"UpdateGroupMember";
-NSString *const RCDGroupNoticeUpdateKey = @"UpdateGroupNotice";
-NSString *const RCDSealTalkNumberKey = @"RCDSealTalkNumber";
-NSString *const RCDUserGenderKey = @"RCDUserGender";
-NSString *const RCDUserPrivacyMobileSearchKey = @"RCDUserPrivacyMobileSearchKey";
-NSString *const RCDUserPrivacySTAccountSearchKey = @"RCDUserPrivacySTAccountSearchKey";
-NSString *const RCDUserPrivacyFriendVerifyKey = @"RCDUserPrivacyFriendVerifyKey";
-NSString *const RCDUserPrivacyGroupVerifyKey = @"RCDUserPrivacyFriendVerifyKey";
-NSString *const RCDContactsAuthStateChangeKey = @"RCDContactsAuthStateChangeKey";
-NSString *const RCDContactsRequestKey = @"RCDContactsRequestKey";
-NSString *const RCDContactsUpdateUIKey = @"RCDContactsUpdateUIKey";
-NSString *const RCDChatBackgroundKey = @"RCDChatBackgroundKey";
-NSString *const RCDChatBackgroundFromAlbum = @"RCDChatBackgroundFromAlbum";
-NSString *const RCDChatBackgroundImageDataKey = @"RCDChatBackgroundImageDataKey";
-NSString *const RCDChatroomDefalutHistoryMessageCountKey = @"ChatroomDefaultHistoryMessageCount";
-NSString *const RCDGroupClearMessageKey = @"RCDGroupClearMessageKey";
+#define RCDIMTokenKey @"userToken"
+#define RCDAppKeyKey @"appKey"
+#define RCDUserIdKey @"userId"
+#define RCDUserNameKey @"userName"
+#define RCDUserPasswordKey @"userPwd"
+#define RCDUserNickNameKey @"userNickName"
+#define RCDUserPortraitUriKey @"userPortraitUri"
+#define RCDSquareInfoListKey @"SquareInfoList"
+#define RCDQiNiuDomainKey @"QiNiuDomain"
+#define RCDApplistURLKey @"applistURL"
+#define RCDNeedUpdateKey @"isNeedUpdate"
+#define RCDDisplayIDKey @"isDisplayID"
+#define RCDCurrentCountryKey @"currentCountry"
+#define RCDStayAfterJoinChatRoomFailedKey @"stayAfterJoinChatRoomFailed"
+#define RCDDebugDataStatisticsKey @"RCDDebugDataStatistics"
+#define RCDDebugBurnMessageKey @"RCDDebugBurnMessage"
+#define RCDDebugSendCombineMessageKey @"RCDDebugSendCombineMessage"
+#define RCDUserCookiesKey @"UserCookies"
+#define RCDDisplayOnlineStatusKey @"isDisplayOnlineStatus"
+#define RCDCookieKey @"Cookie"
+#define RCDGroupInfoUpdateKey @"UpdateGroupInfo"
+#define RCDGroupMemberUpdateKey @"UpdateGroupMember"
+#define RCDGroupNoticeUpdateKey @"UpdateGroupNotice"
+#define RCDSealTalkNumberKey @"RCDSealTalkNumber"
+#define RCDUserGenderKey @"RCDUserGender"
+#define RCDUserPrivacyMobileSearchKey @"RCDUserPrivacyMobileSearchKey"
+#define RCDUserPrivacySTAccountSearchKey @"RCDUserPrivacySTAccountSearchKey"
+#define RCDUserPrivacyFriendVerifyKey @"RCDUserPrivacyFriendVerifyKey"
+#define RCDUserPrivacyGroupVerifyKey @"RCDUserPrivacyFriendVerifyKey"
+#define RCDContactsAuthStateChangeKey @"RCDContactsAuthStateChangeKey"
+#define RCDContactsRequestKey @"RCDContactsRequestKey"
+#define RCDContactsUpdateUIKey @"RCDContactsUpdateUIKey"
+#define RCDChatBackgroundKey @"RCDChatBackgroundKey"
+#define RCDChatBackgroundFromAlbum @"RCDChatBackgroundFromAlbum"
+#define RCDChatBackgroundImageDataKey @"RCDChatBackgroundImageDataKey"
+#define RCDChatroomDefalutHistoryMessageCountKey @"ChatroomDefaultHistoryMessageCount"
+#define RCDGroupClearMessageKey @"RCDGroupClearMessageKey"
 #endif /* RCDCommonString_h */

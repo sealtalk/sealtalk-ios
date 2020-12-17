@@ -313,8 +313,6 @@
 		A6447AA51B1DC14A00EA2CEE /* VoiceMessageRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A6447A841B1DC14A00EA2CEE /* VoiceMessageRow.m */; };
 		A6447AA61B1DC17900EA2CEE /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C330FB1A0C724A00E31B9A /* CoreTelephony.framework */; };
 		A6447AA71B1DC18100EA2CEE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C3310D1A0C72A000E31B9A /* SystemConfiguration.framework */; };
-		A6447AA81B1DC18700EA2CEE /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C331031A0C726F00E31B9A /* libsqlite3.dylib */; };
-		A6447AA91B1DC19100EA2CEE /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C331051A0C727C00E31B9A /* libstdc++.dylib */; };
 		A6B1D8EB1B1FFCB700AD32EC /* RCWKNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B1D8EA1B1FFCB700AD32EC /* RCWKNotifier.m */; };
 		A6B1D8F71B201B3600AD32EC /* RCAppInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B1D8EE1B201B3600AD32EC /* RCAppInfoModel.m */; };
 		A6B1D8F81B201B3600AD32EC /* RCAppQueryHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B1D8F01B201B3600AD32EC /* RCAppQueryHelper.m */; };
@@ -339,6 +337,8 @@
 		E4C4E7E41A0A2F2800140067 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C4E7E31A0A2F2800140067 /* CoreGraphics.framework */; };
 		E4C4E7E61A0A2F2E00140067 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C4E7E51A0A2F2E00140067 /* UIKit.framework */; };
 		E4FCD7C41AD69DFB00915650 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FCD7C31AD69DFB00915650 /* ImageIO.framework */; };
+		E53A45432574A034005CC6F3 /* RongCallKit.strings in Resources */ = {isa = PBXBuildFile; fileRef = E53A453E2574A034005CC6F3 /* RongCallKit.strings */; };
+		E53A45452574A034005CC6F3 /* RongCallKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E53A45422574A034005CC6F3 /* RongCallKit.bundle */; };
 		EE8995AF660D3951CC53C83F /* Pods_SealTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC542FBCFEF60B126BE5E715 /* Pods_SealTalk.framework */; };
 		F1D49DB621ABE4A70047381F /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D49DB521ABE4A70047381F /* NotificationService.m */; };
 		F1D49DBA21ABE4A70047381F /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F1D49DB221ABE4A70047381F /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -392,13 +392,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 6EBDD19BFFFD954165D471F1A9163671;
 			remoteInfo = ZXingObjC;
-		};
-		3B7ED69525515BF300500319 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 276599A1229E87B20074FAB2 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2A1194AC019E1C497A170EE4AB725374;
-			remoteInfo = FBRetainCycleDetector;
 		};
 		3BACB0062500CED50001A92C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1094,10 +1087,8 @@
 		A6BD040F1B1E938000ACAF17 /* 融云 Demo WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "融云 Demo WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		A6EFAB9E1BB0ED94007E9D67 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
-		A6EFABA21BB0EDD7007E9D67 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		A6EFABA41BB0EDE1007E9D67 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		A6EFABA61BB0EDFB007E9D67 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		E42A2E581AAEE67000F4C3AB /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		E4BFAE221A121839007165B1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "RCloudMessage/Supporting Files/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		E4C330F11A0C721D00E31B9A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E4C330F31A0C722300E31B9A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -1106,11 +1097,6 @@
 		E4C330F91A0C724400E31B9A /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		E4C330FB1A0C724A00E31B9A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E4C330FD1A0C725200E31B9A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
-		E4C330FF1A0C725E00E31B9A /* libc++abi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++abi.dylib"; path = "usr/lib/libc++abi.dylib"; sourceTree = SDKROOT; };
-		E4C331011A0C726700E31B9A /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
-		E4C331031A0C726F00E31B9A /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		E4C331051A0C727C00E31B9A /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
-		E4C331071A0C728500E31B9A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		E4C331091A0C728D00E31B9A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		E4C3310B1A0C729600E31B9A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E4C3310D1A0C72A000E31B9A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -1121,6 +1107,9 @@
 		E4D40F281A031F460045097C /* SealTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SealTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4E939141AD65A95001E0AC6 /* RCDCommonDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDCommonDefine.h; sourceTree = "<group>"; };
 		E4FCD7C31AD69DFB00915650 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		E53A453F2574A034005CC6F3 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/RongCallKit.strings"; sourceTree = "<group>"; };
+		E53A45402574A034005CC6F3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RongCallKit.strings; sourceTree = "<group>"; };
+		E53A45422574A034005CC6F3 /* RongCallKit.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RongCallKit.bundle; sourceTree = "<group>"; };
 		EC542FBCFEF60B126BE5E715 /* Pods_SealTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SealTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1D49DB221ABE4A70047381F /* ServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1D49DB421ABE4A70047381F /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
@@ -1158,8 +1147,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6447AA91B1DC19100EA2CEE /* libstdc++.dylib in Frameworks */,
-				A6447AA81B1DC18700EA2CEE /* libsqlite3.dylib in Frameworks */,
 				A6447AA71B1DC18100EA2CEE /* SystemConfiguration.framework in Frameworks */,
 				A6447AA61B1DC17900EA2CEE /* CoreTelephony.framework in Frameworks */,
 			);
@@ -1265,7 +1252,6 @@
 				3BC0C810229F8F3B0079234F /* AFNetworking.framework */,
 				3BACB0072500CED50001A92C /* DoraemonKit.framework */,
 				3BACB0092500CED50001A92C /* DoraemonKit.bundle */,
-				3B7ED69625515BF300500319 /* FBRetainCycleDetector.framework */,
 				3BC0C812229F8F3B0079234F /* FMDB.framework */,
 				9C226D0F229FD5C800F49FC5 /* GCDWebServer.framework */,
 				276599A7229E87B20074FAB2 /* Masonry.framework */,
@@ -2110,14 +2096,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		A24AFAEC247F7287001BA5A2 /* RongCallKit */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = RongCallKit;
-			path = framework/RongCallKit;
-			sourceTree = SOURCE_ROOT;
-		};
 		A24AFAEE247F7287001BA5A2 /* RongContactCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -2668,7 +2646,7 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A24AFAEC247F7287001BA5A2 /* RongCallKit */,
+				E53A453D2574A034005CC6F3 /* RongCallKit */,
 				A24AFB04247F7288001BA5A2 /* RongCallLib */,
 				A24AFAEE247F7287001BA5A2 /* RongContactCard */,
 				A24AFB00247F7288001BA5A2 /* RongiFlyKit */,
@@ -2693,22 +2671,15 @@
 				F8AD4A541CAE56A4006C1CBB /* PushKit.framework */,
 				A6EFABA61BB0EDFB007E9D67 /* libc++.tbd */,
 				A6EFABA41BB0EDE1007E9D67 /* libsqlite3.tbd */,
-				A6EFABA21BB0EDD7007E9D67 /* libstdc++.tbd */,
 				A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */,
 				A6EFAB9E1BB0ED94007E9D67 /* libz.tbd */,
 				8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */,
 				E4FCD7C31AD69DFB00915650 /* ImageIO.framework */,
-				E42A2E581AAEE67000F4C3AB /* libxml2.dylib */,
 				E4C497221A2484DB00098C8A /* MapKit.framework */,
 				E4C497201A24849E00098C8A /* CoreLocation.framework */,
 				E4C3310D1A0C72A000E31B9A /* SystemConfiguration.framework */,
 				E4C3310B1A0C729600E31B9A /* QuartzCore.framework */,
 				E4C331091A0C728D00E31B9A /* OpenGLES.framework */,
-				E4C331071A0C728500E31B9A /* libz.dylib */,
-				E4C331051A0C727C00E31B9A /* libstdc++.dylib */,
-				E4C331031A0C726F00E31B9A /* libsqlite3.dylib */,
-				E4C331011A0C726700E31B9A /* libc++.dylib */,
-				E4C330FF1A0C725E00E31B9A /* libc++abi.dylib */,
 				E4C330FD1A0C725200E31B9A /* CoreVideo.framework */,
 				E4C330FB1A0C724A00E31B9A /* CoreTelephony.framework */,
 				E4C330F91A0C724400E31B9A /* CoreMedia.framework */,
@@ -2768,6 +2739,16 @@
 			name = RCloudMessage;
 			path = RongCloud;
 			sourceTree = "<group>";
+		};
+		E53A453D2574A034005CC6F3 /* RongCallKit */ = {
+			isa = PBXGroup;
+			children = (
+				E53A453E2574A034005CC6F3 /* RongCallKit.strings */,
+				E53A45422574A034005CC6F3 /* RongCallKit.bundle */,
+			);
+			name = RongCallKit;
+			path = framework/RongCallKit;
+			sourceTree = SOURCE_ROOT;
 		};
 		F1D49DB321ABE4A70047381F /* ServiceExtension */ = {
 			isa = PBXGroup;
@@ -3023,13 +3004,6 @@
 			remoteRef = 3B47890222B78F1C00D33F10 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		3B7ED69625515BF300500319 /* FBRetainCycleDetector.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = FBRetainCycleDetector.framework;
-			remoteRef = 3B7ED69525515BF300500319 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		3BACB0072500CED50001A92C /* DoraemonKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -3111,10 +3085,12 @@
 				178998221F6244FA00FC44D3 /* sms-received.caf in Resources */,
 				9B8BBA0024065F2F007CF839 /* RealTimeLocation.xcassets in Resources */,
 				A27AF90C2480F3E800686890 /* before_build.sh in Resources */,
+				E53A45432574A034005CC6F3 /* RongCallKit.strings in Resources */,
 				9B49C53D23C421720058D19F /* RealTimeLocation.strings in Resources */,
 				A28C439322E95818005BA7A0 /* InfoPlist.strings in Resources */,
 				E4BFAE251A121839007165B1 /* Images.xcassets in Resources */,
 				A28C439522E95818005BA7A0 /* SealTalk.strings in Resources */,
+				E53A45452574A034005CC6F3 /* RongCallKit.bundle in Resources */,
 				A27AF90B2480F3E800686890 /* jenkins_build.sh in Resources */,
 				A2F0A96F22F9173000422802 /* poke.mp3 in Resources */,
 				987653631D796C5B008A6BF0 /* Launch Screen.storyboard in Resources */,
@@ -3163,7 +3139,6 @@
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/DoraemonKit/DoraemonKit.framework",
 				"${PODS_ROOT}/DoraemonKit/iOS/DoraemonKit/Framework/DoraemonLoadAnalyze.framework",
-				"${BUILT_PRODUCTS_DIR}/FBRetainCycleDetector/FBRetainCycleDetector.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/GCDWebServer/GCDWebServer.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
@@ -3177,7 +3152,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoraemonKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoraemonLoadAnalyze.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBRetainCycleDetector.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GCDWebServer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
@@ -3583,6 +3557,15 @@
 				A6447A1C1B1DBE6500EA2CEE /* Base */,
 			);
 			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+		E53A453E2574A034005CC6F3 /* RongCallKit.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E53A453F2574A034005CC6F3 /* zh-Hans */,
+				E53A45402574A034005CC6F3 /* en */,
+			);
+			name = RongCallKit.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
