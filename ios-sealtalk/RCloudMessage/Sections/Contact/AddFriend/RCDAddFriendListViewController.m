@@ -175,21 +175,9 @@
           message:(NSString *)message
    cancelBtnTitle:(NSString *)cBtnTitle
     otherBtnTitle:(NSString *)oBtnTitle {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                                 message:message
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        [alertController
-            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
-        if (oBtnTitle) {
-            [alertController addAction:[UIAlertAction actionWithTitle:oBtnTitle
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction *_Nonnull action) {
-                                                                  [self shareUrlToWeChat];
-                                                              }]];
-        }
-        [self presentViewController:alertController animated:YES completion:nil];
-    });
+    [RCAlertView showAlertController:title message:message actionTitles:nil cancelTitle:cBtnTitle confirmTitle:oBtnTitle preferredStyle:(UIAlertControllerStyleAlert) actionsBlock:nil cancelBlock:nil confirmBlock:^{
+        [self shareUrlToWeChat];
+    } inViewController:self];
 }
 
 - (void)shareUrlToWeChat {
@@ -224,7 +212,7 @@
     if (!_searchBar) {
         _searchBar = [[RCDSearchBar alloc] init];
         _searchBar.delegate = self;
-        _searchBar.placeholder = RCDLocalizedString(@"PhoneOrSealTalkNumber");
+        _searchBar.placeholder = RCDLocalizedString(@"PhoneOrSTNumber");
     }
     return _searchBar;
 }

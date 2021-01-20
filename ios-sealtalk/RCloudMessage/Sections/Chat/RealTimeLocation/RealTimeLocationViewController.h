@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import <RongIMKit/RongIMKit.h>
 #import <UIKit/UIKit.h>
-
+#import <RongLocation/RongLocation.h>
 /**
  * 位置选取视图控制器
  */

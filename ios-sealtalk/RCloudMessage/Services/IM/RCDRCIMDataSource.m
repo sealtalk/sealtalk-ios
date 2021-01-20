@@ -47,7 +47,7 @@
 }
 
 - (void)syncGroupNoticeList {
-    [RCDGroupManager getGroupNoticeListFromServer:^(NSArray<RCDGroupNotice *> *noticeList){
+    [RCDGroupManager getGroupNoticeListFromServer:^(BOOL success, NSArray<RCDGroupNotice *> *noticeList){
 
     }];
 }

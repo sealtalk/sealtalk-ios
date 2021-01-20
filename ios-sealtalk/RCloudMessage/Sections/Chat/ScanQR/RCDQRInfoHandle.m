@@ -97,13 +97,7 @@
 }
 
 - (void)showAlert:(NSString *)alertContent {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:alertContent
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:nil]];
-    [self.baseController presentViewController:alertController animated:YES completion:nil];
+    [RCAlertView showAlertController:nil message:alertContent cancelTitle:RCDLocalizedString(@"confirm") inViewController:self.baseController];
 }
 
 - (void)pushChatVC:(NSString *)groupId {

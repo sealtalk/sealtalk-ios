@@ -6,5 +6,16 @@
     	<string>enterprise</string>
     	<key>teamID</key>
     	<string>9CVMN4UZK4</string>
+    	<key>provisioningProfiles</key>
+	<dict>
+		<key>cn.rongcloud.im</key>
+		<string>RongCloud IM</string>
+		<key>cn.rongcloud.im.ServiceExtension</key>
+		<string>cn.rongcloud.im.serviceextension.distribution</string>
+		<key>cn.rongcloud.im.shareextension</key>
+		<string>cn.rongcloud.im.shareextension.distribution</string>
+	</dict>
+	<key>signingCertificate</key>
+	<string>Apple Distribution</string>
     </dict>
 </plist>

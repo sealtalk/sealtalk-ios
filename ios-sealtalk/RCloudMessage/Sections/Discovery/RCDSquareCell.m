@@ -21,7 +21,7 @@
         self.rightArrow.hidden = YES;
         self.leftImageCornerRadius = 4.f;
         self.leftLabel.text = titleName;
-        self.leftLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
+        self.leftLabel.textColor = [RCKitUtility generateDynamicColor:HEXCOLOR(0x000000) darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.9]];
     }
     return self;
 }

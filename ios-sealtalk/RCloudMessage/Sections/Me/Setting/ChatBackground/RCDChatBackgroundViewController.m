@@ -76,10 +76,9 @@
         make.right.equalTo(self.arrowImageView.mas_left).offset(-10);
     }];
     [self.arrowImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.headerView).offset(-10);
+        make.right.equalTo(self.headerView).offset(-12);
         make.centerY.equalTo(self.headerView);
-        make.width.offset(8);
-        make.height.offset(13);
+        make.width.height.offset(16);
     }];
     [self.bgCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.headerView.mas_bottom).offset(15);

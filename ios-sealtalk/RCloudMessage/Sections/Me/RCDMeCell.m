@@ -21,7 +21,7 @@
 - (void)setCellWithImageName:(NSString *)imageName
                    labelName:(NSString *)labelName
               rightLabelName:(NSString *)rightLabelName {
-    [self setImageView:self.leftImageView ImageStr:imageName imageSize:CGSizeMake(18, 18) LeftOrRight:0];
+    [self setImageView:self.leftImageView ImageStr:imageName imageSize:CGSizeMake(24, 24) LeftOrRight:0];
     self.leftLabel.text = labelName;
     if (rightLabelName) {
         [self addRightLabel];
@@ -32,7 +32,7 @@
 - (id)initWithImageName:(NSString *)imageName labelName:(NSString *)labelName {
     if (self) {
         self = [super initWithLeftImageStr:imageName
-                             leftImageSize:CGSizeMake(18, 18)
+                             leftImageSize:CGSizeMake(24, 24)
                               rightImaeStr:nil
                             rightImageSize:CGSizeZero];
         self.leftLabel.text = labelName;
@@ -53,7 +53,7 @@
     NSDictionary *views = NSDictionaryOfVariableBindings(leftLabel, leftImageView, rightLabel, rightArrow);
     [self.contentView
         addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[leftImageView(width)]-8-[leftLabel]-(>"
-                                                                       @"=10)-[rightLabel]-13-[rightArrow(8)]-10-|"
+                                                                       @"=10)-[rightLabel]-13-[rightArrow(16)]-12-|"
                                                                options:0
                                                                metrics:@{
                                                                    @"width" : @(self.leftImageView.frame.size.width)
@@ -86,13 +86,13 @@
     [self.contentView
         addConstraints:[NSLayoutConstraint
                            constraintsWithVisualFormat:@"H:|-10-[leftImageView(width)]-8-[leftLabel]-10-["
-                                                       @"redpointImageView(12)]-(>=0)-[rightArrow(8)]-10-|"
+                                                       @"redpointImageView(8)]-(>=0)-[rightArrow(16)]-12-|"
                                                options:0
                                                metrics:@{
                                                    @"width" : @(self.leftImageView.frame.size.width)
                                                }
                                                  views:views]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[redpointImageView(12)]"
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[redpointImageView(8)]"
                                                                              options:0
                                                                              metrics:nil
                                                                                views:views]];

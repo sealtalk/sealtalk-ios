@@ -48,9 +48,12 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
     [self.tableView reloadData];
     [self updateSelectedResult];
+    
+    //隐藏导航栏下那条线
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 }
 
 - (void)dealloc {
@@ -80,12 +83,12 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 55;
+    return 56;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 1) {
-        return 30;
+        return 40;
     } else if (section == 0) {
         return 0.01;
     }
@@ -98,10 +101,10 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 1) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 200, 30)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, 200, 40)];
         label.text = RCDLocalizedString(@"RecentChat");
-        label.font = [UIFont systemFontOfSize:14];
+        label.font = [UIFont systemFontOfSize:13.5];
         label.textColor = RCDDYCOLOR(0x939393, 0x666666);
         [view addSubview:label];
         return view;
@@ -361,8 +364,6 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
         _tableView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
         _tableView.allowsMultipleSelection = YES;
-        _tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
-        _tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
         _tableView.delegate = self;
         _tableView.dataSource = self;
     }

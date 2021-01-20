@@ -8,7 +8,7 @@
 
 #import "RCDDebugViewController.h"
 #import <RongIMLib/RongIMLib.h>
-
+#import <RongIMKit/RCAlertView.h>
 @interface RCDDebugViewController ()
 
 @property (nonatomic, strong) UILabel *offLineMessageTimeLabel;
@@ -48,18 +48,10 @@
     if (!success) {
         content = RCDLocalizedString(@"set_fail");
     }
-    NSString *confirm = RCDLocalizedString(@"confirm");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                                 message:content
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:confirm
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *_Nonnull action) {
-                                                              [self.navigationController popViewControllerAnimated:YES];
-                                                          }]];
-        [self presentViewController:alertController animated:YES completion:nil];
-    });
+    
+    [RCAlertView showAlertController:title message:content actionTitles:nil cancelTitle:nil confirmTitle:RCDLocalizedString(@"confirm") preferredStyle:(UIAlertControllerStyleAlert) actionsBlock:nil cancelBlock:nil confirmBlock:^{
+        [self.navigationController popViewControllerAnimated:YES];
+    } inViewController:self];
 }
 
 #pragma mark - getter

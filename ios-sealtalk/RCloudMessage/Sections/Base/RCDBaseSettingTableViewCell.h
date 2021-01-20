@@ -40,8 +40,6 @@
 
 @property (nonatomic, strong) UIImageView *rightArrow;
 
-@property (nonatomic, strong) UIView *bottomLine;
-
 @property (nonatomic, assign) BOOL switchButtonStatus;
 
 @property (nonatomic, strong) NSArray *leftLabelConstraints;

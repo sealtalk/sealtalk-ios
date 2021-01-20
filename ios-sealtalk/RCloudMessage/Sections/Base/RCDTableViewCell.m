@@ -13,7 +13,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
-                                                        darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
+                                                        darkColor:HEXCOLOR(0x191919)];
     }
     return self;
 }

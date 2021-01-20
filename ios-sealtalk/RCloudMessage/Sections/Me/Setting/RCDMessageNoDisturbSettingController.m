@@ -70,8 +70,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self showAlert:RCDLocalizedString(@"alert")
                                message:RCDLocalizedString(@"set_fail")
-                        cancelBtnTitle:RCDLocalizedString(@"cancel")
-                         otherBtnTitle:nil];
+                        cancelBtnTitle:RCDLocalizedString(@"cancel")];
                 });
             }];
     }
@@ -150,8 +149,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showAlert:RCDLocalizedString(@"alert")
                            message:RCDLocalizedString(@"set_fail")
-                    cancelBtnTitle:RCDLocalizedString(@"cancel")
-                     otherBtnTitle:nil];
+                    cancelBtnTitle:RCDLocalizedString(@"cancel")];
                 blockSelf.swch.on = NO;
             });
         }];
@@ -166,8 +164,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showAlert:RCDLocalizedString(@"alert")
                            message:RCDLocalizedString(@"shut_down_failed")
-                    cancelBtnTitle:RCDLocalizedString(@"cancel")
-                     otherBtnTitle:nil];
+                    cancelBtnTitle:RCDLocalizedString(@"cancel")];
                 blockSelf.swch.on = YES;
             });
         }];
@@ -351,20 +348,8 @@
 
 - (void)showAlert:(NSString *)title
           message:(NSString *)message
-   cancelBtnTitle:(NSString *)cBtnTitle
-    otherBtnTitle:(NSString *)oBtnTitle {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                                 message:message
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        [alertController
-            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
-        if (oBtnTitle) {
-            [alertController
-                addAction:[UIAlertAction actionWithTitle:oBtnTitle style:UIAlertActionStyleDefault handler:nil]];
-        }
-        [self presentViewController:alertController animated:YES completion:nil];
-    });
+   cancelBtnTitle:(NSString *)cBtnTitle {
+    [RCAlertView showAlertController:title message:message cancelTitle:cBtnTitle inViewController:self];
 }
 
 #pragma mark - getter
@@ -372,6 +357,7 @@
 - (UISwitch *)swch {
     if (!_swch) {
         _swch = [[UISwitch alloc] init];
+        _swch.onTintColor = HEXCOLOR(0x0099ff);
     }
     return _swch;
 }

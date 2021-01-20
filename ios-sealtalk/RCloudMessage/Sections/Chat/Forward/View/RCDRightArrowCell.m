@@ -47,7 +47,7 @@
     if (!_leftLabel) {
         _leftLabel = [[UILabel alloc] init];
         _leftLabel.font = [UIFont systemFontOfSize:17.f];
-        _leftLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
+        _leftLabel.textColor = RCDDYCOLOR(0x262626, 0xffffff);
     }
     return _leftLabel;
 }

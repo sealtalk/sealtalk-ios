@@ -104,7 +104,7 @@
                                                     multiplier:1
                                                       constant:1]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_indicateIcon(14)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_indicateIcon(16)]"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:subviews]];
@@ -119,7 +119,7 @@
 
     [self addConstraints:[NSLayoutConstraint
                              constraintsWithVisualFormat:
-                                 @"H:|-0-[_indicateInfoLabel]-10-[_textField(>=150)]-10-[_indicateIcon(9)]-10-|"
+                                 @"H:|-0-[_indicateInfoLabel]-10-[_textField(>=150)]-10-[_indicateIcon(16)]-10-|"
                                                  options:0
                                                  metrics:nil
                                                    views:subviews]];
@@ -166,7 +166,7 @@
 - (UIImageView *)indicateIcon {
     if (_indicateIcon == nil) {
         _indicateIcon = [[UIImageView alloc] init];
-        _indicateIcon.image = [UIImage imageNamed:@"location_arrow"];
+        _indicateIcon.image = [UIImage imageNamed:@"right_arrow"];
         _indicateIcon.hidden = YES;
     }
     return _indicateIcon;

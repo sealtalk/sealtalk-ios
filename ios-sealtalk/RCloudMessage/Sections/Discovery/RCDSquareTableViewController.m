@@ -40,7 +40,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.tabBarController.navigationItem.title = RCDLocalizedString(@"discover");
+    self.tabBarController.navigationItem.title = RCDLocalizedString(@"chatroom");
     self.tabBarController.navigationItem.rightBarButtonItems = nil;
 }
 

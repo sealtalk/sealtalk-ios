@@ -12,6 +12,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import "UIView+MBProgressHUD.h"
 #import "RCDQRInfoHandle.h"
+#import <RongIMKit/RCKitCommonDefine.h>
+#import <RongIMKit/RCAlertView.h>
 @interface RCDScanQRCodeController () <AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate,
                                        UINavigationControllerDelegate, RCDScannerViewDelegate>
 
@@ -101,20 +103,9 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info {
 
 #pragma mark - private
 - (void)showErrorAlertView {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController
-            addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"confirm", @"RongCloudKit", nil)
-                                               style:UIAlertActionStyleDestructive
-                                             handler:^(UIAlertAction *_Nonnull action){
-                                             }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"QRIdentifyError")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *_Nonnull action) {
-                                                              [self.navigationController popViewControllerAnimated:YES];
-                                                          }]];
-    });
+    [RCAlertView showAlertController:nil message:RCDLocalizedString(@"QRIdentifyError") actionTitles:nil cancelTitle:nil confirmTitle:RCLocalizedString(@"Confirm") preferredStyle:(UIAlertControllerStyleAlert) actionsBlock:nil cancelBlock:nil confirmBlock:^{
+        [self.navigationController popViewControllerAnimated:YES];
+    } inViewController:self];
 }
 
 - (void)setNavi {

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RongIMLib/RCGroup.h>
+#import <RongIMLib/RongIMLib.h>
 typedef NS_ENUM(NSInteger, RCDGroupMessageClearStatus) {
     RCDGroupMessageClearStatusClose = 0,
     RCDGroupMessageClearStatusBefore3d = 3,

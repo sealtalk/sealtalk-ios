@@ -165,10 +165,7 @@
 }
 
 - (void)showAlertController:(NSString *)title cancenTitle:(NSString *)cancelTitle {
-    UIAlertController *alertController =
-        [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:nil]];
-    [self presentViewController:alertController animated:YES completion:nil];
+    [RCAlertView showAlertController:title message:nil cancelTitle:cancelTitle inViewController:self];
 }
 
 #pragma mark - Setter && Getter

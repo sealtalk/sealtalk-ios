@@ -12,6 +12,7 @@
 #import "RCDCSEvaluateModel.h"
 #import "RCDCommonDefine.h"
 #import "RCDUIBarButtonItem.h"
+#import <RongCustomerService/RongCustomerService.h>
 @interface RCDCustomerServiceViewController () <RCDCSAnnounceViewDelegate, RCDCSEvaluateViewDelegate>
 //＊＊＊＊＊＊＊＊＊应用自定义评价界面开始1＊＊＊＊＊＊＊＊＊＊＊＊＊
 @property (nonatomic, strong) NSString *commentId;
@@ -34,7 +35,7 @@
 
     self.evaStarDic = [NSMutableDictionary dictionary];
     __weak typeof(self) weakSelf = self;
-    [[RCIMClient sharedRCIMClient] getHumanEvaluateCustomerServiceConfig:^(NSDictionary *evaConfig) {
+    [[RCCustomerServiceClient sharedCustomerServiceClient] getHumanEvaluateCustomerServiceConfig:^(NSDictionary *evaConfig) {
         NSArray *array = [evaConfig valueForKey:@"evaConfig"];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (array) {
@@ -51,24 +52,6 @@
     [super viewWillAppear:animated];
     [self createNavLeftBarButtonItem];
     self.navigationItem.rightBarButtonItems = nil;
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-
-    if (![[UIDevice currentDevice].model containsString:@"iPad"]) {
-        return;
-    }
-
-    CGRect collectionViewFrame = self.conversationMessageCollectionView.frame;
-    CGRect frame = CGRectMake(0, collectionViewFrame.origin.y, self.view.frame.size.width, 44);
-    if (RCDIsIPad) {
-        frame.origin.y += 20;
-        collectionViewFrame.origin.y += 64;
-        collectionViewFrame.size.height -= 64;
-        self.conversationMessageCollectionView.frame = collectionViewFrame;
-    }
-    self.announceView.frame = frame;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -118,33 +101,22 @@
     self.quitAfterComment = isQuit;
     if (serviceStatus == 0) {
         [super customerServiceLeftCurrentViewController];
-        ;
     } else if (serviceStatus == 1) {
         //人工评价结果
         [self.evaluateView show];
     } else if (serviceStatus == 2) {
         //机器人评价结果
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:RCDLocalizedString(@"remark_rebot_service")
-                                                message:RCDLocalizedString(@"satisfaction")
-                                         preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"yes")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *_Nonnull action) {
-                                                              [self evaluateCustomerService:YES];
-                                                          }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"no")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *_Nonnull action) {
-                                                              [self evaluateCustomerService:NO];
-                                                          }]];
-        [self presentViewController:alertController animated:YES completion:nil];
+        [RCAlertView showAlertController:RCDLocalizedString(@"remark_rebot_service") message:RCDLocalizedString(@"satisfaction") actionTitles:nil cancelTitle:RCDLocalizedString(@"no") confirmTitle:RCDLocalizedString(@"yes") preferredStyle:(UIAlertControllerStyleAlert) actionsBlock:nil cancelBlock:^{
+            [self evaluateCustomerService:NO];
+        } confirmBlock:^{
+            [self evaluateCustomerService:YES];
+        } inViewController:self];
     }
 }
 
 - (void)evaluateCustomerService:(BOOL)isRobotResolved {
     //(1)调用evaluateCustomerService将评价结果传给融云sdk。
-    [[RCIMClient sharedRCIMClient] evaluateCustomerService:self.targetId
+    [[RCCustomerServiceClient sharedCustomerServiceClient] evaluateCustomerService:self.targetId
                                               knownledgeId:self.commentId
                                                 robotValue:isRobotResolved
                                                    suggest:nil];
@@ -158,7 +130,7 @@
 
 - (void)announceViewWillShow:(NSString *)announceMsg announceClickUrl:(NSString *)announceClickUrl {
     self.announceClickUrl = announceClickUrl;
-
+    self.announceView.hidden = NO;
     self.announceView.content.text = announceMsg;
     if (announceClickUrl.length == 0) {
         self.announceView.hiddenArrowIcon = YES;
@@ -179,7 +151,7 @@
                      star:(int)star
                 tagString:(NSString *)tagString
                   suggest:(NSString *)suggest {
-    [[RCIMClient sharedRCIMClient] evaluateCustomerService:self.targetId
+    [[RCCustomerServiceClient sharedCustomerServiceClient] evaluateCustomerService:self.targetId
                                                   dialogId:nil
                                                  starValue:star
                                                    suggest:suggest
@@ -188,7 +160,6 @@
                                                      extra:nil];
     if (self.quitAfterComment) {
         [super customerServiceLeftCurrentViewController];
-        ;
     }
 }
 
@@ -196,7 +167,6 @@
     [self.evaluateView hide];
     if (self.quitAfterComment) {
         [super customerServiceLeftCurrentViewController];
-        ;
     }
 }
 
@@ -217,6 +187,7 @@
         _announceView =
             [[RCDCSAnnounceView alloc] initWithFrame:CGRectMake(0, rect.origin.y - 44, self.view.frame.size.width, 44)];
         _announceView.delegate = self;
+//        _announceView.hidden = YES;
         [self.view addSubview:_announceView];
     }
     return _announceView;
@@ -224,10 +195,7 @@
 
 #pragma mark Navigation Setting
 - (void)createNavLeftBarButtonItem {
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
-                                                                             target:self
-                                                                             action:@selector(clickLeftBarButtonItem:)];
-    self.navigationItem.leftBarButtonItem = leftBtn;
+    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickLeftBarButtonItem:)];
 }
 
 @end

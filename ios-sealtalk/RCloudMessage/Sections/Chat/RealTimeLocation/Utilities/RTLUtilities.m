@@ -49,4 +49,8 @@ MBProgressHUD *hud;
     return image;
 }
 
++ (BOOL)isRTL {
+    return (NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_9_0 && [UIView appearance].semanticContentAttribute == UISemanticContentAttributeForceRightToLeft);
+}
+
 @end

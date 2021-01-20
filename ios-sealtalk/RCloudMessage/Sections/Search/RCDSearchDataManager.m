@@ -203,8 +203,8 @@
 }
 
 - (NSString *)formatMessage:(RCMessageContent *)messageContent withMessageId:(long)messageId {
-    if ([RCIM sharedRCIM].showUnkownMessage && messageId > 0 && !messageContent) {
-        return NSLocalizedStringFromTable(@"unknown_message_cell_tip", @"RongCloudKit", nil);
+    if (RCKitConfigCenter.message.showUnkownMessage && messageId > 0 && !messageContent) {
+        return RCLocalizedString(@"unknown_message_cell_tip");
     } else {
         return [RCKitUtility formatMessage:messageContent];
     }

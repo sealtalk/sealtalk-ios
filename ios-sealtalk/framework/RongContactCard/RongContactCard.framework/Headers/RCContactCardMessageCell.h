@@ -24,11 +24,6 @@
  */
 @property (nonatomic, strong) RCloudImageView *portraitView;
 
-/*!
- 消息的气泡背景View
- */
-@property (nonatomic, strong) UIImageView *bubbleBackgroundView;
-
 // size of cell
 + (CGSize)sizeOfMessageCell;
 @end

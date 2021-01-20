@@ -78,6 +78,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
     [self stopRetryTimerIfNeed];
     [self.animatedImagesView stopAnimating];
 }

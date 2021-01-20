@@ -214,14 +214,14 @@
     return [RCDDBManager getGroupNoticeList];
 }
 
-+ (void)getGroupNoticeListFromServer:(void (^)(NSArray<RCDGroupNotice *> *))complete {
-    [RCDGroupAPI getGroupNoticeList:^(NSArray<RCDGroupNotice *> *_Nonnull noticeList) {
++ (void)getGroupNoticeListFromServer:(void (^)(BOOL success,NSArray<RCDGroupNotice *> *))complete {
+    [RCDGroupAPI getGroupNoticeList:^(BOOL success, NSArray<RCDGroupNotice *> *_Nonnull noticeList) {
         if (noticeList) {
             [RCDDBManager clearGroupNoticeList];
             [RCDDBManager saveGroupNoticeList:noticeList];
         }
         if (complete) {
-            complete(noticeList);
+            complete(success,noticeList);
         }
     }];
 }
@@ -607,7 +607,10 @@
 + (BOOL)isReceiveGroupNoticeUpdateMessage:(RCMessage *)message {
     RCDGroupNoticeUpdateMessage *msg = (RCDGroupNoticeUpdateMessage *)message.content;
     if ([msg.operation isEqualToString:RCDGroupMemberInvite]) {
-        [RCDGroupManager getGroupNoticeListFromServer:^(NSArray<RCDGroupNotice *> *noticeList) {
+        [RCDGroupManager getGroupNoticeListFromServer:^(BOOL success, NSArray<RCDGroupNotice *> *noticeList) {
+            if (!success) {
+                return;
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:RCDGroupNoticeUpdateKey object:nil];
             });

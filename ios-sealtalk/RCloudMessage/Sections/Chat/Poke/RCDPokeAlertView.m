@@ -41,8 +41,7 @@
     } else {
         RCDPokeAlertView *pokeView = [[RCDPokeAlertView alloc] initWithFrame:controller.view.bounds];
         [pokeView registerNotification];
-        pokeView.backgroundColor = [RCDUtilities generateDynamicColor:[HEXCOLOR(0x000000) colorWithAlphaComponent:0.21]
-                                                            darkColor:[HEXCOLOR(0x6a6a6a) colorWithAlphaComponent:0.6]];
+        pokeView.backgroundColor = [HEXCOLOR(0x000000) colorWithAlphaComponent:0.4];
         pokeView.type = type;
         pokeView.targetId = targetId;
         pokeView.baseController = controller;
@@ -194,12 +193,12 @@
     CGRect keyboardBounds = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat space = CGRectGetMaxY(self.bgView.frame) - keyboardBounds.origin.y;
     if (space > 0) {
-        CGFloat bgHeight = (self.type == ConversationType_PRIVATE ? 300 : 335);
+        CGFloat bgHeight = (self.type == ConversationType_PRIVATE ? 280 : 315);
         [self.bgView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self).offset(-space);
             make.centerX.equalTo(self);
             make.height.offset(bgHeight);
-            make.width.offset(310);
+            make.width.offset(280);
         }];
         [self setNeedsLayout];
         [self layoutIfNeeded];
@@ -208,12 +207,12 @@
 
 //键盘关闭时动画
 - (void)keyboardWillHide:(NSNotification *)notif {
-    CGFloat bgHeight = (self.type == ConversationType_PRIVATE ? 300 : 335);
+    CGFloat bgHeight = (self.type == ConversationType_PRIVATE ? 280 : 315);
     [self.bgView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
         make.centerX.equalTo(self);
         make.height.offset(bgHeight);
-        make.width.offset(310);
+        make.width.offset(280);
     }];
     [self setNeedsLayout];
     [self layoutIfNeeded];
@@ -222,24 +221,19 @@
 #pragma mark - Subviews
 - (void)setupSubviews {
     [self addSubview:self.bgView];
-    CGFloat bgHeight = (self.type == ConversationType_PRIVATE ? 300 : 335);
+    CGFloat bgHeight = (self.type == ConversationType_PRIVATE ? 280 : 315);
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
         make.centerX.equalTo(self);
         make.height.offset(bgHeight);
-        make.width.offset(310);
+        make.width.offset(280);
     }];
 
     [self.bgView addSubview:self.pokeIcon];
     [self.bgView addSubview:self.infolabel];
     UIView *inputBgView = [[UIView alloc] init];
-    inputBgView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xf8f8f8)
-                                                           darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.2]];
-    inputBgView.layer.masksToBounds = YES;
-    inputBgView.layer.borderColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0x999999)
-                                                             darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.3]]
-                                        .CGColor;
-    inputBgView.layer.borderWidth = 0.5;
+    inputBgView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xf3f3f3)
+                                                           darkColor:HEXCOLOR(0x363636)];
     [self.bgView addSubview:inputBgView];
     [self.bgView addSubview:self.inputTextField];
     [self.bgView addSubview:self.cancelButton];
@@ -249,13 +243,13 @@
     [self.bgView addSubview:hLineView];
     [self.bgView addSubview:vLineView];
     [self.pokeIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.bgView).offset(32);
+        make.top.equalTo(self.bgView).offset(33);
         make.centerX.equalTo(self.bgView);
-        make.height.offset(110);
-        make.width.offset(88);
+        make.height.offset(63);
+        make.width.offset(63);
     }];
     [self.infolabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.pokeIcon.mas_bottom).offset(20);
+        make.top.equalTo(self.pokeIcon.mas_bottom).offset(27);
         make.left.equalTo(self.bgView).offset(10);
         make.centerX.equalTo(self.bgView);
         make.height.offset(24);
@@ -273,22 +267,21 @@
         [self.selectButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.sendLabel);
             make.left.equalTo(self.sendLabel.mas_right).offset(10);
-            make.right.equalTo(self.bgView).offset(-20);
+            make.right.equalTo(self.bgView).offset(-26);
             make.height.offset(24);
         }];
         [self.arrowIcon mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.sendLabel);
             make.right.equalTo(self.bgView).offset(-10);
-            make.height.offset(13);
-            make.width.offset(8);
+            make.width.height.offset(16);
         }];
     }
-    CGFloat inputTop = (self.type == ConversationType_PRIVATE ? 200 : 236);
+    CGFloat inputTop = (self.type == ConversationType_PRIVATE ? 158 : 194);
     [inputBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.bgView).offset(inputTop);
         make.left.equalTo(self.bgView).offset(10);
         make.centerX.equalTo(self.bgView);
-        make.height.offset(35);
+        make.height.offset(36);
     }];
     [self.inputTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.height.centerX.equalTo(inputBgView);
@@ -296,7 +289,7 @@
     }];
 
     [hLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.inputTextField.mas_bottom).offset(20);
+        make.top.equalTo(self.inputTextField.mas_bottom).offset(30);
         make.left.right.equalTo(self.bgView);
         make.height.offset(0.5);
     }];
@@ -323,8 +316,8 @@
 - (UIView *)bgView {
     if (!_bgView) {
         _bgView = [[UIView alloc] init];
-        _bgView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xf8f8f8)
-                                                           darkColor:[HEXCOLOR(0x000000) colorWithAlphaComponent:0.8]];
+        _bgView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xfAfafa)
+                                                           darkColor:HEXCOLOR(0x2c2c2c)];
         _bgView.layer.masksToBounds = YES;
         _bgView.layer.cornerRadius = 6;
     }
@@ -341,8 +334,9 @@
 - (UILabel *)infolabel {
     if (!_infolabel) {
         _infolabel = [[UILabel alloc] init];
-        _infolabel.font = [UIFont systemFontOfSize:17];
-        _infolabel.textColor = RCDDYCOLOR(0x333333, 0x9f9f9f);
+        _infolabel.font = [UIFont systemFontOfSize:15];
+        _infolabel.textColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0x111f2c)
+                                                        darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.8]];
         _infolabel.textAlignment = NSTextAlignmentCenter;
         if (self.type == ConversationType_GROUP) {
             RCGroup *group = [[RCIM sharedRCIM] getGroupInfoCache:self.targetId];
@@ -393,7 +387,7 @@
         NSAttributedString *attrString =
             [[NSAttributedString alloc] initWithString:_inputTextField.placeholder
                                             attributes:@{
-                                                NSForegroundColorAttributeName : RCDDYCOLOR(0x999999, 0x666666),
+                                                NSForegroundColorAttributeName : [RCDUtilities generateDynamicColor:HEXCOLOR(0xA0A5Ab) darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.4]],
                                                 NSFontAttributeName : _inputTextField.font
                                             }];
         _inputTextField.attributedPlaceholder = attrString;
@@ -406,7 +400,7 @@
     if (!_cancelButton) {
         _cancelButton = [[UIButton alloc] init];
         [_cancelButton setTitle:RCDLocalizedString(@"cancel") forState:UIControlStateNormal];
-        [_cancelButton setTitleColor:RCDDYCOLOR(0x999999, 0x666666) forState:(UIControlStateNormal)];
+        [_cancelButton setTitleColor:RCDDYCOLOR(0x111f2c, 0xAAAAAA) forState:(UIControlStateNormal)];
         [_cancelButton addTarget:self action:@selector(onCanelPressed) forControlEvents:UIControlEventTouchUpInside];
         [_cancelButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
     }
@@ -426,7 +420,7 @@
 
 - (UIView *)getLineView {
     UIView *view = [[UIView alloc] init];
-    view.backgroundColor = RCDDYCOLOR(0xd8d8d8, 0x3a3a3a);
+    view.backgroundColor = RCDDYCOLOR(0xe5e6e7, 0x323232);
     return view;
 }
 @end

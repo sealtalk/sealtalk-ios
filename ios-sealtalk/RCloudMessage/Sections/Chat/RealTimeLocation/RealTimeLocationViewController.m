@@ -57,20 +57,13 @@
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (status == kCLAuthorizationStatusDenied) {
         [RTLUtilities hideHUDAnimated:YES];
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:RTLLocalizedString(@"Inaccessible")
-                                                message:RTLLocalizedString(@"Location_access_without_permission")
-                                         preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:RTLLocalizedString(@"confirm")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
+        [RCAlertView showAlertController:RTLLocalizedString(@"Inaccessible") message:RTLLocalizedString(@"Location_access_without_permission") cancelTitle:RCDLocalizedString(@"confirm") inViewController:self];
     }
 }
 
 - (void)viewDidLayoutSubviews {
     self.mapView.frame = CGRectMake(0, 0, RTLScreenWidth, RTLScreenHeight);
-    self.headCollectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 95);
+    self.headCollectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 73+[RCKitUtility getWindowSafeAreaInsets].top);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -85,23 +78,14 @@
 
 #pragma mark - HeadCollectionTouchDelegate
 - (BOOL)quitButtonPressed {
-    UIAlertAction *cancelAction =
-        [UIAlertAction actionWithTitle:RTLLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
-    UIAlertAction *endAction =
-        [UIAlertAction actionWithTitle:RTLLocalizedString(@"end")
-                                 style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *_Nonnull action) {
-                                   __weak typeof(self) __weakself = self;
-                                   [self dismissViewControllerAnimated:YES
-                                                            completion:^{
-                                                                [__weakself.realTimeLocationProxy quitRealTimeLocation];
-                                                            }];
-                               }];
-    [RCKitUtility showAlertController:RTLLocalizedString(@"end_share_location_alert")
-                              message:nil
-                       preferredStyle:UIAlertControllerStyleActionSheet
-                              actions:@[ cancelAction, endAction ]
-                     inViewController:self];
+    [RCActionSheetView showActionSheetView:RTLLocalizedString(@"end_share_location_alert") cellArray:@[RTLLocalizedString(@"end")] cancelTitle:RCDLocalizedString(@"cancel") selectedBlock:^(NSInteger index) {
+        __weak typeof(self) __weakself = self;
+        [self dismissViewControllerAnimated:YES completion:^{
+            [__weakself.realTimeLocationProxy quitRealTimeLocation];
+        }];
+    } cancelBlock:^{
+            
+    }];
     return YES;
 }
 
@@ -371,7 +355,7 @@
 - (HeadCollectionView *)headCollectionView {
     if (!_headCollectionView) {
         _headCollectionView =
-            [[HeadCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 95)
+            [[HeadCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 73+[RCKitUtility getWindowSafeAreaInsets].top)
                                          participants:[self.realTimeLocationProxy getParticipants]
                                         touchDelegate:self];
         _headCollectionView.touchDelegate = self;

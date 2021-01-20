@@ -80,7 +80,7 @@
             versionCell = [[RCDVersionCell alloc] init];
         }
         [versionCell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
-        versionCell.leftLabel.text = RCDLocalizedString(@"SealTalk_version");
+        versionCell.leftLabel.text = RCDLocalizedString(@"ST_version");
         NSString *SealTalkVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"SealTalk Version"];
         versionCell.rightLabel.text = SealTalkVersion;
         BOOL isNeedUpdate = [[DEFAULTS objectForKey:RCDNeedUpdateKey] boolValue];
@@ -194,12 +194,9 @@
 
 - (void)initUI {
     [self setPoweredView];
-    self.navigationItem.title = RCDLocalizedString(@"about_sealtalk");
+    self.navigationItem.title = RCDLocalizedString(@"about_st");
 
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
-                                                                             target:self
-                                                                             action:@selector(clickBackBtn:)];
-    self.navigationItem.leftBarButtonItem = leftBtn;
+    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn:)];
 }
 
 #pragma mark - getter

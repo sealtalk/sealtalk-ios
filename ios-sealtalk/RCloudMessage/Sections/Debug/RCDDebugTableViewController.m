@@ -16,6 +16,11 @@
 #import "RCDDebugJoinChatroomViewController.h"
 #import "RCDDataStatistics.h"
 #import "RCDDebugSelectChatController.h"
+#import "RCDDebugDiscussionController.h"
+#import "RCDDebugMessagePushConfigController.h"
+#import "RCDDebugChatListViewController.h"
+#import "UIView+MBProgressHUD.h"
+
 #define DISPLAY_ID_TAG 100
 #define DISPLAY_ONLINE_STATUS_TAG 101
 #define JOIN_CHATROOM_TAG 102
@@ -135,13 +140,21 @@
         [self pushToChatroomStatusVC];
     } else if ([title isEqualToString:RCDLocalizedString(@"Set_chatroom_default_history_message")]) {
         [self showAlertController];
-    }else if ([title isEqualToString:@"消息扩展"]){
+    } else if ([title isEqualToString:@"讨论组"]) {
+        [self pushToDiscussionVC];
+    } else if ([title isEqualToString:@"配置消息推送属性"]) {
+        [self pushToMessagePushConfigVC];
+    } else if ([title isEqualToString:@"进入消息推送属性测试"]) {
+        [self pushToChatListVC];
+    } else if ([title isEqualToString:@"消息扩展"]){
         [self pushDebugMessageExtensionVC];
+    } else if ([title isEqualToString:@"设置推送语言"]) {
+        [self setPushLauguageCode];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark init data for tabelview
+#pragma mark - init data for tabelview
 - (void)initdata {
     NSMutableDictionary *dic = [NSMutableDictionary new];
 
@@ -167,6 +180,7 @@
     ]
             forKey:RCDLocalizedString(@"time_setting")];
 
+    [dic setObject:@[@"讨论组", @"配置消息推送属性", @"进入消息推送属性测试", @"设置推送语言"] forKey:@"功能"];
     self.functions = [dic copy];
 }
 
@@ -188,6 +202,7 @@
     if (isNeedAdd == NO)
         return;
     UISwitch *switchView = [[UISwitch alloc] init];
+    switchView.onTintColor = HEXCOLOR(0x0099ff);
     switchView.translatesAutoresizingMaskIntoConstraints = NO;
     [switchView addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
     switchView.tag = cell.tag;
@@ -262,7 +277,7 @@
     case BURN_MESSAGE_TAG: {
         [DEFAULTS setBool:isButtonOn forKey:RCDDebugBurnMessageKey];
         [DEFAULTS synchronize];
-        [RCIM sharedRCIM].enableBurnMessage = isButtonOn;
+        RCKitConfigCenter.message.enableDestructMessage = isButtonOn;
     } break;
     case SEND_COMBINE_MESSAGE_TAG: {
         [DEFAULTS setBool:isButtonOn forKey:RCDDebugSendCombineMessageKey];
@@ -315,12 +330,7 @@
     self.webUploader = [[GCDWebUploader alloc] initWithUploadDirectory:homePath];
     if ([self.webUploader start]) {
         NSString *host = self.webUploader.serverURL.absoluteString;
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:host
-                                                message:@"请在电脑浏览器打开上面的地址"
-                                         preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
+        [RCAlertView showAlertController:host message:@"请在电脑浏览器打开上面的地址" cancelTitle:@"确定" inViewController:self];
         NSLog(@"web uploader host:%@ port:%@", host, @(self.webUploader.port));
     }
 }
@@ -355,6 +365,21 @@
 - (void)pushToChatroomStatusVC {
     RCDDebugJoinChatroomViewController *vc = [[RCDDebugJoinChatroomViewController alloc] init];
     vc.title = @"加入聊天室";
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushToDiscussionVC{
+    RCDDebugDiscussionController *vc = [[RCDDebugDiscussionController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushToMessagePushConfigVC {
+    RCDDebugMessagePushConfigController *vc = [[RCDDebugMessagePushConfigController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushToChatListVC {
+    RCDDebugChatListViewController *vc = [[RCDDebugChatListViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -521,4 +546,38 @@
         }
     }
 }
+
+- (void)setPushLauguageCode {
+    __block UITextField *tempTextField;
+    NSString *lauguageCode = [DEFAULTS objectForKey:RCDCurrentPushLauguageCodeKey];
+    NSString *message = [NSString stringWithFormat:@"当前推送语言为：%@", lauguageCode ?: @""];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"设置推送语言，例如 zh_CN、en_US、ar_SA" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action) {
+        NSString *code = tempTextField.text;
+        [DEFAULTS setObject:code forKey:RCDCurrentPushLauguageCodeKey];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        });
+        [[[RCPushProfile alloc] init] setPushLauguageCode:code success:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                [self.view showHUDMessage:@"设置成功"];
+            });
+        } error:^(RCErrorCode status) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                [self.view showHUDMessage:[NSString stringWithFormat:@"%@ %ld", RCDLocalizedString(@"Failed"), (long)status]];
+            });
+        }];
+    }];
+    [alertController addAction:cancelAction];
+    [alertController addAction:okAction];
+    
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *_Nonnull textField) {
+        tempTextField = textField;
+    }];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 @end

@@ -40,6 +40,8 @@
 #import "NormalAlertView.h"
 #import <Masonry/Masonry.h>
 #import "UIView+MBProgressHUD.h"
+#import "RCDSettingViewController.h"
+#import <RongPublicService/RongPublicService.h>
 
 /*******************实时位置共享***************/
 #import <objc/runtime.h>
@@ -53,13 +55,7 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
 
 #define PLUGIN_BOARD_ITEM_POKE_TAG 20000
 
-@interface RCChatSessionInputBarControl ()
-@property (nonatomic, assign) BOOL burnMessageMode;
-@end
-;
-
-@interface RCDChatViewController () <RCMessageCellDelegate, RCDQuicklySendManagerDelegate, UIGestureRecognizerDelegate,
-                                     RealTimeLocationStatusViewDelegate, RCRealTimeLocationObserver>
+@interface RCDChatViewController () <RCMessageCellDelegate, RCDQuicklySendManagerDelegate, UIGestureRecognizerDelegate, RealTimeLocationStatusViewDelegate, RCRealTimeLocationObserver>
 @property (nonatomic, strong) RCDGroupInfo *groupInfo;
 @property (nonatomic, assign) BOOL isShow;
 @property (nonatomic, assign) BOOL loading;
@@ -92,8 +88,6 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-
     self.loading = NO;
 
     ///注册自定义测试消息Cell
@@ -148,8 +142,8 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     }
 
     KBottomBarStatus inputType = self.chatSessionInputBarControl.currentBottomBarStatus;
-    if (self.chatSessionInputBarControl.burnMessageMode) {
-        inputType = KBottomBarBurnStatus;
+    if (self.chatSessionInputBarControl.destructMessageMode) {
+        inputType = KBottomBarDestructStatus;
     }
     [[RCDIMService sharedService] saveInputStatus:self.conversationType targetId:self.targetId inputType:inputType];
 }
@@ -260,7 +254,7 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     //戳一下消息不能撤回
     if ([[[model.content class] getObjectName] isEqualToString:RCDPokeMessageTypeIdentifier]) {
         for (UIMenuItem *item in menuList) {
-            if ([item.title isEqualToString:NSLocalizedStringFromTable(@"Recall", @"RongCloudKit", nil)]) {
+            if ([item.title isEqualToString:RCLocalizedString(@"Recall")]) {
                 if ([list containsObject:item]) {
                     [list removeObject:item];
                 }
@@ -358,31 +352,22 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     switch (tag) {
     case PLUGIN_BOARD_ITEM_LOCATION_TAG: {
         if (self.realTimeLocation) {
-            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RTLLocalizedString(@"cancel")
-                                                                   style:UIAlertActionStyleCancel
-                                                                 handler:nil];
-            UIAlertAction *sendLocationAction =
-                [UIAlertAction actionWithTitle:RTLLocalizedString(@"send_location")
-                                         style:UIAlertActionStyleDefault
-                                       handler:^(UIAlertAction *_Nonnull action) {
-                                           [super pluginBoardView:self.chatSessionInputBarControl.pluginBoardView
-                                               clickedItemWithTag:PLUGIN_BOARD_ITEM_LOCATION_TAG];
-                                       }];
-            UIAlertAction *locationShareAction = [UIAlertAction actionWithTitle:RTLLocalizedString(@"location_share")
-                                                                          style:UIAlertActionStyleDefault
-                                                                        handler:^(UIAlertAction *_Nonnull action) {
-                                                                            [self showRealTimeLocationViewController];
-                                                                        }];
-
-            [RCKitUtility showAlertController:nil
-                                      message:nil
-                               preferredStyle:UIAlertControllerStyleActionSheet
-                                      actions:@[ cancelAction, sendLocationAction, locationShareAction ]
-                             inViewController:self];
+            [RCActionSheetView showActionSheetView:nil cellArray:@[RTLLocalizedString(@"send_location"), RTLLocalizedString(@"location_share")]
+                                       cancelTitle:RTLLocalizedString(@"cancel")
+                                     selectedBlock:^(NSInteger index) {
+                if (index == 0) {
+                    [super pluginBoardView:self.chatSessionInputBarControl.pluginBoardView
+                        clickedItemWithTag:PLUGIN_BOARD_ITEM_LOCATION_TAG];
+                }else{
+                    [self showRealTimeLocationViewController];
+                }
+            } cancelBlock:^{
+                
+            }];
         } else {
             [super pluginBoardView:pluginBoardView clickedItemWithTag:tag];
         }
-    } break;
+    }break;
     case PLUGIN_BOARD_ITEM_POKE_TAG: {
         if (self.conversationType == ConversationType_GROUP) {
             RCDGroupMember *member =
@@ -519,46 +504,28 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     //客服设置
     else if (self.conversationType == ConversationType_CUSTOMERSERVICE ||
              self.conversationType == ConversationType_SYSTEM) {
-        RCSettingViewController *settingVC = [[RCSettingViewController alloc] init];
+        RCDSettingViewController *settingVC = [[RCDSettingViewController alloc] init];
         settingVC.conversationType = self.conversationType;
         settingVC.targetId = self.targetId;
         //清除聊天记录之后reload data
         __weak RCDChatViewController *weakSelf = self;
-        settingVC.clearHistoryCompletion = ^(BOOL isSuccess) {
-            if (isSuccess) {
-                [weakSelf.conversationDataRepository removeAllObjects];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf.conversationMessageCollectionView reloadData];
-                });
-            }
-        };
+        [settingVC setClearMessageHistory:^{
+            [weakSelf.conversationDataRepository removeAllObjects];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.conversationMessageCollectionView reloadData];
+            });
+        }];
         [self.navigationController pushViewController:settingVC animated:YES];
     } else if (ConversationType_APPSERVICE == self.conversationType ||
                ConversationType_PUBLICSERVICE == self.conversationType) {
         RCPublicServiceProfile *serviceProfile =
-            [[RCIMClient sharedRCIMClient] getPublicServiceProfile:(RCPublicServiceType)self.conversationType
+            [[RCPublicServiceClient sharedPublicServiceClient] getPublicServiceProfile:(RCPublicServiceType)self.conversationType
                                                    publicServiceId:self.targetId];
 
         RCPublicServiceProfileViewController *infoVC = [[RCPublicServiceProfileViewController alloc] init];
         infoVC.serviceProfile = serviceProfile;
         infoVC.fromConversation = YES;
         [self.navigationController pushViewController:infoVC animated:YES];
-    }
-}
-
-/*点击系统键盘的语音按钮，导致输入工具栏被遮挡*/
-- (void)keyboardWillShowNotification:(NSNotification *)notification {
-    // PokeAlertView 输入内容时，内容直接被输到了输入栏里，所以需要判断PokeAlertView是否展示
-    if (!self.chatSessionInputBarControl.inputTextView.isFirstResponder &&
-        ![RCDPokeManager sharedInstance].isShowPokeAlert) {
-        [self.chatSessionInputBarControl.inputTextView becomeFirstResponder];
-    }
-}
-
-//和上面的方法相对应，在别的页面弹出键盘导致聊天页面输入状态改变需要及时改变回来
-- (void)keyboardWillHideNotification:(NSNotification *)notification {
-    if (!self.chatSessionInputBarControl.inputTextView.isFirstResponder) {
-        [self.chatSessionInputBarControl.inputTextView resignFirstResponder];
     }
 }
 
@@ -587,20 +554,10 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     if ([self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_OUTGOING ||
         [self.realTimeLocation getStatus] == RC_REAL_TIME_LOCATION_STATUS_CONNECTED) {
         [self.chatSessionInputBarControl resetToDefaultStatus];
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:nil
-                                                message:RTLLocalizedString(@"leave_location_share_when_leave_chat")
-                                         preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:RTLLocalizedString(@"cancel")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:nil]];
-        [alertController addAction:[UIAlertAction actionWithTitle:RTLLocalizedString(@"confirm")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *_Nonnull action) {
-                                                              [self.realTimeLocation quitRealTimeLocation];
-                                                              [self popupChatViewController];
-                                                          }]];
-        [self presentViewController:alertController animated:YES completion:nil];
+        [RCAlertView showAlertController:nil message:RTLLocalizedString(@"leave_location_share_when_leave_chat") actionTitles:nil cancelTitle:RTLLocalizedString(@"cancel") confirmTitle:RCLocalizedString(@"Confirm") preferredStyle:(UIAlertControllerStyleAlert) actionsBlock:nil cancelBlock:nil confirmBlock:^{
+            [self.realTimeLocation quitRealTimeLocation];
+            [self popupChatViewController];
+        } inViewController:self];
     } else {
         [self popupChatViewController];
     }
@@ -608,7 +565,7 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
 
 - (void)quicklySendImage:(UIButton *)button {
     CGRect targetFrame =
-        CGRectMake(RCDScreenWidth - 108, self.chatSessionInputBarControl.frame.origin.y - 143 - 5, 100, 143);
+        CGRectMake(RCDScreenWidth - 108, self.chatSessionInputBarControl.frame.origin.y - 148 - 2, 106, 148);
     [[RCDQuicklySendManager sharedManager] showQuicklySendViewWithframe:targetFrame];
 }
 
@@ -682,20 +639,20 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
 }
 
 - (void)addEmoticonTabDemo {
-    //  //表情面板添加自定义表情包
-    //  UIImage *icon = [RCKitUtility imageNamed:@"emoji_btn_normal"
-    //                                  ofBundle:@"RongCloud.bundle"];
-    //  RCDCustomerEmoticonTab *emoticonTab1 = [RCDCustomerEmoticonTab new];
-    //  emoticonTab1.identify = @"1";
-    //  emoticonTab1.image = icon;
-    //  emoticonTab1.pageCount = 2;
-    //  [self.emojiBoardView addEmojiTab:emoticonTab1];
-    //
-    //  RCDCustomerEmoticonTab *emoticonTab2 = [RCDCustomerEmoticonTab new];
-    //  emoticonTab2.identify = @"2";
-    //  emoticonTab2.image = icon;
-    //  emoticonTab2.pageCount = 4;
-    //  [self.emojiBoardView addEmojiTab:emoticonTab2];
+//      //表情面板添加自定义表情包
+//      UIImage *icon = [RCKitUtility imageNamed:@"emoji_btn_normal"
+//                                      ofBundle:@"RongCloud.bundle"];
+//      RCDCustomerEmoticonTab *emoticonTab1 = [RCDCustomerEmoticonTab new];
+//      emoticonTab1.identify = @"1";
+//      emoticonTab1.image = icon;
+//      emoticonTab1.pageCount = 2;
+//      [self.chatSessionInputBarControl.emojiBoardView addEmojiTab:emoticonTab1];
+//    
+//      RCDCustomerEmoticonTab *emoticonTab2 = [RCDCustomerEmoticonTab new];
+//      emoticonTab2.identify = @"2";
+//      emoticonTab2.image = icon;
+//      emoticonTab2.pageCount = 4;
+//      [self.chatSessionInputBarControl.emojiBoardView addEmojiTab:emoticonTab2];
 }
 
 #pragma mark - helper
@@ -703,17 +660,18 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     if (self.conversationType != ConversationType_APPSERVICE &&
         self.conversationType != ConversationType_PUBLICSERVICE) {
         //加号区域增加发送文件功能，Kit中已经默认实现了该功能，但是为了SDK向后兼容性，目前SDK默认不开启该入口，可以参考以下代码在加号区域中增加发送文件功能。
-        UIImage *imageFile = [RCKitUtility imageNamed:@"actionbar_file_icon" ofBundle:@"RongCloud.bundle"];
         RCPluginBoardView *pluginBoardView = self.chatSessionInputBarControl.pluginBoardView;
-        [pluginBoardView insertItemWithImage:imageFile
-                                       title:NSLocalizedStringFromTable(@"File", @"RongCloudKit", nil)
-                                     atIndex:3
-                                         tag:PLUGIN_BOARD_ITEM_FILE_TAG];
+        [pluginBoardView insertItem:RCResourceImage(@"plugin_item_file")
+                   highlightedImage:RCResourceImage(@"plugin_item_file_highlighted")
+                              title:RCLocalizedString(@"File")
+                            atIndex:3
+                                tag:PLUGIN_BOARD_ITEM_FILE_TAG];
     }
     if (self.conversationType == ConversationType_PRIVATE || self.conversationType == ConversationType_GROUP) {
-        [self.chatSessionInputBarControl.pluginBoardView insertItemWithImage:[UIImage imageNamed:@"poke_plugin_item"]
-                                                                       title:RCDLocalizedString(@"Poke")
-                                                                         tag:PLUGIN_BOARD_ITEM_POKE_TAG];
+        [self.chatSessionInputBarControl.pluginBoardView insertItem:[UIImage imageNamed:@"plugin_item_poke"]
+                                                   highlightedImage:[UIImage imageNamed:@"plugin_item_poke_highlighted"]
+                                                              title:RCDLocalizedString(@"Poke")
+                                                                tag:PLUGIN_BOARD_ITEM_POKE_TAG];
     }
 }
 
@@ -741,29 +699,20 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
 - (void)setLeftNavigationItem {
     int count = [RCDUtilities getTotalUnreadCount];
     NSString *backString = nil;
-    if (count > 0 && count < 1000) {
-        backString = [NSString stringWithFormat:@"%@(%d)", RCDLocalizedString(@"back"), count];
-    } else if (count >= 1000) {
-        backString = [NSString stringWithFormat:@"%@(...)", RCDLocalizedString(@"back")];
-    } else {
-        backString = RCDLocalizedString(@"back");
+    if (self.conversationType != ConversationType_CHATROOM) {
+        if (count > 0 && count < 100) {
+            backString = [NSString stringWithFormat:@"(%d)", count];
+        }else if (count >= 100 && count < 1000) {
+            backString = @"99+";
+        } else if (count >= 1000) {
+            backString = [NSString stringWithFormat:@"(...)"];
+        }
     }
-    RCDUIBarButtonItem *leftButton =
-        [[RCDUIBarButtonItem alloc] initWithLeftBarButton:backString
-                                                   target:self
-                                                   action:@selector(leftBarButtonItemPressed:)];
-    [self.navigationItem setLeftBarButtonItem:leftButton];
+    [self.navigationItem setLeftBarButtonItems:[RCKitUtility getLeftNavigationItems:RCResourceImage(@"navigator_btn_back") title:backString target:self action:@selector(leftBarButtonItemPressed:)]];
 }
 
-- (void)setRightNavigationItem:(UIImage *)image withFrame:(CGRect)frame {
-    RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:image
-                                                                 imageViewFrame:frame
-                                                                    buttonTitle:nil
-                                                                     titleColor:nil
-                                                                     titleFrame:CGRectZero
-                                                                    buttonFrame:frame
-                                                                         target:self
-                                                                         action:@selector(rightBarButtonItemClicked:)];
+- (void)setRightNavigationItem:(UIImage *)image{
+    RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:image target:self action:@selector(rightBarButtonItemClicked:)];
     self.navigationItem.rightBarButtonItem = rightBtn;
 }
 
@@ -836,12 +785,11 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     if (self.conversationType == ConversationType_GROUP) {
         RCDGroupInfo *groupInfo = [RCDGroupManager getGroupInfo:self.targetId];
         if (groupInfo.groupName) {
-            self.userName = groupInfo.groupName;
-        }
-        if ([groupInfo.number intValue] > 0) {
-            self.title = [NSString stringWithFormat:@"%@(%d)", self.userName, [groupInfo.number intValue]];
-        } else {
-            self.title = [NSString stringWithFormat:@"%@", self.userName];
+            if ([groupInfo.number intValue] > 0) {
+                self.title = [NSString stringWithFormat:@"%@(%d)", groupInfo.groupName, [groupInfo.number intValue]];
+            } else {
+                self.title = [NSString stringWithFormat:@"%@", groupInfo.groupName];
+            }
         }
     } else if(self.conversationType == ConversationType_PRIVATE){
         RCUserInfo *userInfo = [[RCIM sharedRCIM] getUserInfoCache:self.targetId];
@@ -870,11 +818,11 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
             self.navigationItem.rightBarButtonItem = nil;
             return;
         }
-        [self setRightNavigationItem:[UIImage imageNamed:@"Group_Setting"] withFrame:CGRectMake(0, 0, 21, 19.5)];
+        [self setRightNavigationItem:[UIImage imageNamed:@"Setting"]];
     } else if (self.conversationType == ConversationType_CHATROOM) {
-        [self setRightNavigationItem:nil withFrame:CGRectZero];
+        [self setRightNavigationItem:nil];
     } else {
-        [self setRightNavigationItem:[UIImage imageNamed:@"Private_Setting"] withFrame:CGRectMake(0, 0, 16, 18.5)];
+        [self setRightNavigationItem:[UIImage imageNamed:@"Setting"]];
     }
 }
 - (void)addNotifications {
@@ -893,16 +841,6 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateForSharedMessageInsertSuccess:)
                                                  name:@"RCDSharedMessageInsertSuccess"
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShowNotification:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHideNotification:)
-                                                 name:UIKeyboardWillHideNotification
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -955,7 +893,7 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     UIBarButtonItem *forwardBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:forwardBtn];
     //删除按钮
     UIButton *deleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 40)];
-    [deleteBtn setImage:[RCKitUtility imageNamed:@"delete_message" ofBundle:@"RongCloud.bundle"]
+    [deleteBtn setImage:RCResourceImage(@"delete_message")
                forState:UIControlStateNormal];
     [deleteBtn addTarget:self action:@selector(deleteMessages) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *deleteBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:deleteBtn];
@@ -976,14 +914,7 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
         navi.modalPresentationStyle = UIModalPresentationFullScreen;
         [self.navigationController presentViewController:navi animated:YES completion:nil];
     } else {
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:nil
-                                                message:RCDLocalizedString(@"Forwarding_is_not_supported")
-                                         preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
+        [RCAlertView showAlertController:nil message:RCDLocalizedString(@"Forwarding_is_not_supported") cancelTitle:RCDLocalizedString(@"confirm")];
     }
 }
 

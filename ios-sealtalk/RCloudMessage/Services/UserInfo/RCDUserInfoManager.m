@@ -192,14 +192,17 @@
                                  RCUserInfo *user = [self getUserInfoFromFriendInfo:friendInfo];
                                  [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:userId];
                              } else {
-                                 friendInfo = [[RCDFriendInfo alloc] init];
-                                 friendInfo.userId = userId;
-                                 friendInfo.name = [self generateDefaultName:userId];
-                                 friendInfo.displayName = @"";
-                                 friendInfo.portraitUri = [RCDUtilities defaultUserPortrait:friendInfo];
-                                 [RCDDBManager saveFriends:@[ friendInfo ]];
-                                 RCUserInfo *user = [self getUserInfoFromFriendInfo:friendInfo];
-                                 [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:userId];
+                                 bool isInBlacklist = [RCDUserInfoManager isInBlacklist:userId];
+                                 if (!isInBlacklist) {
+                                     friendInfo = [[RCDFriendInfo alloc] init];
+                                     friendInfo.userId = userId;
+                                     friendInfo.name = [self generateDefaultName:userId];
+                                     friendInfo.displayName = @"";
+                                     friendInfo.portraitUri = [RCDUtilities defaultUserPortrait:friendInfo];
+                                     [RCDDBManager saveFriends:@[ friendInfo ]];
+                                     RCUserInfo *user = [self getUserInfoFromFriendInfo:friendInfo];
+                                     [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:userId];
+                                 }                                 
                              }
                              if (completeBlock) {
                                  completeBlock(friendInfo);

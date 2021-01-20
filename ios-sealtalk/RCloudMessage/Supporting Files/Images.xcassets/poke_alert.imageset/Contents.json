@@ -5,18 +5,50 @@
       "scale" : "1x"
     },
     {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "idiom" : "universal",
-      "filename" : "poke_alert@2x.png",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "编组 15备份 2@2x.png",
+      "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "编组 15备份 3@2x.png",
       "idiom" : "universal",
-      "filename" : "poke_alert@3x.png",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "编组 15备份 2@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "编组 15备份 3@3x.png",
+      "idiom" : "universal",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }

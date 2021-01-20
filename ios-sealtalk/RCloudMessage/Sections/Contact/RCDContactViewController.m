@@ -114,7 +114,7 @@
     if (section == 0) {
         return 0;
     }
-    return 21.f;
+    return 32.f;
 }
 
 //如果没有该方法，tableView会默认显示footerView，其高度与headerView等高
@@ -125,12 +125,12 @@
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-    view.frame = CGRectMake(0, 0, self.view.frame.size.width, 21);
-    view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+    view.frame = CGRectMake(0, 0, self.view.frame.size.width, 32);
+    view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x111111);
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
-    title.frame = CGRectMake(13, 3, 15, 15);
-    title.font = [UIFont systemFontOfSize:15.f];
-    title.textColor = RCDDYCOLOR(0x999999, 0x9f9f9f);
+    title.frame = CGRectMake(13, 8, 15, 16);
+    title.font = [UIFont systemFontOfSize:14.f];
+    title.textColor = RCDDYCOLOR(0x3b3b3b, 0x878787);
     [view addSubview:title];
 
     if (section == 0) {
@@ -182,7 +182,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 55.5;
+    return 56;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
@@ -303,14 +303,7 @@
 - (void)setupNavi {
     self.navigationController.navigationBar.translucent = NO;
     self.tabBarController.navigationItem.title = RCDLocalizedString(@"contacts");
-    RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"add_friend"]
-                                                                 imageViewFrame:CGRectMake(0, 0, 22, 20)
-                                                                    buttonTitle:nil
-                                                                     titleColor:nil
-                                                                     titleFrame:CGRectZero
-                                                                    buttonFrame:CGRectMake(0, 0, 22, 20)
-                                                                         target:self
-                                                                         action:@selector(pushAddFriendVC:)];
+    RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"add_friend"] target:self action:@selector(pushAddFriendVC:)];
     self.tabBarController.navigationItem.rightBarButtonItems = [rightBtn setTranslation:rightBtn translation:-6];
 }
 
@@ -429,15 +422,19 @@
 
 - (RCDTableView *)friendsTabelView {
     if (!_friendsTabelView) {
-        _friendsTabelView = [[RCDTableView alloc] initWithFrame:CGRectZero style:(UITableViewStyleGrouped)];
+        _friendsTabelView = [[RCDTableView alloc] initWithFrame:CGRectZero style:(UITableViewStylePlain)];
         _friendsTabelView.delegate = self;
         _friendsTabelView.dataSource = self;
         _friendsTabelView.tableFooterView = [UIView new];
-        _friendsTabelView.tableHeaderView =
-            [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _friendsTabelView.bounds.size.width, 0.01f)];
         //设置右侧索引
         _friendsTabelView.sectionIndexBackgroundColor = [UIColor clearColor];
-        _friendsTabelView.sectionIndexColor = HEXCOLOR(0x555555);
+        _friendsTabelView.sectionIndexColor = HEXCOLOR(0x6f6f6f);
+        if ([_friendsTabelView respondsToSelector:@selector(setSeparatorInset:)]) {
+            _friendsTabelView.separatorInset = UIEdgeInsetsMake(0, 64, 0, 0);
+        }
+        if ([_friendsTabelView respondsToSelector:@selector(setLayoutMargins:)]) {
+            _friendsTabelView.layoutMargins = UIEdgeInsetsMake(0, 64, 0, 0);
+        }
     }
     return _friendsTabelView;
 }

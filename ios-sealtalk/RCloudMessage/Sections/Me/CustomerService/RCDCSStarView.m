@@ -23,8 +23,8 @@
 }
 
 - (void)setDefaultStarIndex:(NSInteger)index starWidth:(CGFloat)starWidth space:(CGFloat)space {
-    self.defaultImage = [RCKitUtility imageNamed:(@"custom_service_evaluation_star") ofBundle:@"RongCloud.bundle"];
-    self.lightImage = [RCKitUtility imageNamed:(@"custom_service_evaluation_star_hover") ofBundle:@"RongCloud.bundle"];
+    self.defaultImage = RCResourceImage(@"custom_service_evaluation_star");
+    self.lightImage = RCResourceImage(@"custom_service_evaluation_star_hover");
     [self setStarTitle];
     CGRect startFrame = self.frame;
     for (NSInteger j = 0; j < 5; j++) {

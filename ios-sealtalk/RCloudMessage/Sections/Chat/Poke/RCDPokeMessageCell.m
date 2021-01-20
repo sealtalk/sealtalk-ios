@@ -9,14 +9,9 @@
 #import "RCDPokeMessageCell.h"
 #import "RCDPokeMessage.h"
 
-#define Poke_Message_Font_Size 15
-#define PokeSize CGSizeMake(12, 14)
+#define Poke_Message_Font_Size 17
+#define PokeSize CGSizeMake(22, 22)
 @interface RCDPokeMessageCell ()
-/*!
- 背景View
- */
-@property (nonatomic, strong) UIImageView *bubbleBackgroundView;
-
 @property (nonatomic, strong) UIImageView *pokeIcon;
 @property (nonatomic, strong) UILabel *contentLabel;
 @end
@@ -27,8 +22,8 @@
     CGSize size = [RCDPokeMessageCell getBubbleBackgroundViewSize:model];
 
     CGFloat __messagecontentview_height = size.height;
-    if (__messagecontentview_height < [RCIM sharedRCIM].globalMessagePortraitSize.height) {
-        __messagecontentview_height = [RCIM sharedRCIM].globalMessagePortraitSize.height;
+    if (__messagecontentview_height < RCKitConfigCenter.ui.globalMessagePortraitSize.height) {
+        __messagecontentview_height = RCKitConfigCenter.ui.globalMessagePortraitSize.height;
     }
     __messagecontentview_height += extraHeight;
     return CGSizeMake(collectionViewWidth, __messagecontentview_height);
@@ -43,14 +38,9 @@
 }
 
 - (void)initialize {
-    self.bubbleBackgroundView = [[UIImageView alloc] initWithFrame:CGRectZero];
-    [self.messageContentView addSubview:self.bubbleBackgroundView];
-    [self.bubbleBackgroundView addSubview:self.pokeIcon];
-    [self.bubbleBackgroundView addSubview:self.contentLabel];
-    self.bubbleBackgroundView.userInteractionEnabled = YES;
-    UILongPressGestureRecognizer *longPress =
-        [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
-    [self.bubbleBackgroundView addGestureRecognizer:longPress];
+    [self showBubbleBackgroundView:YES];
+    [self.messageContentView addSubview:self.pokeIcon];
+    [self.messageContentView addSubview:self.contentLabel];
 }
 
 - (void)setDataModel:(RCMessageModel *)model {
@@ -59,52 +49,23 @@
 }
 
 - (void)setAutoLayout {
+    if(self.model.messageDirection == MessageDirection_RECEIVE){
+        [self.contentLabel setTextColor:[RCKitUtility generateDynamicColor:HEXCOLOR(0x333333) darkColor:RCMASKCOLOR(0xffffff, 0.8)]];
+        self.pokeIcon.image = [UIImage imageNamed:@"poke_from_msg"];
+    }else{
+        [self.contentLabel setTextColor:RCDYCOLOR(0x333333, 0x040A0F)];
+        self.pokeIcon.image = [UIImage imageNamed:@"poke_to_msg"];
+    }
     self.contentLabel.attributedText = [[self class] getDisplayContent:self.model];
     CGSize textLabelSize = [[self class] getTextLabelSize:self.model];
-    CGSize bubbleBackgroundViewSize = [[self class] getBubbleSize:textLabelSize];
-    CGRect messageContentViewRect = self.messageContentView.frame;
-    CGFloat pokeX = 20;
-    //拉伸图片
-    if (MessageDirection_RECEIVE == self.messageDirection) {
-        self.pokeIcon.image = [UIImage imageNamed:@"poke_msg_receive"];
-        messageContentViewRect.size.width = bubbleBackgroundViewSize.width;
-        self.messageContentView.frame = messageContentViewRect;
+    CGSize messageContentSize = [[self class] getBubbleSize:textLabelSize];
+    
+    
+    self.messageContentView.contentSize = messageContentSize;
 
-        self.bubbleBackgroundView.frame =
-            CGRectMake(0, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
-        UIImage *image = [RCKitUtility imageNamed:@"chat_from_bg_normal" ofBundle:@"RongCloud.bundle"];
-        self.bubbleBackgroundView.image =
-            [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height * 0.8, image.size.width * 0.8,
-                                                                image.size.height * 0.2, image.size.width * 0.2)];
-    } else {
-        self.pokeIcon.image = [UIImage imageNamed:@"poke_msg_send"];
-        pokeX = 12;
-        messageContentViewRect.size.width = bubbleBackgroundViewSize.width;
-        messageContentViewRect.size.height = bubbleBackgroundViewSize.height;
-        messageContentViewRect.origin.x =
-            self.baseContentView.bounds.size.width - (messageContentViewRect.size.width + HeadAndContentSpacing +
-                                                      [RCIM sharedRCIM].globalMessagePortraitSize.width + 10);
-        self.messageContentView.frame = messageContentViewRect;
-
-        self.bubbleBackgroundView.frame =
-            CGRectMake(0, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
-        UIImage *image = [RCKitUtility imageNamed:@"chat_to_bg_normal" ofBundle:@"RongCloud.bundle"];
-        self.bubbleBackgroundView.image =
-            [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height * 0.8, image.size.width * 0.2,
-                                                                image.size.height * 0.2, image.size.width * 0.8)];
-    }
-    self.pokeIcon.frame = CGRectMake(pokeX, 12, PokeSize.width, PokeSize.height);
+    self.pokeIcon.frame = CGRectMake(12, 8.5, PokeSize.width, PokeSize.height);
     self.contentLabel.frame =
         CGRectMake(CGRectGetMaxX(self.pokeIcon.frame) + 6, 7, textLabelSize.width, textLabelSize.height);
-}
-
-- (void)longPressed:(id)sender {
-    UILongPressGestureRecognizer *press = (UILongPressGestureRecognizer *)sender;
-    if (press.state == UIGestureRecognizerStateEnded) {
-        return;
-    } else if (press.state == UIGestureRecognizerStateBegan) {
-        [self.delegate didLongTouchMessageCell:self.model inView:self.bubbleBackgroundView];
-    }
 }
 
 + (NSAttributedString *)getDisplayContent:(RCMessageModel *)model {
@@ -121,12 +82,12 @@
         if (model && model.messageDirection == MessageDirection_SEND) {
             [attributedString
                 addAttribute:NSForegroundColorAttributeName
-                       value:[RCKitUtility generateDynamicColor:HEXCOLOR(0x0099ff) darkColor:HEXCOLOR(0x219dbe)]
+                       value:[RCKitUtility generateDynamicColor:HEXCOLOR(0x0099ff) darkColor:HEXCOLOR(0x005F9E)]
                        range:range];
         } else {
             [attributedString
                 addAttribute:NSForegroundColorAttributeName
-                       value:[RCKitUtility generateDynamicColor:HEXCOLOR(0x0099ff) darkColor:HEXCOLOR(0x0099ff)]
+                       value:[RCKitUtility generateDynamicColor:HEXCOLOR(0x0099ff) darkColor:HEXCOLOR(0x1290e2)]
                        range:range];
         }
     }
@@ -136,7 +97,7 @@
 + (CGSize)getTextLabelSize:(RCMessageModel *)model {
     NSAttributedString *attr = [self getDisplayContent:model];
     if ([attr.string length] > 0) {
-        float maxWidth = RCDScreenWidth - (10 + [RCIM sharedRCIM].globalMessagePortraitSize.width + 10) * 2 - 5 - 35;
+        float maxWidth = RCDScreenWidth - (10 + RCKitConfigCenter.ui.globalMessagePortraitSize.width + 10) * 2 - 5 - 35;
         CGRect textRect =
             [attr.string boundingRectWithSize:CGSizeMake(maxWidth, 8000)
                                       options:(NSStringDrawingTruncatesLastVisibleLine |
@@ -156,8 +117,8 @@
 + (CGSize)getBubbleSize:(CGSize)textLabelSize {
     CGSize bubbleSize = CGSizeMake(textLabelSize.width, textLabelSize.height);
 
-    if (bubbleSize.width + 12 + 20 > 50) {
-        bubbleSize.width = bubbleSize.width + 12 + 20 + PokeSize.width;
+    if (bubbleSize.width + 12 + 12 > 50) {
+        bubbleSize.width = bubbleSize.width + 12 + 12 + PokeSize.width;
     } else {
         bubbleSize.width = 50 + PokeSize.width;
     }
@@ -189,7 +150,6 @@
         _contentLabel.font = [UIFont systemFontOfSize:Poke_Message_Font_Size];
         _contentLabel.numberOfLines = 0;
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        _contentLabel.textColor = [RCKitUtility generateDynamicColor:HEXCOLOR(0x333333) darkColor:HEXCOLOR(0xe0e0e0)];
     }
     return _contentLabel;
 }

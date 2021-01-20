@@ -20,11 +20,6 @@
 @property (strong, nonatomic) UILabel *textLabel;
 
 /*!
- 背景View
- */
-@property (nonatomic, strong) UIImageView *bubbleBackgroundView;
-
-/*!
  根据消息内容获取显示的尺寸
 
  @param message 消息内容

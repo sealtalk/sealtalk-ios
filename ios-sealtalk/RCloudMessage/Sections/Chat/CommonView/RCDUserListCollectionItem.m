@@ -11,25 +11,32 @@
 #import "UIColor+RCColor.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "RCDUserInfoManager.h"
+#import <RongIMKit/RongIMKit.h>
+
 @implementation RCDUserListCollectionItem
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         _ivAva = [[UIImageView alloc] initWithFrame:CGRectZero];
         _ivAva.clipsToBounds = YES;
-        _ivAva.layer.cornerRadius = 5.f;
+        if (RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
+            RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
+            _ivAva.layer.cornerRadius = ivAvaWidth/2;
+        } else {
+            _ivAva.layer.cornerRadius = 5.f;
+        }
         [_ivAva setBackgroundColor:[UIColor clearColor]];
         [self.contentView addSubview:_ivAva];
 
         _titleLabel = [UILabel new];
-        [_titleLabel setTextColor:RCDDYCOLOR(0x999999, 0x9f9f9f)];
+        [_titleLabel setTextColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x999999) darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.9]]];
         [_titleLabel setFont:[UIFont systemFontOfSize:13]];
         [_titleLabel setTextAlignment:NSTextAlignmentCenter];
         [self.contentView addSubview:_titleLabel];
 
         _btnImg = [[UIButton alloc] initWithFrame:CGRectZero];
         [_btnImg setHidden:YES];
-        [_btnImg setImage:[RCDUtilities imageNamed:@"delete_member_tip" ofBundle:@"RongCloud.bundle"]
+        [_btnImg setImage:[UIImage imageNamed:@"delete_member_tip"]
                  forState:UIControlStateNormal];
         [_btnImg addTarget:self action:@selector(deleteItem:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_btnImg];
@@ -51,9 +58,9 @@
                                                                    views:NSDictionaryOfVariableBindings(_titleLabel)]];
         [self.contentView
             addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"V:|[_ivAva(55)]-9-[_titleLabel(==15)]"
+                               constraintsWithVisualFormat:@"V:|[_ivAva(ivAvaWidth)]-9-[_titleLabel(==15)]"
                                                    options:kNilOptions
-                                                   metrics:nil
+                            metrics:@{@"ivAvaWidth":@(ivAvaWidth)}
                                                      views:NSDictionaryOfVariableBindings(_titleLabel, _ivAva)]];
 
         [self.contentView

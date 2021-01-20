@@ -12,7 +12,7 @@
 #import "UIColor+RCColor.h"
 #import "RCDCommonString.h"
 #import "RCDLoginManager.h"
-
+#import <RongIMKit/RCAlertView.h>
 @interface RCDChangePasswordViewController ()
 @property (nonatomic, strong) UILabel *oldPwdLabel;
 @property (nonatomic, strong) UILabel *newsPwdLabel;
@@ -106,10 +106,8 @@
 }
 
 - (void)setNavigationButton {
-    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"settings")
-                                                              target:self
-                                                              action:@selector(clickBackBtn)];
-    self.navigationItem.leftBarButtonItem = self.leftBtn;
+    
+    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"settings") target:self action:@selector(clickBackBtn)];
 
     self.rightBtn = [[RCDUIBarButtonItem alloc]
         initWithbuttonTitle:RCDLocalizedString(@"save")
@@ -137,8 +135,7 @@
 
 - (UIView *)setSubView {
     UIView *subView = [[UIView alloc] init];
-    subView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
-                                                       darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.2]];
+    subView.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff) darkColor:[HEXCOLOR(0x808080) colorWithAlphaComponent:0.2]];
     subView.layer.borderWidth = 0.5;
     subView.layer.borderColor = [RCDDYCOLOR(0xdfdfdd, 0x000000) CGColor];
     subView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -243,14 +240,7 @@
 }
 
 - (void)AlertShow:(NSString *)content {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:nil message:content preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
-    });
+    [RCAlertView showAlertController:nil message:content cancelTitle:RCDLocalizedString(@"confirm") inViewController:self];
 }
 
 - (void)clickBackBtn {
@@ -260,7 +250,7 @@
 - (void)textFieldEditChanged:(NSNotification *)obj {
     if (self.oldPwdTextField.text.length > 0 || self.newsPwdTextField.text.length > 0 ||
         self.confirmPwdTextField.text.length > 0) {
-        [self.rightBtn buttonIsCanClick:YES buttonColor:RCDDYCOLOR(0xffffff, 0xA8A8A8) barButtonItem:self.rightBtn];
+        [self.rightBtn buttonIsCanClick:YES buttonColor:RCDDYCOLOR(0x0099ff, 0xA8A8A8) barButtonItem:self.rightBtn];
 
     } else {
         [self.rightBtn

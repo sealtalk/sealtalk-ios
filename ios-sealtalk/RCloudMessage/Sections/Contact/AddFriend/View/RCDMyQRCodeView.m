@@ -72,11 +72,11 @@
     if (status == ALAuthorizationStatusRestricted || status == ALAuthorizationStatusDenied) {
         UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
         UIAlertController *alertController = [UIAlertController
-            alertControllerWithTitle:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil)
-                             message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil)
+            alertControllerWithTitle:RCLocalizedString(@"AccessRightTitle")
+                             message:RCLocalizedString(@"photoAccessRight")
                       preferredStyle:UIAlertControllerStyleAlert];
         [alertController
-            addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)
+            addAction:[UIAlertAction actionWithTitle:RCLocalizedString(@"OK")
                                                style:UIAlertActionStyleDefault
                                              handler:nil]];
         [rootVC presentViewController:alertController animated:YES completion:nil];
@@ -289,9 +289,9 @@
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
     if (error == nil) {
-        [self showHUDMessage:NSLocalizedStringFromTable(@"SavePhotoSuccess", @"RongCloudKit", nil)];
+        [self showHUDMessage:RCLocalizedString(@"SavePhotoSuccess")];
     } else {
-        [self showHUDMessage:NSLocalizedStringFromTable(@"SavePhotoFailed", @"RongCloudKit", nil)];
+        [self showHUDMessage:RCLocalizedString(@"SavePhotoFailed")];
     }
 }
 
@@ -374,7 +374,7 @@
         _shareSealTalkBtn = [[UIButton alloc] init];
         [_shareSealTalkBtn setTitleColor:HEXCOLOR(0x0099ff) forState:(UIControlStateNormal)];
         _shareSealTalkBtn.titleLabel.font = [UIFont systemFontOfSize:13];
-        [_shareSealTalkBtn setTitle:RCDLocalizedString(@"ShareToSealTalk") forState:(UIControlStateNormal)];
+        [_shareSealTalkBtn setTitle:RCDLocalizedString(@"ShareToST") forState:(UIControlStateNormal)];
         [_shareSealTalkBtn addTarget:self
                               action:@selector(didShareSealTalkAction)
                     forControlEvents:(UIControlEventTouchUpInside)];

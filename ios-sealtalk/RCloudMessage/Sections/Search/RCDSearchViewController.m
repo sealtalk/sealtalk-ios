@@ -34,6 +34,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.groupTypeArray = [NSMutableArray array];
     self.resultDictionary = [NSMutableDictionary dictionary];
 
@@ -50,14 +51,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.resultTableView.frame = self.view.bounds;
-    self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    //隐藏导航栏下那条线
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0x0099ff, 0x000000);
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 - (void)loadSearchView {
@@ -112,9 +112,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 3) {
-        return 45;
+        return SearchMoreViewCellHeight;
     }
-    return 65;
+    return [RCDSearchResultViewCell cellHeight];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -123,19 +123,12 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 40 - 16 - 7, self.view.frame.size.width, 16)];
+    view.backgroundColor = RCDYCOLOR(0xffffff, 0x191919);
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width, view.frame.size.height)];
     label.font = [UIFont systemFontOfSize:14.];
     label.text = self.groupTypeArray[section];
-    label.textColor = RCDDYCOLOR(0x999999, 0x666666);
+    label.textColor = RCDDYCOLOR(0x999999, 0x8B8B8B);
     [view addSubview:label];
-    //添加与cell分割线等宽的session分割线
-    CGRect viewFrame = view.frame;
-    UIView *separatorLine =
-        [[UIView alloc] initWithFrame:CGRectMake(10, viewFrame.size.height - 1, viewFrame.size.width - 10, 1)];
-    separatorLine.backgroundColor =
-        [RCDUtilities generateDynamicColor:[UIColor colorWithRed:230 / 255.0 green:230 / 255.0 blue:230 / 255.0 alpha:1]
-                                 darkColor:[UIColor clearColor]];
-    [view addSubview:separatorLine];
     return view;
 }
 
@@ -144,7 +137,7 @@
         return nil;
     }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
-    view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+    view.backgroundColor = RCDDYCOLOR(0xf5f6f9, 0x111111);
     return view;
 }
 
@@ -152,7 +145,7 @@
     if (section == self.groupTypeArray.count - 1) {
         return 0;
     }
-    return 5;
+    return 8;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -233,7 +226,7 @@
     RCDChatViewController *_conversationVC = [[RCDChatViewController alloc] init];
     _conversationVC.conversationType = model.conversationType;
     _conversationVC.targetId = model.targetId;
-    _conversationVC.userName = model.name;
+    _conversationVC.title = model.name;
     NSArray *array = [[RCIMClient sharedRCIMClient] searchMessages:model.conversationType
                                                           targetId:model.targetId
                                                            keyword:self.searchBar.text
@@ -260,7 +253,7 @@
     if (!self.groupTypeArray.count && searchText.length > 0 && searchStr.length > 0) {
         NSString *text = RCDLocalizedString(@"no_search_result");
         NSString *str = [NSString stringWithFormat:text, searchText];
-        self.emptyLabel.textColor = HEXCOLOR(0x999999);
+        self.emptyLabel.textColor = RCDDYCOLOR(0x999999, 0x8b8b8b);
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:str];
         int index = 0;
         NSString *currentlanguage = [RCDLanguageManager sharedRCDLanguageManager].currentLanguage;
@@ -296,7 +289,7 @@
                              options:(NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin |
                                       NSStringDrawingUsesFontLeading)
                           attributes:@{
-                              NSFontAttributeName : [UIFont systemFontOfSize:14.0]
+                              NSFontAttributeName : self.emptyLabel.font
                           }
                              context:nil];
     textRect.size.height = ceilf(textRect.size.height);
@@ -337,26 +330,22 @@
 #pragma mark - getter
 - (RCDTableView *)resultTableView {
     if (!_resultTableView) {
-        _resultTableView = [[RCDTableView alloc] init];
+        _resultTableView = [[RCDTableView alloc] initWithFrame:CGRectZero style:(UITableViewStylePlain)];
+        _resultTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.01)];
+        _resultTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.01)];
+        _resultTableView.backgroundColor = RCDDYCOLOR(0xffffff, 0x191919);
         _resultTableView.delegate = self;
         _resultTableView.dataSource = self;
-        if ([_resultTableView respondsToSelector:@selector(setSeparatorInset:)]) {
-            [_resultTableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
-        }
-        if ([_resultTableView respondsToSelector:@selector(setLayoutMargins:)]) {
-            [_resultTableView setLayoutMargins:UIEdgeInsetsMake(0, 10, 0, 0)];
-        }
     }
     return _resultTableView;
 }
 
 - (RCDSearchBar *)searchBar {
     if (!_searchBar) {
-        _searchBar = [[RCDSearchBar alloc] initWithFrame:CGRectZero];
+        _searchBar = [[RCDSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.searchView.frame.size.width - 75, 44)];
         _searchBar.delegate = self;
         _searchBar.tintColor = [UIColor blueColor];
         [_searchBar becomeFirstResponder];
-        _searchBar.frame = CGRectMake(0, 0, self.searchView.frame.size.width - 75, 44);
     }
     return _searchBar;
 }
@@ -377,8 +366,8 @@
 
 - (UILabel *)emptyLabel {
     if (!_emptyLabel) {
-        _emptyLabel = [[RCDLabel alloc] initWithFrame:CGRectMake(10, 45, self.view.frame.size.width - 20, 16)];
-        _emptyLabel.font = [UIFont systemFontOfSize:14.f];
+        _emptyLabel = [[RCDLabel alloc] initWithFrame:CGRectMake(10, 45, self.view.frame.size.width - 20, 19)];
+        _emptyLabel.font = [UIFont systemFontOfSize:17.f];
         _emptyLabel.textAlignment = NSTextAlignmentCenter;
         _emptyLabel.numberOfLines = 0;
         [self.resultTableView addSubview:_emptyLabel];

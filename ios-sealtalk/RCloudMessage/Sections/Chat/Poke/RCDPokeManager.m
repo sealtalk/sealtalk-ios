@@ -89,13 +89,13 @@
 - (void)saveSendPokeTime:(RCConversationType)type targetId:(NSString *)targetId {
     [[NSUserDefaults standardUserDefaults]
         setValue:@(CFAbsoluteTimeGetCurrent())
-          forKey:[NSString stringWithFormat:@"%ld%@%@", type, targetId, [RCIM sharedRCIM].currentUserInfo.userId]];
+     forKey:[NSString stringWithFormat:@"%lu%@%@", (unsigned long)type, targetId, [RCIM sharedRCIM].currentUserInfo.userId]];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSInteger)getLastSendPokeTimeInterval:(RCConversationType)type targetId:(NSString *)targetId {
     CFAbsoluteTime lastTime = [[[NSUserDefaults standardUserDefaults]
-        objectForKey:[NSString stringWithFormat:@"%ld%@%@", type, targetId, [RCIM sharedRCIM].currentUserInfo.userId]]
+                                objectForKey:[NSString stringWithFormat:@"%lu%@%@", (unsigned long)type, targetId, [RCIM sharedRCIM].currentUserInfo.userId]]
         longLongValue];
     NSTimeInterval linkTime = (CFAbsoluteTimeGetCurrent() - lastTime);
     return (NSInteger)linkTime;

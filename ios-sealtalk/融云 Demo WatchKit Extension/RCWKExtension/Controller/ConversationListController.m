@@ -216,7 +216,7 @@
     }];
 }
 
-+(NSString*)ConvertChatMessageTime:(long long)secs{
++(NSString*)convertMessageTime:(long long)secs{
     NSString *timeText=nil;
     
     NSDate *messageDate = [NSDate dateWithTimeIntervalSince1970:secs/1000];
