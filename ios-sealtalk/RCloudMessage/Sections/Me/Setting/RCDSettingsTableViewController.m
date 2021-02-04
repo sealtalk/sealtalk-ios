@@ -193,13 +193,24 @@
    cancelBtnTitle:(NSString *)cBtnTitle
     otherBtnTitle:(NSString *)oBtnTitle
               tag:(int)tag {
-    [RCAlertView showAlertController:nil message:message actionTitles:nil cancelTitle:cBtnTitle confirmTitle:oBtnTitle preferredStyle:(UIAlertControllerStyleAlert) actionsBlock:nil cancelBlock:nil confirmBlock:^{
-        if (tag == 1010) {
-            [self logout];
-        } else if (tag == 1011) {
-            [self clearCache];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        if (oBtnTitle) {
+            [alertController addAction:[UIAlertAction actionWithTitle:oBtnTitle
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *_Nonnull action) {
+                                                                  if (tag == 1010) {
+                                                                      [self logout];
+                                                                  } else if (tag == 1011) {
+                                                                      [self clearCache];
+                                                                  }
+                                                              }]];
         }
-    } inViewController:self];
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)clickBackBtn:(id)sender {
@@ -240,7 +251,10 @@
 - (void)initUI {
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     self.navigationItem.title = RCDLocalizedString(@"account_setting");
-    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn:)];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn:)];
+    self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
 @end

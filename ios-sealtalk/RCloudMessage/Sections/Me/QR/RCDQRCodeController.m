@@ -97,7 +97,10 @@
         self.navigationItem.title = RCDLocalizedString(@"My_QR");
     }
 
-    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn)];
+    self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
 - (void)clickBackBtn {
@@ -108,11 +111,11 @@
     ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
     if (status == ALAuthorizationStatusRestricted || status == ALAuthorizationStatusDenied) {
         UIAlertController *alertController = [UIAlertController
-            alertControllerWithTitle:RCLocalizedString(@"AccessRightTitle")
-                             message:RCLocalizedString(@"photoAccessRight")
+            alertControllerWithTitle:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil)
+                             message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil)
                       preferredStyle:UIAlertControllerStyleAlert];
         [alertController
-            addAction:[UIAlertAction actionWithTitle:RCLocalizedString(@"OK")
+            addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)
                                                style:UIAlertActionStyleDefault
                                              handler:nil]];
         [self presentViewController:alertController animated:YES completion:nil];
@@ -191,9 +194,9 @@
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
     if (error == nil) {
-        [self.view showHUDMessage:RCLocalizedString(@"SavePhotoSuccess")];
+        [self.view showHUDMessage:NSLocalizedStringFromTable(@"SavePhotoSuccess", @"RongCloudKit", nil)];
     } else {
-        [self.view showHUDMessage:RCLocalizedString(@"SavePhotoFailed")];
+        [self.view showHUDMessage:NSLocalizedStringFromTable(@"SavePhotoFailed", @"RongCloudKit", nil)];
     }
 }
 
@@ -201,24 +204,24 @@
     [self.view addSubview:self.qrBgView];
     [self.view addSubview:self.shareBgView];
     UIView *lineView = [[UIView alloc] init];
-    lineView.backgroundColor = RCDDYCOLOR(0xd8d8d8, 0x373737);
+    lineView.backgroundColor = HEXCOLOR(0xe5e5e5);
     [self.view addSubview:lineView];
     [self.qrBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
         make.width.offset(320);
-        make.height.offset(440);
-        make.top.equalTo(self.view).offset(58.5);
+        make.height.offset(370);
+        make.top.equalTo(self.view).offset(45);
     }];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
         make.width.equalTo(self.qrBgView);
         make.height.offset(0.5);
-        make.bottom.equalTo(self.qrBgView.mas_bottom).offset(-46);
+        make.top.equalTo(self.qrBgView.mas_bottom);
     }];
     [self.shareBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
         make.width.equalTo(self.qrBgView);
-        make.height.offset(46);
+        make.height.offset(50);
         make.top.equalTo(lineView.mas_bottom);
     }];
 
@@ -227,10 +230,10 @@
         label.text = RCDLocalizedString(@"GroupQrCodeCerTip");
         label.textAlignment = NSTextAlignmentCenter;
         label.font = [UIFont systemFontOfSize:15];
-        label.textColor = RCDDYCOLOR(0x333333, 0xaaaaaa);
+        label.textColor = HEXCOLOR(0x333333);
         [self.view addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.qrBgView);
+            make.centerY.equalTo(self.qrBgView).offset(45);
             make.centerX.equalTo(self.qrBgView);
             make.width.equalTo(self.qrBgView);
         }];
@@ -245,10 +248,10 @@
     [self.shareBgView addSubview:self.shareSealTalkBtn];
     [self.shareBgView addSubview:self.shareWechatBtn];
     UIView *lineView1 = [[UIView alloc] init];
-    lineView1.backgroundColor = RCDDYCOLOR(0xd8d8d8, 0x373737);
+    lineView1.backgroundColor = HEXCOLOR(0xe5e5e5);
     [self.shareBgView addSubview:lineView1];
     UIView *lineView2 = [[UIView alloc] init];
-    lineView2.backgroundColor = RCDDYCOLOR(0xd8d8d8, 0x373737);
+    lineView2.backgroundColor = HEXCOLOR(0xe5e5e5);
     [self.shareBgView addSubview:lineView2];
 
     [self.saveButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -280,21 +283,21 @@
     [self.qrBgView addSubview:self.portraitImageView];
     [self.qrBgView addSubview:self.nameLabel];
     UIView *lineView = [[UIView alloc] init];
-    lineView.backgroundColor = RCDDYCOLOR(0xd8d8d8, 0x373737);
+    lineView.backgroundColor = HEXCOLOR(0xe5e5e5);
     [self.qrBgView addSubview:lineView];
 
     [self.portraitImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.equalTo(self.qrBgView).offset(16);
+        make.left.top.equalTo(self.qrBgView).offset(20);
         make.width.height.offset(50);
     }];
 
     if (self.type == ConversationType_GROUP) {
         if (self.group.needCertification) {
             [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.portraitImageView.mas_right).offset(12);
-                make.right.equalTo(self.qrBgView.mas_right).offset(-12);
+                make.left.equalTo(self.portraitImageView.mas_right).offset(15);
+                make.right.equalTo(self.qrBgView.mas_right).offset(-15);
                 make.centerY.equalTo(self.portraitImageView);
-                make.height.offset(24);
+                make.height.offset(28);
             }];
 
         } else {
@@ -302,15 +305,15 @@
             [self.qrBgView addSubview:self.countLabel];
             [self.qrBgView addSubview:self.infoLabel];
             [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.portraitImageView.mas_right).offset(12);
-                make.right.equalTo(self.qrBgView.mas_right).offset(-12);
-                make.top.equalTo(self.qrBgView).offset(17);
-                make.height.offset(24);
+                make.left.equalTo(self.portraitImageView.mas_right).offset(15);
+                make.right.equalTo(self.qrBgView.mas_right).offset(-15);
+                make.top.equalTo(self.qrBgView).offset(20);
+                make.height.offset(28);
             }];
 
             [self.countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.portraitImageView.mas_right).offset(12);
-                make.right.equalTo(self.qrBgView.mas_right).offset(-12);
+                make.left.equalTo(self.portraitImageView.mas_right).offset(15);
+                make.right.equalTo(self.qrBgView.mas_right).offset(-15);
                 make.bottom.equalTo(self.portraitImageView.mas_bottom);
                 make.height.offset(20);
             }];
@@ -319,10 +322,10 @@
         [self.qrBgView addSubview:self.qrCodeImageView];
         [self.qrBgView addSubview:self.infoLabel];
         [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.portraitImageView.mas_right).offset(12);
-            make.right.equalTo(self.qrBgView.mas_right).offset(-12);
+            make.left.equalTo(self.portraitImageView.mas_right).offset(15);
+            make.right.equalTo(self.qrBgView.mas_right).offset(-15);
             make.centerY.equalTo(self.portraitImageView);
-            make.height.offset(24);
+            make.height.offset(28);
         }];
     }
 
@@ -335,59 +338,23 @@
     if (!self.group.needCertification) {
         [self.qrCodeImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.qrBgView);
-            make.top.equalTo(self.qrBgView).offset(76);
+            make.top.equalTo(self.qrBgView).offset(70);
             make.width.height.offset(280);
         }];
         [self.infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.qrBgView);
-            make.bottom.equalTo(self.qrBgView).offset(-72);
-            make.height.offset(20);
+            make.bottom.equalTo(self.qrBgView).offset(-21);
+            make.height.offset(19);
             make.width.equalTo(self.qrBgView);
         }];
-        [self setQrImageBorderView];
     }
-}
-
-- (void)setQrImageBorderView{
-    UIView *topView = [self getQrImageBorderView];
-    UIView *bottomView = [self getQrImageBorderView];
-    UIView *leftView = [self getQrImageBorderView];
-    UIView *rightView = [self getQrImageBorderView];
-    [self.qrCodeImageView addSubview:topView];
-    [self.qrCodeImageView addSubview:bottomView];
-    [self.qrCodeImageView addSubview:leftView];
-    [self.qrCodeImageView addSubview:rightView];
-    [topView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.qrCodeImageView);
-        make.height.offset(15);
-    }];
-    [bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.left.right.equalTo(self.qrCodeImageView);
-        make.height.offset(15);
-    }];
-    [leftView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.equalTo(self.qrCodeImageView);
-        make.width.offset(15);
-    }];
-    [rightView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.right.equalTo(self.qrCodeImageView);
-        make.width.offset(15);
-    }];
-}
-
-- (UIView *)getQrImageBorderView{
-    UIView *view = [[UIView alloc] init];
-    view.backgroundColor = RCDDYCOLOR(0xffffff, 0x2c2c2c);
-    return view;
 }
 
 #pragma mark - getter
 - (UIView *)qrBgView {
     if (!_qrBgView) {
         _qrBgView = [[UIView alloc] init];
-        _qrBgView.backgroundColor = RCDDYCOLOR(0xffffff, 0x2c2c2c);
-        _qrBgView.layer.masksToBounds = YES;
-        _qrBgView.layer.cornerRadius = 8;
+        _qrBgView.backgroundColor = [UIColor whiteColor];
     }
     return _qrBgView;
 }
@@ -396,12 +363,7 @@
     if (!_portraitImageView) {
         _portraitImageView = [[UIImageView alloc] init];
         _portraitImageView.layer.masksToBounds = YES;
-        if (RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
-            RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
-            _portraitImageView.layer.cornerRadius = 25;
-        }else{
-            _portraitImageView.layer.cornerRadius = 4;
-        }
+        _portraitImageView.layer.cornerRadius = 4;
     }
     return _portraitImageView;
 }
@@ -409,8 +371,8 @@
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
-        _nameLabel.textColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0x111f2c) darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.9]];
-        _nameLabel.font = [UIFont boldSystemFontOfSize:17];
+        _nameLabel.textColor = HEXCOLOR(0x262626);
+        _nameLabel.font = [UIFont systemFontOfSize:20];
     }
     return _nameLabel;
 }
@@ -418,7 +380,7 @@
 - (UILabel *)countLabel {
     if (!_countLabel) {
         _countLabel = [[UILabel alloc] init];
-        _countLabel.textColor = RCDDYCOLOR(0xA0A5AB, 0xaaaaaa);
+        _countLabel.textColor = HEXCOLOR(0x939393);
         _countLabel.font = [UIFont systemFontOfSize:14];
     }
     return _countLabel;
@@ -444,9 +406,7 @@
 - (UIView *)shareBgView {
     if (!_shareBgView) {
         _shareBgView = [[UIView alloc] init];
-        _shareBgView.backgroundColor = RCDDYCOLOR(0xffffff, 0x2c2c2c);
-        _shareBgView.layer.masksToBounds = YES;
-        _shareBgView.layer.cornerRadius = 8;
+        _shareBgView.backgroundColor = [UIColor whiteColor];
     }
     return _shareBgView;
 }
@@ -469,7 +429,7 @@
         _shareSealTalkBtn = [[UIButton alloc] init];
         [_shareSealTalkBtn setTitleColor:HEXCOLOR(0x0099ff) forState:(UIControlStateNormal)];
         _shareSealTalkBtn.titleLabel.font = [UIFont systemFontOfSize:13];
-        [_shareSealTalkBtn setTitle:RCDLocalizedString(@"ShareToST") forState:(UIControlStateNormal)];
+        [_shareSealTalkBtn setTitle:RCDLocalizedString(@"ShareToSealTalk") forState:(UIControlStateNormal)];
         [_shareSealTalkBtn addTarget:self
                               action:@selector(didShareSealTalkAction)
                     forControlEvents:(UIControlEventTouchUpInside)];

@@ -56,7 +56,7 @@
 
     [self.groupPortImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.height.width.offset(40);
+        make.height.width.offset(36);
         make.left.equalTo(self.contentView).offset(10);
     }];
 
@@ -87,20 +87,20 @@
     }
     [self.groupPortImgView
         sd_setImageWithURL:[NSURL URLWithString:group.portraitUri]
-          placeholderImage:RCResourceImage(@"default_group_portrait")];
+          placeholderImage:[RCKitUtility imageNamed:@"default_group_portrait" ofBundle:@"RongCloud.bundle"]];
 }
 
 + (CGFloat)cellHeight {
-    return 56.f;
+    return 54.5f;
 }
 
 #pragma mark - Setter && Getter
 - (UIImageView *)groupPortImgView {
     if (!_groupPortImgView) {
         _groupPortImgView = [[UIImageView alloc] init];
-        if (RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE &&
-            RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE) {
-            _groupPortImgView.layer.cornerRadius = 20.f;
+        if ([RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE &&
+            [RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE) {
+            _groupPortImgView.layer.cornerRadius = 28.f;
         } else {
             _groupPortImgView.layer.cornerRadius = 5.f;
         }

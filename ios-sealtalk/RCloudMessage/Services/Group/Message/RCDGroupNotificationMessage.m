@@ -70,33 +70,38 @@ NSString *const RCDGroupMemberProtectionClose = @"closeMemberProtection";
     }
     if ([self.operation isEqualToString:RCDGroupCreate]) {
         content =
-            [NSString stringWithFormat:RCLocalizedString(isMeOperate ? @"GroupHaveCreated" : @"GroupCreated"),
+            [NSString stringWithFormat:NSLocalizedStringFromTable(isMeOperate ? @"GroupHaveCreated" : @"GroupCreated",
+                                                                  @"RongCloudKit", nil),
                                        operationName];
     } else if ([self.operation isEqualToString:RCDGroupMemberAdd]) {
         if (self.targetUserIds.count == 1 && [self.targetUserIds containsObject:self.operatorUserId]) {
             content = [NSString
-                stringWithFormat:RCLocalizedString(@"GroupJoin"), operationName];
+                stringWithFormat:NSLocalizedStringFromTable(@"GroupJoin", @"RongCloudKit", nil), operationName];
         } else {
             content = [NSString
-                stringWithFormat:RCLocalizedString(isMeOperate ? @"GroupHaveInvited" : @"GroupInvited"),
+                stringWithFormat:NSLocalizedStringFromTable(isMeOperate ? @"GroupHaveInvited" : @"GroupInvited",
+                                                            @"RongCloudKit", nil),
                                  operationName, targetNames];
         }
     } else if ([self.operation isEqualToString:RCDGroupMemberJoin]) {
         content =
-            [NSString stringWithFormat:RCLocalizedString(@"GroupJoin"), operationName];
+            [NSString stringWithFormat:NSLocalizedStringFromTable(@"GroupJoin", @"RongCloudKit", nil), operationName];
     } else if ([self.operation isEqualToString:RCDGroupMemberQuit]) {
-        content = [NSString stringWithFormat:RCLocalizedString(isMeOperate ? @"GroupHaveQuit" : @"GroupQuit"),
+        content = [NSString stringWithFormat:NSLocalizedStringFromTable(isMeOperate ? @"GroupHaveQuit" : @"GroupQuit",
+                                                                        @"RongCloudKit", nil),
                                              operationName];
     } else if ([self.operation isEqualToString:RCDGroupMemberKicked]) {
         content =
-            [NSString stringWithFormat:RCLocalizedString(isMeOperate ? @"GroupHaveRemoved" : @"GroupRemoved"),
+            [NSString stringWithFormat:NSLocalizedStringFromTable(isMeOperate ? @"GroupHaveRemoved" : @"GroupRemoved",
+                                                                  @"RongCloudKit", nil),
                                        operationName, targetNames];
     } else if ([self.operation isEqualToString:RCDGroupRename]) {
-        content = [NSString stringWithFormat:RCLocalizedString(@"GroupChanged"),
+        content = [NSString stringWithFormat:NSLocalizedStringFromTable(@"GroupChanged", @"RongCloudKit", nil),
                                              operationName, self.targetGroupName];
     } else if ([self.operation isEqualToString:RCDGroupDismiss]) {
         content =
-            [NSString stringWithFormat:RCLocalizedString(isMeOperate ? @"GroupHaveDismiss" : @"GroupDismiss"),
+            [NSString stringWithFormat:NSLocalizedStringFromTable(isMeOperate ? @"GroupHaveDismiss" : @"GroupDismiss",
+                                                                  @"RongCloudKit", nil),
                                        operationName];
     } else if ([self.operation isEqualToString:RCDGroupOwnerTransfer]) {
         content = [NSString stringWithFormat:RCDLocalizedString(@"GroupHasNewOwner"), targetNames];
@@ -107,7 +112,7 @@ NSString *const RCDGroupMemberProtectionClose = @"closeMemberProtection";
     } else if ([self.operation isEqualToString:RCDGroupMemberProtectionClose]) {
         content = [NSString stringWithFormat:RCDLocalizedString(@"closeMemberProtection"), operationName];
     } else {
-        content = RCLocalizedString(@"unknown_message_cell_tip");
+        content = NSLocalizedStringFromTable(@"unknown_message_cell_tip", @"RongCloudKit", nil);
     }
     return content;
 }
@@ -118,7 +123,7 @@ NSString *const RCDGroupMemberProtectionClose = @"closeMemberProtection";
     for (NSString *userId in userIds) {
         NSString *name;
         if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-            name = RCLocalizedString(@"You");
+            name = NSLocalizedStringFromTable(@"You", @"RongCloudKit", nil);
         } else {
             RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
             if (friend && friend.displayName.length > 0) {
@@ -152,11 +157,11 @@ NSString *const RCDGroupMemberProtectionClose = @"closeMemberProtection";
         displayNames = [displayNames stringByAppendingString:name];
         if ([userIds indexOfObject:userId] >= 20 && userIds.count > 20) {
             displayNames =
-                [displayNames stringByAppendingString:RCLocalizedString(@"GroupEtc")];
+                [displayNames stringByAppendingString:NSLocalizedStringFromTable(@"GroupEtc", @"RongCloudKit", nil)];
             break;
         } else if (![userId isEqualToString:userIds[userIds.count - 1]]) {
             displayNames =
-                [displayNames stringByAppendingString:RCLocalizedString(@"punctuation")];
+                [displayNames stringByAppendingString:NSLocalizedStringFromTable(@"punctuation", @"RongCloudKit", nil)];
         }
     }
     return displayNames;

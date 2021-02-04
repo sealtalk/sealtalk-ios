@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RongIMLib/RongIMLib.h>
+#import <RongIMLib/RCUserInfo.h>
 #import "RCDUserInfo.h"
 
 typedef NS_ENUM(NSInteger, RCDFriendStatus) {

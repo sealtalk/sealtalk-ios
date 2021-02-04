@@ -9,7 +9,7 @@
 #import "RCDDebugJoinChatroomViewController.h"
 #import <Masonry/Masonry.h>
 #import "RCDDebugChatroomViewController.h"
-#import <RongChatRoom/RongChatRoom.h>
+#import <RongIMLib/RongIMLib.h>
 
 @interface RCDDebugJoinChatroomViewController ()
 
@@ -55,7 +55,7 @@
         roomId = @"kvchatroom2";
     }
 
-    [[RCChatRoomClient sharedChatRoomClient] joinChatRoom:roomId
+    [[RCIMClient sharedRCIMClient] joinChatRoom:roomId
         messageCount:20
         success:^{
             dispatch_async(dispatch_get_main_queue(), ^{

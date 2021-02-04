@@ -13,7 +13,7 @@
 #import "RCDUIBarButtonItem.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "UIView+MBProgressHUD.h"
-#import <RongIMKit/RongIMKit.h>
+#import <RongIMKit/RCKitUtility.h>
 
 @interface RCDPictureDetailViewController ()
 
@@ -36,7 +36,10 @@
 - (void)setupNavi {
     self.navigationItem.title = RCDLocalizedString(@"ImageDetail");
 
-    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn:)];
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                                target:self
+                                                                                action:@selector(clickBackBtn:)];
+    self.navigationItem.leftBarButtonItem = leftButton;
 
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"More")
                                                                     style:UIBarButtonItemStylePlain
@@ -82,11 +85,11 @@
     ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
     if (status == ALAuthorizationStatusRestricted || status == ALAuthorizationStatusDenied) {
         UIAlertController *alertController = [UIAlertController
-            alertControllerWithTitle:RCLocalizedString(@"AccessRightTitle")
-                             message:RCLocalizedString(@"photoAccessRight")
+            alertControllerWithTitle:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil)
+                             message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil)
                       preferredStyle:UIAlertControllerStyleAlert];
         [alertController
-            addAction:[UIAlertAction actionWithTitle:RCLocalizedString(@"OK")
+            addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)
                                                style:UIAlertActionStyleDefault
                                              handler:nil]];
         [self presentViewController:alertController animated:YES completion:nil];
@@ -101,9 +104,9 @@
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
     if (error == nil) {
-        [self.view showHUDMessage:RCLocalizedString(@"SavePhotoSuccess")];
+        [self.view showHUDMessage:NSLocalizedStringFromTable(@"SavePhotoSuccess", @"RongCloudKit", nil)];
     } else {
-        [self.view showHUDMessage:RCLocalizedString(@"SavePhotoFailed")];
+        [self.view showHUDMessage:NSLocalizedStringFromTable(@"SavePhotoFailed", @"RongCloudKit", nil)];
     }
 }
 
@@ -113,19 +116,32 @@
 }
 
 - (void)moreAction {
-    [RCActionSheetView showActionSheetView:nil cellArray:@[RCDLocalizedString(@"SaveToAlbum"), RCDLocalizedString(@"DeletePicture")] cancelTitle:RCDLocalizedString(@"cancel") selectedBlock:^(NSInteger index) {
-        if (index == 0) {
-            [self saveImage];
-        }else{
-           self.imageView.image = nil;
-           if (self.deleteImageBlock) {
-               self.deleteImageBlock();
-           }
-           [self.navigationController popViewControllerAnimated:YES];
-        }
-    } cancelBlock:^{
-            
-    }];
+    UIAlertAction *saveAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"SaveToAlbum")
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction *_Nonnull action) {
+                                                           [self saveImage];
+                                                       }];
+    UIAlertAction *deleteAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"DeletePicture")
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+
+                                   rcd_dispatch_main_async_safe(^{
+                                       self.imageView.image = nil;
+                                       if (self.deleteImageBlock) {
+                                           self.deleteImageBlock();
+                                       }
+                                       [self.navigationController popViewControllerAnimated:YES];
+                                   });
+                               }];
+    UIAlertAction *cancelAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
+
+    [RCKitUtility showAlertController:nil
+                              message:nil
+                       preferredStyle:UIAlertControllerStyleActionSheet
+                              actions:@[ cancelAction, saveAction, deleteAction ]
+                     inViewController:self];
 }
 
 - (UIScrollView *)scrollView {

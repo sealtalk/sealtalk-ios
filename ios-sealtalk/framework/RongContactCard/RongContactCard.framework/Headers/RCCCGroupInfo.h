@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RongIMLib/RongIMLib.h>
+#import <RongIMLib/RCGroup.h>
 
 @interface RCCCGroupInfo : RCGroup <NSCoding>
 

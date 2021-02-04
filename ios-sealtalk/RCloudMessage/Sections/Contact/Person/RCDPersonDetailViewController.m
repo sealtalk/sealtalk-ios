@@ -15,7 +15,9 @@
 #import "RCDUtilities.h"
 #import "RCDFriendRemarksViewController.h"
 #import "RCDChatViewController.h"
+
 #import <RongCallKit/RongCallKit.h>
+
 #import "UIView+MBProgressHUD.h"
 #import "RCDUserInfoManager.h"
 #import "RCDPersonDetailCell.h"
@@ -261,7 +263,12 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 }
 
 - (void)showAlertWithMessage:(NSString *)message {
-    [RCAlertView showAlertController:nil message:message cancelTitle:RCDLocalizedString(@"confirm") inViewController:self];
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showAlertWithMessage:(NSString *)message
@@ -400,31 +407,38 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
 }
 
 - (void)presentActionSheet {
-    [RCActionSheetView showActionSheetView:nil cellArray:@[RCDLocalizedString(@"Call"), RCDLocalizedString(@"CopyNumber")] cancelTitle:RCDLocalizedString(@"cancel") selectedBlock:^(NSInteger index) {
-        [self alertActionDidClickIndex:index];
-    } cancelBlock:^{
-            
-    }];
-}
-
-- (void)alertActionDidClickIndex:(NSInteger)index{
-    if (index == 0) {
-        if (self.friendDescription.phone) {
-            NSURL *phoneUrl = [NSURL
-                URLWithString:[NSString stringWithFormat:@"tel://%@", self.friendDescription.phone]];
-            if (IOS_FSystenVersion > 10) {
-                [[UIApplication sharedApplication] openURL:phoneUrl options:@{} completionHandler:nil];
-            } else {
-                [[UIApplication sharedApplication] openURL:phoneUrl];
-            }
-        }
-    }else{
-        if (self.friendDescription.phone) {
-            UIPasteboard *pastboard =
-                [UIPasteboard generalPasteboard];
-            [pastboard setString:self.friendDescription.phone];
-        }
-    }
+    UIAlertAction *cancelAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *callAction = [UIAlertAction
+        actionWithTitle:RCDLocalizedString(@"Call")
+                  style:UIAlertActionStyleDefault
+                handler:^(UIAlertAction *_Nonnull action) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (self.friendDescription.phone) {
+                            NSURL *phoneUrl = [NSURL
+                                URLWithString:[NSString stringWithFormat:@"tel://%@", self.friendDescription.phone]];
+                            if (IOS_FSystenVersion > 10) {
+                                [[UIApplication sharedApplication] openURL:phoneUrl options:@{} completionHandler:nil];
+                            } else {
+                                [[UIApplication sharedApplication] openURL:phoneUrl];
+                            }
+                        }
+                    });
+                }];
+    UIAlertAction *copyAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"CopyNumber")
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction *_Nonnull action) {
+                                                           if (self.friendDescription.phone) {
+                                                               UIPasteboard *pastboard =
+                                                                   [UIPasteboard generalPasteboard];
+                                                               [pastboard setString:self.friendDescription.phone];
+                                                           }
+                                                       }];
+    [RCKitUtility showAlertController:nil
+                              message:nil
+                       preferredStyle:UIAlertControllerStyleActionSheet
+                              actions:@[ cancelAction, callAction, copyAction ]
+                     inViewController:self];
 }
 
 #pragma mark - UITableViewDelegate && UITableViewDataSource
@@ -586,6 +600,7 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
         _tableView.scrollEnabled = NO;
         _tableView.tableFooterView = [UIView new];
         _tableView.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+        _tableView.separatorColor = RCDDYCOLOR(0xdfdfdf, 0x1a1a1a);
         _tableView.tableFooterView = [UIView new];
     }
     return _tableView;

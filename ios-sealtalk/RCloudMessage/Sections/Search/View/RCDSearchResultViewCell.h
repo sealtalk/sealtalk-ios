@@ -16,6 +16,4 @@
 @property (nonatomic, strong) NSString *searchString;
 
 - (void)setDataModel:(RCDSearchResultModel *)model;
-
-+ (CGFloat)cellHeight;
 @end

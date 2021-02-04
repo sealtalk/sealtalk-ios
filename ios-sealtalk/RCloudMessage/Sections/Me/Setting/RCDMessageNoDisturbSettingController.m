@@ -70,7 +70,8 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self showAlert:RCDLocalizedString(@"alert")
                                message:RCDLocalizedString(@"set_fail")
-                        cancelBtnTitle:RCDLocalizedString(@"cancel")];
+                        cancelBtnTitle:RCDLocalizedString(@"cancel")
+                         otherBtnTitle:nil];
                 });
             }];
     }
@@ -149,7 +150,8 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showAlert:RCDLocalizedString(@"alert")
                            message:RCDLocalizedString(@"set_fail")
-                    cancelBtnTitle:RCDLocalizedString(@"cancel")];
+                    cancelBtnTitle:RCDLocalizedString(@"cancel")
+                     otherBtnTitle:nil];
                 blockSelf.swch.on = NO;
             });
         }];
@@ -164,7 +166,8 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showAlert:RCDLocalizedString(@"alert")
                            message:RCDLocalizedString(@"shut_down_failed")
-                    cancelBtnTitle:RCDLocalizedString(@"cancel")];
+                    cancelBtnTitle:RCDLocalizedString(@"cancel")
+                     otherBtnTitle:nil];
                 blockSelf.swch.on = YES;
             });
         }];
@@ -348,8 +351,20 @@
 
 - (void)showAlert:(NSString *)title
           message:(NSString *)message
-   cancelBtnTitle:(NSString *)cBtnTitle {
-    [RCAlertView showAlertController:title message:message cancelTitle:cBtnTitle inViewController:self];
+   cancelBtnTitle:(NSString *)cBtnTitle
+    otherBtnTitle:(NSString *)oBtnTitle {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:message
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        if (oBtnTitle) {
+            [alertController
+                addAction:[UIAlertAction actionWithTitle:oBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        }
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 #pragma mark - getter
@@ -357,7 +372,6 @@
 - (UISwitch *)swch {
     if (!_swch) {
         _swch = [[UISwitch alloc] init];
-        _swch.onTintColor = HEXCOLOR(0x0099ff);
     }
     return _swch;
 }

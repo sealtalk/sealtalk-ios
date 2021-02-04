@@ -9,7 +9,6 @@
 CONFIGURATION="Release"
 BIN_DIR="bin"
 BUILD_DIR="build"
-export Need_Extract_Arch="true"
 
 CUR_PATH=$(pwd)
 
@@ -82,12 +81,40 @@ if [ ${APP_NAME} != "SealTalk" ]; then
  sed -i '' -e 's?SealTalk?'${APP_NAME}'?g' ./ServiceExtension/info.plist
  sed -i '' -e 's?SealTalk?'${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/en.lproj/InfoPlist.strings
  sed -i '' -e 's?SealTalk?'${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/InfoPlist.strings
- sed -i '' -e 's?SealTalk?'${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/ar.lproj/InfoPlist.strings
+ sed -i '' -e 's?设置 SealTalk 号?''设置 '${APP_NAME}' 号?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk 号?'''${APP_NAME}' 号?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?允许通过 SealTalk 号搜到我?''允许通过 '${APP_NAME}' 号搜到我?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?分享至 SealTalk?''分享至 '${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?加我为好友，一起用 SealTalk 聊天?''加我为好友，一起用 '${APP_NAME}' 聊天?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?确定 SealTalk 号?''确定 '${APP_NAME}' 号?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?你确定将 SealTalk 号设置为?''你确定将 '${APP_NAME}' 号设置为?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?设置 SealTalk 号失败?''设置 '${APP_NAME}' 号失败?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk 号已存在，请重新设置?'''${APP_NAME}' 号已存在，请重新设置?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk 号格式错误，?'''${APP_NAME}' 号格式错误，?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?手机号/SealTalk 号?''手机号/'${APP_NAME}' 号?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?你输入手机号或 SealTalk 号?''输入手机号或 '${APP_NAME}' 号?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?设置 SealTalk 号失败?''设置 '${APP_NAME}' 号失败?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk 号已存在，请重新设置?'''${APP_NAME}' 号已存在，请重新设置?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk 号格式错误，?'''${APP_NAME}' 号格式错误，?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk 版本?'''${APP_NAME}' 版本?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?请先打开 SealTalk?''请先打开 '${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk 号?'''${APP_NAME}' 号?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk 账号?'''${APP_NAME}' 账号?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?在使用 SealTalk?''在使用 '${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
+ sed -i '' -e 's?关于 SealTalk?''关于 '${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
  
- sed -i '' -e 's?SealTalk?'${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
- sed -i '' -e 's?SealTalk?'${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/zh-Hans.lproj/SealTalk.strings
- sed -i '' -e 's?SealTalk?'${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/ar.lproj/SealTalk.strings
  
+ sed -i '' -e 's?About SealTalk?''About '${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk Version?'''${APP_NAME}' Version?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
+ sed -i '' -e 's?please login SealTalk for sharing?''please login '${APP_NAME}' for sharing?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk Number?'''${APP_NAME}' Number?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk number?'''${APP_NAME}' number?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk account?'''${APP_NAME}' account?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
+ sed -i '' -e 's?Search By SealTalk No?''Search By '${APP_NAME}' No?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
+ sed -i '' -e 's?Share to SealTalk?''Share to '${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
+ sed -i '' -e 's?chat on SealTalk?''chat on '${APP_NAME}'?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
+ sed -i '' -e 's?SealTalk number?'''${APP_NAME}' number?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
+ sed -i '' -e 's?using SealTalk now?''using '${APP_NAME}' now?g' ./RCloudMessage/Supporting\ Files/en.lproj/SealTalk.strings
  if [ ${APP_NAME} = "SealChat" ]; then
     cp -rf ./RCloudMessage/Supporting\ Files/sealchat/ ./RCloudMessage/Supporting\ Files/Images.xcassets/
  fi
@@ -145,6 +172,7 @@ BUILD_CODE_SIGN_IDENTITY="iPhone Distribution: Beijing Rong Cloud Network Techno
 
 echo $VER_FLAG
 
+#sed -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}/'"$VER_FLAG"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
 Bundle_Short_Version=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ./RCloudMessage/Supporting\ Files/Info.plist)
 sed -i ""  -e '/CFBundleShortVersionString/{n;s/'"${Bundle_Short_Version}"'/'"$VER_FLAG"\ "$RELEASE_FLAG"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
 sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
@@ -152,21 +180,15 @@ sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./RCloudMessa
 Bundle_Demo_Version=$(/usr/libexec/PlistBuddy -c "Print SealTalk\ Version" ./RCloudMessage/Supporting\ Files/Info.plist)
 sed -i "" -e '/SealTalk Version/{n;s/'"${Bundle_Demo_Version}"'/'"$DEMO_VER_FLAG"'/; }' ./RCloudMessage/Supporting\ Files/Info.plist
 
+#sed -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}/'"$VER_FLAG"'/; }' ./融云\ Demo\ WatchKit\ App/Info.plist
 Bundle_Short_Version=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ./融云\ Demo\ WatchKit\ App/Info.plist)
 sed -i ""  -e '/CFBundleShortVersionString/{n;s/'"${Bundle_Short_Version}"'/'"$VER_FLAG"\ "$RELEASE_FLAG"'/; }' ./融云\ Demo\ WatchKit\ App/Info.plist
 sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./融云\ Demo\ WatchKit\ App/Info.plist
 
+#sed -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}/'"$VER_FLAG"'/; }' ./融云\ Demo\ WatchKit\ Extension/Info.plist
 Bundle_Short_Version=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ./融云\ Demo\ WatchKit\ Extension/Info.plist)
 sed -i ""  -e '/CFBundleShortVersionString/{n;s/'"${Bundle_Short_Version}"'/'"$VER_FLAG"\ "$RELEASE_FLAG"'/; }' ./融云\ Demo\ WatchKit\ Extension/Info.plist
 sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./融云\ Demo\ WatchKit\ Extension/Info.plist
-
-Bundle_Short_Version=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ./SealTalkShareExtension/Info.plist)
-sed -i ""  -e '/CFBundleShortVersionString/{n;s/'"${Bundle_Short_Version}"'/'"$VER_FLAG"\ "$RELEASE_FLAG"'/; }' ./SealTalkShareExtension/Info.plist
-sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./SealTalkShareExtension/Info.plist
-
-Bundle_Short_Version=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ./ServiceExtension/Info.plist)
-sed -i ""  -e '/CFBundleShortVersionString/{n;s/'"${Bundle_Short_Version}"'/'"$VER_FLAG"\ "$RELEASE_FLAG"'/; }' ./ServiceExtension/Info.plist
-sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./ServiceExtension/Info.plist
 
 PROJECT_NAME="RCloudMessage.xcodeproj"
 targetName="SealTalk"
@@ -181,7 +203,7 @@ xcodebuild clean -alltargets
 
 echo "***开始build iphoneos文件***"
   xcodebuild -scheme "${targetName}" archive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -configuration ${CONFIGURATION} APP_PROFILE="${BUILD_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}"
-  xcodebuild -exportArchive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -exportOptionsPlist "archive.plist" -exportPath "./${BIN_DIR}" -allowProvisioningUpdates
+  xcodebuild -exportArchive -allowProvisioningUpdates -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -exportOptionsPlist "archive.plist" -exportPath "./${BIN_DIR}"
   
     mv ./${BIN_DIR}/${targetName}.ipa ${CUR_PATH}/${BIN_DIR}/${APP_NAME}_v${VER_FLAG}_${CONFIGURATION}_${CUR_TIME}.ipa
     cp -af ./${BUILD_DIR}/${targetName}.xcarchive/dSYMs/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${APP_NAME}_v${VER_FLAG}_${CONFIGURATION}_${CUR_TIME}.app.dSYM

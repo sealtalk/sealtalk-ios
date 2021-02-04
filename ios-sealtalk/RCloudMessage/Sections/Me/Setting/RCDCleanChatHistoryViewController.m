@@ -131,7 +131,10 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
 
 - (void)setupNavi {
     self.title = RCDLocalizedString(@"CleanChatHistory");
-    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn:)];
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                                target:self
+                                                                                action:@selector(clickBackBtn:)];
+    self.navigationItem.leftBarButtonItem = leftButton;
 }
 
 - (void)deleteConversation {

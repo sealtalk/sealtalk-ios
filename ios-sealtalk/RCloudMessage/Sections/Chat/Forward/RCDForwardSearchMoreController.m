@@ -56,10 +56,15 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.tableView.tableHeaderView = self.headerView;
+    if (self.isShowSeachBar) {
+        self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0x0099ff, 0x000000);
 }
 
 - (void)viewWillLayoutSubviews {
@@ -187,7 +192,21 @@
 }
 
 - (void)setupNavi {
-    [self.navigationItem setLeftBarButtonItems:[RCDUIBarButtonItem getLeftBarButton:nil target:self action:@selector(leftBarButtonBackAction)]];
+    NSString *imageStr = nil;
+    if (self.isShowSeachBar) {
+        imageStr = @"searchBack";
+    } else {
+        imageStr = @"navigator_btn_back";
+    }
+    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:imageStr]
+                                                                   imageViewFrame:CGRectMake(0, 4, 10, 17)
+                                                                      buttonTitle:nil
+                                                                       titleColor:nil
+                                                                       titleFrame:CGRectZero
+                                                                      buttonFrame:CGRectMake(-6, 0, 30, 23)
+                                                                           target:self
+                                                                           action:@selector(leftBarButtonBackAction)];
+    [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
 - (void)addObserver {
@@ -203,7 +222,7 @@
     if (!self.resultArray.count && searchText.length > 0 && searchStr.length > 0) {
         NSString *text = RCDLocalizedString(@"no_search_result");
         NSString *str = [NSString stringWithFormat:text, searchText];
-        self.emptyLabel.textColor = RCDDYCOLOR(0x999999, 0x8b8b8b);
+        self.emptyLabel.textColor = HEXCOLOR(0x999999);
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:str];
         int index = 0;
         NSString *currentlanguage = [RCDLanguageManager sharedRCDLanguageManager].currentLanguage;
@@ -279,9 +298,11 @@
 
 - (RCDSearchBar *)searchBar {
     if (!_searchBar) {
-        _searchBar = [[RCDSearchBar alloc] initWithFrame:CGRectMake(-17, 0, self.searchView.frame.size.width - 75, 44)];
+        _searchBar = [[RCDSearchBar alloc] initWithFrame:CGRectZero];
         _searchBar.delegate = self;
         _searchBar.placeholder = nil;
+        _searchBar.tintColor = [UIColor blueColor];
+        _searchBar.frame = CGRectMake(-17, 0, self.searchView.frame.size.width - 75, 44);
     }
     return _searchBar;
 }

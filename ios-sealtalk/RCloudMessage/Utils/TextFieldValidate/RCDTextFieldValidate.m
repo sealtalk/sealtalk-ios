@@ -7,7 +7,7 @@
 //
 #import "RCDTextFieldValidate.h"
 #import <UIKit/UIKit.h>
-#import <RongIMKit/RCAlertView.h>
+
 @implementation RCDTextFieldValidate
 
 //验证手机号码
@@ -63,6 +63,13 @@
 }
 
 + (void)showAlertController:(NSString *)message cancelTitle:(NSString *)cancelTitle {
-    [RCAlertView showAlertController:nil message:message cancelTitle:cancelTitle];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:nil]];
+        [rootVC presentViewController:alertController animated:YES completion:nil];
+    });
 }
 @end

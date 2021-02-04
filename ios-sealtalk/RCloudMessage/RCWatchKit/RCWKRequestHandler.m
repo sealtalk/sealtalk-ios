@@ -8,7 +8,7 @@
 #import "RCWKRequestHandler.h"
 #import "RCWKAPPCommonDefine.h"
 #import "RCWKNotifier.h"
-#import <RongPublicService/RongPublicService.h>
+
 @interface RCWKRequestHandler ()
 @property (strong, nonatomic) NSDictionary *userInfo;
 @property (strong, nonatomic) void (^reply)(NSDictionary *);
@@ -107,7 +107,7 @@
             if (![fileManager fileExistsAtPath:[currentUrl path]]) {
                 if (conversationType.intValue == ConversationType_PUBLICSERVICE ||
                     conversationType.intValue == ConversationType_APPSERVICE) {
-                    NSArray *publicServices = [[RCPublicServiceClient sharedPublicServiceClient] getPublicServiceList];
+                    NSArray *publicServices = [[RCIMClient sharedRCIMClient] getPublicServiceList];
                     for (RCPublicServiceProfile *profile in publicServices) {
                         if ([profile.publicServiceId isEqualToString:targetId]) {
                             UIImage *image = [UIImage
@@ -243,8 +243,10 @@
                 error:^(RCErrorCode errorCode) {
                     NSLog(@"[RongIMKit]: downloadMediaFile.errorCode > %d", (int)errorCode);
                     [self replyWKApp:nil];
-                }cancel:^{
-                }];
+
+                }
+                cancel:^{
+            }];
         }
 
     } else {

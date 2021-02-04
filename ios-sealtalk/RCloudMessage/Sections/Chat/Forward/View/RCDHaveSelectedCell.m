@@ -104,13 +104,6 @@
 - (UIImageView *)headerImageView {
     if (!_headerImageView) {
         _headerImageView = [[UIImageView alloc] init];
-        _headerImageView.layer.masksToBounds = YES;
-        if (RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
-            RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
-            _headerImageView.layer.cornerRadius = 20.f;
-        } else {
-            _headerImageView.layer.cornerRadius = 5.f;
-        }
     }
     return _headerImageView;
 }

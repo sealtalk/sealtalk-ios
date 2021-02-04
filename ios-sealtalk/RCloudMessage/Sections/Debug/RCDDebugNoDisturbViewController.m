@@ -59,7 +59,14 @@
     if (!success) {
         title = RCDLocalizedString(@"set_fail");
     }
-    [RCAlertView showAlertController:title message:nil cancelTitle:RCDLocalizedString(@"confirm") inViewController:self];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)initSubviews {

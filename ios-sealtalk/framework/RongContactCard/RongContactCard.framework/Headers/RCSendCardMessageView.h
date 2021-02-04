@@ -20,6 +20,6 @@ FOUNDATION_EXPORT NSString *const RCCC_CardMessageSend;
 
 @property (nonatomic, strong) RCCCGroupInfo *targetgroupInfo;
 
-- (id)initWithFrame:(CGRect)frame ConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId;
+- (void)setConversationType:(RCConversationType)conversationType targetId:(NSString *)targetId;
 
 @end

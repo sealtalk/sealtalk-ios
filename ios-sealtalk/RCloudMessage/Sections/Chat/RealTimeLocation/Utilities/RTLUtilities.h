@@ -26,8 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (UIImage *)imageNamed:(NSString *)name ofBundle:(NSString *)bundleName;
 
-+ (BOOL)isRTL;
-
 @end
 
 NS_ASSUME_NONNULL_END

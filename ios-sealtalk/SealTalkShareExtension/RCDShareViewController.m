@@ -164,7 +164,7 @@
         item.title = RCDLocalizedString(@"i_know_it");
         __weak typeof(self) weakSelf = self;
 
-        self.textView.text = RCDLocalizedString(@"use_share_must_open_st");
+        self.textView.text = RCDLocalizedString(@"use_share_must_open_sealtalk");
         self.textView.textAlignment = NSTextAlignmentCenter;
         item.tapHandler = ^{
             [weakSelf.extensionContext completeRequestReturningItems:@[] completionHandler:nil];

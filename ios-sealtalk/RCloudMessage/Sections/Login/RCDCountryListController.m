@@ -14,12 +14,11 @@
 #import "RCDCommonString.h"
 #import "RCDLoginManager.h"
 #import "RCDUIBarButtonItem.h"
-#import <RongIMKit/RCKitCommonDefine.h>
-#import "RCDSearchController.h"
+
 @interface RCDCountryListController () <UITableViewDelegate, UITableViewDataSource, UISearchControllerDelegate,
                                         UISearchResultsUpdating>
 
-@property (nonatomic, retain) RCDSearchController *searchController;
+@property (nonatomic, retain) UISearchController *searchController;
 
 //数据源
 @property (nonatomic, strong) NSMutableArray *countryArray;
@@ -61,7 +60,10 @@
 }
 
 - (void)setNaviItem {
-    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn)];
+    self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
 - (void)clickBackBtn {
@@ -197,11 +199,16 @@
 }
 
 #pragma mark - 属性初始化 -
-- (RCDSearchController *)searchController {
+- (UISearchController *)searchController {
     if (!_searchController) {
-        _searchController = [[RCDSearchController alloc] initWithSearchResultsController:nil];
+        _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
         _searchController.delegate = self;
         _searchController.searchResultsUpdater = self;
+        //提醒字眼
+        _searchController.searchBar.placeholder = NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil);
+        _searchController.searchBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+        _searchController.searchBar.layer.borderColor = RCDDYCOLOR(0xf0f0f6, 0x000000).CGColor;
+        _searchController.searchBar.layer.borderWidth = 1;
         _searchController.dimsBackgroundDuringPresentation = NO;
     }
     return _searchController;

@@ -46,6 +46,7 @@
 
 #pragma mark - Target action
 - (void)save {
+    
     RCPushLauguage lauguage = RCPushLauguage_EN_US;
     if ([self.language isEqualToString:@"ar"]) {
         lauguage = RCPushLauguage_AR_SA;

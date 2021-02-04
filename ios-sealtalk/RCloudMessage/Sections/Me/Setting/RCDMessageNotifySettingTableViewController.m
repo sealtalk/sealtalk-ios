@@ -145,7 +145,8 @@
                     [hud hide:YES];
                     [self showAlert:RCDLocalizedString(@"alert")
                                message:RCDLocalizedString(@"set_fail")
-                        cancelBtnTitle:RCDLocalizedString(@"cancel")];
+                        cancelBtnTitle:RCDLocalizedString(@"cancel")
+                         otherBtnTitle:nil];
                     self.isReceiveNotification = YES;
                     [self.tableView reloadData];
                 });
@@ -163,7 +164,8 @@
                     [hud hide:YES];
                     [self showAlert:RCDLocalizedString(@"alert")
                                message:@"取消失败"
-                        cancelBtnTitle:RCDLocalizedString(@"cancel")];
+                        cancelBtnTitle:RCDLocalizedString(@"cancel")
+                         otherBtnTitle:nil];
                     self.isReceiveNotification = NO;
                     [self.tableView reloadData];
                 });
@@ -188,8 +190,20 @@
 
 - (void)showAlert:(NSString *)title
           message:(NSString *)message
-   cancelBtnTitle:(NSString *)cBtnTitle{
-    [RCAlertView showAlertController:title message:message cancelTitle:cBtnTitle inViewController:self];
+   cancelBtnTitle:(NSString *)cBtnTitle
+    otherBtnTitle:(NSString *)oBtnTitle {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:message
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        if (oBtnTitle) {
+            [alertController
+                addAction:[UIAlertAction actionWithTitle:oBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        }
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 @end

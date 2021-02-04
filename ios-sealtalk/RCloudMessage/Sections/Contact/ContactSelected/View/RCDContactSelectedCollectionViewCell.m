@@ -10,7 +10,7 @@
 #import "DefaultPortraitView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <Masonry/Masonry.h>
-#import <RongIMKit/RongIMKit.h>
+
 @implementation RCDContactSelectedCollectionViewCell
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -45,12 +45,7 @@
     if (!_portraitImgView) {
         _portraitImgView = [[UIImageView alloc] init];
         _portraitImgView.clipsToBounds = YES;
-        if (RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
-            RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
-            _portraitImgView.layer.cornerRadius = self.frame.size.width/2;
-        } else {
-            _portraitImgView.layer.cornerRadius = 5.f;
-        }
+        _portraitImgView.layer.cornerRadius = 5;
         _portraitImgView.backgroundColor = [UIColor clearColor];
         _portraitImgView.contentMode = UIViewContentModeScaleAspectFill;
     }
