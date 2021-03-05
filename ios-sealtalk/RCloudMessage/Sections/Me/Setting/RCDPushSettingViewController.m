@@ -224,21 +224,11 @@
 }
 
 - (void)AlertMessage:(NSString *)message {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
-    });
+    [RCAlertView showAlertController:nil message:message cancelTitle:RCDLocalizedString(@"confirm") inViewController:self];
 }
 
 - (void)initUI {
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
-                                                                             target:self
-                                                                             action:@selector(clickBackBtn:)];
-    self.navigationItem.leftBarButtonItem = leftBtn;
+    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"me") target:self action:@selector(clickBackBtn:)];
 
     self.tableView = [[RCDTableView alloc] init];
     [self setTableViewLayout];

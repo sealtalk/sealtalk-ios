@@ -24,14 +24,18 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.contentView.backgroundColor = RCDYCOLOR(0xffffff, 0x191919);
         [self loadView];
+        self.selectedBackgroundView.backgroundColor =
+            [RCDUtilities generateDynamicColor:HEXCOLOR(0xf1f1f1)
+                                     darkColor:HEXCOLOR(0x242424)];
     }
 
     return self;
 }
 
 - (void)setDataModel:(RCDSearchResultModel *)model {
-    float namelLabelWidth = RCDScreenWidth - 20 - 48 - 9.5;
+    float namelLabelWidth = RCDScreenWidth - 20 - 40 - 9.5;
     if (model.time) {
         self.timeLabel.hidden = NO;
         namelLabelWidth -= 100;
@@ -40,7 +44,7 @@
     }
     if (!(model.otherInformation.length > 0) || !(model.name.length > 0)) {
         self.nameLabel.frame =
-            CGRectMake(CGRectGetMaxX(self.headerView.frame) + 9.5, (65 - 17) / 2, namelLabelWidth, 17);
+            CGRectMake(CGRectGetMaxX(self.headerView.frame) + 8, (56 - 19) / 2, namelLabelWidth, 19);
         self.additionalLabel.hidden = YES;
         self.otherLabel.hidden = YES;
         NSString *str = nil;
@@ -51,28 +55,28 @@
         }
         [self.nameLabel attributedText:str byHighlightedText:self.searchString];
     } else {
-        self.nameLabel.frame = CGRectMake(CGRectGetMaxX(self.headerView.frame) + 9.5,
-                                          CGRectGetMinY(self.headerView.frame) + 3, namelLabelWidth, 17);
+        self.nameLabel.frame = CGRectMake(CGRectGetMaxX(self.headerView.frame) + 8,
+                                          CGRectGetMinY(self.headerView.frame), namelLabelWidth, 19);
         self.additionalLabel.hidden = NO;
         self.otherLabel.hidden = NO;
-        CGFloat height = CGRectGetMaxY(self.headerView.frame) - 20;
-        CGFloat width = CGRectGetMaxX(self.headerView.frame) + 9.5;
-        CGFloat additionalLabelWidth = RCDScreenWidth - 20 - 48 - 9.5;
+        CGFloat height = CGRectGetMaxY(self.headerView.frame) - 19;
+        CGFloat width = CGRectGetMaxX(self.headerView.frame) + 8;
+        CGFloat additionalLabelWidth = RCDScreenWidth - 20 - 50 - 8;
         if (model.searchType == RCDSearchGroup) {
             self.otherLabel.text = RCDLocalizedString(@"include");
-            self.otherLabel.frame = CGRectMake(width, height, 40, 16);
+            self.otherLabel.frame = CGRectMake(width, height, 50, 19);
             [self.otherLabel sizeToFit];
             self.additionalLabel.frame = CGRectMake(width + self.otherLabel.frame.size.width, height,
-                                                    additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
+                                                    additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 19);
 
             [self.additionalLabel attributedText:model.otherInformation byHighlightedText:self.searchString];
             self.nameLabel.text = model.name;
         } else if (model.searchType == RCDSearchFriend) {
             self.otherLabel.text = RCDLocalizedString(@"nickname");
-            self.otherLabel.frame = CGRectMake(width, height, 40, 16);
+            self.otherLabel.frame = CGRectMake(width, height, 50, 19);
             [self.otherLabel sizeToFit];
             self.additionalLabel.frame = CGRectMake(width + self.otherLabel.frame.size.width, height,
-                                                    additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
+                                                    additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 19);
             [self.additionalLabel attributedText:model.name byHighlightedText:self.searchString];
             self.nameLabel.text = model.otherInformation;
         } else {
@@ -88,12 +92,12 @@
                 rect.size.width = additionalLabelWidth;
                 self.additionalLabel.frame = rect;
             }
-            self.otherLabel.frame = CGRectMake(width, height, 40, 16);
+            self.otherLabel.frame = CGRectMake(width, height, 50, 19);
             [self.otherLabel sizeToFit];
             self.additionalLabel.frame = CGRectMake(width + self.otherLabel.frame.size.width, height,
-                                                    additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 16);
+                                                    additionalLabelWidth - CGRectGetWidth(self.otherLabel.frame), 19);
             if (model.time) {
-                self.timeLabel.text = [RCKitUtility ConvertMessageTime:model.time / 1000];
+                self.timeLabel.text = [RCKitUtility convertConversationTime:model.time / 1000];
             }
             self.nameLabel.text = model.name;
             if (model.count > 1) {
@@ -115,30 +119,39 @@
 }
 
 - (void)loadView {
-    self.headerView = [[UIImageView alloc] initWithFrame:CGRectMake(10, (65 - 48) / 2, 48, 48)];
-    self.headerView.layer.cornerRadius = 4;
+    CGFloat cellHeight = [[self class] cellHeight];
+    self.headerView = [[UIImageView alloc] initWithFrame:CGRectMake(10, (cellHeight - 40) / 2, 40, 40)];
+    CGFloat cornerRadius = 4;
+    if (RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE &&
+        RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE) {
+        cornerRadius = 20;
+    }
+    self.headerView.layer.cornerRadius = cornerRadius;
     self.headerView.layer.masksToBounds = YES;
     [self.contentView addSubview:self.headerView];
 
     self.nameLabel = [[RCDLabel alloc] initWithFrame:CGRectZero];
-    self.nameLabel.font = [UIFont systemFontOfSize:15.f];
-    self.nameLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
+    self.nameLabel.font = [UIFont systemFontOfSize:17.f];
+    self.nameLabel.textColor = RCDDYCOLOR(0x111f2c, 0xffffff);
     [self.contentView addSubview:self.nameLabel];
 
-    self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(RCDScreenWidth - 100 - 10, (65 - 48) / 2, 100, 17)];
-    self.timeLabel.textColor = RCDDYCOLOR(0x999999, 0x707070);
-    self.timeLabel.font = [UIFont systemFontOfSize:15.f];
+    self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(RCDScreenWidth - 100 - 10, 8, 100, 17)];
+    self.timeLabel.textColor = RCDDYCOLOR(0x999999, 0x585858);
+    self.timeLabel.font = [UIFont systemFontOfSize:13.f];
     self.timeLabel.textAlignment = NSTextAlignmentRight;
     [self.contentView addSubview:self.timeLabel];
 
     self.otherLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.otherLabel.textColor = RCDDYCOLOR(0x999999, 0x707070);
-    self.otherLabel.font = [UIFont systemFontOfSize:14.f];
+    self.otherLabel.textColor = RCDDYCOLOR(0x111f2c, 0xffffff);
+    self.otherLabel.font = [UIFont systemFontOfSize:17.f];
 
     self.additionalLabel = [[RCDLabel alloc] initWithFrame:CGRectZero];
-    self.additionalLabel.font = [UIFont systemFontOfSize:14.f];
-    self.additionalLabel.textColor = RCDDYCOLOR(0x999999, 0x707070);
+    self.additionalLabel.font = [UIFont systemFontOfSize:17.f];
+    self.additionalLabel.textColor = RCDDYCOLOR(0x111f2c, 0x9f9f9f);
     [self.contentView addSubview:self.otherLabel];
     [self.contentView addSubview:self.additionalLabel];
+}
++ (CGFloat)cellHeight {
+    return 56;
 }
 @end

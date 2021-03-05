@@ -16,12 +16,12 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "back.png",
+      "filename" : "navigator_btn_back@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "back_dark@2x.png",
+      "filename" : "icon／功能／后退@2x.png",
       "appearances" : [
         {
           "appearance" : "luminosity",
@@ -32,11 +32,12 @@
     },
     {
       "idiom" : "universal",
+      "filename" : "navigator_btn_back@3x.png",
       "scale" : "3x"
     },
     {
       "idiom" : "universal",
-      "filename" : "back_dark@3x.png",
+      "filename" : "icon／功能／后退@3x.png",
       "appearances" : [
         {
           "appearance" : "luminosity",

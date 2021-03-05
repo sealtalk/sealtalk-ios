@@ -9,7 +9,7 @@
 #import "RCDPublicServiceListViewController.h"
 #import "RCDChatViewController.h"
 #import "RCDForwardManager.h"
-
+#import <RongPublicService/RongPublicService.h>
 @implementation RCDPublicServiceListViewController
 
 - (void)viewDidLoad {

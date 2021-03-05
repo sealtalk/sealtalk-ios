@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RongIMLib/RCUserInfo.h>
+#import <RongIMLib/RongIMLib.h>
 #import "RCDUserInfo.h"
 typedef enum : NSUInteger {
     RCDGroupMemberRoleOwner,

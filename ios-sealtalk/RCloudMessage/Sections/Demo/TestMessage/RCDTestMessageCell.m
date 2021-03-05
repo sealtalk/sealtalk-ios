@@ -19,8 +19,8 @@
 
     CGFloat __messagecontentview_height = size.height;
 
-    if (__messagecontentview_height < [RCIM sharedRCIM].globalMessagePortraitSize.height) {
-        __messagecontentview_height = [RCIM sharedRCIM].globalMessagePortraitSize.height;
+    if (__messagecontentview_height < RCKitConfigCenter.ui.globalMessagePortraitSize.height) {
+        __messagecontentview_height = RCKitConfigCenter.ui.globalMessagePortraitSize.height;
     }
 
     __messagecontentview_height += extraHeight;
@@ -45,34 +45,19 @@
 }
 
 - (void)initialize {
-    self.bubbleBackgroundView = [[UIImageView alloc] initWithFrame:CGRectZero];
-    [self.messageContentView addSubview:self.bubbleBackgroundView];
-
+    [self showBubbleBackgroundView:YES];
+    if(self.model.messageDirection == MessageDirection_RECEIVE){
+        [self.textLabel setTextColor:[RCKitUtility generateDynamicColor:HEXCOLOR(0x262626) darkColor:RCMASKCOLOR(0xffffff, 0.8)]];
+    }else{
+        [self.textLabel setTextColor:RCDYCOLOR(0x262626, 0x040A0F)];
+    }
     self.textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [self.textLabel setFont:[UIFont systemFontOfSize:Test_Message_Font_Size]];
 
     self.textLabel.numberOfLines = 0;
     [self.textLabel setLineBreakMode:NSLineBreakByWordWrapping];
     [self.textLabel setTextAlignment:NSTextAlignmentLeft];
-    [self.textLabel setTextColor:[RCKitUtility generateDynamicColor:HEXCOLOR(0x000000) darkColor:HEXCOLOR(0xe0e0e0)]];
-    [self.bubbleBackgroundView addSubview:self.textLabel];
-    self.bubbleBackgroundView.userInteractionEnabled = YES;
-    UILongPressGestureRecognizer *longPress =
-        [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
-    [self.bubbleBackgroundView addGestureRecognizer:longPress];
-
-    UITapGestureRecognizer *textMessageTap =
-        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTextMessage:)];
-    textMessageTap.numberOfTapsRequired = 1;
-    textMessageTap.numberOfTouchesRequired = 1;
-    [self.textLabel addGestureRecognizer:textMessageTap];
-    self.textLabel.userInteractionEnabled = YES;
-}
-
-- (void)tapTextMessage:(UIGestureRecognizer *)gestureRecognizer {
-    if ([self.delegate respondsToSelector:@selector(didTapMessageCell:)]) {
-        [self.delegate didTapMessageCell:self.model];
-    }
+    [self.messageContentView addSubview:self.textLabel];
 }
 
 - (void)setDataModel:(RCMessageModel *)model {
@@ -89,54 +74,15 @@
 
     CGSize textLabelSize = [[self class] getTextLabelSize:testMessage];
     CGSize bubbleBackgroundViewSize = [[self class] getBubbleSize:textLabelSize];
-    CGRect messageContentViewRect = self.messageContentView.frame;
-
     //拉伸图片
-    if (MessageDirection_RECEIVE == self.messageDirection) {
-        self.textLabel.frame = CGRectMake(20, 7, textLabelSize.width, textLabelSize.height);
-
-        messageContentViewRect.size.width = bubbleBackgroundViewSize.width;
-        self.messageContentView.frame = messageContentViewRect;
-
-        self.bubbleBackgroundView.frame =
-            CGRectMake(0, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
-        UIImage *image = [RCKitUtility imageNamed:@"chat_from_bg_normal" ofBundle:@"RongCloud.bundle"];
-        self.bubbleBackgroundView.image =
-            [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height * 0.8, image.size.width * 0.8,
-                                                                image.size.height * 0.2, image.size.width * 0.2)];
-    } else {
-        self.textLabel.frame = CGRectMake(12, 7, textLabelSize.width, textLabelSize.height);
-
-        messageContentViewRect.size.width = bubbleBackgroundViewSize.width;
-        messageContentViewRect.size.height = bubbleBackgroundViewSize.height;
-        messageContentViewRect.origin.x =
-            self.baseContentView.bounds.size.width - (messageContentViewRect.size.width + HeadAndContentSpacing +
-                                                      [RCIM sharedRCIM].globalMessagePortraitSize.width + 10);
-        self.messageContentView.frame = messageContentViewRect;
-
-        self.bubbleBackgroundView.frame =
-            CGRectMake(0, 0, bubbleBackgroundViewSize.width, bubbleBackgroundViewSize.height);
-        UIImage *image = [RCKitUtility imageNamed:@"chat_to_bg_normal" ofBundle:@"RongCloud.bundle"];
-        self.bubbleBackgroundView.image =
-            [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height * 0.8, image.size.width * 0.2,
-                                                                image.size.height * 0.2, image.size.width * 0.8)];
-    }
-}
-
-- (void)longPressed:(id)sender {
-    UILongPressGestureRecognizer *press = (UILongPressGestureRecognizer *)sender;
-    if (press.state == UIGestureRecognizerStateEnded) {
-        return;
-    } else if (press.state == UIGestureRecognizerStateBegan) {
-        [self.delegate didLongTouchMessageCell:self.model inView:self.bubbleBackgroundView];
-    }
+    self.textLabel.frame = CGRectMake(12, (bubbleBackgroundViewSize.height - textLabelSize.height)/2, textLabelSize.width, textLabelSize.height);
+    self.messageContentView.contentSize = bubbleBackgroundViewSize;
 }
 
 + (CGSize)getTextLabelSize:(RCDTestMessage *)message {
     if ([message.content length] > 0) {
-        float maxWidth = RCDScreenWidth - (10 + [RCIM sharedRCIM].globalMessagePortraitSize.width + 10) * 2 - 5 - 35;
         CGRect textRect = [message.content
-            boundingRectWithSize:CGSizeMake(maxWidth, 8000)
+            boundingRectWithSize:CGSizeMake([RCMessageCellTool getMessageContentViewMaxWidth], 8000)
                          options:(NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin |
                                   NSStringDrawingUsesFontLeading)
                       attributes:@{
@@ -154,8 +100,8 @@
 + (CGSize)getBubbleSize:(CGSize)textLabelSize {
     CGSize bubbleSize = CGSizeMake(textLabelSize.width, textLabelSize.height);
 
-    if (bubbleSize.width + 12 + 20 > 50) {
-        bubbleSize.width = bubbleSize.width + 12 + 20;
+    if (bubbleSize.width + 12 + 12 > 50) {
+        bubbleSize.width = bubbleSize.width + 12 + 12;
     } else {
         bubbleSize.width = 50;
     }

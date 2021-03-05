@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 RongCloud. All rights reserved.
 //
 
-#import <RongIMLib/RongIMLib.h>
+#import <RongLocation/RongLocation.h>
 #import <UIKit/UIKit.h>
 
 @protocol RealTimeLocationStatusViewDelegate <NSObject>

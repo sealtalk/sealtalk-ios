@@ -70,10 +70,7 @@
                                                                    action:@selector(clickRightBtn:)];
     self.navigationItem.rightBarButtonItem = rightButton;
 
-    RCDUIBarButtonItem *leftButton = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
-                                                                                target:self
-                                                                                action:@selector(clickBackBtn:)];
-    self.navigationItem.leftBarButtonItem = leftButton;
+    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn:)];
 }
 
 - (void)setupSubviews {
@@ -170,38 +167,19 @@
 }
 
 - (void)alertInfo:(NSString *)infoStr {
-    UIAlertController *alertController =
-        [UIAlertController alertControllerWithTitle:nil message:infoStr preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:nil]];
-    [self presentViewController:alertController animated:YES completion:nil];
+    [RCAlertView showAlertController:nil message:infoStr cancelTitle:RCDLocalizedString(@"confirm") inViewController:self];
 }
 
 - (void)showActionSheet {
-    UIAlertAction *takePictureAction =
-        [UIAlertAction actionWithTitle:RCDLocalizedString(@"take_picture")
-                                 style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *_Nonnull action) {
-                                   [self pushImagePickerVCWithType:UIImagePickerControllerSourceTypeCamera];
-                               }];
-
-    UIAlertAction *albumsAction =
-        [UIAlertAction actionWithTitle:RCDLocalizedString(@"SelectFromAlbum")
-                                 style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *_Nonnull action) {
-                                   [self pushImagePickerVCWithType:UIImagePickerControllerSourceTypePhotoLibrary];
-                               }];
-
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel")
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction *_Nonnull action){
-                                                         }];
-    [RCKitUtility showAlertController:nil
-                              message:nil
-                       preferredStyle:UIAlertControllerStyleActionSheet
-                              actions:@[ cancelAction, takePictureAction, albumsAction ]
-                     inViewController:self];
+    [RCActionSheetView showActionSheetView:nil cellArray:@[RCDLocalizedString(@"take_picture"), RCDLocalizedString(@"SelectFromAlbum")] cancelTitle:RCDLocalizedString(@"cancel") selectedBlock:^(NSInteger index) {
+        if (index == 0) {
+            [self pushImagePickerVCWithType:UIImagePickerControllerSourceTypeCamera];
+        }else{
+           [self pushImagePickerVCWithType:UIImagePickerControllerSourceTypePhotoLibrary];
+        }
+    } cancelBlock:^{
+            
+    }];
 }
 
 - (void)pushImagePickerVCWithType:(UIImagePickerControllerSourceType)type {

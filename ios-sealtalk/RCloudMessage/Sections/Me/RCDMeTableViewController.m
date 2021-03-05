@@ -19,7 +19,7 @@
 #import "RCDLanguageSettingViewController.h"
 #import "RCDCommonString.h"
 #import "RCDQRCodeController.h"
-
+#import <RongCustomerService/RongCustomerService.h>
 //#define SERVICE_ID @"KEFU146001495753714"
 
 @interface RCDMeTableViewController ()
@@ -27,12 +27,6 @@
 @end
 
 @implementation RCDMeTableViewController
-- (instancetype)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
-    }
-    return self;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -74,6 +68,7 @@
     if (0 == indexPath.section) {
         static NSString *detailsCellWithIdentifier = @"RCDMeDetailsCell";
         RCDMeDetailsCell *detailsCell = [self.tableView dequeueReusableCellWithIdentifier:detailsCellWithIdentifier];
+        detailsCell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (detailsCell == nil) {
             detailsCell = [[RCDMeDetailsCell alloc] init];
         }
@@ -82,7 +77,6 @@
 
     static NSString *reusableCellWithIdentifier = @"RCDMeCell";
     RCDMeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reusableCellWithIdentifier];
-
     if (cell == nil) {
         cell = [[RCDMeCell alloc] init];
     }
@@ -107,7 +101,7 @@
             [cell setCellWithImageName:@"sevre_inactive" labelName:RCDLocalizedString(@"feedback") rightLabelName:@""];
         } else if (1 == indexPath.row) {
             [cell setCellWithImageName:@"about_rongcloud"
-                             labelName:RCDLocalizedString(@"about_sealtalk")
+                             labelName:RCDLocalizedString(@"about_st")
                         rightLabelName:@""];
             BOOL isNeedUpdate = [[DEFAULTS objectForKey:RCDNeedUpdateKey] boolValue];
             if (isNeedUpdate) {
@@ -115,12 +109,13 @@
             }
         }
     }
+    cell.leftLabel.font = [UIFont systemFontOfSize:17];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        return 88.f;
+        return 80.f;
     }
     return 44.f;
 }
@@ -153,6 +148,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return 0.01;
+    }
     return 15.f;
 }
 
@@ -160,6 +158,10 @@
     UIView *view = [UIView new];
     view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
     return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0.01;
 }
 
 - (void)chatWithCustomerService:(NSString *)kefuId {
@@ -212,6 +214,7 @@
     self.navigationController.navigationBar.translucent = NO;
     self.tableView.tableFooterView = [UIView new];
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 48, 0, 0);
 }
 
 @end

@@ -55,17 +55,17 @@
     if (textField.text.length > 0) {
         self.navigationItem.rightBarButtonItem.enabled = YES;
         if (![RCDUtilities isLowerLetter:textField.text]) {
-            self.hintLabel.text = RCDLocalizedString(@"SetSealTalkNumError");
+            self.hintLabel.text = RCDLocalizedString(@"SetSTNumError");
             self.hintLabel.textColor = [UIColor colorWithHexString:@"FF1612 " alpha:1];
             self.navigationItem.rightBarButtonItem.enabled = NO;
         } else {
-            self.hintLabel.text = RCDLocalizedString(@"SetSealTalkNumHint");
+            self.hintLabel.text = RCDLocalizedString(@"SetSTNumHint");
             self.hintLabel.textColor = [UIColor colorWithHexString:@"666666 " alpha:1];
             self.navigationItem.rightBarButtonItem.enabled = YES;
         }
     } else {
         self.navigationItem.rightBarButtonItem.enabled = NO;
-        self.hintLabel.text = RCDLocalizedString(@"SetSealTalkNumHint");
+        self.hintLabel.text = RCDLocalizedString(@"SetSTNumHint");
         self.hintLabel.textColor = [UIColor colorWithHexString:@"666666 " alpha:1];
     }
 }
@@ -98,7 +98,7 @@
 
 #pragma mark - Private Method
 - (void)setNavi {
-    self.title = RCDLocalizedString(@"SetSealTalkNumber");
+    self.title = RCDLocalizedString(@"SetSTNumber");
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"save")
                                                                            style:UIBarButtonItemStylePlain
                                                                           target:self
@@ -106,10 +106,7 @@
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
-                                                                             target:self
-                                                                             action:@selector(clickBackBtn)];
-    self.navigationItem.leftBarButtonItem = leftBtn;
+    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
 }
 
 - (void)clickBackBtn {
@@ -266,7 +263,7 @@
         _sealTalkNumLabel = [[UILabel alloc] init];
         _sealTalkNumLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
         _sealTalkNumLabel.font = [UIFont systemFontOfSize:15];
-        _sealTalkNumLabel.text = RCDLocalizedString(@"SealTalkNumber");
+        _sealTalkNumLabel.text = RCDLocalizedString(@"STNumber");
     }
     return _sealTalkNumLabel;
 }
@@ -275,7 +272,7 @@
     if (!_textField) {
         _textField = [[UITextField alloc] init];
         _textField.textColor = RCDDYCOLOR(0x000000, 0x999999);
-        _textField.placeholder = RCDLocalizedString(@"SetSealTalkNumPlaceholder");
+        _textField.placeholder = RCDLocalizedString(@"SetSTNumPlaceholder");
         _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _textField.font = [UIFont systemFontOfSize:12];
         _textField.adjustsFontSizeToFitWidth = YES;
@@ -298,7 +295,7 @@
         _hintLabel.numberOfLines = 0;
         _hintLabel.textColor = [UIColor colorWithHexString:@"666666" alpha:1];
         _hintLabel.font = [UIFont systemFontOfSize:12];
-        _hintLabel.text = RCDLocalizedString(@"SetSealTalkNumHint");
+        _hintLabel.text = RCDLocalizedString(@"SetSTNumHint");
     }
     return _hintLabel;
 }

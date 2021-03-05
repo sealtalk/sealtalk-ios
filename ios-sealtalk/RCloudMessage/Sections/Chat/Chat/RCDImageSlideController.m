@@ -45,30 +45,20 @@
         if (![self getCurrentPreviewImageData]) {
             return;
         }
-        UIAlertAction *cancelAction =
-            [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
-        UIAlertAction *saveAction =
-            [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"Save", @"RongCloudKit", nil)
-                                     style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction *_Nonnull action) {
-                                       [self saveImage];
-                                   }];
-        NSArray *actions = @[ cancelAction, saveAction ];
+        NSArray *actions = @[RCLocalizedString(@"Save")];
         NSString *info = [RCDQRCodeManager decodeQRCodeImage:[UIImage imageWithData:[self getCurrentPreviewImageData]]];
         if (info) {
-            UIAlertAction *identifyQRCodeAction =
-                [UIAlertAction actionWithTitle:RCDLocalizedString(@"IdentifyQRCode")
-                                         style:UIAlertActionStyleDefault
-                                       handler:^(UIAlertAction *_Nonnull action) {
-                                           [[RCDQRInfoHandle alloc] identifyQRCode:info base:self];
-                                       }];
-            actions = @[ cancelAction, saveAction, identifyQRCodeAction ];
+            actions = @[RCLocalizedString(@"Save"), RCDLocalizedString(@"IdentifyQRCode")];
         }
-        [RCKitUtility showAlertController:nil
-                                  message:nil
-                           preferredStyle:UIAlertControllerStyleActionSheet
-                                  actions:actions
-                         inViewController:self];
+        [RCActionSheetView showActionSheetView:nil cellArray:actions cancelTitle:RCDLocalizedString(@"cancel") selectedBlock:^(NSInteger index) {
+            if (index == 0) {
+                [self saveImage];
+            }else{
+                [[RCDQRInfoHandle alloc] identifyQRCode:info base:self];
+            }
+        } cancelBlock:^{
+            
+        }];
     }
 }
 
@@ -76,9 +66,10 @@
 - (void)saveImage {
     ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
     if (status == ALAuthorizationStatusRestricted || status == ALAuthorizationStatusDenied) {
-        [self showAlertController:NSLocalizedStringFromTable(@"AccessRightTitle", @"RongCloudKit", nil)
-                          message:NSLocalizedStringFromTable(@"photoAccessRight", @"RongCloudKit", nil)
-                      cancelTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)];
+        [RCAlertView showAlertController:RCLocalizedString(@"AccessRightTitle")
+                                 message:RCLocalizedString(@"photoAccessRight")
+                             cancelTitle:RCLocalizedString(@"OK")
+                        inViewController:self];
         return;
     }
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
@@ -87,15 +78,13 @@
                                 metadata:nil
                          completionBlock:^(NSURL *assetURL, NSError *error) {
                              if (error != NULL) {
-                                 [self showAlertController:nil
-                                                   message:NSLocalizedStringFromTable(@"SavePhotoFailed",
-                                                                                      @"RongCloudKit", nil)
-                                               cancelTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)];
+                                 [RCAlertView showAlertController:nil
+                                                   message:RCLocalizedString(@"SavePhotoFailed")
+                                               cancelTitle:RCLocalizedString(@"OK") inViewController:self];
                              } else {
-                                 [self showAlertController:nil
-                                                   message:NSLocalizedStringFromTable(@"SavePhotoSuccess",
-                                                                                      @"RongCloudKit", nil)
-                                               cancelTitle:NSLocalizedStringFromTable(@"OK", @"RongCloudKit", nil)];
+                                 [RCAlertView showAlertController:nil
+                                                   message:RCLocalizedString(@"SavePhotoSuccess")
+                                               cancelTitle:RCLocalizedString(@"OK") inViewController:self];
                              }
                          }];
 }
@@ -111,16 +100,5 @@
         imageData = [RCKitUtility getImageDataForURLString:self.currentPreviewImage.imageUrl];
     }
     return imageData;
-}
-
-- (void)showAlertController:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                                 message:message
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        [alertController
-            addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
-    });
 }
 @end

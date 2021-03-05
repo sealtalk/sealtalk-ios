@@ -64,7 +64,7 @@ float fromValue = 0.0f;
     _imageView.layer.borderWidth = 2;
     UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(12, -1, 16, 12)];
     arrow.image = [UIImage imageNamed:@"big_arrow.png"];
-    _locationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 12, 16, 16)];
+    _locationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(6, 12, 28, 28)];
     [self addObserver:self forKeyPath:@"imageUrl" options:NSKeyValueObservingOptionNew context:nil];
     [self addSubview:_locationImageView];
     [self addSubview:arrow];

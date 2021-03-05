@@ -8,6 +8,7 @@
 
 #import "RealTimeLocationStatusView.h"
 #import "RealTimeLocationDefine.h"
+#import "RTLUtilities.h"
 
 @interface RealTimeLocationStatusView ()
 @property (nonatomic) BOOL isExpended;
@@ -28,6 +29,8 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+         [self setBackgroundColor:UIColorFromRGB(0x000000, 0.6)];
+
         [self setup];
     }
     return self;
@@ -46,19 +49,11 @@
     case RC_REAL_TIME_LOCATION_STATUS_INCOMING:
         self.hidden = NO;
         self.isExpended = NO;
-        [self setBackgroundColor:[UIColor colorWithRed:((float)0x11) / 255
-                                                 green:((float)0x40) / 255
-                                                  blue:((float)0x60) / 255
-                                                 alpha:0.7]];
         break;
     case RC_REAL_TIME_LOCATION_STATUS_OUTGOING:
     case RC_REAL_TIME_LOCATION_STATUS_CONNECTED:
         self.hidden = NO;
         self.isExpended = NO;
-        [self setBackgroundColor:[UIColor colorWithRed:((float)0x69) / 255
-                                                 green:((float)0xb8) / 255
-                                                  blue:((float)0xee) / 255
-                                                 alpha:0.7]];
         break;
     default:
         break;
@@ -170,30 +165,41 @@
     if (!_statusLabel) {
         _statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, self.frame.size.width - 60, 40)];
         _statusLabel.textAlignment = NSTextAlignmentCenter;
-        _statusLabel.textColor = [UIColor whiteColor];
+        _statusLabel.textColor = [RCKitUtility generateDynamicColor:UIColorFromRGB(0xffffff, 1) darkColor:UIColorFromRGB(0xffffff, 0.6)];
     }
     return _statusLabel;
 }
 - (UIImageView *)locationIcon {
     if (!_locationIcon) {
-        _locationIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 13, 10, 14)];
+        if ([RTLUtilities isRTL]) {
+            _locationIcon = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width - 20, 13, 10, 14)];
+        } else {
+            _locationIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 13, 10, 14)];
+        }
         [_locationIcon setImage:[UIImage imageNamed:@"white_location_icon"]];
     }
     return _locationIcon;
 }
 - (UIImageView *)moreIcon {
     if (!_moreIcon) {
-        _moreIcon = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width - 20, 13, 10, 14)];
-        [_moreIcon setImage:[UIImage imageNamed:@"location_arrow"]];
+        UIImage *image = [UIImage imageNamed:@"location_arrow"];
+        if ([RTLUtilities isRTL]) {
+            _moreIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 13, 10, 14)];
+            image = [image imageFlippedForRightToLeftLayoutDirection];
+        } else {
+            _moreIcon = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width - 20, 13, 10, 14)];
+        }
+        [_moreIcon setImage:image];
     }
     return _moreIcon;
 }
 - (UILabel *)expendLabel {
     if (!_expendLabel) {
-        _expendLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, self.frame.size.width - 48, 60)];
-        _expendLabel.textAlignment = NSTextAlignmentCenter;
-        _expendLabel.textColor = [UIColor whiteColor];
+        _expendLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, self.frame.size.width - 40, 60)];
+        _expendLabel.textAlignment = NSTextAlignmentLeft;
+        _expendLabel.textColor = [RCKitUtility generateDynamicColor:UIColorFromRGB(0xffffff, 1) darkColor:UIColorFromRGB(0xffffff, 0.6)];
         [_expendLabel setText:RTLLocalizedString(@"join_share_location_alert")];
+        _expendLabel.font = [UIFont systemFontOfSize:14];
         _expendLabel.numberOfLines = 0;
     }
     return _expendLabel;
@@ -202,10 +208,9 @@
     if (!_cancelButton) {
         _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(79, 52, 60, 25)];
         [_cancelButton setTitle:RTLLocalizedString(@"cancel") forState:UIControlStateNormal];
-        [_cancelButton setBackgroundImage:[UIImage imageNamed:@"location_share_button"] forState:UIControlStateNormal];
-        [_cancelButton setBackgroundImage:[UIImage imageNamed:@"location_share_button_hover"]
-                                 forState:UIControlStateHighlighted];
+        _cancelButton.backgroundColor = [RCKitUtility generateDynamicColor:UIColorFromRGB(0x444444, 1) darkColor:UIColorFromRGB(0x52676F,1)];
         [_cancelButton addTarget:self action:@selector(onCanelPressed:) forControlEvents:UIControlEventTouchUpInside];
+        _cancelButton.titleLabel.font = [UIFont systemFontOfSize:13];
     }
     return _cancelButton;
 }
@@ -213,10 +218,9 @@
     if (!_joinButton) {
         _joinButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 60 - 79, 52, 60, 25)];
         [_joinButton setTitle:RTLLocalizedString(@"join") forState:UIControlStateNormal];
-        [_joinButton setBackgroundImage:[UIImage imageNamed:@"location_share_button"] forState:UIControlStateNormal];
-        [_joinButton setBackgroundImage:[UIImage imageNamed:@"location_share_button_hover"]
-                               forState:UIControlStateHighlighted];
+        _joinButton.backgroundColor = [RCKitUtility generateDynamicColor:UIColorFromRGB(0x444444, 1) darkColor:UIColorFromRGB(0x9fb7bf,1)];
         [_joinButton addTarget:self action:@selector(onJoinPressed:) forControlEvents:UIControlEventTouchUpInside];
+        _joinButton.titleLabel.font = [UIFont systemFontOfSize:13];
     }
     return _joinButton;
 }

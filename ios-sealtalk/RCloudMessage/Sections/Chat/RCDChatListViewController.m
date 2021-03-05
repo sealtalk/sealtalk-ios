@@ -15,7 +15,6 @@
 #import "RCDSearchBar.h"
 #import "RCDSearchViewController.h"
 #import "RCDUIBarButtonItem.h"
-#import "UIColor+RCColor.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UITabBar+badge.h"
 #import "RCDCommonString.h"
@@ -64,6 +63,13 @@
     [self registerNotification];
     [self checkVersion];
     [self getFriendRequesteds];
+}
+
+- (void)viewWillLayoutSubviews{
+    [super viewWillLayoutSubviews];
+    //隐藏导航栏下那条线
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -216,7 +222,7 @@
 
 //高度
 - (CGFloat)rcConversationListTableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 67.0f;
+    return 72.0f;
 }
 
 //自定义cell
@@ -395,11 +401,8 @@
                       target:self
                       action:@selector(pushToQRScan)]
     ];
-
-    UIBarButtonItem *rightBarButton = self.tabBarController.navigationItem.rightBarButtonItems[0];
-    CGRect targetFrame = [self.navigationController.view convertRect:rightBarButton.customView.frame
-                                                            fromView:rightBarButton.customView.superview];
-    targetFrame.origin.y = targetFrame.origin.y - 15 - 8.5;
+    CGRect navigationBarRect = self.navigationController.navigationBar.frame;
+    CGRect targetFrame = CGRectMake(self.view.frame.size.width - 30, navigationBarRect.origin.y-navigationBarRect.size.height-24, 100, 80);
     [KxMenu setTintColor:HEXCOLOR(0x000000)];
     [KxMenu setTitleFont:[UIFont systemFontOfSize:17]];
     [KxMenu showMenuInView:self.tabBarController.navigationController.navigationBar.superview
@@ -550,14 +553,12 @@
     RCDChatViewController *chatVC = [[RCDChatViewController alloc] init];
     chatVC.conversationType = model.conversationType;
     chatVC.targetId = model.targetId;
-    chatVC.userName = model.conversationTitle;
     chatVC.title = model.conversationTitle;
     if (model.conversationModelType == RC_CONVERSATION_MODEL_TYPE_NORMAL) {
         chatVC.unReadMessage = model.unreadMessageCount;
         chatVC.enableNewComingMessageIcon = YES; //开启消息提醒
         chatVC.enableUnreadMessageIcon = YES;
         if (model.conversationType == ConversationType_SYSTEM) {
-            chatVC.userName = RCDLocalizedString(@"de_actionbar_sub_system");
             chatVC.title = RCDLocalizedString(@"de_actionbar_sub_system");
         } else if (model.conversationType == ConversationType_PRIVATE) {
             chatVC.displayUserNameInCell = NO;
@@ -621,27 +622,24 @@
 }
 
 - (void)setTabBarStyle {
-    //修改tabbar的背景色
-    UIView *tabBarBG = [UIView new];
-    tabBarBG.frame = self.tabBarController.tabBar.bounds;
-    [[UITabBar appearance] insertSubview:tabBarBG atIndex:0];
     [[UITabBarItem appearance]
-        setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RCDDYCOLOR(0x999999, 0x707070),
+        setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RCDDYCOLOR(0x999999, 0xffffff),
                                                                           UITextAttributeTextColor, nil]
                       forState:UIControlStateNormal];
 
     [[UITabBarItem appearance]
-        setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RCDDYCOLOR(0x0099ff, 0x007acc),
+        setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RCDDYCOLOR(0x0099ff, 0x0099ff),
                                                                           UITextAttributeTextColor, nil]
                       forState:UIControlStateSelected];
-    self.tabBarController.tabBar.backgroundColor = RCDDYCOLOR(0xf9f9f9, 0x000000);
+    [[UITabBar appearance] setBarTintColor:RCDDYCOLOR(0xffffff, 0x1c1c1c)];
+    [UITabBar appearance].translucent = NO;
 }
 
 - (void)initSubviews {
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.navigationController.navigationBar.translucent = NO;
     //设置tableView样式
-    self.conversationListTableView.separatorColor = RCDDYCOLOR(0xdfdfdf, 0x1a1a1a);
+    self.conversationListTableView.separatorColor = RCDDYCOLOR(0xE3E5E6, 0x272727);
     self.conversationListTableView.tableFooterView = [UIView new];
     [self.headerView addSubview:self.searchBar];
     self.conversationListTableView.tableHeaderView = self.headerView;
@@ -652,16 +650,9 @@
 }
 
 - (void)setNaviItem {
-    RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"add"]
-                                                                 imageViewFrame:CGRectMake(8.5, 8.5, 17, 17)
-                                                                    buttonTitle:nil
-                                                                     titleColor:nil
-                                                                     titleFrame:CGRectZero
-                                                                    buttonFrame:CGRectMake(0, 0, 34, 34)
-                                                                         target:self
-                                                                         action:@selector(showMenu)];
+    RCDUIBarButtonItem *rightBtn = [[RCDUIBarButtonItem alloc] initContainImage:[UIImage imageNamed:@"add"] target:self action:@selector(showMenu)];
     self.tabBarController.navigationItem.rightBarButtonItems = @[ rightBtn ];
-    self.tabBarController.navigationItem.title = RCDLocalizedString(@"conversation");
+    self.tabBarController.navigationItem.title = RCDLocalizedString(@"Messages");
 }
 
 #pragma mark - geter & setter

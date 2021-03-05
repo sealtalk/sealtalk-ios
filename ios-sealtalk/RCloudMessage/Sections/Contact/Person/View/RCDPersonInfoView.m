@@ -57,7 +57,7 @@
     }
     if (userInfo.stAccount.length > 0 && ![userInfo.stAccount isEqualToString:@""]) {
         self.stAccountLabel.text =
-            [NSString stringWithFormat:@"%@：%@", RCDLocalizedString(@"SealTalkNumber"), userInfo.stAccount];
+            [NSString stringWithFormat:@"%@：%@", RCDLocalizedString(@"STNumber"), userInfo.stAccount];
     }
     if (!userInfo.portraitUri || userInfo.portraitUri.length <= 0) {
         self.portraitImgView.image = [DefaultPortraitView portraitView:userInfo.userId name:userInfo.name];
@@ -278,8 +278,8 @@
     if (!_portraitImgView) {
         _portraitImgView = [[UIImageView alloc] init];
         _portraitImgView.contentMode = UIViewContentModeScaleAspectFill;
-        if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
-            [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
+        if (RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
+            RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
             _portraitImgView.layer.cornerRadius = 30;
         } else {
             _portraitImgView.layer.cornerRadius = 5;

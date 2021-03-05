@@ -9,7 +9,7 @@
 #import "RCDQuicklySendView.h"
 #import <Masonry/Masonry.h>
 #import "UIColor+RCColor.h"
-
+#import "RCDUtilities.h"
 @interface RCDQuicklySendView ()
 
 @property (nonatomic, strong) UIImageView *bgImageView;
@@ -93,7 +93,7 @@
         _titleLabel.numberOfLines = 0;
         _titleLabel.text = RCDLocalizedString(@"PhotosYouWantToSend");
         _titleLabel.font = [UIFont systemFontOfSize:10];
-        _titleLabel.textColor = [UIColor colorWithHexString:@"666666" alpha:1];
+        _titleLabel.textColor = [RCDUtilities generateDynamicColor:HEXCOLOR(666666) darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.4]];
     }
     return _titleLabel;
 }

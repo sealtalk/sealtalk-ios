@@ -28,7 +28,7 @@
         self.dataSource = self;
         self.scrollEnabled = NO;
         self.backgroundColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
-                                                        darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
+                                                        darkColor:HEXCOLOR(0x191919)];
         [self registerClass:[RCDUserListCollectionItem class] forCellWithReuseIdentifier:@"RCDUserListCollectionItem"];
         [self registerClass:[RCDUserListCollectionItem class]
             forCellWithReuseIdentifier:@"RCDUserListCollectionItemForSigns"];
@@ -46,7 +46,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    float width = 55;
+    float width = ivAvaWidth ;
     float height = width + 15 + 9;
     return CGSizeMake(width, height);
 }

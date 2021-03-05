@@ -16,6 +16,8 @@
 #import "RCDUtilities.h"
 #import "UIColor+RCColor.h"
 #import "UIView+MBProgressHUD.h"
+#import "RCDSearchController.h"
+
 @interface RCDChooseUserController () <UISearchControllerDelegate, UISearchResultsUpdating>
 @property (nonatomic, strong) NSArray *allMembers;
 @property (nonatomic, strong) NSString *groupId;
@@ -23,7 +25,7 @@
 @property (nonatomic, strong) NSDictionary *resultSectionDict;
 @property (nonatomic, strong) NSMutableArray *searchKeys;
 @property (nonatomic, strong) NSMutableDictionary *searchResultDic;
-@property (nonatomic, retain) UISearchController *searchController;
+@property (nonatomic, retain) RCDSearchController *searchController;
 @end
 
 @implementation RCDChooseUserController
@@ -37,7 +39,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = NSLocalizedStringFromTable(@"SelectMentionedUser", @"RongCloudKit", nil);
+    self.title = RCLocalizedString(@"SelectMentionedUser");
     self.definesPresentationContext = YES;
     self.tableView.tableHeaderView = self.searchController.searchBar;
     if ([self.tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
@@ -221,20 +223,11 @@
 }
 
 #pragma mark - getter
-- (UISearchController *)searchController {
+- (RCDSearchController *)searchController {
     if (!_searchController) {
-        _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+        _searchController = [[RCDSearchController alloc] initWithSearchResultsController:nil];
         _searchController.delegate = self;
         _searchController.searchResultsUpdater = self;
-        //提醒字眼
-        _searchController.searchBar.placeholder = NSLocalizedStringFromTable(@"ToSearch", @"RongCloudKit", nil);
-        if (@available(iOS 13.0, *)) {
-            _searchController.searchBar.searchTextField.backgroundColor =
-                [RCDUtilities generateDynamicColor:HEXCOLOR(0xffffff)
-                                         darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.6]];
-        }
-        //设置顶部搜索栏的背景色
-        _searchController.searchBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
         _searchController.dimsBackgroundDuringPresentation = NO;
     }
     return _searchController;

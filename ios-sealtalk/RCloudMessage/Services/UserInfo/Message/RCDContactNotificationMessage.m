@@ -8,7 +8,7 @@
 
 #import "RCDContactNotificationMessage.h"
 #import "RCDUserInfoManager.h"
-
+#import <RongIMKit/RCKitCommonDefine.h>
 @implementation RCDContactNotificationMessage
 
 + (instancetype)notificationWithOperation:(NSString *)operation
@@ -48,7 +48,7 @@
     } else if ([self.operation isEqualToString:RCDContactNotificationMessage_ContactOperationRejectResponse]) {
         operationContent = [NSString stringWithFormat:RCDLocalizedString(@"RejectFriendRequest"), name];
     } else {
-        operationContent = NSLocalizedStringFromTable(@"unknown_message_cell_tip", @"RongCloudKit", nil);
+        operationContent = RCLocalizedString(@"unknown_message_cell_tip");
     }
     return operationContent;
 }

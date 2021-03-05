@@ -8,7 +8,7 @@
 
 #import "RCDFriendInfo.h"
 #import <UIKit/UIKit.h>
-
+#define ivAvaWidth 40
 @protocol RCDUserListCollectionItemDelegate;
 
 @interface RCDUserListCollectionItem : UICollectionViewCell

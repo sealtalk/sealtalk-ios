@@ -27,8 +27,9 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self initialize];
+        self.backgroundColor = RCDDYCOLOR(0xFEFFFE, 0x191919);
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }
@@ -66,12 +67,12 @@
 - (void)initialize {
     self.leftLabel = [[UILabel alloc] init];
     self.leftLabel.font = [UIFont systemFontOfSize:16.f];
-    self.leftLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
+    self.leftLabel.textColor = [RCKitUtility generateDynamicColor:HEXCOLOR(0x000000) darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.9]];
     self.leftLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.rightLabel = [[UILabel alloc] init];
     self.rightLabel.font = [UIFont systemFontOfSize:14.f];
-    self.rightLabel.textColor = RCDDYCOLOR(0x999999, 0x666666);
+    self.rightLabel.textColor = RCDDYCOLOR(0x999999, 0x585858);
     self.rightLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.rightArrow = [[UIImageView alloc] init];
@@ -79,22 +80,18 @@
     self.rightArrow.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.switchButton = [[UISwitch alloc] init];
+    self.switchButton.onTintColor = HEXCOLOR(0x0099ff);
     [self.switchButton addTarget:self action:@selector(onClickSwitch:) forControlEvents:UIControlEventValueChanged];
     self.switchButton.on = self.switchButtonStatus;
     self.switchButton.translatesAutoresizingMaskIntoConstraints = NO;
-
-    self.bottomLine = [[UIView alloc] init];
-    self.bottomLine.backgroundColor = RCDDYCOLOR(0xdfdfdf, 0x1a1a1a);
-    self.bottomLine.translatesAutoresizingMaskIntoConstraints = NO;
 
     [self.contentView addSubview:self.leftLabel];
     [self.contentView addSubview:self.rightLabel];
     [self.contentView addSubview:self.rightArrow];
     [self.contentView addSubview:self.switchButton];
-    [self.contentView addSubview:self.bottomLine];
 
     self.cellSubViews =
-        NSDictionaryOfVariableBindings(_leftLabel, _rightLabel, _rightArrow, _switchButton, _bottomLine);
+        NSDictionaryOfVariableBindings(_leftLabel, _rightLabel, _rightArrow, _switchButton);
     [self setLayout];
 }
 
@@ -123,7 +120,7 @@
                                                                 multiplier:1
                                                                   constant:0]];
 
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_rightArrow(13)]"
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_rightArrow(16)]"
                                                                              options:0
                                                                              metrics:nil
                                                                                views:self.cellSubViews]];
@@ -134,15 +131,6 @@
                                                                  attribute:NSLayoutAttributeCenterY
                                                                 multiplier:1
                                                                   constant:0]];
-
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_bottomLine]|"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:self.cellSubViews]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_bottomLine(0.5)]|"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:self.cellSubViews]];
 
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_switchButton
                                                                  attribute:NSLayoutAttributeCenterY
@@ -160,7 +148,7 @@
     case DefaultStyle: {
         self.rightLabel.hidden = YES;
         self.switchButton.hidden = YES;
-        constraints = @"H:|-10-[_leftLabel]-(>=10)-[_rightArrow(8)]-10-|";
+        constraints = @"H:|-10-[_leftLabel]-(>=10)-[_rightArrow(16)]-12-|";
     } break;
 
     case DefaultStyle_RightLabel_WithoutRightArrow: {
@@ -171,7 +159,7 @@
 
     case DefaultStyle_RightLabel: {
         self.switchButton.hidden = YES;
-        constraints = @"H:|-10-[_leftLabel]-(>=5)-[_rightLabel]-8-[_rightArrow(8)]-10-|";
+        constraints = @"H:|-10-[_leftLabel]-(>=5)-[_rightLabel]-8-[_rightArrow(16)]-12-|";
     } break;
 
     case OnlyDisplayLeftLabelStyle: {
@@ -243,7 +231,7 @@
             }
             self.leftImageView = imageView;
             self.leftLabelConstraints = [NSLayoutConstraint
-                constraintsWithVisualFormat:@"H:|-10-[imageView(width)]-8-[_leftLabel]-10-[_rightArrow(8)]-10-|"
+                constraintsWithVisualFormat:@"H:|-10-[imageView(width)]-8-[_leftLabel]-10-[_rightArrow(16)]-12-|"
                                     options:0
                                     metrics:@{
                                         @"width" : @(imageSize.width)
@@ -272,7 +260,7 @@
             }
             self.rightImageView = imageView;
             self.rightLabelConstraints = [NSLayoutConstraint
-                constraintsWithVisualFormat:@"H:|-10-[_leftLabel]-(>=10)-[imageView(width)]-13-[_rightArrow(8)]-10-|"
+                constraintsWithVisualFormat:@"H:|-10-[_leftLabel]-(>=10)-[imageView(width)]-13-[_rightArrow(16)]-12-|"
                                     options:0
                                     metrics:@{
                                         @"width" : @(imageSize.width)

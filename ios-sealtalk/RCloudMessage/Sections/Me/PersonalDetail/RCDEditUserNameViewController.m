@@ -93,7 +93,7 @@
 - (void)textFieldDidChange:(UITextField *)textField {
     NSString *toBeString = textField.text;
     if (![toBeString isEqualToString:self.originNickName]) {
-        [self.rightBtn buttonIsCanClick:YES buttonColor:RCDDYCOLOR(0xffffff, 0xA8A8A8) barButtonItem:self.rightBtn];
+        [self.rightBtn buttonIsCanClick:YES buttonColor:RCDDYCOLOR(0x0099ff, 0xA8A8A8) barButtonItem:self.rightBtn];
     } else {
         [self.rightBtn
             buttonIsCanClick:NO
@@ -104,13 +104,7 @@
 }
 
 - (void)showAlert:(NSString *)message cancelBtnTitle:(NSString *)cBtnTitle {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
-        [alertController
-            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
-    });
+    [RCAlertView showAlertController:nil message:message cancelTitle:cBtnTitle inViewController:self];
 }
 
 - (void)initUI {
@@ -120,10 +114,7 @@
 }
 
 - (void)setNavigationButton {
-    self.leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
-                                                              target:self
-                                                              action:@selector(clickBackBtn)];
-    self.navigationItem.leftBarButtonItem = self.leftBtn;
+    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];
 
     self.rightBtn = [[RCDUIBarButtonItem alloc]
         initWithbuttonTitle:RCDLocalizedString(@"save")

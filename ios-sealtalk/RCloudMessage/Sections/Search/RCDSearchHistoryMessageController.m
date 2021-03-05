@@ -43,23 +43,19 @@
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 0)];
+        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 59, 0, 0)];
     }
     if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [self.tableView setLayoutMargins:UIEdgeInsetsMake(0, 10, 0, 0)];
+        [self.tableView setLayoutMargins:UIEdgeInsetsMake(0, 59, 0, 0)];
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.barTintColor = RCDDYCOLOR(0x0099ff, 0x000000);
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 - (void)loadSearchView {
@@ -90,7 +86,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 65;
+    return [RCDSearchResultViewCell cellHeight];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -148,7 +144,7 @@
     if (!self.resultArray.count && searchText.length > 0 && searchStr.length > 0) {
         NSString *text = RCDLocalizedString(@"no_search_result");
         NSString *str = [NSString stringWithFormat:text, searchText];
-        self.emptyLabel.textColor = HEXCOLOR(0x999999);
+        self.emptyLabel.textColor = RCDDYCOLOR(0x999999, 0x8b8b8b);
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:str];
         int index = 0;
         NSString *currentlanguage = [RCDLanguageManager sharedRCDLanguageManager].currentLanguage;
@@ -208,7 +204,7 @@
                              options:(NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin |
                                       NSStringDrawingUsesFontLeading)
                           attributes:@{
-                              NSFontAttributeName : [UIFont systemFontOfSize:14.0]
+                              NSFontAttributeName : self.emptyLabel.font
                           }
                              context:nil];
     textRect.size.height = ceilf(textRect.size.height);
@@ -218,11 +214,10 @@
 #pragma mark - getter
 - (RCDSearchBar *)searchBar {
     if (!_searchBar) {
-        _searchBar = [[RCDSearchBar alloc] initWithFrame:CGRectZero];
+        _searchBar = [[RCDSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.searchView.frame.size.width - 75, 44)];
         _searchBar.delegate = self;
         _searchBar.tintColor = [UIColor blueColor];
         [_searchBar becomeFirstResponder];
-        _searchBar.frame = CGRectMake(0, 0, self.searchView.frame.size.width - 75, 44);
     }
     return _searchBar;
 }
@@ -241,11 +236,11 @@
 }
 - (UILabel *)emptyLabel {
     if (!_emptyLabel) {
-        self.emptyLabel = [[RCDLabel alloc] initWithFrame:CGRectMake(10, 45, self.view.frame.size.width - 20, 16)];
-        self.emptyLabel.font = [UIFont systemFontOfSize:14.f];
-        self.emptyLabel.textAlignment = NSTextAlignmentCenter;
-        self.emptyLabel.numberOfLines = 0;
-        [self.tableView addSubview:self.emptyLabel];
+        _emptyLabel = [[RCDLabel alloc] initWithFrame:CGRectMake(10, 45, self.view.frame.size.width - 20, 19)];
+        _emptyLabel.font = [UIFont systemFontOfSize:17.f];
+        _emptyLabel.textAlignment = NSTextAlignmentCenter;
+        _emptyLabel.numberOfLines = 0;
+        [self.tableView addSubview:_emptyLabel];
     }
     return _emptyLabel;
 }

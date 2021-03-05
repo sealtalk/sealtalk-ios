@@ -9,7 +9,8 @@
 #import "RCDQRCodeManager.h"
 #import <Photos/PHPhotoLibrary.h>
 #import <ZXingObjC/ZXingObjC.h>
-
+#import <RongIMKit/RCKitCommonDefine.h>
+#import <RongIMKit/RCAlertView.h>
 @implementation RCDQRCodeManager
 + (UIImage *)getQRCodeImage:(NSString *)content {
     NSError *error = nil;
@@ -84,7 +85,7 @@
     // 用户拒绝授权或权限受限
     case AVAuthorizationStatusRestricted:
     case AVAuthorizationStatusDenied: {
-        [self showAlertController:NSLocalizedStringFromTable(@"cameraAccessRight", @"RongCloudKit", nil)
+        [self showAlertController:RCLocalizedString(@"cameraAccessRight")
                       cancelTitle:RCDLocalizedString(@"confirm")];
         permissionGranted(NO);
     } break;
@@ -111,7 +112,7 @@
     // 用户拒绝授权或权限受限
     case PHAuthorizationStatusRestricted:
     case PHAuthorizationStatusDenied: {
-        [self showAlertController:NSLocalizedStringFromTable(@"PhotoAccessRight", @"RongCloudKit", nil)
+        [self showAlertController:RCLocalizedString(@"PhotoAccessRight")
                       cancelTitle:RCDLocalizedString(@"confirm")];
         permissionGranted(NO);
     } break;
@@ -121,14 +122,7 @@
 }
 
 + (void)showAlertController:(NSString *)title cancelTitle:(NSString *)cancelTitle {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController
-            addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:nil]];
-        [rootVC presentViewController:alertController animated:YES completion:nil];
-    });
+    [RCAlertView showAlertController:title message:nil cancelTitle:cancelTitle];
 }
 
 /** 手电筒开关 */

@@ -34,7 +34,6 @@
 }
 
 - (void)showBadgeOnItemIndex:(int)index badgeValue:(int)badgeValue userInteractionEnabled:(BOOL)enable {
-    NSInteger itemsCount = self.items.count;
     NSInteger tag = RCDTabBarButtonTagFrom + index;
     RCDTabBarBtn *badge = [self viewWithTag:tag];
     CGRect decideFrame;
@@ -44,20 +43,17 @@
     } else {
         tabFrame.size.height = 49.0;
     }
-    float peRCDntX = (index + 0.51) / itemsCount;
-    CGFloat x = ceilf(peRCDntX * tabFrame.size.width);
-    if (index == 0) {
-        x = x + 4;
-    }
-    CGFloat y = ceilf(0.07 * tabFrame.size.height);
+    CGRect itemsFrame = [self getTabBarItemFrame:index];
+    CGFloat x = itemsFrame.origin.x + itemsFrame.size.width/2 + 4;
+    CGFloat y = 3;
     if (badgeValue > 0) {
-        CGFloat width = 18;
+        CGFloat width = 16;
         if (badgeValue >= 10 && badgeValue < 100) {
             width = 22;
         } else if (badgeValue >= 100 && badgeValue < 1000) {
             width = 30;
         }
-        decideFrame = CGRectMake(x, y, width, 18);
+        decideFrame = CGRectMake(x, y, width, 16);
     } else {
         decideFrame = CGRectMake(x, y, 10, 10);
     }
@@ -83,29 +79,28 @@
         badge.unreadCount = @"";
     }
 }
-- (void)deviceOrientationChange {
-    if (RCDIsIPad) {
-        NSInteger itemsCount = self.items.count;
-        CGRect tabFrame = self.frame;
-        for (NSInteger index = 0; index < itemsCount; index++) {
-            RCDTabBarBtn *badge = [self viewWithTag:index + RCDTabBarButtonTagFrom];
-            float peRCDntX = (index + 0.51) / itemsCount;
-            CGFloat x = ceilf(peRCDntX * tabFrame.size.width);
-            if (index == 0) {
-                x = x + 4;
-            }
-            CGFloat y = ceilf(0.07 * tabFrame.size.height);
-            CGRect frame = badge.frame;
-            frame.origin.x = x;
-            frame.origin.y = y;
-            badge.frame = frame;
-        }
-    }
-}
+
 //隐藏小红点
 - (void)hideBadgeOnItemIndex:(int)index {
     RCDTabBarBtn *badge = [self viewWithTag:RCDTabBarButtonTagFrom + index];
     badge.hidden = YES;
 }
 
+#pragma mark - privite
+
+- (CGRect)getTabBarItemFrame:(NSInteger)index{
+    NSInteger i = 0;
+    CGRect itemFrame = CGRectZero;
+    for (UIView *view in self.subviews) {
+        if (![NSStringFromClass([view class]) isEqualToString:@"UITabBarButton"]) {
+            continue;
+        }
+        //找到指定的tabBarItem
+        if (index == i++) {
+            itemFrame = view.frame;
+            break;
+        }
+    }
+    return itemFrame;
+}
 @end

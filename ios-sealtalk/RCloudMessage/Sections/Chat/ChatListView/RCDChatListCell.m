@@ -113,7 +113,7 @@
         self.lblDetail.text = operationContent;
         [self.ivAva sd_setImageWithURL:[NSURL URLWithString:portraitUri]
                       placeholderImage:[UIImage imageNamed:@"system_notice"]];
-        self.labelTime.text = [RCKitUtility ConvertMessageTime:self.model.sentTime / 1000];
+        self.labelTime.text = [RCKitUtility convertConversationTime:self.model.sentTime / 1000];
     });
 }
 
@@ -141,7 +141,7 @@
 
     _lblDetail = [UILabel new];
     [_lblDetail setFont:[UIFont systemFontOfSize:14.f]];
-    [_lblDetail setTextColor:HEXCOLOR(0x8c8c8c)];
+    [_lblDetail setTextColor:RCDYCOLOR(0xA0A5AB, 0x707070)];
     _lblDetail.text = [NSString stringWithFormat:RCDLocalizedString(@"from_someone_friend_request"), _userName];
 
     _lblName = [UILabel new];
@@ -152,7 +152,7 @@
     _labelTime = [[UILabel alloc] init];
     _labelTime.backgroundColor = [UIColor clearColor];
     _labelTime.font = [UIFont systemFontOfSize:14];
-    _labelTime.textColor = [RCDUtilities generateDynamicColor:[UIColor lightGrayColor] darkColor:HEXCOLOR(0x707070)];
+    _labelTime.textColor = RCDYCOLOR(0xC7CbCe, 0x707070);
     _labelTime.textAlignment = NSTextAlignmentRight;
 
     [self.contentView addSubview:_ivAva];
@@ -166,19 +166,19 @@
 
     NSDictionary *_bindingViews = NSDictionaryOfVariableBindings(_ivAva, _lblName, _lblDetail, _labelTime);
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-11-[_labelTime(20)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-16-[_labelTime(20)]"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_labelTime)]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_labelTime(200)]-11-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_labelTime(200)]-13-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_labelTime)]];
 
     [self
         addConstraints:[NSLayoutConstraint
-                           constraintsWithVisualFormat:@"H:|-13-[_ivAva(width)]"
+                           constraintsWithVisualFormat:@"H:|-12-[_ivAva(width)]"
                                                options:0
                                                metrics:@{
                                                    @"width" : @([RCIM sharedRCIM].globalConversationPortraitSize.width)
@@ -186,7 +186,7 @@
                                                  views:NSDictionaryOfVariableBindings(_ivAva)]];
 
     [self addConstraints:[NSLayoutConstraint
-                             constraintsWithVisualFormat:@"V:|-10-[_ivAva(height)]"
+                             constraintsWithVisualFormat:@"V:[_ivAva(height)]"
                                                  options:0
                                                  metrics:@{
                                                      @"height" :
@@ -194,7 +194,7 @@
                                                  }
                                                    views:NSDictionaryOfVariableBindings(_ivAva)]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_lblName(18)]-[_lblDetail(18)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_lblName(20)]-4-[_lblDetail(18)]"
                                                                  options:kNilOptions
                                                                  metrics:kNilOptions
                                                                    views:_bindingViews]];
@@ -206,6 +206,14 @@
                                                      attribute:NSLayoutAttributeTop
                                                     multiplier:1.0
                                                       constant:2.f]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.ivAva
+     attribute:NSLayoutAttributeCenterY
+     relatedBy:NSLayoutRelationEqual
+        toItem:self
+     attribute:NSLayoutAttributeCenterY
+    multiplier:1.0
+      constant:2.f]];
 
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_lblName
                                                      attribute:NSLayoutAttributeLeft
@@ -213,7 +221,7 @@
                                                         toItem:_ivAva
                                                      attribute:NSLayoutAttributeRight
                                                     multiplier:1.0
-                                                      constant:8]];
+                                                      constant:12]];
 
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_lblDetail
                                                      attribute:NSLayoutAttributeLeft

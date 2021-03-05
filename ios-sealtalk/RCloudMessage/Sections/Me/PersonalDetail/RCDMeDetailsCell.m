@@ -27,12 +27,20 @@
     if (self) {
         NSString *portraitUrl = [DEFAULTS stringForKey:RCDUserPortraitUriKey];
         self = [[RCDMeDetailsCell alloc] initWithLeftImageStr:portraitUrl
-                                                leftImageSize:CGSizeMake(65, 65)
+                                                leftImageSize:CGSizeMake(48, 48)
                                                  rightImaeStr:nil
                                                rightImageSize:CGSizeZero];
-        self.leftImageCornerRadius = 5.f;
         self.leftLabel.text = [DEFAULTS stringForKey:RCDUserNickNameKey];
-        self.leftLabel.textColor = RCDDYCOLOR(0x000000, 0xa8a8a8);
+        self.leftLabel.textColor = [RCKitUtility generateDynamicColor:HEXCOLOR(0x000000) darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.9]];
+        self.leftLabel.font = [UIFont systemFontOfSize:18];
+        self.rightArrow.hidden = YES;
+        if (RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
+            RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
+            self.leftImageCornerRadius = 24;
+        }else{
+            self.leftImageCornerRadius = 5.f;
+        }
+        self.leftImageView.layer.masksToBounds = YES;
     }
     return self;
 }

@@ -13,7 +13,7 @@
 #import <Masonry/Masonry.h>
 #import "RCDUserInfoManager.h"
 #import "RCDUtilities.h"
-#define CellHeight 70.0f
+#define CellHeight 56.0f
 
 @implementation RCDContactSelectedTableViewCell
 
@@ -49,7 +49,7 @@
         make.left.equalTo(self.portraitImageView.mas_right).offset(8);
         make.centerY.equalTo(self.contentView);
         make.right.equalTo(self.contentView).offset(-27);
-        make.height.offset(CellHeight - 15 - 17);
+        make.height.offset(20);
     }];
 }
 
@@ -106,8 +106,8 @@
 - (UIImageView *)portraitImageView {
     if (!_portraitImageView) {
         _portraitImageView = [[UIImageView alloc] init];
-        if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
-            [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
+        if (RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
+            RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
             _portraitImageView.layer.cornerRadius = 20.f;
         } else {
             _portraitImageView.layer.cornerRadius = 5.f;
@@ -121,8 +121,8 @@
 - (UILabel *)nicknameLabel {
     if (!_nicknameLabel) {
         _nicknameLabel = [[UILabel alloc] init];
-        _nicknameLabel.font = [UIFont fontWithName:@"Heiti SC" size:14.0];
-        _nicknameLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
+        _nicknameLabel.font = [UIFont fontWithName:@"Heiti SC" size:17.0];
+        _nicknameLabel.textColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0x111f2c) darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.9]];
     }
     return _nicknameLabel;
 }

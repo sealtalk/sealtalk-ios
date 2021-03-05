@@ -11,6 +11,6 @@
 @implementation RCDViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+    self.view.backgroundColor = RCDDYCOLOR(0xf5f6f9, 0x111111);
 }
 @end

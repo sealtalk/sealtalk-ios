@@ -120,14 +120,7 @@
 }
 
 - (void)showAlertWithMessage:(NSString *)message {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
-    });
+    [RCAlertView showAlertController:nil message:message cancelTitle:RCDLocalizedString(@"confirm") inViewController:self];
 }
 
 - (void)pushAddFriendVC:(RCDUserInfo *)user {
@@ -225,7 +218,7 @@
         _phoneTextField.textField.adjustsFontSizeToFitWidth = YES;
         _phoneTextField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _phoneTextField.textField.textAlignment = NSTextAlignmentLeft;
-        _phoneTextField.textField.placeholder = RCDLocalizedString(@"PhoneOrSealTalkNumber");
+        _phoneTextField.textField.placeholder = RCDLocalizedString(@"PhoneOrSTNumber");
     }
     return _phoneTextField;
 }

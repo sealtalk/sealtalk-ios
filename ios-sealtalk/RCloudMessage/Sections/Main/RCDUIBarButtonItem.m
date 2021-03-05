@@ -15,49 +15,23 @@
 @end
 
 @implementation RCDUIBarButtonItem
-- (RCDUIBarButtonItem *)initWithLeftBarButton:(NSString *)title target:(id)target action:(SEL)method {
-    CGRect titleFrame = CGRectMake(15, 4, 85, 17);
-    if (title.length == 0) {
-        titleFrame = CGRectZero;
-    }
-    return [self initContainImage:[UIImage imageNamed:@"navigator_btn_back"]
-                   imageViewFrame:CGRectMake(0, 4, 10, 17)
-                      buttonTitle:title
-                       titleColor:[RCIM sharedRCIM].globalNavigationBarTintColor
-                       titleFrame:titleFrame
-                      buttonFrame:CGRectMake(-10, 0, 87, 23)
-                           target:target
-                           action:method];
++ (NSArray *)getLeftBarButton:(NSString *)title target:(id)target action:(SEL)method {
+    return [RCKitUtility getLeftNavigationItems:[UIImage imageNamed:@"navigator_btn_back"] title:nil target:target action:method];
 }
 
 //初始化包含图片的UIBarButtonItem
-- (RCDUIBarButtonItem *)initContainImage:(UIImage *)buttonImage
-                          imageViewFrame:(CGRect)imageFrame
-                             buttonTitle:(NSString *)buttonTitle
-                              titleColor:(UIColor *)titleColor
-                              titleFrame:(CGRect)titleFrame
-                             buttonFrame:(CGRect)buttonFrame
-                                  target:(id)target
-                                  action:(SEL)method {
+- (RCDUIBarButtonItem *)initContainImage:(UIImage *)buttonImage target:(id)target action:(SEL)method {
     self = [[RCDUIBarButtonItem alloc] init];
-    UIView *view = [[UIView alloc] initWithFrame:buttonFrame];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height)];
     self.button = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.button.frame = buttonFrame;
+    self.button.frame = view.bounds;
     UIImageView *image = [[UIImageView alloc] initWithImage:buttonImage];
-    image.frame = imageFrame;
+    image.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
     [self.button addSubview:image];
-    if (buttonTitle != nil && titleColor != nil) {
-        self.titleText = [[UILabel alloc] initWithFrame:titleFrame];
-        self.titleText.text = buttonTitle;
-        [self.titleText setBackgroundColor:[UIColor clearColor]];
-        [self.titleText setTextColor:titleColor];
-        [self.button addSubview:self.titleText];
-    }
     [self.button addTarget:target action:method forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:self.button];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:target action:method];
-    [view addGestureRecognizer:tap];
     self.customView = view;
+
     return self;
 }
 

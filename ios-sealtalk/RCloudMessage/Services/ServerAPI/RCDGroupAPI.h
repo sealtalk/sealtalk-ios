@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)setGroupCertification:(BOOL)open groupId:(NSString *)groupId complete:(void (^)(BOOL success))complete;
 
-+ (void)getGroupNoticeList:(void (^)(NSArray<RCDGroupNotice *> *noticeList))complete;
++ (void)getGroupNoticeList:(void (^)(BOOL success, NSArray<RCDGroupNotice *> *noticeList))complete;
 
 + (void)clearGroupNoticeList:(void (^)(BOOL success))complete;
 

@@ -97,8 +97,8 @@
             return RCChatSessionInputBarInputVoice;
         } else if (inputType == KBottomBarPluginStatus) {
             //      self.defaultInputType = RCChatSessionInputBarInputExtention;
-        } else if (inputType == KBottomBarBurnStatus) {
-            return RCChatSessionInputBarInputBurnMode;
+        } else if (inputType == KBottomBarDestructStatus) {
+            return RCChatSessionInputBarInputDestructMode;
         }
     }
     return 0;

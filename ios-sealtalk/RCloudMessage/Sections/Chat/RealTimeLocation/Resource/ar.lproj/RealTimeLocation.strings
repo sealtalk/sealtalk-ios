@@ -1,0 +1,31 @@
+/* 
+  RealTimeLocation.strings
+  RCloudMessage
+
+  Created by Jue on 2020/1/7.
+  Copyright © 2020 RongCloud. All rights reserved.
+*/
+
+"locating"="جاري تحديد الموقع ...";
+"Inaccessible"="فشل الوصول إليها";
+"Location_access_without_permission"="لا يوجد إذن للوصول إلى معلومات الموقع ، يرجى تشغيل إذن الوصول إلى الموقع من الإعدادات - الخصوصية - خدمات الموقع";
+"end_share_location_alert"=" سيتم إنهاء مشاركة الموقع أم لا؟";
+"end"="إنهاء";
+"leave_location_share_when_leave_chat"="إذا تركت الدردشة ستنتهي مشاركة الموقع، أكد المغادرة";
+"send_location"="إرسال الموقع";
+"location_share"="مشاركة الموقع في الوقت الحقيقي";
+"you_join_location_share"="لقد انضممت إلى مشاركة الموقع";
+"you_location_sharing"="أنت تشارك الموقع";
+"someone_location_sharing"="تم %@ مشاركة الموقع";
+"user_location_sharing"=" مشاركة الموقع  user<%@>تم";
+"you_quit_location_share"="قمت بإلغاء مشاركة الموقع";
+"someone_quit_location_share"="تم @% إلغاء مشاركة الموقع ";
+"user_quit_location_share"="إلغاء مشاركة الموقع user<%@>تم";
+"share_location_people_count"="شخص مشاركة الموقع %lu تم  ";
+"confirm"="تأكيد";
+"cancel"="إلغاء";
+"share_location_finished"="انتهت مشاركة الموقع";
+"i_start_location_share"="بدأت مشاركة الموقع";
+"join_share_location_alert"="انضم إلى مشاركة الموقع ، ويمكن الآخرين في الدردشة رؤية موقعك ، هل أنت متأكد من الانضمام؟";
+"join"="الانضمام إلى";
+"join_share_location"="تم @% الانضمام إلى ";

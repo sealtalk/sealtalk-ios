@@ -62,7 +62,6 @@
     [self loginAndEnterMainPage];
     [self configDoraemon];
     [self configCurrentLanguage];
-    
     return YES;
 }
 
@@ -87,7 +86,9 @@
     [[RCIM sharedRCIM] registerMessageType:[RCDClearMessage class]];
 
     [RCIMClient sharedRCIMClient].voiceMsgType = RCVoiceMessageTypeHighQuality;
-
+    
+    [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;
+    
     //设置会话列表头像和会话页面头像
     [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
     [RCIM sharedRCIM].receiveMessageDelegate = self;
@@ -98,23 +99,24 @@
     [RCIM sharedRCIM].groupMemberDataSource = RCDDataSource;
     [RCContactCardKit shareInstance].contactsDataSource = RCDDataSource;
     [RCContactCardKit shareInstance].groupDataSource = RCDDataSource;
-    [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
-    [RCIM sharedRCIM].globalNavigationBarTintColor = RCDDYCOLOR(0xffffff, 0xA8A8A8);
-    [RCIM sharedRCIM].enableTypingStatus = YES;
-    [RCIM sharedRCIM].enableSyncReadStatus = YES;
-    [RCIM sharedRCIM].showUnkownMessage = YES;
-    [RCIM sharedRCIM].showUnkownMessageNotificaiton = YES;
-    [RCIM sharedRCIM].enableMessageMentioned = YES;
-    [RCIM sharedRCIM].enableMessageRecall = YES;
-    [RCIM sharedRCIM].isMediaSelectorContainVideo = YES;
-    [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Info;
-    [RCIM sharedRCIM].enableSendCombineMessage = YES;
-    [RCIM sharedRCIM].enableDarkMode = YES;
-    [RCIM sharedRCIM].reeditDuration = 60;
+    
+    RCKitConfigCenter.message.enableTypingStatus = YES;
+    RCKitConfigCenter.message.enableSyncReadStatus = YES;
+    RCKitConfigCenter.message.showUnkownMessage = YES;
+    RCKitConfigCenter.message.showUnkownMessageNotificaiton = YES;
+    RCKitConfigCenter.message.enableMessageMentioned = YES;
+    RCKitConfigCenter.message.enableMessageRecall = YES;
+    RCKitConfigCenter.message.isMediaSelectorContainVideo = YES;
+    RCKitConfigCenter.message.enableSendCombineMessage = YES;
+    RCKitConfigCenter.message.reeditDuration = 60;
 
+    RCKitConfigCenter.ui.enableDarkMode = YES;
+    RCKitConfigCenter.ui.globalConversationPortraitSize = CGSizeMake(48, 48);
+    RCKitConfigCenter.ui.globalNavigationBarTintColor = [RCDUtilities generateDynamicColor:HEXCOLOR(0x111f2c) darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.9]];
     //  设置头像为圆形
-    //  [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
-    //  [RCIM sharedRCIM].globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
+    RCKitConfigCenter.ui.globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
+    RCKitConfigCenter.ui.globalConversationAvatarStyle = RC_USER_AVATAR_CYCLE;
+    
     //   设置优先使用WebView打开URL
     //  [RCIM sharedRCIM].embeddedWebViewPreferred = YES;
 }
@@ -311,7 +313,7 @@
 // 模拟器不能使用远程推送
 #else
     // 请检查App的APNs的权限设置，更多内容可以参考文档
-    // http://www.rongcloud.cn/docs/ios_push.html。
+    // http://www.rongcloud.cn/docs/ios_push.html
     NSLog(@"获取DeviceToken失败！！！");
     NSLog(@"ERROR：%@", error);
 #endif
@@ -615,11 +617,11 @@
 }
 
 - (BOOL)getNewMessageNotificationSound {
-    return ![RCIM sharedRCIM].disableMessageAlertSound;
+    return !RCKitConfigCenter.message.disableMessageAlertSound;
 }
 
 - (void)setNewMessageNotificationSound:(BOOL)on {
-    [RCIM sharedRCIM].disableMessageAlertSound = !on;
+    RCKitConfigCenter.message.disableMessageAlertSound = !on;
 }
 
 - (BOOL)getLoginStatus {
@@ -698,23 +700,16 @@
 
 - (void)setNavigationBarAppearance {
     //统一导航条样式
-    UIFont *font = [UIFont systemFontOfSize:19.f];
+    UIFont *font = [UIFont boldSystemFontOfSize:[RCKitConfig defaultConfig].font.firstLevel];
     NSDictionary *textAttributes =
-        @{NSFontAttributeName : font, NSForegroundColorAttributeName : RCDDYCOLOR(0xffffff, 0xA8A8A8)};
+        @{NSFontAttributeName : font, NSForegroundColorAttributeName : RCDDYCOLOR(0x111f2c, 0xffffff)};
     [[UINavigationBar appearance] setTitleTextAttributes:textAttributes];
-    [[UINavigationBar appearance] setTintColor:RCDDYCOLOR(0xffffff, 0xA8A8A8)];
-    [[UINavigationBar appearance] setBarTintColor:RCDDYCOLOR(0x0099ff, 0x000000)];
-
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(2, 1)
-                                                         forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setTintColor:[RCDUtilities generateDynamicColor:HEXCOLOR(0x111f2c) darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.9]]];
+    [[UINavigationBar appearance] setBarTintColor:RCDDYCOLOR(0xffffff, 0x191919)];
     UIImage *tmpImage = [UIImage imageNamed:@"navigator_btn_back"];
-    CGSize newSize = CGSizeMake(10, 17);
-    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0f);
-    [tmpImage drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *backButtonImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    [[UINavigationBar appearance] setBackIndicatorImage:backButtonImage];
-    [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:backButtonImage];
+    [[UINavigationBar appearance] setBackIndicatorImage:tmpImage];
+    [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:tmpImage];
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-2, -0.5)  forBarMetrics:UIBarMetricsDefault];
     if (IOS_FSystenVersion >= 8.0) {
         [UINavigationBar appearance].translucent = NO;
     }
@@ -782,13 +777,6 @@
 }
 
 - (void)showAlert:(NSString *)title message:(NSString *)msg cancelBtnTitle:(NSString *)cBtnTitle {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController *rootVC = self.window.rootViewController;
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-        [alertController
-            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
-        [rootVC presentViewController:alertController animated:YES completion:nil];
-    });
+    [RCAlertView showAlertController:title message:msg cancelTitle:cBtnTitle];
 }
 @end

@@ -6,8 +6,11 @@
 //  Copyright © 2016年 RongCloud. All rights reserved.
 //
 
+#if __has_include(<RongIMKit/RongIMKit.h>)
 #import <RongIMKit/RongIMKit.h>
-@class RCloudImageView;
+#else
+#import "RongIMKit.h"
+#endif
 
 /**
  *  名片消息cell
@@ -23,11 +26,6 @@
  *  头像
  */
 @property (nonatomic, strong) RCloudImageView *portraitView;
-
-/*!
- 消息的气泡背景View
- */
-@property (nonatomic, strong) UIImageView *bubbleBackgroundView;
 
 // size of cell
 + (CGSize)sizeOfMessageCell;

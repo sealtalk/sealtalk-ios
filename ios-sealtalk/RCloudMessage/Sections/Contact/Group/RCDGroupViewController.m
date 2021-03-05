@@ -70,7 +70,6 @@
     RCDChatViewController *chatVC = [[RCDChatViewController alloc] init];
     chatVC.targetId = groupInfo.groupId;
     chatVC.conversationType = ConversationType_GROUP;
-    chatVC.userName = groupInfo.groupName;
     chatVC.title = groupInfo.groupName;
     [self.navigationController pushViewController:chatVC animated:YES];
 }

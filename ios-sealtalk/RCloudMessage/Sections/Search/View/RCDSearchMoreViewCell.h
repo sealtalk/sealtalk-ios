@@ -7,7 +7,7 @@
 //
 
 #import "RCDTableViewCell.h"
-
+#define SearchMoreViewCellHeight 40
 @interface RCDSearchMoreViewCell : RCDTableViewCell
 @property (nonatomic, strong) UIImageView *searchImageView;
 @property (nonatomic, strong) UILabel *moreLabel;

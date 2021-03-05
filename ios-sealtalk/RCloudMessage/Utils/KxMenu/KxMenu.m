@@ -60,7 +60,7 @@ const CGFloat kArrowSize = 8.f;
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2];
         self.opaque = NO;
     }
     return self;
@@ -151,10 +151,9 @@ typedef enum {
         self.backgroundColor = [UIColor clearColor];
         self.opaque = YES;
         self.alpha = 0;
-
-        self.layer.shadowOpacity = 0.3;
-        self.layer.shadowOffset = CGSizeMake(0, 0);
-        self.layer.shadowRadius = 5.0;
+        
+        self.layer.cornerRadius = 6;
+        self.layer.masksToBounds = YES;
     }
 
     return self;
@@ -174,14 +173,13 @@ typedef enum {
     const CGFloat rectY0 = fromRect.origin.y;
     const CGFloat rectY1 = fromRect.origin.y + fromRect.size.height;
     const CGFloat rectYM = fromRect.origin.y + fromRect.size.height * 0.5f;
-    ;
 
     const CGFloat widthPlusArrow = contentSize.width + kArrowSize;
     const CGFloat heightPlusArrow = contentSize.height + kArrowSize;
     const CGFloat widthHalf = contentSize.width * 0.5f;
     const CGFloat heightHalf = contentSize.height * 0.5f;
 
-    const CGFloat kMargin = 5.f;
+    const CGFloat kMargin = 12.f;
 
     if (heightPlusArrow < (outerHeight - rectY1)) {
 
@@ -342,10 +340,11 @@ typedef enum {
     if (!_menuItems.count)
         return nil;
 
-    const CGFloat kMinMenuItemHeight = 32.f;
+    const CGFloat kMinMenuItemHeight = 56.f;
     const CGFloat kMinMenuItemWidth = 32.f;
-    const CGFloat kMarginX = 10.f;
-    const CGFloat kMarginY = 5.f;
+    const CGFloat kMarginX = 24.f;
+    const CGFloat kMarginY = 0.f;
+    const CGFloat imageAndTitleSpace = 12;
 
     UIFont *titleFont = [KxMenu titleFont];
     if (!titleFont)
@@ -369,7 +368,7 @@ typedef enum {
         const CGSize imageSize = menuItem.image.size;
 
         const CGFloat itemHeight = MAX(titleSize.height, imageSize.height) + kMarginY * 2;
-        const CGFloat itemWidth = (menuItem.image ? maxImageWidth + kMarginX : 0) + titleSize.width + kMarginX * 4;
+        const CGFloat itemWidth = kMarginX + (menuItem.image ? maxImageWidth + imageAndTitleSpace: 0) + titleSize.width + kMarginX;
 
         if (itemHeight > maxItemHeight)
             maxItemHeight = itemHeight;
@@ -381,10 +380,9 @@ typedef enum {
     maxItemWidth = MAX(maxItemWidth, kMinMenuItemWidth);
     maxItemHeight = MAX(maxItemHeight, kMinMenuItemHeight);
 
-    const CGFloat titleX = kMarginX * 2 + (maxImageWidth > 0 ? maxImageWidth + kMarginX : 0);
+    const CGFloat titleX = kMarginX + (maxImageWidth > 0 ? maxImageWidth + imageAndTitleSpace: 0);
     const CGFloat titleWidth = maxItemWidth - titleX - kMarginX;
 
-    UIImage *selectedImage = [KxMenuView selectedImage:(CGSize){maxItemWidth, maxItemHeight + 2}];
     UIImage *gradientLine = [KxMenuView gradientLine:(CGSize){maxItemWidth - kMarginX * 4, 1}];
 
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -412,13 +410,13 @@ typedef enum {
             button.tag = itemNum;
             button.frame = itemView.bounds;
             button.enabled = menuItem.enabled;
-            button.backgroundColor = [UIColor clearColor];
             button.opaque = NO;
             button.autoresizingMask = UIViewAutoresizingNone;
 
             [button addTarget:self action:@selector(performAction:) forControlEvents:UIControlEventTouchUpInside];
 
-            [button setBackgroundImage:selectedImage forState:UIControlStateHighlighted];
+            [button setImage:[self imageWithColor:RCDDYCOLOR(0xffffff, 0x404040) size:(CGSize){maxItemWidth, maxItemHeight + 2}] forState:(UIControlStateNormal)];
+            [button setImage:[self imageWithColor:RCDDYCOLOR(0xf2f9ff, 0x4a4a4a) size:(CGSize){maxItemWidth, maxItemHeight + 2}] forState:(UIControlStateHighlighted)];
 
             [itemView addSubview:button];
         }
@@ -442,7 +440,7 @@ typedef enum {
             titleLabel.font = titleFont;
             titleLabel.textAlignment = menuItem.alignment;
             //设置字体颜色
-            titleLabel.textColor = menuItem.foreColor ? menuItem.foreColor : RCDDYCOLOR(0x000000, 0x9f9f9f);
+            titleLabel.textColor = menuItem.foreColor ? menuItem.foreColor : RCDDYCOLOR(0x000000, 0xffffff);
             titleLabel.backgroundColor = [UIColor clearColor];
             titleLabel.autoresizingMask = UIViewAutoresizingNone;
             // titleLabel.backgroundColor = [UIColor greenColor];
@@ -453,7 +451,7 @@ typedef enum {
 
             //            const CGRect imageFrame = {kMarginX * 2, kMarginY,
             //            maxImageWidth, maxItemHeight - kMarginY * 2};
-            const CGRect imageFrame = {kMarginX * 1.5, kMarginY, maxImageWidth, maxItemHeight - kMarginY * 2};
+            const CGRect imageFrame = {kMarginX , kMarginY, maxImageWidth, maxItemHeight - kMarginY * 2};
             UIImageView *imageView = [[UIImageView alloc] initWithFrame:imageFrame];
             imageView.image = menuItem.image;
             imageView.clipsToBounds = YES;
@@ -479,8 +477,20 @@ typedef enum {
     }
 
     contentView.frame = (CGRect){0, 0, maxItemWidth, itemY + kMarginY * 2};
-
+    contentView.layer.cornerRadius = 6;
+    contentView.layer.masksToBounds = YES;
     return contentView;
+}
+
+- (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size{
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
 }
 
 - (CGPoint)arrowPoint {
@@ -549,7 +559,6 @@ typedef enum {
     CGColorSpaceRelease(colorSpace);
     CGContextDrawLinearGradient(context, colorGradient, (CGPoint){0, 0}, (CGPoint){size.width, 0}, 0);
     CGGradientRelease(colorGradient);
-
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
@@ -585,7 +594,7 @@ typedef enum {
         [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowY1}];
         [arrowPath addLineToPoint:(CGPoint){arrowXM, arrowY0}];
 
-        [[RCDDYCOLOR(0xffffff, 0x1a1a1a) colorWithAlphaComponent:1.0f] set];
+        [[RCDDYCOLOR(0xffffff, 0x404040) colorWithAlphaComponent:1.0f] set];
 
         Y0 += kArrowSize;
 
@@ -602,7 +611,7 @@ typedef enum {
         [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowY0}];
         [arrowPath addLineToPoint:(CGPoint){arrowXM, arrowY1}];
 
-        [[RCDDYCOLOR(0xffffff, 0x1a1a1a) colorWithAlphaComponent:1.0f] set];
+        [[RCDDYCOLOR(0xffffff, 0x404040) colorWithAlphaComponent:1.0f] set];
 
         Y1 -= kArrowSize;
 
@@ -620,7 +629,7 @@ typedef enum {
         [arrowPath addLineToPoint:(CGPoint){arrowX1, arrowY1}];
         [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowYM}];
 
-        [[RCDDYCOLOR(0xffffff, 0x1a1a1a) colorWithAlphaComponent:1.0f] set];
+        [[RCDDYCOLOR(0xffffff, 0x404040) colorWithAlphaComponent:1.0f] set];
 
         X0 += kArrowSize;
 
@@ -638,7 +647,7 @@ typedef enum {
         [arrowPath addLineToPoint:(CGPoint){arrowX1, arrowY1}];
         [arrowPath addLineToPoint:(CGPoint){arrowX0, arrowYM}];
 
-        [[RCDDYCOLOR(0xffffff, 0x1a1a1a) colorWithAlphaComponent:1.0f] set];
+        [[RCDDYCOLOR(0xffffff, 0x404040) colorWithAlphaComponent:1.0f] set];
 
         X1 -= kArrowSize;
     }
@@ -649,7 +658,7 @@ typedef enum {
 
     const CGRect bodyFrame = {X0, Y0, X1 - X0, Y1 - Y0};
 
-    UIBezierPath *borderPath = [UIBezierPath bezierPathWithRoundedRect:bodyFrame cornerRadius:3];
+    UIBezierPath *borderPath = [UIBezierPath bezierPathWithRoundedRect:bodyFrame cornerRadius:6];
 
     //    const CGFloat locations[] = {0, 1};
     //    const CGFloat components[] = {

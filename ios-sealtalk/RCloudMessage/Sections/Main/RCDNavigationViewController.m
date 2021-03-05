@@ -28,14 +28,6 @@
     }
 }
 
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    //去掉导航下的线
-    UIView *backgroundView = [self.navigationBar subviews].firstObject;
-    UIImageView *navLine = backgroundView.subviews.firstObject;
-    navLine.hidden = YES;
-}
-
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     if ([self respondsToSelector:@selector(interactivePopGestureRecognizer)] && animated == YES) {
         self.interactivePopGestureRecognizer.enabled = NO;

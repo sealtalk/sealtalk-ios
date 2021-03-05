@@ -62,7 +62,7 @@
 
     [self setUserInfo];
     [self setStatusInfo];
-    self.timeLabel.text = [RCKitUtility ConvertMessageTime:self.notice.createTime / 1000];
+    self.timeLabel.text = [RCKitUtility convertConversationTime:self.notice.createTime / 1000];
 }
 
 - (void)reloadCell:(RCDGroupInviteStatus)status {
@@ -115,7 +115,7 @@
         }
         [self.portraitImageView
             sd_setImageWithURL:[NSURL URLWithString:group.portraitUri]
-              placeholderImage:[RCKitUtility imageNamed:@"default_group_portrait" ofBundle:@"RongCloud.bundle"]];
+              placeholderImage:RCResourceImage(@"default_group_portrait")];
     } else if (self.notice.noticeType == RCDGroupNoticeTypeManagerApproving) {
         self.infoLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"RequestJoinGroup"), group.groupName];
     }
@@ -173,7 +173,7 @@
     [self.portraitImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).offset(10);
-        make.height.width.offset(46);
+        make.height.width.offset([RCKitConfig defaultConfig].ui.globalConversationPortraitSize.width);
     }];
 
     [self.nameLabel mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -218,7 +218,12 @@
 - (UIImageView *)portraitImageView {
     if (!_portraitImageView) {
         _portraitImageView = [[UIImageView alloc] init];
-        _portraitImageView.layer.cornerRadius = 2.f;
+        if (RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
+            RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
+            _portraitImageView.layer.cornerRadius = 20.f;
+        } else {
+            _portraitImageView.layer.cornerRadius = 5.f;
+        }
         _portraitImageView.layer.masksToBounds = YES;
         _portraitImageView.contentMode = UIViewContentModeScaleAspectFill;
     }

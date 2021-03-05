@@ -180,6 +180,13 @@
 - (UIImageView *)headerImageView {
     if (!_headerImageView) {
         _headerImageView = [[UIImageView alloc] init];
+        _headerImageView.layer.masksToBounds = YES;
+        if (RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
+            RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
+            _headerImageView.layer.cornerRadius = 20;
+        } else {
+            _headerImageView.layer.cornerRadius = 5.f;
+        }
     }
     return _headerImageView;
 }
@@ -189,7 +196,7 @@
         _conversationTitleLabel = [[UILabel alloc] init];
         _conversationTitleLabel.backgroundColor = [UIColor clearColor];
         _conversationTitleLabel.font = [UIFont systemFontOfSize:16];
-        _conversationTitleLabel.textColor = RCDDYCOLOR(0x262626, 0x9f9f9f);
+        _conversationTitleLabel.textColor = RCDDYCOLOR(0x262626, 0xffffff);
     }
     return _conversationTitleLabel;
 }

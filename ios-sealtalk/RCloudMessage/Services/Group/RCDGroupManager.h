@@ -64,7 +64,7 @@
 
 + (NSArray<RCDGroupNotice *> *)getGroupNoticeList;
 
-+ (void)getGroupNoticeListFromServer:(void (^)(NSArray<RCDGroupNotice *> *noticeList))complete;
++ (void)getGroupNoticeListFromServer:(void (^)(BOOL success,NSArray<RCDGroupNotice *> *noticeList))complete;
 
 + (void)clearGroupNoticeList:(void (^)(BOOL success))complete;
 

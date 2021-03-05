@@ -104,7 +104,7 @@
         case 0: {
             NSString *portraitUrl = [DEFAULTS stringForKey:RCDUserPortraitUriKey];
             [cell setImageView:cell.rightImageView ImageStr:portraitUrl imageSize:CGSizeMake(65, 65) LeftOrRight:1];
-            cell.rightImageCornerRadius = 5.f;
+            cell.rightImageCornerRadius = 65/2.f;
             cell.leftLabel.text = RCDLocalizedString(@"portrait");
         } break;
         case 1: {
@@ -114,7 +114,7 @@
         } break;
         case 2: {
             NSString *sealTalkNumber = [DEFAULTS stringForKey:RCDSealTalkNumberKey];
-            cell.leftLabel.text = RCDLocalizedString(@"SealTalkNumber");
+            cell.leftLabel.text = RCDLocalizedString(@"STNumber");
             if (sealTalkNumber.length > 0) {
                 [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
                 cell.rightLabel.text = sealTalkNumber;
@@ -186,25 +186,15 @@
 }
 
 - (void)changePortrait {
-    UIAlertAction *cancelAction =
-        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
-    UIAlertAction *takePictureAction =
-        [UIAlertAction actionWithTitle:RCDLocalizedString(@"take_picture")
-                                 style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *_Nonnull action) {
-                                   [self pushToImagePickerController:UIImagePickerControllerSourceTypeCamera];
-                               }];
-    UIAlertAction *myAlbumAction =
-        [UIAlertAction actionWithTitle:RCDLocalizedString(@"my_album")
-                                 style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *_Nonnull action) {
-                                   [self pushToImagePickerController:UIImagePickerControllerSourceTypePhotoLibrary];
-                               }];
-    [RCKitUtility showAlertController:nil
-                              message:nil
-                       preferredStyle:UIAlertControllerStyleActionSheet
-                              actions:@[ cancelAction, takePictureAction, myAlbumAction ]
-                     inViewController:self];
+    [RCActionSheetView showActionSheetView:nil cellArray:@[RCDLocalizedString(@"take_picture"), RCDLocalizedString(@"my_album")] cancelTitle:RCDLocalizedString(@"cancel") selectedBlock:^(NSInteger index) {
+        if (index == 0) {
+            [self pushToImagePickerController:UIImagePickerControllerSourceTypeCamera];
+        }else{
+            [self pushToImagePickerController:UIImagePickerControllerSourceTypePhotoLibrary];
+        }
+    } cancelBlock:^{
+            
+    }];
 }
 
 - (void)pushToImagePickerController:(UIImagePickerControllerSourceType)sourceType {
@@ -248,12 +238,7 @@
 }
 
 - (void)showAlertView:(NSString *)message cancelBtnTitle:(NSString *)cTitle {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController *alertController =
-            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:cTitle style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
-    });
+    [RCAlertView showAlertController:nil message:message cancelTitle:cTitle inViewController:self];
 }
 
 - (void)clickBackBtn:(id)sender {
@@ -264,7 +249,7 @@
     BOOL isconnected = NO;
     RCNetworkStatus networkStatus = [[RCIMClient sharedRCIMClient] getCurrentNetworkStatus];
     if (networkStatus == 0) {
-        [self showAlertView:NSLocalizedStringFromTable(@"ConnectionIsNotReachable", @"RongCloudKit", nil)
+        [self showAlertView:RCLocalizedString(@"ConnectionIsNotReachable")
              cancelBtnTitle:RCDLocalizedString(@"confirm")];
         return isconnected;
     }
@@ -274,11 +259,7 @@
 - (void)initUI {
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
     self.navigationItem.title = RCDLocalizedString(@"Personal_information");
-
-    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
-                                                                             target:self
-                                                                             action:@selector(clickBackBtn:)];
-    self.navigationItem.leftBarButtonItem = leftBtn;
+    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn:)];
 }
 
 - (MBProgressHUD *)hud {

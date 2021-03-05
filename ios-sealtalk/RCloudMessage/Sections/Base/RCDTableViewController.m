@@ -19,8 +19,9 @@
     //关闭iOS11默认开启的self sizing
     [self closeSelfSizing];
     self.tableView.tableFooterView = [UIView new];
-    self.tableView.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
-    self.tableView.separatorColor = RCDDYCOLOR(0xdfdfdf, 0x1a1a1a);
+    self.tableView.backgroundColor = RCDDYCOLOR(0xf5f6f9, 0x111111);
+    self.tableView.separatorColor = RCDDYCOLOR(0xE3E5E6, 0x272727);
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 59, 0, 0);
 }
 
 - (void)closeSelfSizing {
@@ -31,7 +32,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [UIView new];
-    view.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+    view.backgroundColor = RCDDYCOLOR(0xf5f6f9, 0x000000);
     return view;
 }
 @end
