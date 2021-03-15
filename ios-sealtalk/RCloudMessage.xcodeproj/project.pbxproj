@@ -20,8 +20,6 @@
 		17E018C71D59BCBB0093D3A0 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E018C21D59BCBB0093D3A0 /* TFHpple.m */; };
 		17E018C81D59BCBB0093D3A0 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E018C41D59BCBB0093D3A0 /* TFHppleElement.m */; };
 		17E018C91D59BCBB0093D3A0 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E018C61D59BCBB0093D3A0 /* XPathQuery.m */; };
-		270985ED2591C911005562BC /* RongIMLibCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 270985DE2591C911005562BC /* RongIMLibCore.framework */; };
-		270985EE2591C911005562BC /* RongIMLibCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 270985DE2591C911005562BC /* RongIMLibCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		270C242022A4C88E000F22A2 /* RCDSearchMoreViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C241622A4C88E000F22A2 /* RCDSearchMoreViewCell.m */; };
 		270C242122A4C88E000F22A2 /* RCDSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C241922A4C88E000F22A2 /* RCDSearchBar.m */; };
 		270C242322A4C88E000F22A2 /* RCDSearchResultViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C241C22A4C88E000F22A2 /* RCDSearchResultViewCell.m */; };
@@ -107,17 +105,6 @@
 		3B0F2C6422DC308B0017979E /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B0F2C5822DC308B0017979E /* MessageUI.framework */; };
 		3B0F2C6722DC684B0017979E /* RCDAddressBookFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B0F2C6622DC684A0017979E /* RCDAddressBookFriendsViewController.m */; };
 		3B0F2C6A22DC6D470017979E /* RCDAddressBookFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B0F2C6922DC6D470017979E /* RCDAddressBookFriendCell.m */; };
-		3B118041256CFF10001E5105 /* RongSticker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A24AFB0C247F7288001BA5A2 /* RongSticker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3B118045256CFF14001E5105 /* RongLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A296CCC7256BABAD008C91C7 /* RongLocation.framework */; };
-		3B118046256CFF14001E5105 /* RongLocation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A296CCC7256BABAD008C91C7 /* RongLocation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3B118047256CFF16001E5105 /* RongPublicService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A296CCCC256BABAE008C91C7 /* RongPublicService.framework */; };
-		3B118048256CFF16001E5105 /* RongPublicService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A296CCCC256BABAE008C91C7 /* RongPublicService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3B11804D256CFF1C001E5105 /* RongDiscussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A296CCC0256BA857008C91C7 /* RongDiscussion.framework */; };
-		3B11804E256CFF1C001E5105 /* RongDiscussion.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A296CCC0256BA857008C91C7 /* RongDiscussion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3B11804F256CFF1E001E5105 /* RongCustomerService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A296CCC9256BABAE008C91C7 /* RongCustomerService.framework */; };
-		3B118050256CFF1E001E5105 /* RongCustomerService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A296CCC9256BABAE008C91C7 /* RongCustomerService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3B118051256CFF20001E5105 /* RongChatRoom.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A296CCD4256BABF7008C91C7 /* RongChatRoom.framework */; };
-		3B118052256CFF20001E5105 /* RongChatRoom.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A296CCD4256BABF7008C91C7 /* RongChatRoom.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3B1180A3256D1237001E5105 /* RongContactCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A24AFAEF247F7287001BA5A2 /* RongContactCard.framework */; };
 		3B1180A4256D1237001E5105 /* RongContactCard.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A24AFAEF247F7287001BA5A2 /* RongContactCard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3B1180DE256E0BB6001E5105 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B11809E256D0FEB001E5105 /* Photos.framework */; };
@@ -220,8 +207,6 @@
 		A257509F22B8DA0000A79749 /* RCDGroupMemberSelectController.m in Sources */ = {isa = PBXBuildFile; fileRef = A257509E22B8DA0000A79749 /* RCDGroupMemberSelectController.m */; };
 		A25750A822B8DA6700A79749 /* RCDGroupMemberSelectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A25750A722B8DA6700A79749 /* RCDGroupMemberSelectCell.m */; };
 		A25750AB22B8F6DD00A79749 /* RCDGroupMember.m in Sources */ = {isa = PBXBuildFile; fileRef = A25750AA22B8F6DD00A79749 /* RCDGroupMember.m */; };
-		A257B9722595EC940009C91D /* RongCallKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A257B96D2595EC930009C91D /* RongCallKit.bundle */; };
-		A257B97F2595ECB70009C91D /* RongCallKit.strings in Resources */ = {isa = PBXBuildFile; fileRef = A257B97D2595ECB70009C91D /* RongCallKit.strings */; };
 		A25EE9C622A0D2810064E0F2 /* RCDUserListCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = A25EE9C522A0D2810064E0F2 /* RCDUserListCollectionView.m */; };
 		A264FD2322DD756700DF63AA /* RCDChatNotificationMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A264FD2222DD756700DF63AA /* RCDChatNotificationMessage.m */; };
 		A27AF90B2480F3E800686890 /* jenkins_build.sh in Resources */ = {isa = PBXBuildFile; fileRef = A27AF9092480F3E700686890 /* jenkins_build.sh */; };
@@ -467,14 +452,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3B11804E256CFF1C001E5105 /* RongDiscussion.framework in Embed Frameworks */,
-				270985EE2591C911005562BC /* RongIMLibCore.framework in Embed Frameworks */,
-				3B118052256CFF20001E5105 /* RongChatRoom.framework in Embed Frameworks */,
-				3B118050256CFF1E001E5105 /* RongCustomerService.framework in Embed Frameworks */,
-				3B118048256CFF16001E5105 /* RongPublicService.framework in Embed Frameworks */,
-				3B118046256CFF14001E5105 /* RongLocation.framework in Embed Frameworks */,
 				3B1180A4256D1237001E5105 /* RongContactCard.framework in Embed Frameworks */,
-				3B118041256CFF10001E5105 /* RongSticker.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1191,26 +1169,20 @@
 			files = (
 				3B0F2C6422DC308B0017979E /* MessageUI.framework in Frameworks */,
 				3B7D8F2822326670009E1417 /* Security.framework in Frameworks */,
-				3B11804F256CFF1E001E5105 /* RongCustomerService.framework in Frameworks */,
 				F1E7784C21A622B00005C37D /* UserNotifications.framework in Frameworks */,
-				3B118051256CFF20001E5105 /* RongChatRoom.framework in Frameworks */,
 				9870725020A17AC3008EE653 /* GLKit.framework in Frameworks */,
 				2724CCD71FF34411006FFC86 /* Contacts.framework in Frameworks */,
 				6E1C98201F39C90C008F96D8 /* libresolv.tbd in Frameworks */,
 				3B1180E2256E0C99001E5105 /* AssetsLibrary.framework in Frameworks */,
 				27AADC281DDC4DD800E1AE31 /* Foundation.framework in Frameworks */,
-				3B118047256CFF16001E5105 /* RongPublicService.framework in Frameworks */,
 				27AADC261DDC4DB800E1AE31 /* AddressBook.framework in Frameworks */,
 				3B1180A3256D1237001E5105 /* RongContactCard.framework in Frameworks */,
 				F880EA791D0808B300FD5CC4 /* VideoToolbox.framework in Frameworks */,
 				F8AD4A5B1CAE5782006C1CBB /* CoreMotion.framework in Frameworks */,
 				F8AD4A571CAE5702006C1CBB /* libicucore.tbd in Frameworks */,
 				F8AD4A551CAE56A4006C1CBB /* PushKit.framework in Frameworks */,
-				3B118045256CFF14001E5105 /* RongLocation.framework in Frameworks */,
-				3B11804D256CFF1C001E5105 /* RongDiscussion.framework in Frameworks */,
 				EE8995AF660D3951CC53C83F /* Pods_SealTalk.framework in Frameworks */,
 				3B1180DE256E0BB6001E5105 /* Photos.framework in Frameworks */,
-				270985ED2591C911005562BC /* RongIMLibCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3172,8 +3144,6 @@
 				9B49C53D23C421720058D19F /* RealTimeLocation.strings in Resources */,
 				A28C439322E95818005BA7A0 /* InfoPlist.strings in Resources */,
 				E4BFAE251A121839007165B1 /* Images.xcassets in Resources */,
-				A257B97F2595ECB70009C91D /* RongCallKit.strings in Resources */,
-				A257B9722595EC940009C91D /* RongCallKit.bundle in Resources */,
 				A28C439522E95818005BA7A0 /* SealTalk.strings in Resources */,
 				A27AF90B2480F3E800686890 /* jenkins_build.sh in Resources */,
 				A2F0A96F22F9173000422802 /* poke.mp3 in Resources */,
