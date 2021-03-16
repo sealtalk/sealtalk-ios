@@ -3811,6 +3811,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = $APP_PROFILE;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = AutoDebug;
 		};
@@ -3974,6 +3975,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = $APP_PROFILE;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = AutoRelease;
 		};
@@ -4295,6 +4297,7 @@
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -4354,6 +4357,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};
