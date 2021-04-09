@@ -15,7 +15,7 @@
 
 static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier";
 
-@interface RCDDebugChatroomViewController () <UITableViewDelegate, UITableViewDataSource, RCChatRoomKVStatusChangeDelegate>
+@interface RCDDebugChatroomViewController () <UITableViewDelegate, UITableViewDataSource, RCChatRoomKVStatusChangeDelegate,RCChatRoomStatusDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
@@ -26,30 +26,31 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    [[RCChatRoomClient sharedChatRoomClient] setChatRoomStatusDelegate:self];
     [self setupData];
     [self setupNav];
     [self setupUI];
+    [self joinChatRoom];
 }
 
 - (void)dealloc {
-    [[RCChatRoomClient sharedChatRoomClient] quitChatRoom:self.roomId
-        success:^{
-        }
-        error:^(RCErrorCode status){
-        }];
+//    [[RCChatRoomClient sharedChatRoomClient] quitChatRoom:self.roomId
+//        success:^{
+//        }
+//        error:^(RCErrorCode status){
+//        }];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Target Action
 - (void)onBackButtonClick:(id)sender {
-    [[RCChatRoomClient sharedChatRoomClient] quitChatRoom:self.roomId
-        success:^{
-            NSLog(@"退出聊天室成功");
-        }
-        error:^(RCErrorCode status) {
-            NSLog(@"退出聊天室失败：%ld", (long)status);
-        }];
+//    [[RCChatRoomClient sharedChatRoomClient] quitChatRoom:self.roomId
+//        success:^{
+//            NSLog(@"退出聊天室成功");
+//        }
+//        error:^(RCErrorCode status) {
+//            NSLog(@"退出聊天室失败：%ld", (long)status);
+//        }];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController popViewControllerAnimated:YES];
     });
@@ -240,6 +241,41 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
         });
     }
 }
+
+#pragma mark - RCChatRoomKVStatusChangeDelegate
+- (void)onChatRoomDestroyed:(NSString *)chatroomId type:(RCChatRoomDestroyType)type {
+    NSString *msg;
+    if (type == RCChatRoomDestroyTypeAuto) {
+        msg = @"聊天室长时间不活跃，被系统自动回收";
+    }else {
+        msg = @"开发者主动销毁";
+    }
+    [RCAlertView showAlertController:@"提示" message:[NSString stringWithFormat:@"聊天室：%@ 被销毁,类型:%@",chatroomId,msg] cancelTitle:@"取消"];
+}
+
+- (void)onChatRoomReset:(NSString *)chatroomId {
+    [RCAlertView showAlertController:@"提示" message:[NSString stringWithFormat:@"聊天室：%@ 重置加入",chatroomId] cancelTitle:@"取消"];
+}
+
+- (void)onChatRoomJoined:(NSString *)chatroomId {
+    [RCAlertView showAlertController:@"提示" message:[NSString stringWithFormat:@"聊天室：%@ 加入成功回调",chatroomId] cancelTitle:@"取消"];
+}
+
+- (void)joinChatRoom{
+    [[RCChatRoomClient sharedChatRoomClient] joinChatRoom:self.roomId
+                                             messageCount:20
+                                                  success:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+        });
+    }
+                                                    error:^(RCErrorCode status) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"debug 测试聊天室状态存储，加入聊天室失败：%ld", (long)status);
+        });
+    }];
+}
+
 
 #pragma mark - RCChatRoomKVStatusChangeDelegate
 - (void)chatRoomKVDidSync:(NSString *)roomId {

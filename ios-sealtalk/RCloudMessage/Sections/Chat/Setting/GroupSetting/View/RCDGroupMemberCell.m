@@ -72,7 +72,7 @@
     [self.rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView.mas_right).offset(-5);
         make.centerY.equalTo(self.contentView);
-        make.width.offset(100);
+        make.width.offset(130);
         make.height.offset(23);
     }];
 }

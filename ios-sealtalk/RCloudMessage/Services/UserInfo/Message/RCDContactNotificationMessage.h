@@ -62,11 +62,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *message;
 
 /*!
- 当前操作的附加信息
- */
-@property (nonatomic, copy) NSString *extra;
-
-/*!
  初始化好友请求消息
 
  @param operation       好友请求当前的操作名

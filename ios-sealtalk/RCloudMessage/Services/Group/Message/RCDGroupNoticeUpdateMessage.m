@@ -31,6 +31,7 @@ NSString *const RCDGroupMemberInvite = @"Invite";
         self.targetGroupName = dict[@"data"][@"targetGroupName"];
         self.noticeType = [dict[@"data"][@"type"] integerValue];
         self.status = [dict[@"data"][@"status"] integerValue];
+        self.extra = dict[@"extra"];
     } else {
         self.rawJSONData = data;
     }

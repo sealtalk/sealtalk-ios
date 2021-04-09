@@ -44,7 +44,9 @@
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell =
             [collectionView dequeueReusableCellWithReuseIdentifier:@"RCDDebugCollectionItem" forIndexPath:indexPath];
-       
+    for (UIView *view in cell.contentView.subviews) {
+        [view removeFromSuperview];
+    }
     UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, cell.contentView.frame.size.width-20, cell.contentView.frame.size.height - 10)];
     lable.layer.cornerRadius = 4;
     lable.layer.masksToBounds = YES;

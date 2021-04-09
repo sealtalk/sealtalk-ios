@@ -30,6 +30,7 @@ NSString *const RCDChatNotificationCloseRegularClearNtf = @"closeRegularClear";
     if (!__error && dict) {
         self.operation = [dict objectForKey:@"operation"];
         self.operatorUserId = [dict objectForKey:@"operatorUserId"];
+        self.extra = dict[@"extra"];
     } else {
         self.rawJSONData = data;
     }

@@ -20,7 +20,8 @@
 #import "RCDDebugMessagePushConfigController.h"
 #import "RCDDebugChatListViewController.h"
 #import "UIView+MBProgressHUD.h"
-
+#import "RCDDebugConversationTagController.h"
+#import "RCDDebugGroupChatListViewController.h"
 #define DISPLAY_ID_TAG 100
 #define DISPLAY_ONLINE_STATUS_TAG 101
 #define JOIN_CHATROOM_TAG 102
@@ -150,6 +151,10 @@
         [self pushDebugMessageExtensionVC];
     } else if ([title isEqualToString:@"设置推送语言"]) {
         [self setPushLauguageCode];
+    } else if ([title isEqualToString:@"会话标签"]) {
+        [self pushConversationTagVC];
+    }else if ([title isEqualToString:@"新的群已读回执"]) {
+        [self pushGroupChatListVC];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -180,7 +185,7 @@
     ]
             forKey:RCDLocalizedString(@"time_setting")];
 
-    [dic setObject:@[@"讨论组", @"配置消息推送属性", @"进入消息推送属性测试", @"设置推送语言"] forKey:@"功能"];
+    [dic setObject:@[@"讨论组", @"配置消息推送属性", @"进入消息推送属性测试", @"设置推送语言", @"会话标签",@"新的群已读回执"] forKey:@"功能"];
     self.functions = [dic copy];
 }
 
@@ -322,6 +327,16 @@
 
 - (void)pushDebugMessageExtensionVC{
     RCDDebugSelectChatController *vc = [[RCDDebugSelectChatController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushConversationTagVC{
+    RCDDebugConversationTagController *vc = [[RCDDebugConversationTagController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushGroupChatListVC{
+    RCDDebugGroupChatListViewController *vc = [[RCDDebugGroupChatListViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

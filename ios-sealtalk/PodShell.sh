@@ -34,24 +34,42 @@ sed -i '' -e "/iflyMSC.framework/d"  ${Project}
 sed -i '' -e "/RongCloudiFly.bundle/d"  ${Project}
 
 
-sed -i '' -e "/Blink.framework/d"  ${Project}
-sed -i '' -e "/RongCallKit.framework/d"  ${Project}
-sed -i '' -e "/RongCallLib.framework/d"  ${Project}
-sed -i '' -e "/RongIMLib.framework/d"  ${Project}
-sed -i '' -e "/RongIMKit.framework/d"  ${Project}
-sed -i '' -e "/RongRTCLib.framework/d"  ${Project}
+# im start
 
-sed -i '' -e "/RCColor.plist/d"  ${Project}
+sed -i '' -e "/RongIMLibCore.framework/d"  ${Project}
+sed -i '' -e "/RongChatRoom.framework/d"  ${Project}
+sed -i '' -e "/RongCustomerService.framework/d"  ${Project}
+sed -i '' -e "/RongPublicService.framework/d"  ${Project}
+sed -i '' -e "/RongLocation.framework/d"  ${Project}
+sed -i '' -e "/RongDiscussion.framework/d"  ${Project}
+
+sed -i '' -e "/RongIMLib.framework/d"  ${Project}
+
+sed -i '' -e "/RongIMKit.framework/d"  ${Project}
+
 sed -i '' -e "/RCConfig.plist/d"  ${Project}
 
 sed -i '' -e "/RongCloud.bundle/d"  ${Project}
 sed -i '' -e "/RongCloudKit.strings in Resources/d"  ${Project}
+sed -i '' -e "/RCColor.plist/d"  ${Project}
 
 sed -i '' -e "/libopencore-amrnb.a/d"  ${Project}
 sed -i '' -e "/libopencore-amrwb.a/d"  ${Project}
 sed -i '' -e "/libvo-amrwbenc.a/d"  ${Project}
+# im end
+
+# rtc start
+sed -i '' -e "/Blink.framework/d"  ${Project}
+sed -i '' -e "/RongCallKit.framework/d"  ${Project}
+sed -i '' -e "/RongCallLib.framework/d"  ${Project}
+sed -i '' -e "/RongRTCLib.framework/d"  ${Project}
+sed -i '' -e "/RongCallKit.strings in Resources/d"  ${Project}
+sed -i '' -e "/RongCallKit.bundle in Resources/d"  ${Project}
+# rtc end
+
 
 sed -i '' -e "/\/\* RCSticker \*\/ = {/,/};/d"  ${Project}
+sed -i '' -e "/RongSticker.framework/d"  ${Project}
 sed -i '' -e "/RongSticker.framework in Frameworks/d"  ${Project}
 sed -i '' -e "/RongSticker.bundle in Resources/d"  ${Project}
 sed -i '' -e "/RongSticker.strings in Resources/d"  ${Project}

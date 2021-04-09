@@ -65,6 +65,11 @@ APP_NAME=$PPARAM
 fi
 done
 
+# 如果 framework 目录不存在，说明没有 copy 所以来的 SDK
+if [ ! -d "framework" ]; then
+    sh before_build.sh
+fi
+
 # 更新 pod
 pod update --no-repo-update
 echo "APP_NAME"

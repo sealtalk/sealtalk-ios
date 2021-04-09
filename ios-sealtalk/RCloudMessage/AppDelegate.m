@@ -151,6 +151,11 @@
                                              selector:@selector(didReceiveMessageNotification:)
                                                  name:RCKitDispatchMessageNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didLoginCookieExpiredNotification:)
+                                                 name:RCDLoginCookieExpiredNotification
+                                               object:nil];
 
     /**
      * 推送处理 1
@@ -166,8 +171,6 @@
 - (void)loginAndEnterMainPage {
     NSString *token = [DEFAULTS objectForKey:RCDIMTokenKey];
     NSString *userId = [DEFAULTS objectForKey:RCDUserIdKey];
-    NSString *userName = [DEFAULTS objectForKey:RCDUserNameKey];
-    NSString *password = [DEFAULTS objectForKey:RCDUserPasswordKey];
     NSString *userNickName = [DEFAULTS objectForKey:RCDUserNickNameKey];
     NSString *userPortraitUri = [DEFAULTS objectForKey:RCDUserPortraitUriKey];
     RCDCountry *currentCountry = [[RCDCountry alloc] initWithDict:[DEFAULTS objectForKey:RCDCurrentCountryKey]];
@@ -175,7 +178,7 @@
     if (currentCountry.phoneCode.length > 0) {
         regionCode = currentCountry.phoneCode;
     }
-    if (token.length && userId.length && password.length) {
+    if (token.length && userId.length) {
         [RCDLoginManager openDB:userId];
         RCDMainTabBarViewController *mainTabBarVC = [[RCDMainTabBarViewController alloc] init];
         RCDNavigationViewController *rootNavi =
@@ -186,22 +189,16 @@
             [[RCUserInfo alloc] initWithUserId:userId name:userNickName portrait:userPortraitUri];
         [RCIM sharedRCIM].currentUserInfo = _currentUserInfo;
         [self insertSharedMessageIfNeed];
-        [[RCDIMService sharedService] connectWithToken:token
-            dbOpened:^(RCDBErrorCode code) {
-                NSLog(@"RCDBOpened %@", code ? @"failed" : @"success");
+        [[RCDIMService sharedService] connectWithToken:token dbOpened:^(RCDBErrorCode code) {
+            NSLog(@"RCDBOpened %@", code ? @"failed" : @"success");
+        }success:^(NSString *userId) {
+            [RCDDataSource syncAllData];
+        }error:^(RCConnectErrorCode status) {
+            if (status == RC_CONN_TOKEN_INCORRECT) {
+                [self gotoLoginViewAndDisplayReasonInfo:@"无法连接到服务器"];
+                NSLog(@"Token无效");
             }
-            success:^(NSString *userId) {
-                [self loginAppServer:userName password:password region:regionCode userId:userId];
-            }
-            error:^(RCConnectErrorCode status) {
-                if (status == RC_CONN_TOKEN_INCORRECT) {
-                    [self refreshIMTokenAndReconnect:userName password:password region:regionCode];
-                } else {
-                    NSLog(@"connect error %ld", (long)status);
-                    [self loginAppServer:userName password:password region:regionCode userId:userId];
-                }
-            }];
-
+        }];
     } else {
         RCDLoginViewController *vc = [[RCDLoginViewController alloc] init];
         RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc] initWithRootViewController:vc];
@@ -219,50 +216,6 @@
     } else {
         [UIView appearance].semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
     }
-}
-
-- (void)loginAppServer:(NSString *)userName
-              password:(NSString *)password
-                region:(NSString *)regionCode
-                userId:(NSString *)userId {
-    [RCDLoginManager loginWithPhone:userName
-        password:password
-        region:regionCode
-        success:^(NSString *_Nonnull token, NSString *_Nonnull userId) {
-            [self saveLoginData:userName userId:userId token:token password:password];
-        }
-        error:^(RCDLoginErrorCode errorCode){
-
-        }];
-}
-
-- (void)refreshIMTokenAndReconnect:(NSString *)userName password:(NSString *)password region:(NSString *)regionCode {
-    [RCDLoginManager loginWithPhone:userName
-        password:password
-        region:regionCode
-        success:^(NSString *_Nonnull newToken, NSString *_Nonnull newUserId) {
-            [[RCDIMService sharedService] connectWithToken:newToken
-                dbOpened:^(RCDBErrorCode code) {
-                    NSLog(@"RCDBOpened %@", code ? @"failed" : @"success");
-                }
-                success:^(NSString *userId) {
-                    [self saveLoginData:userName userId:newUserId token:newToken password:password];
-                }
-                error:^(RCConnectErrorCode status) {
-                    if (status == RC_CONN_TOKEN_INCORRECT) {
-                        [self gotoLoginViewAndDisplayReasonInfo:@"无法连接到服务器"];
-                        NSLog(@"Token无效");
-                    } else {
-                        [self gotoLoginViewAndDisplayReasonInfo:RCDLocalizedString(
-                                                                    @"Login_is_invalid_please_login_again")];
-                    }
-                }];
-        }
-        error:^(RCDLoginErrorCode errorCode) {
-            if (errorCode == RCDLoginErrorCodeWrongPassword) {
-                [self gotoLoginViewAndDisplayReasonInfo:@"手机号或密码错误"];
-            }
-        }];
 }
 
 /**
@@ -381,6 +334,10 @@
     }
 }
 
+- (void)didLoginCookieExpiredNotification:(NSNotification *)notification{
+    [self gotoLoginViewAndDisplayReasonInfo:@"未登录或登录凭证失效"];
+}
+
 - (void)application:(UIApplication *)application
     handleWatchKitExtensionRequest:(NSDictionary *)userInfo
                              reply:(void (^)(NSDictionary *))reply {
@@ -460,7 +417,6 @@
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options {
-
     if ([url.absoluteString containsString:@"wechat"] || [url.absoluteString containsString:@"weixin"]) {
         return [[RCDWeChatManager sharedManager] handleOpenURL:url];
     }
@@ -499,40 +455,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RCKitDispatchMessageNotification object:nil];
 }
 
-- (void)saveLoginData:(NSString *)userName
-               userId:(NSString *)userId
-                token:(NSString *)token
-             password:(NSString *)password {
-    //保存默认用户
-    [DEFAULTS setObject:userName forKey:RCDUserNameKey];
-    [DEFAULTS setObject:password forKey:RCDUserPasswordKey];
-    [DEFAULTS setObject:token forKey:RCDIMTokenKey];
-    [DEFAULTS setObject:userId forKey:RCDUserIdKey];
-    [DEFAULTS synchronize];
-
-    [RCDUserInfoManager
-        getUserInfoFromServer:userId
-                     complete:^(RCDUserInfo *userInfo) {
-                         [RCDBuglyManager
-                             setUserIdentifier:[NSString stringWithFormat:@"%@ - %@", userInfo.userId, userInfo.name]];
-                         [RCIM sharedRCIM].currentUserInfo = userInfo;
-                         [DEFAULTS setObject:userInfo.portraitUri forKey:RCDUserPortraitUriKey];
-                         [DEFAULTS setObject:userInfo.name forKey:RCDUserNickNameKey];
-                         [DEFAULTS setObject:userInfo.stAccount forKey:RCDSealTalkNumberKey];
-                         [DEFAULTS setObject:userInfo.gender forKey:RCDUserGenderKey];
-                         [DEFAULTS synchronize];
-                     }];
-    //同步群组
-    [RCDDataSource syncAllData];
-}
-
 - (void)gotoLoginViewAndDisplayReasonInfo:(NSString *)reason {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self showAlert:nil message:reason cancelBtnTitle:RCDLocalizedString(@"confirm")];
+    [[RCIM sharedRCIM] logout];
+    [DEFAULTS removeObjectForKey:RCDIMTokenKey];
+    [DEFAULTS synchronize];
+    __weak typeof(self) weakSelf = self;
+    rcd_dispatch_main_async_safe(^{
         RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
         RCDNavigationViewController *_navi = [[RCDNavigationViewController alloc] initWithRootViewController:loginVC];
-        self.window.rootViewController = _navi;
-
+        weakSelf.window.rootViewController = _navi;
+        [weakSelf showAlert:nil message:reason cancelBtnTitle:RCDLocalizedString(@"confirm")];
     });
 }
 #pragma mark - ShareExtension

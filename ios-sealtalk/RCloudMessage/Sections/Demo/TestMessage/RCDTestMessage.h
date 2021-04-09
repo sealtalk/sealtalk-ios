@@ -26,11 +26,6 @@
 @property (nonatomic, strong) NSString *content;
 
 /*!
- 测试消息的附加信息
- */
-@property (nonatomic, strong) NSString *extra;
-
-/*!
  初始化测试消息
 
  @param content 文本内容

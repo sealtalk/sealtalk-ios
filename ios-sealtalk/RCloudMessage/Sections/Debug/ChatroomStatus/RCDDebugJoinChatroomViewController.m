@@ -54,25 +54,12 @@
     if (sender.tag == 100002) {
         roomId = @"kvchatroom2";
     }
+    RCDDebugChatroomViewController *vc = [[RCDDebugChatroomViewController alloc] init];
+    vc.roomId = roomId;
+    [self.navigationController pushViewController:vc animated:YES];
 
-    [[RCChatRoomClient sharedChatRoomClient] joinChatRoom:roomId
-        messageCount:20
-        success:^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                RCDDebugChatroomViewController *vc = [[RCDDebugChatroomViewController alloc] init];
-                vc.roomId = roomId;
-                [self.navigationController pushViewController:vc animated:YES];
-            });
-        }
-        error:^(RCErrorCode status) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                RCDDebugChatroomViewController *vc = [[RCDDebugChatroomViewController alloc] init];
-                vc.roomId = roomId;
-                [self.navigationController pushViewController:vc animated:YES];
-                NSLog(@"debug 测试聊天室状态存储，加入聊天室失败：%ld", (long)status);
-            });
-        }];
 }
+
 
 #pragma mark - Getter && Setter
 - (UIButton *)joinChatroom1Btn {

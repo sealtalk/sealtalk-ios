@@ -47,6 +47,7 @@ NSString *const RCDGroupMemberProtectionClose = @"closeMemberProtection";
         self.targetUserIds = dict[@"data"][@"targetUserIds"];
         self.targetGroupName = dict[@"data"][@"targetGroupName"];
         self.targetUserNames = dict[@"data"][@"targetUserDisplayNames"];
+        self.extra = dict[@"extra"];
     } else {
         self.rawJSONData = data;
     }

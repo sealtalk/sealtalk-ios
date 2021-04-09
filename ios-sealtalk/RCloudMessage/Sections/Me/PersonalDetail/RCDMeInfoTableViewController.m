@@ -126,7 +126,7 @@
         case 3: {
             [cell setCellStyle:DefaultStyle_RightLabel_WithoutRightArrow];
             cell.leftLabel.text = RCDLocalizedString(@"mobile_number");
-            cell.rightLabel.text = [DEFAULTS stringForKey:RCDUserNameKey];
+            cell.rightLabel.text = [DEFAULTS stringForKey:RCDPhoneKey];
         } break;
         default:
             break;

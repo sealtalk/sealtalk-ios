@@ -46,22 +46,6 @@
     return YES;
 }
 
-//验证密码
-+ (BOOL)validatePassword:(NSString *)password {
-    if (password.length == 0) {
-        NSString *message = RCDLocalizedString(@"password_can_not_be_blank");
-        [self showAlertController:message cancelTitle:RCDLocalizedString(@"confirm")];
-        return NO;
-    }
-    NSRange _range = [password rangeOfString:@" "];
-    if (_range.location != NSNotFound) {
-        NSString *message = RCDLocalizedString(@"There_can_be_no_spaces_in_the_password");
-        [self showAlertController:message cancelTitle:RCDLocalizedString(@"confirm")];
-        return NO;
-    }
-    return YES;
-}
-
 + (void)showAlertController:(NSString *)message cancelTitle:(NSString *)cancelTitle {
     [RCAlertView showAlertController:nil message:message cancelTitle:cancelTitle];
 }

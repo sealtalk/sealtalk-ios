@@ -22,6 +22,8 @@
 #define RCDOpenQRCodeUrlNotification @"RCDOpenQRCodeUrlNotification"
 #define RCDQRCodeContentInfoUrl @"http://sealtalk.rongcloud.cn/download"
 
+#define RCDLoginCookieExpiredNotification @"RCDLoginCookieExpiredNotification"
+
 #define SealTalkLog(s, ...) NSLog((@"[SealTalkLog]%s [Line %d] " s), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 
 #define RCDMetionAllUsetId @"All"

@@ -1,5 +1,4 @@
 #!/bin/sh
-
 #@author qixinbing
 
 #github 配置 Actions 自动执行该脚本
@@ -11,4 +10,3 @@ pod repo update
 pod update --no-repo-update
 
 xcodebuild -workspace RCloudMessage.xcworkspace -scheme SealTalk -configuration Debug  -sdk iphonesimulator -arch x86_64
-

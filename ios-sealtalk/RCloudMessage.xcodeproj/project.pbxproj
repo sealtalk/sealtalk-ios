@@ -56,11 +56,7 @@
 		27AD302E229E721F003C2680 /* RCDSquareTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2F9B229E721E003C2680 /* RCDSquareTableViewController.m */; };
 		27AD3031229E721F003C2680 /* RCDCountry.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2FA4229E721E003C2680 /* RCDCountry.m */; };
 		27AD3032229E721F003C2680 /* RCDCountryListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2FA5229E721E003C2680 /* RCDCountryListController.m */; };
-		27AD3033229E721F003C2680 /* RCDChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2FA9229E721E003C2680 /* RCDChangePasswordViewController.m */; };
-		27AD3034229E721F003C2680 /* RCAnimatedImagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2FAB229E721E003C2680 /* RCAnimatedImagesView.m */; };
-		27AD3035229E721F003C2680 /* RCDFindPswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2FAC229E721E003C2680 /* RCDFindPswViewController.m */; };
-		27AD3036229E721F003C2680 /* RCDLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2FAD229E721E003C2680 /* RCDLoginViewController.m */; };
-		27AD3038229E721F003C2680 /* RCDRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2FB2229E721E003C2680 /* RCDRegisterViewController.m */; };
+		27AD3035229E721F003C2680 /* RCDLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2FAC229E721E003C2680 /* RCDLoginViewController.m */; };
 		27AD303A229E721F003C2680 /* RCDMainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2FB7229E721E003C2680 /* RCDMainTabBarViewController.m */; };
 		27AD303B229E721F003C2680 /* RCDNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2FB8229E721E003C2680 /* RCDNavigationViewController.m */; };
 		27AD303C229E721F003C2680 /* RCDTabBarBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AD2FBA229E721E003C2680 /* RCDTabBarBtn.m */; };
@@ -211,6 +207,7 @@
 		A264FD2322DD756700DF63AA /* RCDChatNotificationMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A264FD2222DD756700DF63AA /* RCDChatNotificationMessage.m */; };
 		A27AF90B2480F3E800686890 /* jenkins_build.sh in Resources */ = {isa = PBXBuildFile; fileRef = A27AF9092480F3E700686890 /* jenkins_build.sh */; };
 		A27AF90C2480F3E800686890 /* before_build.sh in Resources */ = {isa = PBXBuildFile; fileRef = A27AF90A2480F3E700686890 /* before_build.sh */; };
+		A2825CEE25E5F70E0073F1C6 /* RCDDebugReceiptDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2825CED25E5F70E0073F1C6 /* RCDDebugReceiptDetailsController.m */; };
 		A28C439322E95818005BA7A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A28C438F22E95818005BA7A0 /* InfoPlist.strings */; };
 		A28C439422E95818005BA7A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A28C438F22E95818005BA7A0 /* InfoPlist.strings */; };
 		A28C439522E95818005BA7A0 /* SealTalk.strings in Resources */ = {isa = PBXBuildFile; fileRef = A28C439122E95818005BA7A0 /* SealTalk.strings */; };
@@ -243,6 +240,8 @@
 		A29070BA229E8045006BDAC7 /* RCDCustomerEmoticonTab.m in Sources */ = {isa = PBXBuildFile; fileRef = A29070B4229E8045006BDAC7 /* RCDCustomerEmoticonTab.m */; };
 		A29070BB229E8045006BDAC7 /* RCDTestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A29070B7229E8045006BDAC7 /* RCDTestMessage.m */; };
 		A29070BC229E8045006BDAC7 /* RCDTestMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A29070B9229E8045006BDAC7 /* RCDTestMessageCell.m */; };
+		A2910A9925E50264005651E2 /* RCDDebugGroupReadReceiptChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2910A9825E50264005651E2 /* RCDDebugGroupReadReceiptChatController.m */; };
+		A2910AA325E503B3005651E2 /* RCDDebugGroupChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2910AA225E503B3005651E2 /* RCDDebugGroupChatListViewController.m */; };
 		A296CCE6256BB36F008C91C7 /* RCDDebugDiscussionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A296CCE5256BB36E008C91C7 /* RCDDebugDiscussionController.m */; };
 		A2A5253E22B73305008188A1 /* RCDImageSlideController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A5253D22B73305008188A1 /* RCDImageSlideController.m */; };
 		A2A5255922B784FB008188A1 /* RCDQRCodeController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A5255822B784FB008188A1 /* RCDQRCodeController.m */; };
@@ -252,6 +251,10 @@
 		A2A5256D22B8899C008188A1 /* RCDGroupManagerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A5256C22B8899C008188A1 /* RCDGroupManagerListController.m */; };
 		A2A5257022B88E74008188A1 /* RCDGroupManagerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A5256F22B88E74008188A1 /* RCDGroupManagerCell.m */; };
 		A2A5258022B8B9D1008188A1 /* NormalAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A5257F22B8B9D1008188A1 /* NormalAlertView.m */; };
+		A2A7EA1325C7EA8D00C99173 /* RCDDebugConversationTagController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A7EA1225C7EA8D00C99173 /* RCDDebugConversationTagController.m */; };
+		A2A7EDE32612C8FE00EAA2D5 /* agreement_zh.html in Resources */ = {isa = PBXBuildFile; fileRef = A2A7EDD52612C8FE00EAA2D5 /* agreement_zh.html */; };
+		A2A7EDEC2612CBDB00EAA2D5 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2A7EDEB2612CBDB00EAA2D5 /* WebKit.framework */; };
+		A2A7EDF92612F76200EAA2D5 /* RCDRegistrationAgreementController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A7EDF72612F76100EAA2D5 /* RCDRegistrationAgreementController.m */; };
 		A2AD037A22D3226900F8E64D /* RCDScanQRCodeController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AD037922D3226900F8E64D /* RCDScanQRCodeController.m */; };
 		A2AD039C22D3251400F8E64D /* RCDScannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AD039422D3251400F8E64D /* RCDScannerView.m */; };
 		A2AD039E22D3251400F8E64D /* RCDQRCodeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AD039822D3251400F8E64D /* RCDQRCodeManager.m */; };
@@ -376,13 +379,6 @@
 			remoteGlobalIDString = 6EBDD19BFFFD954165D471F1A9163671;
 			remoteInfo = ZXingObjC;
 		};
-		3B841CF525E3A8040044D881 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 276599A1229E87B20074FAB2 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2A1194AC019E1C497A170EE4AB725374;
-			remoteInfo = FBRetainCycleDetector;
-		};
 		3BACB0062500CED50001A92C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 276599A1229E87B20074FAB2 /* Pods.xcodeproj */;
@@ -492,7 +488,6 @@
 		17E018C51D59BCBB0093D3A0 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
 		17E018C61D59BCBB0093D3A0 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
 		1C3EE1254F250BC346B4AFE6 /* Pods-SealTalk.autorelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalk.autorelease.xcconfig"; path = "Target Support Files/Pods-SealTalk/Pods-SealTalk.autorelease.xcconfig"; sourceTree = "<group>"; };
-		270985DE2591C911005562BC /* RongIMLibCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongIMLibCore.framework; path = framework/RongIMLibCore/RongIMLibCore.framework; sourceTree = SOURCE_ROOT; };
 		270C241622A4C88E000F22A2 /* RCDSearchMoreViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSearchMoreViewCell.m; sourceTree = "<group>"; };
 		270C241722A4C88E000F22A2 /* RCDSearchResultViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSearchResultViewCell.h; sourceTree = "<group>"; };
 		270C241822A4C88E000F22A2 /* RCDLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDLabel.h; sourceTree = "<group>"; };
@@ -559,20 +554,12 @@
 		27AD2F99229E721E003C2680 /* RCDSquareTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSquareTableViewController.h; sourceTree = "<group>"; };
 		27AD2F9A229E721E003C2680 /* RCDSquareCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDSquareCell.h; sourceTree = "<group>"; };
 		27AD2F9B229E721E003C2680 /* RCDSquareTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDSquareTableViewController.m; sourceTree = "<group>"; };
-		27AD2FA2229E721E003C2680 /* RCAnimatedImagesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAnimatedImagesView.h; sourceTree = "<group>"; };
-		27AD2FA3229E721E003C2680 /* RCDFindPswViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDFindPswViewController.h; sourceTree = "<group>"; };
+		27AD2FA3229E721E003C2680 /* RCDLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDLoginViewController.h; sourceTree = "<group>"; };
 		27AD2FA4229E721E003C2680 /* RCDCountry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDCountry.m; sourceTree = "<group>"; };
 		27AD2FA5229E721E003C2680 /* RCDCountryListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDCountryListController.m; sourceTree = "<group>"; };
-		27AD2FA7229E721E003C2680 /* RCDLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDLoginViewController.h; sourceTree = "<group>"; };
-		27AD2FA9229E721E003C2680 /* RCDChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDChangePasswordViewController.m; sourceTree = "<group>"; };
-		27AD2FAA229E721E003C2680 /* RCDRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDRegisterViewController.h; sourceTree = "<group>"; };
-		27AD2FAB229E721E003C2680 /* RCAnimatedImagesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAnimatedImagesView.m; sourceTree = "<group>"; };
-		27AD2FAC229E721E003C2680 /* RCDFindPswViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDFindPswViewController.m; sourceTree = "<group>"; };
-		27AD2FAD229E721E003C2680 /* RCDLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDLoginViewController.m; sourceTree = "<group>"; };
+		27AD2FAC229E721E003C2680 /* RCDLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDLoginViewController.m; sourceTree = "<group>"; };
 		27AD2FAF229E721E003C2680 /* RCDCountryListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDCountryListController.h; sourceTree = "<group>"; };
 		27AD2FB0229E721E003C2680 /* RCDCountry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDCountry.h; sourceTree = "<group>"; };
-		27AD2FB1229E721E003C2680 /* RCDChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDChangePasswordViewController.h; sourceTree = "<group>"; };
-		27AD2FB2229E721E003C2680 /* RCDRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDRegisterViewController.m; sourceTree = "<group>"; };
 		27AD2FB5229E721E003C2680 /* RCDTabBarBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDTabBarBtn.h; sourceTree = "<group>"; };
 		27AD2FB6229E721E003C2680 /* RCDNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDNavigationBar.h; sourceTree = "<group>"; };
 		27AD2FB7229E721E003C2680 /* RCDMainTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDMainTabBarViewController.m; sourceTree = "<group>"; };
@@ -859,7 +846,6 @@
 		A24AFB09247F7288001BA5A2 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/RongSticker.strings"; sourceTree = "<group>"; };
 		A24AFB0A247F7288001BA5A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RongSticker.strings; sourceTree = "<group>"; };
 		A24AFB0B247F7288001BA5A2 /* RongSticker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RongSticker.bundle; sourceTree = "<group>"; };
-		A24AFB0C247F7288001BA5A2 /* RongSticker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongSticker.framework; sourceTree = "<group>"; };
 		A257509222B8C6E100A79749 /* RCDGroupSelectNewOwnerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDGroupSelectNewOwnerController.h; sourceTree = "<group>"; };
 		A257509322B8C6E100A79749 /* RCDGroupSelectNewOwnerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDGroupSelectNewOwnerController.m; sourceTree = "<group>"; };
 		A257509D22B8DA0000A79749 /* RCDGroupMemberSelectController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDGroupMemberSelectController.h; sourceTree = "<group>"; };
@@ -878,6 +864,8 @@
 		A264FD2222DD756700DF63AA /* RCDChatNotificationMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDChatNotificationMessage.m; sourceTree = "<group>"; };
 		A27AF9092480F3E700686890 /* jenkins_build.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = jenkins_build.sh; sourceTree = "<group>"; };
 		A27AF90A2480F3E700686890 /* before_build.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = before_build.sh; sourceTree = "<group>"; };
+		A2825CEC25E5F70E0073F1C6 /* RCDDebugReceiptDetailsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugReceiptDetailsController.h; sourceTree = "<group>"; };
+		A2825CED25E5F70E0073F1C6 /* RCDDebugReceiptDetailsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugReceiptDetailsController.m; sourceTree = "<group>"; };
 		A28C439022E95818005BA7A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A28C439222E95818005BA7A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SealTalk.strings; sourceTree = "<group>"; };
 		A28C439722E95832005BA7A0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/SealTalk.strings"; sourceTree = "<group>"; };
@@ -938,11 +926,10 @@
 		A29070B7229E8045006BDAC7 /* RCDTestMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDTestMessage.m; sourceTree = "<group>"; };
 		A29070B8229E8045006BDAC7 /* RCDTestMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDTestMessage.h; sourceTree = "<group>"; };
 		A29070B9229E8045006BDAC7 /* RCDTestMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDTestMessageCell.m; sourceTree = "<group>"; };
-		A296CCC0256BA857008C91C7 /* RongDiscussion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongDiscussion.framework; sourceTree = "<group>"; };
-		A296CCC7256BABAD008C91C7 /* RongLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongLocation.framework; sourceTree = "<group>"; };
-		A296CCC9256BABAE008C91C7 /* RongCustomerService.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongCustomerService.framework; sourceTree = "<group>"; };
-		A296CCCC256BABAE008C91C7 /* RongPublicService.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongPublicService.framework; sourceTree = "<group>"; };
-		A296CCD4256BABF7008C91C7 /* RongChatRoom.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongChatRoom.framework; sourceTree = "<group>"; };
+		A2910A9725E50264005651E2 /* RCDDebugGroupReadReceiptChatController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugGroupReadReceiptChatController.h; sourceTree = "<group>"; };
+		A2910A9825E50264005651E2 /* RCDDebugGroupReadReceiptChatController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugGroupReadReceiptChatController.m; sourceTree = "<group>"; };
+		A2910AA125E503B3005651E2 /* RCDDebugGroupChatListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugGroupChatListViewController.h; sourceTree = "<group>"; };
+		A2910AA225E503B3005651E2 /* RCDDebugGroupChatListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugGroupChatListViewController.m; sourceTree = "<group>"; };
 		A296CCE4256BB36E008C91C7 /* RCDDebugDiscussionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDDebugDiscussionController.h; sourceTree = "<group>"; };
 		A296CCE5256BB36E008C91C7 /* RCDDebugDiscussionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDDebugDiscussionController.m; sourceTree = "<group>"; };
 		A2A5253C22B73305008188A1 /* RCDImageSlideController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDImageSlideController.h; sourceTree = "<group>"; };
@@ -961,6 +948,12 @@
 		A2A5256F22B88E74008188A1 /* RCDGroupManagerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDGroupManagerCell.m; sourceTree = "<group>"; };
 		A2A5257E22B8B9D0008188A1 /* NormalAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalAlertView.h; sourceTree = "<group>"; };
 		A2A5257F22B8B9D1008188A1 /* NormalAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NormalAlertView.m; sourceTree = "<group>"; };
+		A2A7EA1125C7EA8D00C99173 /* RCDDebugConversationTagController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugConversationTagController.h; sourceTree = "<group>"; };
+		A2A7EA1225C7EA8D00C99173 /* RCDDebugConversationTagController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugConversationTagController.m; sourceTree = "<group>"; };
+		A2A7EDD52612C8FE00EAA2D5 /* agreement_zh.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = agreement_zh.html; sourceTree = "<group>"; };
+		A2A7EDEB2612CBDB00EAA2D5 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		A2A7EDF72612F76100EAA2D5 /* RCDRegistrationAgreementController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDRegistrationAgreementController.m; sourceTree = "<group>"; };
+		A2A7EDF82612F76200EAA2D5 /* RCDRegistrationAgreementController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDRegistrationAgreementController.h; sourceTree = "<group>"; };
 		A2AD037822D3226900F8E64D /* RCDScanQRCodeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDScanQRCodeController.h; sourceTree = "<group>"; };
 		A2AD037922D3226900F8E64D /* RCDScanQRCodeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDScanQRCodeController.m; sourceTree = "<group>"; };
 		A2AD039422D3251400F8E64D /* RCDScannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDScannerView.m; sourceTree = "<group>"; };
@@ -1167,6 +1160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2A7EDEC2612CBDB00EAA2D5 /* WebKit.framework in Frameworks */,
 				3B0F2C6422DC308B0017979E /* MessageUI.framework in Frameworks */,
 				3B7D8F2822326670009E1417 /* Security.framework in Frameworks */,
 				F1E7784C21A622B00005C37D /* UserNotifications.framework in Frameworks */,
@@ -1233,7 +1227,6 @@
 				3BC0C810229F8F3B0079234F /* AFNetworking.framework */,
 				3BACB0072500CED50001A92C /* DoraemonKit.framework */,
 				3BACB0092500CED50001A92C /* DoraemonKit.bundle */,
-				3B841CF625E3A8040044D881 /* FBRetainCycleDetector.framework */,
 				3BC0C812229F8F3B0079234F /* FMDB.framework */,
 				9C226D0F229FD5C800F49FC5 /* GCDWebServer.framework */,
 				276599A7229E87B20074FAB2 /* Masonry.framework */,
@@ -1309,12 +1302,15 @@
 		27AD2F69229E721D003C2680 /* Debug */ = {
 			isa = PBXGroup;
 			children = (
+				A2910AA025E5036D005651E2 /* GroupReadReceipt */,
 				3B3563122570B1580095A2AF /* MessagePushConfig */,
 				A296CCEB256BB380008C91C7 /* Discussion */,
 				A207435A253E95BE003BD64D /* MessageExtension */,
 				A2074342253E958E003BD64D /* ChatroomStatus */,
 				27AD2F6A229E721D003C2680 /* RCDDebugViewController.h */,
 				27AD2F6D229E721D003C2680 /* RCDDebugViewController.m */,
+				A2A7EA1125C7EA8D00C99173 /* RCDDebugConversationTagController.h */,
+				A2A7EA1225C7EA8D00C99173 /* RCDDebugConversationTagController.m */,
 				27AD2F6B229E721D003C2680 /* RCDDebugNoDisturbViewController.h */,
 				27AD2F6F229E721D003C2680 /* RCDDebugNoDisturbViewController.m */,
 				27AD2F6C229E721D003C2680 /* RCDDebugTableViewController.h */,
@@ -1368,20 +1364,14 @@
 		27AD2FA1229E721E003C2680 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				27AD2FA7229E721E003C2680 /* RCDLoginViewController.h */,
-				27AD2FAD229E721E003C2680 /* RCDLoginViewController.m */,
-				27AD2FA3229E721E003C2680 /* RCDFindPswViewController.h */,
-				27AD2FAC229E721E003C2680 /* RCDFindPswViewController.m */,
-				27AD2FAA229E721E003C2680 /* RCDRegisterViewController.h */,
-				27AD2FB2229E721E003C2680 /* RCDRegisterViewController.m */,
+				27AD2FA3229E721E003C2680 /* RCDLoginViewController.h */,
+				27AD2FAC229E721E003C2680 /* RCDLoginViewController.m */,
+				A2A7EDF82612F76200EAA2D5 /* RCDRegistrationAgreementController.h */,
+				A2A7EDF72612F76100EAA2D5 /* RCDRegistrationAgreementController.m */,
 				27AD2FAF229E721E003C2680 /* RCDCountryListController.h */,
 				27AD2FA5229E721E003C2680 /* RCDCountryListController.m */,
-				27AD2FB1229E721E003C2680 /* RCDChangePasswordViewController.h */,
-				27AD2FA9229E721E003C2680 /* RCDChangePasswordViewController.m */,
 				27AD2F89229E721E003C2680 /* RCUnderlineTextField.h */,
 				27AD2F79229E721D003C2680 /* RCUnderlineTextField.m */,
-				27AD2FA2229E721E003C2680 /* RCAnimatedImagesView.h */,
-				27AD2FAB229E721E003C2680 /* RCAnimatedImagesView.m */,
 				27AD2FB0229E721E003C2680 /* RCDCountry.h */,
 				27AD2FA4229E721E003C2680 /* RCDCountry.m */,
 			);
@@ -1879,6 +1869,7 @@
 		9C119459229D3F86005407ED /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A2A7EDD52612C8FE00EAA2D5 /* agreement_zh.html */,
 				E4E939141AD65A95001E0AC6 /* RCDCommonDefine.h */,
 				270C242C22A50862000F22A2 /* RCDCommonString.h */,
 				9C11946D229D4BB7005407ED /* RCloudMessage.entitlements */,
@@ -2162,7 +2153,6 @@
 			children = (
 				A24AFB08247F7288001BA5A2 /* RongSticker.strings */,
 				A24AFB0B247F7288001BA5A2 /* RongSticker.bundle */,
-				A24AFB0C247F7288001BA5A2 /* RongSticker.framework */,
 			);
 			name = RongSticker;
 			path = framework/RongSticker;
@@ -2420,10 +2410,22 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		A2910AA025E5036D005651E2 /* GroupReadReceipt */ = {
+			isa = PBXGroup;
+			children = (
+				A2910A9725E50264005651E2 /* RCDDebugGroupReadReceiptChatController.h */,
+				A2910A9825E50264005651E2 /* RCDDebugGroupReadReceiptChatController.m */,
+				A2910AA125E503B3005651E2 /* RCDDebugGroupChatListViewController.h */,
+				A2910AA225E503B3005651E2 /* RCDDebugGroupChatListViewController.m */,
+				A2825CEC25E5F70E0073F1C6 /* RCDDebugReceiptDetailsController.h */,
+				A2825CED25E5F70E0073F1C6 /* RCDDebugReceiptDetailsController.m */,
+			);
+			path = GroupReadReceipt;
+			sourceTree = "<group>";
+		};
 		A296CCBF256BA857008C91C7 /* RongDiscussion */ = {
 			isa = PBXGroup;
 			children = (
-				A296CCC0256BA857008C91C7 /* RongDiscussion.framework */,
 			);
 			name = RongDiscussion;
 			path = framework/RongDiscussion;
@@ -2432,7 +2434,6 @@
 		A296CCC6256BABAD008C91C7 /* RongLocation */ = {
 			isa = PBXGroup;
 			children = (
-				A296CCC7256BABAD008C91C7 /* RongLocation.framework */,
 			);
 			name = RongLocation;
 			path = framework/RongLocation;
@@ -2441,7 +2442,6 @@
 		A296CCC8256BABAE008C91C7 /* RongCustomerService */ = {
 			isa = PBXGroup;
 			children = (
-				A296CCC9256BABAE008C91C7 /* RongCustomerService.framework */,
 			);
 			name = RongCustomerService;
 			path = framework/RongCustomerService;
@@ -2450,7 +2450,6 @@
 		A296CCCA256BABAE008C91C7 /* RongChatRoom */ = {
 			isa = PBXGroup;
 			children = (
-				A296CCD4256BABF7008C91C7 /* RongChatRoom.framework */,
 			);
 			name = RongChatRoom;
 			path = framework/RongChatRoom;
@@ -2459,7 +2458,6 @@
 		A296CCCB256BABAE008C91C7 /* RongPublicService */ = {
 			isa = PBXGroup;
 			children = (
-				A296CCCC256BABAE008C91C7 /* RongPublicService.framework */,
 			);
 			name = RongPublicService;
 			path = framework/RongPublicService;
@@ -2736,7 +2734,7 @@
 		E4C4E7E71A0A309100140067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				270985DE2591C911005562BC /* RongIMLibCore.framework */,
+				A2A7EDEB2612CBDB00EAA2D5 /* WebKit.framework */,
 				3B11809E256D0FEB001E5105 /* Photos.framework */,
 				A296CCCA256BABAE008C91C7 /* RongChatRoom */,
 				A296CCC8256BABAE008C91C7 /* RongCustomerService */,
@@ -3053,13 +3051,6 @@
 			remoteRef = 3B47890222B78F1C00D33F10 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		3B841CF625E3A8040044D881 /* FBRetainCycleDetector.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = FBRetainCycleDetector.framework;
-			remoteRef = 3B841CF525E3A8040044D881 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		3BACB0072500CED50001A92C /* DoraemonKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -3147,6 +3138,7 @@
 				A28C439522E95818005BA7A0 /* SealTalk.strings in Resources */,
 				A27AF90B2480F3E800686890 /* jenkins_build.sh in Resources */,
 				A2F0A96F22F9173000422802 /* poke.mp3 in Resources */,
+				A2A7EDE32612C8FE00EAA2D5 /* agreement_zh.html in Resources */,
 				3BC4C627259327A200212D8C /* extract_architectures.sh in Resources */,
 				987653631D796C5B008A6BF0 /* Launch Screen.storyboard in Resources */,
 			);
@@ -3301,7 +3293,6 @@
 				9C11941C229CF0AE005407ED /* RCDUserInfoManager.m in Sources */,
 				3BC0C7E1229E79490079234F /* RCDPublicServiceListViewController.m in Sources */,
 				A2E705BC22BA1C5E0047DF47 /* UIView+MBProgressHUD.m in Sources */,
-				27AD3033229E721F003C2680 /* RCDChangePasswordViewController.m in Sources */,
 				27AD3020229E721F003C2680 /* RCDTableViewController.m in Sources */,
 				A2A5253E22B73305008188A1 /* RCDImageSlideController.m in Sources */,
 				A2AD03CD22D481B400F8E64D /* RCDGroupNoticeCell.m in Sources */,
@@ -3312,7 +3303,6 @@
 				270C242422A4C88E000F22A2 /* RCDLabel.m in Sources */,
 				9C11945F229D3F87005407ED /* main.m in Sources */,
 				27AD3012229E721F003C2680 /* RCDSearchResultModel.m in Sources */,
-				27AD3034229E721F003C2680 /* RCAnimatedImagesView.m in Sources */,
 				A2074356253E958E003BD64D /* RCDDebugAlertView.m in Sources */,
 				3BC0C7DA229E79490079234F /* RCDContactViewController.m in Sources */,
 				276599E5229E969D0074FAB2 /* RCDUIBarButtonItem.m in Sources */,
@@ -3327,8 +3317,8 @@
 				270C242322A4C88E000F22A2 /* RCDSearchResultViewCell.m in Sources */,
 				27F0E3C522A0E3E300C8B0B8 /* RCDEditUserNameViewController.m in Sources */,
 				A29070AE229E7F61006BDAC7 /* RealTimeLocationStartCell.m in Sources */,
-				27AD3038229E721F003C2680 /* RCDRegisterViewController.m in Sources */,
 				9C226D14229FD8F300F49FC5 /* RCDLoginManager.m in Sources */,
+				A2910AA325E503B3005651E2 /* RCDDebugGroupChatListViewController.m in Sources */,
 				27AD3019229E721F003C2680 /* RCDDebugNoDisturbViewController.m in Sources */,
 				A216790222BC6FE20095873C /* RCDGroupAnnouncement.m in Sources */,
 				3BC0C7E3229E79490079234F /* RCDAddressBookViewController.m in Sources */,
@@ -3388,6 +3378,7 @@
 				3B3DED11221D62E40079DFE6 /* RCDLanguageManager.m in Sources */,
 				3BB6CE1F22D82D520007FFFB /* RCDSelectAddressBookViewController.m in Sources */,
 				A290709C229E7F61006BDAC7 /* RCDChatListViewController.m in Sources */,
+				A2A7EA1325C7EA8D00C99173 /* RCDDebugConversationTagController.m in Sources */,
 				A29070A8229E7F61006BDAC7 /* RCAnnotation.m in Sources */,
 				3B208C9B22F28BFB004076EA /* RCDQuicklySendManager.m in Sources */,
 				27F0E3DB22A0E3E300C8B0B8 /* RCDSettingsTableViewController.m in Sources */,
@@ -3414,7 +3405,8 @@
 				9C11946C229D4B79005407ED /* RCDFriendInfo.m in Sources */,
 				A2A5256D22B8899C008188A1 /* RCDGroupManagerListController.m in Sources */,
 				3B054E5722F43C7C009A3C72 /* RCDTextView.m in Sources */,
-				27AD3035229E721F003C2680 /* RCDFindPswViewController.m in Sources */,
+				27AD3035229E721F003C2680 /* RCDLoginViewController.m in Sources */,
+				A2A7EDF92612F76200EAA2D5 /* RCDRegistrationAgreementController.m in Sources */,
 				A2A5255C22B7944D008188A1 /* RCDGroupJoinController.m in Sources */,
 				A29070BA229E8045006BDAC7 /* RCDCustomerEmoticonTab.m in Sources */,
 				A2CFFCEA24C9861500C8DA2A /* RCDSettingViewController.m in Sources */,
@@ -3435,7 +3427,6 @@
 				A25750AB22B8F6DD00A79749 /* RCDGroupMember.m in Sources */,
 				9C226CF2229FB17000F49FC5 /* RCDHTTPUtility.m in Sources */,
 				A257509422B8C6E100A79749 /* RCDGroupSelectNewOwnerController.m in Sources */,
-				27AD3036229E721F003C2680 /* RCDLoginViewController.m in Sources */,
 				3BB6CDFD22D723460007FFFB /* RCDUserInfo.m in Sources */,
 				A2F0A97522F9579500422802 /* RCDGroupMemberDetailCell.m in Sources */,
 				3B47891722B7A11100D33F10 /* RCDForwardSelectedCell.m in Sources */,
@@ -3447,6 +3438,7 @@
 				27F0E3D322A0E3E300C8B0B8 /* RCDCSSolveView.m in Sources */,
 				3BC0C820229FC1E80079234F /* RCDPersonInfoView.m in Sources */,
 				79B029F622D5FE920062CBA5 /* RCDChatConfig.m in Sources */,
+				A2910A9925E50264005651E2 /* RCDDebugGroupReadReceiptChatController.m in Sources */,
 				A2AD03C722D47F3200F8E64D /* RCDGroupNoticeListController.m in Sources */,
 				3B47890622B78F3200D33F10 /* RCDBottomResultView.m in Sources */,
 				27AD302B229E721F003C2680 /* RCDGroupInfo.m in Sources */,
@@ -3456,6 +3448,7 @@
 				A2074364253E95BF003BD64D /* RCDDebugSelectChatController.m in Sources */,
 				A2074358253E958E003BD64D /* RCDDebugChatRoomCell.m in Sources */,
 				A2402F9622B2380200BF8F6A /* RCDChatRoomManager.m in Sources */,
+				A2825CEE25E5F70E0073F1C6 /* RCDDebugReceiptDetailsController.m in Sources */,
 				27F0E3CC22A0E3E300C8B0B8 /* RCDVersionCell.m in Sources */,
 				27644ABC2355CEB8005A39F5 /* RCDDataStatistics.m in Sources */,
 				3B4788E822B780EF00D33F10 /* RCDForwardManager.m in Sources */,
@@ -3811,7 +3804,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = $APP_PROFILE;
-				VALIDATE_WORKSPACE = YES;
 			};
 			name = AutoDebug;
 		};
@@ -3975,7 +3967,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = $APP_PROFILE;
-				VALIDATE_WORKSPACE = YES;
 			};
 			name = AutoRelease;
 		};
@@ -4297,7 +4288,6 @@
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
-				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -4357,7 +4347,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
 				PROVISIONING_PROFILE = "";
-				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};

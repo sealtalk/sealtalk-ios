@@ -74,7 +74,7 @@
     NSString *searchText = self.phoneTextField.textField.text;
     if ([searchText length] > 0) {
 
-        NSString *currentPhoneNumber = [DEFAULTS objectForKey:RCDUserNameKey];
+        NSString *currentPhoneNumber = [DEFAULTS objectForKey:RCDPhoneKey];
         NSString *currentSTAccount = [DEFAULTS objectForKey:RCDSealTalkNumberKey];
 
         if ([searchText isEqualToString:currentPhoneNumber] || [searchText isEqualToString:currentSTAccount]) {

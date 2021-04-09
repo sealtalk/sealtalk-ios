@@ -15,6 +15,7 @@ if [ -d "$IMLIB_PATH" ]; then
         mkdir -p $SEALTALK_IMLIB_FRAMEWORKER_PATH
     fi
     cp -af ${IMLIB_PATH}/* $SEALTALK_IMLIB_FRAMEWORKER_PATH
+    rm -rf $SEALTALK_IMLIB_FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy imlibcore
@@ -26,6 +27,7 @@ if [ -d "$IMLIB_PATH" ]; then
         mkdir -p $SEALTALK_IMLIB_FRAMEWORKER_PATH
     fi
     cp -af ${IMLIB_PATH}/* $SEALTALK_IMLIB_FRAMEWORKER_PATH
+    rm -rf $SEALTALK_IMLIB_FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy chatroom
@@ -37,6 +39,7 @@ if [ -d ${CHATROOM_PATH}/bin ]; then
        mkdir -p $FRAMEWORKER_PATH
    fi
    cp -af ${CHATROOM_PATH}/bin/* $FRAMEWORKER_PATH
+   rm -rf $FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy discussion
@@ -48,6 +51,7 @@ if [ -d ${DISCUSSION_PATH}/bin ]; then
        mkdir -p $FRAMEWORKER_PATH
    fi
    cp -af ${DISCUSSION_PATH}/bin/* $FRAMEWORKER_PATH
+   rm -rf $FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy realtimelocation
@@ -59,6 +63,7 @@ if [ -d ${REALTIME_PATH}/bin ]; then
        mkdir -p $FRAMEWORKER_PATH
    fi
    cp -af ${REALTIME_PATH}/bin/* $FRAMEWORKER_PATH
+   rm -rf $FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy publicservice
@@ -70,6 +75,7 @@ if [ -d ${PUBLICSERVICE_PATH}/bin ]; then
        mkdir -p $FRAMEWORKER_PATH
    fi
    cp -af ${PUBLICSERVICE_PATH}/bin/* $FRAMEWORKER_PATH
+   rm -rf $FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy customerservice
@@ -81,6 +87,7 @@ if [ -d ${CUSTOMERSERVICE_PATH}/bin ]; then
        mkdir -p $FRAMEWORKER_PATH
    fi
    cp -af ${CUSTOMERSERVICE_PATH}/bin/* $FRAMEWORKER_PATH
+   rm -rf $FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy imkit
@@ -92,6 +99,7 @@ if [ -d "$IMKIT_PATH" ]; then
         mkdir -p $SEALTALK_IMKIT_FRAMEWORKER_PATH
     fi
     cp -af ${IMKIT_PATH}/* $SEALTALK_IMKIT_FRAMEWORKER_PATH
+    rm -rf $SEALTALK_IMKIT_FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy contact
@@ -103,6 +111,7 @@ if [ -d "$CONTACT_PATH" ]; then
         mkdir -p $SEALTALK_CONTACT_FRAMEWORKER_PATH
     fi
     cp -af ${CONTACT_PATH}/* $SEALTALK_CONTACT_FRAMEWORKER_PATH
+    rm -rf $SEALTALK_CONTACT_FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy sight
@@ -114,6 +123,7 @@ if [ -d "$SIGHT_PATH" ]; then
         mkdir -p $SEALTALK_SIGHT_FRAMEWORKER_PATH
     fi
     cp -af ${SIGHT_PATH}/* $SEALTALK_SIGHT_FRAMEWORKER_PATH
+    rm -rf $SEALTALK_SIGHT_FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy sticker
@@ -125,6 +135,7 @@ if [ -d "$STICKER_PATH" ]; then
         mkdir -p $SEALTALK_STICKER_FRAMEWORKER_PATH
     fi
     cp -af ${STICKER_PATH}/* $SEALTALK_STICKER_FRAMEWORKER_PATH
+    rm -rf $SEALTALK_STICKER_FRAMEWORKER_PATH/*.xcframework
 fi
 
 
@@ -138,6 +149,7 @@ if [ -d "$IFLY_PATH" ]; then
         mkdir -p $SEALTALK_IFLY_FRAMEWORKER_PATH
     fi
     cp -af ${IFLY_PATH}/* $SEALTALK_IFLY_FRAMEWORKER_PATH
+    rm -rf $SEALTALK_IFLY_FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy RongCallKit
@@ -149,6 +161,7 @@ if [ -d "$CALLKIT_PATH" ]; then
         mkdir -p $SEALTALK_CALLKIT_FRAMEWORKER_PATH
     fi
     cp -af ${CALLKIT_PATH}/* $SEALTALK_CALLKIT_FRAMEWORKER_PATH
+    rm -rf $SEALTALK_CALLKIT_FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy RongCallLib
@@ -160,6 +173,7 @@ if [ -d "$CALLLIB_PATH" ]; then
         mkdir -p $SEALTALK_CALLLIB_FRAMEWORKER_PATH
     fi
     cp -af ${CALLLIB_PATH}/* $SEALTALK_CALLLIB_FRAMEWORKER_PATH
+    rm -rf $SEALTALK_CALLLIB_FRAMEWORKER_PATH/*.xcframework
 fi
 
 #copy RongRTCLib
@@ -172,4 +186,5 @@ if [ -d "$RTCLIB_PATH" ]; then
     fi
 
     cp -af ${RTCLIB_PATH}/* $SEALTALK_RTCLIB_FRAMEWORKER_PATH
+    rm -rf $SEALTALK_RTCLIB_FRAMEWORKER_PATH/*.xcframework
 fi
