@@ -6,16 +6,18 @@ iOS App of SealTalk powered by RongCloud.
 
 ## 运行 SealTalk-iOS
 
-SealTalk 从 2.0.0 版本开始改用 cocoaPods 管理融云 SDK 库和其他第三方库，下载完源码后，按照下面步骤操作
+SealTalk 从 2.0.0 版本开始改用 CocoaPods 管理融云 SDK 库和其他第三方库，下载完源码后，按照下面步骤操作
 
-1.终端进入 Podfile 目录
+1.`SDK 5.1.1 以后升级为 XCFramework，CocoaPods 支持 XCFramework 的最低为版本 1.10.0`
 
-2.更新本地 CocoaPods 的本地仓库，终端执行下面命令
+2.终端进入 Podfile 目录
+
+3.更新本地 CocoaPods 的本地仓库，终端执行下面命令
 
 ```
 $ pod repo update
 ```
-3.下载 Podfile 中的依赖库，终端执行下面命令
+4.下载 Podfile 中的依赖库，终端执行下面命令
 
 ```
 $ pod install
