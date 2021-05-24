@@ -22,6 +22,7 @@
 #import "UIView+MBProgressHUD.h"
 #import "RCDDebugConversationTagController.h"
 #import "RCDDebugGroupChatListViewController.h"
+#import "RCDDebugMsgShortageChatListController.h"
 #define DISPLAY_ID_TAG 100
 #define DISPLAY_ONLINE_STATUS_TAG 101
 #define JOIN_CHATROOM_TAG 102
@@ -155,6 +156,8 @@
         [self pushConversationTagVC];
     }else if ([title isEqualToString:@"新的群已读回执"]) {
         [self pushGroupChatListVC];
+    }else if ([title isEqualToString:@"消息断档"]) {
+        [self pushChatListVC];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -185,7 +188,7 @@
     ]
             forKey:RCDLocalizedString(@"time_setting")];
 
-    [dic setObject:@[@"讨论组", @"配置消息推送属性", @"进入消息推送属性测试", @"设置推送语言", @"会话标签",@"新的群已读回执"] forKey:@"功能"];
+    [dic setObject:@[@"讨论组", @"配置消息推送属性", @"进入消息推送属性测试", @"设置推送语言", @"会话标签",@"新的群已读回执", @"消息断档"] forKey:@"功能"];
     self.functions = [dic copy];
 }
 
@@ -337,6 +340,11 @@
 
 - (void)pushGroupChatListVC{
     RCDDebugGroupChatListViewController *vc = [[RCDDebugGroupChatListViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushChatListVC{
+    RCDDebugMsgShortageChatListController *vc = [[RCDDebugMsgShortageChatListController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

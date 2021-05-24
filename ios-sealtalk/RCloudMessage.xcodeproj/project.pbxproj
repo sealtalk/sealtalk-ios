@@ -207,6 +207,8 @@
 		A264FD2322DD756700DF63AA /* RCDChatNotificationMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A264FD2222DD756700DF63AA /* RCDChatNotificationMessage.m */; };
 		A27AF90B2480F3E800686890 /* jenkins_build.sh in Resources */ = {isa = PBXBuildFile; fileRef = A27AF9092480F3E700686890 /* jenkins_build.sh */; };
 		A27AF90C2480F3E800686890 /* before_build.sh in Resources */ = {isa = PBXBuildFile; fileRef = A27AF90A2480F3E700686890 /* before_build.sh */; };
+		A27E824A263A57D200A7DF26 /* RCDDebugMsgShortageChatListController.m in Sources */ = {isa = PBXBuildFile; fileRef = A27E8249263A57D200A7DF26 /* RCDDebugMsgShortageChatListController.m */; };
+		A27E825C263A596100A7DF26 /* RCDDebugMsgShortageChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = A27E825B263A596100A7DF26 /* RCDDebugMsgShortageChatController.m */; };
 		A2825CEE25E5F70E0073F1C6 /* RCDDebugReceiptDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2825CED25E5F70E0073F1C6 /* RCDDebugReceiptDetailsController.m */; };
 		A28C439322E95818005BA7A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A28C438F22E95818005BA7A0 /* InfoPlist.strings */; };
 		A28C439422E95818005BA7A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A28C438F22E95818005BA7A0 /* InfoPlist.strings */; };
@@ -864,6 +866,10 @@
 		A264FD2222DD756700DF63AA /* RCDChatNotificationMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDChatNotificationMessage.m; sourceTree = "<group>"; };
 		A27AF9092480F3E700686890 /* jenkins_build.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = jenkins_build.sh; sourceTree = "<group>"; };
 		A27AF90A2480F3E700686890 /* before_build.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = before_build.sh; sourceTree = "<group>"; };
+		A27E8248263A57D200A7DF26 /* RCDDebugMsgShortageChatListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugMsgShortageChatListController.h; sourceTree = "<group>"; };
+		A27E8249263A57D200A7DF26 /* RCDDebugMsgShortageChatListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugMsgShortageChatListController.m; sourceTree = "<group>"; };
+		A27E825A263A596100A7DF26 /* RCDDebugMsgShortageChatController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugMsgShortageChatController.h; sourceTree = "<group>"; };
+		A27E825B263A596100A7DF26 /* RCDDebugMsgShortageChatController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugMsgShortageChatController.m; sourceTree = "<group>"; };
 		A2825CEC25E5F70E0073F1C6 /* RCDDebugReceiptDetailsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugReceiptDetailsController.h; sourceTree = "<group>"; };
 		A2825CED25E5F70E0073F1C6 /* RCDDebugReceiptDetailsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDDebugReceiptDetailsController.m; sourceTree = "<group>"; };
 		A28C439022E95818005BA7A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1302,6 +1308,7 @@
 		27AD2F69229E721D003C2680 /* Debug */ = {
 			isa = PBXGroup;
 			children = (
+				A27E8261263A877400A7DF26 /* MessageShortage */,
 				A2910AA025E5036D005651E2 /* GroupReadReceipt */,
 				3B3563122570B1580095A2AF /* MessagePushConfig */,
 				A296CCEB256BB380008C91C7 /* Discussion */,
@@ -2185,6 +2192,17 @@
 				A27AF90A2480F3E700686890 /* before_build.sh */,
 			);
 			name = Scripts;
+			sourceTree = "<group>";
+		};
+		A27E8261263A877400A7DF26 /* MessageShortage */ = {
+			isa = PBXGroup;
+			children = (
+				A27E8248263A57D200A7DF26 /* RCDDebugMsgShortageChatListController.h */,
+				A27E8249263A57D200A7DF26 /* RCDDebugMsgShortageChatListController.m */,
+				A27E825A263A596100A7DF26 /* RCDDebugMsgShortageChatController.h */,
+				A27E825B263A596100A7DF26 /* RCDDebugMsgShortageChatController.m */,
+			);
+			path = MessageShortage;
 			sourceTree = "<group>";
 		};
 		A290703F229E7F61006BDAC7 /* Chat */ = {
@@ -3287,6 +3305,7 @@
 				3BC0C7DE229E79490079234F /* RCDGroupTableViewCell.m in Sources */,
 				A29070A9229E7F61006BDAC7 /* RCLocationConvert.m in Sources */,
 				3B3563232570B1A80095A2AF /* RCDDebugMessagePushConfigController.m in Sources */,
+				A27E825C263A596100A7DF26 /* RCDDebugMsgShortageChatController.m in Sources */,
 				3B2CC34122A4D0C900C2EA1F /* RCDContactSelectedTableViewCell.m in Sources */,
 				3B47891E22B87B4E00D33F10 /* RCDRightArrowCell.m in Sources */,
 				276599E1229E95250074FAB2 /* UITextFiled+Shake.m in Sources */,
@@ -3408,6 +3427,7 @@
 				27AD3035229E721F003C2680 /* RCDLoginViewController.m in Sources */,
 				A2A7EDF92612F76200EAA2D5 /* RCDRegistrationAgreementController.m in Sources */,
 				A2A5255C22B7944D008188A1 /* RCDGroupJoinController.m in Sources */,
+				A27E824A263A57D200A7DF26 /* RCDDebugMsgShortageChatListController.m in Sources */,
 				A29070BA229E8045006BDAC7 /* RCDCustomerEmoticonTab.m in Sources */,
 				A2CFFCEA24C9861500C8DA2A /* RCDSettingViewController.m in Sources */,
 				27F0E3C322A0E3E300C8B0B8 /* RCDMeInfoTableViewController.m in Sources */,

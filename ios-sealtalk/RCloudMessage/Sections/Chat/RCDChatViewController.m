@@ -926,8 +926,9 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
 }
 
 - (void)deleteMessages {
-    for (int i = 0; i < self.selectedMessages.count; i++) {
-        [self deleteMessage:self.selectedMessages[i]];
+    NSArray *tempArray = [self.selectedMessages mutableCopy];
+    for (int i = 0; i < tempArray.count; i++) {
+        [self deleteMessage:tempArray[i]];
     }
     //置为 NO,将消息 cell 重置为初始状态
     self.allowsMessageCellSelection = NO;

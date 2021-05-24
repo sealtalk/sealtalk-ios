@@ -355,14 +355,20 @@
                                parameters:nil
                                  response:^(RCDHTTPResult *result) {
                                      if (result.success) {
-                                         RCDUserInfo *userInfo = [[RCDUserInfo alloc] init];
-                                         userInfo.userId = result.content[@"id"];
-                                         userInfo.name = result.content[@"nickname"];
-                                         userInfo.portraitUri = result.content[@"portraitUri"];
-                                         userInfo.stAccount = result.content[@"stAccount"];
-                                         userInfo.gender = result.content[@"gender"];
-                                         if (completeBlock) {
-                                             completeBlock(userInfo);
+                                         if (result.content) {
+                                             RCDUserInfo *userInfo = [[RCDUserInfo alloc] init];
+                                             userInfo.userId = result.content[@"id"];
+                                             userInfo.name = result.content[@"nickname"];
+                                             userInfo.portraitUri = result.content[@"portraitUri"];
+                                             userInfo.stAccount = result.content[@"stAccount"];
+                                             userInfo.gender = result.content[@"gender"];
+                                             if (completeBlock) {
+                                                 completeBlock(userInfo);
+                                             }
+                                         }else{
+                                             if (completeBlock) {
+                                                 completeBlock(nil);
+                                             }
                                          }
                                      } else {
                                          if (completeBlock) {

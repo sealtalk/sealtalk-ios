@@ -49,6 +49,14 @@
                                                object:nil];
 }
 
+- (BOOL)shouldAutorotate{
+    return NO;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     [self setTabBarItems];

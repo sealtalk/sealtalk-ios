@@ -28,6 +28,14 @@
     }
 }
 
+- (BOOL)shouldAutorotate{
+    return NO;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     if ([self respondsToSelector:@selector(interactivePopGestureRecognizer)] && animated == YES) {
         self.interactivePopGestureRecognizer.enabled = NO;

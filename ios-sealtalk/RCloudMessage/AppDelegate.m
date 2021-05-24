@@ -46,7 +46,7 @@
 #define WECHAT_APPID @"wxe3d4d4ec21b00104"
 
 @interface AppDelegate () <RCWKAppInfoProvider>
-
+@property (nonatomic, assign) BOOL allowAutorotate;
 @end
 
 @implementation AppDelegate
@@ -156,6 +156,10 @@
                                              selector:@selector(didLoginCookieExpiredNotification:)
                                                  name:RCDLoginCookieExpiredNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didViewChangeAutorotate:)
+                                                 name:RCKitViewSupportAutorotateNotification
+                                               object:nil];
 
     /**
      * 推送处理 1
@@ -166,6 +170,20 @@
      * 统计推送，并获取融云推送服务扩展字段
      */
     [self recordLaunchOptions:launchOptions];
+}
+
+- (void)didViewChangeAutorotate:(NSNotification *)noti{
+    self.allowAutorotate = [noti.object boolValue];
+    //强制归正：
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        SEL selector = NSSelectorFromString(@"setOrientation:");
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:[UIDevice currentDevice]];
+        int val =UIInterfaceOrientationPortrait;
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
+    }
 }
 
 - (void)loginAndEnterMainPage {
@@ -710,5 +728,13 @@
 
 - (void)showAlert:(NSString *)title message:(NSString *)msg cancelBtnTitle:(NSString *)cBtnTitle {
     [RCAlertView showAlertController:title message:msg cancelTitle:cBtnTitle];
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    if(self.allowAutorotate){
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }else{
+        return UIInterfaceOrientationMaskPortrait;
+    }
 }
 @end

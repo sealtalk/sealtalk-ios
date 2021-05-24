@@ -41,10 +41,14 @@ static AFHTTPSessionManager *manager;
                     URLString:(NSString *)URLString
                    parameters:(NSDictionary *)parameters
                      response:(void (^)(RCDHTTPResult *))responseBlock {
+    
     AFHTTPSessionManager *manager = [RCDHTTPUtility sharedHTTPManager];
     URLString = [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *url = [BASE_URL stringByAppendingPathComponent:URLString];
-
+    NSString *cookie = [DEFAULTS valueForKey:RCDUserCookiesKey];
+    if (cookie && cookie.length > 0) {
+        [manager.requestSerializer setValue:cookie forHTTPHeaderField:@"Cookie"];
+    }
     switch (method) {
     case HTTPMethodGet: {
         [manager GET:url
