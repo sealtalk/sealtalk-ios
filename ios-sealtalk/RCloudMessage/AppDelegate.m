@@ -34,7 +34,7 @@
 #import "RCDPokeManager.h"
 #import "RCDClearMessage.h"
 #import "RCDLanguageManager.h"
-
+#import <UMCommon/UMCommon.h>
 #ifdef DEBUG
 #import <DoraemonKit/DoraemonManager.h>
 #endif
@@ -44,6 +44,7 @@
 #define LOG_EXPIRE_TIME -7 * 24 * 60 * 60
 
 #define WECHAT_APPID @"wxe3d4d4ec21b00104"
+#define UMENG_APPKEY @""
 
 @interface AppDelegate () <RCWKAppInfoProvider>
 @property (nonatomic, assign) BOOL allowAutorotate;
@@ -55,12 +56,13 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-
-    [self configSealTalkWithApp:application andOptions:launchOptions];
+    
     [self configRongIM];
+    [self configSealTalkWithApp:application andOptions:launchOptions];
     [self configWeChatShare];
     [self loginAndEnterMainPage];
     [self configDoraemon];
+    [self configUMCommon];
     [self configCurrentLanguage];
     return YES;
 }
@@ -129,6 +131,10 @@
     #ifdef DEBUG
     [[DoraemonManager shareInstance] installWithPid:DORAEMON_APPID];
     #endif
+}
+
+- (void)configUMCommon {
+    [UMConfigure initWithAppkey:UMENG_APPKEY channel:nil];
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {

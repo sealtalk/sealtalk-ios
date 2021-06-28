@@ -78,6 +78,7 @@ if [ ${APP_NAME} = "SealChat" ]; then
   echo "build SealChat"
   sed -i '' -e 's?cn.rongcloud.im?cn.rongcloud.im.sg?g' ./RCloudMessage.xcodeproj/project.pbxproj
   sed -i '' -e 's?cn.rongcloud.im.sg.shareextension?cn.rongcloud.im.sg.ShareExtension?g' ./RCloudMessage.xcodeproj/project.pbxproj
+  sed -i '' -e 's?cn.rongcloud.im.notificationservice?cn.rongcloud.im.sg.notificationservice?g' ./RCloudMessage.xcodeproj/project.pbxproj
   sed -i '' -e 's?group.cn.rongcloud.im.share?group.cn.rongcloud.im.sg.share?g' ./RCloudMessage/Supporting\ Files/RCloudMessage.entitlements
 fi
 

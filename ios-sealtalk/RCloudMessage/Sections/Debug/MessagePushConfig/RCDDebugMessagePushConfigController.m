@@ -51,6 +51,8 @@
 
 @property (nonatomic, strong) UITextField *fcmUrlTF;
 
+@property (nonatomic, strong) UITextField *hwLvel;
+
 @property (nonatomic, strong) RCMessagePushConfig *pushConfig;
 
 @property (nonatomic, strong) RCMessageConfig *config;
@@ -94,7 +96,8 @@
     [self.contentView addSubview:self.typeVivoTF];
     [self.contentView addSubview:self.fcmTF];
     [self.contentView addSubview:self.fcmUrlTF];
-    
+    [self.contentView addSubview:self.hwLvel];
+
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.bottom.equalTo(self.view);
     }];
@@ -192,6 +195,11 @@
     [self.fcmUrlTF mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.fcmTF.mas_bottom).offset(10);
         make.height.left.right.equalTo(self.disableTitleBtn);
+    }];
+    
+    [self.hwLvel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.fcmUrlTF.mas_bottom).offset(10);
+        make.height.left.right.equalTo(self.disableTitleBtn);
         make.bottom.equalTo(self.contentView);
     }];
 }
@@ -232,6 +240,7 @@
         self.typeVivoTF.text = self.pushConfig.androidConfig.typeVivo;
         self.fcmTF.text = self.pushConfig.androidConfig.fcmCollapseKey;
         self.fcmUrlTF.text = self.pushConfig.androidConfig.fcmImageUrl;
+        self.hwLvel.text = self.pushConfig.androidConfig.importanceHW ;
     }
     
     if (self.config) {
@@ -271,6 +280,7 @@
     pushConfig.androidConfig.typeVivo = self.typeVivoTF.text;
     pushConfig.androidConfig.fcmCollapseKey = self.fcmTF.text;
     pushConfig.androidConfig.fcmImageUrl = self.fcmUrlTF.text;
+    pushConfig.androidConfig.importanceHW = self.hwLvel.text;
     pushConfig.forceShowDetailContent = self.forceShowDetailBtn.selected;
     
     [self saveToUserDefaults:pushConfig];
@@ -305,6 +315,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:pushConfig.androidConfig.typeVivo forKey:@"pushConfig-android-vivo"];
     [[NSUserDefaults standardUserDefaults] setObject:pushConfig.androidConfig.fcmCollapseKey forKey:@"pushConfig-android-fcm"];
     [[NSUserDefaults standardUserDefaults] setObject:pushConfig.androidConfig.fcmImageUrl forKey:@"pushConfig-android-fcmImageUrl"];
+    [[NSUserDefaults standardUserDefaults] setObject:pushConfig.androidConfig.importanceHW forKey:@"pushConfig-android-importanceHW"];
 }
 
 - (void)saveConfigToUserDefaults:(RCMessageConfig *)config {
@@ -332,7 +343,13 @@
     self.pushConfig.androidConfig.typeVivo = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushConfig-android-vivo"];
     self.pushConfig.androidConfig.fcmCollapseKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushConfig-android-fcm"];
     self.pushConfig.androidConfig.fcmImageUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushConfig-android-fcmImageUrl"];
-    
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"pushConfig-android-importanceHW"]) {
+        self.pushConfig.androidConfig.importanceHW = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushConfig-android-importanceHW"];
+    }else{
+        self.pushConfig.androidConfig.importanceHW = RCImportanceHwNormal;
+
+    }
+
     self.config = [[RCMessageConfig alloc] init];
     self.config.disableNotification = [[[NSUserDefaults standardUserDefaults] objectForKey:@"config-disableNotification"] boolValue];
 }
@@ -545,6 +562,16 @@
         _fcmUrlTF.layer.borderWidth = 1;
     }
     return _fcmUrlTF;
+}
+
+
+- (UITextField *)hwLvel {
+    if (!_hwLvel) {
+        _hwLvel = [[UITextField alloc] init];
+        _hwLvel.placeholder = @"hw推送级别";
+        _hwLvel.layer.borderWidth = 1;
+    }
+    return _hwLvel;
 }
 
 

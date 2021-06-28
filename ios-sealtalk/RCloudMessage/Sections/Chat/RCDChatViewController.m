@@ -114,6 +114,10 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     [self addEmoticonTabDemo];
     [self addQuicklySendImage];
     [self setupChatBackground];
+    
+    self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 180, 20)];
+    self.placeholderLabel.text = @"随便说点什么";
+    self.placeholderLabel.textColor = [UIColor grayColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -12,7 +12,6 @@
 #import "RCDTipMessageCell.h"
 #import "RCDGroupNotificationMessage.h"
 #import "RCDChatNotificationMessage.h"
-
 @interface RCDDebugMsgShortageChatController ()
 @property (nonatomic, assign) BOOL isTouchScrolled; /// 表示是否是触摸滚动
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
@@ -181,5 +180,27 @@
             }
         }
     }
+}
+
+- (void)didSendMessage:(NSInteger)status content:(RCMessageContent *)messageContent {
+    if ([messageContent isKindOfClass:[RCReferenceMessage class]]) {
+        RCReferenceMessage *mesage = messageContent;
+        [self showAlertController:mesage.referMsgUid];
+    }
+}
+-(void)showAlertController:(NSString *)info {
+    dispatch_async(dispatch_get_main_queue(), ^{
+    UIAlertController *alertController = [UIAlertController
+        alertControllerWithTitle:nil
+                         message:info
+                  preferredStyle:UIAlertControllerStyleAlert];
+    [alertController
+        addAction:[UIAlertAction actionWithTitle:@"确定"
+                                           style:UIAlertActionStyleDefault
+                                         handler:^(UIAlertAction *_Nonnull action) {
+                                             [self.navigationController popViewControllerAnimated:YES];
+                                         }]];
+    [self presentViewController:alertController animated:NO completion:nil];
+    });
 }
 @end

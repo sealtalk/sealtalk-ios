@@ -205,6 +205,8 @@
 		A25750AB22B8F6DD00A79749 /* RCDGroupMember.m in Sources */ = {isa = PBXBuildFile; fileRef = A25750AA22B8F6DD00A79749 /* RCDGroupMember.m */; };
 		A25EE9C622A0D2810064E0F2 /* RCDUserListCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = A25EE9C522A0D2810064E0F2 /* RCDUserListCollectionView.m */; };
 		A264FD2322DD756700DF63AA /* RCDChatNotificationMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A264FD2222DD756700DF63AA /* RCDChatNotificationMessage.m */; };
+		A27AD72D265C96C0008D35F7 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = A27AD72C265C96C0008D35F7 /* NotificationService.m */; };
+		A27AD731265C96C0008D35F7 /* SealTalkNotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A27AD729265C96C0008D35F7 /* SealTalkNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A27AF90B2480F3E800686890 /* jenkins_build.sh in Resources */ = {isa = PBXBuildFile; fileRef = A27AF9092480F3E700686890 /* jenkins_build.sh */; };
 		A27AF90C2480F3E800686890 /* before_build.sh in Resources */ = {isa = PBXBuildFile; fileRef = A27AF90A2480F3E700686890 /* before_build.sh */; };
 		A27E824A263A57D200A7DF26 /* RCDDebugMsgShortageChatListController.m in Sources */ = {isa = PBXBuildFile; fileRef = A27E8249263A57D200A7DF26 /* RCDDebugMsgShortageChatListController.m */; };
@@ -416,6 +418,13 @@
 			remoteGlobalIDString = 71809ED5228E495A886623E1E92A77F6;
 			remoteInfo = GCDWebServer;
 		};
+		A27AD72F265C96C0008D35F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4D40F201A031F460045097C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A27AD728265C96C0008D35F7;
+			remoteInfo = SealTalkNotificationService;
+		};
 		A2E705C522BA1D1E0047DF47 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 276599A1229E87B20074FAB2 /* Pods.xcodeproj */;
@@ -439,6 +448,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				A27AD731265C96C0008D35F7 /* SealTalkNotificationService.appex in Embed App Extensions */,
 				17D7D1E31D534F56000AEC54 /* SealTalkShareExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -864,6 +874,11 @@
 		A25EE9C522A0D2810064E0F2 /* RCDUserListCollectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDUserListCollectionView.m; sourceTree = "<group>"; };
 		A264FD2122DD756700DF63AA /* RCDChatNotificationMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDChatNotificationMessage.h; sourceTree = "<group>"; };
 		A264FD2222DD756700DF63AA /* RCDChatNotificationMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDChatNotificationMessage.m; sourceTree = "<group>"; };
+		A27AD729265C96C0008D35F7 /* SealTalkNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SealTalkNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A27AD72B265C96C0008D35F7 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		A27AD72C265C96C0008D35F7 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		A27AD72E265C96C0008D35F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A27AD791265CD9AD008D35F7 /* RCDCommonDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDCommonDefine.h; sourceTree = "<group>"; };
 		A27AF9092480F3E700686890 /* jenkins_build.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = jenkins_build.sh; sourceTree = "<group>"; };
 		A27AF90A2480F3E700686890 /* before_build.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = before_build.sh; sourceTree = "<group>"; };
 		A27E8248263A57D200A7DF26 /* RCDDebugMsgShortageChatListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDDebugMsgShortageChatListController.h; sourceTree = "<group>"; };
@@ -1123,7 +1138,6 @@
 		E4C4E7E31A0A2F2800140067 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		E4C4E7E51A0A2F2E00140067 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E4D40F281A031F460045097C /* SealTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SealTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4E939141AD65A95001E0AC6 /* RCDCommonDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDCommonDefine.h; sourceTree = "<group>"; };
 		E4FCD7C31AD69DFB00915650 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		EC542FBCFEF60B126BE5E715 /* Pods_SealTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SealTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1E7784B21A622B00005C37D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -1147,6 +1161,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8599EC9FA1F0DC35ABA4C981 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A27AD726265C96C0008D35F7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1877,7 +1898,7 @@
 			isa = PBXGroup;
 			children = (
 				A2A7EDD52612C8FE00EAA2D5 /* agreement_zh.html */,
-				E4E939141AD65A95001E0AC6 /* RCDCommonDefine.h */,
+				A27AD791265CD9AD008D35F7 /* RCDCommonDefine.h */,
 				270C242C22A50862000F22A2 /* RCDCommonString.h */,
 				9C11946D229D4BB7005407ED /* RCloudMessage.entitlements */,
 				178998211F6244FA00FC44D3 /* sms-received.caf */,
@@ -2182,6 +2203,16 @@
 				A2D549562320FE7000AC640B /* RCDClearMessage.m */,
 			);
 			path = Message;
+			sourceTree = "<group>";
+		};
+		A27AD72A265C96C0008D35F7 /* SealTalkNotificationService */ = {
+			isa = PBXGroup;
+			children = (
+				A27AD72B265C96C0008D35F7 /* NotificationService.h */,
+				A27AD72C265C96C0008D35F7 /* NotificationService.m */,
+				A27AD72E265C96C0008D35F7 /* Info.plist */,
+			);
+			path = SealTalkNotificationService;
 			sourceTree = "<group>";
 		};
 		A27AF9082480F3C500686890 /* Scripts */ = {
@@ -2817,6 +2848,7 @@
 				A6447A061B1DBE6500EA2CEE /* 融云 Demo WatchKit Extension */,
 				A6447A181B1DBE6500EA2CEE /* 融云 Demo WatchKit App */,
 				17D7D1D91D534F56000AEC54 /* SealTalkShareExtension */,
+				A27AD72A265C96C0008D35F7 /* SealTalkNotificationService */,
 				E4C4E7E71A0A309100140067 /* Frameworks */,
 				E4D40F291A031F460045097C /* Products */,
 				91077AEAEADD4FA6B829E6BF /* Pods */,
@@ -2832,6 +2864,7 @@
 				A6447A051B1DBE6500EA2CEE /* SealTalk WatchKit Extension.appex */,
 				A6447A141B1DBE6500EA2CEE /* SealTalk WatchKit App.app */,
 				17D7D1D81D534F56000AEC54 /* SealTalkShareExtension.appex */,
+				A27AD729265C96C0008D35F7 /* SealTalkNotificationService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2895,6 +2928,23 @@
 			productReference = 17D7D1D81D534F56000AEC54 /* SealTalkShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		A27AD728265C96C0008D35F7 /* SealTalkNotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A27AD743265C96C0008D35F7 /* Build configuration list for PBXNativeTarget "SealTalkNotificationService" */;
+			buildPhases = (
+				A27AD725265C96C0008D35F7 /* Sources */,
+				A27AD726265C96C0008D35F7 /* Frameworks */,
+				A27AD727265C96C0008D35F7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SealTalkNotificationService;
+			productName = SealTalkNotificationService;
+			productReference = A27AD729265C96C0008D35F7 /* SealTalkNotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		A6447A041B1DBE6500EA2CEE /* SealTalk WatchKit Extension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A6447A281B1DBE6500EA2CEE /* Build configuration list for PBXNativeTarget "SealTalk WatchKit Extension" */;
@@ -2948,6 +2998,7 @@
 			);
 			dependencies = (
 				17D7D1E21D534F56000AEC54 /* PBXTargetDependency */,
+				A27AD730265C96C0008D35F7 /* PBXTargetDependency */,
 			);
 			name = SealTalk;
 			productName = RongCloud;
@@ -2973,6 +3024,10 @@
 								enabled = 1;
 							};
 						};
+					};
+					A27AD728265C96C0008D35F7 = {
+						CreatedOnToolsVersion = 12.4;
+						ProvisioningStyle = Automatic;
 					};
 					A6447A041B1DBE6500EA2CEE = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -3029,6 +3084,7 @@
 				A6447A041B1DBE6500EA2CEE /* SealTalk WatchKit Extension */,
 				A6447A131B1DBE6500EA2CEE /* SealTalk WatchKit App */,
 				17D7D1D71D534F56000AEC54 /* SealTalkShareExtension */,
+				A27AD728265C96C0008D35F7 /* SealTalkNotificationService */,
 			);
 		};
 /* End PBXProject section */
@@ -3122,6 +3178,13 @@
 				A28C439622E95818005BA7A0 /* SealTalk.strings in Resources */,
 				A28C439422E95818005BA7A0 /* InfoPlist.strings in Resources */,
 				17D7D1DF1D534F56000AEC54 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A27AD727265C96C0008D35F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3238,6 +3301,14 @@
 				17D7D1DC1D534F56000AEC54 /* RCDShareViewController.m in Sources */,
 				17D7D1EF1D534FCD000AEC54 /* RCDShareChatListController.m in Sources */,
 				17D7D1F01D534FCD000AEC54 /* RCDShareChatListCell.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A27AD725265C96C0008D35F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A27AD72D265C96C0008D35F7 /* NotificationService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3542,6 +3613,11 @@
 			target = 17D7D1D71D534F56000AEC54 /* SealTalkShareExtension */;
 			targetProxy = 17D7D1E11D534F56000AEC54 /* PBXContainerItemProxy */;
 		};
+		A27AD730265C96C0008D35F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A27AD728265C96C0008D35F7 /* SealTalkNotificationService */;
+			targetProxy = A27AD72F265C96C0008D35F7 /* PBXContainerItemProxy */;
+		};
 		A6447A171B1DBE6500EA2CEE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A6447A131B1DBE6500EA2CEE /* SealTalk WatchKit App */;
@@ -3718,6 +3794,183 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = $SHARE_PROFILE;
 				SKIP_INSTALL = YES;
+			};
+			name = AutoRelease;
+		};
+		A27AD732265C96C0008D35F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework/RongIMLibCore",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SealTalkNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.notificationservice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A27AD733265C96C0008D35F7 /* AutoDebug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework/RongIMLibCore",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SealTalkNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.notificationservice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = AutoDebug;
+		};
+		A27AD734265C96C0008D35F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework/RongIMLibCore",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SealTalkNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.notificationservice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A27AD735265C96C0008D35F7 /* AutoRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework/RongIMLibCore",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SealTalkNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.notificationservice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = AutoRelease;
 		};
@@ -4380,6 +4633,17 @@
 				17D7D1E51D534F56000AEC54 /* AutoDebug */,
 				17D7D1E61D534F56000AEC54 /* Release */,
 				17D7D1E71D534F56000AEC54 /* AutoRelease */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A27AD743265C96C0008D35F7 /* Build configuration list for PBXNativeTarget "SealTalkNotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A27AD732265C96C0008D35F7 /* Debug */,
+				A27AD733265C96C0008D35F7 /* AutoDebug */,
+				A27AD734265C96C0008D35F7 /* Release */,
+				A27AD735265C96C0008D35F7 /* AutoRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
