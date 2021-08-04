@@ -16,4 +16,7 @@
 //验证电子邮箱
 + (BOOL)validateEmail:(NSString *)email;
 
+//验证密码
++ (BOOL)validatePassword:(NSString *)password;
+
 @end

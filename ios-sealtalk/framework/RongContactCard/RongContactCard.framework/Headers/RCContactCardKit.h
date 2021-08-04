@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RongIMLib/RongIMLib.h>
+#import <RongIMKit/RongIMKit.h>
 #import "RCCCGroupInfo.h"
 #import "RCCCUserInfo.h"
 

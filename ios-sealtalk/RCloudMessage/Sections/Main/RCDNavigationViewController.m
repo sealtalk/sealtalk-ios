@@ -28,12 +28,12 @@
     }
 }
 
-- (BOOL)shouldAutorotate{
-    return NO;
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskPortrait;
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    //去掉导航下的线
+    UIView *backgroundView = [self.navigationBar subviews].firstObject;
+    UIImageView *navLine = backgroundView.subviews.firstObject;
+    navLine.hidden = YES;
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {

@@ -12,10 +12,15 @@
 
 @property (nonatomic, strong) UIButton *button;
 //初始化包含图片的
-+ (NSArray *)getLeftBarButton:(NSString *)title target:(id)target action:(SEL)method;
+- (RCDUIBarButtonItem *)initWithLeftBarButton:(NSString *)title target:(id)target action:(SEL)method;
 
 //初始化包含图片的UIBarButtonItem
 - (RCDUIBarButtonItem *)initContainImage:(UIImage *)buttonImage
+                          imageViewFrame:(CGRect)imageFrame
+                             buttonTitle:(NSString *)buttonTitle
+                              titleColor:(UIColor *)titleColor
+                              titleFrame:(CGRect)titleFrame
+                             buttonFrame:(CGRect)buttonFrame
                                   target:(id)target
                                   action:(SEL)method;
 

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <RongIMLib/RongIMLib.h>
+#import <RongIMKit/RongIMKit.h>
 
 @interface RCCCUserListViewController : UIViewController
 

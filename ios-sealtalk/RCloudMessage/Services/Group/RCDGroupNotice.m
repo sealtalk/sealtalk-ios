@@ -16,7 +16,7 @@
         self.targetId = json[@"receiver"][@"id"];
         self.noticeType = [json[@"type"] integerValue];
         self.status = [json[@"status"] integerValue];
-        self.createTime = [json[@"createdTime"] longLongValue];
+        self.createTime = [json[@"timestamp"] longLongValue];
     }
     return self;
 }

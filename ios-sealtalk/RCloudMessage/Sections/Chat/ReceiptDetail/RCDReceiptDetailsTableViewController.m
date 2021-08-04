@@ -8,21 +8,23 @@
 
 #import "RCDReceiptDetailsTableViewController.h"
 #import "RCDPersonDetailViewController.h"
-#import "RCDReceiptDetailsHeaderView.h"
+#import "RCDReceiptDetailsTableViewCell.h"
 #import "RCDUIBarButtonItem.h"
 #import "RCDDBManager.h"
 #import "RCDUserInfoManager.h"
 #import "UIColor+RCColor.h"
 #import <Masonry/Masonry.h>
+#import "RCDReceiptDetailHeader.h"
 #import "RCDUserListCollectionView.h"
 #import <RongIMKit/RongIMKit.h>
 #import "RCDGroupManager.h"
-#import "RCDGroupMemberCell.h"
-#define CellHeight 56
-@interface RCDReceiptDetailsTableViewController () <RCDReceiptDetailsHeaderViewDelegate>
+#define CellHeight 44
+@interface RCDReceiptDetailsTableViewController () <RCDReceiptDetailsCellDelegate, RCDReceiptDetailHeaderDelegate,
+                                                    RCDUserListCollectionViewDelegate>
 
-@property (nonatomic, strong) RCDReceiptDetailsHeaderView *headerView;
+@property (nonatomic, strong) RCDReceiptDetailHeader *headerMessageContentView;
 
+@property (nonatomic, strong) RCDUserListCollectionView *footerUserListView;
 @property (nonatomic, strong) NSArray *displayUserList;
 
 @property (nonatomic, strong) NSArray *hasReadUserList;
@@ -37,42 +39,53 @@
     [super viewDidLoad];
     [self setNaviItem];
     [self handleData];
-    self.tableView.tableHeaderView = self.headerView;
+    self.tableView.tableHeaderView = self.headerMessageContentView;
+    self.tableView.tableFooterView = self.footerUserListView;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.scrollEnabled = NO;
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.displayUserList.count;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return CellHeight;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 15;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RCDGroupMemberCell *cell = [RCDGroupMemberCell cellWithTableView:tableView];
-    [cell setDataModel:self.displayUserList[indexPath.row] groupId:self.message.targetId];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    RCDReceiptDetailsTableViewCell *cell = [RCDReceiptDetailsTableViewCell cellWithTableView:tableView];
+    cell.delegate = self;
+    cell.hasReadUsersCount = self.hasReadUserList.count;
+    cell.unreadUsersCount = self.unreadUserList.count;
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self didTipHeaderClicked:self.displayUserList[indexPath.row]];
-}
-
-#pragma mark - RCDReceiptDetailsHeaderViewDelegate
+#pragma mark - RCDReceiptDetailsCellDelegate
 - (void)clickHasReadButton {
-    self.displayUserList = self.hasReadUserList;
-    [self.tableView reloadData];
+    [self.footerUserListView reloadData:self.hasReadUserList];
 }
 
 - (void)clickUnreadButton {
-    self.displayUserList = self.unreadUserList;
-    [self.tableView reloadData];
+    [self.footerUserListView reloadData:self.unreadUserList];
 }
 
-#pragma mark - helper
+#pragma mark - RCDReceiptDetailHeaderDelegate
+- (void)receiptDetailHeaderDidUpdate:(BOOL)isClosed {
+    self.tableView.scrollEnabled = !isClosed;
+    self.tableView.tableHeaderView = self.headerMessageContentView;
+    CGRect rect = self.footerUserListView.frame;
+    rect.size.height = self.tableView.frame.size.height - self.headerMessageContentView.frame.size.height - CellHeight;
+    self.tableView.tableFooterView = self.footerUserListView;
+}
+
+#pragma mark - RCDUserListCollectionViewDelegate
 - (void)didTipHeaderClicked:(NSString *)userId {
     if (self.message.conversationType == ConversationType_GROUP) {
         UIViewController *vc = [RCDPersonDetailViewController configVC:userId groupId:self.message.targetId];
@@ -83,13 +96,17 @@
     }
 }
 
+#pragma mark - helper
 - (void)clickBackBtn {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)setNaviItem {
     self.navigationItem.title = RCDLocalizedString(@"Receipt_details");
-    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];;
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn)];
+    self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
 - (void)handleData {
@@ -100,8 +117,8 @@
         hasReadUserList = [self sortForHasReadList:readReceiptUserList];
     }
     self.hasReadUserList = hasReadUserList;
+    self.displayUserList = self.hasReadUserList;
     self.unreadUserList = [self getUnreadUserList];
-    self.displayUserList = self.unreadUserList;
     [self.tableView reloadData];
 }
 
@@ -130,13 +147,27 @@
     result = [sortedKeys copy];
     return result;
 }
-
 #pragma mark - getter & setter
-- (RCDReceiptDetailsHeaderView *)headerView{
-    if (!_headerView) {
-        _headerView = [[RCDReceiptDetailsHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44) hasReadCount:self.hasReadUserList.count unreadCount:self.unreadUserList.count];
-        _headerView.delegate = self;
+- (RCDReceiptDetailHeader *)headerMessageContentView {
+    if (!_headerMessageContentView) {
+        _headerMessageContentView = [[RCDReceiptDetailHeader alloc] initWithMessage:self.message];
+        _headerMessageContentView.delegate = self;
     }
-    return _headerView;
+    return _headerMessageContentView;
+}
+
+- (RCDUserListCollectionView *)footerUserListView {
+    if (!_footerUserListView) {
+        CGFloat height =
+            self.tableView.frame.size.height - self.headerMessageContentView.frame.size.height - CellHeight;
+        CGRect tempRect = CGRectMake(0, 0, RCDScreenWidth, height);
+        _footerUserListView = [[RCDUserListCollectionView alloc] initWithFrame:tempRect isAllowAdd:NO isAllowDelete:NO];
+        if (self.message.conversationType == ConversationType_GROUP) {
+            _footerUserListView.groupId = self.message.targetId;
+        }
+        _footerUserListView.userListCollectionViewDelegate = self;
+        [_footerUserListView reloadData:self.hasReadUserList];
+    }
+    return _footerUserListView;
 }
 @end

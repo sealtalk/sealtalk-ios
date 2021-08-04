@@ -11,11 +11,10 @@
 #import "RCDDebugChatRoomCell.h"
 #import <RongIMKit/RongIMKit.h>
 #import "RCDDebugAlertView.h"
-#import <RongChatRoom/RongChatRoom.h>
 
 static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier";
 
-@interface RCDDebugChatroomViewController () <UITableViewDelegate, UITableViewDataSource, RCChatRoomKVStatusChangeDelegate,RCChatRoomStatusDelegate>
+@interface RCDDebugChatroomViewController () <UITableViewDelegate, UITableViewDataSource, RCChatRoomKVStatusChangeDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
@@ -26,82 +25,116 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[RCChatRoomClient sharedChatRoomClient] setChatRoomStatusDelegate:self];
+
     [self setupData];
     [self setupNav];
     [self setupUI];
-    [self joinChatRoom];
 }
 
 - (void)dealloc {
-//    [[RCChatRoomClient sharedChatRoomClient] quitChatRoom:self.roomId
-//        success:^{
-//        }
-//        error:^(RCErrorCode status){
-//        }];
+    [[RCIMClient sharedRCIMClient] quitChatRoom:self.roomId
+        success:^{
+        }
+        error:^(RCErrorCode status){
+        }];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Target Action
 - (void)onBackButtonClick:(id)sender {
-//    [[RCChatRoomClient sharedChatRoomClient] quitChatRoom:self.roomId
-//        success:^{
-//            NSLog(@"退出聊天室成功");
-//        }
-//        error:^(RCErrorCode status) {
-//            NSLog(@"退出聊天室失败：%ld", (long)status);
-//        }];
+    [[RCIMClient sharedRCIMClient] quitChatRoom:self.roomId
+        success:^{
+            NSLog(@"退出聊天室成功");
+        }
+        error:^(RCErrorCode status) {
+            NSLog(@"退出聊天室失败：%ld", (long)status);
+        }];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController popViewControllerAnimated:YES];
     });
 }
 - (void)onRightButtonClick:(id)sender {
-    [RCActionSheetView showActionSheetView:nil cellArray:@[@"设置 Key(强制)", @"设置 Key(不强制)", @"删除 Key（强制）", @"删除 Key（不强制）", @"获取所有 Key", @"获取指定 Key"] cancelTitle:RCDLocalizedString(@"cancel") selectedBlock:^(NSInteger index) {
-        [self alertActionDidClickIndex:index];
-    } cancelBlock:^{
-            
-    }];
-}
+    UIAlertAction *setKVAction =
+        [UIAlertAction actionWithTitle:@"设置 Key(强制)"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   [self showAlertViewWithType:RCDDebugAlertViewTypeSet force:YES];
+                               }];
 
-- (void)alertActionDidClickIndex:(NSInteger)index{
-    if (index == 0) {
-        [self showAlertViewWithType:RCDDebugAlertViewTypeSet force:YES];
-    }else if (index == 1) {
-        [self showAlertViewWithType:RCDDebugAlertViewTypeSet force:NO];
-    }else if (index == 2) {
-        [self showAlertViewWithType:RCDDebugAlertViewTypeDelete force:YES];
-    }else if (index == 3) {
-        [self showAlertViewWithType:RCDDebugAlertViewTypeDelete force:NO];
-    }else if (index == 4) {
-        [self getAllChatroomKey];
-    }else if (index == 5) {
-        [self showAlertViewWithType:RCDDebugAlertViewTypeGet force:NO];
-    }
-}
+    UIAlertAction *setPrivateKVAction =
+        [UIAlertAction actionWithTitle:@"设置 Key(不强制)"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   [self showAlertViewWithType:RCDDebugAlertViewTypeSet force:NO];
+                               }];
 
-- (void)getAllChatroomKey{
-    [[RCChatRoomClient sharedChatRoomClient] getAllChatRoomEntries:self.roomId
-        success:^(NSDictionary *entry) {
-            NSString *jsonString = @"";
-            NSError *error = nil;
-            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:entry
-                                                               options:NSJSONWritingPrettyPrinted
-                                                                 error:&error];
-            if (error) {
-                jsonString = [entry description];
-            }
-            jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-            NSString *targetString =
-                [NSString stringWithFormat:@"获取所有 kv 成功：共 %lu 个，\n%@",
-                                           (unsigned long)entry.count, jsonString];
-            [self addStringToDataSource:targetString];
-        }
-        error:^(RCErrorCode nErrorCode) {
-            NSString *targetString =
-                [NSString stringWithFormat:@"获取所有 kv 失败：(%ld)%@", (long)nErrorCode,
-                                           [self errorCodeToString:nErrorCode]];
-            [self addStringToDataSource:targetString];
-        }];
+    UIAlertAction *deleteKVAction =
+        [UIAlertAction actionWithTitle:@"删除 Key（强制）"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   [self showAlertViewWithType:RCDDebugAlertViewTypeDelete force:YES];
+                               }];
+
+    UIAlertAction *deletePrivateKVAction =
+        [UIAlertAction actionWithTitle:@"删除 Key（不强制）"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   [self showAlertViewWithType:RCDDebugAlertViewTypeDelete force:NO];
+                               }];
+
+    UIAlertAction *getAllKVAction = [UIAlertAction
+        actionWithTitle:@"获取所有 Key"
+                  style:UIAlertActionStyleDefault
+                handler:^(UIAlertAction *_Nonnull action) {
+                    [[RCIMClient sharedRCIMClient] getAllChatRoomEntries:self.roomId
+                        success:^(NSDictionary *entry) {
+                            NSString *jsonString = @"";
+                            NSError *error = nil;
+                            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:entry
+                                                                               options:NSJSONWritingPrettyPrinted
+                                                                                 error:&error];
+                            if (error) {
+                                jsonString = [entry description];
+                            }
+                            jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                            NSString *targetString =
+                                [NSString stringWithFormat:@"获取所有 kv 成功：共 %lu 个，\n%@",
+                                                           (unsigned long)entry.count, jsonString];
+                            [self addStringToDataSource:targetString];
+                        }
+                        error:^(RCErrorCode nErrorCode) {
+                            NSString *targetString =
+                                [NSString stringWithFormat:@"获取所有 kv 失败：(%ld)%@", (long)nErrorCode,
+                                                           [self errorCodeToString:nErrorCode]];
+                            [self addStringToDataSource:targetString];
+                        }];
+                }];
+
+    UIAlertAction *getSpecifiedKVAction =
+        [UIAlertAction actionWithTitle:@"获取指定 Key"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *_Nonnull action) {
+                                   [self showAlertViewWithType:RCDDebugAlertViewTypeGet force:NO];
+                               }];
+
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *_Nonnull action){
+                                                         }];
+
+    [RCKitUtility showAlertController:nil
+                              message:nil
+                       preferredStyle:UIAlertControllerStyleActionSheet
+                              actions:@[
+                                  cancelAction,
+                                  setKVAction,
+                                  setPrivateKVAction,
+                                  deleteKVAction,
+                                  deletePrivateKVAction,
+                                  getAllKVAction,
+                                  getSpecifiedKVAction
+                              ]
+                     inViewController:self];
 }
 
 - (void)showAlertViewWithType:(RCDDebugAlertViewType)type force:(BOOL)isForce {
@@ -123,7 +156,7 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
 
         if (type == RCDDebugAlertViewTypeSet) {
             if (isForce) {
-                [[RCChatRoomClient sharedChatRoomClient] forceSetChatRoomEntry:chatroomId
+                [[RCIMClient sharedRCIMClient] forceSetChatRoomEntry:chatroomId
                     key:key
                     value:value
                     sendNotification:isNotice
@@ -144,7 +177,7 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
                         [self addStringToDataSource:targetString];
                     }];
             } else {
-                [[RCChatRoomClient sharedChatRoomClient] setChatRoomEntry:chatroomId
+                [[RCIMClient sharedRCIMClient] setChatRoomEntry:chatroomId
                     key:key
                     value:value
                     sendNotification:isNotice
@@ -166,7 +199,7 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
                     }];
             }
         } else if (type == RCDDebugAlertViewTypeGet) {
-            [[RCChatRoomClient sharedChatRoomClient] getChatRoomEntry:chatroomId
+            [[RCIMClient sharedRCIMClient] getChatRoomEntry:chatroomId
                 key:key
                 success:^(NSDictionary *entry) {
                     NSString *targetString = [NSString stringWithFormat:@"获取 kv 成功：\n%@=%@", key, entry[key]];
@@ -179,7 +212,7 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
                 }];
         } else {
             if (isForce) {
-                [[RCChatRoomClient sharedChatRoomClient] forceRemoveChatRoomEntry:chatroomId
+                [[RCIMClient sharedRCIMClient] forceRemoveChatRoomEntry:chatroomId
                     key:key
                     sendNotification:isNotice
                     notificationExtra:extra
@@ -196,7 +229,7 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
                         [self addStringToDataSource:targetString];
                     }];
             } else {
-                [[RCChatRoomClient sharedChatRoomClient] removeChatRoomEntry:chatroomId
+                [[RCIMClient sharedRCIMClient] removeChatRoomEntry:chatroomId
                     key:key
                     sendNotification:isNotice
                     notificationExtra:extra
@@ -223,7 +256,7 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
     if ([rcMessage.content isMemberOfClass:[RCChatroomKVNotificationMessage class]] &&
         [rcMessage.targetId isEqualToString:self.roomId]) {
         RCChatroomKVNotificationMessage *chatroomKVMessage = (RCChatroomKVNotificationMessage *)rcMessage.content;
-        NSString *timeString = [RCKitUtility convertConversationTime:rcMessage.sentTime / 1000];
+        NSString *timeString = [RCKitUtility ConvertMessageTime:rcMessage.sentTime / 1000];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *typeString = @"";
             if (chatroomKVMessage.type == RCChatroomKVNotificationTypeSet) {
@@ -241,41 +274,6 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
         });
     }
 }
-
-#pragma mark - RCChatRoomKVStatusChangeDelegate
-- (void)onChatRoomDestroyed:(NSString *)chatroomId type:(RCChatRoomDestroyType)type {
-    NSString *msg;
-    if (type == RCChatRoomDestroyTypeAuto) {
-        msg = @"聊天室长时间不活跃，被系统自动回收";
-    }else {
-        msg = @"开发者主动销毁";
-    }
-    [RCAlertView showAlertController:@"提示" message:[NSString stringWithFormat:@"聊天室：%@ 被销毁,类型:%@",chatroomId,msg] cancelTitle:@"取消"];
-}
-
-- (void)onChatRoomReset:(NSString *)chatroomId {
-    [RCAlertView showAlertController:@"提示" message:[NSString stringWithFormat:@"聊天室：%@ 重置加入",chatroomId] cancelTitle:@"取消"];
-}
-
-- (void)onChatRoomJoined:(NSString *)chatroomId {
-    [RCAlertView showAlertController:@"提示" message:[NSString stringWithFormat:@"聊天室：%@ 加入成功回调",chatroomId] cancelTitle:@"取消"];
-}
-
-- (void)joinChatRoom{
-    [[RCChatRoomClient sharedChatRoomClient] joinChatRoom:self.roomId
-                                             messageCount:20
-                                                  success:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-        });
-    }
-                                                    error:^(RCErrorCode status) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"debug 测试聊天室状态存储，加入聊天室失败：%ld", (long)status);
-        });
-    }];
-}
-
 
 #pragma mark - RCChatRoomKVStatusChangeDelegate
 - (void)chatRoomKVDidSync:(NSString *)roomId {
@@ -328,9 +326,8 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
 
     [self addStringToDataSource:[NSString stringWithFormat:@"加入聊天室：%@", self.roomId]];
     
-    [[RCChatRoomClient sharedChatRoomClient] setRCChatRoomKVStatusChangeDelegate:self];
+    [[RCIMClient sharedRCIMClient] setRCChatRoomKVStatusChangeDelegate:self];
 }
-
 
 - (void)setupNav {
     UIBarButtonItem *leftBarItem = [[UIBarButtonItem alloc] initWithTitle:@"退出"
@@ -400,7 +397,7 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
 - (NSString *)currentDateStr {
     NSDate *currentDate = [NSDate date];
     NSTimeInterval time = [currentDate timeIntervalSince1970];
-    NSString *dateString = [RCKitUtility convertConversationTime:time];
+    NSString *dateString = [RCKitUtility ConvertMessageTime:time];
     return dateString;
 }
 

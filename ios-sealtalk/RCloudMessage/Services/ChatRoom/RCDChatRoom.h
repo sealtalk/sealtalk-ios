@@ -6,7 +6,7 @@
 //  Copyright © 2019 RongCloud. All rights reserved.
 //
 
-#import <RongChatRoom/RongChatRoom.h>
+#import <RongIMLib/RongIMLib.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

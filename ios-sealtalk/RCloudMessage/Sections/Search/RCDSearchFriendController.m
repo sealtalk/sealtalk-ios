@@ -74,7 +74,7 @@
     NSString *searchText = self.phoneTextField.textField.text;
     if ([searchText length] > 0) {
 
-        NSString *currentPhoneNumber = [DEFAULTS objectForKey:RCDPhoneKey];
+        NSString *currentPhoneNumber = [DEFAULTS objectForKey:RCDUserNameKey];
         NSString *currentSTAccount = [DEFAULTS objectForKey:RCDSealTalkNumberKey];
 
         if ([searchText isEqualToString:currentPhoneNumber] || [searchText isEqualToString:currentSTAccount]) {
@@ -120,7 +120,14 @@
 }
 
 - (void)showAlertWithMessage:(NSString *)message {
-    [RCAlertView showAlertController:nil message:message cancelTitle:RCDLocalizedString(@"confirm") inViewController:self];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)pushAddFriendVC:(RCDUserInfo *)user {
@@ -218,7 +225,7 @@
         _phoneTextField.textField.adjustsFontSizeToFitWidth = YES;
         _phoneTextField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _phoneTextField.textField.textAlignment = NSTextAlignmentLeft;
-        _phoneTextField.textField.placeholder = RCDLocalizedString(@"PhoneOrSTNumber");
+        _phoneTextField.textField.placeholder = RCDLocalizedString(@"PhoneOrSealTalkNumber");
     }
     return _phoneTextField;
 }

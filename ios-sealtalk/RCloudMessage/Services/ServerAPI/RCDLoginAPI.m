@@ -10,29 +10,35 @@
 #import "RCDHTTPUtility.h"
 
 @implementation RCDLoginAPI
+
 + (void)loginWithPhone:(NSString *)phone
-      verificationCode:(NSString *)verificationCode
+              password:(NSString *)password
                 region:(NSString *)region
-               success:(void (^)(NSString *token, NSString *userId, NSString *nickName))successBlock
-                 error:(void (^)(RCDLoginErrorCode errorCode))errorBlock{
-    NSDictionary *params = @{ @"region" : region, @"phone" : phone, @"code" : verificationCode };
+               success:(void (^)(NSString *_Nonnull, NSString *_Nonnull))successBlock
+                 error:(void (^)(RCDLoginErrorCode))errorBlock {
+    NSDictionary *params = @{ @"region" : region, @"phone" : phone, @"password" : password };
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
-                                URLString:@"user/verify_code_register"
+                                URLString:@"user/login"
                                parameters:params
                                  response:^(RCDHTTPResult *_Nonnull result) {
-        if (result.success) {
-            if (successBlock) {
-                NSString *token = result.content[@"token"];
-                NSString *userId = result.content[@"id"];
-                NSString *nickName = result.content[@"nickName"];
-                successBlock(token, userId, nickName);
-            }
-        } else {
-            if (errorBlock) {
-                errorBlock(result.errorCode);
-            }
-        }
-    }];
+                                     if (result.success) {
+                                         if (successBlock) {
+                                             NSString *token = result.content[@"token"];
+                                             NSString *userId = result.content[@"id"];
+                                             successBlock(token, userId);
+                                         }
+                                     } else {
+                                         if (errorBlock) {
+                                             if (result.httpCode == 400 || result.errorCode == 1000) {
+                                                 errorBlock(RCDLoginErrorCodeUserNotRegistered);
+                                             } else if (result.errorCode == 1001) {
+                                                 errorBlock(RCDLoginErrorCodeWrongPassword);
+                                             } else {
+                                                 errorBlock(RCDLoginErrorCodeUnknown);
+                                             }
+                                         }
+                                     }
+                                 }];
 }
 
 + (void)logout:(void (^)(BOOL))completeBlock {
@@ -81,6 +87,21 @@
                      }];
 }
 
++ (void)checkPhoneNumberAvailable:(NSString *)phoneCode
+                      phoneNumber:(NSString *)phoneNumber
+                         complete:(void (^)(BOOL, BOOL))completeBlock {
+    NSDictionary *params = @{ @"region" : phoneCode, @"phone" : phoneNumber };
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"user/check_phone_available"
+                               parameters:params
+                                 response:^(RCDHTTPResult *result) {
+                                     BOOL numberAvailable = [(NSNumber *)result.content boolValue];
+                                     if (completeBlock) {
+                                         completeBlock(result.success, numberAvailable);
+                                     }
+                                 }];
+}
+
 + (void)getVerificationCode:(NSString *)phoneCode
                 phoneNumber:(NSString *)phoneNumber
                     success:(void (^)(BOOL))successBlock
@@ -90,14 +111,17 @@
                                 URLString:@"user/send_code_yp"
                                parameters:params
                                  response:^(RCDHTTPResult *result) {
+
                                      if (result.success) {
                                          if (successBlock) {
                                              successBlock(YES);
                                          }
                                      } else {
                                          NSString *errorMsg = result.content[@"msg"];
-                                         if (errorBlock) {
-                                             errorBlock(result.errorCode, errorMsg);
+                                         if (result.errorCode == 3102) {
+                                             errorBlock(RCDLoginErrorCodeParameterError, errorMsg);
+                                         } else {
+                                             errorBlock(RCDLoginErrorCodeUnknown, errorMsg);
                                          }
                                      }
                                  }];
@@ -120,8 +144,57 @@
                                          }
                                      } else {
                                          if (errorBlock) {
-                                             errorBlock(result.errorCode);
+                                             if (result.errorCode == 1000) { // verification_code_error
+                                                 errorBlock(RCDLoginErrorCodeWrongPassword);
+                                             } else if (result.errorCode == 2000) {
+                                                 errorBlock(RCDLoginErrorCodeVerificationCodeExpired);
+                                             } else {
+                                                 errorBlock(RCDLoginErrorCodeUnknown);
+                                             }
                                          }
+                                     }
+                                 }];
+}
+
++ (void)registerWithNickname:(NSString *)nickname
+                    password:(NSString *)password
+            verficationToken:(NSString *)verficationToken
+                    complete:(void (^)(BOOL success))completeBlock {
+    NSDictionary *params =
+        @{ @"nickname" : nickname,
+           @"password" : password,
+           @"verification_token" : verficationToken };
+
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"user/register"
+                               parameters:params
+                                 response:^(RCDHTTPResult *result) {
+                                     if (completeBlock) {
+                                         completeBlock(result.success);
+                                     }
+                                 }];
+}
+
++ (void)changePassword:(NSString *)oldPwd newPwd:(NSString *)newPwd complete:(void (^)(BOOL))completeBlock {
+    NSDictionary *params = @{ @"oldPassword" : oldPwd, @"newPassword" : newPwd };
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"user/change_password"
+                               parameters:params
+                                 response:^(RCDHTTPResult *result) {
+                                     if (completeBlock) {
+                                         completeBlock(result.success);
+                                     }
+                                 }];
+}
+
++ (void)resetPassword:(NSString *)password vToken:(NSString *)verificationToken complete:(void (^)(BOOL))completeBlock {
+    NSDictionary *params = @{ @"password" : password, @"verification_token" : verificationToken };
+    [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodPost
+                                URLString:@"user/reset_password"
+                               parameters:params
+                                 response:^(RCDHTTPResult *result) {
+                                     if (completeBlock) {
+                                         completeBlock(result.success);
                                      }
                                  }];
 }

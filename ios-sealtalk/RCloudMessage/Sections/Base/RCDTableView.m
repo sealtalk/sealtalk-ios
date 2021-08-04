@@ -12,10 +12,8 @@
 - (instancetype)init {
     if (self = [super init]) {
         self.tableFooterView = [UIView new];
-        self.backgroundColor = RCDDYCOLOR(0xf5f6f9, 0x000000);
-        self.separatorColor = RCDDYCOLOR(0xE3E5E6, 0x272727);
-        self.separatorInset = UIEdgeInsetsMake(0, 59, 0, 0);
-
+        self.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+        self.separatorColor = RCDDYCOLOR(0xdfdfdf, 0x1a1a1a);
     }
     return self;
 }
@@ -23,9 +21,8 @@
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     if (self = [super initWithFrame:frame style:style]) {
         self.tableFooterView = [UIView new];
-        self.backgroundColor = RCDDYCOLOR(0xf5f6f9, 0x000000);
-        self.separatorColor = RCDDYCOLOR(0xE3E5E6, 0x272727);
-        self.separatorInset = UIEdgeInsetsMake(0, 59, 0, 0);
+        self.backgroundColor = RCDDYCOLOR(0xf0f0f6, 0x000000);
+        self.separatorColor = RCDDYCOLOR(0xdfdfdf, 0x1a1a1a);
     }
     return self;
 }

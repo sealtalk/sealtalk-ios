@@ -8,6 +8,7 @@
 
 #import "RCDSettingsTableViewController.h"
 #import "RCDBaseSettingTableViewCell.h"
+#import "RCDChangePasswordViewController.h"
 #import "RCDLoginViewController.h"
 #import "RCDMessageNotifySettingTableViewController.h"
 #import "RCDPrivacyTableViewController.h"
@@ -45,7 +46,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSUInteger row = 0;
     if (0 == section) {
-        row = 3;
+        row = 4;
     } else if (1 == section) {
         row = 3;
     } else if (2 == section) {
@@ -69,10 +70,12 @@
     NSString *text = @"";
     if (0 == indexPath.section) {
         if (0 == indexPath.row) {
-            text = RCDLocalizedString(@"SecurityAndprivacy");
+            text = RCDLocalizedString(@"change_password");
         } else if (1 == indexPath.row) {
-            text = RCDLocalizedString(@"new_message_notification");
+            text = RCDLocalizedString(@"SecurityAndprivacy");
         } else if (2 == indexPath.row) {
+            text = RCDLocalizedString(@"new_message_notification");
+        } else if (3 == indexPath.row) {
             text = RCDLocalizedString(@"push_setting");
         }
     } else {
@@ -93,12 +96,15 @@
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (0 == indexPath.section) {
         if (0 == indexPath.row) {
-            RCDPrivacyTableViewController *vc = [[RCDPrivacyTableViewController alloc] init];
+            RCDChangePasswordViewController *vc = [[RCDChangePasswordViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         } else if (1 == indexPath.row) {
-            RCDMessageNotifySettingTableViewController *vc = [[RCDMessageNotifySettingTableViewController alloc] init];
+            RCDPrivacyTableViewController *vc = [[RCDPrivacyTableViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         } else if (2 == indexPath.row) {
+            RCDMessageNotifySettingTableViewController *vc = [[RCDMessageNotifySettingTableViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if (3 == indexPath.row) {
             RCDPushSettingViewController *vc = [[RCDPushSettingViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         }
@@ -187,13 +193,24 @@
    cancelBtnTitle:(NSString *)cBtnTitle
     otherBtnTitle:(NSString *)oBtnTitle
               tag:(int)tag {
-    [RCAlertView showAlertController:nil message:message actionTitles:nil cancelTitle:cBtnTitle confirmTitle:oBtnTitle preferredStyle:(UIAlertControllerStyleAlert) actionsBlock:nil cancelBlock:nil confirmBlock:^{
-        if (tag == 1010) {
-            [self logout];
-        } else if (tag == 1011) {
-            [self clearCache];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cBtnTitle style:UIAlertActionStyleDefault handler:nil]];
+        if (oBtnTitle) {
+            [alertController addAction:[UIAlertAction actionWithTitle:oBtnTitle
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *_Nonnull action) {
+                                                                  if (tag == 1010) {
+                                                                      [self logout];
+                                                                  } else if (tag == 1011) {
+                                                                      [self clearCache];
+                                                                  }
+                                                              }]];
         }
-    } inViewController:self];
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (void)clickBackBtn:(id)sender {
@@ -234,7 +251,10 @@
 - (void)initUI {
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     self.navigationItem.title = RCDLocalizedString(@"account_setting");
-    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn:)];
+    RCDUIBarButtonItem *leftBtn = [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"me")
+                                                                             target:self
+                                                                             action:@selector(clickBackBtn:)];
+    self.navigationItem.leftBarButtonItem = leftBtn;
 }
 
 @end

@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>method</key>
-	<string>enterprise</string>
-	<key>teamID</key>
-	<string>9CVMN4UZK4</string>
-	<key>provisioningProfiles</key>
-	<dict>
-		<key>cn.rongcloud.im</key>
-		<string>RongCloud IM</string>
-		<key>cn.rongcloud.im.notificationservice</key>
-		<string>cn.rongcloud.im.notificationservice.distribution</string>
-		<key>cn.rongcloud.im.shareextension</key>
-		<string>cn.rongcloud.im.shareextension.distribution</string>
-	</dict>
-	<key>signingCertificate</key>
-	<string>Apple Distribution</string>
-</dict>
+    <dict>
+    	<key>method</key>
+    	<string>enterprise</string>
+    	<key>teamID</key>
+    	<string>9CVMN4UZK4</string>
+    </dict>
 </plist>

@@ -129,7 +129,7 @@
         getContactsInfo:phoneNumberList
                complete:^(NSArray *contactsList) {
                    NSMutableArray *contacstList = [NSMutableArray array];
-                   NSString *currentPhone = [DEFAULTS stringForKey:RCDPhoneKey];
+                   NSString *currentPhone = [DEFAULTS stringForKey:RCDUserNameKey];
                    for (NSDictionary *userJson in contactsList) {
                        if ([userJson[@"registered"] boolValue] && ![userJson[@"phone"] isEqualToString:currentPhone]) {
                            RCDContactsInfo *contactsInfo = [[RCDContactsInfo alloc] init];

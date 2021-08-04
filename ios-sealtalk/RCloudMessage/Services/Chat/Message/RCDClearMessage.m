@@ -22,7 +22,6 @@
     NSDictionary *dict = [[NSDictionary alloc] initWithDictionary:dictionary];
     if (!__error && dict) {
         self.clearTime = [[dict objectForKey:@"clearTime"] longLongValue];
-        self.extra = [dict objectForKey:@"extra"];
     }
 }
 

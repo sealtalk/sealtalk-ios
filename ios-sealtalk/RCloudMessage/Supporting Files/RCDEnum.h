@@ -10,10 +10,10 @@
 #define RCDEnum_h
 
 typedef NS_ENUM(NSInteger, RCDLoginErrorCode) {
+    RCDLoginErrorCodeWrongPassword,
+    RCDLoginErrorCodeUserNotRegistered,
     RCDLoginErrorCodeVerificationCodeExpired = 2000,
     RCDLoginErrorCodeParameterError = 3102,
-    RCDLoginErrorCodeVerificationCodeError = 1000,
-    RCDLoginErrorCodeVerificationCodeFrequencyTransfinite = 5000,
     RCDLoginErrorCodeUnknown
 };
 

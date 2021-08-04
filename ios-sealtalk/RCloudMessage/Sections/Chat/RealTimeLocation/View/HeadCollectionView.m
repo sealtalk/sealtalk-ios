@@ -54,16 +54,8 @@
 }
 
 - (void)layoutSubviews {
-    if ([RTLUtilities isRTL]) {
-        self.quitButton.frame = CGRectMake(self.bounds.size.width - 12 - 24, [RCKitUtility getWindowSafeAreaInsets].top+10, 24, 24);
-        self.backButton.frame = CGRectMake(8, [RCKitUtility getWindowSafeAreaInsets].top+10, 26, 26);
-    } else {
-        self.backButton.frame = CGRectMake(self.bounds.size.width - 12 - 24, [RCKitUtility getWindowSafeAreaInsets].top+10, 24, 24);
-        self.quitButton.frame = CGRectMake(8, [RCKitUtility getWindowSafeAreaInsets].top+10, 26, 26);
-    }
-//    self.tipLabel.frame = CGRectMake(0, 24 + self.headViewSize + 12, self.headViewRect.size.width, 13);
-    self.tipLabel.frame = CGRectMake(self.headViewRect.origin.x, CGRectGetMaxY(self.headViewRect) + 10,
-    self.headViewRect.size.width, 15);
+    self.backButton.frame = CGRectMake(self.bounds.size.width - 8 - 26, 41.5, 26, 26);
+    self.tipLabel.frame = CGRectMake(0, 24 + self.headViewSize + 12, self.headViewRect.size.width, 13);
     CGPoint tipLabelCenter = self.tipLabel.center;
     tipLabelCenter.x = self.center.x;
     self.tipLabel.center = tipLabelCenter;
@@ -210,7 +202,7 @@
         CGFloat scrollViewWidth = [self getScrollViewWidth];
         UIImageView *userHead = [[UIImageView alloc] init];
         [RTLUtilities setImageWithURL:[NSURL URLWithString:user.portraitUri]
-                     placeholderImage:RCResourceImage(@"default_portrait_msg")
+                     placeholderImage:[RCKitUtility imageNamed:@"default_portrait_msg" ofBundle:@"RongCloud.bundle"]
                             imageView:userHead];
         [userHead setFrame:CGRectMake(scrollViewWidth - self.headViewSize, 0, self.headViewSize, self.headViewSize)];
 
@@ -279,6 +271,22 @@
     }
 }
 
+//- (UIImage *)getHeadImage:(RCUserInfo *)user {
+////    if (user.portraitUri) {
+////        NSData *data = [NSData dataWithContentsOfURL:[NSURL
+/// URLWithString:user.portraitUri]];
+////        if (data) {
+////            return [UIImage imageWithData:data];
+////        } else {
+////            return [self imageNamed:@"default_portrait_msg"
+/// ofBundle:@"RongCloud.bundle"];
+////        }
+////    } else {
+//        return [self imageNamed:@"default_portrait_msg"
+//        ofBundle:@"RongCloud.bundle"];
+//    //}
+//}
+
 // copy from IMKit because of none head view interface
 - (UIImage *)imageNamed:(NSString *)name ofBundle:(NSString *)bundleName {
     UIImage *image = nil;
@@ -295,33 +303,28 @@
 - (void)setupSubviews {
     self.headsView = [[NSMutableArray alloc] init];
     self.rcUserInfos = [[NSMutableArray alloc] init];
-    [self setBackgroundColor:[HEXCOLOR(0x000000) colorWithAlphaComponent:0.6]];
-    self.headViewSize = 34;
+    [self setBackgroundColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5]];
+    self.headViewSize = 42;
     self.headViewSpace = 8;
-    self.headViewRect = CGRectMake(8 + 26 + 8, [RCKitUtility getWindowSafeAreaInsets].top+10 , self.frame.size.width - (8 + 26 + 8) * 2, self.headViewSize);
+    self.headViewRect = CGRectMake(8 + 26 + 8, 24 + 8, self.frame.size.width - (8 + 26 + 8) * 2, self.headViewSize);
 
-    UIButton *quitButton = [[UIButton alloc] initWithFrame:CGRectMake(12, [RCKitUtility getWindowSafeAreaInsets].top+10, 24, 24)];
+    UIButton *quitButton = [[UIButton alloc] initWithFrame:CGRectMake(8, 41.5, 26, 26)];
     [quitButton setImage:[UIImage imageNamed:@"quit_location_share"] forState:UIControlStateNormal];
     [quitButton addTarget:self action:@selector(onQuitButtonPressed:) forControlEvents:UIControlEventTouchDown];
-    self.quitButton = quitButton;
     [self addSubview:quitButton];
 
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.headViewRect];
     self.scrollView.showsHorizontalScrollIndicator = NO;
     [self addSubview:self.scrollView];
 
-    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(self.bounds.size.width - 12 - 24, [RCKitUtility getWindowSafeAreaInsets].top+10, 24, 24)];
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(self.bounds.size.width - 8 - 26, 41.5, 26, 26)];
     [backButton setImage:[UIImage imageNamed:@"back_to_conversation"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(onBackButtonPressed:) forControlEvents:UIControlEventTouchDown];
     [self addSubview:backButton];
     self.backButton = backButton;
-    if ([RTLUtilities isRTL]) {
-        self.quitButton.frame = CGRectMake(self.bounds.size.width - 8 - 26, [RCKitUtility getWindowSafeAreaInsets].top+10, 26, 26);
-        self.backButton.frame = CGRectMake(8, [RCKitUtility getWindowSafeAreaInsets].top+10, 26, 26);
-    }
 
-    self.tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.headViewRect.origin.x, CGRectGetMaxY(self.headViewRect) + 10,
-                                                              self.headViewRect.size.width, 15)];
+    self.tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.headViewRect.origin.x, 20 + self.headViewSize + 12,
+                                                              self.headViewRect.size.width, 13)];
     self.tipLabel.textAlignment = NSTextAlignmentCenter;
     self.tipLabel.font = [UIFont boldSystemFontOfSize:13];
     [self showUserShareInfo];

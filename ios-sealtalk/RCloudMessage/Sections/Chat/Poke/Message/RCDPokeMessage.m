@@ -18,9 +18,6 @@
 - (NSData *)encode {
     NSMutableDictionary *dataDict = [NSMutableDictionary dictionary];
     [dataDict setObject:self.content forKey:@"content"];
-    if (self.extra) {
-        [dataDict setObject:self.extra forKey:@"extra"];
-    }
     NSData *data = [NSJSONSerialization dataWithJSONObject:dataDict options:kNilOptions error:nil];
     return data;
 }
@@ -32,7 +29,6 @@
         NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
         if (dictionary) {
             self.content = dictionary[@"content"];
-            self.extra = dictionary[@"extra"];
         }
     }
 }

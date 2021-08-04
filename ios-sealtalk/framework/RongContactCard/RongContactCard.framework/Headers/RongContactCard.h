@@ -15,7 +15,7 @@ FOUNDATION_EXPORT const unsigned char RongContactCardVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import
 // <RongContactCard/PublicHeader.h>
-#if __has_include(<RongContactCard/RCContactCardKit.h>)
+
 //名片消息核心类
 #import <RongContactCard/RCContactCardKit.h>
 
@@ -32,24 +32,3 @@ FOUNDATION_EXPORT const unsigned char RongContactCardVersionString[];
 
 //名片消息中的群组信息对象
 #import <RongContactCard/RCCCGroupInfo.h>
-
-#else
-
-//名片消息核心类
-#import "RCContactCardKit.h"
-
-//名片消息和cell
-#import "RCContactCardMessage.h"
-#import "RCContactCardMessageCell.h"
-
-//名片消息相关界面
-#import "RCSendCardMessageView.h"
-#import "RCCCUserListViewController.h"
-
-//名片消息中的用户信息对象
-#import "RCCCUserInfo.h"
-
-//名片消息中的群组信息对象
-#import "RCCCGroupInfo.h"
-
-#endif

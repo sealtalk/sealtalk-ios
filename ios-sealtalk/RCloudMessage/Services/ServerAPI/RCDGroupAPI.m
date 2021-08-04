@@ -274,7 +274,7 @@
                                  }];
 }
 
-+ (void)getGroupNoticeList:(void (^)(BOOL success, NSArray<RCDGroupNotice *> *))complete {
++ (void)getGroupNoticeList:(void (^)(NSArray<RCDGroupNotice *> *))complete {
     [RCDHTTPUtility requestWithHTTPMethod:HTTPMethodGet
                                 URLString:@"group/notice_info"
                                parameters:nil
@@ -287,11 +287,11 @@
                                              [list addObject:notice];
                                          }
                                          if (complete) {
-                                             complete(result.success,list.copy);
+                                             complete(list.copy);
                                          }
                                      } else {
                                          if (complete) {
-                                             complete(result.success,nil);
+                                             complete(nil);
                                          }
                                      }
                                  }];

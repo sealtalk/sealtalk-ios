@@ -320,7 +320,10 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 }
 
 - (void)setupNavi {
-    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];;
+    self.navigationItem.leftBarButtonItem =
+        [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                   target:self
+                                                   action:@selector(clickBackBtn)];
     self.navigationController.navigationBar.translucent = NO;
     if (self.type == RCDContactSelectTypeDelete) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:RCDLocalizedString(@"Delete")

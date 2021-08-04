@@ -102,7 +102,10 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
 
 - (void)setupNavi {
     self.navigationItem.title = RCDLocalizedString(@"group");
-    self.navigationItem.leftBarButtonItems = [RCDUIBarButtonItem getLeftBarButton:RCDLocalizedString(@"back") target:self action:@selector(clickBackBtn)];;
+    self.navigationItem.leftBarButtonItem =
+        [[RCDUIBarButtonItem alloc] initWithLeftBarButton:RCDLocalizedString(@"back")
+                                                   target:self
+                                                   action:@selector(clickBackBtn)];
 }
 
 - (void)addObserver {

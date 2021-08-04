@@ -128,7 +128,7 @@
                                }
                                dispatch_async(dispatch_get_main_queue(), ^{
                                    UIAlertController *alertController =
-                                       [UIAlertController alertControllerWithTitle:@""
+                                       [UIAlertController alertControllerWithTitle:nil
                                                                            message:notify
                                                                     preferredStyle:UIAlertControllerStyleAlert];
                                    [self presentViewController:alertController animated:YES completion:nil];

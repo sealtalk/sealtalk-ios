@@ -208,7 +208,7 @@
         !self.groupInfo.memberProtection) {
         self.stAccountLabel.hidden = NO;
         self.stAccountLabel.text =
-            [NSString stringWithFormat:@"%@：%@", RCDLocalizedString(@"STNumber"), self.targetUserInfo.stAccount];
+            [NSString stringWithFormat:@"%@：%@", RCDLocalizedString(@"SealTalkNumber"), self.targetUserInfo.stAccount];
     } else {
         self.stAccountLabel.hidden = YES;
     }
@@ -273,7 +273,15 @@
 }
 
 - (void)showAlertViewWith:(NSString *)message {
-    [RCAlertView showAlertController:nil message:message cancelTitle:RCDLocalizedString(@"confirm") inViewController:self];
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"confirm")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *_Nonnull action) {
+                                                          [self.navigationController
+                                                              popToRootViewControllerAnimated:YES];
+                                                      }]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Target Action
@@ -323,8 +331,8 @@
 - (UIImageView *)portraitImgView {
     if (!_portraitImgView) {
         _portraitImgView = [[UIImageView alloc] init];
-        if (RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
-            RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
+        if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
+            [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
             _portraitImgView.layer.cornerRadius = 30.f;
         } else {
             _portraitImgView.layer.cornerRadius = 5.f;

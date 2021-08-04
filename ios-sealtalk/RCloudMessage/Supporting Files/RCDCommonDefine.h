@@ -9,7 +9,6 @@
 #ifndef RCloudMessage_RCDCommonDefine_h
 #define RCloudMessage_RCDCommonDefine_h
 
-
 #define RONGCLOUD_IM_APPKEY @"n19jmcy59f1q9" // online key
 #define SERVICE_ID @"service"
 #define DEMO_SERVER @"http://api-sealtalk.rongcloud.cn/"
@@ -17,12 +16,10 @@
 #define RONGCLOUD_FILE_SERVER @""
 #define RONGCLOUD_STATS_SERVER @""
 
-
 #define RCDGroupNoticeTargetId @"__group_apply__"
 #define RCDOpenQRCodeUrlNotification @"RCDOpenQRCodeUrlNotification"
 #define RCDQRCodeContentInfoUrl @"http://sealtalk.rongcloud.cn/download"
 
-#define RCDLoginCookieExpiredNotification @"RCDLoginCookieExpiredNotification"
 
 #define SealTalkLog(s, ...) NSLog((@"[SealTalkLog]%s [Line %d] " s), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 

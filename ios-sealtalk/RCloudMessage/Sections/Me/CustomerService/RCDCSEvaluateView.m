@@ -476,7 +476,13 @@
 }
 
 - (void)showAlertWarning:(NSString *)message {
-    [RCAlertView showAlertController:nil message:message cancelTitle:RCDLocalizedString(@"i_know_it")];
+    UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+    UIAlertController *alertController =
+        [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:RCDLocalizedString(@"i_know_it")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [rootVC presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)resignInputViewFirstResponder {

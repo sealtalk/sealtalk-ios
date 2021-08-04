@@ -110,7 +110,7 @@ static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
     if (!_confirmButton) {
         _confirmButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
         [_confirmButton setTitle:RCDLocalizedString(@"ConfirmBtnTitle") forState:UIControlStateNormal];
-        [_confirmButton setTitleColor:HEXCOLOR(0x111f2c) forState:UIControlStateNormal];
+        [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_confirmButton setTitleColor:[UIColor colorWithHexString:@"939393" alpha:1] forState:UIControlStateDisabled];
         [_confirmButton addTarget:self
                            action:@selector(confirmButtonEvent)

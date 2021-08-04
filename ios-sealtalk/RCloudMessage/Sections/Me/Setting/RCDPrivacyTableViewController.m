@@ -30,7 +30,7 @@
     self.sectionData = @[
         @[
            RCDLocalizedString(@"AllowSearchByMobile"),
-           RCDLocalizedString(@"AllowSearchBySTNum"),
+           RCDLocalizedString(@"AllowSearchBySealTalkNum"),
            RCDLocalizedString(@"AddFriendNeedAuth"),
            RCDLocalizedString(@"AllowAddGroup")
         ],
@@ -90,7 +90,7 @@
         if (self.userSettings) {
             cell.switchButton.on = self.userSettings.allowMobileSearch;
         }
-    } else if ([title isEqualToString:RCDLocalizedString(@"AllowSearchBySTNum")]) {
+    } else if ([title isEqualToString:RCDLocalizedString(@"AllowSearchBySealTalkNum")]) {
         [cell setCellStyle:SwitchStyle];
         cell.switchButton.tag = RCDSearchBySTAccountTag;
         if (self.userSettings) {

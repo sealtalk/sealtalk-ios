@@ -12,7 +12,8 @@
 #define RCDIMTokenKey @"userToken"
 #define RCDAppKeyKey @"appKey"
 #define RCDUserIdKey @"userId"
-#define RCDPhoneKey @"phoneNumber"
+#define RCDUserNameKey @"userName"
+#define RCDUserPasswordKey @"userPwd"
 #define RCDUserNickNameKey @"userNickName"
 #define RCDUserPortraitUriKey @"userPortraitUri"
 #define RCDSquareInfoListKey @"SquareInfoList"
@@ -45,5 +46,4 @@
 #define RCDChatBackgroundImageDataKey @"RCDChatBackgroundImageDataKey"
 #define RCDChatroomDefalutHistoryMessageCountKey @"ChatroomDefaultHistoryMessageCount"
 #define RCDGroupClearMessageKey @"RCDGroupClearMessageKey"
-#define RCDCurrentPushLauguageCodeKey @"RCDCurrentPushLauguageCodeKey"
 #endif /* RCDCommonString_h */

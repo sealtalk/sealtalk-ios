@@ -41,14 +41,10 @@ static AFHTTPSessionManager *manager;
                     URLString:(NSString *)URLString
                    parameters:(NSDictionary *)parameters
                      response:(void (^)(RCDHTTPResult *))responseBlock {
-    
     AFHTTPSessionManager *manager = [RCDHTTPUtility sharedHTTPManager];
     URLString = [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *url = [BASE_URL stringByAppendingPathComponent:URLString];
-    NSString *cookie = [DEFAULTS valueForKey:RCDUserCookiesKey];
-    if (cookie && cookie.length > 0) {
-        [manager.requestSerializer setValue:cookie forHTTPHeaderField:@"Cookie"];
-    }
+
     switch (method) {
     case HTTPMethodGet: {
         [manager GET:url
@@ -62,7 +58,7 @@ static AFHTTPSessionManager *manager;
             failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
                 NSLog(@"GET url is %@, error is %@", URLString, error.localizedDescription);
                 if (responseBlock) {
-                    responseBlock([[self class] httpFailureResult:task error:error]);
+                    responseBlock([[self class] httpFailureResult:task]);
                 }
             }];
         break;
@@ -79,7 +75,7 @@ static AFHTTPSessionManager *manager;
             failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
                 NSLog(@"HEAD url is %@, error is %@", URLString, error.localizedDescription);
                 if (responseBlock) {
-                    responseBlock([[self class] httpFailureResult:task error:error]);
+                    responseBlock([[self class] httpFailureResult:task]);
                 }
             }];
         break;
@@ -98,7 +94,7 @@ static AFHTTPSessionManager *manager;
             failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
                 NSLog(@"POST url is %@, error is %@", URLString, error.localizedDescription);
                 if (responseBlock) {
-                    responseBlock([[self class] httpFailureResult:task error:error]);
+                    responseBlock([[self class] httpFailureResult:task]);
                 }
             }];
         break;
@@ -115,7 +111,7 @@ static AFHTTPSessionManager *manager;
             failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
                 NSLog(@"PUT url is %@, error is %@", URLString, error.localizedDescription);
                 if (responseBlock) {
-                    responseBlock([[self class] httpFailureResult:task error:error]);
+                    responseBlock([[self class] httpFailureResult:task]);
                 }
             }];
         break;
@@ -132,7 +128,7 @@ static AFHTTPSessionManager *manager;
             failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
                 NSLog(@"DELETE url is %@, error is %@", URLString, error.localizedDescription);
                 if (responseBlock) {
-                    responseBlock([[self class] httpFailureResult:task error:error]);
+                    responseBlock([[self class] httpFailureResult:task]);
                 }
             }];
         break;
@@ -161,26 +157,11 @@ static AFHTTPSessionManager *manager;
     return result;
 }
 
-+ (RCDHTTPResult *)httpFailureResult:(NSURLSessionDataTask *)task error:(NSError *)error{
++ (RCDHTTPResult *)httpFailureResult:(NSURLSessionDataTask *)task {
     RCDHTTPResult *result = [[RCDHTTPResult alloc] init];
     result.success = NO;
     result.httpCode = ((NSHTTPURLResponse *)task.response).statusCode;
-    result.errorCode = result.httpCode;
     NSLog(@"%@, {%@}", task.currentRequest.URL, result);
-    //权限校验失败(未登录或登录凭证失效)
-    if (result.httpCode == 403) {
-        NSData *data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
-        if (data) {
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            if (dic && [dic isKindOfClass:[NSDictionary class]]) {
-                result.errorCode = [dic[@"code"] integerValue];
-                result.content = dic[@"msg"];
-                if (result.errorCode == 10000) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:RCDLoginCookieExpiredNotification object:nil];
-                }
-            }
-        }
-    }
     return result;
 }
 

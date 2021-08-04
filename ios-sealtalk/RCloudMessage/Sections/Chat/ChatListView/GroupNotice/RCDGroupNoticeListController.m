@@ -129,10 +129,7 @@
 - (void)getData {
     self.noticeList = [RCDGroupManager getGroupNoticeList];
     __weak typeof(self) weakSelf = self;
-    [RCDGroupManager getGroupNoticeListFromServer:^(BOOL success, NSArray<RCDGroupNotice *> *noticeList) {
-        if (!success) {
-            return;
-        }
+    [RCDGroupManager getGroupNoticeListFromServer:^(NSArray<RCDGroupNotice *> *noticeList) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.noticeList = noticeList;
             [weakSelf.tableView reloadData];
@@ -163,11 +160,18 @@
 }
 
 - (void)didTapRightNaviBar {
-    [RCActionSheetView showActionSheetView:nil cellArray:@[RCDLocalizedString(@"ClearGroupInviteListInfo")] cancelTitle:RCDLocalizedString(@"cancel") selectedBlock:^(NSInteger index) {
-        [self clearGroupNoticeList];
-        } cancelBlock:^{
-            
-        }];
+    UIAlertAction *cancelAction =
+        [UIAlertAction actionWithTitle:RCDLocalizedString(@"cancel") style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *clearAction = [UIAlertAction actionWithTitle:RCDLocalizedString(@"ClearGroupInviteListInfo")
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *_Nonnull action) {
+                                                            [self clearGroupNoticeList];
+                                                        }];
+    [RCKitUtility showAlertController:nil
+                              message:nil
+                       preferredStyle:UIAlertControllerStyleActionSheet
+                              actions:@[ cancelAction, clearAction ]
+                     inViewController:self];
 }
 
 - (void)clearGroupNoticeList {

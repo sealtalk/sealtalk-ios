@@ -34,12 +34,10 @@ CGFloat const MBPHUDShowTime = 2.0f;
 - (void)showHUDMessage:(NSString *)message {
     MBPHUD_EXECUTE({
         MBProgressHUD *HUD = [weakself instanceHUD];
-        HUD.bezelView.backgroundColor = [HEXCOLOR(0x000000) colorWithAlphaComponent:0.4];
         [[UIApplication sharedApplication].keyWindow addSubview:HUD];
         [[UIApplication sharedApplication].keyWindow bringSubviewToFront:HUD];
         HUD.mode = MBProgressHUDModeText;
         HUD.label.text = message;
-        HUD.label.textColor = HEXCOLOR(0xffffff);
         HUD.removeFromSuperViewOnHide = YES;
         [HUD showAnimated:YES];
         HUD.userInteractionEnabled = NO;

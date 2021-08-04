@@ -7,7 +7,7 @@
 //
 #import "RCDTextFieldValidate.h"
 #import <UIKit/UIKit.h>
-#import <RongIMKit/RCAlertView.h>
+
 @implementation RCDTextFieldValidate
 
 //验证手机号码
@@ -46,7 +46,30 @@
     return YES;
 }
 
+//验证密码
++ (BOOL)validatePassword:(NSString *)password {
+    if (password.length == 0) {
+        NSString *message = RCDLocalizedString(@"password_can_not_be_blank");
+        [self showAlertController:message cancelTitle:RCDLocalizedString(@"confirm")];
+        return NO;
+    }
+    NSRange _range = [password rangeOfString:@" "];
+    if (_range.location != NSNotFound) {
+        NSString *message = RCDLocalizedString(@"There_can_be_no_spaces_in_the_password");
+        [self showAlertController:message cancelTitle:RCDLocalizedString(@"confirm")];
+        return NO;
+    }
+    return YES;
+}
+
 + (void)showAlertController:(NSString *)message cancelTitle:(NSString *)cancelTitle {
-    [RCAlertView showAlertController:nil message:message cancelTitle:cancelTitle];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertController
+            addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:nil]];
+        [rootVC presentViewController:alertController animated:YES completion:nil];
+    });
 }
 @end

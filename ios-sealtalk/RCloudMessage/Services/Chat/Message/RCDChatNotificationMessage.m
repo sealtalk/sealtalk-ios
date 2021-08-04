@@ -30,7 +30,6 @@ NSString *const RCDChatNotificationCloseRegularClearNtf = @"closeRegularClear";
     if (!__error && dict) {
         self.operation = [dict objectForKey:@"operation"];
         self.operatorUserId = [dict objectForKey:@"operatorUserId"];
-        self.extra = dict[@"extra"];
     } else {
         self.rawJSONData = data;
     }
@@ -58,7 +57,7 @@ NSString *const RCDChatNotificationCloseRegularClearNtf = @"closeRegularClear";
     } else if ([self.operation isEqualToString:RCDChatNotificationCloseRegularClearNtf]) {
         content = [NSString stringWithFormat:RCDLocalizedString(@"CloseGroupMessageClear")];
     } else {
-        content = RCLocalizedString(@"unknown_message_cell_tip");
+        content = NSLocalizedStringFromTable(@"unknown_message_cell_tip", @"RongCloudKit", nil);
     }
     return content;
 }
@@ -68,7 +67,7 @@ NSString *const RCDChatNotificationCloseRegularClearNtf = @"closeRegularClear";
     for (NSString *userId in userIds) {
         NSString *name;
         if ([userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
-            name = RCLocalizedString(@"You");
+            name = NSLocalizedStringFromTable(@"You", @"RongCloudKit", nil);
         } else {
             RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
             if (friend && friend.displayName.length > 0) {
@@ -93,11 +92,11 @@ NSString *const RCDChatNotificationCloseRegularClearNtf = @"closeRegularClear";
         displayNames = [displayNames stringByAppendingString:name];
         if ([userIds indexOfObject:userId] >= 20 && userIds.count > 20) {
             displayNames =
-                [displayNames stringByAppendingString:RCLocalizedString(@"GroupEtc")];
+                [displayNames stringByAppendingString:NSLocalizedStringFromTable(@"GroupEtc", @"RongCloudKit", nil)];
             break;
         } else if (![userId isEqualToString:userIds[userIds.count - 1]]) {
             displayNames =
-                [displayNames stringByAppendingString:RCLocalizedString(@"punctuation")];
+                [displayNames stringByAppendingString:NSLocalizedStringFromTable(@"punctuation", @"RongCloudKit", nil)];
         }
     }
     return displayNames;
@@ -108,7 +107,7 @@ NSString *const RCDChatNotificationCloseRegularClearNtf = @"closeRegularClear";
     NSString *content;
     NSString *operationName = [RCDUserInfoManager getUserInfo:self.operatorUserId].name;
     if ([self.operatorUserId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
-        operationName = RCLocalizedString(@"You");
+        operationName = NSLocalizedStringFromTable(@"You", @"RongCloudKit", nil);
     } else {
         RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:self.operatorUserId];
         if (friend && friend.displayName.length > 0) {
@@ -129,7 +128,7 @@ NSString *const RCDChatNotificationCloseRegularClearNtf = @"closeRegularClear";
     } else if ([self.operation isEqualToString:RCDChatNotificationCloseRegularClearNtf]) {
         content = [NSString stringWithFormat:RCDLocalizedString(@"CloseGroupMessageClear")];
     } else {
-        content = RCLocalizedString(@"unknown_message_cell_tip");
+        content = NSLocalizedStringFromTable(@"unknown_message_cell_tip", @"RongCloudKit", nil);
     }
     return content;
 }

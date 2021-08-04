@@ -6,5 +6,4 @@
   Copyright © 2019 RongCloud. All rights reserved.
 */
 
-//替换系统获取通讯录权限的弹窗，通讯录加好友->邀请手机联系人
-"NSContactsUsageDescription"="请允许 SealTalk 获取您的通讯录，完成手机通讯录至服务器匹配朋友，SealTalk 不会保存您的通讯录";
+"NSContactsUsageDescription"="请允许SealTalk获取您的通讯录，完成手机通讯录至服务器匹配朋友，Sealtalk不会保存您的通讯录";

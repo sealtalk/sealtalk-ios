@@ -15,19 +15,24 @@ static NSString *const RongCloud = @"RongCloud";
 static NSString *const DBName = @"SealTalkDB";
 
 @implementation RCDLoginManager
+
 + (void)loginWithPhone:(NSString *)phone
-      verificationCode:(NSString *)verificationCode
+              password:(NSString *)password
                 region:(NSString *)region
-               success:(void (^)(NSString *token, NSString *userId, NSString *nickName))successBlock
-                 error:(void (^)(RCDLoginErrorCode errorCode))errorBlock{
-    [RCDLoginAPI loginWithPhone:phone verificationCode:verificationCode region:region success:^(NSString *token, NSString *userId, NSString *nickName) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self openDB:userId];
-        });
-        if (successBlock) {
-            successBlock(token, userId, nickName);
-        }
-    } error:errorBlock];
+               success:(void (^)(NSString *_Nonnull, NSString *_Nonnull))successBlock
+                 error:(void (^)(RCDLoginErrorCode))errorBlock {
+    [RCDLoginAPI loginWithPhone:phone
+                       password:password
+                         region:region
+                        success:^(NSString *_Nonnull token, NSString *_Nonnull userId) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [self openDB:userId];
+                            });
+                            if (successBlock) {
+                                successBlock(token, userId);
+                            }
+                        }
+                          error:errorBlock];
 }
 
 + (void)logout:(void (^)(BOOL))completeBlock {
@@ -80,6 +85,12 @@ static NSString *const DBName = @"SealTalkDB";
     }];
 }
 
++ (void)checkPhoneNumberAvailable:(NSString *)phoneCode
+                      phoneNumber:(NSString *)phoneNumber
+                         complete:(void (^)(BOOL, BOOL))completeBlock {
+    [RCDLoginAPI checkPhoneNumberAvailable:phoneCode phoneNumber:phoneNumber complete:completeBlock];
+}
+
 + (void)getVerificationCode:(NSString *)phoneCode
                 phoneNumber:(NSString *)phoneNumber
                     success:(void (^)(BOOL))successBlock
@@ -98,6 +109,24 @@ static NSString *const DBName = @"SealTalkDB";
                        verificationCode:verificationCode
                                 success:successBlock
                                   error:errorBlock];
+}
+
++ (void)registerWithNickname:(NSString *)nickname
+                    password:(NSString *)password
+            verficationToken:(NSString *)verficationToken
+                    complete:(void (^)(BOOL))completeBlock {
+    [RCDLoginAPI registerWithNickname:nickname
+                             password:password
+                     verficationToken:verficationToken
+                             complete:completeBlock];
+}
+
++ (void)changePassword:(NSString *)oldPwd newPwd:(NSString *)newPwd complete:(void (^)(BOOL))completeBlock {
+    [RCDLoginAPI changePassword:oldPwd newPwd:newPwd complete:completeBlock];
+}
+
++ (void)resetPassword:(NSString *)password vToken:(NSString *)verificationToken complete:(void (^)(BOOL))completeBlock {
+    [RCDLoginAPI resetPassword:password vToken:verificationToken complete:completeBlock];
 }
 
 + (void)getRegionlist:(void (^)(NSArray *_Nonnull))completeBlock {

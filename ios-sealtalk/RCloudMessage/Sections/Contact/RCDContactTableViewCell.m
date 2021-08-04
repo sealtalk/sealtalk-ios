@@ -62,8 +62,8 @@
     self.selectionStyle = UITableViewCellSelectionStyleDefault;
     self.selectedBackgroundView = [[UIView alloc] initWithFrame:self.frame];
     self.selectedBackgroundView.backgroundColor =
-        [RCDUtilities generateDynamicColor:HEXCOLOR(0xf1f1f1)
-                                 darkColor:[HEXCOLOR(0x242424) colorWithAlphaComponent:0.4]];
+        [RCDUtilities generateDynamicColor:HEXCOLOR(0xf5f5f5)
+                                 darkColor:[HEXCOLOR(0x1c1c1e) colorWithAlphaComponent:0.4]];
 
     [self.contentView addSubview:self.portraitView];
     [self.contentView addSubview:self.nicknameLabel];
@@ -73,7 +73,7 @@
     [self.portraitView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(14);
         make.centerY.equalTo(self.contentView);
-        make.width.height.offset(40);
+        make.width.height.offset(36);
     }];
 
     BOOL isDisplayID = [DEFAULTS boolForKey:RCDDisplayIDKey];
@@ -131,8 +131,8 @@
         _portraitView = [[UIImageView alloc] init];
         _portraitView.translatesAutoresizingMaskIntoConstraints = NO;
         _portraitView.contentMode = UIViewContentModeScaleAspectFill;
-        if (RCKitConfigCenter.ui.globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
-            RCKitConfigCenter.ui.globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
+        if ([RCIM sharedRCIM].globalConversationAvatarStyle == RC_USER_AVATAR_CYCLE &&
+            [RCIM sharedRCIM].globalMessageAvatarStyle == RC_USER_AVATAR_CYCLE) {
             _portraitView.layer.cornerRadius = 20.f;
         } else {
             _portraitView.layer.cornerRadius = 5.f;
@@ -146,8 +146,8 @@
     if (!_nicknameLabel) {
         _nicknameLabel = [[UILabel alloc] init];
         _nicknameLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _nicknameLabel.font = [UIFont systemFontOfSize:17.f];
-        _nicknameLabel.textColor = [RCKitUtility generateDynamicColor:HEXCOLOR(0x000000) darkColor:[HEXCOLOR(0xffffff) colorWithAlphaComponent:0.9]];
+        _nicknameLabel.font = [UIFont systemFontOfSize:15.f];
+        _nicknameLabel.textColor = RCDDYCOLOR(0x000000, 0x9f9f9f);
     }
     return _nicknameLabel;
 }
