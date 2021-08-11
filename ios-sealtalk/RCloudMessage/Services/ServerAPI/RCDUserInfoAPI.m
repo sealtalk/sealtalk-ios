@@ -57,6 +57,7 @@
                                          RCDFriendInfo *friendInfo = [[RCDFriendInfo alloc] init];
                                          friendInfo.userId = userId;
                                          friendInfo.displayName = result.content[@"displayName"];
+                                         friendInfo.alias = friendInfo.displayName;
                                          NSDictionary *userDic = result.content[@"user"];
                                          friendInfo.name = userDic[@"nickname"];
                                          friendInfo.portraitUri = userDic[@"portraitUri"];
@@ -222,6 +223,7 @@
                                              friendInfo.name = userDic[@"nickname"];
                                              friendInfo.portraitUri = userDic[@"portraitUri"];
                                              friendInfo.displayName = respFriend[@"displayName"];
+                                             friendInfo.alias = friendInfo.displayName;
                                              friendInfo.status = [respFriend[@"status"] integerValue];
                                              friendInfo.phoneNumber = userDic[@"phone"];
                                              friendInfo.stAccount = userDic[@"stAccount"];

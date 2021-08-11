@@ -63,7 +63,7 @@
 - (void)setModel:(RCDFriendInfo *)user {
     self.currentUserInfo = user;
     if (user) {
-        self.nameLabel.text = user.name;
+        self.nameLabel.text = [RCKitUtility getDisplayName:user];
         if ([user.portraitUri isEqualToString:@""]) {
             UIImage *portrait = [DefaultPortraitView portraitView:user.userId name:user.name];
             self.portraitImageView.image = portrait;

@@ -107,8 +107,9 @@
             [[RCIM sharedRCIM] refreshUserInfoCache:userInfo withUserId:userInfo.userId];
         } else {
             RCUserInfo *refreshUser = [[RCUserInfo alloc] initWithUserId:userInfo.userId
-                                                                    name:friendInfo.displayName
+                                                                    name:userInfo.name
                                                                 portrait:userInfo.portraitUri];
+            refreshUser.alias = friendInfo.displayName;
             [[RCIM sharedRCIM] refreshUserInfoCache:refreshUser withUserId:userInfo.userId];
         }
     }
@@ -204,6 +205,7 @@
                                      [[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:userId];
                                  }                                 
                              }
+                             friendInfo.alias = friendInfo.displayName;
                              if (completeBlock) {
                                  completeBlock(friendInfo);
                              }
@@ -370,7 +372,7 @@
     user.userId = friendInfo.userId;
     user.name = friendInfo.name;
     if (friendInfo.displayName.length > 0) {
-        user.name = friendInfo.displayName;
+        user.alias = friendInfo.displayName;
     }
     user.portraitUri = friendInfo.portraitUri;
     if (friendInfo.portraitUri.length <= 0) {

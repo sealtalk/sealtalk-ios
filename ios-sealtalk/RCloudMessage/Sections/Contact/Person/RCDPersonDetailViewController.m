@@ -375,13 +375,9 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
     chatVC.targetId = self.userId;
     NSString *title;
     if ([self isCurrentUser]) {
-        title = [RCIM sharedRCIM].currentUserInfo.name;
+        title = [RCKitUtility getDisplayName:[RCIM sharedRCIM].currentUserInfo];
     } else {
-        if (self.userInfo.displayName.length > 0) {
-            title = self.userInfo.displayName;
-        } else {
-            title = self.userInfo.name;
-        }
+        title = [RCKitUtility getDisplayName:self.userInfo];
     }
     chatVC.title = title;
     chatVC.needPopToRootView = YES;
@@ -547,9 +543,9 @@ typedef NS_ENUM(NSInteger, RCDFriendDescriptionType) {
                             rightTitle:RCDLocalizedString(@"confirm")];
         } else {
             self.operation = RCDPersonOperationDelete;
-            [self showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"DeleteFriendHindMessage"),
-                                                                  self.userInfo.name]
-                         highlightText:self.userInfo.name
+            NSString *displayName = [RCKitUtility getDisplayName:self.userInfo];
+            [self showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"DeleteFriendHindMessage"), displayName]
+                         highlightText:displayName
                              leftTitle:RCDLocalizedString(@"cancel")
                             rightTitle:RCDLocalizedString(@"Delete")];
         }

@@ -245,10 +245,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         [self sortAndRefreshWithList:self.allFriendArray];
     } else {
         for (RCDFriendInfo *userInfo in self.allFriendArray) {
-            NSString *name = userInfo.name;
-            if ([userInfo isMemberOfClass:[RCDFriendInfo class]] && userInfo.displayName.length > 0) {
-                name = userInfo.displayName;
-            }
+            NSString *name = [RCKitUtility getDisplayName:userInfo];
             // //忽略大小写去判断是否包含
             if ([name rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound ||
                 [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch]

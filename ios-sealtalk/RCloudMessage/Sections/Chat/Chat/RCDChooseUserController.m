@@ -152,9 +152,8 @@
         NSMutableArray *array = [NSMutableArray array];
         for (RCUserInfo *userInfo in self.allMembers) {
             RCUserInfo *user = [RCDUserInfoManager getUserInfo:userInfo.userId];
-            RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userInfo.userId];
             RCDGroupMember *member = [RCDGroupManager getGroupMember:userInfo.userId groupId:self.groupId];
-            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] ||
+            if ([user.name containsString:searchString] || [user.alias containsString:searchString] ||
                 [member.groupNickname containsString:searchString]) {
                 [array addObject:userInfo];
             }
@@ -203,7 +202,7 @@
         RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
         RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
         if (friend.displayName.length > 0) {
-            user.name = friend.displayName;
+            user.alias = friend.displayName;
         }
         [list addObject:user];
     }

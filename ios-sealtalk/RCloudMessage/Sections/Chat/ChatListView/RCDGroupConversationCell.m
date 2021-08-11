@@ -90,7 +90,7 @@
         [self getUserInfo:self.notice.operatorId
                  complete:^(RCDUserInfo *user) {
                      self.detailContentView.messageContentLabel.text =
-                         [NSString stringWithFormat:RCDLocalizedString(@"InviteYouJoinGroup"), user.name];
+                         [NSString stringWithFormat:RCDLocalizedString(@"InviteYouJoinGroup"), [RCKitUtility getDisplayName:user]];
                  }];
     }
 }
@@ -102,8 +102,8 @@
                                          complete:^(RCDUserInfo *userInfo) {
                                              dispatch_async(dispatch_get_main_queue(), ^{
                                                  RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
-                                                 if (friend && friend.displayName.length > 0) {
-                                                     userInfo.name = friend.displayName;
+                                                 if (friend && friend.alias.length > 0) {
+                                                     userInfo.alias = friend.alias;
                                                  }
                                                  completeBlock(userInfo);
                                              });
@@ -111,7 +111,7 @@
     } else {
         RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
         if (friend && friend.displayName.length > 0) {
-            user.name = friend.displayName;
+            user.alias = friend.displayName;
         }
         completeBlock(user);
     }

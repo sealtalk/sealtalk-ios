@@ -74,18 +74,14 @@
                                                      if (user == nil) {
                                                          return;
                                                      }
-                                                     [weakSelf setDataInfo:user.name portraitUri:user.portraitUri];
+                                                     [weakSelf setDataInfo:[RCKitUtility getDisplayName:user] portraitUri:user.portraitUri];
                                                      [weakSelf cacheUserInfo:user];
                                                  }];
             }
         }
     } else {
         RCDFriendInfo *user = (RCDFriendInfo *)model.extend;
-        if (user.displayName.length > 0) {
-            userName = user.displayName;
-        } else {
-            userName = user.name;
-        }
+        userName = [RCKitUtility getDisplayName:user];
         portraitUri = user.portraitUri;
     }
     [self setDataInfo:userName portraitUri:portraitUri];

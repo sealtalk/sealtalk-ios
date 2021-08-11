@@ -923,10 +923,12 @@ static int GROUP_MEMBER_DETAIL_TABLE_VERSION = 1;
     friendInfo.portraitUri = [resultSet stringForColumn:@"portrait_uri"];
     friendInfo.status = [resultSet intForColumn:@"status"];
     friendInfo.displayName = [resultSet stringForColumn:@"display_name"];
+    friendInfo.alias = [resultSet stringForColumn:@"display_name"];
     friendInfo.phoneNumber = [resultSet stringForColumn:@"phone_number"];
     friendInfo.updateDt = [resultSet longLongIntForColumn:@"update_dt"];
     friendInfo.stAccount = [resultSet stringForColumn:@"st_account"];
     friendInfo.gender = [resultSet stringForColumn:@"gender"];
+    friendInfo.alias = friendInfo.displayName;
     return friendInfo;
 }
 

@@ -56,7 +56,7 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
     });
 }
 - (void)onRightButtonClick:(id)sender {
-    [RCActionSheetView showActionSheetView:nil cellArray:@[@"设置 Key(强制)", @"设置 Key(不强制)", @"删除 Key（强制）", @"删除 Key（不强制）", @"获取所有 Key", @"获取指定 Key"] cancelTitle:RCDLocalizedString(@"cancel") selectedBlock:^(NSInteger index) {
+    [RCActionSheetView showActionSheetView:nil cellArray:@[@"设置 Key(强制)", @"设置 Key(不强制)", @"删除 Key（强制）", @"删除 Key（不强制）", @"获取所有 Key", @"获取指定 Key", @"批量设置 Key(强制)", @"批量设置 Key(不强制)", @"批量删除 Key(强制)", @"批量删除 Key(不强制)"] cancelTitle:RCDLocalizedString(@"cancel") selectedBlock:^(NSInteger index) {
         [self alertActionDidClickIndex:index];
     } cancelBlock:^{
             
@@ -66,16 +66,24 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
 - (void)alertActionDidClickIndex:(NSInteger)index{
     if (index == 0) {
         [self showAlertViewWithType:RCDDebugAlertViewTypeSet force:YES];
-    }else if (index == 1) {
+    } else if (index == 1) {
         [self showAlertViewWithType:RCDDebugAlertViewTypeSet force:NO];
-    }else if (index == 2) {
+    } else if (index == 2) {
         [self showAlertViewWithType:RCDDebugAlertViewTypeDelete force:YES];
-    }else if (index == 3) {
+    } else if (index == 3) {
         [self showAlertViewWithType:RCDDebugAlertViewTypeDelete force:NO];
-    }else if (index == 4) {
+    } else if (index == 4) {
         [self getAllChatroomKey];
-    }else if (index == 5) {
+    } else if (index == 5) {
         [self showAlertViewWithType:RCDDebugAlertViewTypeGet force:NO];
+    } else if (index == 6) {
+        [self showAlertViewWithType:RCDDebugAlertViewTypeBatchSet force:YES];
+    } else if (index == 7) {
+        [self showAlertViewWithType:RCDDebugAlertViewTypeBatchSet force:NO];
+    } else if (index == 8) {
+        [self showAlertViewWithType:RCDDebugAlertViewTypeBatchDelete force:YES];
+    } else if (index == 9) {
+        [self showAlertViewWithType:RCDDebugAlertViewTypeBatchDelete force:NO];
     }
 }
 
@@ -177,7 +185,7 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
                                                                         [self errorCodeToString:nErrorCode]];
                     [self addStringToDataSource:targetString];
                 }];
-        } else {
+        } else if (type == RCDDebugAlertViewTypeDelete) {
             if (isForce) {
                 [[RCChatRoomClient sharedChatRoomClient] forceRemoveChatRoomEntry:chatroomId
                     key:key
@@ -213,6 +221,39 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
                         [self addStringToDataSource:targetString];
                     }];
             }
+        } else if (type == RCDDebugAlertViewTypeBatchSet) {
+            NSArray *keys = [key componentsSeparatedByString:@","];
+            NSArray *values = [value componentsSeparatedByString:@","];
+            
+            if (keys.count != values.count) {
+                [RCAlertView showAlertController:@"提示" message:@"key value 数量不匹配" cancelTitle:@"取消"];
+                return;
+            }
+            NSDictionary *entries = [NSDictionary dictionaryWithObjects:values forKeys:keys];;
+                [[RCChatRoomClient sharedChatRoomClient] setChatRoomEntries:chatroomId entries:entries isForce:isForce autoDelete:isDelete success:^{
+                    NSString *targetString =
+                        [NSString stringWithFormat:@"%@批量设置 kv 成功：\n"
+                                                   @"entries:%@，extra:%@，\n"
+                                                   @"退出时是否删除:%d",
+                         isForce ? @"强制" : @"", entries, extra, isDelete];
+                    [self addStringToDataSource:targetString];
+                } error:^(RCErrorCode nErrorCode, NSDictionary * _Nonnull entries) {
+                    NSString *targetString =
+                        [NSString stringWithFormat:@"%@设置 kv 失败：(%ld) 失败的 entries: %@ %@", isForce ? @"强制" : @"", (long)nErrorCode, entries, [self errorCodeToString:nErrorCode]];
+                    [self addStringToDataSource:targetString];
+                }];
+        } else if (type == RCDDebugAlertViewTypeBatchDelete) {
+            NSArray *keys = [key componentsSeparatedByString:@","];
+            [[RCChatRoomClient sharedChatRoomClient] removeChatRoomEntries:chatroomId keys:keys isForce:isForce success:^{
+                NSString *targetString = [NSString
+                                          stringWithFormat:@"%@ 删除 kv 成功：\nkeys:%@，extra:%@",
+                                          isForce ? @"强制" : @"", keys, extra];
+                [self addStringToDataSource:targetString];
+            } error:^(RCErrorCode nErrorCode, NSDictionary * _Nonnull entries) {
+                NSString *targetString =
+                [NSString stringWithFormat:@"%@设置 kv 失败：(%ld) 失败的 entries: %@ %@", isForce ? @"强制" : @"", (long)nErrorCode, entries, [self errorCodeToString:nErrorCode]];
+                [self addStringToDataSource:targetString];
+            }];
         }
     };
 }
@@ -379,6 +420,12 @@ static NSString *debugChatRoomCellIdentifier = @"RCDDebugChatRoomCellIdentifier"
         break;
     case RC_KV_STORE_NOT_SYNC:
         errorString = @"聊天室 KV 未同步完成";
+        break;
+    case RC_KV_STORE_NOT_ALL_SUCCESS:
+        errorString = @"聊天室批量设置 KV 部分不成功";
+        break;
+    case RC_KV_STORE_OUT_OF_LIMIT:
+        errorString = @"聊天室设置 KV，数量超限（最多一次10条）";
         break;
     default:
         errorString = @"其他错误码";

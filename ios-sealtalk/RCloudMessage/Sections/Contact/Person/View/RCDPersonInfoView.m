@@ -44,11 +44,11 @@
     // todo：设置头像
     if ([userInfo.userId isEqualToString:[RCIM sharedRCIM].currentUserInfo.userId]) {
         [self updateSubviewsWithHaveRemarks:NO];
-        self.nameLabel.text = userInfo.name;
+        self.nameLabel.text = [RCKitUtility getDisplayName:userInfo];
     } else {
-        if (userInfo.displayName != nil && ![userInfo.displayName isEqualToString:@""]) {
+        if (userInfo.alias.length > 0) {
             [self updateSubviewsWithHaveRemarks:YES];
-            self.remarksLabel.text = userInfo.displayName;
+            self.remarksLabel.text = userInfo.alias;
             self.nameLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"someone_nickname"), userInfo.name];
         } else {
             [self updateSubviewsWithHaveRemarks:NO];
