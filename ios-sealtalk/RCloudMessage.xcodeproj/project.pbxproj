@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		065EC5EB2BC14231865C381D /* Pods_SealTalkNotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD8391BFE37C5DB9E00FC2EF /* Pods_SealTalkNotificationService.framework */; };
 		178998221F6244FA00FC44D3 /* sms-received.caf in Resources */ = {isa = PBXBuildFile; fileRef = 178998211F6244FA00FC44D3 /* sms-received.caf */; };
 		17B181851D587A1C0061E02B /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */; };
 		17BE51CF1D5828EC0001418D /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = 17BE51CE1D5828EC0001418D /* check.png */; };
@@ -337,6 +336,7 @@
 		E4BFAE251A121839007165B1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4BFAE221A121839007165B1 /* Images.xcassets */; };
 		EE8995AF660D3951CC53C83F /* Pods_SealTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC542FBCFEF60B126BE5E715 /* Pods_SealTalk.framework */; };
 		F1E7784C21A622B00005C37D /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E7784B21A622B00005C37D /* UserNotifications.framework */; };
+		F5649671AD2D0D871DEF7E89 /* Pods_SealTalkNotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C91882D18DE0DD07A5B09925 /* Pods_SealTalkNotificationService.framework */; };
 		F880EA791D0808B300FD5CC4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F880EA781D0808B300FD5CC4 /* VideoToolbox.framework */; };
 		F8AD4A551CAE56A4006C1CBB /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AD4A541CAE56A4006C1CBB /* PushKit.framework */; };
 		F8AD4A571CAE5702006C1CBB /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AD4A561CAE5702006C1CBB /* libicucore.tbd */; };
@@ -489,6 +489,7 @@
 
 /* Begin PBXFileReference section */
 		0A1DDD9F22169D7300A9FE21 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = "RCloudMessage/Supporting Files/PrefixHeader.pch"; sourceTree = SOURCE_ROOT; };
+		14ABF16183D8484566BCF300 /* Pods-SealTalkNotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.release.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		178998211F6244FA00FC44D3 /* sms-received.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "sms-received.caf"; path = "RCloudMessage/Supporting Files/sms-received.caf"; sourceTree = SOURCE_ROOT; };
 		17B181861D587B0F0061E02B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		17BE51CE1D5828EC0001418D /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
@@ -645,7 +646,6 @@
 		27F0E3C222A0E3E300C8B0B8 /* RCDMeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDMeCell.m; sourceTree = "<group>"; };
 		27F0E3DF22A104A600C8B0B8 /* RCDMessageNoDisturbSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDMessageNoDisturbSettingController.h; sourceTree = "<group>"; };
 		2F602A601C49F4AF006C6056 /* Pods-SealTalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalk.release.xcconfig"; path = "Target Support Files/Pods-SealTalk/Pods-SealTalk.release.xcconfig"; sourceTree = "<group>"; };
-		3888AF651EDD27C960BD2900 /* Pods-SealTalkNotificationService.autodebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.autodebug.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.autodebug.xcconfig"; sourceTree = "<group>"; };
 		3B054E3222F2DCFC009A3C72 /* RCDRecentPictureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDRecentPictureViewController.h; sourceTree = "<group>"; };
 		3B054E3322F2DCFC009A3C72 /* RCDRecentPictureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDRecentPictureViewController.m; sourceTree = "<group>"; };
 		3B054E4722F439C6009A3C72 /* RCDSetupRemarkView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDSetupRemarkView.h; sourceTree = "<group>"; };
@@ -790,6 +790,7 @@
 		8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		9870724F20A17AC2008EE653 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		987653621D796C5B008A6BF0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "RCloudMessage/Supporting Files/Launch Screen.storyboard"; sourceTree = SOURCE_ROOT; };
+		9AB5BC473A372B02527F4129 /* Pods-SealTalkNotificationService.autodebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.autodebug.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.autodebug.xcconfig"; sourceTree = "<group>"; };
 		9B49C53E23C421720058D19F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RealTimeLocation.strings; sourceTree = "<group>"; };
 		9B49C54023C421790058D19F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/RealTimeLocation.strings"; sourceTree = "<group>"; };
 		9B49C54123C4240D0058D19F /* RealTimeLocationDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RealTimeLocationDefine.h; sourceTree = "<group>"; };
@@ -1041,6 +1042,7 @@
 		A2F0A99522FACE9300422802 /* RCDGroupMemberDetailInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDGroupMemberDetailInfo.m; sourceTree = "<group>"; };
 		A2FF706B22B0EE2900962AB3 /* RCDGroupAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDGroupAPI.h; sourceTree = "<group>"; };
 		A2FF706C22B0EE2900962AB3 /* RCDGroupAPI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDGroupAPI.m; sourceTree = "<group>"; };
+		A5BE0E45EC1672217482B984 /* Pods-SealTalkNotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.debug.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.debug.xcconfig"; sourceTree = "<group>"; };
 		A6447A051B1DBE6500EA2CEE /* SealTalk WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "SealTalk WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6447A081B1DBE6500EA2CEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A6447A091B1DBE6500EA2CEE /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
@@ -1133,10 +1135,7 @@
 		A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		A6EFABA41BB0EDE1007E9D67 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		A6EFABA61BB0EDFB007E9D67 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		A72CD5E428603AFC5EE6D84D /* Pods-SealTalkNotificationService.autorelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.autorelease.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.autorelease.xcconfig"; sourceTree = "<group>"; };
-		A8B960B419170FEAD506D153 /* Pods-SealTalkNotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.release.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.release.xcconfig"; sourceTree = "<group>"; };
-		AB35344D793C4D8C51621739 /* Pods-SealTalkNotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.debug.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.debug.xcconfig"; sourceTree = "<group>"; };
-		DD8391BFE37C5DB9E00FC2EF /* Pods_SealTalkNotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SealTalkNotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C91882D18DE0DD07A5B09925 /* Pods_SealTalkNotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SealTalkNotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4BFAE221A121839007165B1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "RCloudMessage/Supporting Files/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		E4C330F11A0C721D00E31B9A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E4C330F31A0C722300E31B9A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -1155,6 +1154,7 @@
 		E4D40F281A031F460045097C /* SealTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SealTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4FCD7C31AD69DFB00915650 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		EC542FBCFEF60B126BE5E715 /* Pods_SealTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SealTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1DB9C652B9EDF87D1CB7271 /* Pods-SealTalkNotificationService.autorelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.autorelease.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.autorelease.xcconfig"; sourceTree = "<group>"; };
 		F1E7784B21A622B00005C37D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		F65BCD9366C6027B49220746 /* Pods-SealTalk.autodebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalk.autodebug.xcconfig"; path = "Target Support Files/Pods-SealTalk/Pods-SealTalk.autodebug.xcconfig"; sourceTree = "<group>"; };
 		F82B553F1DE03E40007392BD /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
@@ -1186,7 +1186,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				065EC5EB2BC14231865C381D /* Pods_SealTalkNotificationService.framework in Frameworks */,
+				F5649671AD2D0D871DEF7E89 /* Pods_SealTalkNotificationService.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1814,10 +1814,10 @@
 				F65BCD9366C6027B49220746 /* Pods-SealTalk.autodebug.xcconfig */,
 				2F602A601C49F4AF006C6056 /* Pods-SealTalk.release.xcconfig */,
 				1C3EE1254F250BC346B4AFE6 /* Pods-SealTalk.autorelease.xcconfig */,
-				AB35344D793C4D8C51621739 /* Pods-SealTalkNotificationService.debug.xcconfig */,
-				3888AF651EDD27C960BD2900 /* Pods-SealTalkNotificationService.autodebug.xcconfig */,
-				A8B960B419170FEAD506D153 /* Pods-SealTalkNotificationService.release.xcconfig */,
-				A72CD5E428603AFC5EE6D84D /* Pods-SealTalkNotificationService.autorelease.xcconfig */,
+				A5BE0E45EC1672217482B984 /* Pods-SealTalkNotificationService.debug.xcconfig */,
+				9AB5BC473A372B02527F4129 /* Pods-SealTalkNotificationService.autodebug.xcconfig */,
+				14ABF16183D8484566BCF300 /* Pods-SealTalkNotificationService.release.xcconfig */,
+				F1DB9C652B9EDF87D1CB7271 /* Pods-SealTalkNotificationService.autorelease.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -2857,7 +2857,7 @@
 				E4C4E7E51A0A2F2E00140067 /* UIKit.framework */,
 				E4C4E7E31A0A2F2800140067 /* CoreGraphics.framework */,
 				EC542FBCFEF60B126BE5E715 /* Pods_SealTalk.framework */,
-				DD8391BFE37C5DB9E00FC2EF /* Pods_SealTalkNotificationService.framework */,
+				C91882D18DE0DD07A5B09925 /* Pods_SealTalkNotificationService.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2956,7 +2956,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A27AD743265C96C0008D35F7 /* Build configuration list for PBXNativeTarget "SealTalkNotificationService" */;
 			buildPhases = (
-				462321248D2B257DA836FB0A /* [CP] Check Pods Manifest.lock */,
+				5D55C02C34074F35A7817951 /* [CP] Check Pods Manifest.lock */,
 				A27AD725265C96C0008D35F7 /* Sources */,
 				A27AD726265C96C0008D35F7 /* Frameworks */,
 				A27AD727265C96C0008D35F7 /* Resources */,
@@ -3260,7 +3260,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		462321248D2B257DA836FB0A /* [CP] Check Pods Manifest.lock */ = {
+		5D55C02C34074F35A7817951 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3853,7 +3853,7 @@
 		};
 		A27AD732265C96C0008D35F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AB35344D793C4D8C51621739 /* Pods-SealTalkNotificationService.debug.xcconfig */;
+			baseConfigurationReference = A5BE0E45EC1672217482B984 /* Pods-SealTalkNotificationService.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -3899,7 +3899,7 @@
 		};
 		A27AD733265C96C0008D35F7 /* AutoDebug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3888AF651EDD27C960BD2900 /* Pods-SealTalkNotificationService.autodebug.xcconfig */;
+			baseConfigurationReference = 9AB5BC473A372B02527F4129 /* Pods-SealTalkNotificationService.autodebug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -3944,7 +3944,7 @@
 		};
 		A27AD734265C96C0008D35F7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A8B960B419170FEAD506D153 /* Pods-SealTalkNotificationService.release.xcconfig */;
+			baseConfigurationReference = 14ABF16183D8484566BCF300 /* Pods-SealTalkNotificationService.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -3989,7 +3989,7 @@
 		};
 		A27AD735265C96C0008D35F7 /* AutoRelease */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A72CD5E428603AFC5EE6D84D /* Pods-SealTalkNotificationService.autorelease.xcconfig */;
+			baseConfigurationReference = F1DB9C652B9EDF87D1CB7271 /* Pods-SealTalkNotificationService.autorelease.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
