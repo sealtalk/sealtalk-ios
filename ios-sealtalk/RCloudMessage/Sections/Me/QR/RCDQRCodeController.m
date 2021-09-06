@@ -73,7 +73,7 @@
     } else {
         RCUserInfo *user = [RCDUserInfoManager getUserInfo:self.targetId];
         portraitUri = user.portraitUri;
-        name = [RCKitUtility getDisplayName:user];
+        name = user.name;
         info = RCDLocalizedString(@"MyScanQRCodeInfo");
         qrInfo = [NSString stringWithFormat:@"%@?key=sealtalk://user/info?u=%@", RCDQRCodeContentInfoUrl,
                                             [RCIMClient sharedRCIMClient].currentUserInfo.userId];

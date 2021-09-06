@@ -137,9 +137,14 @@
                                    if ([self addUserInfoIfNeed:userInfo]) {
                                        [self addHeadViewUser:userInfo];
                                        if (show) {
-                                           [self showUserChangeInfo:[NSString stringWithFormat:RTLLocalizedString(@"join_share_location"), [RCKitUtility getDisplayName:user]]];
+                                           [self showUserChangeInfo:[NSString
+                                                                        stringWithFormat:RTLLocalizedString(
+                                                                                             @"join_share_location"),
+                                                                                         userInfo.name]];
                                        } else {
-                                           self.tipLabel.text = [NSString stringWithFormat:RTLLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
+                                           self.tipLabel.text = [NSString
+                                               stringWithFormat:RTLLocalizedString(@"share_location_people_count"),
+                                                                (unsigned long)self.rcUserInfos.count];
                                        }
                                    }
                                });
@@ -149,9 +154,11 @@
             if ([self addUserInfoIfNeed:userInfo]) {
                 [self addHeadViewUser:userInfo];
                 if (show) {
-                    [self showUserChangeInfo:[NSString stringWithFormat:RTLLocalizedString(@"join_share_location"), [RCKitUtility getDisplayName:userInfo]]];
+                    [self showUserChangeInfo:[NSString stringWithFormat:RTLLocalizedString(@"join_share_location"),
+                                                                        userInfo.name]];
                 } else {
-                    self.tipLabel.text = [NSString stringWithFormat:RTLLocalizedString(@"share_location_people_count"), (unsigned long)self.rcUserInfos.count];
+                    self.tipLabel.text = [NSString stringWithFormat:RTLLocalizedString(@"share_location_people_count"),
+                                                                    (unsigned long)self.rcUserInfos.count];
                 }
             }
         }
@@ -169,7 +176,7 @@
             [self.rcUserInfos removeObjectAtIndex:index];
             [self removeHeadViewUser:index];
             if (show) {
-                [self showUserChangeInfo:[NSString stringWithFormat:@"%@退出...", [RCKitUtility getDisplayName:userInfo]]];
+                [self showUserChangeInfo:[NSString stringWithFormat:@"%@退出...", userInfo.name]];
             } else {
                 self.tipLabel.text = [NSString stringWithFormat:RTLLocalizedString(@"share_location_people_count"),
                                                                 (unsigned long)self.rcUserInfos.count];

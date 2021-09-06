@@ -317,7 +317,7 @@
     RCDChatViewController *chat = [[RCDChatViewController alloc] init];
     chat.targetId = userInfo.userId;
     chat.conversationType = ConversationType_PRIVATE;
-    chat.title = [RCKitUtility getDisplayName:userInfo];
+    chat.title = userInfo.name;
     chat.needPopToRootView = YES;
     chat.displayUserNameInCell = NO;
     [self.navigationController pushViewController:chat animated:YES];
@@ -679,7 +679,7 @@
     [self.selectedUsersCollectionView reloadData];
     for (NSIndexPath *indexPath in self.tableView.indexPathsForSelectedRows) {
         RCDContactSelectedTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-        NSString *name = [RCKitUtility getDisplayName:user];
+        NSString *name = user.displayName.length > 0 ? user.displayName : user.name;
         if ([cell.nicknameLabel.text isEqualToString:name]) {
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -722,7 +722,10 @@
     } else {
         for (RCDFriendInfo *userInfo in [self.friendArray copy]) {
             //忽略大小写去判断是否包含
-            NSString *name = [RCKitUtility getDisplayName:userInfo];
+            NSString *name = userInfo.name;
+            if ([userInfo isMemberOfClass:[RCDFriendInfo class]] && userInfo.displayName.length > 0) {
+                name = userInfo.displayName;
+            }
 
             RCDGroupMember *member;
             if (self.groupId.length > 0) {
@@ -781,7 +784,10 @@
         self.matchSearchList = [self.friendArray mutableCopy];
     } else {
         for (RCDFriendInfo *userInfo in [self.friendArray copy]) {
-            NSString *name = [RCKitUtility getDisplayName:userInfo];
+            NSString *name = userInfo.name;
+            if ([userInfo isMemberOfClass:[RCDFriendInfo class]] && userInfo.displayName.length > 0) {
+                name = userInfo.displayName;
+            }
             //忽略大小写去判断是否包含
             if ([name rangeOfString:temp options:NSCaseInsensitiveSearch].location != NSNotFound ||
                 [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:temp options:NSCaseInsensitiveSearch]

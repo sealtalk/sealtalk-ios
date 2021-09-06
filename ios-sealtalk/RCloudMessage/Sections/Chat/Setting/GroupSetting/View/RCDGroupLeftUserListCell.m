@@ -51,7 +51,7 @@
     [RCDUtilities getGroupUserDisplayInfo:self.model.userId
                                   groupId:self.groupId
                                    result:^(RCUserInfo *user) {
-                                       self.nameLabel.text = [RCKitUtility getDisplayName:user];
+                                       self.nameLabel.text = user.name;
                                        if (user.portraitUri.length == 0) {
                                            user.portraitUri = [RCDUtilities defaultUserPortrait:user];
                                        }
@@ -59,15 +59,18 @@
                                                                  placeholderImage:[UIImage imageNamed:@"contact"]];
                                    }];
     if (self.model.reason != RCDGroupMemberLeftReasonSelf) {
-        [RCDUtilities getGroupUserDisplayInfo:self.model.operatorId groupId:self.groupId result:^(RCUserInfo *user) {
-            NSString *displayName = [RCKitUtility getDisplayName:user];
-            if (self.model.reason == RCDGroupMemberLeftReasonManager) {
-                self.infoLabel.text = [NSString stringWithFormat:RCDLocalizedString(@"KickGroupByManager"), displayName];
-            } else if (self.model.reason == RCDGroupMemberLeftReasonOwner) {
-                self.infoLabel.text =
-                [NSString stringWithFormat:RCDLocalizedString(@"KickGroupByOwner"), displayName];
-            }
-        }];
+        [RCDUtilities
+            getGroupUserDisplayInfo:self.model.operatorId
+                            groupId:self.groupId
+                             result:^(RCUserInfo *user) {
+                                 if (self.model.reason == RCDGroupMemberLeftReasonManager) {
+                                     self.infoLabel.text = [NSString
+                                         stringWithFormat:RCDLocalizedString(@"KickGroupByManager"), user.name];
+                                 } else if (self.model.reason == RCDGroupMemberLeftReasonOwner) {
+                                     self.infoLabel.text =
+                                         [NSString stringWithFormat:RCDLocalizedString(@"KickGroupByOwner"), user.name];
+                                 }
+                             }];
     } else {
         self.infoLabel.text = RCDLocalizedString(@"KickGroupBySelf");
     }

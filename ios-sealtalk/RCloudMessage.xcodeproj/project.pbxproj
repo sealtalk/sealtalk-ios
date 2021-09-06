@@ -331,12 +331,9 @@
 		A6B1D8F91B201B3600AD32EC /* RCAppSharedUserDefault.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B1D8F21B201B3600AD32EC /* RCAppSharedUserDefault.m */; };
 		A6B1D8FA1B201B3600AD32EC /* RCWKNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B1D8F41B201B3600AD32EC /* RCWKNotificationCenter.m */; };
 		A6B1D8FB1B201B3600AD32EC /* RCWKUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B1D8F61B201B3600AD32EC /* RCWKUtility.m */; };
-		DD67603C26A6A356004CF458 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C497221A2484DB00098C8A /* MapKit.framework */; };
-		DD67605026A6A35D004CF458 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C330F31A0C722300E31B9A /* AudioToolbox.framework */; };
 		E4BFAE251A121839007165B1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4BFAE221A121839007165B1 /* Images.xcassets */; };
 		EE8995AF660D3951CC53C83F /* Pods_SealTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC542FBCFEF60B126BE5E715 /* Pods_SealTalk.framework */; };
 		F1E7784C21A622B00005C37D /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E7784B21A622B00005C37D /* UserNotifications.framework */; };
-		F5649671AD2D0D871DEF7E89 /* Pods_SealTalkNotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C91882D18DE0DD07A5B09925 /* Pods_SealTalkNotificationService.framework */; };
 		F880EA791D0808B300FD5CC4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F880EA781D0808B300FD5CC4 /* VideoToolbox.framework */; };
 		F8AD4A551CAE56A4006C1CBB /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AD4A541CAE56A4006C1CBB /* PushKit.framework */; };
 		F8AD4A571CAE5702006C1CBB /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AD4A561CAE5702006C1CBB /* libicucore.tbd */; };
@@ -442,13 +439,6 @@
 			remoteGlobalIDString = A6447A131B1DBE6500EA2CEE;
 			remoteInfo = "融云 Demo WatchKit App";
 		};
-		DD67604B26A6A357004CF458 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 276599A1229E87B20074FAB2 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2A1194AC019E1C497A170EE4AB725374;
-			remoteInfo = FBRetainCycleDetector;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -489,7 +479,6 @@
 
 /* Begin PBXFileReference section */
 		0A1DDD9F22169D7300A9FE21 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = "RCloudMessage/Supporting Files/PrefixHeader.pch"; sourceTree = SOURCE_ROOT; };
-		14ABF16183D8484566BCF300 /* Pods-SealTalkNotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.release.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		178998211F6244FA00FC44D3 /* sms-received.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "sms-received.caf"; path = "RCloudMessage/Supporting Files/sms-received.caf"; sourceTree = SOURCE_ROOT; };
 		17B181861D587B0F0061E02B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		17BE51CE1D5828EC0001418D /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
@@ -790,7 +779,6 @@
 		8CCBC9861AEDDF8600BA1135 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		9870724F20A17AC2008EE653 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		987653621D796C5B008A6BF0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "RCloudMessage/Supporting Files/Launch Screen.storyboard"; sourceTree = SOURCE_ROOT; };
-		9AB5BC473A372B02527F4129 /* Pods-SealTalkNotificationService.autodebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.autodebug.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.autodebug.xcconfig"; sourceTree = "<group>"; };
 		9B49C53E23C421720058D19F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RealTimeLocation.strings; sourceTree = "<group>"; };
 		9B49C54023C421790058D19F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/RealTimeLocation.strings"; sourceTree = "<group>"; };
 		9B49C54123C4240D0058D19F /* RealTimeLocationDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RealTimeLocationDefine.h; sourceTree = "<group>"; };
@@ -1042,7 +1030,6 @@
 		A2F0A99522FACE9300422802 /* RCDGroupMemberDetailInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDGroupMemberDetailInfo.m; sourceTree = "<group>"; };
 		A2FF706B22B0EE2900962AB3 /* RCDGroupAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCDGroupAPI.h; sourceTree = "<group>"; };
 		A2FF706C22B0EE2900962AB3 /* RCDGroupAPI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDGroupAPI.m; sourceTree = "<group>"; };
-		A5BE0E45EC1672217482B984 /* Pods-SealTalkNotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.debug.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.debug.xcconfig"; sourceTree = "<group>"; };
 		A6447A051B1DBE6500EA2CEE /* SealTalk WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "SealTalk WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6447A081B1DBE6500EA2CEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A6447A091B1DBE6500EA2CEE /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
@@ -1135,7 +1122,6 @@
 		A6EFABA01BB0EDAC007E9D67 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		A6EFABA41BB0EDE1007E9D67 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		A6EFABA61BB0EDFB007E9D67 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		C91882D18DE0DD07A5B09925 /* Pods_SealTalkNotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SealTalkNotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4BFAE221A121839007165B1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "RCloudMessage/Supporting Files/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		E4C330F11A0C721D00E31B9A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E4C330F31A0C722300E31B9A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -1154,7 +1140,6 @@
 		E4D40F281A031F460045097C /* SealTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SealTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4FCD7C31AD69DFB00915650 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		EC542FBCFEF60B126BE5E715 /* Pods_SealTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SealTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F1DB9C652B9EDF87D1CB7271 /* Pods-SealTalkNotificationService.autorelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalkNotificationService.autorelease.xcconfig"; path = "Target Support Files/Pods-SealTalkNotificationService/Pods-SealTalkNotificationService.autorelease.xcconfig"; sourceTree = "<group>"; };
 		F1E7784B21A622B00005C37D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		F65BCD9366C6027B49220746 /* Pods-SealTalk.autodebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealTalk.autodebug.xcconfig"; path = "Target Support Files/Pods-SealTalk/Pods-SealTalk.autodebug.xcconfig"; sourceTree = "<group>"; };
 		F82B553F1DE03E40007392BD /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
@@ -1186,7 +1171,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5649671AD2D0D871DEF7E89 /* Pods_SealTalkNotificationService.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1206,7 +1190,6 @@
 				A2A7EDEC2612CBDB00EAA2D5 /* WebKit.framework in Frameworks */,
 				3B0F2C6422DC308B0017979E /* MessageUI.framework in Frameworks */,
 				3B7D8F2822326670009E1417 /* Security.framework in Frameworks */,
-				DD67603C26A6A356004CF458 /* MapKit.framework in Frameworks */,
 				F1E7784C21A622B00005C37D /* UserNotifications.framework in Frameworks */,
 				9870725020A17AC3008EE653 /* GLKit.framework in Frameworks */,
 				2724CCD71FF34411006FFC86 /* Contacts.framework in Frameworks */,
@@ -1215,7 +1198,6 @@
 				27AADC281DDC4DD800E1AE31 /* Foundation.framework in Frameworks */,
 				27AADC261DDC4DB800E1AE31 /* AddressBook.framework in Frameworks */,
 				3B1180A3256D1237001E5105 /* RongContactCard.framework in Frameworks */,
-				DD67605026A6A35D004CF458 /* AudioToolbox.framework in Frameworks */,
 				F880EA791D0808B300FD5CC4 /* VideoToolbox.framework in Frameworks */,
 				F8AD4A5B1CAE5782006C1CBB /* CoreMotion.framework in Frameworks */,
 				F8AD4A571CAE5702006C1CBB /* libicucore.tbd in Frameworks */,
@@ -1272,7 +1254,6 @@
 				3BC0C810229F8F3B0079234F /* AFNetworking.framework */,
 				3BACB0072500CED50001A92C /* DoraemonKit.framework */,
 				3BACB0092500CED50001A92C /* DoraemonKit.bundle */,
-				DD67604C26A6A357004CF458 /* FBRetainCycleDetector.framework */,
 				3BC0C812229F8F3B0079234F /* FMDB.framework */,
 				9C226D0F229FD5C800F49FC5 /* GCDWebServer.framework */,
 				276599A7229E87B20074FAB2 /* Masonry.framework */,
@@ -1814,10 +1795,6 @@
 				F65BCD9366C6027B49220746 /* Pods-SealTalk.autodebug.xcconfig */,
 				2F602A601C49F4AF006C6056 /* Pods-SealTalk.release.xcconfig */,
 				1C3EE1254F250BC346B4AFE6 /* Pods-SealTalk.autorelease.xcconfig */,
-				A5BE0E45EC1672217482B984 /* Pods-SealTalkNotificationService.debug.xcconfig */,
-				9AB5BC473A372B02527F4129 /* Pods-SealTalkNotificationService.autodebug.xcconfig */,
-				14ABF16183D8484566BCF300 /* Pods-SealTalkNotificationService.release.xcconfig */,
-				F1DB9C652B9EDF87D1CB7271 /* Pods-SealTalkNotificationService.autorelease.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -2082,14 +2059,14 @@
 		A2074342253E958E003BD64D /* ChatroomStatus */ = {
 			isa = PBXGroup;
 			children = (
-				A2074349253E958E003BD64D /* RCDDebugJoinChatroomViewController.h */,
-				A2074346253E958E003BD64D /* RCDDebugJoinChatroomViewController.m */,
-				A2074345253E958E003BD64D /* RCDDebugChatroomViewController.h */,
-				A207434A253E958E003BD64D /* RCDDebugChatroomViewController.m */,
+				A2074343253E958E003BD64D /* RCDDebugAlertView.m */,
 				A2074344253E958E003BD64D /* RCDDebugChatRoomCell.h */,
+				A2074345253E958E003BD64D /* RCDDebugChatroomViewController.h */,
+				A2074346253E958E003BD64D /* RCDDebugJoinChatroomViewController.m */,
 				A2074347253E958E003BD64D /* RCDDebugChatRoomCell.m */,
 				A2074348253E958E003BD64D /* RCDDebugAlertView.h */,
-				A2074343253E958E003BD64D /* RCDDebugAlertView.m */,
+				A2074349253E958E003BD64D /* RCDDebugJoinChatroomViewController.h */,
+				A207434A253E958E003BD64D /* RCDDebugChatroomViewController.m */,
 			);
 			path = ChatroomStatus;
 			sourceTree = "<group>";
@@ -2857,7 +2834,6 @@
 				E4C4E7E51A0A2F2E00140067 /* UIKit.framework */,
 				E4C4E7E31A0A2F2800140067 /* CoreGraphics.framework */,
 				EC542FBCFEF60B126BE5E715 /* Pods_SealTalk.framework */,
-				C91882D18DE0DD07A5B09925 /* Pods_SealTalkNotificationService.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2956,7 +2932,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A27AD743265C96C0008D35F7 /* Build configuration list for PBXNativeTarget "SealTalkNotificationService" */;
 			buildPhases = (
-				5D55C02C34074F35A7817951 /* [CP] Check Pods Manifest.lock */,
 				A27AD725265C96C0008D35F7 /* Sources */,
 				A27AD726265C96C0008D35F7 /* Frameworks */,
 				A27AD727265C96C0008D35F7 /* Resources */,
@@ -3192,13 +3167,6 @@
 			remoteRef = A2E705C522BA1D1E0047DF47 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		DD67604C26A6A357004CF458 /* FBRetainCycleDetector.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = FBRetainCycleDetector.framework;
-			remoteRef = DD67604B26A6A357004CF458 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -3260,28 +3228,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5D55C02C34074F35A7817951 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SealTalkNotificationService-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		A9A81101CCA7835E3636010D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3800,7 +3746,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.shareextension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "$SHARE_PROFILE";
+				PROVISIONING_PROFILE = $SHARE_PROFILE;
 				SKIP_INSTALL = YES;
 			};
 			name = AutoDebug;
@@ -3846,14 +3792,13 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.shareextension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "$SHARE_PROFILE";
+				PROVISIONING_PROFILE = $SHARE_PROFILE;
 				SKIP_INSTALL = YES;
 			};
 			name = AutoRelease;
 		};
 		A27AD732265C96C0008D35F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A5BE0E45EC1672217482B984 /* Pods-SealTalkNotificationService.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -3899,7 +3844,6 @@
 		};
 		A27AD733265C96C0008D35F7 /* AutoDebug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9AB5BC473A372B02527F4129 /* Pods-SealTalkNotificationService.autodebug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -3944,7 +3888,6 @@
 		};
 		A27AD734265C96C0008D35F7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 14ABF16183D8484566BCF300 /* Pods-SealTalkNotificationService.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -3989,7 +3932,6 @@
 		};
 		A27AD735265C96C0008D35F7 /* AutoRelease */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F1DB9C652B9EDF87D1CB7271 /* Pods-SealTalkNotificationService.autorelease.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -4072,7 +4014,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
-				PROVISIONING_PROFILE = "$APP_PROFILE";
+				PROVISIONING_PROFILE = $APP_PROFILE;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4134,7 +4076,7 @@
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
-				PROVISIONING_PROFILE = "$APP_PROFILE";
+				PROVISIONING_PROFILE = $APP_PROFILE;
 			};
 			name = AutoDebug;
 		};
@@ -4167,7 +4109,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.wkextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "$WATCHKIT_EXTENSION_PROFILE";
+				PROVISIONING_PROFILE = $WATCHKIT_EXTENSION_PROFILE;
 				SKIP_INSTALL = YES;
 			};
 			name = AutoDebug;
@@ -4193,7 +4135,7 @@
 				OTHER_CFLAGS = "-fembed-bitcode";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "$WATCHKIT_APP_PROFILE";
+				PROVISIONING_PROFILE = $WATCHKIT_APP_PROFILE;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
 				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
@@ -4234,7 +4176,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
-				PROVISIONING_PROFILE = "$APP_PROFILE";
+				PROVISIONING_PROFILE = $APP_PROFILE;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4297,7 +4239,7 @@
 				OTHER_LIBTOOLFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im;
 				PRODUCT_NAME = SealTalk;
-				PROVISIONING_PROFILE = "$APP_PROFILE";
+				PROVISIONING_PROFILE = $APP_PROFILE;
 			};
 			name = AutoRelease;
 		};
@@ -4327,7 +4269,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.wkextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "$WATCHKIT_EXTENSION_PROFILE";
+				PROVISIONING_PROFILE = $WATCHKIT_EXTENSION_PROFILE;
 				SKIP_INSTALL = YES;
 			};
 			name = AutoRelease;
@@ -4350,7 +4292,7 @@
 				OTHER_CFLAGS = "-fembed-bitcode";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.rongcloud.im.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "$WATCHKIT_APP_PROFILE";
+				PROVISIONING_PROFILE = $WATCHKIT_APP_PROFILE;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
 				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";

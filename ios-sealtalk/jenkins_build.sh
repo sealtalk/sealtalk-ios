@@ -6,7 +6,6 @@
 #  Created by xugang on 4/8/15.
 #  Copyright (c) 2015 RongCloud. All rights reserved.
 
-TEMP_TIME=$(date +%s)
 CONFIGURATION="Release"
 BIN_DIR="bin"
 BUILD_DIR="build"
@@ -70,14 +69,9 @@ done
 if [ ! -d "framework" ]; then
     sh before_build.sh
 fi
-echo "sealtalk copy sdk times: $(($(date +%s) - $TEMP_TIME))"
-TEMP_TIME=$(date +%s)
 
 # 更新 pod
 pod update --no-repo-update
-echo "sealtalk pod update times: $(($(date +%s) - $TEMP_TIME))"
-TEMP_TIME=$(date +%s)
-
 echo "APP_NAME"
 echo ${APP_NAME}
 if [ ${APP_NAME} = "SealChat" ]; then
@@ -180,9 +174,6 @@ Bundle_Short_Version=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionStr
 sed -i ""  -e '/CFBundleShortVersionString/{n;s/'"${Bundle_Short_Version}"'/'"$VER_FLAG"\ "$RELEASE_FLAG"'/; }' ./ServiceExtension/Info.plist
 sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./ServiceExtension/Info.plist
 
-echo "sealtalk modify parameters times: $(($(date +%s) - $TEMP_TIME))"
-TEMP_TIME=$(date +%s)
-
 PROJECT_NAME="RCloudMessage.xcodeproj"
 targetName="SealTalk"
 TARGET_DECIVE="iphoneos"
@@ -194,23 +185,11 @@ mkdir -p "$BIN_DIR"
 mkdir -p "$BUILD_DIR"
 xcodebuild clean -alltargets
 
-echo "sealtalk clean env times: $(($(date +%s) - $TEMP_TIME))"
-TEMP_TIME=$(date +%s)
-
 echo "***开始build iphoneos文件***"
   xcodebuild -scheme "${targetName}" archive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -configuration ${CONFIGURATION} APP_PROFILE="${BUILD_APP_PROFILE}" SHARE_PROFILE="${BUILD_SHARE_PROFILE}"
-  
-  echo "sealtalk archive times: $(($(date +%s) - $TEMP_TIME))"
-  TEMP_TIME=$(date +%s)
-  
   xcodebuild -exportArchive -archivePath "./${BUILD_DIR}/${targetName}.xcarchive" -exportOptionsPlist "archive.plist" -exportPath "./${BIN_DIR}" -allowProvisioningUpdates
-  
-  echo "sealtalk export times: $(($(date +%s) - $TEMP_TIME))"
-  TEMP_TIME=$(date +%s)
   
     mv ./${BIN_DIR}/${targetName}.ipa ${CUR_PATH}/${BIN_DIR}/${APP_NAME}_v${VER_FLAG}_${CONFIGURATION}_${CUR_TIME}.ipa
     cp -af ./${BUILD_DIR}/${targetName}.xcarchive/dSYMs/${targetName}.app.dSYM ${CUR_PATH}/${BIN_DIR}/${APP_NAME}_v${VER_FLAG}_${CONFIGURATION}_${CUR_TIME}.app.dSYM
-    
-  echo "sealtalk output times: $(($(date +%s) - $TEMP_TIME))"
+  
 echo "***编译结束***"
-

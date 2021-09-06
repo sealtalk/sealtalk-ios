@@ -61,7 +61,8 @@
                     [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:friendInfo.portraitUri]
                                             placeholderImage:[UIImage imageNamed:@"default_portrait_msg"]];
                 }
-                self.conversationTitleLabel.text = [RCKitUtility getDisplayName:friendInfo];
+                self.conversationTitleLabel.text =
+                    friendInfo.displayName.length > 0 ? friendInfo.displayName : friendInfo.name;
             }
         }
     }

@@ -114,7 +114,7 @@
         RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
         RCDGroupMember *member = [RCDGroupManager getGroupMember:userId groupId:self.groupId];
         if ([user.name.lowercaseString containsString:searchString] ||
-            [friend.alias.lowercaseString containsString:searchString] ||
+            [friend.displayName.lowercaseString containsString:searchString] ||
             [member.groupNickname containsString:searchString]) {
             [self.searchResultList addObject:userId];
         }

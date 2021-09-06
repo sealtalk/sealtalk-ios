@@ -99,10 +99,10 @@
 #pragma mark - RCDGroupManagerCellDelegate
 - (void)didSelectUserId:(NSString *)userId {
     RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
-    RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
+    RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:user.userId];
     NSString *name = user.name;
-    if (friend.alias.length > 0) {
-        name = friend.alias;
+    if (friend.displayName.length > 0) {
+        name = friend.displayName;
     }
     [NormalAlertView
         showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"GroupManagerDeleteTitle"), name]

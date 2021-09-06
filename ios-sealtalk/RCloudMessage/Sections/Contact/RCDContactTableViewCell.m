@@ -39,18 +39,17 @@
     if (isDisplayID == YES) {
         self.userIdLabel.text = userInfo.userId;
     }
-    
+
     if ([userInfo isMemberOfClass:[RCDFriendInfo class]]) {
         RCDFriendInfo *friendInfo = (RCDFriendInfo *)userInfo;
-        if (friendInfo.alias.length > 0) {
-            self.nicknameLabel.text = friendInfo.alias;
+        if (friendInfo.displayName.length > 0) {
+            self.nicknameLabel.text = friendInfo.displayName;
         } else {
             self.nicknameLabel.text = friendInfo.name;
         }
     } else {
-        self.nicknameLabel.text = [RCKitUtility getDisplayName:userInfo];
+        self.nicknameLabel.text = userInfo.name;
     }
-    
     if (userInfo.portraitUri.length <= 0) {
         self.portraitView.image = [DefaultPortraitView portraitView:userInfo.userId name:userInfo.name];
     } else {

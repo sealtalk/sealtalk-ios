@@ -55,7 +55,7 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
 
 #define PLUGIN_BOARD_ITEM_POKE_TAG 20000
 
-@interface RCDChatViewController () <RCMessageCellDelegate, RCDQuicklySendManagerDelegate, UIGestureRecognizerDelegate, RealTimeLocationStatusViewDelegate, RCRealTimeLocationObserver, RCMessageBlockDelegate, RCChatRoomMemberDelegate>
+@interface RCDChatViewController () <RCMessageCellDelegate, RCDQuicklySendManagerDelegate, UIGestureRecognizerDelegate, RealTimeLocationStatusViewDelegate, RCRealTimeLocationObserver>
 @property (nonatomic, strong) RCDGroupInfo *groupInfo;
 @property (nonatomic, assign) BOOL isShow;
 @property (nonatomic, assign) BOOL loading;
@@ -115,11 +115,6 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     [self addQuicklySendImage];
     [self setupChatBackground];
     
-    [RCCoreClient sharedCoreClient].messageBlockDelegate = self;
-    
-    if (self.conversationType == ConversationType_CHATROOM) {
-        [RCChatRoomClient sharedChatRoomClient].memberDelegate = self;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -184,24 +179,6 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     [self.conversationMessageCollectionView removeObserver:self forKeyPath:@"frame"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-#pragma mark - RCMessageBlockDelegate
-- (void)messageDidBlock:(RCBlockedMessageInfo *)blockedMessageInfo {
-    [RCAlertView showAlertController:nil message:[NSString stringWithFormat:@"发送的消息（Id:%@, 会话类型: %lu, targetId: %@, 拦截原因:%lu）遇到敏感词被拦截", blockedMessageInfo.blockedMsgUId, (unsigned long)blockedMessageInfo.type, blockedMessageInfo.targetId, (unsigned long)blockedMessageInfo.blockType] cancelTitle:RCDLocalizedString(@"confirm")];
-}
-
-#pragma mark - RCChatRoomMemberDelegate
-- (void)memberDidChange:(NSArray<RCChatRoomMemberAction *> *)members inRoom:(NSString *)roomId {
-    NSLog(@"%luu",(unsigned long) (unsigned long)members.count);
-    
-    NSString *text = @"";
-    for (RCChatRoomMemberAction *member in members) {
-        text = [text stringByAppendingFormat:@"%@", [NSString stringWithFormat:@"成员 %@ %@了聊天室：%@\n", member.memberId, (member.action == RC_ChatRoom_Member_Join) ? @"加入": @"退出", roomId]];
-    }
-    
-    [RCAlertView showAlertController:nil message:text cancelTitle:RCDLocalizedString(@"confirm")];
-}
-
 #pragma mark - RCMessageCellDelegate
 - (void)didTapReceiptCountView:(RCMessageModel *)model {
     if ([model.content isKindOfClass:[RCTextMessage class]]) {
@@ -772,7 +749,11 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
                                      getFriendInfoFromServer:userInfo.userId
                                                     complete:^(RCDFriendInfo *friendInfo) {
                                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                                            weakSelf.navigationItem.title = [RCKitUtility getDisplayName:friendInfo];
+                                                            if (friendInfo.displayName.length > 0) {
+                                                                weakSelf.navigationItem.title = friendInfo.displayName;
+                                                            } else {
+                                                                weakSelf.navigationItem.title = userInfo.name;
+                                                            }
                                                         });
                                                     }];
                              }];
@@ -814,7 +795,7 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     } else if(self.conversationType == ConversationType_PRIVATE){
         RCUserInfo *userInfo = [[RCIM sharedRCIM] getUserInfoCache:self.targetId];
         if (userInfo) {
-            self.title = [RCKitUtility getDisplayName:userInfo];
+            self.title = userInfo.name;
         }
     }
 }
@@ -1053,19 +1034,26 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
             participants = [self.realTimeLocation getParticipants];
             if (participants.count == 1) {
                 NSString *userId = participants[0];
-                [[RCIM sharedRCIM].userInfoDataSource getUserInfoWithUserId:userId completion:^(RCUserInfo *userInfo) {
-                    NSString *displayName = [RCKitUtility getDisplayName:userInfo];
-                    if (displayName.length) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [weakSelf.realTimeLocationStatusView updateText:[NSString stringWithFormat:RTLLocalizedString(@"someone_location_sharing"), displayName]];
-                        });
-                    }
-                }];
+                [[RCIM sharedRCIM]
+                        .userInfoDataSource
+                    getUserInfoWithUserId:userId
+                               completion:^(RCUserInfo *userInfo) {
+                                   if (userInfo.name.length) {
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           [weakSelf.realTimeLocationStatusView
+                                               updateText:[NSString stringWithFormat:RTLLocalizedString(
+                                                                                         @"someone_location_sharing"),
+                                                                                     userInfo.name]];
+                                       });
+                                   }
+                               }];
             } else {
                 if (participants.count < 1)
                     [self.realTimeLocationStatusView removeFromSuperview];
                 else
-                    [self.realTimeLocationStatusView updateText:[NSString stringWithFormat:RTLLocalizedString(@"share_location_people_count"), (int)participants.count]];
+                    [self.realTimeLocationStatusView
+                        updateText:[NSString stringWithFormat:RTLLocalizedString(@"share_location_people_count"),
+                                                              (int)participants.count]];
             }
             break;
         default:
@@ -1094,14 +1082,23 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     if ([userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
         [self notifyParticipantChange:RTLLocalizedString(@"you_join_location_share")];
     } else {
-        [[RCIM sharedRCIM].userInfoDataSource getUserInfoWithUserId:userId completion:^(RCUserInfo *userInfo) {
-            NSString *displayName = [RCKitUtility getDisplayName:userInfo];
-            if (displayName.length) {
-                [weakSelf notifyParticipantChange:[NSString stringWithFormat:RTLLocalizedString(@"someone_join_share_location"), displayName]];
-            } else {
-                [weakSelf notifyParticipantChange:[NSString stringWithFormat:RTLLocalizedString(@"user_join_share_location"), userId]];
-            }
-        }];
+        [[RCIM sharedRCIM]
+                .userInfoDataSource
+            getUserInfoWithUserId:userId
+                       completion:^(RCUserInfo *userInfo) {
+                           if (userInfo.name.length) {
+                               [weakSelf
+                                   notifyParticipantChange:[NSString
+                                                               stringWithFormat:RTLLocalizedString(
+                                                                                    @"someone_join_share_location"),
+                                                                                userInfo.name]];
+                           } else {
+                               [weakSelf
+                                   notifyParticipantChange:[NSString stringWithFormat:RTLLocalizedString(
+                                                                                          @"user_join_share_location"),
+                                                                                      userId]];
+                           }
+                       }];
     }
 }
 
@@ -1110,14 +1107,23 @@ static const char *kRealTimeLocationStatusViewKey = "kRealTimeLocationStatusView
     if ([userId isEqualToString:[RCIMClient sharedRCIMClient].currentUserInfo.userId]) {
         [self notifyParticipantChange:RTLLocalizedString(@"you_quit_location_share")];
     } else {
-        [[RCIM sharedRCIM].userInfoDataSource getUserInfoWithUserId:userId completion:^(RCUserInfo *userInfo) {
-            NSString *displayName = [RCKitUtility getDisplayName:userInfo];
-            if (displayName.length) {
-                [weakSelf notifyParticipantChange:[NSString stringWithFormat:RTLLocalizedString(@"someone_quit_location_share"), displayName]];
-            } else {
-                [weakSelf notifyParticipantChange:[NSString stringWithFormat:RTLLocalizedString(@"user_quit_location_share"), userId]];
-            }
-        }];
+        [[RCIM sharedRCIM]
+                .userInfoDataSource
+            getUserInfoWithUserId:userId
+                       completion:^(RCUserInfo *userInfo) {
+                           if (userInfo.name.length) {
+                               [weakSelf
+                                   notifyParticipantChange:[NSString
+                                                               stringWithFormat:RTLLocalizedString(
+                                                                                    @"someone_quit_location_share"),
+                                                                                userInfo.name]];
+                           } else {
+                               [weakSelf
+                                   notifyParticipantChange:[NSString stringWithFormat:RTLLocalizedString(
+                                                                                          @"user_quit_location_share"),
+                                                                                      userId]];
+                           }
+                       }];
     }
 }
 

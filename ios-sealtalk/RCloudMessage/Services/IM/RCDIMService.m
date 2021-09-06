@@ -25,13 +25,16 @@
                 dbOpened:(void (^)(RCDBErrorCode))dbOpenedBlock
                  success:(void (^)(NSString *userId))successBlock
                    error:(void (^)(RCConnectErrorCode status))errorBlock {
-    [[RCIM sharedRCIM] connectWithToken:token dbOpened:dbOpenedBlock success:^(NSString *userId) {
+    [[RCIM sharedRCIM] connectWithToken:token
+        dbOpened:dbOpenedBlock
+        success:^(NSString *userId) {
             if (successBlock) {
                 successBlock(userId);
             }
-        } error:^(RCConnectErrorCode errorCode) {
+        }
+        error:^(RCConnectErrorCode status) {
             if (errorBlock) {
-                errorBlock(errorCode);
+                errorBlock(status);
             }
         }];
 }

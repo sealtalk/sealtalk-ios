@@ -80,7 +80,7 @@
     RCDChatViewController *chatViewController = [[RCDChatViewController alloc] init];
     chatViewController.conversationType = ConversationType_PRIVATE;
     chatViewController.targetId = user.userId;
-    chatViewController.title = [RCKitUtility getDisplayName:user];
+    chatViewController.title = user.name;
     chatViewController.displayUserNameInCell = NO;
     chatViewController.needPopToRootView = YES;
     [self.navigationController pushViewController:chatViewController animated:YES];

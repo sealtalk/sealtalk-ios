@@ -78,7 +78,7 @@
                                              dispatch_async(dispatch_get_main_queue(), ^{
                                                  RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
                                                  if (friend && friend.displayName.length > 0) {
-                                                     userInfo.alias = friend.displayName;
+                                                     userInfo.name = friend.displayName;
                                                  }
                                                  completeBlock(userInfo);
                                              });
@@ -86,7 +86,7 @@
     } else {
         RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
         if (friend && friend.displayName.length > 0) {
-            user.alias = friend.displayName;
+            user.name = friend.displayName;
         }
         completeBlock(user);
     }
@@ -126,12 +126,12 @@
         [self getUserInfo:self.notice.operatorId
                  complete:^(RCDUserInfo *user) {
                      self.infoLabel.text =
-                         [NSString stringWithFormat:RCDLocalizedString(@"InviteYouJoinGroup"), [RCKitUtility getDisplayName:user]];
+                         [NSString stringWithFormat:RCDLocalizedString(@"InviteYouJoinGroup"), user.name];
                  }];
     } else if (self.notice.noticeType == RCDGroupNoticeTypeManagerApproving) {
         [self getUserInfo:self.notice.targetId
                  complete:^(RCDUserInfo *user) {
-                     self.nameLabel.text = [RCKitUtility getDisplayName:user];
+                     self.nameLabel.text = user.name;
                      if (user.portraitUri.length == 0) {
                          user.portraitUri = [RCDUtilities defaultUserPortrait:user];
                      }

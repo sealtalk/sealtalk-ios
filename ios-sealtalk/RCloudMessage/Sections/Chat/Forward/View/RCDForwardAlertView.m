@@ -175,7 +175,7 @@
         } else {
             userInfo = [RCDDBManager getFriend:model.targetId];
         }
-        self.nameLabel.text = [RCKitUtility getDisplayName:userInfo];
+        self.nameLabel.text = userInfo.name;
     } else if (model.conversationType == ConversationType_GROUP) {
         RCDGroupInfo *groupInfo = [RCDDBManager getGroup:model.targetId];
         self.nameLabel.text = groupInfo.groupName;

@@ -107,10 +107,9 @@
     NSString *key = self.resultKeys[indexPath.section];
     NSArray *array = self.resultSectionDict[key];
     RCUserInfo *user = array[indexPath.row];
-    NSString *displayName = [RCKitUtility getDisplayName:user];
     [NormalAlertView
-        showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"GroupSelectNewOwnerTitle"), displayName]
-        highlightText:displayName
+        showAlertWithMessage:[NSString stringWithFormat:RCDLocalizedString(@"GroupSelectNewOwnerTitle"), user.name]
+        highlightText:user.name
         leftTitle:RCDLocalizedString(@"cancel")
         rightTitle:RCDLocalizedString(@"confirm")
         cancel:^{
@@ -136,7 +135,7 @@
             RCUserInfo *user = [RCDUserInfoManager getUserInfo:userInfo.userId];
             RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userInfo.userId];
             RCDGroupMember *member = [RCDGroupManager getGroupMember:userInfo.userId groupId:self.groupId];
-            if ([user.name containsString:searchString] || [friend.alias containsString:searchString] ||
+            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] ||
                 [member.groupNickname containsString:searchString]) {
                 [array addObject:userInfo];
             }
@@ -158,8 +157,8 @@
     for (NSString *userId in array) {
         RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
         RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
-        if (friend.alias.length > 0) {
-            user.alias = friend.alias;
+        if (friend.displayName.length > 0) {
+            user.name = friend.displayName;
         }
         [list addObject:user];
     }

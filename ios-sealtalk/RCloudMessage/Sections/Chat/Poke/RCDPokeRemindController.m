@@ -137,7 +137,7 @@
         [RCDUtilities getGroupUserDisplayInfo:self.message.senderUserId
                                       groupId:self.message.targetId
                                        result:^(RCUserInfo *user) {
-                                           weakSelf.userNameLabel.text = [RCKitUtility getDisplayName:user];
+                                           weakSelf.userNameLabel.text = user.name;
                                            [weakSelf.headerView
                                                sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
                                                  placeholderImage:[UIImage imageNamed:@"contact"]];
@@ -146,7 +146,7 @@
         __weak typeof(self) weakSelf = self;
         [RCDUtilities getUserDisplayInfo:self.message.senderUserId
                                 complete:^(RCUserInfo *user) {
-                                    weakSelf.userNameLabel.text = [RCKitUtility getDisplayName:user];
+                                    weakSelf.userNameLabel.text = user.name;
                                     [weakSelf.headerView sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
                                                            placeholderImage:[UIImage imageNamed:@"contact"]];
                                 }];

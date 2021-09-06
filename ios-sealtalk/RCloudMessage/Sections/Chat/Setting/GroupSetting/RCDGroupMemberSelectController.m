@@ -160,7 +160,7 @@
             RCUserInfo *user = [RCDUserInfoManager getUserInfo:userInfo.userId];
             RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userInfo.userId];
             RCDGroupMember *member = [RCDGroupManager getGroupMember:userInfo.userId groupId:self.groupId];
-            if ([user.name containsString:searchString] || [friend.alias containsString:searchString] ||
+            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] ||
                 [member.groupNickname containsString:searchString]) {
                 [array addObject:userInfo];
             }
@@ -183,8 +183,8 @@
         for (NSString *userId in self.selectUsers) {
             RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
             RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
-            if (friend.alias.length > 0) {
-                names = [names stringByAppendingString:friend.alias];
+            if (friend.displayName.length > 0) {
+                names = [names stringByAppendingString:friend.displayName];
             } else {
                 names = [names stringByAppendingString:user.name];
             }
@@ -214,8 +214,8 @@
     for (NSString *userId in array) {
         RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
         RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
-        if (friend.alias.length > 0) {
-            user.name = friend.alias;
+        if (friend.displayName.length > 0) {
+            user.name = friend.displayName;
         }
         [list addObject:user];
     }

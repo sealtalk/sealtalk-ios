@@ -65,7 +65,7 @@
             [RCDUtilities getGroupUserDisplayInfo:user.userId
                                           groupId:self.groupId
                                            result:^(RCUserInfo *user) {
-                                               weakSelf.nicknameLabel.text = [RCKitUtility getDisplayName:user];
+                                               weakSelf.nicknameLabel.text = user.name;
                                                [weakSelf.portraitImageView
                                                    sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
                                                      placeholderImage:[UIImage imageNamed:@"contact"]];
@@ -74,7 +74,7 @@
             __weak typeof(self) weakSelf = self;
             [RCDUtilities getUserDisplayInfo:user.userId
                                     complete:^(RCUserInfo *user) {
-                                        weakSelf.nicknameLabel.text = [RCKitUtility getDisplayName:user];
+                                        weakSelf.nicknameLabel.text = user.name;
                                         [weakSelf.portraitImageView
                                             sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
                                               placeholderImage:[UIImage imageNamed:@"contact"]];

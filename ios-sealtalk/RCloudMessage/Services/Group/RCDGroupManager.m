@@ -535,11 +535,10 @@
     RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
     if (user) {
         RCDGroupMember *memberDetail = [self getGroupMember:userId groupId:groupId];
-//        RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
-//        if (friend.displayName.length > 0) {
-//            user.name = friend.displayName;
-//        } else
-        if (memberDetail.groupNickname.length > 0) {
+        RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
+        if (friend.displayName.length > 0) {
+            user.name = friend.displayName;
+        } else if (memberDetail.groupNickname.length > 0) {
             user.name = memberDetail.groupNickname;
         }
         [[RCIM sharedRCIM] refreshGroupUserInfoCache:user withUserId:userId withGroupId:groupId];

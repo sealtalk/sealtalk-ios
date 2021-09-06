@@ -236,7 +236,10 @@
         [self sortAndRefreshWithList:self.allFriendArray];
     } else {
         for (RCDFriendInfo *userInfo in self.allFriendArray) {
-            NSString *name = [RCKitUtility getDisplayName:userInfo];
+            NSString *name = userInfo.name;
+            if ([userInfo isMemberOfClass:[RCDFriendInfo class]] && userInfo.displayName.length > 0) {
+                name = userInfo.displayName;
+            }
             // //忽略大小写去判断是否包含
             if ([name rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound ||
                 [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch]
