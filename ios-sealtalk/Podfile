@@ -24,8 +24,8 @@ target 'SealTalk' do
   pod 'RongCloudIM/IMKit', '5.1.3.3'
   pod 'RongCloudIM/RongSticker', '5.1.3.3'
   pod 'RongCloudIM/Sight', '5.1.3.3'
-  pod 'RongCloudRTC/RongCallLib',
-  pod 'RongCloudRTC/RongCallKit',
+  pod 'RongCloudRTC/RongCallLib'
+  pod 'RongCloudRTC/RongCallKit'
 end
 
 target 'SealTalkNotificationService' do
