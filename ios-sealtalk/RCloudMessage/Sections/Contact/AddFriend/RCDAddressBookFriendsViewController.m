@@ -302,6 +302,7 @@
         [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.tableFooterView = [UIView new];
         //设置右侧索引
         _tableView.sectionIndexBackgroundColor = [UIColor clearColor];
         _tableView.sectionIndexColor = HEXCOLOR(0x555555);

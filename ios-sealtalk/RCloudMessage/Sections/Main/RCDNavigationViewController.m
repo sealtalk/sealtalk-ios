@@ -7,7 +7,8 @@
 //
 
 #import "RCDNavigationViewController.h"
-
+#import "RCDCommonDefine.h"
+#import "RCDUtilities.h"
 @interface RCDNavigationViewController ()
 
 @end

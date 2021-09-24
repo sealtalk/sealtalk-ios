@@ -70,9 +70,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RCDGroupMemberCell *cell = [RCDGroupMemberCell cellWithTableView:tableView];
-    if (indexPath.section == 0) {
-        cell.portraitImageView.image = [UIImage imageNamed:@"choose_all"];
-        cell.nameLabel.text = RCDLocalizedString(@"mention_all");
+    if (indexPath.section == 0 ) {
+        if (self.searchController.searchBar.text.length == 0) {
+            cell.portraitImageView.image = [UIImage imageNamed:@"choose_all"];
+            cell.nameLabel.text = RCDLocalizedString(@"mention_all");
+        }
     } else {
         NSString *key = self.resultKeys[indexPath.section - 1];
         NSArray *array = self.resultSectionDict[key];
@@ -117,6 +119,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 && self.searchController.searchBar.text.length > 0) {
+        return 0;
+    }
     return 55.0;
 }
 
@@ -152,9 +157,8 @@
         NSMutableArray *array = [NSMutableArray array];
         for (RCUserInfo *userInfo in self.allMembers) {
             RCUserInfo *user = [RCDUserInfoManager getUserInfo:userInfo.userId];
-            RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userInfo.userId];
             RCDGroupMember *member = [RCDGroupManager getGroupMember:userInfo.userId groupId:self.groupId];
-            if ([user.name containsString:searchString] || [friend.displayName containsString:searchString] ||
+            if ([user.name containsString:searchString] || [user.alias containsString:searchString] ||
                 [member.groupNickname containsString:searchString]) {
                 [array addObject:userInfo];
             }
@@ -203,7 +207,7 @@
         RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
         RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:userId];
         if (friend.displayName.length > 0) {
-            user.name = friend.displayName;
+            user.alias = friend.displayName;
         }
         [list addObject:user];
     }

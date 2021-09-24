@@ -55,7 +55,7 @@
                                            [weakSelf.portraitImageView
                                                sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
                                                  placeholderImage:[UIImage imageNamed:@"contact"]];
-                                           weakSelf.nameLabel.text = user.name;
+                                           weakSelf.nameLabel.text = [RCKitUtility getDisplayName:user];
                                        }];
     }
 }

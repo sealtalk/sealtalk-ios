@@ -396,7 +396,7 @@
 #pragma mark - getter
 - (RCDTableView *)resultTableView {
     if (!_resultTableView) {
-        _resultTableView = [[RCDTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _resultTableView = [[RCDTableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _resultTableView.delegate = self;
         _resultTableView.dataSource = self;
     }

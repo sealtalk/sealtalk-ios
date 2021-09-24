@@ -115,6 +115,10 @@
         [self getUnreadCountForTag];
     }else if (indexPath.row == 11){
         [self setConversationToTopForTag];
+    }else if (indexPath.row == 12){
+        [self clearUnreadCountFotTag];
+    }else if (indexPath.row == 13){
+        [self clearConversationFotTag];
     }
 }
 
@@ -327,6 +331,37 @@
     }];
 }
 
+- (void)clearUnreadCountFotTag {
+    __weak typeof(self) weakSelf = self;
+    [self showTextInputAlert:@[@"tagId"] complete:^(NSArray *texts) {
+        BOOL isSuccess = [[RCCoreClient sharedCoreClient] clearMessagesUnreadStatusByTag:texts[0]];
+        NSString *str = [NSString stringWithFormat:@"清除标签 %@ 对应会话的未读数:%@", texts[0], isSuccess ? @"成功" : @"失败"];
+        [weakSelf.logList addObject:str];
+        [weakSelf reloadViews];
+    }];
+}
+
+- (void)clearConversationFotTag {
+    __weak typeof(self) weakSelf = self;
+    [self showTextInputAlert:@[@"tagId", @"needDeleteMessage"] complete:^(NSArray *texts) {
+        BOOL needDelete = ([texts[1]  isEqual: @"0"] ? NO : YES);
+        RCClearConversationOption *option = [[RCClearConversationOption alloc] init];
+        option.isDeleteMessage = needDelete;
+        [[RCCoreClient sharedCoreClient] clearConversationsByTag:texts[0] option:option success:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.view showHUDMessage:@"clearConversationFotTag success"];
+                NSString *str = [NSString stringWithFormat:@"清除标签 %@ 中的会话, %@清除本地历史消息", texts[0], needDelete ? @"" : @"不"];
+                [weakSelf.logList addObject:str];
+                [weakSelf reloadViews];
+            });
+        } error:^(RCErrorCode errorCode) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.view showHUDMessage:[NSString stringWithFormat:@"setConversationToTopForTag failed: %ld",(long)errorCode]];
+            });
+        }];
+    }];
+}
+
 - (void)reloadViews{
     [self.tableView reloadData];
     if (self.logList.count > 0) {
@@ -381,7 +416,7 @@
 }
 - (RCDDebugSelectView *)selectView{
     if (!_selectView) {
-        _selectView = [[RCDDebugSelectView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 240, self.view.frame.size.width, 150) titleList:@[@"添加标签", @"删除标签", @"更新标签", @"获取标签列表", @"添加会话到标签", @"删除标签中的会话", @"删除会话的标签", @"获取会话标签", @"获取标签中的会话",@"获取会话标签的置顶状态", @"获取标签下会话未读数",@"设置标签下会话置顶"]];
+        _selectView = [[RCDDebugSelectView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 240, self.view.frame.size.width, 150) titleList:@[@"添加标签", @"删除标签", @"更新标签", @"获取标签列表", @"添加会话到标签", @"删除标签中的会话", @"删除会话的标签", @"获取会话标签", @"获取标签中的会话",@"获取会话标签的置顶状态", @"获取标签下会话未读数",@"设置标签下会话置顶",@"清除标签对应会话的未读数",@"删除标签对应的会话"]];
         _selectView.debugSelectViewDelegate = self;
     }
     return _selectView;

@@ -74,6 +74,10 @@
     return 49.f;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return CGFLOAT_MIN;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
     case 0: {
@@ -252,6 +256,7 @@
         _tableView = [[RCDTableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.tableFooterView = [UIView new];
         [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
         _tableView.scrollEnabled = NO;
     }

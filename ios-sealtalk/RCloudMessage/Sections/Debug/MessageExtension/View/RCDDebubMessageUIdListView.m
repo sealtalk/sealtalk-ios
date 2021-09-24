@@ -20,7 +20,7 @@
     if (array.count < 10) {
         height = array.count * 30 + 40;
     }
-    RCDDebubMessageUIdListView *listView= [[RCDDebubMessageUIdListView alloc] initWithFrame:CGRectMake(20, 150, inview.frame.size.width-40, height) style:(UITableViewStylePlain)];
+    RCDDebubMessageUIdListView *listView= [[RCDDebubMessageUIdListView alloc] initWithFrame:CGRectMake(20, 150, inview.frame.size.width-40, height) style:(UITableViewStyleGrouped)];
     listView.type = type;
     listView.targetId = targetId;
     listView.array = array;

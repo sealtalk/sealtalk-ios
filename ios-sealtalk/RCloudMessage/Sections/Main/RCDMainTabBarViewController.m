@@ -13,6 +13,7 @@
 #import "RCDSquareTableViewController.h"
 #import "UITabBar+badge.h"
 #import "RCDUtilities.h"
+#import "RCDCommonDefine.h"
 @interface RCDMainTabBarViewController ()
 
 @property NSUInteger previousIndex;
@@ -39,6 +40,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = RCDDYCOLOR(0xffffff, 0x1c1c1c);
     [self rcdinitTabImages];
     [self setControllers];
     [self setTabBarItems];

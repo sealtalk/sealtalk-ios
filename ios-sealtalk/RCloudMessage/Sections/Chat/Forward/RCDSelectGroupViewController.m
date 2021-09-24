@@ -173,6 +173,10 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
     return 55;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return CGFLOAT_MIN;
+}
+
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     [self.searchBar resignFirstResponder];
@@ -246,6 +250,7 @@ static NSString *selectGroupCellIdentifier = @"RCDSelectGroupCellIdentifier";
         _tableView = [[RCDTableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.tableFooterView = [UIView new];
         _tableView.tableHeaderView =
             [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _tableView.bounds.size.width, 0.01f)];
         //设置右侧索引

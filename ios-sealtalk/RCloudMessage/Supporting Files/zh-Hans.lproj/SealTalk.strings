@@ -11,7 +11,7 @@
 "cancel"="取消";
 "join"="加入";
 "back"="返回";
-"mention_all"="@所有人";
+"mention_all"="所有人";
 "group_information_x"="群组信息(%@)";
 "group_information"="群组信息";
 "group_members_x"="群组成员(%lu)";

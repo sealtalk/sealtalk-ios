@@ -112,7 +112,7 @@
     }
     self.ivAva.image = nil;
     self.userId = user.userId;
-    self.titleLabel.text = user.name;
+    self.titleLabel.text = [RCKitUtility getDisplayName:user];
     [self.ivAva sd_setImageWithURL:[NSURL URLWithString:user.portraitUri]
                   placeholderImage:[UIImage imageNamed:@"icon_person"]];
 }

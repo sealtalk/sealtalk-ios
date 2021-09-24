@@ -49,8 +49,12 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
     return 55;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return CGFLOAT_MIN;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.01;
+    return CGFLOAT_MIN;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -199,10 +203,11 @@ static NSString *cleanConversationCellIdentifier = @"RCDCleanConversationCellIde
 - (RCDTableView *)tableView {
     if (!_tableView) {
         _tableView = [[RCDTableView alloc] init];
-        [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
-        _tableView.allowsMultipleSelection = YES;
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.tableFooterView = [UIView new];
+        [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
+        _tableView.allowsMultipleSelection = YES;
     }
     return _tableView;
 }

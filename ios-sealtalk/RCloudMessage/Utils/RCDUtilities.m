@@ -171,8 +171,8 @@
             NSString *firstLetter;
             if ([user isMemberOfClass:[RCDFriendInfo class]]) {
                 RCDFriendInfo *userInfo = (RCDFriendInfo *)user;
-                if (userInfo.displayName.length > 0 && ![userInfo.displayName isEqualToString:@""]) {
-                    firstLetter = [self getFirstUpperLetter:userInfo.displayName];
+                if (userInfo.alias.length > 0 && ![userInfo.alias isEqualToString:@""]) {
+                    firstLetter = [self getFirstUpperLetter:userInfo.alias];
                 } else {
                     firstLetter = [self getFirstUpperLetter:userInfo.name];
                 }
@@ -312,8 +312,8 @@
         if (friend.portraitUri.length == 0) {
             friend.portraitUri = [self defaultUserPortrait:friend];
         }
-        RCUserInfo *user =
-            [[RCUserInfo alloc] initWithUserId:userId name:friend.displayName portrait:friend.portraitUri];
+        RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:userId name:friend.name portrait:friend.portraitUri];
+        user.alias = friend.displayName;
         result(user);
         [[RCIM sharedRCIM] refreshGroupUserInfoCache:user withUserId:userId withGroupId:groupId];
     } else {
@@ -322,6 +322,9 @@
                             RCDGroupMember *memberDetail = [RCDGroupManager getGroupMember:userId groupId:groupId];
                             if (groupId.length > 0 && memberDetail.groupNickname.length > 0) {
                                 user.name = memberDetail.groupNickname;
+                                if (friend.displayName.length > 0) {
+                                    user.alias = friend.displayName;
+                                }
                             }
                             result(user);
                             [[RCIM sharedRCIM] refreshGroupUserInfoCache:user withUserId:userId withGroupId:groupId];
@@ -335,8 +338,8 @@
         if (friend.portraitUri.length == 0) {
             friend.portraitUri = [self defaultUserPortrait:friend];
         }
-        RCUserInfo *user =
-            [[RCUserInfo alloc] initWithUserId:userId name:friend.displayName portrait:friend.portraitUri];
+        RCUserInfo *user = [[RCUserInfo alloc] initWithUserId:userId name:friend.name portrait:friend.portraitUri];
+        user.alias = friend.displayName;
         completeBlock(user);
     } else {
         RCDUserInfo *user = [RCDUserInfoManager getUserInfo:userId];

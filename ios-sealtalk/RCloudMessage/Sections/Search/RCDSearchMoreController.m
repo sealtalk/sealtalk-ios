@@ -28,7 +28,7 @@
 
 @implementation RCDSearchMoreController
 - (instancetype)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:UITableViewStylePlain];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.isShowSeachBar = YES;
     }
@@ -78,7 +78,6 @@
 
 - (void)cancelButtonClicked {
     self.cancelBlock();
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Table view data source

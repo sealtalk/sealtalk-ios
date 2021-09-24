@@ -11,7 +11,7 @@
 "cancel"="Cancel";
 "join"="Join";
 "back"="Back";
-"mention_all"="@All";
+"mention_all"="All";
 "group_information_x"="Group Information(%@)";
 "group_information"="Group Information";
 "group_members_x"="Group Members(%lu)";

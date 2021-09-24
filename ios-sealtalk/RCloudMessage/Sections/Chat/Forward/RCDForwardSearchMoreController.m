@@ -107,6 +107,10 @@
     return 65;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return CGFLOAT_MIN;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.searchBar resignFirstResponder];
     RCDSearchResultModel *model = self.resultArray[indexPath.row];
@@ -260,7 +264,6 @@
 
 - (void)cancelButtonClicked {
     self.cancelBlock();
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)updateSelectedResult {
@@ -270,9 +273,10 @@
 #pragma mark - getter
 - (RCDTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[RCDTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _tableView = [[RCDTableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.tableFooterView = [UIView new];
     }
     return _tableView;
 }

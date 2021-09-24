@@ -14,6 +14,8 @@ typedef enum : NSUInteger {
     RCDDebugAlertViewTypeSet,
     RCDDebugAlertViewTypeGet,
     RCDDebugAlertViewTypeDelete,
+    RCDDebugAlertViewTypeBatchSet,
+    RCDDebugAlertViewTypeBatchDelete,
 } RCDDebugAlertViewType;
 
 @interface RCDDebugAlertView : UIView
@@ -25,6 +27,7 @@ typedef void (^FinishBlock)(RCDDebugAlertView *alertView);
 @property (nonatomic, assign) BOOL isDelete;
 @property (nonatomic, assign) BOOL isNotice;
 @property (nonatomic, strong) NSString *extra;
+@property (nonatomic, assign) BOOL isForce;
 
 @property (nonatomic, copy) FinishBlock finishBlock;
 

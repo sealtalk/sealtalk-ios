@@ -330,7 +330,7 @@
 #pragma mark - getter
 - (RCDTableView *)resultTableView {
     if (!_resultTableView) {
-        _resultTableView = [[RCDTableView alloc] initWithFrame:CGRectZero style:(UITableViewStylePlain)];
+        _resultTableView = [[RCDTableView alloc] initWithFrame:CGRectZero style:(UITableViewStyleGrouped)];
         _resultTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.01)];
         _resultTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.01)];
         _resultTableView.backgroundColor = RCDDYCOLOR(0xffffff, 0x191919);

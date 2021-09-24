@@ -28,8 +28,9 @@
 #import "RCDGroupConversationCell.h"
 #import "RCDChatNotificationMessage.h"
 #import "RCDUtilities.h"
+#import "RCDNavigationViewController.h"
 @interface RCDChatListViewController () <UISearchBarDelegate, RCDSearchViewDelegate>
-@property (nonatomic, strong) UINavigationController *searchNavigationController;
+@property (nonatomic, strong) RCDNavigationViewController *searchNavigationController;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) RCDSearchBar *searchBar;
 @property (nonatomic, assign) NSUInteger index;
@@ -109,19 +110,18 @@
 
 #pragma mark - UISearchBarDelegate
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
     RCDSearchViewController *searchViewController = [[RCDSearchViewController alloc] init];
-    self.searchNavigationController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
+    self.searchNavigationController = [[RCDNavigationViewController alloc] initWithRootViewController:searchViewController];
     searchViewController.delegate = self;
-    [self.navigationController.view addSubview:self.searchNavigationController.view];
+    self.searchNavigationController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:self.searchNavigationController animated:NO completion:^{
+        
+    }];
 }
 
 #pragma mark - RCDSearchViewDelegate
 - (void)searchViewControllerDidClickCancel {
-    [self.searchNavigationController.view removeFromSuperview];
-    [self.searchNavigationController removeFromParentViewController];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self refreshConversationTableViewIfNeeded];
+    [self.searchNavigationController dismissViewControllerAnimated:NO completion:nil];
 }
 
 #pragma mark - UIScrollViewDelegate

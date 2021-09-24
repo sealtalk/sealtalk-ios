@@ -64,6 +64,10 @@ static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
     return 55;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return CGFLOAT_MIN;
+}
+
 #pragma mark - Private Method
 - (void)setupSubviews {
 
@@ -98,6 +102,7 @@ static NSString *haveSelectedCellIdentifier = @"RCDHaveSelectedCellIdentifier";
         _tableView = [[RCDTableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.tableFooterView = [UIView new];
         [_tableView setSectionIndexColor:[UIColor darkGrayColor]];
         _tableView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
         _tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);

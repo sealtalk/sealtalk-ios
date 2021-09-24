@@ -13,6 +13,12 @@
 @end
 
 @implementation RCDTableViewController
+- (instancetype)initWithStyle:(UITableViewStyle)style{
+    if (self = [super initWithStyle:UITableViewStyleGrouped]) {
+        
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -34,5 +40,9 @@
     UIView *view = [UIView new];
     view.backgroundColor = RCDDYCOLOR(0xf5f6f9, 0x000000);
     return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return CGFLOAT_MIN;
 }
 @end

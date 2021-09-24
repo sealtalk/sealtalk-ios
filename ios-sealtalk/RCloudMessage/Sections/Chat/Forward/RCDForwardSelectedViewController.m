@@ -20,6 +20,8 @@
 #import "RCDSelectGroupViewController.h"
 #import "RCDTableView.h"
 #import "RCDSearchBar.h"
+#import "RCDNavigationViewController.h"
+
 static NSString *rightArrowCellIdentifier = @"RCDRightArrowCellIdentifier";
 static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentifier";
 
@@ -32,7 +34,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 @property (nonatomic, strong) RCDTableView *tableView;
 @property (nonatomic, strong) NSArray *conversationList;
 @property (nonatomic, assign) BOOL isMultiSelectModel;
-@property (nonatomic, strong) UINavigationController *searchNavigationController;
+@property (nonatomic, strong) RCDNavigationViewController *searchNavigationController;
 
 @end
 
@@ -224,20 +226,21 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
 }
 
 #pragma mark - UISearchBarDelegate
+
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
     RCDForwardSearchViewController *searchViewController =
         [[RCDForwardSearchViewController alloc] initWithSuperViewController:self];
-    self.searchNavigationController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
+    self.searchNavigationController = [[RCDNavigationViewController alloc] initWithRootViewController:searchViewController];
     searchViewController.delegate = self;
-    [self.navigationController.view addSubview:self.searchNavigationController.view];
+    self.searchNavigationController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:self.searchNavigationController animated:NO completion:^{
+        
+    }];
 }
 
 #pragma mark - RCDForwardSearchViewDelegate
 - (void)forwardSearchViewControllerDidClickCancel {
-    [self.searchNavigationController.view removeFromSuperview];
-    [self.searchNavigationController removeFromParentViewController];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.searchNavigationController dismissViewControllerAnimated:NO completion:nil];
     [self refreshTableViewIfNeed];
 }
 
@@ -366,6 +369,7 @@ static NSString *forwardSelectedCellIdentifier = @"RCDForwardSelectedCellIdentif
         _tableView.allowsMultipleSelection = YES;
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.tableFooterView = [UIView new];
     }
     return _tableView;
 }

@@ -158,11 +158,7 @@
             break;
         }
         RCUserInfo *user = [RCDUserInfoManager getUserInfo:userId];
-        RCDFriendInfo *friend = [RCDUserInfoManager getFriendInfo:user.userId];
-        NSString *str = user.name;
-        if (friend.displayName.length > 0) {
-            str = friend.displayName;
-        }
+        NSString *str = [RCKitUtility getDisplayName:user];
         names = [names stringByAppendingString:str];
         if (names.length >= 10) {
             names = [names substringWithRange:NSMakeRange(0, 10)];

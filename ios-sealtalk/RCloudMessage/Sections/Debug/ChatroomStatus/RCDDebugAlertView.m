@@ -95,7 +95,7 @@
             make.height.offset(30);
         }];
         lastView = self.keyTextField;
-    } else {
+    } else if (type == RCDDebugAlertViewTypeDelete)  {
         [self.contentView addSubview:self.keyTextField];
         [self.contentView addSubview:self.noticeButton];
         [self.contentView addSubview:self.extraTextField];
@@ -116,6 +116,53 @@
 
         [self.extraTextField mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.noticeButton.mas_bottom).offset(VerticalInterval);
+            make.left.right.height.equalTo(self.keyTextField);
+        }];
+
+        lastView = self.extraTextField;
+    } else if (type == RCDDebugAlertViewTypeBatchSet)  {
+        [self.contentView addSubview:self.keyTextField];
+        [self.contentView addSubview:self.valueTextField];
+        [self.contentView addSubview:self.deleteButton];
+        [self.contentView addSubview:self.extraTextField];
+        rightTitle = @"批量设置";
+
+        [self.keyTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.contentView).offset(VerticalInterval);
+            make.left.right.equalTo(self.contentView).inset(20);
+            make.height.offset(30);
+        }];
+
+        [self.valueTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.keyTextField.mas_bottom).offset(VerticalInterval);
+            make.left.right.height.equalTo(self.keyTextField);
+        }];
+
+        [self.deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.valueTextField.mas_bottom).offset(VerticalInterval);
+            make.centerX.equalTo(self.contentView);
+            make.height.offset(40);
+            make.width.offset(150);
+        }];
+
+        [self.extraTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.deleteButton.mas_bottom).offset(VerticalInterval);
+            make.left.right.height.equalTo(self.keyTextField);
+        }];
+        lastView = self.extraTextField;
+    } else if (type == RCDDebugAlertViewTypeBatchDelete)  {
+        [self.contentView addSubview:self.keyTextField];
+        [self.contentView addSubview:self.extraTextField];
+        rightTitle = @"删除";
+
+        [self.keyTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.contentView).offset(VerticalInterval);
+            make.left.right.equalTo(self.contentView).inset(20);
+            make.height.offset(30);
+        }];
+
+        [self.extraTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.keyTextField.mas_bottom).offset(VerticalInterval);
             make.left.right.height.equalTo(self.keyTextField);
         }];
 
@@ -153,12 +200,12 @@
 }
 
 - (void)rightAction {
-    if (self.alertViewType == RCDDebugAlertViewTypeSet) {
+    if (self.alertViewType == RCDDebugAlertViewTypeSet || self.alertViewType == RCDDebugAlertViewTypeBatchSet) {
         self.value = self.valueTextField.text;
         self.isDelete = self.deleteButton.isSelected;
         self.isNotice = self.noticeButton.isSelected;
         self.extra = self.extraTextField.text;
-    } else if (self.alertViewType == RCDDebugAlertViewTypeDelete) {
+    } else if (self.alertViewType == RCDDebugAlertViewTypeDelete || self.alertViewType == RCDDebugAlertViewTypeBatchDelete) {
         self.isNotice = self.noticeButton.isSelected;
         self.extra = self.extraTextField.text;
     }

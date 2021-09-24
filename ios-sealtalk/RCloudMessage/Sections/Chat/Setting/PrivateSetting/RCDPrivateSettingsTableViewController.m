@@ -102,9 +102,9 @@ static NSString *CellIdentifier = @"RCDBaseSettingTableViewCell";
             [cell setCellStyle:SwitchStyle];
             cell.leftLabel.text = RCDLocalizedString(@"stick_on_top");
             cell.switchButton.hidden = NO;
-            RCConversation *currentConversation =
-                [[RCIMClient sharedRCIMClient] getConversation:ConversationType_PRIVATE targetId:self.userId];
-            cell.switchButton.on = currentConversation.isTop;
+            RCConversationIdentifier *identifier = [[RCConversationIdentifier alloc] initWithConversationIdentifier:ConversationType_PRIVATE targetId:self.userId];
+            BOOL isTop = [[RCCoreClient sharedCoreClient] getConversationTopStatus:identifier];
+            cell.switchButton.on = isTop;
             [cell.switchButton addTarget:self
                                   action:@selector(clickIsTopBtn:)
                         forControlEvents:UIControlEventValueChanged];

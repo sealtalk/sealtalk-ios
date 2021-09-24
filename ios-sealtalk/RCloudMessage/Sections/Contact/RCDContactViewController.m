@@ -112,7 +112,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0) {
-        return 0;
+        return CGFLOAT_MIN;
     }
     return 32.f;
 }
@@ -236,10 +236,7 @@
         [self sortAndRefreshWithList:self.allFriendArray];
     } else {
         for (RCDFriendInfo *userInfo in self.allFriendArray) {
-            NSString *name = userInfo.name;
-            if ([userInfo isMemberOfClass:[RCDFriendInfo class]] && userInfo.displayName.length > 0) {
-                name = userInfo.displayName;
-            }
+            NSString *name = [RCKitUtility getDisplayName:userInfo];
             // //忽略大小写去判断是否包含
             if ([name rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound ||
                 [[RCDUtilities hanZiToPinYinWithString:name] rangeOfString:searchText options:NSCaseInsensitiveSearch]
@@ -422,7 +419,7 @@
 
 - (RCDTableView *)friendsTabelView {
     if (!_friendsTabelView) {
-        _friendsTabelView = [[RCDTableView alloc] initWithFrame:CGRectZero style:(UITableViewStylePlain)];
+        _friendsTabelView = [[RCDTableView alloc] initWithFrame:CGRectZero style:(UITableViewStyleGrouped)];
         _friendsTabelView.delegate = self;
         _friendsTabelView.dataSource = self;
         _friendsTabelView.tableFooterView = [UIView new];

@@ -136,7 +136,7 @@
 #pragma mark - Getters and setters
 - (RCDTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[RCDTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        _tableView = [[RCDTableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         if ([_tableView respondsToSelector:@selector(setSeparatorInset:)]) {

@@ -669,6 +669,14 @@
     if (IOS_FSystenVersion >= 8.0) {
         [UINavigationBar appearance].translucent = NO;
     }
+    if (@available(iOS 13.0, *)) {
+        UINavigationBarAppearance *barApp = [UINavigationBarAppearance new];
+        barApp.backgroundColor = RCDDYCOLOR(0xffffff, 0x191919);
+        barApp.backgroundEffect = nil;// 去掉半透明效果
+        barApp.shadowColor = [UIColor clearColor];
+        [UINavigationBar appearance].scrollEdgeAppearance = barApp;
+        [UINavigationBar appearance].standardAppearance = barApp;
+    }
 }
 
 //重定向 log 到本地文件
